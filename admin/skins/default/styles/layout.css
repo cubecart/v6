@@ -780,7 +780,8 @@ img {
     align-items: center;
     height: 30px
 }
-#header .btn-signout {
+#header .btn-signout,
+#header .btn-clear-cache {
     display: inline-flex;
     align-items: center;
     padding: 5px 12px;
@@ -794,14 +795,29 @@ img {
     text-decoration: none;
     transition: background 0.15s, border-color 0.15s
 }
-#header .btn-signout:hover {
+#header .btn-signout:hover,
+#header .btn-clear-cache:hover {
     background: rgba(255,255,255,0.22);
     border-color: rgba(255,255,255,0.5);
     color: #fff
 }
-#header .btn-signout i {
+#header .btn-signout i,
+#header .btn-clear-cache i {
     margin-right: 3px;
     color: #fff
+}
+#header #clear_cache_master.clear .btn-clear-cache {
+    background: rgba(255, 165, 0, 0.35);
+    border-color: rgba(255, 183, 77, 0.6);
+    animation: cache_pulse_header 1.5s ease-in-out infinite
+}
+#header #clear_cache_master.clear .btn-clear-cache:hover {
+    background: rgba(255, 165, 0, 0.55);
+    border-color: rgba(255, 183, 77, 0.85)
+}
+@keyframes cache_pulse_header {
+    0%, 100% { background: rgba(255, 165, 0, 0.30) }
+    50%      { background: rgba(255, 165, 0, 0.55) }
 }
 .store_open {
     color: var(--success)
@@ -1745,18 +1761,6 @@ table.filter td {
     }
 }
 
-#clear_cache_master.clear {
-    background: #ffa500;
-    animation-name: cache_animation;
-    animation-duration: 1s;
-    animation-iteration-count: 3;
-}
-#clear_cache_master.clear a {
-    color: var(--text-invert);   
-}
-#clear_cache_master.clear:hover {
-    background: #ffb733;
-}
 .order_status_1 {
 	color:#008CBA;
 }
@@ -2869,19 +2873,6 @@ textarea#query {
   #breadcrumbs ul.quick_links li:hover,
   #breadcrumbs ul.quick_links li:focus-within {
     background: var(--rowHover) !important;
-  }
-  #breadcrumbs ul.quick_links li#clear_cache_master.clear {
-    background-color: #e08600;
-    animation: cache_animation_dark 1s 3;
-  }
-  #breadcrumbs ul.quick_links li#clear_cache_master.clear:hover,
-  #breadcrumbs ul.quick_links li#clear_cache_master.clear:focus-within {
-    background: #ffa500 !important;
-  }
-  #breadcrumbs ul.quick_links li#clear_cache_master.clear a,
-  #breadcrumbs ul.quick_links li#clear_cache_master.clear:hover a,
-  #breadcrumbs ul.quick_links li#clear_cache_master.clear:focus-within a {
-    color: #000000 !important;
   }
   /* Help menu dropdown */
   ul.quick_links li#help_menu { position: relative }
