@@ -1360,6 +1360,59 @@ td {
 .alert-metric--solo .alert-value {
     font-size: 48px
 }
+.h4-sub {
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--text-light);
+    text-transform: none;
+    letter-spacing: 0
+}
+.abandon-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px
+}
+.abandon-spark {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 50px;
+    padding: 4px 0
+}
+.abandon-spark__bar {
+    flex: 1 1 0;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    background: transparent;
+    cursor: default
+}
+.abandon-spark__bar > span {
+    display: block;
+    width: 100%;
+    min-height: 2px;
+    background: var(--primary-accent);
+    border-radius: 1px 1px 0 0
+}
+.abandon-funnel {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    text-align: center
+}
+.abandon-stat__value {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.1
+}
+.abandon-stat__label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--text-muted);
+    margin-top: 2px
+}
 .alert-label {
     font-size: 10px;
     text-transform: uppercase;

@@ -345,12 +345,42 @@ if (Admin::getInstance()->permissions('statistics', CC_PERM_READ, false, false))
         $top_searches = $GLOBALS['db']->select('CubeCart_search', array('searchstr', 'hits'), false, array('hits' => 'DESC'), 5);
         $GLOBALS['smarty']->assign('TOP_SEARCHES', $top_searches ?: array());
 
-        ## Abandoned carts awaiting recovery
-        $abandoned_row = $GLOBALS['db']->query(
-            'SELECT COUNT(*) AS `n` FROM `'.$dbp.'CubeCart_cart_abandonment` '.
-            'WHERE `recovered_at` IS NULL AND `expires_at` > NOW()'
+        ## Abandoned carts — last 14 days: daily sparkline + funnel totals.
+        $abandon_rows = $GLOBALS['db']->query(
+            'SELECT DATE(`notified_at`) AS `d`, '.
+                   'COUNT(*) AS `sent`, '.
+                   'SUM(`clicked_at` IS NOT NULL) AS `clicked`, '.
+                   'SUM(`recovered_at` IS NOT NULL) AS `recovered` '.
+            'FROM `'.$dbp.'CubeCart_cart_abandonment` '.
+            'WHERE `notified_at` >= DATE_SUB(CURDATE(), INTERVAL 13 DAY) '.
+            'GROUP BY `d` ORDER BY `d` ASC'
         );
-        $GLOBALS['smarty']->assign('ABANDONED_COUNT', ($abandoned_row && isset($abandoned_row[0]['n'])) ? (int)$abandoned_row[0]['n'] : 0);
+        $abandon_by_date = array();
+        $abandon_totals  = array('sent' => 0, 'clicked' => 0, 'recovered' => 0);
+        if ($abandon_rows) {
+            foreach ($abandon_rows as $row) {
+                $abandon_by_date[$row['d']] = (int)$row['sent'];
+                $abandon_totals['sent']      += (int)$row['sent'];
+                $abandon_totals['clicked']   += (int)$row['clicked'];
+                $abandon_totals['recovered'] += (int)$row['recovered'];
+            }
+        }
+        $spark_max = $abandon_by_date ? max($abandon_by_date) : 0;
+        $abandon_spark = array();
+        for ($i = 13; $i >= 0; $i--) {
+            $d = date('Y-m-d', strtotime('-'.$i.' days'));
+            $count = $abandon_by_date[$d] ?? 0;
+            $abandon_spark[] = array(
+                'date'    => $d,
+                'count'   => $count,
+                'percent' => $spark_max > 0 ? round(($count / $spark_max) * 100) : 0,
+            );
+        }
+        $abandon_totals['rate'] = $abandon_totals['sent'] > 0
+            ? round(($abandon_totals['recovered'] / $abandon_totals['sent']) * 100, 1)
+            : 0;
+        $GLOBALS['smarty']->assign('ABANDON_SPARK', $abandon_spark);
+        $GLOBALS['smarty']->assign('ABANDON_TOTALS', $abandon_totals);
     } else {
         $chart_data = $GLOBALS['session']->get('chart_data');
     }

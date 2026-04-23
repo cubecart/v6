@@ -263,9 +263,31 @@
          </script>
          {/literal}
          <div class="dash-card">
-            <h4>{$LANG.dashboard.title_abandoned_carts}</h4>
-            <div class="alert-metric alert-metric--solo">
-               <div class="alert-value{if $ABANDONED_COUNT > 0} tile-count-warn{/if}">{$ABANDONED_COUNT}</div>
+            <h4>{$LANG.dashboard.title_abandoned_carts}<span class="h4-sub">14d</span></h4>
+            <div class="abandon-body">
+               <div class="abandon-spark">
+                  {foreach from=$ABANDON_SPARK item=d}
+                  <span class="abandon-spark__bar" title="{$d.date}: {$d.count}"><span style="height: {$d.percent}%"></span></span>
+                  {/foreach}
+               </div>
+               <div class="abandon-funnel">
+                  <div class="abandon-stat">
+                     <div class="abandon-stat__value">{$ABANDON_TOTALS.sent}</div>
+                     <div class="abandon-stat__label">Sent</div>
+                  </div>
+                  <div class="abandon-stat">
+                     <div class="abandon-stat__value">{$ABANDON_TOTALS.clicked}</div>
+                     <div class="abandon-stat__label">Clicked</div>
+                  </div>
+                  <div class="abandon-stat">
+                     <div class="abandon-stat__value">{$ABANDON_TOTALS.recovered}</div>
+                     <div class="abandon-stat__label">Recovered</div>
+                  </div>
+                  <div class="abandon-stat">
+                     <div class="abandon-stat__value">{$ABANDON_TOTALS.rate}%</div>
+                     <div class="abandon-stat__label">Rate</div>
+                  </div>
+               </div>
             </div>
          </div>
       </div>
