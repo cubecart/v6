@@ -838,7 +838,8 @@ img {
     color: var(--success)
 }
 .important,
-.store_closed {
+.store_closed,
+.sale_price {
     color: var(--error)
 }
 #navigation div.menu {

@@ -106,7 +106,7 @@
                   {/if}
                </td>
                <td>{include file='templates/element.click_to_copy.php' value=$product.product_code}{$product.product_code}</td>
-               <td>{$product.price}</td>
+               <td nowrap="nowrap">{$product.price_display}</td>
                <td style="text-align:center">{$product.stock_level_display}</td>
                <td>
                   {if $product.updated == '0000-00-00 00:00:00'}

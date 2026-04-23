@@ -1284,8 +1284,24 @@ if (isset($_GET['action'])) {
     $char_link = currentPage(array('char', 'page'));
     $GLOBALS['smarty']->assign('CHAR_SELECTED', isset($_GET['char']) ? $_GET['char'] : '');
     $GLOBALS['smarty']->assign('SORT_CHARS_RESET_LINK', $char_link);
-    if (($where === false || strlen($where) > 0) && ($results = $GLOBALS['db']->select('CubeCart_inventory', false, $where, $_GET['sort'], $per_page, $page)) !== false) {
-        $pagination = $GLOBALS['db']->pagination(false, $per_page, $page, 9);
+    // When sale mode 1 (per-product sale_price) is active and the user sorts by price,
+    // sort by the effective price (sale_price when valid, else price) via a computed column.
+    $sale_sort_override = ((int)$GLOBALS['config']->get('config', 'catalogue_sale_mode') === 1 && isset($_GET['sort']['price']));
+    if ($sale_sort_override && ($where === false || strlen($where) > 0)) {
+        $dir = (is_string($_GET['sort']['price']) && strtoupper(trim($_GET['sort']['price'])) === 'DESC') ? 'DESC' : 'ASC';
+        $db_prefix = $GLOBALS['config']->get('config', 'dbprefix');
+        $where_sql = ($where === false || $where === '') ? '' : 'WHERE '.trim($where);
+        $offset_sql = ($page > 0) ? ' OFFSET '.(($page - 1) * $per_page) : '';
+        $query = 'SELECT *, IF(`sale_price` > 0 AND `sale_price` < `price`, `sale_price`, `price`) AS `price_sort` FROM `'.$db_prefix.'CubeCart_inventory` '.$where_sql.' ORDER BY `price_sort` '.$dir.' LIMIT '.(int)$per_page.$offset_sql;
+        $results = $GLOBALS['db']->query($query);
+        $count_row = $GLOBALS['db']->misc('SELECT COUNT(*) AS `Count` FROM `'.$db_prefix.'CubeCart_inventory` '.$where_sql);
+        $total_results = ($count_row !== false && isset($count_row[0]['Count'])) ? (int)$count_row[0]['Count'] : 0;
+    } else {
+        $results = (($where === false || strlen($where) > 0)) ? $GLOBALS['db']->select('CubeCart_inventory', false, $where, $_GET['sort'], $per_page, $page) : false;
+        $total_results = false;
+    }
+    if ($results !== false) {
+        $pagination = $GLOBALS['db']->pagination($total_results, $per_page, $page, 9);
         // Find fist letters to sort products by
         $char_list_array = array();
         if (($chars = $GLOBALS['db']->query('SELECT DISTINCT UPPER(LEFT(`name`, 1)) AS `char` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory`')) !== false) {
@@ -1321,7 +1337,25 @@ if (isset($_GET['action'])) {
 
         $catalogue = Catalogue::getInstance();
         $seo  = SEO::getInstance();
+        $tax  = Tax::getInstance();
+        $sale_mode = (int)$GLOBALS['config']->get('config', 'catalogue_sale_mode');
+        $sale_pct  = (float)$GLOBALS['config']->get('config', 'catalogue_sale_percentage');
         foreach ($results as $result) {
+            $base_price = (float)$result['price'];
+            $effective_sale = 0;
+            if ($sale_mode === 1) {
+                $sp = (float)($result['sale_price'] ?? 0);
+                if ($sp > 0 && $sp < $base_price) {
+                    $effective_sale = $sp;
+                }
+            } elseif ($sale_mode === 2 && $sale_pct > 0 && $sale_pct < 100) {
+                $effective_sale = $base_price - ($base_price / 100) * $sale_pct;
+            }
+            if ($effective_sale > 0 && $effective_sale < $base_price) {
+                $result['price_display'] = '<del>'.$tax->priceFormat($base_price).'</del> <span class="sale_price">'.$tax->priceFormat($effective_sale).'</span>';
+            } else {
+                $result['price_display'] = $tax->priceFormat($base_price);
+            }
             $result['stock_level_display'] = $result['stock_level'];
             if ((!$result['use_stock_level'] || $result['digital'] || $result['digital_path']) && !($result['use_stock_level'] && ($result['digital'] || $result['digital_path']))) {
                 $result['stock_level_display'] = "&infin;";
