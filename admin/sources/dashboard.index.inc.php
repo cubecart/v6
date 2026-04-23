@@ -39,6 +39,20 @@ if(file_exists($release_notes_path) && !$GLOBALS['config']->has('release_notes',
 ## Quick tour
 $GLOBALS['smarty']->assign('QUICK_TOUR', true);
 
+## Dismiss News banner — stores an MD5 of the announcement's URL so the banner stays
+## hidden until a new top story (different URL → different hash) appears.
+if (!empty($_POST['dismiss_news']) && isset($_POST['news_link'])) {
+    $admin_id = (int)Admin::getInstance()->get('admin_id');
+    $hash     = md5((string)$_POST['news_link']);
+    $success  = (bool)$GLOBALS['db']->update('CubeCart_admin_users', array('news_dismissed_link' => $hash), array('admin_id' => $admin_id));
+    if ($success) {
+        $GLOBALS['session']->delete('', 'admin_data');
+    }
+    header('Content-Type: application/json');
+    echo json_encode(array('status' => $success ? 'ok' : 'error'));
+    exit;
+}
+
 ## Save notes
 if (isset($_POST['notes']['dashboard_notes'])) {
     $update  = array('dashboard_notes' => $_POST['notes']['dashboard_notes']);
@@ -654,7 +668,10 @@ foreach ($GLOBALS['hooks']->load('admin.dashboard.tabs') as $hook) {
 
 $GLOBALS['smarty']->assign('PLUGIN_TABS', ($smarty_data['plugin_tabs'] ?? false));
 
-## Latest News (from RSS)
+## Latest News (from RSS) + per-admin dismissed-link
+$dismissed_row = $GLOBALS['db']->select('CubeCart_admin_users', array('news_dismissed_link'), array('admin_id' => (int)Admin::getInstance()->get('admin_id')));
+$GLOBALS['smarty']->assign('NEWS_DISMISSED_LINK', (!empty($dismissed_row[0]['news_dismissed_link'])) ? $dismissed_row[0]['news_dismissed_link'] : '');
+
 if ($GLOBALS['session']->has('rss_news')) {
     $GLOBALS['smarty']->assign('NEWS', $GLOBALS['session']->get('rss_news'));
 } else {
@@ -699,6 +716,11 @@ if ($GLOBALS['session']->has('rss_news')) {
             trigger_error($e->getMessage(), E_USER_WARNING);
         }
     }
+}
+// Pre-hash the top story link so the template can compare it against the stored dismissed hash.
+$news_assigned = $GLOBALS['smarty']->getTemplateVars('NEWS');
+if (!empty($news_assigned['items'][0]['link'])) {
+    $GLOBALS['smarty']->assign('NEWS_TOP_HASH', md5($news_assigned['items'][0]['link']));
 }
 $GLOBALS['main']->addTabControl($lang['dashboard']['title_store_overview'], 'advanced');
 
