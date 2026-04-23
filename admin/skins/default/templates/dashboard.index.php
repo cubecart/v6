@@ -136,7 +136,22 @@
 
             google.charts.load('current', { packages: ['corechart'] });
             google.charts.setOnLoadCallback(initChart);
-            window.addEventListener('resize', function() { if (chart) drawChart(); });
+
+            // Google Charts picks up container width at draw time, and on first paint
+            // the dashboard layout isn't always settled (fonts, CSS, async content).
+            // Observe the container and redraw whenever its width changes — covers
+            // initial layout settling, window resize, sidebar collapse, font-swap etc.
+            var debounce;
+            function scheduleRedraw() {
+               clearTimeout(debounce);
+               debounce = setTimeout(function() { if (chart) drawChart(); }, 60);
+            }
+            window.addEventListener('load', scheduleRedraw);
+            window.addEventListener('resize', scheduleRedraw);
+            var chartDiv = document.getElementById('chart_div');
+            if (chartDiv && 'ResizeObserver' in window) {
+               new ResizeObserver(scheduleRedraw).observe(chartDiv);
+            }
          })();
          {/literal}
       </script>
