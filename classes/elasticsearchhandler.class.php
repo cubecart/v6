@@ -316,13 +316,13 @@ class ElasticsearchHandler
             ['match' => ['jan' => $q]],
             ['match' => ['isbn' => $q]],
             ['match' => ['gtin' => $q]],
-            ['match' => ['mpn' => $q]]
+            ['match' => ['mpn' => $q]],
+            ['match' => ['category' => ['query' => $q, 'boost' => 1]]]
         ];
 
         if(count($search)>1) { // Form submitted search
             $should = array_merge($should, [
-                ['match' => ['description' => ['query' => $q, 'boost' => 0.5]]],
-                ['match' => ['category' => ['query' => $q, 'boost' => 1]]]
+                ['match' => ['description' => ['query' => $q, 'boost' => 0.5]]]
             ]);
             if(isset($search['featured']) && $search['featured']=='1') {
                 $featured =
