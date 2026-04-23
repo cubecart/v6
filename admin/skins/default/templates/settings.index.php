@@ -588,15 +588,15 @@
          <div><label for="abandoned_cart_enabled">{$LANG.settings.abandoned_cart_enabled}</label><span><input name="config[abandoned_cart_enabled]" id="abandoned_cart_enabled" type="hidden" class="toggle" value="{$CONFIG.abandoned_cart_enabled}"></span></div>
          <div><label for="abandoned_cart_delay">{$LANG.settings.abandoned_cart_delay}</label><span><select name="config[abandoned_cart_delay]" id="abandoned_cart_delay" class="textbox">
             {foreach from=$OPT_ABANDONED_CART_DELAY item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
-            </select></span>
+            </select> <small class="recommended">{$LANG.common.recommended}: 1 Day</small></span>
          </div>
          <div><label for="abandoned_cart_notify_cooldown">{$LANG.settings.abandoned_cart_notify_cooldown}</label><span><select name="config[abandoned_cart_notify_cooldown]" id="abandoned_cart_notify_cooldown" class="textbox">
             {foreach from=$OPT_ABANDONED_CART_NOTIFY_COOLDOWN item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
-            </select></span>
+            </select> <small class="recommended">{$LANG.common.recommended}: 7 Days</small></span>
          </div>
          <div><label for="abandoned_cart_order_window">{$LANG.settings.abandoned_cart_order_window}</label><span><select name="config[abandoned_cart_order_window]" id="abandoned_cart_order_window" class="textbox">
             {foreach from=$OPT_ABANDONED_CART_ORDER_WINDOW item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
-            </select></span>
+            </select> <small class="recommended">{$LANG.common.recommended}: 3 Days</small></span>
          </div>
          <div><label for="abandoned_cart_coupon">{$LANG.settings.abandoned_cart_coupon}</label><span><select name="config[abandoned_cart_coupon]" id="abandoned_cart_coupon" class="textbox">
             {foreach from=$OPT_ABANDONED_CART_COUPON item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}

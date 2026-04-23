@@ -973,6 +973,11 @@ div.tab_content fieldset label {
 div.tab_content fieldset > span {
     width: auto
 }
+.tb-form fieldset small.recommended,
+div.tab_content fieldset small.recommended {
+    color: #666;
+    margin-left: 5px
+}
 #disabled-zone-list div,
 #enabled-zones div {
     clear: left;
