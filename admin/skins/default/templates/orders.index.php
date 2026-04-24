@@ -132,6 +132,10 @@
             <span><input type="text" id="search_customer_id" class="textbox ajax" rel="user"><input type="hidden" id="result_search_customer_id" name="search[search_customer_id]" autocomplete="off" value=""></span>
          </div>
          <div>
+            <label for="search_product">{$LANG.common.product}</label>
+            <span><input type="text" id="search_product" class="textbox ajax" rel="product" placeholder="{$LANG.common.type_to_search}" autocomplete="off"><input type="hidden" id="result_search_product" name="search[product_id]" autocomplete="off" value="{if isset($SEARCH_PRODUCT_ID)}{$SEARCH_PRODUCT_ID}{/if}"></span>
+         </div>
+         <div>
             <label for="search_status">{$LANG.orders.title_order_status}</label>
             <span>
                <select name="search[status]" id="search_status" class="textbox">

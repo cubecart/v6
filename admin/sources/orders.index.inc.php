@@ -877,6 +877,19 @@ CODE;
             if (isset($_GET['search']['search_customer_id']) && is_numeric($_GET['search']['search_customer_id'])) {
                 $where['customer_id'] = (int)$_GET['search']['search_customer_id'];
             }
+            // Product ID — restrict to orders containing the given product
+            if (isset($_GET['search']['product_id']) && is_numeric($_GET['search']['product_id']) && (int)$_GET['search']['product_id'] > 0) {
+                $product_id = (int)$_GET['search']['product_id'];
+                $GLOBALS['smarty']->assign('SEARCH_PRODUCT_ID', $product_id);
+                $inv_matches = $GLOBALS['db']->select('CubeCart_order_inventory', array('cart_order_id'), array('product_id' => $product_id));
+                $quoted_ids = array();
+                if ($inv_matches) {
+                    foreach (array_unique(array_column($inv_matches, 'cart_order_id')) as $oid) {
+                        $quoted_ids[] = $GLOBALS['db']->sqlSafe($oid, true);
+                    }
+                }
+                $where['cart_order_id'] = !empty($quoted_ids) ? $quoted_ids : array("'__none__'");
+            }
         }
     } else {
         if(isset($_GET['i']) && preg_match('/^\d+(?:,\d+)*$/', $_GET['i'])) {
