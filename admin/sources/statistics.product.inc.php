@@ -26,89 +26,44 @@ if($product) {
     $where = '`I`.`product_id` = '.(int)$_GET['product_id'].' AND `S`.`status` IN(2, 3)';
     $where_date = '';
     $reset = false;
+    $redirect = '?_g=statistics&node=product&product_id='.(int)$_GET['product_id'];
     if(isset($_REQUEST['from']) && !empty($_REQUEST['from']) && isset($_REQUEST['to']) && !empty($_REQUEST['to'])) {
         $reset = true;
-        $from = strtotime($_REQUEST['from']['year'].'-'.$_REQUEST['from']['month'].'-'.$_REQUEST['from']['day']);
-        $to = strtotime($_REQUEST['to']['year'].'-'.$_REQUEST['to']['month'].'-'.$_REQUEST['to']['day']);
-        $redirect = '?_g=statistics&node=product&product_id='.(int)$_GET['product_id'];
-        
-        if(!checkdate((int)$_REQUEST['from']['month'], (int)$_REQUEST['from']['day'], (int)$_REQUEST['from']['year'])) {
+        $from_parts = explode('-', (string)$_REQUEST['from']);
+        $to_parts = explode('-', (string)$_REQUEST['to']);
+
+        if(count($from_parts) !== 3 || !checkdate((int)$from_parts[1], (int)$from_parts[2], (int)$from_parts[0])) {
             $GLOBALS['main']->errorMessage($GLOBALS['language']->statistics['invalid_date_from']);
             httpredir($redirect);
-            exit;   
+            exit;
         }
-        if(!checkdate((int)$_REQUEST['to']['month'], (int)$_REQUEST['to']['day'], (int)$_REQUEST['to']['year'])) {
+        if(count($to_parts) !== 3 || !checkdate((int)$to_parts[1], (int)$to_parts[2], (int)$to_parts[0])) {
             $GLOBALS['main']->errorMessage($GLOBALS['language']->statistics['invalid_date_to']);
             httpredir($redirect);
-            exit;     
+            exit;
         }
+
+        $from = strtotime($_REQUEST['from']);
+        $to = strtotime($_REQUEST['to'].' 23:59:59');
+
         if($from < $to) {
             $where_date = " AND (`S`.`order_date` BETWEEN $from AND $to)";
         } else {
             $GLOBALS['main']->errorMessage($GLOBALS['language']->statistics['date_range_error']);
             httpredir($redirect);
             exit;
-        }       
+        }
     }
     $GLOBALS['smarty']->assign('RESET', $reset);
-    
+
     $first_sale = $GLOBALS['db']->select($join, $columns, $where.$where_date, '`S`.`order_date` ASC', 1);
     $last_sale = $GLOBALS['db']->select($join, $columns, $where.$where_date, '`S`.`order_date` DESC', 1);
     $all_sales = $GLOBALS['db']->select($join, $columns, $where.$where_date);
 
-    $earliest_year = date('Y',$first_sale[0]['order_date']);
-    $earliest_month = date('m',$first_sale[0]['order_date']);
-    $earliest_day = date('d',$first_sale[0]['order_date']);
-    $now['year'] = date('Y');
-
-    for ($i = $earliest_year; $i <= $now['year']; ++$i) {
-        if(isset($_REQUEST['from']['year'])) {
-            $selected_from = ((int)$_REQUEST['from']['year'] == (int)$i) ? ' selected="selected"' : '';
-        } else {
-            $selected_from = ((int)$earliest_year == (int)$i) ? ' selected="selected"' : '';
-        }
-        if(isset($_REQUEST['to']['year'])) {
-            $selected_to = ((int)$_REQUEST['to']['year'] == (int)$i) ? ' selected="selected"' : '';
-        } else {
-            $selected_to = ((int)date('Y') == (int)$i) ? ' selected="selected"' : '';
-        }
-        $smarty_data['years'][] = array('value' => $i, 'selected_from' => $selected_from, 'selected_to' => $selected_to);
-    }
-    $GLOBALS['smarty']->assign('YEARS', $smarty_data['years']);
-
-    for ($i = 1; $i <= 12; ++$i) {
-        $i    = str_pad($i, 2, '0', STR_PAD_LEFT);
-        $value   = isset($monthly[$i]) ? $monthly[$i] : 0;
-        $month_text  = date('F', mktime(0, 0, 0, $i, 1));
-
-        if(isset($_REQUEST['from']['month'])) {
-            $selected_from = ((int)$_REQUEST['from']['month'] == (int)$i) ? ' selected="selected"' : '';
-        } else {
-            $selected_from = ((int)$earliest_month == (int)$i) ? ' selected="selected"' : '';
-        }
-        if(isset($_REQUEST['to']['month'])) {
-            $selected_to  = ((int)$_REQUEST['to']['month'] == (int)$i) ? ' selected="selected"' : '';
-        } else {
-            $selected_to  = ((int)date('m') == (int)$i) ? ' selected="selected"' : '';
-        }
-        $smarty_data['months'][] = array('value' => $i, 'title' => $month_text, 'selected_from' => $selected_from, 'selected_to' => $selected_to);
-    }
-    $GLOBALS['smarty']->assign('MONTHS', $smarty_data['months']);
-
-    for ($day = 1; $day <= 31; ++$day) {
-        if(isset($_REQUEST['from']['day'])) {
-            $selected_from = ((int)$_REQUEST['from']['day'] == (int)$day) ? ' selected="selected"' : '';
-        } else {
-            $selected_from = ((int)$earliest_day == (int)$day) ? ' selected="selected"' : '';
-        }
-        if(isset($_REQUEST['to']['day'])) {
-            $selected_to = ((int)$_REQUEST['to']['day'] == (int)$day) ? ' selected="selected"' : '';
-        } else {
-            $selected_to = ((int)date('d') == (int)$day) ? ' selected="selected"' : '';
-        }
-        $smarty_data['days'][] = array('value' => $day, 'selected_from' => $selected_from, 'selected_to' => $selected_to);
-    }
-    $GLOBALS['smarty']->assign('DAYS', $smarty_data['days']);
+    $from_default = !empty($_REQUEST['from']) ? $_REQUEST['from'] : ($first_sale ? date('Y-m-d', $first_sale[0]['order_date']) : date('Y-m-d'));
+    $to_default = !empty($_REQUEST['to']) ? $_REQUEST['to'] : date('Y-m-d');
+    $GLOBALS['smarty']->assign('FROM_DATE', $from_default);
+    $GLOBALS['smarty']->assign('TO_DATE', $to_default);
 
     function secondsToTime($seconds) {
         $dtF = new \DateTime('@0');

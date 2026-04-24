@@ -11,44 +11,20 @@
  *}
  <div id="general" class="tab_content">
    {if $PRODUCT}
-   <a href="?_g=products&node=index&action=edit&product_id={$PRODUCT.product_id}" class="button right">{$LANG.catalogue.title_product_update}</a><h3>{$PRODUCT.name} ({$PRODUCT.product_code})</h3>
+   <h3>{$PRODUCT.name} ({$PRODUCT.product_code})</h3>
+   <a href="?_g=products&node=index&action=edit&product_id={$PRODUCT.product_id}">&larr; {$LANG.catalogue.title_product_update}</a>
    <form action="{$VAL_SELF}" class="ignore-dirty" method="get">
       <div style="max-width: 700px">
-         <fieldset>
+         <fieldset class="date-range-filter">
+            <style>.date-range-filter label { width: 10em !important; }</style>
             <legend>{$LANG.search.date_range}</legend>
             <div>
-              {$LANG.common.from}
-              <select name="from[day]" class="textbox">
-              {foreach from=$DAYS item=day}
-                <option value="{$day.value}"{$day.selected_from}>{$day.value}</option>
-              {/foreach}
-              </select>
-              <select name="from[month]" class="textbox">
-              {foreach from=$MONTHS item=month}
-                <option value="{$month.value}"{$month.selected_from}>{$month.title}</option>
-              {/foreach}
-              </select>
-              <select name="from[year]" class="textbox">
-              {foreach from=$YEARS item=year}
-                <option value="{$year.value}" {$year.selected_from}>{$year.value}</option>
-              {/foreach}
-              </select>
-              {$LANG.common.to|lower}
-              <select name="to[day]" class="textbox">
-              {foreach from=$DAYS item=day}
-                <option value="{$day.value}"{$day.selected_to}>{$day.value}</option>
-              {/foreach}
-              </select>
-              <select name="to[month]" class="textbox">
-              {foreach from=$MONTHS item=month}
-                <option value="{$month.value}"{$month.selected_to}>{$month.title}</option>
-              {/foreach}
-              </select>
-              <select name="to[year]" class="textbox">
-              {foreach from=$YEARS item=year}
-                <option value="{$year.value}" {$year.selected_to}>{$year.value}</option>
-              {/foreach}
-              </select>
+              <label for="date_from">{$LANG.common.from}</label>
+              <input type="text" id="date_from" name="from" class="textbox date" value="{$FROM_DATE}" size="12" autocomplete="off">
+            </div>
+            <div>
+              <label for="date_to">{$LANG.common.to|lower}</label>
+              <input type="text" id="date_to" name="to" class="textbox date" value="{$TO_DATE}" size="12" autocomplete="off">
               <span style="float: right">
               {if $RESET}
               <a href="?_g=statistics&node=product&product_id={$PRODUCT.product_id}">{$LANG.common.reset}</a>
@@ -58,7 +34,7 @@
             </div>
          </fieldset>
       </div>
-      <input type="hidden" name="_g" value="statistics"> 
+      <input type="hidden" name="_g" value="statistics">
       <input type="hidden" name="node" value="product">
       <input type="hidden" name="product_id" value="{$PRODUCT.product_id}">
    </form>
