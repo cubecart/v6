@@ -114,10 +114,10 @@
       <ul>
          <li>Memory caching, Elasticsearch and CDN all included</li>
          <li>Support from the official CubeCart developers</li>
-         <li>Managed upgrades &mdash; we keep your store on the latest version</li>
+         <li>Managed upgrades &mdash; we keep your store on the latest version while respecting code customisations</li>
          <li>Daily backups with easy one-click restore</li>
          <li>SSL certificate included and renewed automatically</li>
-         <li>PHP, database and server software kept up to date</li>
+         <li>PHP, database and server software kept secure and up to date &mdash; powered by CloudLinux</li>
          <li>Security patches applied as soon as they&rsquo;re released</li>
          <li>Free migration from your current host</li>
       </ul>
