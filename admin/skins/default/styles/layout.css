@@ -792,7 +792,8 @@ img {
     height: 30px
 }
 #header .btn-signout,
-#header .btn-clear-cache {
+#header .btn-clear-cache,
+#header .btn-version-available {
     display: inline-flex;
     align-items: center;
     padding: 5px 12px;
@@ -803,6 +804,19 @@ img {
     line-height: 1;
     text-decoration: none;
     transition: background 0.15s, border-color 0.15s
+}
+#header .btn-version-available {
+    background: rgba(76, 175, 80, 0.55);
+    border: 1px solid rgba(129, 199, 132, 0.85)
+}
+#header .btn-version-available:hover {
+    background: rgba(76, 175, 80, 0.75);
+    border-color: rgba(129, 199, 132, 1);
+    color: #fff
+}
+#header .btn-version-available i {
+    margin-right: 3px;
+    color: #fff
 }
 #header .btn-signout {
     background: rgba(255,255,255,0.12);

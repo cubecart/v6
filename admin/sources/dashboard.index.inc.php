@@ -139,8 +139,9 @@ if (!$GLOBALS['session']->has('version_check') && $request = new Request('versio
     $response = $request->send();
     if ($response !== false) {
         if (isset($response) && version_compare($response, CC_VERSION, '>')) {
-            $release_url = 'https://kb.cubecart.com/getting-started/upgrading/how-do-i-upgrade-from-cubecart-v6-to-latest-v6';
-            $GLOBALS['main']->errorMessage(sprintf($lang['dashboard']['error_version_update'], $response, CC_VERSION).' <a href="'.$release_url.'" target="_blank">'.$lang['maintain']['upgrade_now'].'</a>');
+            $GLOBALS['session']->set('version_available', $response);
+        } else {
+            $GLOBALS['session']->delete('version_available');
         }
     }
     $GLOBALS['session']->set('version_check', true);

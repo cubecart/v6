@@ -391,6 +391,12 @@ class ACP
             } else {
                 $GLOBALS['smarty']->assign('TOUR_AUTO_START', 'false');
             }
+
+            $version_available = $GLOBALS['session']->get('version_available');
+            if ($version_available && version_compare($version_available, CC_VERSION, '>')) {
+                $GLOBALS['smarty']->assign('VERSION_AVAILABLE_LABEL', sprintf($GLOBALS['language']->maintain['version_available'], $version_available));
+                $GLOBALS['smarty']->assign('VERSION_UPGRADE_URL', 'https://kb.cubecart.com/getting-started/upgrading/how-do-i-upgrade-from-cubecart-v6-to-latest-v6');
+            }
         }
     }
 
