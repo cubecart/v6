@@ -60,6 +60,16 @@ class Cart
      */
     private $_subtotal_inc_gross = 0;
     /**
+     * Raw sums for tax-inclusive items used to round tax once at the basket
+     * level rather than per line (prevents sum-of-rounds drift when the same
+     * inc-tax product appears on multiple lines, e.g. 2 x £5.60 added
+     * twice with qty=1 each showing subtotal £11.21 instead of £11.20).
+     *
+     * @var float
+     */
+    private $_inc_line_sum_raw = 0;
+    private $_inc_tax_sum_raw = 0;
+    /**
      * Cart subtotal
      *
      * @var float
@@ -798,6 +808,7 @@ class Cart
 
         if (!empty($this->basket['contents']) && is_array($this->basket['contents'])) {
             $this->_discount = $this->_subtotal = $this->_subtotal_inc_gross = $this->_weight = 0;
+            $this->_inc_line_sum_raw = $this->_inc_tax_sum_raw = 0;
             $this->basket['has_inclusive_tax'] = false;
             // Include inline shipping maths for Per Category Shipping
             $ship_by_cat = $GLOBALS['config']->get('Per_Category');
@@ -987,7 +998,10 @@ class Cart
                 if ($inc_unit_price_pre_strip > 0 && $product_tax !== false && $product['option_line_price'] == 0) {
                     $inc_line = $inc_unit_price_pre_strip * $item['quantity'];
                     $this->_subtotal_inc_gross += $inc_line;
-                    $this->_subtotal += $inc_line - (float)$product_tax['amount'];
+                    // Defer: accumulate raw inc-line and raw tax; resolve once
+                    // after the loop via round-of-sum to avoid per-line drift.
+                    $this->_inc_line_sum_raw += $inc_line;
+                    $this->_inc_tax_sum_raw  += (float)$product_tax['amount_raw'];
                 } else {
                     $this->_subtotal_inc_gross += $product['price'];
                     $this->_subtotal  += $product['price'];
@@ -1005,6 +1019,12 @@ class Cart
                     $category = $GLOBALS['catalogue']->getCategoryData($assigned_category_id);
                     $line_shipping->lineCalc($product, $category);
                 }
+            }
+            // Resolve deferred inclusive-items subtotal using round-of-sum tax to
+            // keep it consistent with basket['total_tax'] (which also rounds the raw
+            // _total_tax_add once). Prevents sum-of-rounds drift across lines.
+            if ($this->_inc_line_sum_raw > 0) {
+                $this->_subtotal += $this->_inc_line_sum_raw - round($this->_inc_tax_sum_raw, 2);
             }
             // Put By_Cat shipping prices into basket for calc class
             if (isset($product['product_id']) && !empty($product['product_id']) && isset($ship_by_cat['status']) && (bool)$ship_by_cat['status']) {
