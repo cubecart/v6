@@ -13,12 +13,25 @@
   <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
   {if isset($DISPLAY_LIST)}
   <div id="customer-list" class="tab_content">
-    <h3>{$LANG.customer.title_list}</h3>
-    <p>
-	<strong>{$LANG.customer.title_key_type}:</strong><br>
-	  <i class="fa fa-user registered" title="{$LANG.customer.title_key_registered}"></i> - {$LANG.customer.title_key_registered}<br>
-	  <i class="fa fa-user unregistered" title="{$LANG.customer.title_key_unregistered}"></i> - {$LANG.customer.title_key_unregistered}
-	</p>
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:1em">
+      <h3 style="margin:0">{$LANG.customer.title_list}</h3>
+      <table class="customer-type-legend" style="width:auto">
+        <style>
+          .customer-type-legend tbody tr:nth-child(even) td { background-color: transparent !important; }
+          .customer-type-legend tbody td { height: auto; padding: 1px 6px; line-height: 1.2; font-size: 12px; }
+        </style>
+        <tbody>
+          <tr>
+            <td style="text-align:center"><i class="fa fa-user registered" title="{$LANG.customer.title_key_registered}"></i></td>
+            <td>{$LANG.customer.title_key_registered}</td>
+          </tr>
+          <tr>
+            <td style="text-align:center"><i class="fa fa-user unregistered" title="{$LANG.customer.title_key_unregistered}"></i></td>
+            <td>{$LANG.customer.title_key_unregistered}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 	<table width="100%" class="filter">
 	<tr>
 	  <td>

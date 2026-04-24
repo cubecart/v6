@@ -1092,7 +1092,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_groups_membership_add" introduced="5.0.0"><![CDATA[Add Group Membership]]></string>
     <string name="title_key_registered" introduced="5.0.0"><![CDATA[Registered Customer]]></string>
     <string name="title_key_type" introduced="5.0.0"><![CDATA[Customer Type]]></string>
-    <string name="title_key_unregistered" introduced="5.0.0"><![CDATA[Unregistered Customer]]></string>
+    <string name="title_key_unregistered" introduced="5.0.0"><![CDATA[Guest Customer]]></string>
     <string name="title_list" introduced="5.0.0"><![CDATA[Customer List]]></string>
   </group>
   <group name="dashboard">
