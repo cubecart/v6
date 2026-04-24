@@ -467,7 +467,7 @@ if (isset($_GET['export'])) {
             $available = array();
             foreach ($api_data['languages'] as $api_lang) {
                 if (!in_array($api_lang['code'], $installed_codes)) {
-                    $api_lang['install_url'] = currentPage(null, array('install' => $api_lang['code'], 'token' => SESSION_TOKEN));
+                    $api_lang['install_url'] = currentPage(null, array('install' => $api_lang['code'], 'token' => SESSION_TOKEN)).'#lang_available';
                     $available[] = $api_lang;
                 }
             }

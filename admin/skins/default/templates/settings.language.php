@@ -67,7 +67,7 @@
          <tr>
             <td>{$avail.name} ({$avail.code})</td>
             <td>{$avail.version}</td>
-            <td class="actions">
+            <td class="actions text-center">
                <a href="{$avail.install_url}" title="{$LANG.common.install}"><i class="fa fa-plus-circle" title="{$LANG.common.install}"></i></a>
             </td>
          </tr>
