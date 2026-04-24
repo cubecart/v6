@@ -830,11 +830,8 @@ function httpredir($destination = '', $anchor = '', $meta_refresh = false, $stat
     }
     //SEO Redirect
     if (!preg_match('#^https#i', $destination) && isset($GLOBALS['seo']) && $GLOBALS['seo'] instanceof SEO) { // added !preg_match('#^https#i', $destination) to prevent SEO lookup on SSL redirect to basket breaking on shared SSL like https://xxx.xxx.co.uk/yyy.co.uk/index.php?_a=basket
-        // make the seo class rewrite the URL
-        $rewrite = $GLOBALS['seo']->rewriteUrls(sprintf('href="%s"', $destination));
-        if (preg_match('#href="(.+)"#i', $rewrite, $match)) {
-            $destination	= preg_match('#^http#i', $match[1]) ? $match[1] : $base.$match[1];
-        }
+        $rewritten = $GLOBALS['seo']->rewriteSingleUrl($destination);
+        $destination = preg_match('#^http#i', $rewritten) ? $rewritten : $base.$rewritten;
     }
 
     // Sanitize url and make sure it remains properly encoded; note that it has already been run through urldecode

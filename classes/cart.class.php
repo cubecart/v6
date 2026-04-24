@@ -427,7 +427,7 @@ class Cart
                     }
                     if (isset($_GET['_g']) && $_GET['_g'] == 'ajaxadd' && $GLOBALS['config']->get('config', 'basket_jump_to') && $redirect_enabled === true) {
                         $GLOBALS['debug']->supress();
-                        die($GLOBALS['seo']->rewriteUrls("Redir:".$jumpto, true));
+                        die("Redir:".$jumpto);
                     } elseif (isset($_GET['_g']) && $_GET['_g'] == 'ajaxadd' && $redirect_enabled === true) {
                         $GLOBALS['debug']->supress();
                         if ($stock_warning) {

@@ -690,6 +690,95 @@ class SEO
     }
 
     /**
+     * Rewrite a single bare URL into its SEO-friendly equivalent.
+     *
+     * Preferred over rewriteUrls() when callers already have a bare URL —
+     * avoids the href="..." wrapping/unwrapping dance and the regex-on-HTML
+     * fragility. Preserves the same Rule1 matching constraints (so existing
+     * URL shapes transform identically), strips internal-only `seo_path`, and
+     * handles URL fragments and encoded values properly.
+     *
+     * @param string $url       Bare URL (relative or absolute)
+     * @param bool   $absolute  Return absolute URL using storeURL as base
+     * @return string           SEO-rewritten URL
+     */
+    public function rewriteSingleUrl($url, $absolute = false)
+    {
+        // External absolute URLs (different host) — pass through unchanged.
+        if (preg_match('#^[a-z][a-z0-9+.\-]*://#i', $url)) {
+            $store_host = parse_url($GLOBALS['storeURL'], PHP_URL_HOST);
+            $url_host   = parse_url($url, PHP_URL_HOST);
+            if ($store_host && $url_host && strcasecmp($url_host, $store_host) !== 0) {
+                return $url;
+            }
+        }
+
+        $parts = parse_url($url);
+        if (!is_array($parts)) {
+            return $this->fullURL($url, $absolute);
+        }
+
+        // Parse + sanitize query
+        $query = array();
+        if (!empty($parts['query'])) {
+            parse_str(html_entity_decode($parts['query']), $query);
+            unset($query['seo_path']); // never leak the internal rewrite param
+            foreach ($query as $k => $v) {
+                if (substr((string)$k, 0, 1) === '#') {
+                    unset($query[$k]); // legacy fragment-style keys
+                }
+            }
+        }
+
+        // Match the original Rule1 condition exactly:
+        //   path ends in something.ext (e.g. index.php), and the query has
+        //   _a=word AND a single key=value pair where value is [\w\-\_]+.
+        $script = isset($parts['path']) ? basename($parts['path']) : '';
+        if (preg_match('/^[\w\-\_]+\.[a-z]+$/i', $script)
+            && !empty($query['_a'])
+            && preg_match('/^[\w]+$/', $query['_a'])
+        ) {
+            $type = $query['_a'];
+            $id_key = $id_val = null;
+            $remaining = array();
+            foreach ($query as $k => $v) {
+                if ($k === '_a') continue;
+                if ($id_key === null
+                    && preg_match('/^[\w]+$/', (string)$k)
+                    && is_string($v)
+                    && preg_match('/^[\w\-\_]+$/', $v)
+                ) {
+                    $id_key = $k;
+                    $id_val = $v;
+                    continue;
+                }
+                $remaining[$k] = $v;
+            }
+            if ($id_key !== null) {
+                $base_path = $this->_getBaseUrl($absolute);
+                $out = $base_path . $this->generatePath($id_val, $type, $id_key);
+                if (!empty($remaining)) {
+                    $out .= '?' . http_build_query($remaining);
+                }
+                if (!empty($parts['fragment'])) {
+                    $out .= '#' . $parts['fragment'];
+                }
+                return $out;
+            }
+        }
+
+        // Doesn't fit Rule1 — rebuild the URL with sanitized query and absolutize.
+        $rebuilt = '';
+        if (!empty($parts['scheme'])) $rebuilt .= $parts['scheme'] . '://';
+        if (!empty($parts['host']))   $rebuilt .= $parts['host'];
+        if (!empty($parts['port']))   $rebuilt .= ':' . $parts['port'];
+        if (!empty($parts['path']))   $rebuilt .= $parts['path'];
+        if (!empty($query))           $rebuilt .= '?' . http_build_query($query);
+        if (!empty($parts['fragment'])) $rebuilt .= '#' . $parts['fragment'];
+        return $this->fullURL($rebuilt, $absolute);
+    }
+
+    /**
      * Generate a safe SEO URL
      *
      * @param string $path
