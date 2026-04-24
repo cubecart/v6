@@ -73,18 +73,22 @@ class Password
     }
 
     /**
-     * Hash a password using bcrypt
+     * Hash a password using Argon2id (memory-hard, preferred) where available,
+     * otherwise fall back to bcrypt cost 12. Algorithm choice is encoded in the
+     * returned hash, so verifyPassword() handles either transparently.
      *
      * @param string $password
      * @return string
      */
     public function hashPassword($password)
     {
-        return password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+        list($algo, $opts) = $this->_currentAlgo();
+        return password_hash($password, $algo, $opts);
     }
 
     /**
-     * Verify a password against a bcrypt hash
+     * Verify a password against a modern hash. password_verify() autodetects
+     * the algorithm from the hash format ($2y$, $argon2id$, $argon2i$, …).
      *
      * @param string $password
      * @param string $hash
@@ -96,14 +100,54 @@ class Password
     }
 
     /**
-     * Check if a hash is bcrypt (starts with $2y$)
+     * Returns true for any modern PHP password_hash() output (bcrypt $2y$,
+     * argon2i $argon2i$, argon2id $argon2id$). Method name kept for backward
+     * compatibility with hooks/plugins; semantic is "is a modern hash, not a
+     * legacy salted md5/whirlpool".
      *
      * @param string $hash
      * @return bool
      */
     public function isBcrypt($hash)
     {
-        return (substr($hash, 0, 4) === '$2y$');
+        if (!is_string($hash) || $hash === '') {
+            return false;
+        }
+        $info = password_get_info($hash);
+        return !empty($info['algo']);
+    }
+
+    /**
+     * True if the hash should be re-hashed because the current preferred
+     * algorithm or cost differs (e.g. bcrypt cost 12 → Argon2id, or future
+     * cost bumps). Call this after a successful verifyPassword() to migrate
+     * users to stronger hashes on their next login.
+     *
+     * @param string $hash
+     * @return bool
+     */
+    public function needsRehash($hash)
+    {
+        list($algo, $opts) = $this->_currentAlgo();
+        return password_needs_rehash($hash, $algo, $opts);
+    }
+
+    /**
+     * Internal: the currently-preferred algorithm + options tuple.
+     * Argon2id when the PHP build supports it, otherwise bcrypt.
+     *
+     * @return array [algo_const, options_array]
+     */
+    private function _currentAlgo()
+    {
+        if (defined('PASSWORD_ARGON2ID')) {
+            return array(PASSWORD_ARGON2ID, array(
+                'memory_cost' => 65536, // 64 MiB — PHP default
+                'time_cost'   => 4,      // PHP default
+                'threads'     => 1,      // PHP default
+            ));
+        }
+        return array(PASSWORD_BCRYPT, array('cost' => 12));
     }
 
     /**

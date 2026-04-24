@@ -326,9 +326,15 @@ class Admin
             if (($user = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'password', 'salt', 'new_password'), array('username' => $username, 'status' => '1'), null, 1)) !== false) {
                 $pwd = Password::getInstance();
                 if ($pwd->isBcrypt($user[0]['password'])) {
-                    // Bcrypt verification
+                    // Modern hash (bcrypt or Argon2id) verification
                     if ($pwd->verifyPassword($password, $user[0]['password'])) {
                         $hash_password = $user[0]['password'];
+                        // Upgrade hash if algorithm/cost has been strengthened
+                        if ($pwd->needsRehash($hash_password)) {
+                            $upgraded = $pwd->hashPassword($password);
+                            $GLOBALS['db']->update('CubeCart_admin_users', array('password' => $upgraded, 'salt' => '', 'new_password' => 1), array('admin_id' => (int)$user[0]['admin_id']));
+                            $hash_password = $upgraded;
+                        }
                     }
                 } elseif (empty($user[0]['salt'])) {
                     // Legacy: no salt - oldest format

@@ -199,9 +199,15 @@ class User
         if (($user = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'password', 'salt', 'new_password'), array('type' => 1, 'email' => $username, 'status' => true), false, 1, false, false)) !== false) {
             $pwd = Password::getInstance();
             if ($pwd->isBcrypt($user[0]['password'])) {
-                // Bcrypt verification
+                // Modern hash (bcrypt or Argon2id) verification
                 if ($pwd->verifyPassword($password, $user[0]['password'])) {
                     $hash_password = $user[0]['password'];
+                    // Upgrade hash if algorithm/cost has been strengthened
+                    if ($pwd->needsRehash($hash_password)) {
+                        $upgraded = $pwd->hashPassword($password);
+                        $GLOBALS['db']->update('CubeCart_customer', array('password' => $upgraded, 'salt' => '', 'new_password' => 1), array('customer_id' => (int)$user[0]['customer_id']));
+                        $hash_password = $upgraded;
+                    }
                 }
             } elseif (empty($user[0]['salt'])) {
                 //Legacy: no salt - oldest format
