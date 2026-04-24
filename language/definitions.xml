@@ -2795,6 +2795,7 @@ This email was sent automatically by the CubeCart setup tool.]]></string>
     <string name="title_available_languages" introduced="6.6.0"><![CDATA[Available Languages]]></string>
     <string name="title_installed_languages" introduced="6.6.0"><![CDATA[Installed Languages]]></string>
     <string name="notify_language_installed" introduced="6.6.0"><![CDATA[Language %s successfully installed.]]></string>
+    <string name="language_updates_available" introduced="6.6.3"><![CDATA[Language updates available:]]></string>
     <string name="error_language_install" introduced="6.6.0"><![CDATA[Failed to install language. Please check your internet connection and try again.]]></string>
     <string name="error_language_install_write" introduced="6.6.0"><![CDATA[Cannot install language: %s is not writable.]]></string>
   </group>

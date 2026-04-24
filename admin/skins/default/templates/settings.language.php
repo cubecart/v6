@@ -19,6 +19,7 @@
             <th>{$LANG.common.status}</th>
             <th>{$LANG.settings.default_language}</th>
             <th>{$LANG.common.language}</th>
+            <th>{$LANG.common.version}</th>
             <th>{$LANG.common.domain} *</th>
             <th>{$LANG.form.action}</th>
          </tr>
@@ -29,8 +30,10 @@
             <td style="text-align:center"><input type="checkbox" name="status[{$language.code}]" id="status_{$language.code}" value="1" class="check_lang"{if $language.status} checked="checked"{/if}></td>
             <td style="text-align:center"><input type="radio" name="default_language" value="{$language.code}" class="check-default" rel="status_{$language.code}"{if $language.is_default} checked="checked"{/if}></td>
             <td><a href="{$language.edit}">{$language.title}</a></td>
+            <td>{$language.version}{if $language.upgrade_available} &rarr; <strong>{$language.api_version}</strong>{/if}</td>
             <td><input type="text" class="textbox" name="domain[{$language.code}]" style="max-width: 240px" placeholder="e.g. {$language.placeholder}" value="{$language.domain}"></td>
             <td class="actions">
+               {if $language.upgrade_available}<a href="{$language.upgrade_url}" title="{$LANG.maintain.upgrade_now}"><i class="fa fa-arrow-up" title="{$LANG.maintain.upgrade_now}"></i></a>{/if}
                <a href="{$language.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
                <a href="{$language.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
             </td>

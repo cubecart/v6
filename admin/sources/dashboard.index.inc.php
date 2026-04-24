@@ -208,6 +208,44 @@ if (!$GLOBALS['session']->has('extension_update_check')) {
     $GLOBALS['session']->set('extension_update_check', true);
 }
 
+## Check for language updates
+if (!$GLOBALS['session']->has('language_update_check')) {
+    $lang_request = new Request('extensions.cubecart.com', '/api/languages', 443, false, true, 15);
+    $lang_request->setMethod('get');
+    $lang_request->setSSL();
+    $lang_request->setUserAgent('CubeCart');
+    $lang_request->skiplog(true);
+    $lang_request->cache(true);
+    $lang_json = $lang_request->send();
+
+    if ($lang_json) {
+        $lang_data = json_decode($lang_json, true);
+        if ($lang_data && !empty($lang_data['languages'])) {
+            $installed = $GLOBALS['language']->listLanguages();
+            $lang_updates = array();
+            if (is_array($installed)) {
+                $api_versions = array();
+                foreach ($lang_data['languages'] as $api_lang) {
+                    $api_versions[$api_lang['code']] = $api_lang['version'];
+                }
+                foreach ($installed as $code => $info) {
+                    if (isset($api_versions[$code]) && !empty($info['version'])
+                        && version_compare($api_versions[$code], $info['version'], '>')) {
+                        $lang_updates[] = trim((string)$info['title']).' ('.$info['version'].' &rarr; '.$api_versions[$code].')';
+                    }
+                }
+            }
+            if (!empty($lang_updates)) {
+                $lang_msg = $lang['translate']['language_updates_available'].' ';
+                $lang_msg .= implode(', ', $lang_updates).'. ';
+                $lang_msg .= '<a href="?_g=settings&node=language#lang_list">'.$lang['translate']['title_installed_languages'].'</a>';
+                $GLOBALS['main']->errorMessage($lang_msg);
+            }
+        }
+    }
+    $GLOBALS['session']->set('language_update_check', true);
+}
+
 $GLOBALS['smarty']->assign('DASH_NOTES', Admin::getInstance()->get('dashboard_notes'));
 
 $GLOBALS['main']->wikiPage('Dashboard');

@@ -178,8 +178,12 @@ if (isset($_GET['install']) && Admin::getInstance()->permissions('settings', CC_
                             $GLOBALS['language']->importEmail($email_file);
                         }
 
-                        // Set language to disabled initially
-                        $GLOBALS['config']->set('languages', $install_code, '0');
+                        // Preserve existing enabled/disabled status on upgrade; only
+                        // default to disabled when the language wasn't already installed.
+                        $existing_languages_cfg = $GLOBALS['config']->get('languages');
+                        if (!is_array($existing_languages_cfg) || !isset($existing_languages_cfg[$install_code])) {
+                            $GLOBALS['config']->set('languages', $install_code, '0');
+                        }
                         $GLOBALS['cache']->clear('lang');
                         $installed = true;
                     }
@@ -427,6 +431,25 @@ if (isset($_GET['export'])) {
 
     $GLOBALS['main']->addTabControl($lang['translate']['title_installed_languages'], 'lang_list');
 
+    // Fetch available languages from API first so we can cross-reference versions
+    $api_versions = array();
+    $api_url_path = '/api/languages';
+    $request = new Request('extensions.cubecart.com', $api_url_path, 443, false, true, 10);
+    $request->setMethod('get');
+    $request->setSSL();
+    $request->setUserAgent('CubeCart');
+    $request->skiplog(true);
+    $request->cache(true);
+    if (!$json = $request->send()) {
+        $json = file_get_contents('https://extensions.cubecart.com'.$api_url_path);
+    }
+    $api_data = $json ? json_decode($json, true) : null;
+    if ($api_data && !empty($api_data['languages'])) {
+        foreach ($api_data['languages'] as $api_lang) {
+            $api_versions[$api_lang['code']] = $api_lang['version'];
+        }
+    }
+
     ## List available language files
     $url_parts = parse_url(CC_STORE_URL);
     $domain = ltrim($url_parts['host'],'www.');
@@ -444,37 +467,30 @@ if (isset($_GET['export'])) {
             $info['delete'] = currentPage(null, array('delete' => $info['code'], 'token' => SESSION_TOKEN));
             $subdomain = ($code == $current_default) ? 'www' : substr($info['code'],0,2);
             $info['placeholder'] = $subdomain.'.'.$domain;
+            // Version info + upgrade flag
+            $info['api_version'] = $api_versions[$code] ?? null;
+            $info['upgrade_available'] = (!empty($info['api_version']) && !empty($info['version']) && version_compare($info['api_version'], $info['version'], '>'));
+            if ($info['upgrade_available']) {
+                $info['upgrade_url'] = currentPage(null, array('install' => $code, 'token' => SESSION_TOKEN)).'#lang_list';
+            }
             $smarty_data['languages'][] = $info;
         }
         $GLOBALS['smarty']->assign('LANGUAGES', $smarty_data['languages']);
     }
 
-    // Fetch available languages from API
-    $api_url_path = '/api/languages';
-    $request = new Request('extensions.cubecart.com', $api_url_path, 443, false, true, 10);
-    $request->setMethod('get');
-    $request->setSSL();
-    $request->setUserAgent('CubeCart');
-    $request->skiplog(true);
-    $request->cache(true);
-    if (!$json = $request->send()) {
-        $json = file_get_contents('https://extensions.cubecart.com'.$api_url_path);
-    }
-    if ($json) {
-        $api_data = json_decode($json, true);
-        if ($api_data && !empty($api_data['languages'])) {
-            $installed_codes = is_array($languageList) ? array_keys($languageList) : array();
-            $available = array();
-            foreach ($api_data['languages'] as $api_lang) {
-                if (!in_array($api_lang['code'], $installed_codes)) {
-                    $api_lang['install_url'] = currentPage(null, array('install' => $api_lang['code'], 'token' => SESSION_TOKEN)).'#lang_available';
-                    $available[] = $api_lang;
-                }
+    // Build "Available Languages" tab (those not installed) from the same API payload
+    if ($api_data && !empty($api_data['languages'])) {
+        $installed_codes = is_array($languageList) ? array_keys($languageList) : array();
+        $available = array();
+        foreach ($api_data['languages'] as $api_lang) {
+            if (!in_array($api_lang['code'], $installed_codes)) {
+                $api_lang['install_url'] = currentPage(null, array('install' => $api_lang['code'], 'token' => SESSION_TOKEN)).'#lang_available';
+                $available[] = $api_lang;
             }
-            if (!empty($available)) {
-                $GLOBALS['smarty']->assign('AVAILABLE_LANGUAGES', $available);
-                $GLOBALS['main']->addTabControl($lang['translate']['title_available_languages'], 'lang_available');
-            }
+        }
+        if (!empty($available)) {
+            $GLOBALS['smarty']->assign('AVAILABLE_LANGUAGES', $available);
+            $GLOBALS['main']->addTabControl($lang['translate']['title_available_languages'], 'lang_available');
         }
     }
 
