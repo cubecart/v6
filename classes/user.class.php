@@ -408,9 +408,20 @@ class User
                 $data[$key] = htmlspecialchars(html_entity_decode($value));
             }
 
-            if ($existing = $GLOBALS['db']->select('CubeCart_customer', 'customer_id', array('email' => $data['email']), false, 1, false, false)) {
+            if ($existing = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'type'), array('email' => $data['email']), false, 1, false, false)) {
+                // Upgrade a guest record (type=2) to registered (type=1) when they
+                // now choose to register. Never downgrade an existing registered
+                // account (the line 1157 caller-side guard already blocks that).
+                if ((int)$type === 1 && (int)$existing[0]['type'] === 2) {
+                    $data['type'] = 1;
+                }
                 $GLOBALS['db']->update('CubeCart_customer', $data, array('email' => $data['email']));
                 $customer_id = $existing[0]['customer_id'];
+                // Track ghost across the in-flight checkout for repeat guests too,
+                // not just first-time guests (matches INSERT-branch behaviour).
+                if ((int)$type === 2) {
+                    $this->setGhostId($customer_id);
+                }
             } else {
                 $data['registered']  = time();
                 $data['type']    = $type;
