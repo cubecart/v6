@@ -186,9 +186,16 @@ class SEO
             if (!in_array($match[2], $this->_ignored)) {
                 //Generate SEO URL
                 $seo_url = html_entity_decode($this->generatePath($match[5], $match[2], $match[4], true));
-                if(!empty($match[6]) && $match[6][0]=='&'){ 
-                    $match[6][0]='?';
-                    $seo_url.=$match[6];
+                if(!empty($match[6]) && $match[6][0]=='&'){
+                    // Strip internal-only params from the trailing query string
+                    // before appending — `seo_path` is set by .htaccess and must
+                    // never leak into a public URL (else it can recursively
+                    // accumulate via Apache's QSA flag on subsequent visits).
+                    parse_str(ltrim($match[6], '&'), $extra_params);
+                    unset($extra_params['seo_path']);
+                    if (!empty($extra_params)) {
+                        $seo_url .= '?'.http_build_query($extra_params);
+                    }
                 }
                 //If the SEO URL != to the current URL
                 if (str_replace($GLOBALS['rootRel'], '', $_SERVER['REQUEST_URI']) != $seo_url) {
@@ -627,6 +634,9 @@ class SEO
             // Get query string variables
             parse_str(html_entity_decode($query), $vars);
             //$vars = (isset($existing_vars) && is_array($existing_vars)) ? array_merge($existing_vars, $vars) : $vars;
+            // Strip seo_path — it's an internal-only param set by the .htaccess
+            // rewrite and must never leak into a public URL.
+            unset($vars['seo_path']);
             foreach ($vars as $key => $var) {
                 if (substr($key, 0, 1) == '#') {
                     unset($vars[$key]);
