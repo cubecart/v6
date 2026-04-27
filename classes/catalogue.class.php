@@ -1074,6 +1074,8 @@ class Catalogue
             $manufacturer[0]['eu_email'] = filter_var($manufacturer[0]['eu_email'], FILTER_VALIDATE_EMAIL) ? $manufacturer[0]['eu_email'] : '';
             $manufacturer[0]['country'] = ctype_digit($manufacturer[0]['country']) ? getCountryFormat($manufacturer[0]['country']) : $manufacturer[0]['country'];
             $manufacturer[0]['eu_country'] = ctype_digit($manufacturer[0]['eu_country']) ? getCountryFormat($manufacturer[0]['eu_country']) : $manufacturer[0]['eu_country'];
+            $manufacturer[0]['state'] = ctype_digit($manufacturer[0]['state']) ? getStateFormat($manufacturer[0]['state']) : $manufacturer[0]['state'];
+            $manufacturer[0]['eu_state'] = ctype_digit($manufacturer[0]['eu_state']) ? getStateFormat($manufacturer[0]['eu_state']) : $manufacturer[0]['eu_state'];
             return $manufacturer[0];
         } else {
             return false;
