@@ -69,7 +69,7 @@ class Autoloader
 
         //If its smarty we need to use the smarty loader
         if ($class == 'Smarty') {
-            require_once CC_INCLUDES_DIR.'lib/smarty/Smarty.class.php';
+            require_once CC_INCLUDES_DIR.'smarty/Smarty.class.php';
             return true;
         }
 

@@ -1,6 +1,6 @@
 <?php
-// Remove obsolete reCAPTCHA v1 library (no longer referenced)
-$recaptcha_dir = CC_INCLUDES_DIR.'lib/recaptcha';
-if (is_dir($recaptcha_dir)) {
-    recursiveDelete($recaptcha_dir);
+// Smarty moved to includes/smarty; reCAPTCHA v1 lib removed. Drop the now-empty includes/lib dir.
+$old_lib_dir = CC_INCLUDES_DIR.'lib';
+if (is_dir($old_lib_dir)) {
+    recursiveDelete($old_lib_dir);
 }

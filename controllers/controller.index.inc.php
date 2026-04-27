@@ -50,7 +50,7 @@ $GLOBALS['smarty']->debugging = false;
 $GLOBALS['smarty']->enableSecurity(new CubeCart_Smarty_Security($GLOBALS['smarty']));
 if (!(bool)$GLOBALS['config']->get('config', 'debug')) {
     define('HTML_MINIFY_URL_ENABLED', false);
-    include(CC_INCLUDES_DIR.'lib/smarty/filters/HTMLMinify.smarty.php');
+    include(CC_INCLUDES_DIR.'smarty/filters/HTMLMinify.smarty.php');
     $GLOBALS['smarty']->registerFilter("output", "minify_html");
 }
 //Initialize language
