@@ -543,24 +543,20 @@ class ACP
                 }
             }
 
-            // CDN: look for a real RewriteRule redirecting to an external http(s) origin — not just
-            // the word "cdn" (which anyone could drop into a comment)
-            $cdn = false;
-            $htaccess = CC_ROOT_DIR.'/images/cache/.htaccess';
-            if (is_readable($htaccess)) {
-                $content = (string)file_get_contents($htaccess);
-                // Strip comments so a `# cdn note` line can't satisfy the match
-                $content = preg_replace('/^\s*#.*$/m', '', $content);
-                if (preg_match('/^\s*RewriteRule\s+\S+\s+https?:\/\//mi', $content)) {
-                    $cdn = true;
-                }
+            // CDN: probe our own public URL and inspect response headers. Falls back to
+            // request-header sniffing if the probe can't run (no curl, network error).
+            $cdn_provider = $this->_probeOriginCDN();
+            if ($cdn_provider === '') {
+                $cdn_provider = $this->_detectExternalCDN();
             }
+            $cdn = ($cdn_provider !== '');
 
             $perf = array(
                 'memcache'      => $memcache,
                 'cache_driver'  => $memcache ? $cache_driver : '',
                 'elasticsearch' => $elasticsearch,
                 'cdn'           => $cdn,
+                'cdn_provider'  => $cdn_provider,
                 'enabled_count' => (int)$memcache + (int)$elasticsearch + (int)$cdn,
             );
             $GLOBALS['session']->set('status', $perf, 'performance');
@@ -597,6 +593,84 @@ class ACP
         } catch (Exception $e) {
             return false;
         }
+    }
+
+    /**
+     * Detect a third-party CDN proxying the request via signature headers.
+     * Returns the provider name or '' if none detected. Headers are spoofable so
+     * this is informational only — never use for security decisions.
+     */
+    private function _detectExternalCDN()
+    {
+        // Cloudflare — any one of these is reliable when proxied
+        if (!empty($_SERVER['HTTP_CF_CONNECTING_IP'])
+            || !empty($_SERVER['HTTP_CF_RAY'])
+            || !empty($_SERVER['HTTP_CF_VISITOR'])
+            || !empty($_SERVER['HTTP_CF_IPCOUNTRY'])) return 'Cloudflare';
+        if (!empty($_SERVER['HTTP_X_AMZ_CF_ID']))      return 'AWS CloudFront';
+        if (!empty($_SERVER['HTTP_FASTLY_CLIENT_IP'])) return 'Fastly';
+        if (!empty($_SERVER['HTTP_TRUE_CLIENT_IP'])
+            || !empty($_SERVER['HTTP_AKAMAI_ORIGIN_HOP'])) return 'Akamai';
+        if (!empty($_SERVER['HTTP_X_SUCURI_ID']))      return 'Sucuri';
+        if (!empty($_SERVER['HTTP_X_AZURE_REF']))      return 'Azure CDN';
+        if (!empty($_SERVER['HTTP_VIA'])) {
+            $via = $_SERVER['HTTP_VIA'];
+            if (stripos($via, 'CloudFront') !== false) return 'AWS CloudFront';
+            if (stripos($via, 'google') !== false)     return 'Google Cloud CDN';
+        }
+        return '';
+    }
+
+    /**
+     * Probe the public store URL and inspect the response headers for CDN signatures.
+     * Works regardless of whether the admin's own request went through the CDN — useful
+     * when admin traffic bypasses the proxy (hosts override, page rules, etc.).
+     */
+    private function _probeOriginCDN()
+    {
+        if (!defined('CC_STORE_URL') || empty(CC_STORE_URL)) return '';
+        if (!function_exists('curl_init')) return '';
+
+        // Pick any image known to the filemanager so we hit a real, CDN-cacheable file.
+        // Falls back to the bundled px.gif when the filemanager has no images.
+        $file = $GLOBALS['db']->select('CubeCart_filemanager', array('filepath', 'filename'),
+            array('type' => 1, 'disabled' => 0, 'mimetype' => '~image/'),
+            'RAND()', 1);
+        if (!empty($file[0]['filename'])) {
+            $path = (string)$file[0]['filepath'];
+            if ($path !== '' && substr($path, -1) !== '/') $path .= '/';
+            $url = CC_STORE_URL.'/images/source/'.$path.rawurlencode($file[0]['filename']);
+        } else {
+            $url = CC_STORE_URL.'/images/general/px.gif';
+        }
+        $ch = curl_init($url);
+        if ($ch === false) return '';
+        curl_setopt_array($ch, array(
+            CURLOPT_NOBODY         => true,
+            CURLOPT_HEADER         => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT        => 5,
+            CURLOPT_CONNECTTIMEOUT => 3,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_MAXREDIRS      => 5,
+        ));
+        $response = curl_exec($ch);
+        curl_close($ch);
+        if ($response === false || $response === '') return '';
+
+        $h = strtolower($response);
+        if (strpos($h, 'server: cloudflare')      !== false || strpos($h, 'cf-ray:')             !== false) return 'Cloudflare';
+        if (strpos($h, 'x-amz-cf-id:')            !== false || strpos($h, 'via: ')               !== false && strpos($h, 'cloudfront') !== false) return 'AWS CloudFront';
+        if (strpos($h, 'x-served-by: cache-')     !== false || strpos($h, 'x-fastly-request-id:') !== false) return 'Fastly';
+        if (strpos($h, 'server: akamaighost')     !== false || strpos($h, 'x-akamai-')           !== false) return 'Akamai';
+        if (strpos($h, 'x-sucuri-cache:')         !== false || strpos($h, 'server: sucuri')      !== false) return 'Sucuri';
+        if (strpos($h, 'x-azure-ref:')            !== false || strpos($h, 'x-msedge-ref:')       !== false) return 'Azure CDN';
+        if (strpos($h, 'server: bunnycdn')        !== false || strpos($h, 'cdn-pullzone:')       !== false) return 'BunnyCDN';
+        if (strpos($h, 'server: keycdn')          !== false) return 'KeyCDN';
+        if (strpos($h, 'server: netdna')          !== false) return 'StackPath';
+        return '';
     }
 
     /**

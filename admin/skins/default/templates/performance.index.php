@@ -98,9 +98,29 @@
    <div class="perf-card">
       <div class="perf-status-icon {if $PERFORMANCE.cdn}perf-on{else}perf-off{/if}"><i class="fa fa-{if $PERFORMANCE.cdn}check-circle{else}times-circle{/if}"></i></div>
       <div>
-         <h4>Content Delivery Network (CDN)</h4>
-         <span class="perf-status-label {if $PERFORMANCE.cdn}perf-on{else}perf-off{/if}">{if $PERFORMANCE.cdn}Active{else}Not active{/if}</span>
-         <p>Your product images, logos and styles are probably served from a single server in one country. A shopper halfway around the world has to wait while all those files travel across the globe before the page finishes loading. A CDN keeps copies of your images on servers all over the world, so every customer downloads them from somewhere nearby. Pages feel instant, bounce rates drop, and Google rewards the faster page speed with better rankings.</p>
+         <h4>Content Delivery Network (CDN){if $PERFORMANCE.cdn && $PERFORMANCE.cdn_provider} <small>({$PERFORMANCE.cdn_provider})</small>{/if}</h4>
+         <span class="perf-status-label {if $PERFORMANCE.cdn}perf-on{else}perf-off{/if}">{if $PERFORMANCE.cdn}Active{else}Not detected{/if}</span>
+         {if $PERFORMANCE.cdn}
+            {if $PERFORMANCE.cdn_provider == 'Cloudflare'}
+               <p>Cloudflare is proxying your store, caching static assets at edge locations worldwide and adding DDoS protection and a basic web application firewall. Visitors download your images, CSS and JavaScript from a server near them rather than your origin.</p>
+            {elseif $PERFORMANCE.cdn_provider == 'AWS CloudFront'}
+               <p>Amazon CloudFront is delivering your content from AWS's global edge network. Static assets are cached close to each visitor, reducing load on your origin and speeding up page loads worldwide.</p>
+            {elseif $PERFORMANCE.cdn_provider == 'Fastly'}
+               <p>Fastly's edge network is accelerating your store with real-time cache control. Static assets are served from points of presence near each visitor.</p>
+            {elseif $PERFORMANCE.cdn_provider == 'Akamai'}
+               <p>Akamai's enterprise edge network is delivering your content from servers near each visitor, giving consistently fast page loads at any scale.</p>
+            {elseif $PERFORMANCE.cdn_provider == 'Sucuri'}
+               <p>Sucuri is proxying your store through its CDN and website firewall &mdash; combining global content delivery with malware scanning and attack protection.</p>
+            {elseif $PERFORMANCE.cdn_provider == 'Azure CDN'}
+               <p>Microsoft Azure CDN is serving your content from its global edge network, caching static assets close to each visitor.</p>
+            {elseif $PERFORMANCE.cdn_provider == 'Google Cloud CDN'}
+               <p>Google Cloud CDN is distributing your content from Google's edge network, putting your static assets near each shopper.</p>
+            {else}
+               <p>A CDN is in front of your store, serving static assets from edge locations near each visitor.</p>
+            {/if}
+         {else}
+            <p>Your product images, logos and styles are probably served from a single server in one country. A shopper halfway around the world has to wait while all those files travel across the globe before the page finishes loading. A CDN keeps copies of your images on servers all over the world, so every customer downloads them from somewhere nearby. Pages feel instant, bounce rates drop, and Google rewards the faster page speed with better rankings.</p>
+         {/if}
       </div>
       {if !$PERFORMANCE.cdn}
       <div><a href="https://www.cubecart.com/hosting" target="_blank" class="perf-cta-btn">Get this &rarr;</a></div>
