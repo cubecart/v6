@@ -75,7 +75,11 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
     $request = new Request($extensions_url, $parsed['path'], 443, false, true, 30);
     $request->setMethod('get');
     $request->setSSL();
-    $request->setUserAgent('CubeCart');
+    $request->setUserAgent('CubeCart/'.CC_VERSION);
+    if ($GLOBALS['config']->get('config', 'allow_telemetry')) {
+        $domain = defined('CC_STORE_URL') ? CC_STORE_URL : ($_SERVER['HTTP_HOST'] ?? 'unknown');
+        $request->customHeaders('CC-Client-ID: '.hash('sha256', $domain));
+    }
     $request->skiplog(true);
     $file_data = $request->send();
 
@@ -316,7 +320,11 @@ if (!$api_extensions || !$cache_time || (time() - $cache_time) > 3600) {
     $request = new Request($extensions_url, '/api/extensions', 443, false, true, 15);
     $request->setMethod('get');
     $request->setSSL();
-    $request->setUserAgent('CubeCart');
+    $request->setUserAgent('CubeCart/'.CC_VERSION);
+    if ($GLOBALS['config']->get('config', 'allow_telemetry')) {
+        $domain = defined('CC_STORE_URL') ? CC_STORE_URL : ($_SERVER['HTTP_HOST'] ?? 'unknown');
+        $request->customHeaders('CC-Client-ID: '.hash('sha256', $domain));
+    }
     $request->skiplog(true);
     $json = $request->send();
 

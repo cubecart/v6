@@ -152,7 +152,11 @@ if (!$GLOBALS['session']->has('extension_update_check')) {
     $ext_request = new Request('extensions.cubecart.com', '/api/extensions', 443, false, true, 15);
     $ext_request->setMethod('get');
     $ext_request->setSSL();
-    $ext_request->setUserAgent('CubeCart');
+    $ext_request->setUserAgent('CubeCart/'.CC_VERSION);
+    if ($GLOBALS['config']->get('config', 'allow_telemetry')) {
+        $domain = defined('CC_STORE_URL') ? CC_STORE_URL : ($_SERVER['HTTP_HOST'] ?? 'unknown');
+        $ext_request->customHeaders('CC-Client-ID: '.hash('sha256', $domain));
+    }
     $ext_request->skiplog(true);
     $ext_request->cache(true);
     $ext_json = $ext_request->send();

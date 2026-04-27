@@ -44,6 +44,7 @@ class Request
     private $_request_return_headers;
     private $_curl_options  = array();
     private $_log    = true;
+    private $_user_agent;
 
     private $_success_responses = array(200, 201, 202, 203, 204, 205, 206, 207, 208, 226);
 
@@ -66,8 +67,9 @@ class Request
         $this->_request_timeout   = (int)$timeout;
         $this->_request_cache   = (bool)$cache;
 
+        $this->_user_agent = defined('CC_VERSION') ? 'CubeCart/'.CC_VERSION : 'CubeCart';
         if ($this->_curl) {
-            $this->_curl_options[CURLOPT_HTTPHEADER] = array('User-Agent: CubeCart/'.CC_VERSION);
+            $this->_curl_options[CURLOPT_USERAGENT]    = $this->_user_agent;
             $this->_curl_options[CURLOPT_HEADER]    = $this->_request_return_headers;
             $this->_curl_options[CURLOPT_RETURNTRANSFER]  = $this->_request_return;
             $this->_curl_options[CURLOPT_VERBOSE]    = false;
@@ -304,6 +306,9 @@ class Request
             }
             $this->_request_headers[]  = 'Host: '.$this->_request_url;
             $this->_request_headers[]  = 'Connection: Close';
+            if (!$this->_curl && !empty($this->_user_agent)) {
+                $this->_request_headers[] = 'User-Agent: '.$this->_user_agent;
+            }
 
             if (count($this->_custom_request_headers)) {
                 $this->_request_headers  = $this->_custom_request_headers;
@@ -517,10 +522,9 @@ class Request
      */
     public function setUserAgent($user_agent)
     {
+        $this->_user_agent = $user_agent;
         if ($this->_curl) {
             $this->_curl_options[CURLOPT_USERAGENT] = $user_agent;
-        } else {
-            $this->_request_headers[] = 'User-Agent: '.$user_agent;
         }
     }
 
