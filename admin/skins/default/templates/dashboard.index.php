@@ -221,7 +221,7 @@
             {if !empty($TOP_SEARCHES)}
             <ul class="tile-list tile-list--search">
                {foreach from=$TOP_SEARCHES item=s}
-               <li><span class="search-term">{$s.searchstr}</span><span class="search-count">{$s.hits}</span></li>
+               <li><span class="search-term">{$s.searchstr}</span><span class="search-count">{number_format($s.hits)}</span></li>
                {/foreach}
             </ul>
             {else}
