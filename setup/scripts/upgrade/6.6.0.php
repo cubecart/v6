@@ -119,7 +119,6 @@ if (is_array($languages) && !empty($languages)) {
     $request = new Request('extensions.cubecart.com', $api_url_path, 443, false, true, 10);
     $request->setMethod('get');
     $request->setSSL();
-    $request->setUserAgent('CubeCart');
     $request->skiplog(true);
     if (!$json = $request->send()) {
         $json = file_get_contents('https://extensions.cubecart.com'.$api_url_path);
@@ -139,7 +138,6 @@ if (is_array($languages) && !empty($languages)) {
                 $dl_request = new Request($url_parts['host'], $url_parts['path'], 443, false, true, 30);
                 $dl_request->setMethod('get');
                 $dl_request->setSSL();
-                $dl_request->setUserAgent('CubeCart');
                 $dl_request->skiplog(true);
                 $zip_data = $dl_request->send();
                 if (!$zip_data) {

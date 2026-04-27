@@ -211,7 +211,6 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
     $request = new Request('codeload.github.com', $download_url, 443, false, true, 120);
     $request->setMethod('get');
     $request->setSSL();
-    $request->setUserAgent('CubeCart/'.CC_VERSION);
     $request->skiplog(true);
     $request->customOption(CURLOPT_FOLLOWLOCATION, true);
 
@@ -1189,7 +1188,6 @@ if ($request = new Request('api.github.com', '/repos/cubecart/v6/releases/latest
     $request->setMethod('get');
     $request->cache(true);
     $request->setSSL();
-    $request->setUserAgent('CubeCart/'.CC_VERSION);
     $request->customHeaders('Accept: application/vnd.github.v3+json');
 
     if (($response = $request->send()) !== false) {

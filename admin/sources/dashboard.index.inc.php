@@ -130,7 +130,6 @@ if (!$GLOBALS['session']->has('version_check') && $request = new Request('versio
     $request->setMethod('get');
     $request->cache(true);
     $request->setSSL();
-    $request->setUserAgent('CubeCart/'.CC_VERSION);
     if ($GLOBALS['config']->get('config', 'allow_telemetry')) {
         $domain = defined('CC_STORE_URL') ? CC_STORE_URL : ($_SERVER['HTTP_HOST'] ?? 'unknown');
         $client_id = hash('sha256', $domain);
@@ -152,7 +151,6 @@ if (!$GLOBALS['session']->has('extension_update_check')) {
     $ext_request = new Request('extensions.cubecart.com', '/api/extensions', 443, false, true, 15);
     $ext_request->setMethod('get');
     $ext_request->setSSL();
-    $ext_request->setUserAgent('CubeCart/'.CC_VERSION);
     if ($GLOBALS['config']->get('config', 'allow_telemetry')) {
         $domain = defined('CC_STORE_URL') ? CC_STORE_URL : ($_SERVER['HTTP_HOST'] ?? 'unknown');
         $ext_request->customHeaders('CC-Client-ID: '.hash('sha256', $domain));
@@ -217,7 +215,6 @@ if (!$GLOBALS['session']->has('language_update_check')) {
     $lang_request = new Request('extensions.cubecart.com', '/api/languages', 443, false, true, 15);
     $lang_request->setMethod('get');
     $lang_request->setSSL();
-    $lang_request->setUserAgent('CubeCart');
     $lang_request->skiplog(true);
     $lang_request->cache(true);
     $lang_json = $lang_request->send();
@@ -646,7 +643,6 @@ if (!$recent_raw || !$recent_cache_ts || (time() - $recent_cache_ts) > 3600) {
     $recent_req = new Request('extensions.cubecart.com', '/api/extensions', 443, false, true, 10);
     $recent_req->setMethod('get');
     $recent_req->setSSL();
-    $recent_req->setUserAgent('CubeCart');
     $recent_req->skiplog(true);
     if (($recent_json = $recent_req->send()) !== false) {
         $recent_data = json_decode($recent_json, true);
