@@ -1721,7 +1721,12 @@ class Catalogue
                 $folder = 'cache';
                 if (isset($skins['images'][$mode])) {
                     $data = $skins['images'][$mode];
-                    preg_match('#(.*)(\.\w+)$#', $file, $match);
+                    if (!preg_match('#(.+)(\.\w+)$#', $file, $match)) {
+                        // Source filename has no usable basename + extension —
+                        // serving from cache would produce ill-named files
+                        // (e.g. ".500"). Fall back to the source path.
+                        return $this->imagePath($input, 'source', $path, $return_placeholder);
+                    }
                     $size  = (int)$data['maximum'];
                     $filename = sprintf('%s.%d%s', $match[1], $size, $match[2]);
                     ## Find the source
