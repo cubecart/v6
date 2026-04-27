@@ -121,6 +121,7 @@
          {else}
             <p>Your product images, logos and styles are probably served from a single server in one country. A shopper halfway around the world has to wait while all those files travel across the globe before the page finishes loading. A CDN keeps copies of your images on servers all over the world, so every customer downloads them from somewhere nearby. Pages feel instant, bounce rates drop, and Google rewards the faster page speed with better rankings.</p>
          {/if}
+         <p style="font-size:11px;color:var(--text-muted);margin-top:10px;font-style:italic;">CDN detection is informational. If your CDN strips identifying response headers or your server resolves its own hostname locally, a real CDN may not be detected here even when it's serving your visitors. This check should never be relied on for security or billing purposes.</p>
       </div>
       {if !$PERFORMANCE.cdn}
       <div><a href="https://www.cubecart.com/hosting" target="_blank" class="perf-cta-btn">Get this &rarr;</a></div>
