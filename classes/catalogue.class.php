@@ -2423,6 +2423,12 @@ class Catalogue
                                 $search_cols[] = preg_replace('/^[A-Z]+\./', '', $col);
                             }
                         }
+                        if (empty($search_cols) && $GLOBALS['config']->has('config', 'search_columns')) {
+                            $cfg_cols = $GLOBALS['config']->get('config', 'search_columns');
+                            if (is_array($cfg_cols) && !empty($cfg_cols)) {
+                                $search_cols = $cfg_cols;
+                            }
+                        }
                         if (empty($search_cols)) {
                             $search_cols = array('name', 'description', 'product_code');
                         }
