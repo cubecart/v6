@@ -1,95 +1,128 @@
-jQuery(document).ready(function () {
-    $("div.click-select input:radio").hide();
-    $("div.click-select").click(function () {
-        $("div.selected").removeClass("selected");
-        $(this).addClass("selected");
-        $(this).children("input:radio").attr("checked", "checked");
-        $(this).removeClass("faded");
-    });
-    if ($("div.click-select").size() == 1) $("div.click-select").click();
+(function () {
+    'use strict';
 
-    $("input.cancel:submit").click(function () {
-        $(".required:input").removeClass("required");
+    // Click-select cards (method radios). Hide the native radio, click anywhere
+    // on the card to select. If there's only one option, auto-select it.
+    var clickSelects = document.querySelectorAll('div.click-select');
+    clickSelects.forEach(function (card) {
+        var radio = card.querySelector('input[type=radio]');
+        if (radio) radio.style.display = 'none';
+        card.addEventListener('click', function () {
+            clickSelects.forEach(function (c) { c.classList.remove('selected'); });
+            card.classList.add('selected');
+            card.classList.remove('faded');
+            if (radio) radio.checked = true;
+        });
+    });
+    if (clickSelects.length === 1) clickSelects[0].click();
+
+    // Cancel button: drop the `required` flag so the submit handler doesn't bounce.
+    document.querySelectorAll('input.cancel[type=submit]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            document.querySelectorAll('.required').forEach(function (el) {
+                el.classList.remove('required');
+            });
+        });
     });
 
     // Show/hide password toggle. Each .password-toggle button carries its own
     // localised labels via data-text-show / data-text-hide so the JS stays language-neutral.
-    $(document).on("click", ".password-toggle", function (e) {
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest('.password-toggle');
+        if (!btn) return;
         e.preventDefault();
-        var $btn = $(this);
-        var $input = $("#" + $btn.data("target"));
-        if (!$input.length) return;
-        var isPwd = $input.attr("type") === "password";
-        $input.attr("type", isPwd ? "text" : "password");
-        $btn.text(isPwd ? $btn.data("text-hide") : $btn.data("text-show"));
+        var input = document.getElementById(btn.dataset.target);
+        if (!input) return;
+        var isPwd = input.type === 'password';
+        input.type = isPwd ? 'text' : 'password';
+        btn.textContent = isPwd ? btn.dataset.textHide : btn.dataset.textShow;
     });
+
+    // Drop the required-error highlight as soon as the user starts fixing the field.
+    function clearError(e) {
+        if (e.target.classList && e.target.classList.contains('required-error')) {
+            e.target.classList.remove('required-error');
+        }
+    }
+    document.addEventListener('input', clearError);
+    document.addEventListener('change', clearError);
+
+    var testBtn    = document.getElementById('test-connection-btn');
+    var testResult = document.getElementById('test-connection-result');
+    var dbTestPassed = false;
 
     // POST the install form's DB fields with test_connection=1 so setup/index.php
     // can short-circuit with a JSON reply. Shared by the manual button and the
-    // pre-submit gate below.
-    function runDbTest(onDone) {
-        var $btn = $("#test-connection-btn");
-        var $result = $("#test-connection-result");
-        $result.removeClass("pass fail").text("…");
-        $btn.prop("disabled", true);
+    // pre-submit gate. onSuccess only fires on res.ok — failures stop the chain.
+    function runDbTest(onSuccess) {
+        if (!testBtn || !testResult) return;
+        testResult.classList.remove('pass', 'fail');
+        testResult.textContent = '…';
+        testBtn.disabled = true;
 
-        var data = {
-            test_connection: "1",
-            "global[dbhost]":     $("#form-dbhost").val(),
-            "global[dbdatabase]": $("#form-dbdatabase").val(),
-            "global[dbusername]": $("#form-dbusername").val(),
-            "global[dbpassword]": $("#form-dbpassword").val(),
-            "global[dbport]":     $("#form-dbport").val(),
-            "global[dbsocket]":   $("#form-dbsocket").val()
-        };
+        var params = new URLSearchParams();
+        document.querySelectorAll('input[name^="global["]').forEach(function (input) {
+            params.append(input.name, input.value);
+        });
+        params.append('test_connection', '1');
 
-        $.post("index.php", data, null, "json").done(function (res) {
-            $result.addClass(res.ok ? "pass" : "fail").text(res.message);
-            if (onDone) onDone(res);
-        }).fail(function () {
-            $result.addClass("fail").text($btn.data("text-error") || "Test failed.");
-        }).always(function () {
-            $btn.prop("disabled", false);
+        fetch('index.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString()
+        })
+            .then(function (r) { return r.json(); })
+            .then(function (res) {
+                testResult.classList.add(res.ok ? 'pass' : 'fail');
+                testResult.textContent = res.message;
+                if (res.ok && onSuccess) onSuccess();
+            })
+            .catch(function () {
+                testResult.classList.add('fail');
+                testResult.textContent = testBtn.dataset.textError || 'Test failed.';
+            })
+            .finally(function () {
+                testBtn.disabled = false;
+            });
+    }
+
+    if (testBtn) {
+        testBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            runDbTest();
         });
     }
 
-    $("#test-connection-btn").on("click", function (e) {
-        e.preventDefault();
-        runDbTest();
-    });
+    // Required-field check on every form, plus an auto DB test before the install
+    // form actually submits. The auto-test only kicks in when #test-connection-btn
+    // is present (i.e. install step, !PRESET_DB).
+    document.querySelectorAll('form').forEach(function (form) {
+        form.addEventListener('submit', function (e) {
+            var ok = true;
 
-    // Single submit handler: required-field check first, then auto-run the DB test
-    // before letting the install form go through. The auto-test only kicks in when
-    // #test-connection-btn is present (i.e. install step, !PRESET_DB).
-    $("form").on("submit", function (e) {
-        var ok = true;
-        $(".required:input").removeClass("required-error");
-        $(this).find(".required:input").each(function () {
-            if ($(this).val().replace(/\s/i, "") == "") {
-                $(this).addClass("required-error").change(function () {
-                    $(this).removeClass("required-error");
-                });
+            form.querySelectorAll('.required').forEach(function (el) {
+                el.classList.remove('required-error');
+                if (el.value.trim() === '') {
+                    el.classList.add('required-error');
+                    ok = false;
+                }
+            });
+            form.querySelectorAll('.error').forEach(function (el) {
+                el.classList.add('required-error');
                 ok = false;
+            });
+            if (!ok) {
+                e.preventDefault();
+                return;
             }
-        });
-        $(this).find(".error:input").each(function () {
-            $(this).addClass("required-error");
-            ok = false;
-        });
-        if (!ok) return false;
 
-        if (window._dbTestPassed) return;
-        if (!$("#test-connection-btn").length) return;
+            if (dbTestPassed || !testBtn) return;
 
-        e.preventDefault();
-        var $form = $(this);
-        runDbTest(function (res) {
-            if (res.ok) {
-                window._dbTestPassed = true;
-                $form[0].submit();
-            }
+            e.preventDefault();
+            runDbTest(function () {
+                dbTestPassed = true;
+                form.submit();
+            });
         });
     });
-
-    $("label.help").click(function () {});
-});
+})();
