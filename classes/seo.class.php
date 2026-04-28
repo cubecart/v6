@@ -986,10 +986,12 @@ class SEO
             }
         }
 
-        // Pre-fetch all SEO URLs in one query to avoid N+1
+        // Pre-fetch SEO URLs we actually look up in the loop. Products use the JOIN
+        // in the products query for their path, so only cat + doc rows are needed here.
+        // On large stores this drops the prefetch from full-table to a few thousand rows.
         $seo_urls = array();
         $seo_rows = $GLOBALS['db']->misc(sprintf(
-            "SELECT `type`, `item_id`, `path`, `custom` FROM `%sCubeCart_seo_urls` WHERE `redirect` = 0", $prefix
+            "SELECT `type`, `item_id`, `path`, `custom` FROM `%sCubeCart_seo_urls` WHERE `redirect` = 0 AND `type` IN ('cat','doc')", $prefix
         ));
         if ($seo_rows) {
             foreach ($seo_rows as $sr) {
@@ -1009,49 +1011,14 @@ class SEO
             }
         }
 
-        // Products: pre-fetch with SEO path in one query, exclude those only in restricted categories
-        $products_sql = sprintf(
-            "SELECT I.`product_id`, I.`updated`, I.`name`, I.`cat_id`, S.`path` AS `seo_path`
-             FROM `%1\$sCubeCart_inventory` AS I
-             LEFT JOIN `%1\$sCubeCart_seo_urls` AS S ON S.`item_id` = I.`product_id` AND S.`type` = 'prod' AND S.`redirect` = 0
-             WHERE I.`status` = 1", $prefix
-        );
-        $products_raw = $GLOBALS['db']->misc($products_sql);
-        $sitemap_products = array();
-        if ($products_raw) {
-            // Pre-fetch primary category assignments for products without SEO path
-            $cat_index = array();
-            if ($GLOBALS['config']->get('config', 'seo_add_cats') != 0) {
-                $ci_rows = $GLOBALS['db']->misc(sprintf(
-                    "SELECT `product_id`, `cat_id` FROM `%sCubeCart_category_index` ORDER BY `primary` DESC", $prefix
-                ));
-                if ($ci_rows) {
-                    foreach ($ci_rows as $ci) {
-                        if (!isset($cat_index[(int)$ci['product_id']])) {
-                            $cat_index[(int)$ci['product_id']] = (int)$ci['cat_id'];
-                        }
-                    }
-                }
-            }
-
-            foreach ($products_raw as $prod) {
-                $pid = (int)$prod['product_id'];
-                // Determine product's primary category
-                $prod_cat = isset($cat_index[$pid]) ? $cat_index[$pid] : (int)$prod['cat_id'];
-                // Skip if product's primary category is restricted
-                if ($prod_cat > 0 && isset($restricted_cats[$prod_cat])) {
-                    continue;
-                }
-                $sitemap_products[] = $prod;
-            }
-        }
-
+        // Categories + documents are bounded sets, fine to load up front.
+        // Products are streamed in batches below to keep memory bounded on large catalogues.
         $queryArray = array(
             'category' => $sitemap_categories,
-            'product' => $sitemap_products,
             'document' => $GLOBALS['db']->select('CubeCart_documents', array('doc_id', 'updated'), array('doc_parent_id' => '0', 'doc_status' => 1)),
         );
 
+        // Hook may inject custom types or pre-populate 'product' to override the streamed path.
         foreach ($GLOBALS['hooks']->load('class.seo.sitemap') as $hook) {
             include $hook;
         }
@@ -1059,50 +1026,65 @@ class SEO
         foreach ($queryArray as $type => $results) {
             if ($results) {
                 foreach ($results as $record) {
-                    $url = null;
-                    switch ($type) {
-                    case 'category':
-                        $id  = $record['cat_id'];
-                        $key = 'cat_id';
-                        // Use pre-fetched SEO URL if available
-                        if (isset($seo_urls['cat'][(int)$id])) {
-                            $slug = $seo_urls['cat'][(int)$id]['path'];
-                            if ($GLOBALS['config']->get('config', 'seo_cat_add_cats') == 0 && !$seo_urls['cat'][(int)$id]['custom']) {
-                                $parts = explode('/', $slug);
-                                $slug = array_pop($parts);
-                            }
-                            $url = $this->_sitemap_base_url.'/'.SEO::_safeUrl($slug).$this->_extension;
-                        }
-                        break;
-                    case 'product':
-                        $id  = $record['product_id'];
-                        $key = 'product_id';
-                        // Use pre-fetched SEO path if available
-                        if (!empty($record['seo_path'])) {
-                            $url = $this->_sitemap_base_url.'/'.SEO::_safeUrl($record['seo_path']).$this->_extension;
-                        }
-                        break;
-                    case 'document':
-                        $id  = $record['doc_id'];
-                        $key = 'doc_id';
-                        if (isset($seo_urls['doc'][(int)$id])) {
-                            $url = $this->_sitemap_base_url.'/'.SEO::_safeUrl($seo_urls['doc'][(int)$id]['path']).$this->_extension;
-                        }
-                        break;
-                    }
-                    if ($url) {
-                        $this->_sitemap_link(array('url' => $url), $record['updated'] ?? false);
-                    } else {
-                        $this->_sitemap_link(array('key' => $key, 'id' => $id), $record['updated'] ?? false, $type);
-                    }
-                    if($this->_sitemap_url_count == $this->_sitemap_limit) {
-                        $this->_writeSiteMap();
-                        $this->_sitemap_xml = new XML();
-                        $this->_sitemap_xml->startElement('urlset', array('xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'));
-                        $this->_sitemap_url_count = 0;
-                    }
+                    $this->_sitemap_emit($type, $record, $seo_urls);
                 }
             }
+        }
+
+        // Stream products with cursor pagination so memory stays flat regardless of catalogue size.
+        // Skip when a hook has already populated $queryArray['product'] (legacy override path).
+        if (empty($queryArray['product'])) {
+            $batch_size = 1000;
+            $last_id = 0;
+            $add_cats = ($GLOBALS['config']->get('config', 'seo_add_cats') != 0);
+            do {
+                $batch = $GLOBALS['db']->misc(sprintf(
+                    "SELECT I.`product_id`, I.`updated`, I.`name`, I.`cat_id`, S.`path` AS `seo_path`
+                     FROM `%1\$sCubeCart_inventory` AS I
+                     LEFT JOIN `%1\$sCubeCart_seo_urls` AS S ON S.`item_id` = I.`product_id` AND S.`type` = 'prod' AND S.`redirect` = 0
+                     WHERE I.`status` = 1 AND I.`product_id` > %2\$d
+                     ORDER BY I.`product_id`
+                     LIMIT %3\$d", $prefix, (int)$last_id, (int)$batch_size
+                ));
+                if (!$batch) {
+                    break;
+                }
+
+                // Per-batch primary-category lookup. Only fetch ids in this chunk, and
+                // only when restrictions exist (otherwise the result is unused).
+                $cat_index = array();
+                if ($add_cats && !empty($restricted_cats)) {
+                    $batch_ids = array();
+                    foreach ($batch as $r) {
+                        $batch_ids[] = (int)$r['product_id'];
+                    }
+                    $ci_rows = $GLOBALS['db']->misc(sprintf(
+                        "SELECT `product_id`, `cat_id` FROM `%sCubeCart_category_index` WHERE `product_id` IN (%s) ORDER BY `primary` DESC",
+                        $prefix, implode(',', $batch_ids)
+                    ));
+                    if ($ci_rows) {
+                        foreach ($ci_rows as $ci) {
+                            if (!isset($cat_index[(int)$ci['product_id']])) {
+                                $cat_index[(int)$ci['product_id']] = (int)$ci['cat_id'];
+                            }
+                        }
+                    }
+                }
+
+                foreach ($batch as $prod) {
+                    $pid = (int)$prod['product_id'];
+                    $prod_cat = isset($cat_index[$pid]) ? $cat_index[$pid] : (int)$prod['cat_id'];
+                    if ($prod_cat > 0 && isset($restricted_cats[$prod_cat])) {
+                        continue;
+                    }
+                    $this->_sitemap_emit('product', $prod);
+                }
+
+                $last_row = end($batch);
+                $last_id = (int)$last_row['product_id'];
+                $batch_count = count($batch);
+                unset($batch, $cat_index);
+            } while ($batch_count === $batch_size);
         }
         if($this->_sitemap_url_count > 0) {
             $this->_writeSiteMap();
@@ -1475,6 +1457,60 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
         $url = preg_replace('#[^\w\-._/]#iuU', '-', str_replace('/', '/', $url));
         $url = preg_replace(array('#/{2,}#iu', '#-{2,}#'), array('/', '-'), $url);
         return trim($url, '-');
+    }
+
+    /**
+     * Emit a sitemap URL for a single record and rotate to a new file when
+     * the per-file URL limit is reached.
+     *
+     * @param string $type    'category' | 'product' | 'document' (or hook-injected)
+     * @param array  $record
+     * @param array  $seo_urls Pre-fetched type=>id=>row map (cat + doc only)
+     */
+    private function _sitemap_emit($type, $record, $seo_urls = array())
+    {
+        $url = null;
+        $id  = null;
+        $key = '';
+        switch ($type) {
+        case 'category':
+            $id  = $record['cat_id'];
+            $key = 'cat_id';
+            if (isset($seo_urls['cat'][(int)$id])) {
+                $slug = $seo_urls['cat'][(int)$id]['path'];
+                if ($GLOBALS['config']->get('config', 'seo_cat_add_cats') == 0 && !$seo_urls['cat'][(int)$id]['custom']) {
+                    $parts = explode('/', $slug);
+                    $slug = array_pop($parts);
+                }
+                $url = $this->_sitemap_base_url.'/'.SEO::_safeUrl($slug).$this->_extension;
+            }
+            break;
+        case 'product':
+            $id  = $record['product_id'];
+            $key = 'product_id';
+            if (!empty($record['seo_path'])) {
+                $url = $this->_sitemap_base_url.'/'.SEO::_safeUrl($record['seo_path']).$this->_extension;
+            }
+            break;
+        case 'document':
+            $id  = $record['doc_id'];
+            $key = 'doc_id';
+            if (isset($seo_urls['doc'][(int)$id])) {
+                $url = $this->_sitemap_base_url.'/'.SEO::_safeUrl($seo_urls['doc'][(int)$id]['path']).$this->_extension;
+            }
+            break;
+        }
+        if ($url) {
+            $this->_sitemap_link(array('url' => $url), $record['updated'] ?? false);
+        } else {
+            $this->_sitemap_link(array('key' => $key, 'id' => $id), $record['updated'] ?? false, $type);
+        }
+        if ($this->_sitemap_url_count == $this->_sitemap_limit) {
+            $this->_writeSiteMap();
+            $this->_sitemap_xml = new XML();
+            $this->_sitemap_xml->startElement('urlset', array('xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'));
+            $this->_sitemap_url_count = 0;
+        }
     }
 
     /**

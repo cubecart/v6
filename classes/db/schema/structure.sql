@@ -978,6 +978,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_cron_tasks` (
   `enabled` TINYINT(1) NOT NULL DEFAULT 1,
   `frequency` INT UNSIGNED NOT NULL DEFAULT 3600,
   `last_run` DATETIME DEFAULT NULL,
+  `started_at` DATETIME DEFAULT NULL,
+  `last_completed` DATETIME DEFAULT NULL,
   `last_result` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `method` (`method`)

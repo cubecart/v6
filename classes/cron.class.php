@@ -273,42 +273,74 @@ class Cron
     }
 
     /**
+     * Per-task wall-clock budget. Each task gets a fresh allowance via set_time_limit()
+     * so one slow job can't burn the whole cron window. Also acts as the staleness
+     * threshold for the started_at lock — a task marked running for longer than this
+     * is treated as crashed and may be re-claimed.
+     */
+    const TASK_TIMEOUT = 600;
+
+    /**
      * Unified cron entry point - runs all enabled tasks that are due
      */
     public function run() {
         $tasks = $GLOBALS['db']->select('CubeCart_cron_tasks', false, array('enabled' => 1), false, false, false, false);
         $output = array();
         if ($tasks) {
+            $now = time();
             foreach ($tasks as $task) {
                 $method = $task['method'];
                 if (!method_exists($this, $method)) {
                     continue;
                 }
-                $due = false;
-                if (empty($task['last_run'])) {
-                    $due = true;
-                } else {
-                    $elapsed = time() - strtotime($task['last_run']);
-                    if ($elapsed >= (int)$task['frequency']) {
-                        $due = true;
+
+                // Concurrency guard: another invocation already claimed this task.
+                // Stale locks (older than TASK_TIMEOUT) are treated as crashed and re-claimable.
+                if (!empty($task['started_at'])) {
+                    $age = $now - strtotime($task['started_at']);
+                    if ($age >= 0 && $age < self::TASK_TIMEOUT) {
+                        $output[] = $task['label'] . ': skipped (in progress since ' . $task['started_at'] . ')';
+                        continue;
                     }
                 }
-                if ($due) {
-                    try {
-                        if ($method === 'updateExchangeRates') {
-                            $ret = $this->$method('', false);
-                        } else {
-                            $ret = $this->$method();
-                        }
-                        $result = is_string($ret) ? $ret : 'OK';
-                    } catch (Exception $e) {
-                        $result = substr($e->getMessage(), 0, 255);
+
+                // Due check: cadence is keyed off last_run, which we now stamp at start
+                // (not completion). A task that crashes still gets its last_run advanced,
+                // so the dispatcher won't re-fire it every tick — it'll wait its full frequency.
+                if (!empty($task['last_run']) && (int)$task['frequency'] > 0) {
+                    if (($now - strtotime($task['last_run'])) < (int)$task['frequency']) {
+                        $output[] = $task['label'] . ': skipped (not due)';
+                        continue;
                     }
-                    $GLOBALS['db']->update('CubeCart_cron_tasks', array('last_run' => date('Y-m-d H:i:s'), 'last_result' => $result), array('id' => $task['id']));
-                    $output[] = $task['label'] . ': ' . $result;
-                } else {
-                    $output[] = $task['label'] . ': skipped (not due)';
                 }
+
+                // Claim the task before invocation. Stamp last_run + started_at together;
+                // last_run is the dispatcher cadence anchor, started_at is the running-lock.
+                $start_str = date('Y-m-d H:i:s');
+                $GLOBALS['db']->update('CubeCart_cron_tasks', array(
+                    'last_run'   => $start_str,
+                    'started_at' => $start_str,
+                ), array('id' => $task['id']));
+
+                @set_time_limit(self::TASK_TIMEOUT);
+
+                try {
+                    if ($method === 'updateExchangeRates') {
+                        $ret = $this->$method('', false);
+                    } else {
+                        $ret = $this->$method();
+                    }
+                    $result = is_string($ret) ? $ret : 'OK';
+                } catch (Exception $e) {
+                    $result = substr($e->getMessage(), 0, 255);
+                }
+
+                $GLOBALS['db']->update('CubeCart_cron_tasks', array(
+                    'last_completed' => date('Y-m-d H:i:s'),
+                    'started_at'     => 'NULL',
+                    'last_result'    => $result,
+                ), array('id' => $task['id']));
+                $output[] = $task['label'] . ': ' . $result;
             }
         }
         echo implode("\n", $output);
