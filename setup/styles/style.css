@@ -3,6 +3,7 @@ html {
     font-size: .8em;
     font-family: 'Open Sans', sans-serif;
     background-color: #ECECEC;
+    color: #4A4A4A;
     margin: 0;
     padding: 0
 }
@@ -10,7 +11,10 @@ html {
     width: 676px;
     margin: 30px auto 10px;
     padding: 30px 40px;
-    background-color: #1E3D45
+    background-color: #1E3D45;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px
 }
 #header {
     height: 55px;
@@ -23,32 +27,6 @@ html {
     margin-bottom: 20px;
     text-align: right
 }
-#progress {
-    background-color: #FFF;
-    padding: 20px;
-    margin-bottom: 10px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px
-}
-#progress div.container {
-    height: 28px;
-    border: 1px solid #E7E7E7;
-    background-image: url(../images/progress-back.png);
-    background-repeat: repeat-x;
-    background-position: bottom left;
-    background-color: #F8F8F8
-}
-#progress div.indicator {
-    height: 28px;
-    background-image: url(../images/progress-fill.png);
-    background-repeat: repeat-x;
-    background-position: bottom left
-}
-#progress div.text {
-    text-align: right;
-    color: #999;
-    margin-top: 5px
-}
 #error {
     background-color: #FFEDED;
     color: #FE0000;
@@ -57,7 +35,7 @@ html {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px
 }
-#error h3 {
+#error h2 {
     padding-top: 10px;
     border-bottom-color: #FE0000
 }
@@ -75,7 +53,7 @@ html {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px
 }
-#notice h3 {
+#notice h2 {
     padding-top: 10px;
     margin-bottom: 0;
     padding-bottom: 0;
@@ -100,16 +78,19 @@ html {
     text-align: center;
     font-size: 14px
 }
-h3 {
-    font-size: 1.2em;
+h1 {
+    margin: 0 0 30px;
+}
+h2 {
+    font-size: 1.4em;
     font-weight: 700;
-    border-bottom: 1px dotted #000;
-    padding-bottom: 10px;
+    border-bottom: 1px solid #CCC;
+    padding-bottom: 3px;
     padding-top: 20px;
     margin-bottom: 20px;
     margin-top: 0
 }
-h3.first {
+h2.first {
     padding-top: 0
 }
 a {
@@ -190,7 +171,7 @@ div.click-select {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px
 }
-div.click-select h3 {
+div.click-select h2 {
     margin-left: 100px
 }
 div.click-select>span.icon {
@@ -210,7 +191,9 @@ fieldset {
 }
 fieldset>div>label {
     float: left;
-    width: 200px!important
+    width: 200px!important;
+    font-size: 13px;
+    font-weight: 600
 }
 label.help {
     cursor: help
@@ -221,7 +204,8 @@ label.help {
     background-color: #F7F7F7;
     width: 250px;
     padding: 1px;
-    margin: 1px
+    margin: 1px;
+    box-sizing: border-box
 }
 .textbox:focus {
     background-color: #FFF
@@ -296,4 +280,127 @@ h4 {
 	color: #FF0000;
 	font-size: 16px;
 	font-weight: bold;
+}
+
+/* Install step layout: two-column grid with stacked labels for compact density.
+ * Falls back to a single column on narrow viewports automatically via flex-wrap. */
+.install-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-bottom: 20px;
+}
+.install-grid-col {
+    flex: 1 1 250px;
+    min-width: 0;
+}
+.install-grid-col.install-grid-solo {
+    flex: none;
+    max-width: 360px;
+    margin-bottom: 20px;
+}
+.install-grid-col fieldset {
+    width: auto;
+    margin: 0;
+    padding: 0;
+}
+.install-grid-col fieldset > div {
+    margin-bottom: 12px;
+}
+.install-grid-col fieldset > div > label {
+    float: none;
+    display: block;
+    width: auto !important;
+    margin-bottom: 4px;
+    font-weight: 600;
+    font-size: 13px;
+}
+.install-grid-col .textbox {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 8px;
+    margin: 0;
+}
+.install-grid-col input[type=checkbox] {
+    margin-right: 6px;
+}
+
+/* Password input + show/hide toggle */
+.password-wrap {
+    position: relative;
+    display: block;
+}
+.password-wrap .textbox {
+    padding-right: 56px;
+}
+.password-toggle {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #4F9AAF !important;
+    font-size: 11px;
+    padding: 2px 6px !important;
+    cursor: pointer;
+}
+.password-toggle:hover {
+    text-decoration: underline;
+}
+
+/* DB-credentials test button + result. Sits as a full-width row inside the install
+ * grid (flex-basis: 100% forces it onto its own line under the two columns). */
+.connection-test-row {
+    flex-basis: 100%;
+    margin-top: 4px;
+}
+#test-connection-result {
+    margin-left: 8px;
+    font-size: 12px;
+}
+#test-connection-result.pass { color: #10AB5D; }
+#test-connection-result.fail { color: #FF211E; }
+
+/* Collapsible advanced settings inside the database section */
+details.install-advanced {
+    margin-top: 12px;
+    border-top: 1px solid #EEE;
+    padding-top: 8px;
+}
+details.install-advanced > summary {
+    cursor: pointer;
+    color: #4F9AAF;
+    font-size: 12px;
+    padding: 4px 0;
+    list-style: none;
+}
+details.install-advanced > summary::-webkit-details-marker {
+    display: none;
+}
+details.install-advanced > summary::before {
+    content: "\25B8";
+    display: inline-block;
+    margin-right: 6px;
+    transition: transform 0.15s ease;
+}
+details.install-advanced[open] > summary::before {
+    transform: rotate(90deg);
+}
+details.install-advanced > div {
+    margin-top: 8px;
+}
+
+/* One-line telemetry consent — replaces the old "Advanced Settings" fieldset framing */
+.telemetry-consent {
+    font-size: 12px;
+    color: #666;
+    margin: 16px auto 0;
+    width: 500px;
+    max-width: 100%;
+}
+.telemetry-consent input[type=checkbox] {
+    margin-right: 6px;
+    vertical-align: middle;
 }

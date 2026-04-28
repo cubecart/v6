@@ -56,7 +56,10 @@ if (!isset($_SESSION['setup']['permissions'])) {
         $proceed = false;
         $retry  = true;
     } else {
-        $GLOBALS['smarty']->assign('PERMS_PASS', true);
+        // All permissions OK — skip the screen and advance straight to server details.
+        // The user only sees this step when there's something to fix.
+        $_SESSION['setup']['permissions'] = true;
+        httpredir('index.php');
     }
     $GLOBALS['smarty']->assign('MODE_PERMS', true);
 } else {
@@ -75,16 +78,8 @@ if (!isset($_SESSION['setup']['permissions'])) {
                 }
             }
 
-            if ($_POST['global']['dbpassword'] !== $_POST['global']['dbpassconf']) {
-                unset($_POST['global']['dbpassword'], $_POST['global']['dbpassconf']);
-                $errors['dbpass'] = $strings['setup']['error_db_password_mismatch'];
-            }
             // Validate admin array
             $required = array('username', 'email', 'name', 'password');
-            if ($_POST['admin']['password'] !== $_POST['admin']['passconf']) {
-                $errors['password'] = $strings['setup']['error_admin_password_mismatch'];
-                unset($_POST['admin']['password'], $_POST['admin']['passconf']);
-            }
             foreach ($_POST['admin'] as $key => $value) {
                 if (in_array($key, $required) && empty($value)) {
                     $validated = false;
@@ -104,14 +99,16 @@ if (!isset($_SESSION['setup']['permissions'])) {
 
                     if ($connect_id->connect_error) {
                         $errors[] = $strings['setup']['error_db_incorrect_something'].' '.$connect_id->connect_error;
-                        unset($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], $_POST['global']['dbport'], $_POST['global']['dbsocket']);
+                        // Only clear the password — keep host/user/db/port/socket so the
+                        // admin doesn't have to retype every field when only one is wrong.
+                        unset($_POST['global']['dbpassword']);
                     } else {
                         $mysql_connect = true;
                         $connect_id->close();
                     }
                 } catch (Exception $e) {
                     $errors[] = $strings['setup']['error_db_incorrect_something'].' '.$e->getMessage();
-                    unset($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], $_POST['global']['dbport'], $_POST['global']['dbsocket']);
+                    unset($_POST['global']['dbpassword']);
                 }
             } else {
                 $dbport = (isset($config['dbport']) && !empty($config['dbport'])) ? $config['dbport'] : ini_get('mysqli.default_port');
@@ -132,16 +129,14 @@ if (!isset($_SESSION['setup']['permissions'])) {
                         unset($_POST['global']['dbdatabase']);
                     }
                 } else {
-                    // Incorrect host/user/pass
+                    // Incorrect host/user/pass — only clear the password so the admin
+                    // can fix the typo without retyping the whole connection string.
                     $errors[] = $strings['setup']['error_db_incorrect_something'];
-                    unset($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], $_POST['global']['dbport'], $_POST['global']['dbsocket']);
+                    unset($_POST['global']['dbpassword']);
                 }
             }
 
             if ($validated && $mysql_connect) {
-                // Set session variables, then proceed
-                unset($_POST['global']['dbpassconf'], $_POST['admin']['passconf']);
-
                 $_SESSION['setup']['progress'] = true;
                 $_SESSION['setup']['droptable'] = (isset($_POST['drop'])) ? true : false;
 

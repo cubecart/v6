@@ -279,6 +279,51 @@ $GLOBALS['smarty']->assign('VERSION', CC_VERSION);
 $GLOBALS['smarty']->assign('ROOT', CC_ROOT_DIR);
 $GLOBALS['smarty']->assign('SESSION_LANGUAGE', $_SESSION['language']);
 
+// Header shown above every step once the method is locked in (e.g. "Install CubeCart 6.6.4"
+// or "Upgrade CubeCart 6.6.4"). install_cubecart_title is parameterised; for upgrade we
+// compose from the plain label to avoid the marketing-flavoured upgrade_cubecart_title.
+if (isset($_SESSION['setup']['method'])) {
+    if ($_SESSION['setup']['method'] === 'install') {
+        $GLOBALS['smarty']->assign('STEP_HEADING', sprintf($strings['setup']['install_cubecart_title'], CC_VERSION));
+    } elseif ($_SESSION['setup']['method'] === 'upgrade') {
+        $GLOBALS['smarty']->assign('STEP_HEADING', $strings['setup']['upgrade_cubecart'].' '.CC_VERSION);
+    }
+}
+
+// AJAX endpoint: pre-submit DB connection test from the install form. Returns JSON
+// and exits, so it has to short-circuit before the regular HTML render path below.
+if (isset($_POST['test_connection']) && $_POST['test_connection'] === '1') {
+    header('Content-Type: application/json');
+    $host   = isset($_POST['global']['dbhost'])     ? trim($_POST['global']['dbhost'])     : '';
+    $name   = isset($_POST['global']['dbdatabase']) ? trim($_POST['global']['dbdatabase']) : '';
+    $user   = isset($_POST['global']['dbusername']) ? trim($_POST['global']['dbusername']) : '';
+    $pass   = isset($_POST['global']['dbpassword']) ? $_POST['global']['dbpassword']       : '';
+    $port   = !empty($_POST['global']['dbport'])    ? (int)$_POST['global']['dbport']      : (int)ini_get('mysqli.default_port');
+    $socket = !empty($_POST['global']['dbsocket'])  ? $_POST['global']['dbsocket']         : ini_get('mysqli.default_socket');
+
+    if ($host === '' || $user === '' || $name === '') {
+        echo json_encode(array('ok' => false, 'message' => $strings['setup']['test_connection_missing']));
+        exit;
+    }
+    if (!function_exists('mysqli_connect')) {
+        echo json_encode(array('ok' => false, 'message' => $strings['setup']['error_mysqli_missing']));
+        exit;
+    }
+    try {
+        mysqli_report(MYSQLI_REPORT_OFF);
+        $mysqli = @new mysqli($host, $user, $pass, $name, $port, $socket);
+        if ($mysqli->connect_errno) {
+            echo json_encode(array('ok' => false, 'message' => $strings['setup']['error_db_incorrect_something'].' '.$mysqli->connect_error));
+        } else {
+            echo json_encode(array('ok' => true, 'message' => $strings['setup']['test_connection_ok']));
+            $mysqli->close();
+        }
+    } catch (Exception $e) {
+        echo json_encode(array('ok' => false, 'message' => $strings['setup']['error_db_incorrect_something'].' '.$e->getMessage()));
+    }
+    exit;
+}
+
 // Detect upgrade (skip language selection stage)
 $is_upgrade = false;
 if (file_exists($global_file) && filesize($global_file) > 0) {
@@ -363,14 +408,8 @@ if (isset($_POST['select_language'])) {
             $errors[] = $strings['setup']['error_action_required'];
             $redir    = false;
         }
-        if (isset($_SESSION['setup']['method']) && !isset($_POST['licence']) && !isset($_SESSION['setup']['licence'])) {
-            $errors[] = $strings['setup']['error_accept_licence'];
-            $redir    = false;
-        }
         if (isset($_POST['method'])) {
             $_SESSION['setup']['method'] = $_POST['method'];
-        } elseif (isset($_POST['licence'])) {
-            $_SESSION['setup']['licence'] = true;
         } elseif (isset($_POST['permissions'])) {
             $_SESSION['setup']['permissions'] = true;
         } elseif (isset($_POST['progress'])) {
@@ -480,8 +519,13 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
     $errors[] = $strings['setup']['error_hosting_compat'];
     $retry = true;
     $proceed = false;
+  } else {
+    // All compatibility checks pass — skip the screen and advance straight to method
+    // selection. The user will only ever see this step if there's something to fix.
+    $_SESSION['setup'] = array();
+    httpredir('index.php');
   }
-  
+
   $GLOBALS['smarty']->assign('CHECKS', $checks);
   $GLOBALS['smarty']->assign('MODE_COMPAT', true);
 } else {
@@ -500,11 +544,6 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
             $GLOBALS['smarty']->assign('SHOW_UPGRADE', true);
         }
         $GLOBALS['smarty']->assign('MODE_METHOD', true);
-    } elseif (!isset($_SESSION['setup']['licence'])) {
-        if (file_exists(CC_ROOT_DIR . '/docs/license.txt')) {
-            $GLOBALS['smarty']->assign('SOFTWARE_LICENCE', file_get_contents(CC_ROOT_DIR . '/docs/license.txt'));
-        }
-        $GLOBALS['smarty']->assign('MODE_LICENCE', true);
     } elseif (!isset($_SESSION['setup']['complete'])) {
         if (in_array($_SESSION['setup']['method'], array(
             'install', 'upgrade'))) {
@@ -778,15 +817,6 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
 if (isset($errors) && is_array($errors)) {
     $vars['errors'] = $errors;
     $GLOBALS['smarty']->assign('GUI_MESSAGE', $vars);
-}
-
-if (isset($step)) {
-    $progress = (100 / 5) * ((int) $step - 1);
-    $progress = ($progress >= 100) ? 100 : $progress;
-    $GLOBALS['smarty']->assign('PROGRESS', array(
-    'percent' => (int) $progress,
-    'message' => sprintf($strings['setup']['percent_complete'], (int) $progress)
-  ));
 }
 
 ## Build Logos
