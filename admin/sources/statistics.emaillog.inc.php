@@ -86,9 +86,23 @@ $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
 $email_logs = $GLOBALS['db']->select('CubeCart_email_log', false, $where, array('date' => 'DESC'), $per_page, $page, false);
 $email_log = array();
 $count = $GLOBALS['db']->getFoundRows();
+// Friendly labels for the email_method column. Hardcoded universal acronyms — no
+// lang strings — so display is correct under any installed language. Unknown values
+// (e.g. plugin-injected methods like 'sendgrid_api') fall through to the raw value.
+$method_labels = array(
+    'mail'     => 'PHP mail()',
+    'phpmail'  => 'PHP mail()',
+    'smtp'     => 'SMTP',
+    'smtp_ssl' => 'SMTP (SSL)',
+    'smtp_tls' => 'SMTP (TLS)',
+);
+
 if ($email_logs!==false) {
     $row['to_email'] = array();
     foreach ($email_logs as $row) {
+        $row['email_method_label'] = isset($method_labels[$row['email_method']])
+            ? $method_labels[$row['email_method']]
+            : $row['email_method'];
         $row['to'] = explode(',', $row['to']);
         foreach($row['to'] as $value) {
             if($to = User::getEmailAddressParts($value)) {

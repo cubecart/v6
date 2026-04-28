@@ -60,7 +60,7 @@
 			<a href="#" onclick="{literal}$.colorbox({title:'{/literal}{addslashes(htmlentities($log.subject))} ({$LANG.common.plain_text}){literal}',width:'90%', height:'90%', html:'<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' src=\'?_g=xml&amp;function=viewEmail&amp;id={/literal}{$log.id}{literal}&amp;mode=content_text\'></iframe>'}){/literal}">{$LANG.common.plain_text}</a>
 			{/if}
 		</td>
-		<td style="text-align:center">{$log.email_method|default:'—'}</td>
+		<td style="text-align:center">{$log.email_method_label|default:'—'}</td>
 		<td>{$log.date}</td>
 		<td>
 			{if !empty($log.attachment)}
