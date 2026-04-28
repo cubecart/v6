@@ -724,11 +724,7 @@ $(document).ready(function() {
             inline: !0,
             innerHeight: "685px",
             innerWidth: "420px"
-        }), $("#loading_content").hide(), $("div#progress_bar>img.newsletter").each(function() {
-            window.onbeforeunload = function() {
-                return !0
-            }, ajaxNewsletter($("#newsletter_id").val(), 1)
-        }), $("input:file.multiple").MultiFile({
+        }), $("#loading_content").hide(), $("input:file.multiple").MultiFile({
             max: 4,
             namePattern: "$name$i",
             remove: '<i class="fa fa-trash-o"></i>'
@@ -1437,25 +1433,6 @@ function ajaxElasticSearch(page) {
       setTimeout(() => ajaxElasticSearch(page + 1), 0);
     }
   });
-}
-
-function ajaxNewsletter(t, e) {
-    var i = ADMIN_FILE;
-    $.getJSON("./" + i, {
-        _g: "xml",
-        type: "newsletter",
-        q: t,
-        page: e,
-        function: "search"
-    }, function(i) {
-        if (typeof i.error !== 'undefined' && i.error=='true') {
-            window.location.href = '?_g=customers&node=email';
-            return false;
-        }
-        $("div#progress_bar").css({
-            width: i.percent + "%"
-        }), $("div#progress_bar_percent").text(Math.round(i.percent) + "%"), 100 == i.percent || "true" == i.complete ? (window.onbeforeunload = null, setTimeout(function(){ window.location = "?_g=customers&node=email"; }, 2000)) : ajaxNewsletter(t, e + 1)
-    })
 }
 
 function updateOrderTotals(t) {

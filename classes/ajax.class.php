@@ -214,15 +214,6 @@ class Ajax
                     }
                 }
                 break;
-            case 'newsletter':
-                $newsletter = Newsletter::getInstance();
-                $status  = $newsletter->sendNewsletter($_GET['q'], $_GET['page']);
-                if (is_array($status)) {
-                    $data = $status;
-                } else {
-                    $data = ($status) ? array('complete' => 'true', 'percent' => 100) : array('error' => 'true');
-                }
-                break;
             case 'files':
 
                 if (!isset($_GET['dir']) || $_GET['dir'] == '/') {

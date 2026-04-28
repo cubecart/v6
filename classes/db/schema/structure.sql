@@ -634,13 +634,26 @@ CREATE TABLE IF NOT EXISTS `CubeCart_newsletter` (
 	`newsletter_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`template_id` INT UNSIGNED NOT NULL,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`date_saved` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`date_sent` TIMESTAMP,
 	`subject` VARCHAR(250) NOT NULL,
 	`sender_email` VARCHAR(254) NOT NULL,
 	`sender_name` VARCHAR(255) NOT NULL,
 	`content_html` TEXT NOT NULL,
+	`dbl_opt` enum('0','1') NOT NULL DEFAULT '0',
+	`last_subscriber_id` INT UNSIGNED NOT NULL DEFAULT 0,
+	`sent_count` INT UNSIGNED NOT NULL DEFAULT 0,
+	`total_subscribers` INT UNSIGNED NOT NULL DEFAULT 0,
 	PRIMARY KEY (`newsletter_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
+
+CREATE TABLE IF NOT EXISTS `CubeCart_newsletter_send_log` (
+	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`newsletter_id` INT UNSIGNED NOT NULL,
+	`sent_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`),
+	KEY `sent_at` (`sent_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_newsletter_subscriber` (

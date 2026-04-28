@@ -1,2 +1,15 @@
 ALTER TABLE `CubeCart_cron_tasks` ADD COLUMN `started_at` DATETIME DEFAULT NULL AFTER `last_run`; #EOQ
 ALTER TABLE `CubeCart_cron_tasks` ADD COLUMN `last_completed` DATETIME DEFAULT NULL AFTER `started_at`; #EOQ
+
+ALTER TABLE `CubeCart_newsletter` ADD COLUMN `last_subscriber_id` INT UNSIGNED NOT NULL DEFAULT 0; #EOQ
+ALTER TABLE `CubeCart_newsletter` ADD COLUMN `sent_count` INT UNSIGNED NOT NULL DEFAULT 0; #EOQ
+ALTER TABLE `CubeCart_newsletter` ADD COLUMN `total_subscribers` INT UNSIGNED NOT NULL DEFAULT 0; #EOQ
+ALTER TABLE `CubeCart_newsletter` ADD COLUMN `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP; #EOQ
+UPDATE `CubeCart_newsletter` SET `date_created` = `date_saved` WHERE `date_created` >= `date_saved`; #EOQ
+
+CREATE TABLE IF NOT EXISTS `CubeCart_newsletter_send_log` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `newsletter_id` INT UNSIGNED NOT NULL, `sent_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (`id`), KEY `sent_at` (`sent_at`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
+
+INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) VALUES ('config', 'newsletter_per_tick', '50') ON DUPLICATE KEY UPDATE `name`=`name`; #EOQ
+INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) VALUES ('config', 'newsletter_hourly_limit', '200') ON DUPLICATE KEY UPDATE `name`=`name`; #EOQ
+
+INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('processNewsletters', 'Process Newsletter Queue', 1, 600) ON DUPLICATE KEY UPDATE `method`=`method`; #EOQ

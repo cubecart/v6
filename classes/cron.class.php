@@ -254,6 +254,48 @@ class Cron
     }
 
     /**
+     * Process queued newsletters in throttled batches.
+     *
+     * Picks the oldest queued/sending newsletter, sends up to per-tick or hourly-remaining
+     * (whichever is smaller), and updates the cursor + sent_count. Resumable across ticks:
+     * a half-finished newsletter just continues on the next run. Hourly throttle is
+     * computed from CubeCart_newsletter_send_log so it covers everything sent in the last
+     * 60 minutes regardless of which newsletter it belonged to.
+     */
+    public function processNewsletters() {
+        $per_tick = (int)$GLOBALS['config']->get('config', 'newsletter_per_tick');
+        if ($per_tick <= 0) { $per_tick = 50; }
+        $hourly_limit = (int)$GLOBALS['config']->get('config', 'newsletter_hourly_limit');
+        if ($hourly_limit <= 0) { $hourly_limit = 200; }
+        $pfx = $GLOBALS['config']->get('config', 'dbprefix');
+
+        // Prune old send-log rows opportunistically (only the last hour matters for throttling)
+        $GLOBALS['db']->misc(sprintf("DELETE FROM `%sCubeCart_newsletter_send_log` WHERE `sent_at` < (NOW() - INTERVAL 7 DAY)", $pfx));
+
+        // Pick the oldest queued/sending newsletter
+        $queued = $GLOBALS['db']->select('CubeCart_newsletter', false, "`status` IN (2, 3)", array('date_saved' => 'ASC'), 1, false, false);
+        if (!$queued) {
+            return 'Idle (no queued newsletters)';
+        }
+        $newsletter_id = (int)$queued[0]['newsletter_id'];
+
+        // Hourly quota: count send_log rows in the last 60 minutes
+        $rows = $GLOBALS['db']->misc(sprintf("SELECT COUNT(*) AS c FROM `%sCubeCart_newsletter_send_log` WHERE `sent_at` >= (NOW() - INTERVAL 1 HOUR)", $pfx));
+        $sent_last_hour = isset($rows[0]['c']) ? (int)$rows[0]['c'] : 0;
+        $remaining_quota = $hourly_limit - $sent_last_hour;
+        if ($remaining_quota <= 0) {
+            return sprintf('Throttled — %d/%d sent in last hour', $sent_last_hour, $hourly_limit);
+        }
+
+        $batch = min($per_tick, $remaining_quota);
+        $sent = Newsletter::getInstance()->processQueue($newsletter_id, $batch);
+        if ($sent === false) {
+            return sprintf('Newsletter %d: send failed', $newsletter_id);
+        }
+        return sprintf('Newsletter %d: sent %d (hourly used %d/%d)', $newsletter_id, $sent, $sent_last_hour + $sent, $hourly_limit);
+    }
+
+    /**
      * Ensure default cron tasks exist in the database
      */
     public static function ensureDefaults() {
@@ -263,6 +305,7 @@ class Cron
             array('method' => 'runSnippets', 'label' => 'Run Code Snippets / Hooks**', 'enabled' => 0, 'frequency' => 3600),
             array('method' => 'sendAbandonmentEmails', 'label' => 'Send Cart Abandonment Emails', 'enabled' => 0, 'frequency' => 3600),
             array('method' => 'rebuildSitemap', 'label' => 'Rebuild Sitemap', 'enabled' => 1, 'frequency' => 86400),
+            array('method' => 'processNewsletters', 'label' => 'Process Newsletter Queue', 'enabled' => 1, 'frequency' => 600),
         );
         foreach ($defaults as $task) {
             $exists = $GLOBALS['db']->select('CubeCart_cron_tasks', 'id', array('method' => $task['method']), false, false, false, false);

@@ -808,6 +808,8 @@
     <string name="blank_to_disable" introduced="5.0.0"><![CDATA[(Leave blank to disable)]]></string>
     <string name="blank_for_no_expire" introduced="5.0.0"><![CDATA[(Leave blank to never expire)]]></string>
     <string name="cancel" introduced="5.0.0"><![CDATA[Cancel]]></string>
+    <string name="pause" introduced="6.6.4"><![CDATA[Pause]]></string>
+    <string name="resume" introduced="6.6.4"><![CDATA[Resume]]></string>
     <string name="change_currency" introduced="5.0.0"><![CDATA[Change Currency]]></string>
     <string name="change_language" introduced="5.0.0"><![CDATA[Change Language]]></string>
     <string name="change_skin" introduced="5.0.0"><![CDATA[Change Skin]]></string>
@@ -1227,7 +1229,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_no_subject" introduced="6.0.3"><![CDATA[Please enter the newsletter subject.]]></string>
     <string name="error_no_message" introduced="6.0.3"><![CDATA[Please enter the newsletter content.]]></string>
     <string name="install_master_lang" introduced="6.0.0"><![CDATA[Your store currently only has one master language. Before the email contents can be translated the master language file must be installed from our <a href="?_g=marketplace">extensions marketplace</a>.]]></string>
-    <string name="confirm_cancel" introduced="5.0.0"><![CDATA[Are you sure you want to cancel the sending of this newsletter?]]></string>
+    <string name="confirm_cancel" introduced="5.0.0"><![CDATA[Are you sure you want to cancel the sending of this newsletter? Subscribers already sent to will not be re-sent.]]></string>
+    <string name="confirm_pause" introduced="6.6.4"><![CDATA[Pause sending? The cron will stop after the current batch. You can resume from where it left off.]]></string>
+    <string name="confirm_resume" introduced="6.6.4"><![CDATA[Resume sending from where it was paused?]]></string>
     <string name="confirm_send" introduced="5.0.0"><![CDATA[Are you sure you want to send this newsletter?]]></string>
     <string name="email_macro" introduced="5.0.0"><![CDATA[Macro]]></string>
     <string name="email_macro_available" introduced="5.0.0"><![CDATA[Always Available]]></string>
@@ -1246,6 +1250,10 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_news_delete" introduced="5.0.0"><![CDATA[Failed to delete newsletter]]></string>
     <string name="error_news_export_empty" introduced="5.0.0"><![CDATA[There are no mailing list subscribers.]]></string>
     <string name="error_news_save" introduced="5.0.0"><![CDATA[Failed to save newsletter.]]></string>
+    <string name="error_news_queue" introduced="6.6.4"><![CDATA[Failed to queue newsletter. Check that there are confirmed subscribers.]]></string>
+    <string name="error_news_pause" introduced="6.6.4"><![CDATA[Could not pause newsletter — it may already be in another state.]]></string>
+    <string name="error_news_resume" introduced="6.6.4"><![CDATA[Could not resume newsletter — it may already be sending.]]></string>
+    <string name="error_news_cancel" introduced="6.6.4"><![CDATA[Could not cancel newsletter — it may already be sent or cancelled.]]></string>
     <string name="example_email" introduced="5.0.0"><![CDATA[(e.g. amy.jones@example.com)]]></string>
     <string name="example_fullname_long" introduced="5.0.0"><![CDATA[(e.g. Miss Amy Jones)]]></string>
     <string name="example_fullname_short" introduced="5.0.0"><![CDATA[(e.g. Amy Jones)]]></string>
@@ -1341,12 +1349,28 @@ This email is sent from the store's master email address but it is possible to r
     <string name="news_sender_email" introduced="5.0.0"><![CDATA[Sender's Email Address]]></string>
     <string name="news_sender_name" introduced="5.0.0"><![CDATA[Sender's Name]]></string>
     <string name="news_subject" introduced="5.0.0"><![CDATA[Newsletter Subject]]></string>
+    <string name="news_status" introduced="6.6.4"><![CDATA[Status]]></string>
+    <string name="news_status_draft" introduced="6.6.4"><![CDATA[Draft]]></string>
+    <string name="news_status_queued" introduced="6.6.4"><![CDATA[Queued (%d subscribers)]]></string>
+    <string name="news_status_sending" introduced="6.6.4"><![CDATA[Sending: %d / %d]]></string>
+    <string name="news_status_paused" introduced="6.6.4"><![CDATA[Paused (%d of %d sent)]]></string>
+    <string name="news_status_cancelled" introduced="6.6.4"><![CDATA[Cancelled (%d of %d sent)]]></string>
+    <string name="news_status_sent" introduced="6.6.4"><![CDATA[Sent]]></string>
+    <string name="throttle_status" introduced="6.6.4"><![CDATA[Throttle: %d / %d sent this hour]]></string>
+    <string name="throttle_status_capped" introduced="6.6.4"><![CDATA[Throttled: %d / %d sent this hour — sending paused]]></string>
+    <string name="throttle_next_batch" introduced="6.6.4"><![CDATA[Next batch: %s]]></string>
+    <string name="throttle_window_resets" introduced="6.6.4"><![CDATA[Window resets %s]]></string>
+    <string name="background_send_notice" introduced="6.6.4"><![CDATA[Sending runs in the background via the scheduled task — it's safe to navigate away.]]></string>
     <string name="notify_content_create" introduced="5.0.0"><![CDATA[Email content saved.]]></string>
     <string name="notify_content_delete" introduced="5.0.0"><![CDATA[Email content deleted.]]></string>
     <string name="notify_content_update" introduced="5.0.0"><![CDATA[Email content updated.]]></string>
     <string name="notify_export_language" introduced="5.0.0"><![CDATA[Language has been exported from database to the file %1$s]]></string>
     <string name="notify_news_delete" introduced="5.0.0"><![CDATA[Newsletter deleted.]]></string>
     <string name="notify_news_save" introduced="5.0.0"><![CDATA[Newsletter Saved.]]></string>
+    <string name="notify_news_queued" introduced="6.6.4"><![CDATA[Newsletter queued — the cron task will send it in throttled batches.]]></string>
+    <string name="notify_news_paused" introduced="6.6.4"><![CDATA[Newsletter paused. Resume when ready to continue.]]></string>
+    <string name="notify_news_resumed" introduced="6.6.4"><![CDATA[Newsletter resumed — the cron will continue sending on the next tick.]]></string>
+    <string name="notify_news_cancelled" introduced="6.6.4"><![CDATA[Newsletter cancelled. No further emails will be sent.]]></string>
     <string name="notify_news_sent" introduced="5.0.0"><![CDATA[Newsletter sent.]]></string>
     <string name="notify_news_test_sent" introduced="5.0.0"><![CDATA[Test newsletter sent.]]></string>
     <string name="notify_template_create" introduced="5.0.0"><![CDATA[Template created.]]></string>

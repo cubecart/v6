@@ -74,8 +74,17 @@
 </form>
 {/if}
 {if isset($DISPLAY_LIST)}
+{if $NEWSLETTER_AUTO_REFRESH}
+<meta http-equiv="refresh" content="15">
+{/if}
 <div id="newsletter-list" class="tab_content">
 <h3>{$LANG.email.title_newsletters}</h3>
+{if isset($THROTTLE_BANNER)}
+<p class="notice {if $THROTTLE_BANNER.throttled}error{/if}">
+   {$THROTTLE_BANNER.status_text} &middot; {$THROTTLE_BANNER.next_batch_text}{if $THROTTLE_BANNER.window_resets_text} &middot; {$THROTTLE_BANNER.window_resets_text}{/if}
+</p>
+<p class="notice"><i class="fa fa-info-circle"></i> {$LANG.email.background_send_notice}</p>
+{/if}
    {if $CONFIG.newsletter_status=='0'}
    <p>{$LANG.newsletter.disabled_notice}</p>
    {/if}
@@ -84,6 +93,8 @@
       <thead>
          <tr>
             <td>{$LANG.email.news_subject}</td>
+            <td>{$LANG.common.created}</td>
+            <td>{$LANG.email.news_status}</td>
             <td></td>
          </tr>
       </thead>
@@ -91,10 +102,23 @@
          {foreach from=$NEWSLETTERS item=newsletter}
          <tr>
             <td><a href="{$newsletter.edit}" class="edit">{$newsletter.subject}</a></td>
+            <td>{$newsletter.date_created_formatted}</td>
+            <td>{$newsletter.status_text}</td>
             <td><span class="actions">
-               <a href="{$newsletter.send}" class="confirm" title="{$LANG.email.confirm_send}"><i class="fa fa-paper-plane" title="{$LANG.common.send}"></i></a>
                <a href="{$newsletter.edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
                <a href="{$newsletter.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+               {if $newsletter.can_send}
+               <a href="{$newsletter.send}" class="button tiny confirm" title="{$LANG.email.confirm_send}"><i class="fa fa-plane"></i> {$LANG.common.send}</a>
+               {/if}
+               {if $newsletter.can_pause}
+               <a href="{$newsletter.pause}" class="button tiny confirm" title="{$LANG.email.confirm_pause}">{$LANG.common.pause}</a>
+               {/if}
+               {if $newsletter.can_resume}
+               <a href="{$newsletter.resume}" class="button tiny confirm" title="{$LANG.email.confirm_resume}">{$LANG.common.resume}</a>
+               {/if}
+               {if $newsletter.can_cancel}
+               <a href="{$newsletter.cancel}" class="button tiny delete confirm" title="{$LANG.email.confirm_cancel}">{$LANG.common.cancel}</a>
+               {/if}
                </span>
             </td>
          </tr>
@@ -104,15 +128,5 @@
    {else}
    <p>{$LANG.email.news_none}</p>
    {/if}
-</div>
-{/if}
-{if isset($DISPLAY_SEND)}
-<div class="tab_content" id="newsletter_send">
-   <div id="progress_wrapper">
-      <input type="hidden" id="newsletter_id" value="{$NEWSLETTER_ID}">
-      <div id="progress_bar"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/loading.gif" style="display: none" alt="" class="newsletter"></div>
-   </div>
-   <div id="progress_bar_percent"></div>
-   <p><a href="?_g=customers&node=email" class="delete" title="{$LANG.email.confirm_cancel}">{$LANG.email.news_cancel}</a></p>
 </div>
 {/if}

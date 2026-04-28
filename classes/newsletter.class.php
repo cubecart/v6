@@ -134,87 +134,253 @@ class Newsletter
     }
 
     /**
-     * Send newsletter
+     * Send a single test newsletter email to the supplied address. Bypasses subscriber
+     * filters, hourly throttle and queue state — used from the admin compose form.
      *
-     * @param int $newsletter_id
-     * @param int $cycle
-     * @param bool $test
+     * @param int    $newsletter_id
+     * @param string $email
      * @return bool
      */
-    public function sendNewsletter($newsletter_id = false, $cycle = 1, $test = false)
+    public function sendTest($newsletter_id, $email)
     {
-        // Load newsletter from database, and send
-        if ($newsletter_id && is_numeric($newsletter_id)) {
-            if (($contents = $GLOBALS['db']->select('CubeCart_newsletter', false, array('newsletter_id' => (int)$newsletter_id))) !== false) {
-                $content = $contents[0];
+        $newsletter_id = (int)$newsletter_id;
+        if ($newsletter_id <= 0 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return false;
+        }
+        $rows = $GLOBALS['db']->select('CubeCart_newsletter', false, array('newsletter_id' => $newsletter_id));
+        if (!$rows) {
+            return false;
+        }
+        $content = $rows[0];
 
-                if (!empty($content['sender_name'])) {
-                    $this->_mailer->FromName = $content['sender_name'];
-                }
-                if (!empty($content['sender_email'])) {
-                    $this->_mailer->From = $content['sender_email'];
-                }
-                if ($test) {
-                    // Send test email only
-                    if (filter_var($test, FILTER_VALIDATE_EMAIL)) {
-                        $this->unsubscribeHeader($test);
-                        if($this->_mailer->sendEmail($test, $content, $contents[0]['template_id'])) {
-                            $log = sprintf($GLOBALS['language']->newsletter['test_subscriber_log'], $contents[0]['subject'], $this->_mailer->getTemplateTitle());
-                            $this->_subscriberLog($test, $log);
-                        }
-                        return true;
-                    }
-                } else {
-                    ini_set('ignore_user_abort', true);
-                    // Send to all subscribers
-                    $limit = 20;
-                    $where = array('status' => '1');
-                    if ($content['dbl_opt']==1) {
-                        $where['dbl_opt'] = 1;
-                    }
-                    $total = (int)$GLOBALS['db']->count('CubeCart_newsletter_subscriber', 'status', $where);
-                    if($total==0 && $cycle==1) {
-                        $GLOBALS['gui']->setError($GLOBALS['language']->newsletter['no_subscribers']);
-                    }
-                    if (($subscribers = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', array('email'), $where, false, $limit, $cycle)) !== false) {
-                        foreach ($subscribers as $subscriber) {
-                            if (filter_var($subscriber['email'], FILTER_VALIDATE_EMAIL)) {
-                                $send_content = array(
-                                    'subject'  => $content['subject'],
-                                    'content_html' => $content['content_html'],
-                                );
-                                $this->unsubscribeHeader($subscriber['email']);
-                                if($this->_mailer->sendEmail($subscriber['email'], $send_content, $contents[0]['template_id'])) {
-                                    $log = sprintf($GLOBALS['language']->newsletter['subscriber_log'], $contents[0]['subject'], $this->_mailer->getTemplateTitle());
-                                    $this->_subscriberLog($subscriber['email'], $log);
-                                }
-                            } else {
-                                // Flag for deletion
-                                $GLOBALS['db']->update('CubeCart_newsletter_subscriber', array('status' => '9'), array('email' => $subscriber['email']));
-                            }
-                        }
-                        $sent_to = $limit * $cycle;
-                        if ($total > $sent_to) {
-                            $data = array(
-                                'count'  => $sent_to,
-                                'total'  => $total,
-                                'percent' => ($sent_to/$total)*100,
-                            );
-                            return $data;
-                        } else {
-                            // Delete flagged subscribers
-                            $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('status' => '9'));
-                            // Update newsletter record
-                            $GLOBALS['db']->update('CubeCart_newsletter', array('date_sent' => 'CURRENT_TIMESTAMP', 'status' => 1), array('newsletter_id' => (int)$newsletter_id));
-                            return true;
-                        }
-                    } else {
-                        return false;
-                    }
-                }
-            }
+        if (!empty($content['sender_name'])) {
+            $this->_mailer->FromName = $content['sender_name'];
+        }
+        if (!empty($content['sender_email'])) {
+            $this->_mailer->From = $content['sender_email'];
+        }
+        $this->unsubscribeHeader($email);
+        if ($this->_mailer->sendEmail($email, $content, $content['template_id'])) {
+            $log = sprintf($GLOBALS['language']->newsletter['test_subscriber_log'], $content['subject'], $this->_mailer->getTemplateTitle());
+            $this->_subscriberLog($email, $log);
+            return true;
         }
         return false;
+    }
+
+    /**
+     * Mark a newsletter as queued for sending. The cron task processNewsletters() will
+     * pick it up and send in throttled batches. Captures total_subscribers at queue time
+     * so progress display is stable even if subscribers join/leave mid-send.
+     *
+     * @param int $newsletter_id
+     * @return bool true if queued, false if newsletter missing or no subscribers
+     */
+    public function queueNewsletter($newsletter_id)
+    {
+        $newsletter_id = (int)$newsletter_id;
+        if ($newsletter_id <= 0) {
+            return false;
+        }
+        $rows = $GLOBALS['db']->select('CubeCart_newsletter', false, array('newsletter_id' => $newsletter_id));
+        if (!$rows) {
+            return false;
+        }
+        $content = $rows[0];
+
+        $where = array('status' => '1');
+        if ($content['dbl_opt'] == 1) {
+            $where['dbl_opt'] = 1;
+        }
+        $total = (int)$GLOBALS['db']->count('CubeCart_newsletter_subscriber', 'status', $where);
+        if ($total === 0) {
+            return false;
+        }
+
+        return (bool)$GLOBALS['db']->update('CubeCart_newsletter', array(
+            'status'             => 2,
+            'last_subscriber_id' => 0,
+            'sent_count'         => 0,
+            'total_subscribers'  => $total,
+            'date_sent'          => 'NULL',
+        ), array('newsletter_id' => $newsletter_id));
+    }
+
+    /**
+     * Send the next batch for a queued newsletter. Called from the processNewsletters
+     * cron task with $batch_size already capped to per-tick + hourly-remaining quota.
+     *
+     * Cursor-paginated by subscriber_id so it works at any subscriber count without
+     * OFFSET cost. Logs each successful send to CubeCart_newsletter_send_log so the
+     * cron can compute the rolling-hour throttle.
+     *
+     * @param int $newsletter_id
+     * @param int $batch_size    Max emails this tick should send
+     * @return int|false  Number actually sent (0 valid, false on hard failure)
+     */
+    public function processQueue($newsletter_id, $batch_size)
+    {
+        $newsletter_id = (int)$newsletter_id;
+        $batch_size    = (int)$batch_size;
+        if ($newsletter_id <= 0 || $batch_size <= 0) {
+            return false;
+        }
+        // cache=false: this is the hot path that races with itself across cron ticks.
+        // CubeCart's UPDATE doesn't invalidate cached SELECT results, so a cached row
+        // would mean tick 2 reads tick 1's pre-update state and re-sends to the same
+        // subscribers (cursor never advances). Always read fresh.
+        $rows = $GLOBALS['db']->select('CubeCart_newsletter', false, array('newsletter_id' => $newsletter_id), false, 1, false, false);
+        if (!$rows) {
+            return false;
+        }
+        $content = $rows[0];
+        if (!in_array((int)$content['status'], array(2, 3), true)) {
+            return false;
+        }
+
+        if (!empty($content['sender_name'])) {
+            $this->_mailer->FromName = $content['sender_name'];
+        }
+        if (!empty($content['sender_email'])) {
+            $this->_mailer->From = $content['sender_email'];
+        }
+
+        // Move to "sending" on first tick that processes work
+        if ((int)$content['status'] !== 3) {
+            $GLOBALS['db']->update('CubeCart_newsletter', array('status' => 3), array('newsletter_id' => $newsletter_id));
+        }
+
+        // Cursor-paginated subscriber fetch — no OFFSET, scales to any list size.
+        // cache=false on misc() for the same race-staleness reason as above.
+        $pfx = $GLOBALS['config']->get('config', 'dbprefix');
+        $where_sql = sprintf("`status`='1' AND `subscriber_id` > %d", (int)$content['last_subscriber_id']);
+        if ($content['dbl_opt'] == 1) {
+            $where_sql .= " AND `dbl_opt`='1'";
+        }
+        $sql = sprintf(
+            "SELECT `subscriber_id`, `email` FROM `%sCubeCart_newsletter_subscriber` WHERE %s ORDER BY `subscriber_id` LIMIT %d",
+            $pfx, $where_sql, $batch_size
+        );
+        $subscribers = $GLOBALS['db']->misc($sql, false);
+
+        if (!$subscribers) {
+            // Nothing left — finalise
+            $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('status' => '9'));
+            $GLOBALS['db']->update('CubeCart_newsletter', array(
+                'status'    => 1,
+                'date_sent' => 'CURRENT_TIMESTAMP',
+            ), array('newsletter_id' => $newsletter_id));
+            return 0;
+        }
+
+        $sent    = 0;
+        $last_id = (int)$content['last_subscriber_id'];
+        foreach ($subscribers as $subscriber) {
+            $sub_id = (int)$subscriber['subscriber_id'];
+            if ($sub_id > $last_id) {
+                $last_id = $sub_id;
+            }
+            if (filter_var($subscriber['email'], FILTER_VALIDATE_EMAIL)) {
+                $send_content = array(
+                    'subject'      => $content['subject'],
+                    'content_html' => $content['content_html'],
+                );
+                $this->unsubscribeHeader($subscriber['email']);
+                if ($this->_mailer->sendEmail($subscriber['email'], $send_content, $content['template_id'])) {
+                    $log = sprintf($GLOBALS['language']->newsletter['subscriber_log'], $content['subject'], $this->_mailer->getTemplateTitle());
+                    $this->_subscriberLog($subscriber['email'], $log);
+                    // sent_at relies on the column's DEFAULT CURRENT_TIMESTAMP — passing
+                    // 'CURRENT_TIMESTAMP' here would be quoted as a literal string by
+                    // insert() (which, unlike update(), doesn't honour _allowed_exceptions).
+                    $GLOBALS['db']->insert('CubeCart_newsletter_send_log', array(
+                        'newsletter_id' => $newsletter_id,
+                    ));
+                    $sent++;
+                }
+            } else {
+                // Flag for deletion at the end of the run
+                $GLOBALS['db']->update('CubeCart_newsletter_subscriber', array('status' => '9'), array('email' => $subscriber['email']));
+            }
+        }
+
+        $GLOBALS['db']->update('CubeCart_newsletter', array(
+            'last_subscriber_id' => $last_id,
+            'sent_count'         => (int)$content['sent_count'] + $sent,
+        ), array('newsletter_id' => $newsletter_id));
+
+        // Short batch means we ran out — finalise on next tick (no extra round-trip needed
+        // since the empty-subscribers branch above will handle it, but we shortcut here too)
+        if (count($subscribers) < $batch_size) {
+            $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('status' => '9'));
+            $GLOBALS['db']->update('CubeCart_newsletter', array(
+                'status'    => 1,
+                'date_sent' => 'CURRENT_TIMESTAMP',
+            ), array('newsletter_id' => $newsletter_id));
+        }
+
+        return $sent;
+    }
+
+    /**
+     * Pause an in-flight newsletter. Cursor + sent_count are preserved so resumeNewsletter()
+     * can pick up exactly where it left off. Only legal from status=3 (sending) — pausing a
+     * still-queued (2) newsletter is a no-op since nothing has gone out yet.
+     *
+     * @param int $newsletter_id
+     * @return bool
+     */
+    public function pauseNewsletter($newsletter_id)
+    {
+        $newsletter_id = (int)$newsletter_id;
+        if ($newsletter_id <= 0) {
+            return false;
+        }
+        return (bool)$GLOBALS['db']->update(
+            'CubeCart_newsletter',
+            array('status' => 5),
+            "`newsletter_id` = {$newsletter_id} AND `status` = 3"
+        );
+    }
+
+    /**
+     * Resume a paused newsletter — flips status back to 3 so the cron picks it up
+     * on its next tick.
+     *
+     * @param int $newsletter_id
+     * @return bool
+     */
+    public function resumeNewsletter($newsletter_id)
+    {
+        $newsletter_id = (int)$newsletter_id;
+        if ($newsletter_id <= 0) {
+            return false;
+        }
+        return (bool)$GLOBALS['db']->update(
+            'CubeCart_newsletter',
+            array('status' => 3),
+            "`newsletter_id` = {$newsletter_id} AND `status` = 5"
+        );
+    }
+
+    /**
+     * Cancel — terminal state. Cursor + sent_count are preserved so the list keeps the
+     * audit trail ("Cancelled — 47 of 312 sent"). Legal from queued (2), sending (3),
+     * or paused (5). The cron's `status IN (2,3)` filter naturally stops touching it.
+     *
+     * @param int $newsletter_id
+     * @return bool
+     */
+    public function cancelNewsletter($newsletter_id)
+    {
+        $newsletter_id = (int)$newsletter_id;
+        if ($newsletter_id <= 0) {
+            return false;
+        }
+        return (bool)$GLOBALS['db']->update(
+            'CubeCart_newsletter',
+            array('status' => 4),
+            "`newsletter_id` = {$newsletter_id} AND `status` IN (2, 3, 5)"
+        );
     }
 
     /**

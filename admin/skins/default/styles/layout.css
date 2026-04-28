@@ -385,7 +385,8 @@ input[type=button][disabled] {
 }
 input[type=submit].tiny,
 input[type=button].tiny,
-button.tiny {
+button.tiny,
+a.button.tiny {
     padding: 2px 4px!important
 }
 .mini_button {

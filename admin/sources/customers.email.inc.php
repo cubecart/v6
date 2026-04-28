@@ -43,7 +43,7 @@ if (isset($_POST['newsletter']) && !empty($_POST['newsletter'])) {
             $GLOBALS['main']->errorMessage($lang['email']['error_news_save']);
         }
         if (isset($_POST['newsletter']['test_email']) && !empty($_POST['newsletter']['test_email'])) {
-            if ($newsletter->sendNewsletter($_POST['newsletter']['newsletter_id'], false, $_POST['newsletter']['test_email'])) {
+            if ($newsletter->sendTest($_POST['newsletter']['newsletter_id'], $_POST['newsletter']['test_email'])) {
                 $GLOBALS['main']->successMessage($lang['email']['notify_news_test_sent']);
             }
         }
@@ -62,11 +62,40 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
     httpredir(currentPage(array('newsletter_id', 'action')));
 } elseif (isset($_GET['action']) && strtolower($_GET['action']) == 'send') {
     if (isset($_GET['newsletter_id']) && is_numeric($_GET['newsletter_id'])) {
-        $GLOBALS['main']->addTabControl($lang['email']['title_sending'], 'newsletter_send');
-        $GLOBALS['gui']->addBreadcrumb($lang['email']['title_sending'], currentPage());
-        $GLOBALS['smarty']->assign('NEWSLETTER_ID', (int)$_GET['newsletter_id']);
+        if ($newsletter->queueNewsletter((int)$_GET['newsletter_id'])) {
+            $GLOBALS['main']->successMessage($lang['email']['notify_news_queued']);
+        } else {
+            $GLOBALS['main']->errorMessage($lang['email']['error_news_queue']);
+        }
     }
-    $GLOBALS['smarty']->assign('DISPLAY_SEND', true);
+    httpredir('?_g=customers&node=email');
+} elseif (isset($_GET['action']) && strtolower($_GET['action']) == 'pause') {
+    if (isset($_GET['newsletter_id']) && is_numeric($_GET['newsletter_id'])) {
+        if ($newsletter->pauseNewsletter((int)$_GET['newsletter_id'])) {
+            $GLOBALS['main']->successMessage($lang['email']['notify_news_paused']);
+        } else {
+            $GLOBALS['main']->errorMessage($lang['email']['error_news_pause']);
+        }
+    }
+    httpredir('?_g=customers&node=email');
+} elseif (isset($_GET['action']) && strtolower($_GET['action']) == 'resume') {
+    if (isset($_GET['newsletter_id']) && is_numeric($_GET['newsletter_id'])) {
+        if ($newsletter->resumeNewsletter((int)$_GET['newsletter_id'])) {
+            $GLOBALS['main']->successMessage($lang['email']['notify_news_resumed']);
+        } else {
+            $GLOBALS['main']->errorMessage($lang['email']['error_news_resume']);
+        }
+    }
+    httpredir('?_g=customers&node=email');
+} elseif (isset($_GET['action']) && strtolower($_GET['action']) == 'cancel') {
+    if (isset($_GET['newsletter_id']) && is_numeric($_GET['newsletter_id'])) {
+        if ($newsletter->cancelNewsletter((int)$_GET['newsletter_id'])) {
+            $GLOBALS['main']->successMessage($lang['email']['notify_news_cancelled']);
+        } else {
+            $GLOBALS['main']->errorMessage($lang['email']['error_news_cancel']);
+        }
+    }
+    httpredir('?_g=customers&node=email');
 } elseif (isset($_GET['action']) && in_array(strtolower($_GET['action']), array('add', 'edit'))) {
     Admin::getInstance()->permissions('customers', CC_PERM_EDIT, true);
 
@@ -99,15 +128,91 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
     $GLOBALS['main']->addTabControl($lang['email']['title_newsletters'], 'newsletter-list');
     $GLOBALS['main']->addTabControl($lang['email']['title_news_create'], false, currentPage(null, array('action' => 'add')));
     // List newsletters, reverse chronology
+    $has_active_send = false;
     if (($contents = $GLOBALS['db']->select('CubeCart_newsletter', false)) !== false) {
         foreach ($contents as $content) {
-            $content['edit'] = currentPage(null, array('action' => 'edit', 'newsletter_id' => $content['newsletter_id']));
-            $content['send'] = currentPage(null, array('action' => 'send', 'newsletter_id' => $content['newsletter_id'], 'token' => SESSION_TOKEN));
-            $content['delete'] = currentPage(null, array('action' => 'delete', 'newsletter_id' => $content['newsletter_id'], 'token' => SESSION_TOKEN));
+            $nid = (int)$content['newsletter_id'];
+            $content['edit']   = currentPage(null, array('action' => 'edit',   'newsletter_id' => $nid));
+            $content['send']   = currentPage(null, array('action' => 'send',   'newsletter_id' => $nid, 'token' => SESSION_TOKEN));
+            $content['delete'] = currentPage(null, array('action' => 'delete', 'newsletter_id' => $nid, 'token' => SESSION_TOKEN));
+            $content['pause']  = currentPage(null, array('action' => 'pause',  'newsletter_id' => $nid, 'token' => SESSION_TOKEN));
+            $content['resume'] = currentPage(null, array('action' => 'resume', 'newsletter_id' => $nid, 'token' => SESSION_TOKEN));
+            $content['cancel'] = currentPage(null, array('action' => 'cancel', 'newsletter_id' => $nid, 'token' => SESSION_TOKEN));
+            // formatTime() expects a unix timestamp; the column is a TIMESTAMP string.
+            $content['date_created_formatted'] = !empty($content['date_created']) ? formatTime(strtotime($content['date_created'])) : '';
+            // Decorate row with available actions and a human-readable status. The action
+            // buttons that show depend on which transitions are legal from the current state.
+            $status = (int)$content['status'];
+            // Trigger auto-refresh on the list view if anything in flight — queued + sending only.
+            // Paused/cancelled/sent/draft don't change without admin action so polling is wasted.
+            if (in_array($status, array(2, 3), true)) {
+                $has_active_send = true;
+            }
+            $content['can_send']   = ($status === 0);
+            $content['can_pause']  = ($status === 3);
+            $content['can_resume'] = ($status === 5);
+            $content['can_cancel'] = in_array($status, array(2, 3, 5), true);
+            switch ($status) {
+                case 1:
+                    $content['status_text'] = $lang['email']['news_status_sent'];
+                    break;
+                case 2:
+                    $content['status_text'] = sprintf($lang['email']['news_status_queued'], (int)$content['total_subscribers']);
+                    break;
+                case 3:
+                    $content['status_text'] = sprintf($lang['email']['news_status_sending'], (int)$content['sent_count'], (int)$content['total_subscribers']);
+                    break;
+                case 4:
+                    $content['status_text'] = sprintf($lang['email']['news_status_cancelled'], (int)$content['sent_count'], (int)$content['total_subscribers']);
+                    break;
+                case 5:
+                    $content['status_text'] = sprintf($lang['email']['news_status_paused'], (int)$content['sent_count'], (int)$content['total_subscribers']);
+                    break;
+                default:
+                    $content['status_text'] = $lang['email']['news_status_draft'];
+            }
             $smarty_data['newsletters'][] = $content;
         }
         $GLOBALS['smarty']->assign('NEWSLETTERS', $smarty_data['newsletters']);
     }
+    $GLOBALS['smarty']->assign('NEWSLETTER_AUTO_REFRESH', $has_active_send);
+
+    // Throttle banner: only computed when something is actually in flight.
+    // Reads the rolling-hour counter from the same send_log table the cron uses, so
+    // the numbers shown to admin and the numbers the cron is gating on are identical.
+    if ($has_active_send) {
+        $pfx = $GLOBALS['config']->get('config', 'dbprefix');
+        $hourly_limit = (int)$GLOBALS['config']->get('config', 'newsletter_hourly_limit');
+        if ($hourly_limit <= 0) {
+            $hourly_limit = 200;
+        }
+        $rows = $GLOBALS['db']->misc(sprintf(
+            "SELECT COUNT(*) AS c, UNIX_TIMESTAMP(MIN(sent_at)) AS oldest FROM `%sCubeCart_newsletter_send_log` WHERE sent_at >= (NOW() - INTERVAL 1 HOUR)",
+            $pfx
+        ));
+        $sent_last_hour = isset($rows[0]['c']) ? (int)$rows[0]['c'] : 0;
+        $oldest_in_window = isset($rows[0]['oldest']) ? (int)$rows[0]['oldest'] : 0;
+
+        // Next batch ETA: assumes the standard */5 crontab — the cron tick is the
+        // binding constraint, not the task's `frequency`. Show clock time, not "≤X min",
+        // so the admin can glance at their own clock.
+        $next_tick_ts = (int)(ceil(time() / 300) * 300);
+
+        $throttled = ($sent_last_hour >= $hourly_limit);
+        $banner = array(
+            'throttled'           => $throttled,
+            'status_text'         => sprintf(
+                $throttled ? $lang['email']['throttle_status_capped'] : $lang['email']['throttle_status'],
+                $sent_last_hour, $hourly_limit
+            ),
+            'next_batch_text'     => sprintf($lang['email']['throttle_next_batch'], date('H:i', $next_tick_ts)),
+            'window_resets_text'  => ($throttled && $oldest_in_window > 0)
+                ? sprintf($lang['email']['throttle_window_resets'], date('H:i', $oldest_in_window + 3600))
+                : '',
+        );
+        $GLOBALS['smarty']->assign('THROTTLE_BANNER', $banner);
+    }
+
     $GLOBALS['smarty']->assign('DISPLAY_LIST', true);
 }
 $page_content = $GLOBALS['smarty']->fetch('templates/customers.email.php');
