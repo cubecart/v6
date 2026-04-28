@@ -531,7 +531,8 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
 } else {
     if (!isset($_SESSION['setup']['method'])) {
         $step = 2;
-        // Select Install/Upgrade
+        // Select Install/Upgrade — first interactive page, nothing to restart from.
+        $restart = false;
         $GLOBALS['smarty']->assign('LANG_INSTALL_CUBECART_TITLE', sprintf($strings['setup']['install_cubecart_title'], CC_VERSION));
         // Check if upgrading is possible
         if (file_exists($global_file) && filesize($global_file) > 0) {

@@ -2635,7 +2635,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="install_cubecart_title" introduced="5.0.0"><![CDATA[Install CubeCart %1$s]]></string>
     <string name="install_drop_tables" introduced="5.0.0"><![CDATA[Drop existing tables if they exist]]></string>
     <string name="install_drop_tables_explained" introduced="5.0.0"><![CDATA[(Check this if you wish to overwrite existing data.)]]></string>
-    <string name="install_fresh" introduced="5.0.0"><![CDATA[Choose this option if you wish to perform a fresh installation of CubeCart.<br><strong style='color: red;'>WARNING</strong>: By proceeding with this option any existing store data may be overwritten!]]></string>
+    <string name="install_fresh" introduced="5.0.0"><![CDATA[Choose this option if you wish to perform a fresh installation of CubeCart.<br><strong style='color: red;'>WARNING</strong>: By proceeding with this option any existing store data may be overwritten.]]></string>
     <string name="link_admin_panel" introduced="5.0.0"><![CDATA[Admin Control Panel]]></string>
     <string name="link_admin_panel_note" introduced="6.1.0"><![CDATA[Please save this as a bookmark in your browser.]]></string>
     <string name="link_store_front" introduced="5.0.0"><![CDATA[Store Front]]></string>
@@ -2644,6 +2644,11 @@ This email is sent from the store's master email address but it is possible to r
     <string name="test_connection_ok" introduced="6.6.4"><![CDATA[Connection successful.]]></string>
     <string name="test_connection_missing" introduced="6.6.4"><![CDATA[Please enter database host, name and username before testing.]]></string>
     <string name="test_connection_error" introduced="6.6.4"><![CDATA[Test failed — could not reach the server.]]></string>
+    <string name="password_weak" introduced="6.6.4"><![CDATA[Weak]]></string>
+    <string name="password_fair" introduced="6.6.4"><![CDATA[Fair]]></string>
+    <string name="password_strong" introduced="6.6.4"><![CDATA[Strong]]></string>
+    <string name="password_requirements" introduced="6.6.4"><![CDATA[Use at least 10 characters with a mix of upper and lower case letters, numbers and symbols.]]></string>
+    <string name="error_password_weak" introduced="6.6.4"><![CDATA[Please choose a stronger password.]]></string>
     <string name="select_language_note" introduced="6.6.0"><![CDATA[Please select your language. It will be downloaded and used for the setup process and your store.]]></string>
     <string name="title_compat_check" introduced="5.0.0"><![CDATA[Compatibility Check]]></string>
     <string name="title_select_language" introduced="6.6.0"><![CDATA[Select Language]]></string>
@@ -2656,7 +2661,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="upgrade_complete_note" introduced="5.0.0"><![CDATA[Upgrade Complete. Please log in to your Admin Control Panel, and verify your store's configuration.]]></string>
     <string name="upgrade_cubecart" introduced="5.0.0"><![CDATA[Upgrade CubeCart]]></string>
     <string name="upgrade_cubecart_title" introduced="5.0.0"><![CDATA[Upgrade to CubeCart %1$s (Recommended)]]></string>
-    <string name="upgrade_existing" introduced="5.0.0"><![CDATA[Choose this option to upgrade your CubeCart store to the latest version. <br><strong style='color: red;'>IMPORTANT:</strong> Please take a FULL backup of your database and files before continuing!]]></string>
+    <string name="upgrade_existing" introduced="5.0.0"><![CDATA[Choose this option to upgrade your CubeCart store to the latest version. <br><strong style='color: red;'>IMPORTANT:</strong> Please take a FULL backup of your database and files before continuing.]]></string>
     <string name="upgrade_from_to" introduced="5.0.0"><![CDATA[Your store is ready to be upgraded from version <strong>%1$s</strong> to version <strong>%2$s</strong>]]></string>
     <string name="upgrade_in_progress" introduced="5.0.0"><![CDATA[Upgrade in progress. Upgrading from version <strong>%1$s</strong> to version <strong>%2$s</strong>]]></string>
     <string name="upgrade_will_reload" introduced="5.0.0"><![CDATA[The page may reload several times, but this is perfectly normal. We'll let you know when it's done, so go grab a cup of coffee.]]></string>

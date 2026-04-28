@@ -10,20 +10,10 @@
         card.addEventListener('click', function () {
             clickSelects.forEach(function (c) { c.classList.remove('selected'); });
             card.classList.add('selected');
-            card.classList.remove('faded');
             if (radio) radio.checked = true;
         });
     });
     if (clickSelects.length === 1) clickSelects[0].click();
-
-    // Cancel button: drop the `required` flag so the submit handler doesn't bounce.
-    document.querySelectorAll('input.cancel[type=submit]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            document.querySelectorAll('.required').forEach(function (el) {
-                el.classList.remove('required');
-            });
-        });
-    });
 
     // Show/hide password toggle. Each .password-toggle button carries its own
     // localised labels via data-text-show / data-text-hide so the JS stays language-neutral.
@@ -46,6 +36,48 @@
     }
     document.addEventListener('input', clearError);
     document.addEventListener('change', clearError);
+
+    // Admin password strength meter + submit gate.
+    // Score = (length tier 0-2) + (number of distinct char classes 0-4). Threshold:
+    //   <3 weak, 3-4 fair, ≥5 strong. Submit blocked unless 'strong'.
+    // Rules are read from data-min-length / data-min-classes on the input so PHP
+    // (or future translations) can override without touching JS.
+    var adminPwd = document.getElementById('form-password');
+    var pwdMeter = document.getElementById('form-password-strength');
+    function classifyPassword(pwd) {
+        var classes = 0;
+        if (/[a-z]/.test(pwd))      classes++;
+        if (/[A-Z]/.test(pwd))      classes++;
+        if (/[0-9]/.test(pwd))      classes++;
+        if (/[^a-zA-Z0-9]/.test(pwd)) classes++;
+        var len = pwd.length;
+        var lengthTier = len >= 14 ? 2 : len >= 10 ? 1 : 0;
+        return { score: lengthTier + classes, classes: classes, length: len };
+    }
+    function passwordStrong(pwd) {
+        var min = parseInt(adminPwd.dataset.minLength, 10) || 10;
+        var minClasses = parseInt(adminPwd.dataset.minClasses, 10) || 3;
+        var info = classifyPassword(pwd);
+        return info.length >= min && info.classes >= minClasses;
+    }
+    if (adminPwd && pwdMeter) {
+        var fill  = pwdMeter.querySelector('.password-meter-fill');
+        var label = pwdMeter.querySelector('.password-meter-label');
+        adminPwd.addEventListener('input', function () {
+            var pwd = adminPwd.value;
+            pwdMeter.classList.remove('weak', 'fair', 'strong');
+            if (!pwd.length) {
+                if (label) label.textContent = '';
+                return;
+            }
+            var info = classifyPassword(pwd);
+            var tier = info.score >= 5 ? 'strong' : info.score >= 3 ? 'fair' : 'weak';
+            pwdMeter.classList.add(tier);
+            if (label) {
+                label.textContent = adminPwd.dataset['text' + tier.charAt(0).toUpperCase() + tier.slice(1)] || tier;
+            }
+        });
+    }
 
     var testBtn    = document.getElementById('test-connection-btn');
     var testResult = document.getElementById('test-connection-result');
@@ -98,6 +130,10 @@
     // is present (i.e. install step, !PRESET_DB).
     document.querySelectorAll('form').forEach(function (form) {
         form.addEventListener('submit', function (e) {
+            // Cancel/restart button bypasses all validation and the DB test — the
+            // user is bailing out, no point checking credentials.
+            if (e.submitter && e.submitter.classList.contains('cancel')) return;
+
             var ok = true;
 
             form.querySelectorAll('.required').forEach(function (el) {
@@ -111,6 +147,21 @@
                 el.classList.add('required-error');
                 ok = false;
             });
+
+            // Block on weak admin password — only when the field is present in this form
+            // and has a value. Empty case is already caught by the required check above.
+            if (adminPwd && form.contains(adminPwd) && adminPwd.value && !passwordStrong(adminPwd.value)) {
+                adminPwd.classList.add('required-error');
+                if (pwdMeter) {
+                    var msg = adminPwd.dataset.textError;
+                    if (msg) {
+                        var lbl = pwdMeter.querySelector('.password-meter-label');
+                        if (lbl) lbl.textContent = msg;
+                    }
+                }
+                ok = false;
+            }
+
             if (!ok) {
                 e.preventDefault();
                 return;

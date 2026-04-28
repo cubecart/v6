@@ -72,16 +72,16 @@
 
   {if isset($MODE_METHOD)}
 	{if isset($SHOW_UPGRADE)}
-	  <div id="method-upgrade" class="click-select">
-	  <input type="radio" name="method" value="upgrade" />
-	  <span class="icon"><img src="images/upgrade.gif" alt="" /></span>
+	  <div id="method-upgrade" class="click-select selected">
+	  <input type="radio" name="method" value="upgrade" checked="checked" />
+	  <span class="icon"><img src="images/upgrade.png" alt="" /></span>
 	  <h2 class="first">{$LANG_UPGRADE_CUBECART_TITLE}</h2>
 	  <p>{$LANG.setup.upgrade_existing}</p>
 	</div>
 	{/if}
-	<div id="method-install" class="click-select{if isset($SHOW_UPGRADE)} faded{/if}">
+	<div id="method-install" class="click-select">
 	  <input type="radio" name="method" value="install" />
-	  <span class="icon"><img src="images/install.gif" alt="" /></span>
+	  <span class="icon"><img src="images/install.png" alt="" /></span>
 	  <h2 class="first">{$LANG_INSTALL_CUBECART_TITLE}</h2>
 	  <p>{$LANG.setup.install_fresh}</p>
 	</div>
@@ -135,7 +135,9 @@
 		  <div><label for="form-realname">{$LANG.common.name}</label><span><input type="text" name="admin[name]" id="form-realname"{if isset($FORM.admin.name)} value="{$FORM.admin.name}"{/if} class="textbox required" /></span></div>
 		  <div><label for="form-email">{$LANG.common.email}</label><span><input type="email" name="admin[email]" id="form-email"{if isset($FORM.admin.email)} value="{$FORM.admin.email}"{elseif isset($PRESET_EMAIL)} value="{$PRESET_EMAIL}"{/if} class="textbox required" /></span></div>
 		  <div><label for="form-username">{$LANG.account.username}</label><span><input type="text" name="admin[username]" id="form-username"{if isset($FORM.admin.username)} value="{$FORM.admin.username}"{/if} class="textbox required" /></span></div>
-		  <div><label for="form-password">{$LANG.account.password}</label><span class="password-wrap"><input type="password" name="admin[password]" id="form-password"{if isset($FORM.admin.password)} value="{$FORM.admin.password}"{/if} class="textbox required" /><button type="button" class="password-toggle" data-target="form-password" data-text-show="{$LANG.common.show}" data-text-hide="{$LANG.common.hide}" tabindex="-1">{$LANG.common.show}</button></span></div>
+		  <div><label for="form-password">{$LANG.account.password}</label><span class="password-wrap"><input type="password" name="admin[password]" id="form-password"{if isset($FORM.admin.password)} value="{$FORM.admin.password}"{/if} class="textbox required" aria-describedby="form-password-strength form-password-hint" data-min-length="10" data-min-classes="3" data-text-weak="{$LANG.setup.password_weak}" data-text-fair="{$LANG.setup.password_fair}" data-text-strong="{$LANG.setup.password_strong}" data-text-error="{$LANG.setup.error_password_weak}" /><button type="button" class="password-toggle" data-target="form-password" data-text-show="{$LANG.common.show}" data-text-hide="{$LANG.common.hide}" tabindex="-1">{$LANG.common.show}</button></span></div>
+		  <div class="password-meter-row"><span class="password-meter" id="form-password-strength" aria-live="polite"><span class="password-meter-bar"><span class="password-meter-fill"></span></span><span class="password-meter-label"></span></span></div>
+		  <p class="password-hint" id="form-password-hint">{$LANG.setup.password_requirements}</p>
 		</fieldset>
 	  </div>
 

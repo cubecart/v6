@@ -122,10 +122,6 @@ span.result {
 .fail {
     color: #FF211E
 }
-.faded {
-    opacity: .4;
-    filter: alpha(opacity=40)
-}
 input[type=button],
 input[type=submit] {
     display: inline-block;
@@ -177,7 +173,12 @@ div.click-select h2 {
 div.click-select>span.icon {
     float: left;
     height: 90px;
-    width: 100px
+    width: 100px;
+    text-align: center;
+}
+div.click-select>span.icon img {
+    max-width: 100%;
+    max-height: 100%;
 }
 div.selected {
     background-color: #EDFFED
@@ -348,6 +349,48 @@ h4 {
 }
 .password-toggle:hover {
     text-decoration: underline;
+}
+
+/* Admin password strength meter. Sits directly under the password input. */
+.password-meter-row {
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
+}
+.password-meter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+}
+.password-meter-bar {
+    flex: 1;
+    height: 4px;
+    background: #E5E5E5;
+    border-radius: 2px;
+    overflow: hidden;
+}
+.password-meter-fill {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: #FE0000;
+    transition: width 0.15s ease, background-color 0.15s ease;
+}
+.password-meter.weak   .password-meter-fill { width: 33%;  background: #FE0000; }
+.password-meter.fair   .password-meter-fill { width: 66%;  background: #E89F2C; }
+.password-meter.strong .password-meter-fill { width: 100%; background: #10AB5D; }
+.password-meter-label {
+    min-width: 50px;
+    color: #999;
+}
+.password-meter.weak   .password-meter-label { color: #FE0000; }
+.password-meter.fair   .password-meter-label { color: #E89F2C; }
+.password-meter.strong .password-meter-label { color: #10AB5D; }
+.password-hint {
+    margin: 0 !important;
+    font-size: 11px;
+    color: #888;
+    line-height: 1.4;
 }
 
 /* DB-credentials test button + result. Sits as a full-width row inside the install
