@@ -8,12 +8,13 @@ CKEDITOR.editorConfig = function( config ) {
 	config.skin = darkMode ? 'moono-dark' : 'moono-lisa';
 	config.filebrowserImageBrowseUrl = document.location.pathname+'?_g=filemanager&mode=fck';
 	config.filebrowserLinkBrowseUrl = document.location.pathname+'?_g=filemanager&mode=fckfile';
-	config.protectedSource.push(/{\S*?.*?\S}/g);
+	config.protectedSource.push(/\{\*[\s\S]*?\*\}|\{[$\/][^{}]+?\}|\{(?!cke_)[a-zA-Z][\w]*\b[^{}]*\}/g);
 	config.extraPlugins = 'showprotected';
 	config.filebrowserWindowHeight  = 500;
 	config.filebrowserWindowWidth  = 650;
 	config.allowedContent = true;
 	config.disableNativeSpellChecker = false;
+	config.versionCheck = false;
 	config.toolbarGroups = [
 		{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
 		{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
