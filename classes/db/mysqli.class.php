@@ -201,7 +201,7 @@ class Database extends Database_Contoller
                     $this->_found_rows = sizeof($this->_result);
                     $this->_sqlDebug($cache, true);
                     return true;
-                } elseif ($cache_check) {
+                } elseif (is_array($cache_check)) {
                     $this->_result = $cache_check;
                     $this->_found_rows = sizeof($this->_result);
                     $this->_sqlDebug($cache, true);
