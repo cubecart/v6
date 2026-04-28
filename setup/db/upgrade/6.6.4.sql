@@ -9,7 +9,4 @@ UPDATE `CubeCart_newsletter` SET `date_created` = `date_saved` WHERE `date_creat
 
 CREATE TABLE IF NOT EXISTS `CubeCart_newsletter_send_log` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `newsletter_id` INT UNSIGNED NOT NULL, `sent_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (`id`), KEY `sent_at` (`sent_at`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
-INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) VALUES ('config', 'newsletter_per_tick', '50') ON DUPLICATE KEY UPDATE `name`=`name`; #EOQ
-INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) VALUES ('config', 'newsletter_hourly_limit', '200') ON DUPLICATE KEY UPDATE `name`=`name`; #EOQ
-
 INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('processNewsletters', 'Process Newsletter Queue', 1, 600) ON DUPLICATE KEY UPDATE `method`=`method`; #EOQ

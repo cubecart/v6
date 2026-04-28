@@ -65,6 +65,11 @@ $glob['auto_upgrade_disabled'] = false;
 // Newsletter
 // Set to 1 to enable lax subscribe mode (allows double opt-in to be disabled)
 $glob['subscribe_mode_lax'] = '0';
+// Newsletter throttle — the cron processNewsletters task sends in batches and respects
+// a rolling-hour cap. Defaults: 50 per cron tick, 200 per hour. Override here to match
+// your hosting provider's outbound mail limits.
+$glob['newsletter_per_tick']     = 50;
+$glob['newsletter_hourly_limit'] = 200;
 
 // Search
 // Columns used for LIKE search

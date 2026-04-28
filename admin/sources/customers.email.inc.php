@@ -181,8 +181,9 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
     // Reads the rolling-hour counter from the same send_log table the cron uses, so
     // the numbers shown to admin and the numbers the cron is gating on are identical.
     if ($has_active_send) {
+        global $glob;
         $pfx = $GLOBALS['config']->get('config', 'dbprefix');
-        $hourly_limit = (int)$GLOBALS['config']->get('config', 'newsletter_hourly_limit');
+        $hourly_limit = isset($glob['newsletter_hourly_limit']) ? (int)$glob['newsletter_hourly_limit'] : 200;
         if ($hourly_limit <= 0) {
             $hourly_limit = 200;
         }
