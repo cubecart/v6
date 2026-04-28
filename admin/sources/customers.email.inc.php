@@ -152,6 +152,14 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
             $content['can_pause']  = ($status === 3);
             $content['can_resume'] = ($status === 5);
             $content['can_cancel'] = in_array($status, array(2, 3, 5), true);
+            // Edit only when nothing is in flight — draft (0) or paused (5).
+            // Editing mid-send would change content for future batches but not
+            // already-delivered ones, leaving recipients with mismatched messages.
+            $content['can_edit']   = in_array($status, array(0, 5), true);
+            // Delete only from terminal states — draft (0), sent (1), cancelled (4).
+            // Deleting queued/sending/paused orphans the cron task and loses cursor
+            // state; admin should Cancel first to land in status 4.
+            $content['can_delete'] = in_array($status, array(0, 1, 4), true);
             switch ($status) {
                 case 1:
                     $content['status_text'] = $lang['email']['news_status_sent'];

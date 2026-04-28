@@ -105,8 +105,12 @@
             <td>{$newsletter.date_created_formatted}</td>
             <td>{$newsletter.status_text}</td>
             <td><span class="actions">
+               {if $newsletter.can_edit}
                <a href="{$newsletter.edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+               {/if}
+               {if $newsletter.can_delete}
                <a href="{$newsletter.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+               {/if}
                {if $newsletter.can_send}
                <a href="{$newsletter.send}" class="button tiny confirm" title="{$LANG.email.confirm_send}"><i class="fa fa-plane"></i> {$LANG.common.send}</a>
                {/if}

@@ -85,6 +85,12 @@ class Newsletter
     public function deleteNewsletter($newsletter_id = false)
     {
         if ($newsletter_id && is_numeric($newsletter_id)) {
+            // Refuse mid-flight states (queued/sending/paused) — deleting orphans
+            // the cron task and loses cursor state. Admin should Cancel first.
+            $row = $GLOBALS['db']->select('CubeCart_newsletter', array('status'), array('newsletter_id' => (int)$newsletter_id));
+            if (!$row || !in_array((int)$row[0]['status'], array(0, 1, 4), true)) {
+                return false;
+            }
             $GLOBALS['db']->delete('CubeCart_newsletter', array('newsletter_id' => (int)$newsletter_id));
             return true;
         } else {
@@ -124,6 +130,12 @@ class Newsletter
         $result = false;
         if (!empty($newsletter) && is_array($newsletter)) {
             if (!empty($newsletter['newsletter_id']) && is_numeric($newsletter['newsletter_id'])) {
+                // Refuse edits while anything is in flight or after send — only
+                // draft (0) and paused (5) are mutable.
+                $row = $GLOBALS['db']->select('CubeCart_newsletter', array('status'), array('newsletter_id' => (int)$newsletter['newsletter_id']));
+                if (!$row || !in_array((int)$row[0]['status'], array(0, 5), true)) {
+                    return false;
+                }
                 $result = $GLOBALS['db']->update('CubeCart_newsletter', $newsletter, array('newsletter_id' => $newsletter['newsletter_id']));
                 $this->_newsletter_id = $newsletter['newsletter_id'];
             } else {
