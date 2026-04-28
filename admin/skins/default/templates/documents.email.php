@@ -111,7 +111,7 @@
 		var darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
 		editor.setOptions({ highlightActiveLine:true, showPrintMargin:false, theme: darkMQ.matches ? 'ace/theme/tomorrow_night' : 'ace/theme/github', mode: 'ace/mode/smarty' });
 		darkMQ.addEventListener('change', function(e) { editor.setTheme(e.matches ? 'ace/theme/tomorrow_night' : 'ace/theme/github'); });
-		editor.setValue(window.atob(input.value), 1);
+		document.addEventListener('DOMContentLoaded', function() { editor.setValue(b64DecodeUnicode(input.value), 1); });
 		editor.getSession().on("change", function () { input.value = b64EncodeUnicode(editor.getSession().getValue()); });
 	</script>
 	<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.test}</button>
@@ -173,7 +173,7 @@
 		var darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
 		editor.setOptions({ highlightActiveLine:true, showPrintMargin:false, theme: darkMQ.matches ? 'ace/theme/tomorrow_night' : 'ace/theme/github', mode: 'ace/mode/smarty' });
 		darkMQ.addEventListener('change', function(e) { editor.setTheme(e.matches ? 'ace/theme/tomorrow_night' : 'ace/theme/github'); });
-		editor.setValue(window.atob(input.value), 1);
+		document.addEventListener('DOMContentLoaded', function() { editor.setValue(b64DecodeUnicode(input.value), 1); });
 		editor.getSession().on("change", function () { input.value = b64EncodeUnicode(editor.getSession().getValue()); });
 	</script>
 	<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.test}</button>
@@ -226,12 +226,3 @@
 	<input type="submit" value="{$LANG.common.save}">{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
   </div>
 </form>
-<script>
-	// Source: https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings
-	function b64EncodeUnicode(str) {
-		return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
-			function toSolidBytes(match, p1) {
-				return String.fromCharCode('0x' + p1);
-		}));
-	}
-</script>

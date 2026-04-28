@@ -118,9 +118,9 @@
                 theme: 'ace/theme/github',
                 mode: 'ace/mode/php'
             });
-            editor.setValue(window.atob(input.value), 1);
+            document.addEventListener('DOMContentLoaded', function() { editor.setValue(b64DecodeUnicode(input.value), 1); });
             editor.getSession().on("change", function () {
-               input.value = window.btoa(editor.getSession().getValue());
+               input.value = b64EncodeUnicode(editor.getSession().getValue());
             });
          </script>
          <input type="hidden" name="snippet[snippet_id]" id="snippet_id" class="textbox" value="{$SNIPPET.snippet_id}">
@@ -222,7 +222,6 @@
       <script>
          var hookEditor = ace.edit("hook_code_editor");
          var hookInput = document.getElementById('hook_file_code_input');
-         var hookCode = window.atob(document.getElementById('hook_file_code_b64').value);
          hookEditor.session.setUseWrapMode(true);
          hookEditor.setOptions({
             highlightActiveLine: true,
@@ -231,13 +230,16 @@
             mode: 'ace/mode/php',
             readOnly: !hookInput
          });
-         hookEditor.setValue(hookCode, 1);
-         if (hookInput) {
-            hookInput.value = hookCode;
-            hookEditor.getSession().on("change", function () {
-               hookInput.value = hookEditor.getSession().getValue();
-            });
-         }
+         document.addEventListener('DOMContentLoaded', function() {
+            var hookCode = b64DecodeUnicode(document.getElementById('hook_file_code_b64').value);
+            hookEditor.setValue(hookCode, 1);
+            if (hookInput) {
+               hookInput.value = hookCode;
+               hookEditor.getSession().on("change", function () {
+                  hookInput.value = hookEditor.getSession().getValue();
+               });
+            }
+         });
       </script>
       {/literal}
       {if $HOOK_FILE.backups}
