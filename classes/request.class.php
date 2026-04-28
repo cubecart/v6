@@ -75,6 +75,14 @@ class Request
             $this->_curl_options[CURLOPT_VERBOSE]    = false;
             //$this->_curl_options[CURLOPT_FAILONERROR]   = true;
         }
+
+        // Auto-attach telemetry client ID for cubecart.com endpoints when opted in
+        if (preg_match('/(^|\.)cubecart\.com$/i', $this->_request_url)
+            && isset($GLOBALS['config']) && is_object($GLOBALS['config'])
+            && $GLOBALS['config']->get('config', 'allow_telemetry')) {
+            $store_domain = defined('CC_STORE_URL') ? CC_STORE_URL : ($_SERVER['HTTP_HOST'] ?? 'unknown');
+            $this->appendHeaders('CC-Client-ID: '.hash('sha256', $store_domain));
+        }
     }
 
     public function __destruct()
