@@ -474,7 +474,7 @@ class Database_Contoller
             foreach ($record as $field => $value) {
                 if (in_array($field, $allowed) && !is_numeric($field)) {
                     $fields[] = "`$field`";
-                    $values[] = ($value==='NULL') ? 'NULL' : $this->sqlSafe($value, true);
+                    $values[] = (in_array($value, $this->_allowed_exceptions, true)) ? $value : $this->sqlSafe($value, true);
                 }
             }
             if (!empty($fields) && !empty($values)) {
@@ -508,7 +508,7 @@ class Database_Contoller
             foreach ($record as $field => $value) {
                 if (in_array($field, $allowed) && !is_numeric($field)) {
                     $fields[] = "`$field`";
-                    $values[] = ($value==='NULL') ? 'NULL' : $this->sqlSafe($value, true);
+                    $values[] = (in_array($value, $this->_allowed_exceptions, true)) ? $value : $this->sqlSafe($value, true);
                 }
             }
             if (!empty($fields) && !empty($values)) {
@@ -518,7 +518,7 @@ class Database_Contoller
                 $updates = array();
                 foreach ($update_fields as $field) {
                     if (in_array($field, $allowed) && isset($record[$field])) {
-                        $updates[] = "`$field` = ".($record[$field]==='NULL' ? 'NULL' : $this->sqlSafe($record[$field], true));
+                        $updates[] = "`$field` = ".(in_array($record[$field], $this->_allowed_exceptions, true) ? $record[$field] : $this->sqlSafe($record[$field], true));
                     }
                 }
                 if (!empty($updates)) {
