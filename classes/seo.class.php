@@ -1529,7 +1529,10 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 
         $input['url'] = stristr($input['url'],$this->_sitemap_base_url) ? $input['url'] : $this->_sitemap_base_url.$input['url'];
 
-        if(!in_array(md5($input['url']), $this->_sitemap_duplicates) && substr($input['url'], -6) !== '/.html') {
+        // Dedupe lookup is hot — N URLs × in_array() over a growing array was O(N^2).
+        // Use the hash as the array key for O(1) isset() lookup; same memory footprint.
+        $hash = md5($input['url']);
+        if (!isset($this->_sitemap_duplicates[$hash]) && substr($input['url'], -6) !== '/.html') {
             $this->_sitemap_xml->startElement($masterElement);
             $this->_sitemap_xml->setElement('loc', $input['url'], false, false);
             if ($updated && "0000-00-00" !== substr($updated, 0, 10)) {
@@ -1538,7 +1541,7 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
             }
             $this->_sitemap_xml->endElement();
             $this->_sitemap_url_count++;
-            array_push($this->_sitemap_duplicates, md5($input['url']));
+            $this->_sitemap_duplicates[$hash] = true;
         }
     }
 
