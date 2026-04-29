@@ -16,7 +16,7 @@
    <h3>{$LANG.statistics.title_sales}</h3>
 
    <form action="{$VAL_SELF}" class="ignore-dirty stats-filter stats-status-filter" method="get">
-      <span class="stats-status-label">Order status:</span>
+      <span class="stats-status-label">{$LANG.statistics.order_status_label}</span>
       {foreach from=$SALES_STATUSES item=st}
       <label class="stats-status-option"><input type="checkbox" name="s[]" value="{$st.id}"{$st.checked}> {$st.name}</label>
       {/foreach}
@@ -46,7 +46,7 @@
          <div id="chart1-hAxis" style="display:none">{$GRAPH_DATA.1.hAxis}</div>
          <div id="chart1-vAxis" style="display:none">{$GRAPH_DATA.1.vAxis}</div>
       </div>
-      <div class="stat-chart-footer">{$GRAPH_DATA.1.total_sum} &middot; {$GRAPH_DATA.1.total_count} orders</div>
+      <div class="stat-chart-footer">{$LANG.statistics.footer_orders|sprintf:$GRAPH_DATA.1.total_sum:$GRAPH_DATA.1.total_count}</div>
    </div>
 
    <div class="stat-chart">
@@ -76,7 +76,7 @@
          <div id="chart2-hAxis" style="display:none">{$GRAPH_DATA.2.hAxis}</div>
          <div id="chart2-vAxis" style="display:none">{$GRAPH_DATA.2.vAxis}</div>
       </div>
-      <div class="stat-chart-footer">{$GRAPH_DATA.2.total_sum} &middot; {$GRAPH_DATA.2.total_count} orders</div>
+      <div class="stat-chart-footer">{$LANG.statistics.footer_orders|sprintf:$GRAPH_DATA.2.total_sum:$GRAPH_DATA.2.total_count}</div>
    </div>
 
    <div class="stat-chart">
@@ -106,7 +106,7 @@
          <div id="chart3-hAxis" style="display:none">{$GRAPH_DATA.3.hAxis}</div>
          <div id="chart3-vAxis" style="display:none">{$GRAPH_DATA.3.vAxis}</div>
       </div>
-      <div class="stat-chart-footer">{$GRAPH_DATA.3.total_sum} &middot; {$GRAPH_DATA.3.total_count} orders</div>
+      <div class="stat-chart-footer">{$LANG.statistics.footer_orders|sprintf:$GRAPH_DATA.3.total_sum:$GRAPH_DATA.3.total_count}</div>
    </div>
 
    <div class="stat-chart">
@@ -138,7 +138,7 @@
          <div id="chart4-hAxis" style="display:none">{$GRAPH_DATA.4.hAxis}</div>
          <div id="chart4-vAxis" style="display:none">{$GRAPH_DATA.4.vAxis}</div>
       </div>
-      <div class="stat-chart-footer">{$GRAPH_DATA.4.total_sum} &middot; {$GRAPH_DATA.4.total_count} orders</div>
+      <div class="stat-chart-footer">{$LANG.statistics.footer_orders|sprintf:$GRAPH_DATA.4.total_sum:$GRAPH_DATA.4.total_count}</div>
    </div>
 
    <script type="text/javascript">
@@ -162,19 +162,19 @@
    <p>{$LANG.statistics.notify_sales_none}</p>
    {/if}
 {elseif $ACTIVE_TAB == 'stats_funnel'}
-   <h3>Conversion Funnel</h3>
+   <h3>{$LANG.statistics.title_funnel}</h3>
    <div class="stat-chart">
       <div class="stat-chart-header">
-         <span class="stat-chart-title">Last 7 days</span>
+         <span class="stat-chart-title">{$LANG.statistics.last_7_days}</span>
       </div>
       <div class="stat-chart-body">
          <table width="100%" class="stat-table funnel-table">
             <thead>
                <tr>
-                  <td>Stage</td>
-                  <td style="text-align: right" nowrap="nowrap">Count</td>
-                  <td style="text-align: right" nowrap="nowrap">% of sessions</td>
-                  <td style="text-align: right" nowrap="nowrap">% of previous</td>
+                  <td>{$LANG.statistics.funnel_stage}</td>
+                  <td style="text-align: right" nowrap="nowrap">{$LANG.statistics.funnel_count}</td>
+                  <td style="text-align: right" nowrap="nowrap">{$LANG.statistics.funnel_pct_total}</td>
+                  <td style="text-align: right" nowrap="nowrap">{$LANG.statistics.funnel_pct_prev}</td>
                   <td style="width: 40%">&nbsp;</td>
                </tr>
             </thead>
@@ -191,24 +191,24 @@
             </tbody>
          </table>
       </div>
-      <div class="stat-chart-footer">Submitted: {$FUNNEL_SUB_VALUE} &middot; Paid: {$FUNNEL_PAID_VALUE}</div>
+      <div class="stat-chart-footer">{$FUNNEL_SUB_VALUE} &middot; {$FUNNEL_PAID_VALUE}</div>
    </div>
 {elseif $ACTIVE_TAB == 'stats_abandoned'}
-   <h3>Abandoned Carts</h3>
+   <h3>{$LANG.statistics.title_abandoned}</h3>
    <div class="stat-chart">
       <div class="stat-chart-header">
-         <span class="stat-chart-title">Active sessions with non-empty baskets (last 24h)</span>
+         <span class="stat-chart-title">{$LANG.statistics.abandoned_subtitle}</span>
       </div>
       {if $ABANDONED_CARTS}
       <div class="stat-chart-body">
          <table width="100%" class="stat-table">
             <thead>
                <tr>
-                  <td>Customer</td>
-                  <td style="text-align: center" nowrap="nowrap">Items</td>
-                  <td style="text-align: right" nowrap="nowrap">Cart Value</td>
-                  <td style="text-align: center" nowrap="nowrap">Idle</td>
-                  <td>IP</td>
+                  <td>{$LANG.statistics.abandoned_customer}</td>
+                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.abandoned_items}</td>
+                  <td style="text-align: right" nowrap="nowrap">{$LANG.statistics.abandoned_value}</td>
+                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.abandoned_idle}</td>
+                  <td>{$LANG.common.ip_address}</td>
                   <td></td>
                </tr>
             </thead>
@@ -227,22 +227,22 @@
                   <td style="text-align: right" nowrap="nowrap"><strong>{$ab.cart_value}</strong></td>
                   <td style="text-align: center" nowrap="nowrap">{$ab.last_idle}</td>
                   <td nowrap="nowrap"><a href="http://whois.domaintools.com/{$ab.ip_address}" target="_blank" rel="noopener">{$ab.ip_address}</a></td>
-                  <td style="text-align: center">{if $ab.email}<a href="mailto:{$ab.email}" title="Email customer"><i class="fa fa-envelope"></i></a>{/if}</td>
+                  <td style="text-align: center">{if $ab.email}<a href="mailto:{$ab.email}" title="{$LANG.statistics.email_customer}"><i class="fa fa-envelope"></i></a>{/if}</td>
                </tr>
                {/foreach}
             </tbody>
          </table>
       </div>
-      <div class="stat-chart-footer">{$ABANDONED_TOTAL} in {$ABANDONED_COUNT} abandoned baskets</div>
+      <div class="stat-chart-footer">{$LANG.statistics.abandoned_total|sprintf:$ABANDONED_TOTAL:$ABANDONED_COUNT}</div>
       {else}
-      <div class="stat-chart-body" style="text-align: center; padding: 2em 0;">No abandoned carts in the last 24 hours.</div>
+      <div class="stat-chart-body" style="text-align: center; padding: 2em 0;">{$LANG.statistics.abandoned_none}</div>
       {/if}
    </div>
 {elseif $ACTIVE_TAB == 'stats_country'}
-   <h3>Sales by Country</h3>
+   <h3>{$LANG.statistics.title_country}</h3>
    <div class="stat-chart">
       <div class="stat-chart-header">
-         <span class="stat-chart-title">Sales by Country</span>
+         <span class="stat-chart-title">{$LANG.statistics.title_country}</span>
          <form action="{$VAL_SELF}" class="ignore-dirty stats-filter" method="get">
             <select name="cn_year" class="textbox">
             {foreach from=$CN_YEAR_OPTIONS item=opt}<option value="{$opt.value}"{$opt.selected}>{$opt.label}</option>{/foreach}
@@ -262,10 +262,10 @@
             <thead>
                <tr>
                   <td></td>
-                  <td>Country</td>
-                  <td style="text-align: center" nowrap="nowrap">Orders</td>
-                  <td style="text-align: right" nowrap="nowrap">Revenue</td>
-                  <td style="text-align: center" nowrap="nowrap">% of total</td>
+                  <td>{$LANG.statistics.country_label}</td>
+                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.orders}</td>
+                  <td style="text-align: right" nowrap="nowrap">{$LANG.statistics.revenue}</td>
+                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.country_pct_total}</td>
                </tr>
             </thead>
             <tbody>
@@ -281,7 +281,7 @@
             </tbody>
          </table>
       </div>
-      <div class="stat-chart-footer">{$GRAPH_DATA.11.total_sum} &middot; {$GRAPH_DATA.11.total_count} countries</div>
+      <div class="stat-chart-footer">{$LANG.statistics.country_total|sprintf:$GRAPH_DATA.11.total_sum:$GRAPH_DATA.11.total_count}</div>
       <script type="text/javascript">
          window.chart_data = window.chart_data || [];
          window.chart_options = window.chart_options || [];
@@ -292,7 +292,7 @@
          window.whenChartsReady(function() { window.drawChart(11, window.chart_data); });
       </script>
       {else}
-      <div class="stat-chart-body" style="text-align: center; padding: 2em 0;">No sales data for the selected period.</div>
+      <div class="stat-chart-body" style="text-align: center; padding: 2em 0;">{$LANG.statistics.country_no_data}</div>
       {/if}
    </div>
 {elseif $ACTIVE_TAB == 'stats_prod_sales'}
@@ -322,10 +322,10 @@
                   <td></td>
                   <td>{$LANG.catalogue.product_name}</td>
                   <td style="text-align: center" nowrap="nowrap"><span title="{$LANG.statistics.quantity_sold}">{$LANG.common.quantity}</span></td>
-                  <td style="text-align: center" nowrap="nowrap">Revenue</td>
+                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.revenue}</td>
                   <td style="text-align: center" nowrap="nowrap"><span title="{$LANG.statistics.percentage_of_total}">{$LANG.common.percentage}</span></td>
-                  <td style="text-align: center" nowrap="nowrap">Stock</td>
-                  {if $PS_HAS_TREND}<td style="text-align: center" nowrap="nowrap">Trend</td>{/if}
+                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.stock}</td>
+                  {if $PS_HAS_TREND}<td style="text-align: center" nowrap="nowrap">{$LANG.statistics.trend}</td>{/if}
                   <td></td>
                </tr>
             </thead>
@@ -345,7 +345,7 @@
             </tbody>
          </table>
       </div>
-      <div class="stat-chart-footer">{$GRAPH_DATA.5.total_sum} &middot; {$GRAPH_DATA.5.total_count} products</div>
+      <div class="stat-chart-footer">{$LANG.statistics.footer_products|sprintf:$GRAPH_DATA.5.total_sum:$GRAPH_DATA.5.total_count}</div>
       <script type="text/javascript">
          window.chart_data = window.chart_data || [];
          window.chart_options = window.chart_options || [];
@@ -379,7 +379,7 @@
                   <td>{$LANG.catalogue.product_name}</td>
                   <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.product_views}</td>
                   <td style="text-align: center" nowrap="nowrap"><span title="{$LANG.statistics.percentage_of_views}">{$LANG.common.percentage}</span></td>
-                  <td style="text-align: center" nowrap="nowrap">Stock</td>
+                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.stock}</td>
                   <td></td>
                </tr>
             </thead>
@@ -397,7 +397,7 @@
             </tbody>
          </table>
       </div>
-      <div class="stat-chart-footer">{$GRAPH_DATA.6.total_sum} &middot; {$GRAPH_DATA.6.total_count} products</div>
+      <div class="stat-chart-footer">{$LANG.statistics.footer_products|sprintf:$GRAPH_DATA.6.total_sum:$GRAPH_DATA.6.total_count}</div>
       <script type="text/javascript">
          window.chart_data = window.chart_data || [];
          window.chart_options = window.chart_options || [];
@@ -448,7 +448,7 @@
             </tbody>
          </table>
       </div>
-      <div class="stat-chart-footer">{$GRAPH_DATA.7.total_sum} &middot; {$GRAPH_DATA.7.total_count} terms</div>
+      <div class="stat-chart-footer">{$LANG.statistics.footer_terms|sprintf:$GRAPH_DATA.7.total_sum:$GRAPH_DATA.7.total_count}</div>
       <script type="text/javascript">
          window.chart_data = window.chart_data || [];
          window.chart_options = window.chart_options || [];
@@ -488,7 +488,7 @@
                <tr>
                   <td></td>
                   <td>{$LANG.common.name}</td>
-                  <td style="text-align: center" nowrap="nowrap">Orders</td>
+                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.orders}</td>
                   <td style="text-align: right" nowrap="nowrap">{$LANG.statistics.total_expenditure}</td>
                   <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.percentage_of_total}</td>
                   <td></td>
@@ -508,7 +508,7 @@
             </tbody>
          </table>
       </div>
-      <div class="stat-chart-footer">{$GRAPH_DATA.8.total_sum} &middot; {$GRAPH_DATA.8.total_count} customers</div>
+      <div class="stat-chart-footer">{$LANG.statistics.footer_customers|sprintf:$GRAPH_DATA.8.total_sum:$GRAPH_DATA.8.total_count}</div>
       <script type="text/javascript">
          window.chart_data = window.chart_data || [];
          window.chart_options = window.chart_options || [];
@@ -527,7 +527,7 @@
    <div class="stat-chart">
       <div class="stat-chart-header">
          <span class="stat-chart-title">{$LANG.statistics.title_customers_active}</span>
-         <a href="#" class="button tiny stats-refresh" title="Refresh now"><i class="fa fa-refresh"></i></a>
+         <a href="#" class="button tiny stats-refresh" title="{$LANG.statistics.refresh_now}"><i class="fa fa-refresh"></i></a>
          {if $BOTS==true}
          <a href="?_g=statistics&bots=false&tab=stats_online#stats_online" class="button tiny">{$LANG.statistics.display_customers_only}</a>
          {else}
@@ -541,10 +541,10 @@
                   <td></td>
                   <td>{$LANG.statistics.session_user}</td>
                   <td>{$LANG.statistics.session_location}</td>
-                  <td style="text-align:right" nowrap="nowrap">Cart</td>
-                  <td style="text-align:center" nowrap="nowrap">Active for</td>
-                  <td style="text-align:center" nowrap="nowrap">Last seen</td>
-                  <td style="text-align:center">Country</td>
+                  <td style="text-align:right" nowrap="nowrap">{$LANG.statistics.cart}</td>
+                  <td style="text-align:center" nowrap="nowrap">{$LANG.statistics.online_active_for}</td>
+                  <td style="text-align:center" nowrap="nowrap">{$LANG.statistics.online_last_seen}</td>
+                  <td style="text-align:center">{$LANG.statistics.country_label}</td>
                   <td>{$LANG.common.ip_address}</td>
                </tr>
             </thead>
@@ -580,7 +580,7 @@
          </table>
       </div>
       <div class="stat-chart-footer">
-         {$USERS_SPLIT.total} online &middot; {$USERS_SPLIT.signed_in} signed-in &middot; {$USERS_SPLIT.guests} guests &middot; {$USERS_SPLIT.bots} bots
+         {$LANG.statistics.online_total_summary|sprintf:$USERS_SPLIT.total:$USERS_SPLIT.signed_in:$USERS_SPLIT.guests:$USERS_SPLIT.bots}
       </div>
    </div>
 {/if}

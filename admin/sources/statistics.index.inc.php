@@ -58,9 +58,9 @@ $online_count = $online_count_q ? (int)$online_count_q[0]['c'] : 0;
 
 // Register every tab button up front so the strip is consistent regardless of which tab is active.
 $GLOBALS['main']->addTabControl($lang['statistics']['title_sales'],            'stats_sales');
-$GLOBALS['main']->addTabControl('Conversion',                                   'stats_funnel');
-$GLOBALS['main']->addTabControl('Abandoned Carts',                              'stats_abandoned');
-$GLOBALS['main']->addTabControl('Sales by Country',                             'stats_country');
+$GLOBALS['main']->addTabControl($lang['statistics']['title_funnel'],            'stats_funnel');
+$GLOBALS['main']->addTabControl($lang['statistics']['title_abandoned'],         'stats_abandoned');
+$GLOBALS['main']->addTabControl($lang['statistics']['title_country'],           'stats_country');
 $GLOBALS['main']->addTabControl($lang['statistics']['title_popular'],          'stats_prod_sales');
 $GLOBALS['main']->addTabControl($lang['statistics']['title_viewed'],           'stats_prod_views');
 $GLOBALS['main']->addTabControl($lang['statistics']['title_search'],           'stats_search');
@@ -403,10 +403,10 @@ case 'stats_funnel':
 
     $base = max($sessions_count, 1);
     $stages = array(
-        array('name' => 'Sessions',          'count' => $sessions_count, 'pct_total' => 100,                                                'pct_prev' => null),
-        array('name' => 'Created cart',      'count' => $cart_count,     'pct_total' => round($cart_count      / $base * 100, 1),           'pct_prev' => $sessions_count ? round($cart_count      / $sessions_count * 100, 1) : 0),
-        array('name' => 'Order submitted',   'count' => $submitted_count,'pct_total' => round($submitted_count / $base * 100, 1),           'pct_prev' => $cart_count      ? round($submitted_count / $cart_count      * 100, 1) : 0),
-        array('name' => 'Order paid',        'count' => $paid_count,     'pct_total' => round($paid_count      / $base * 100, 1),           'pct_prev' => $submitted_count ? round($paid_count      / $submitted_count * 100, 1) : 0),
+        array('name' => $lang['statistics']['funnel_sessions'],  'count' => $sessions_count,  'pct_total' => 100,                                                            'pct_prev' => null),
+        array('name' => $lang['statistics']['funnel_carts'],     'count' => $cart_count,      'pct_total' => round($cart_count      / $base * 100, 1),                       'pct_prev' => $sessions_count  ? round($cart_count      / $sessions_count  * 100, 1) : 0),
+        array('name' => $lang['statistics']['funnel_submitted'], 'count' => $submitted_count, 'pct_total' => round($submitted_count / $base * 100, 1),                       'pct_prev' => $cart_count      ? round($submitted_count / $cart_count      * 100, 1) : 0),
+        array('name' => $lang['statistics']['funnel_paid'],      'count' => $paid_count,      'pct_total' => round($paid_count      / $base * 100, 1),                       'pct_prev' => $submitted_count ? round($paid_count      / $submitted_count * 100, 1) : 0),
     );
 
     $g_graph_data[10]['data']        = "['Stage','Count'],";
@@ -415,14 +415,14 @@ case 'stats_funnel':
         $tmp[] = "['".addslashes($s['name'])."',".$s['count']."]";
     }
     $g_graph_data[10]['data']       .= implode(',', $tmp);
-    $g_graph_data[10]['title']       = 'Last 7 days';
+    $g_graph_data[10]['title']       = $lang['statistics']['last_7_days'];
     $g_graph_data[10]['hAxis']       = '';
     $g_graph_data[10]['vAxis']       = '';
     $g_graph_data[10]['legend']      = 'none';
 
     $GLOBALS['smarty']->assign('FUNNEL_STAGES',     $stages);
-    $GLOBALS['smarty']->assign('FUNNEL_PAID_VALUE', $tax_inst->priceFormat($paid_value));
-    $GLOBALS['smarty']->assign('FUNNEL_SUB_VALUE',  $tax_inst->priceFormat($submitted_value));
+    $GLOBALS['smarty']->assign('FUNNEL_PAID_VALUE', sprintf($lang['statistics']['funnel_paid_value'],      $tax_inst->priceFormat($paid_value)));
+    $GLOBALS['smarty']->assign('FUNNEL_SUB_VALUE',  sprintf($lang['statistics']['funnel_submitted_value'], $tax_inst->priceFormat($submitted_value)));
     break;
 
 case 'stats_abandoned':
@@ -493,7 +493,7 @@ case 'stats_country':
     $earliest_q    = $GLOBALS['db']->query("SELECT MIN(`order_date`) AS `m` FROM `".$glob['dbprefix']."CubeCart_order_summary` WHERE `status` IN (2,3)");
     $earliest_year = ($earliest_q && !empty($earliest_q[0]['m'])) ? (int)date('Y', $earliest_q[0]['m']) : $now_year;
     $cn_year_options = array(
-        array('value' => 'all', 'label' => 'All time', 'selected' => $cn_year === 'all' ? ' selected="selected"' : ''),
+        array('value' => 'all', 'label' => $lang['statistics']['all_time'], 'selected' => $cn_year === 'all' ? ' selected="selected"' : ''),
     );
     for ($yr = $now_year; $yr >= $earliest_year; $yr--) {
         $cn_year_options[] = array('value' => $yr, 'label' => $yr, 'selected' => ($cn_year === $yr) ? ' selected="selected"' : '');
@@ -569,7 +569,7 @@ case 'stats_country':
         }
     }
     $g_graph_data[11]['data']       .= implode(',', $tmp);
-    $g_graph_data[11]['title']       = 'Top 10 by revenue';
+    $g_graph_data[11]['title']       = $lang['statistics']['country_top_revenue'];
     $g_graph_data[11]['hAxis']       = '';
     $g_graph_data[11]['vAxis']       = '';
     $g_graph_data[11]['colors']      = "['".$cn_color."']";
@@ -613,7 +613,7 @@ case 'stats_prod_sales':
     $earliest_q = $GLOBALS['db']->query("SELECT MIN(`order_date`) AS `m` FROM `".$glob['dbprefix']."CubeCart_order_summary` WHERE `status` IN (2,3)");
     $earliest_year = ($earliest_q && !empty($earliest_q[0]['m'])) ? (int)date('Y', $earliest_q[0]['m']) : $now_year;
     $ps_year_options = array(
-        array('value' => 'all', 'label' => 'All time', 'selected' => $ps_year === 'all' ? ' selected="selected"' : ''),
+        array('value' => 'all', 'label' => $lang['statistics']['all_time'], 'selected' => $ps_year === 'all' ? ' selected="selected"' : ''),
     );
     for ($yr = $now_year; $yr >= $earliest_year; $yr--) {
         $ps_year_options[] = array(
@@ -705,7 +705,7 @@ case 'stats_prod_sales':
             } elseif ($prior === 0 && $current === 0) {
                 $result['trend'] = null;
             } elseif ($prior === 0) {
-                $result['trend'] = array('dir' => 'up', 'label' => 'NEW');
+                $result['trend'] = array('dir' => 'up', 'label' => $lang['statistics']['trend_new']);
             } else {
                 $pct = (int)round((($current - $prior) / $prior) * 100);
                 $result['trend'] = array(
@@ -882,7 +882,7 @@ case 'stats_best_customers':
     $earliest_q    = $GLOBALS['db']->query("SELECT MIN(`order_date`) AS `m` FROM `".$glob['dbprefix']."CubeCart_order_summary` WHERE `status` IN (2,3)");
     $earliest_year = ($earliest_q && !empty($earliest_q[0]['m'])) ? (int)date('Y', $earliest_q[0]['m']) : $now_year;
     $bc_year_options = array(
-        array('value' => 'all', 'label' => 'All time', 'selected' => $bc_year === 'all' ? ' selected="selected"' : ''),
+        array('value' => 'all', 'label' => $lang['statistics']['all_time'], 'selected' => $bc_year === 'all' ? ' selected="selected"' : ''),
     );
     for ($yr = $now_year; $yr >= $earliest_year; $yr--) {
         $bc_year_options[] = array(
@@ -987,40 +987,44 @@ case 'stats_online':
         if (strpos($ua, 'yandexbot') !== false)            return 'Yandex';
         if (strpos($ua, 'applebot') !== false)             return 'Applebot';
         if (strpos($ua, 'slurp') !== false)                return 'Yahoo';
-        if (strpos($ua, 'bot') !== false || strpos($ua, 'spider') !== false || strpos($ua, 'crawl') !== false) return 'Bot';
-        return 'Bot';
+        $generic = $GLOBALS['language']->statistics['bot_generic'] ?? 'Bot';
+        if (strpos($ua, 'bot') !== false || strpos($ua, 'spider') !== false || strpos($ua, 'crawl') !== false) return $generic;
+        return $generic;
     };
-    $location_label = function ($loc) {
+    $loc_strings = $lang['statistics'];
+    $location_label = function ($loc) use ($loc_strings) {
         $loc = (string)$loc;
         // Special-case the 404 marker before stripping tags, so the
         // <br><strike> markup CubeCart bakes in is not exposed.
         if (strpos($loc, '_a=404') !== false) {
-            return array('label' => 'Missing page (404)', 'is_checkout' => false);
+            return array('label' => $loc_strings['loc_404'], 'is_checkout' => false);
         }
         $loc = trim(strip_tags($loc));
-        if ($loc === '' || $loc === '/' || $loc === 'index.html')    return array('label' => 'Home', 'is_checkout' => false);
-        if (strpos($loc, 'cart.html') === 0)                          return array('label' => 'Cart', 'is_checkout' => true);
-        if (strpos($loc, 'checkout.html') === 0)                      return array('label' => 'Checkout', 'is_checkout' => true);
-        if (strpos($loc, 'account') === 0)                            return array('label' => 'Account', 'is_checkout' => false);
-        if (strpos($loc, 'login.html') === 0)                         return array('label' => 'Login', 'is_checkout' => false);
-        if (strpos($loc, 'register.html') === 0)                      return array('label' => 'Register', 'is_checkout' => false);
-        if (preg_match('#^category/(.+?)\.html#', $loc, $m))          return array('label' => 'Browsing: '.ucwords(str_replace(array('-','_'), ' ', $m[1])), 'is_checkout' => false);
-        if (preg_match('#^product/(.+?)\.html#', $loc, $m))           return array('label' => 'Viewing: '.ucwords(str_replace(array('-','_'), ' ', $m[1])), 'is_checkout' => false);
-        if (preg_match('#search.*[?&]search%5Bkeywords%5D=([^&]+)#', $loc, $m)) return array('label' => 'Searching: '.urldecode($m[1]), 'is_checkout' => false);
-        if (preg_match('#search.*[?&]search\[keywords\]=([^&]+)#', $loc, $m))  return array('label' => 'Searching: '.urldecode($m[1]), 'is_checkout' => false);
+        if ($loc === '' || $loc === '/' || $loc === 'index.html')    return array('label' => $loc_strings['loc_home'],     'is_checkout' => false);
+        if (strpos($loc, 'cart.html') === 0)                          return array('label' => $loc_strings['loc_cart'],     'is_checkout' => true);
+        if (strpos($loc, 'checkout.html') === 0)                      return array('label' => $loc_strings['loc_checkout'], 'is_checkout' => true);
+        if (strpos($loc, 'account') === 0)                            return array('label' => $loc_strings['loc_account'],  'is_checkout' => false);
+        if (strpos($loc, 'login.html') === 0)                         return array('label' => $loc_strings['loc_login'],    'is_checkout' => false);
+        if (strpos($loc, 'register.html') === 0)                      return array('label' => $loc_strings['loc_register'], 'is_checkout' => false);
+        if (preg_match('#^category/(.+?)\.html#', $loc, $m))          return array('label' => sprintf($loc_strings['loc_browsing'], ucwords(str_replace(array('-','_'), ' ', $m[1]))), 'is_checkout' => false);
+        if (preg_match('#^product/(.+?)\.html#', $loc, $m))           return array('label' => sprintf($loc_strings['loc_viewing'],  ucwords(str_replace(array('-','_'), ' ', $m[1]))), 'is_checkout' => false);
+        if (preg_match('#search.*[?&]search%5Bkeywords%5D=([^&]+)#', $loc, $m)) return array('label' => sprintf($loc_strings['loc_searching'], urldecode($m[1])), 'is_checkout' => false);
+        if (preg_match('#search.*[?&]search\[keywords\]=([^&]+)#', $loc, $m))  return array('label' => sprintf($loc_strings['loc_searching'], urldecode($m[1])), 'is_checkout' => false);
         // Bare SEO slug (no slash/query): treat as a product/category page.
         if (preg_match('#^[a-z0-9][a-z0-9_\-]*(?:\.html)?$#i', $loc)) {
             $slug = preg_replace('/\.html$/', '', $loc);
-            return array('label' => 'Viewing: '.ucwords(str_replace(array('-','_'), ' ', $slug)), 'is_checkout' => false);
+            return array('label' => sprintf($loc_strings['loc_viewing'], ucwords(str_replace(array('-','_'), ' ', $slug))), 'is_checkout' => false);
         }
         return array('label' => $loc, 'is_checkout' => false);
     };
-    $country_for = function ($ip) {
+    $ip_local_label = $lang['statistics']['ip_local'];
+    $ip_test_label  = $lang['statistics']['ip_test'];
+    $country_for = function ($ip) use ($ip_local_label, $ip_test_label) {
         // Hook for a real geo lookup (MaxMind GeoLite2 / ipapi). For now we
         // just flag local/test IP ranges so seeded data renders cleanly.
-        if (empty($ip) || $ip === '127.0.0.1' || $ip === '::1')   return 'Local';
-        if (preg_match('#^(10\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.)#', $ip)) return 'Local';
-        if (preg_match('#^(192\.0\.2\.|198\.51\.100\.|203\.0\.113\.)#', $ip)) return 'Test';
+        if (empty($ip) || $ip === '127.0.0.1' || $ip === '::1')   return $ip_local_label;
+        if (preg_match('#^(10\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.)#', $ip)) return $ip_local_label;
+        if (preg_match('#^(192\.0\.2\.|198\.51\.100\.|203\.0\.113\.)#', $ip)) return $ip_test_label;
         return '';
     };
 
@@ -1046,8 +1050,12 @@ case 'stats_online':
             // Relative timestamps.
             $rel_last  = max(0, $now_t - (int)$user['session_last']);
             $rel_start = max(0, $now_t - (int)$user['session_start']);
-            $user['last_relative']  = ($rel_last  < 60) ? $rel_last.'s ago'  : (($rel_last  < 3600) ? floor($rel_last/60).'m ago'  : floor($rel_last/3600).'h ago');
-            $user['active_for']     = ($rel_start < 60) ? $rel_start.'s'    : (($rel_start < 3600) ? floor($rel_start/60).'m'    : floor($rel_start/3600).'h ' . floor(($rel_start%3600)/60).'m');
+            $user['last_relative']  = ($rel_last  < 60) ? sprintf($lang['statistics']['time_ago_seconds'], $rel_last)
+                                     : (($rel_last  < 3600) ? sprintf($lang['statistics']['time_ago_minutes'], floor($rel_last/60))
+                                     : sprintf($lang['statistics']['time_ago_hours'], floor($rel_last/3600)));
+            $user['active_for']     = ($rel_start < 60) ? sprintf($lang['statistics']['duration_seconds'], $rel_start)
+                                     : (($rel_start < 3600) ? sprintf($lang['statistics']['duration_minutes'], floor($rel_start/60))
+                                     : sprintf($lang['statistics']['duration_hours'], floor($rel_start/3600), floor(($rel_start%3600)/60)));
 
             // Cart value: try to extract from serialised session_data. CubeCart
             // namespaces the basket under "__basket" (Session::set('', x, 'basket')).

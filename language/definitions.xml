@@ -2734,6 +2734,70 @@ This email was sent automatically by the CubeCart setup tool.]]></string>
     <string name="total_expenditure" introduced="5.0.0"><![CDATA[Total Expenditure]]></string>
     <string name="display_customers_only" introduced="5.2.6"><![CDATA[Display Customers Only]]></string>
     <string name="display_bots_and_customers" introduced="5.2.6"><![CDATA[Display Webbots &amp; Customers]]></string>
+    <string name="title_funnel" introduced="6.6.4"><![CDATA[Conversion]]></string>
+    <string name="title_abandoned" introduced="6.6.4"><![CDATA[Abandoned Carts]]></string>
+    <string name="title_country" introduced="6.6.4"><![CDATA[Sales by Country]]></string>
+    <string name="all_time" introduced="6.6.4"><![CDATA[All time]]></string>
+    <string name="order_status_label" introduced="6.6.4"><![CDATA[Order status:]]></string>
+    <string name="trend" introduced="6.6.4"><![CDATA[Trend]]></string>
+    <string name="trend_new" introduced="6.6.4"><![CDATA[NEW]]></string>
+    <string name="stock" introduced="6.6.4"><![CDATA[Stock]]></string>
+    <string name="revenue" introduced="6.6.4"><![CDATA[Revenue]]></string>
+    <string name="orders" introduced="6.6.4"><![CDATA[Orders]]></string>
+    <string name="cart" introduced="6.6.4"><![CDATA[Cart]]></string>
+    <string name="refresh_now" introduced="6.6.4"><![CDATA[Refresh now]]></string>
+    <string name="email_customer" introduced="6.6.4"><![CDATA[Email customer]]></string>
+    <string name="last_7_days" introduced="6.6.4"><![CDATA[Last 7 days]]></string>
+    <string name="funnel_stage" introduced="6.6.4"><![CDATA[Stage]]></string>
+    <string name="funnel_count" introduced="6.6.4"><![CDATA[Count]]></string>
+    <string name="funnel_pct_total" introduced="6.6.4"><![CDATA[% of sessions]]></string>
+    <string name="funnel_pct_prev" introduced="6.6.4"><![CDATA[% of previous]]></string>
+    <string name="funnel_sessions" introduced="6.6.4"><![CDATA[Sessions]]></string>
+    <string name="funnel_carts" introduced="6.6.4"><![CDATA[Created cart]]></string>
+    <string name="funnel_submitted" introduced="6.6.4"><![CDATA[Order submitted]]></string>
+    <string name="funnel_paid" introduced="6.6.4"><![CDATA[Order paid]]></string>
+    <string name="funnel_submitted_value" introduced="6.6.4"><![CDATA[Submitted: %1$s]]></string>
+    <string name="funnel_paid_value" introduced="6.6.4"><![CDATA[Paid: %1$s]]></string>
+    <string name="abandoned_subtitle" introduced="6.6.4"><![CDATA[Active sessions with non-empty baskets (last 24h)]]></string>
+    <string name="abandoned_customer" introduced="6.6.4"><![CDATA[Customer]]></string>
+    <string name="abandoned_items" introduced="6.6.4"><![CDATA[Items]]></string>
+    <string name="abandoned_value" introduced="6.6.4"><![CDATA[Cart Value]]></string>
+    <string name="abandoned_idle" introduced="6.6.4"><![CDATA[Idle]]></string>
+    <string name="abandoned_none" introduced="6.6.4"><![CDATA[No abandoned carts in the last 24 hours.]]></string>
+    <string name="abandoned_total" introduced="6.6.4"><![CDATA[%1$s in %2$s abandoned baskets]]></string>
+    <string name="country_top_revenue" introduced="6.6.4"><![CDATA[Top 10 by revenue]]></string>
+    <string name="country_label" introduced="6.6.4"><![CDATA[Country]]></string>
+    <string name="country_pct_total" introduced="6.6.4"><![CDATA[% of total]]></string>
+    <string name="country_no_data" introduced="6.6.4"><![CDATA[No sales data for the selected period.]]></string>
+    <string name="country_total" introduced="6.6.4"><![CDATA[%1$s &middot; %2$s countries]]></string>
+    <string name="online_active_for" introduced="6.6.4"><![CDATA[Active for]]></string>
+    <string name="online_last_seen" introduced="6.6.4"><![CDATA[Last seen]]></string>
+    <string name="online_total_summary" introduced="6.6.4"><![CDATA[%1$s online &middot; %2$s signed-in &middot; %3$s guests &middot; %4$s bots]]></string>
+    <string name="loc_home" introduced="6.6.4"><![CDATA[Home]]></string>
+    <string name="loc_cart" introduced="6.6.4"><![CDATA[Cart]]></string>
+    <string name="loc_checkout" introduced="6.6.4"><![CDATA[Checkout]]></string>
+    <string name="loc_account" introduced="6.6.4"><![CDATA[Account]]></string>
+    <string name="loc_login" introduced="6.6.4"><![CDATA[Login]]></string>
+    <string name="loc_register" introduced="6.6.4"><![CDATA[Register]]></string>
+    <string name="loc_browsing" introduced="6.6.4"><![CDATA[Browsing: %1$s]]></string>
+    <string name="loc_viewing" introduced="6.6.4"><![CDATA[Viewing: %1$s]]></string>
+    <string name="loc_searching" introduced="6.6.4"><![CDATA[Searching: %1$s]]></string>
+    <string name="loc_404" introduced="6.6.4"><![CDATA[Missing page (404)]]></string>
+    <string name="time_ago_seconds" introduced="6.6.4"><![CDATA[%1$ds ago]]></string>
+    <string name="time_ago_minutes" introduced="6.6.4"><![CDATA[%1$dm ago]]></string>
+    <string name="time_ago_hours" introduced="6.6.4"><![CDATA[%1$dh ago]]></string>
+    <string name="duration_seconds" introduced="6.6.4"><![CDATA[%1$ds]]></string>
+    <string name="duration_minutes" introduced="6.6.4"><![CDATA[%1$dm]]></string>
+    <string name="duration_hours" introduced="6.6.4"><![CDATA[%1$dh %2$dm]]></string>
+    <string name="ip_local" introduced="6.6.4"><![CDATA[Local]]></string>
+    <string name="ip_test" introduced="6.6.4"><![CDATA[Test]]></string>
+    <string name="footer_orders" introduced="6.6.4"><![CDATA[%1$s &middot; %2$s orders]]></string>
+    <string name="footer_products" introduced="6.6.4"><![CDATA[%1$s &middot; %2$s products]]></string>
+    <string name="footer_terms" introduced="6.6.4"><![CDATA[%1$s &middot; %2$s terms]]></string>
+    <string name="footer_customers" introduced="6.6.4"><![CDATA[%1$s &middot; %2$s customers]]></string>
+    <string name="footer_searches" introduced="6.6.4"><![CDATA[%1$s searches]]></string>
+    <string name="footer_views" introduced="6.6.4"><![CDATA[%1$s views]]></string>
+    <string name="bot_generic" introduced="6.6.4"><![CDATA[Bot]]></string>
   </group>
   <group name="translate">
     <string name="no_phrases_found" introduced="6.4.3"><![CDATA[No phrases found containing &quot;%1$s&quot;.]]></string>
