@@ -161,6 +161,140 @@
    {else}
    <p>{$LANG.statistics.notify_sales_none}</p>
    {/if}
+{elseif $ACTIVE_TAB == 'stats_funnel'}
+   <h3>Conversion Funnel</h3>
+   <div class="stat-chart">
+      <div class="stat-chart-header">
+         <span class="stat-chart-title">Last 7 days</span>
+      </div>
+      <div class="stat-chart-body">
+         <table width="100%" class="stat-table funnel-table">
+            <thead>
+               <tr>
+                  <td>Stage</td>
+                  <td style="text-align: right" nowrap="nowrap">Count</td>
+                  <td style="text-align: right" nowrap="nowrap">% of sessions</td>
+                  <td style="text-align: right" nowrap="nowrap">% of previous</td>
+                  <td style="width: 40%">&nbsp;</td>
+               </tr>
+            </thead>
+            <tbody>
+               {foreach from=$FUNNEL_STAGES item=stage}
+               <tr>
+                  <td><strong>{$stage.name}</strong></td>
+                  <td style="text-align: right" nowrap="nowrap">{$stage.count|number_format}</td>
+                  <td style="text-align: right" nowrap="nowrap">{$stage.pct_total}%</td>
+                  <td style="text-align: right" nowrap="nowrap">{if $stage.pct_prev !== null}{$stage.pct_prev}%{else}&mdash;{/if}</td>
+                  <td><div class="funnel-bar" style="width: {$stage.pct_total}%"></div></td>
+               </tr>
+               {/foreach}
+            </tbody>
+         </table>
+      </div>
+      <div class="stat-chart-footer">Submitted: {$FUNNEL_SUB_VALUE} &middot; Paid: {$FUNNEL_PAID_VALUE}</div>
+   </div>
+{elseif $ACTIVE_TAB == 'stats_abandoned'}
+   <h3>Abandoned Carts</h3>
+   <div class="stat-chart">
+      <div class="stat-chart-header">
+         <span class="stat-chart-title">Active sessions with non-empty baskets (last 24h)</span>
+      </div>
+      {if $ABANDONED_CARTS}
+      <div class="stat-chart-body">
+         <table width="100%" class="stat-table">
+            <thead>
+               <tr>
+                  <td>Customer</td>
+                  <td style="text-align: center" nowrap="nowrap">Items</td>
+                  <td style="text-align: right" nowrap="nowrap">Cart Value</td>
+                  <td style="text-align: center" nowrap="nowrap">Idle</td>
+                  <td>IP</td>
+                  <td></td>
+               </tr>
+            </thead>
+            <tbody>
+               {foreach from=$ABANDONED_CARTS item=ab}
+               <tr>
+                  <td>
+                     {if $ab.customer_id > 0}
+                     <a href="?_g=customers&node=index&action=edit&customer_id={$ab.customer_id}">{$ab.name}</a>
+                     {if $ab.email} <small>&lt;{$ab.email}&gt;</small>{/if}
+                     {else}
+                     {$ab.name}
+                     {/if}
+                  </td>
+                  <td style="text-align: center">{$ab.item_count}</td>
+                  <td style="text-align: right" nowrap="nowrap"><strong>{$ab.cart_value}</strong></td>
+                  <td style="text-align: center" nowrap="nowrap">{$ab.last_idle}</td>
+                  <td nowrap="nowrap"><a href="http://whois.domaintools.com/{$ab.ip_address}" target="_blank" rel="noopener">{$ab.ip_address}</a></td>
+                  <td style="text-align: center">{if $ab.email}<a href="mailto:{$ab.email}" title="Email customer"><i class="fa fa-envelope"></i></a>{/if}</td>
+               </tr>
+               {/foreach}
+            </tbody>
+         </table>
+      </div>
+      <div class="stat-chart-footer">{$ABANDONED_TOTAL} in {$ABANDONED_COUNT} abandoned baskets</div>
+      {else}
+      <div class="stat-chart-body" style="text-align: center; padding: 2em 0;">No abandoned carts in the last 24 hours.</div>
+      {/if}
+   </div>
+{elseif $ACTIVE_TAB == 'stats_country'}
+   <h3>Sales by Country</h3>
+   <div class="stat-chart">
+      <div class="stat-chart-header">
+         <span class="stat-chart-title">Sales by Country</span>
+         <form action="{$VAL_SELF}" class="ignore-dirty stats-filter" method="get">
+            <select name="cn_year" class="textbox">
+            {foreach from=$CN_YEAR_OPTIONS item=opt}<option value="{$opt.value}"{$opt.selected}>{$opt.label}</option>{/foreach}
+            </select>
+            <input type="submit" class="tiny" value="{$LANG.common.go}">
+            <input type="hidden" name="_g" value="statistics">
+            <input type="hidden" name="tab" value="stats_country">
+         </form>
+      </div>
+      {if $COUNTRY_ROWS}
+      <div class="stat-chart-body">
+         <div id="chart11" class="google_chart"></div>
+         <div id="chart11-title" style="display:none">{$GRAPH_DATA.11.title}</div>
+         <div id="chart11-hAxis" style="display:none">{$GRAPH_DATA.11.hAxis}</div>
+         <div id="chart11-vAxis" style="display:none">{$GRAPH_DATA.11.vAxis}</div>
+         <table width="100%" class="stat-table">
+            <thead>
+               <tr>
+                  <td></td>
+                  <td>Country</td>
+                  <td style="text-align: center" nowrap="nowrap">Orders</td>
+                  <td style="text-align: right" nowrap="nowrap">Revenue</td>
+                  <td style="text-align: center" nowrap="nowrap">% of total</td>
+               </tr>
+            </thead>
+            <tbody>
+               {foreach from=$COUNTRY_ROWS item=row}
+               <tr>
+                  <td style="text-align: center">{$row.rank}</td>
+                  <td>{if $row.flag}<span class="country-flag">{$row.flag}</span> {/if}{$row.name}</td>
+                  <td style="text-align: center">{$row.orders}</td>
+                  <td style="text-align: right" nowrap="nowrap">{$row.revenue}</td>
+                  <td style="text-align: center">{$row.percent}%</td>
+               </tr>
+               {/foreach}
+            </tbody>
+         </table>
+      </div>
+      <div class="stat-chart-footer">{$GRAPH_DATA.11.total_sum} &middot; {$GRAPH_DATA.11.total_count} countries</div>
+      <script type="text/javascript">
+         window.chart_data = window.chart_data || [];
+         window.chart_options = window.chart_options || [];
+         window.chart_data[11] = [{$GRAPH_DATA.11.data}];
+         window.chart_options[11] = {};
+         window.chart_options[11].colors = {$GRAPH_DATA.11.colors};
+         window.chart_options[11].legend = '{$GRAPH_DATA.11.legend}';
+         window.whenChartsReady(function() { window.drawChart(11, window.chart_data); });
+      </script>
+      {else}
+      <div class="stat-chart-body" style="text-align: center; padding: 2em 0;">No sales data for the selected period.</div>
+      {/if}
+   </div>
 {elseif $ACTIVE_TAB == 'stats_prod_sales'}
    <h3>{$LANG.statistics.title_popular}</h3>
    <div class="stat-chart">

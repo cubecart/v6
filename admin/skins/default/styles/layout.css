@@ -2092,6 +2092,19 @@ div#content .powered ul li img {
 .row-at-checkout td {
     background-color: rgba(255, 196, 0, 0.10)
 }
+.funnel-table td { vertical-align: middle }
+.funnel-bar {
+    height: 14px;
+    background: linear-gradient(90deg, #5b8def 0%, #3d6cc8 100%);
+    border-radius: 7px;
+    min-width: 2px;
+    transition: width .3s ease
+}
+.country-flag {
+    font-size: 16px;
+    margin-right: 6px;
+    vertical-align: -2px
+}
 .stats-filter.stats-status-filter {
     background: var(--panel);
     border: 1px solid var(--border);

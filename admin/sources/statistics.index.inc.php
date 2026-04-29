@@ -20,7 +20,7 @@ Admin::getInstance()->permissions('statistics', CC_PERM_READ, true);
 // `?tab=plugin_x` is accepted by the active-tab gate. Plugin content itself
 // is rendered via the existing `admin.statistics.tabs` hook below — plugins
 // gate their own SQL on $active_tab to opt into lazy loading.
-$valid_tabs  = array('stats_sales', 'stats_prod_sales', 'stats_prod_views', 'stats_search', 'stats_best_customers', 'stats_online');
+$valid_tabs  = array('stats_sales', 'stats_funnel', 'stats_abandoned', 'stats_country', 'stats_prod_sales', 'stats_prod_views', 'stats_search', 'stats_best_customers', 'stats_online');
 foreach ($GLOBALS['hooks']->load('admin.statistics.tabs.register') as $hook) {
     include $hook;
 }
@@ -58,6 +58,9 @@ $online_count = $online_count_q ? (int)$online_count_q[0]['c'] : 0;
 
 // Register every tab button up front so the strip is consistent regardless of which tab is active.
 $GLOBALS['main']->addTabControl($lang['statistics']['title_sales'],            'stats_sales');
+$GLOBALS['main']->addTabControl('Conversion',                                   'stats_funnel');
+$GLOBALS['main']->addTabControl('Abandoned Carts',                              'stats_abandoned');
+$GLOBALS['main']->addTabControl('Sales by Country',                             'stats_country');
 $GLOBALS['main']->addTabControl($lang['statistics']['title_popular'],          'stats_prod_sales');
 $GLOBALS['main']->addTabControl($lang['statistics']['title_viewed'],           'stats_prod_views');
 $GLOBALS['main']->addTabControl($lang['statistics']['title_search'],           'stats_search');
@@ -358,6 +361,223 @@ case 'stats_sales':
 
         $GLOBALS['smarty']->assign('DISPLAY_SALES', true);
     }
+    break;
+
+case 'stats_funnel':
+    // Conversion funnel — last 7 days (sessions table is purged after that).
+    $window     = 7 * 86400;
+    $since      = time() - $window;
+    $tax_inst   = Tax::getInstance();
+
+    // Stage 1: sessions in window.
+    $sess_q = $GLOBALS['db']->query(sprintf(
+        "SELECT COUNT(*) AS c FROM `%sCubeCart_sessions` WHERE acp = 0 AND session_last >= %d",
+        $glob['dbprefix'], $since
+    ));
+    $sessions_count = $sess_q ? (int)$sess_q[0]['c'] : 0;
+
+    // Stage 2: sessions with at least one cart item. Cheapest viable
+    // detection: serialised "__basket" with non-empty contents leaves a
+    // recognisable substring in the blob.
+    $cart_q = $GLOBALS['db']->query(sprintf(
+        "SELECT COUNT(*) AS c FROM `%sCubeCart_sessions` WHERE acp = 0 AND session_last >= %d AND session_data LIKE '%%\"__basket\"%%' AND session_data LIKE '%%\"contents\";a:%%' AND session_data NOT LIKE '%%\"contents\";a:0:{}%%'",
+        $glob['dbprefix'], $since
+    ));
+    $cart_count = $cart_q ? (int)$cart_q[0]['c'] : 0;
+
+    // Stage 3: orders submitted (any non-zero status) in window.
+    $sub_q = $GLOBALS['db']->query(sprintf(
+        "SELECT COUNT(*) AS c, COALESCE(SUM(`total`), 0) AS s FROM `%sCubeCart_order_summary` WHERE `order_date` >= %d",
+        $glob['dbprefix'], $since
+    ));
+    $submitted_count = $sub_q ? (int)$sub_q[0]['c'] : 0;
+    $submitted_value = $sub_q ? (float)$sub_q[0]['s'] : 0;
+
+    // Stage 4: orders paid (status 2 or 3) in window.
+    $paid_q = $GLOBALS['db']->query(sprintf(
+        "SELECT COUNT(*) AS c, COALESCE(SUM(`total`), 0) AS s FROM `%sCubeCart_order_summary` WHERE `order_date` >= %d AND `status` IN (2,3)",
+        $glob['dbprefix'], $since
+    ));
+    $paid_count = $paid_q ? (int)$paid_q[0]['c'] : 0;
+    $paid_value = $paid_q ? (float)$paid_q[0]['s'] : 0;
+
+    $base = max($sessions_count, 1);
+    $stages = array(
+        array('name' => 'Sessions',          'count' => $sessions_count, 'pct_total' => 100,                                                'pct_prev' => null),
+        array('name' => 'Created cart',      'count' => $cart_count,     'pct_total' => round($cart_count      / $base * 100, 1),           'pct_prev' => $sessions_count ? round($cart_count      / $sessions_count * 100, 1) : 0),
+        array('name' => 'Order submitted',   'count' => $submitted_count,'pct_total' => round($submitted_count / $base * 100, 1),           'pct_prev' => $cart_count      ? round($submitted_count / $cart_count      * 100, 1) : 0),
+        array('name' => 'Order paid',        'count' => $paid_count,     'pct_total' => round($paid_count      / $base * 100, 1),           'pct_prev' => $submitted_count ? round($paid_count      / $submitted_count * 100, 1) : 0),
+    );
+
+    $g_graph_data[10]['data']        = "['Stage','Count'],";
+    $tmp = array();
+    foreach ($stages as $s) {
+        $tmp[] = "['".addslashes($s['name'])."',".$s['count']."]";
+    }
+    $g_graph_data[10]['data']       .= implode(',', $tmp);
+    $g_graph_data[10]['title']       = 'Last 7 days';
+    $g_graph_data[10]['hAxis']       = '';
+    $g_graph_data[10]['vAxis']       = '';
+    $g_graph_data[10]['legend']      = 'none';
+
+    $GLOBALS['smarty']->assign('FUNNEL_STAGES',     $stages);
+    $GLOBALS['smarty']->assign('FUNNEL_PAID_VALUE', $tax_inst->priceFormat($paid_value));
+    $GLOBALS['smarty']->assign('FUNNEL_SUB_VALUE',  $tax_inst->priceFormat($submitted_value));
+    break;
+
+case 'stats_abandoned':
+    // Active sessions that have a non-empty basket but no recent paid order
+    // for the same session_id linkage.
+    $window = 24 * 3600; // last 24h
+    $since  = time() - $window;
+    $tax_inst = Tax::getInstance();
+
+    $rows_q = $GLOBALS['db']->query(sprintf(
+        "SELECT S.session_id, S.session_start, S.session_last, S.customer_id, S.location, S.ip_address, S.session_data, C.first_name, C.last_name, C.email FROM `%1\$sCubeCart_sessions` AS S LEFT JOIN `%1\$sCubeCart_customer` AS C ON S.customer_id = C.customer_id WHERE S.acp = 0 AND S.session_last >= %2\$d AND S.session_data LIKE '%%\"__basket\"%%' AND S.session_data LIKE '%%\"contents\";a:%%' AND S.session_data NOT LIKE '%%\"contents\";a:0:{}%%' ORDER BY S.session_last DESC",
+        $glob['dbprefix'], $since
+    ));
+
+    $abandoned = array();
+    $total_value = 0;
+    if ($rows_q) {
+        $now_t = time();
+        foreach ($rows_q as $row) {
+            $data = @unserialize($row['session_data'], ['allowed_classes' => false]);
+            if (!is_array($data)) continue;
+            $basket = $data['__basket'] ?? null;
+            if (!is_array($basket) || empty($basket['contents'])) continue;
+            $value = (float)($basket['total'] ?? 0);
+            if ($value <= 0) continue;
+            $total_value += $value;
+
+            $rel = max(0, $now_t - (int)$row['session_last']);
+            $idle = ($rel < 60) ? $rel.'s' : (($rel < 3600) ? floor($rel/60).'m' : floor($rel/3600).'h');
+
+            $abandoned[] = array(
+                'session_id'    => $row['session_id'],
+                'name'          => ((int)$row['customer_id'] > 0)
+                    ? trim($row['first_name'].' '.$row['last_name'])
+                    : $lang['common']['guest'],
+                'email'         => $row['email'] ?? '',
+                'customer_id'   => (int)$row['customer_id'],
+                'item_count'    => count($basket['contents']),
+                'cart_value'    => $tax_inst->priceFormat($value),
+                'cart_value_raw'=> $value,
+                'last_idle'     => $idle . ' ago',
+                'ip_address'    => $row['ip_address'],
+                'location'      => $row['location'],
+            );
+        }
+    }
+    // Sort by basket value DESC.
+    usort($abandoned, function ($a, $b) { return $b['cart_value_raw'] <=> $a['cart_value_raw']; });
+
+    $GLOBALS['smarty']->assign('ABANDONED_CARTS',  $abandoned);
+    $GLOBALS['smarty']->assign('ABANDONED_TOTAL',  $tax_inst->priceFormat($total_value));
+    $GLOBALS['smarty']->assign('ABANDONED_COUNT',  number_format(count($abandoned)));
+    break;
+
+case 'stats_country':
+    // Year filter ('all' or numeric).
+    $cn_year_raw = isset($_GET['cn_year']) ? $_GET['cn_year'] : 'all';
+    $cn_year     = ($cn_year_raw === 'all' || !is_numeric($cn_year_raw)) ? 'all' : (int)$cn_year_raw;
+
+    $now_year   = (int)date('Y');
+    $where_date = '';
+    if ($cn_year !== 'all') {
+        $year_start = mktime(0, 0, 0, 1, 1, $cn_year);
+        $year_end   = ($cn_year === $now_year) ? time() : mktime(0, 0, 0, 1, 1, $cn_year + 1);
+        $where_date = " AND `O`.`order_date` >= ".$year_start." AND `O`.`order_date` < ".$year_end;
+    }
+
+    $earliest_q    = $GLOBALS['db']->query("SELECT MIN(`order_date`) AS `m` FROM `".$glob['dbprefix']."CubeCart_order_summary` WHERE `status` IN (2,3)");
+    $earliest_year = ($earliest_q && !empty($earliest_q[0]['m'])) ? (int)date('Y', $earliest_q[0]['m']) : $now_year;
+    $cn_year_options = array(
+        array('value' => 'all', 'label' => 'All time', 'selected' => $cn_year === 'all' ? ' selected="selected"' : ''),
+    );
+    for ($yr = $now_year; $yr >= $earliest_year; $yr--) {
+        $cn_year_options[] = array('value' => $yr, 'label' => $yr, 'selected' => ($cn_year === $yr) ? ' selected="selected"' : '');
+    }
+
+    // Year-colour palette, same rules as Best Customers / Best Selling.
+    $hsl_to_hex = function ($h, $s, $l) {
+        $h = (($h % 360) + 360) % 360 / 360;
+        $q = $l < 0.5 ? $l * (1 + $s) : $l + $s - $l * $s;
+        $p = 2 * $l - $q;
+        $hue = function ($t) use ($p, $q) {
+            if ($t < 0) $t += 1;
+            if ($t > 1) $t -= 1;
+            if ($t < 1/6) return $p + ($q - $p) * 6 * $t;
+            if ($t < 1/2) return $q;
+            if ($t < 2/3) return $p + ($q - $p) * (2/3 - $t) * 6;
+            return $p;
+        };
+        return sprintf('#%02x%02x%02x', (int)round($hue($h + 1/3) * 255), (int)round($hue($h) * 255), (int)round($hue($h - 1/3) * 255));
+    };
+    if ($cn_year === 'all') {
+        $idx = ($now_year - $earliest_year) + 1;
+    } else {
+        $idx = max(0, $cn_year - $earliest_year);
+    }
+    $cn_color = $hsl_to_hex((int)round(fmod(210 + $idx * 137.5, 360)), 0.65, 0.45);
+
+    $GLOBALS['smarty']->assign('CN_YEAR_OPTIONS', $cn_year_options);
+    $GLOBALS['smarty']->assign('CN_YEAR',         $cn_year);
+
+    $rows_q = $GLOBALS['db']->query(sprintf(
+        "SELECT G.iso, G.name, COUNT(*) AS orders, SUM(O.total) AS revenue FROM `%1\$sCubeCart_order_summary` AS O INNER JOIN `%1\$sCubeCart_geo_country` AS G ON G.numcode = O.country WHERE O.status IN (2,3)".$where_date." GROUP BY O.country ORDER BY revenue DESC",
+        $glob['dbprefix']
+    ));
+
+    $countries = array();
+    $total_revenue = 0;
+    if ($rows_q) {
+        foreach ($rows_q as $row) {
+            $total_revenue += (float)$row['revenue'];
+        }
+    }
+
+    $tax_inst = Tax::getInstance();
+    $flag_for = function ($iso) {
+        if (!$iso || strlen($iso) !== 2) return '';
+        $iso = strtoupper($iso);
+        $base = 0x1F1E6;
+        $a = ord('A');
+        return mb_chr($base + ord($iso[0]) - $a) . mb_chr($base + ord($iso[1]) - $a);
+    };
+
+    $g_graph_data[11]['data'] = "['Country','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
+    $tmp = array();
+    if ($rows_q) {
+        $rank = 0;
+        foreach ($rows_q as $row) {
+            $rank++;
+            $rev   = (float)$row['revenue'];
+            $flag  = $flag_for($row['iso']);
+            if ($rank <= 10) {
+                $tmp[] = "['".addslashes(($flag ? $flag.' ' : '').$row['name'])."',".$rev."]";
+            }
+            $countries[] = array(
+                'rank'    => $rank,
+                'flag'    => $flag,
+                'iso'     => $row['iso'],
+                'name'    => $row['name'],
+                'orders'  => number_format((int)$row['orders']),
+                'revenue' => $tax_inst->priceFormat($rev),
+                'percent' => $total_revenue > 0 ? number_format($rev / $total_revenue * 100, 1) : 0,
+            );
+        }
+    }
+    $g_graph_data[11]['data']       .= implode(',', $tmp);
+    $g_graph_data[11]['title']       = 'Top 10 by revenue';
+    $g_graph_data[11]['hAxis']       = '';
+    $g_graph_data[11]['vAxis']       = '';
+    $g_graph_data[11]['colors']      = "['".$cn_color."']";
+    $g_graph_data[11]['legend']      = 'none';
+    $g_graph_data[11]['total_sum']   = $tax_inst->priceFormat($total_revenue);
+    $g_graph_data[11]['total_count'] = number_format(count($countries));
+
+    $GLOBALS['smarty']->assign('COUNTRY_ROWS', $countries);
     break;
 
 case 'stats_prod_sales':

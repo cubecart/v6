@@ -175,6 +175,15 @@ window.statsDrillTo = function(updates, scrollTo) {
 <div id="stats_sales" class="tab_content"{if $ACTIVE_TAB != 'stats_sales'} data-needs-load="1"{/if}>
    {if $ACTIVE_TAB == 'stats_sales'}{include file='templates/statistics.tabs.php'}{/if}
 </div>
+<div id="stats_funnel" class="tab_content"{if $ACTIVE_TAB != 'stats_funnel'} data-needs-load="1"{/if}>
+   {if $ACTIVE_TAB == 'stats_funnel'}{include file='templates/statistics.tabs.php'}{/if}
+</div>
+<div id="stats_abandoned" class="tab_content"{if $ACTIVE_TAB != 'stats_abandoned'} data-needs-load="1"{/if}>
+   {if $ACTIVE_TAB == 'stats_abandoned'}{include file='templates/statistics.tabs.php'}{/if}
+</div>
+<div id="stats_country" class="tab_content"{if $ACTIVE_TAB != 'stats_country'} data-needs-load="1"{/if}>
+   {if $ACTIVE_TAB == 'stats_country'}{include file='templates/statistics.tabs.php'}{/if}
+</div>
 <div id="stats_prod_sales" class="tab_content"{if $ACTIVE_TAB != 'stats_prod_sales'} data-needs-load="1"{/if}>
    {if $ACTIVE_TAB == 'stats_prod_sales'}{include file='templates/statistics.tabs.php'}{/if}
 </div>
