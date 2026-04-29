@@ -71,8 +71,35 @@ $smarty_data  = array();
 switch ($active_tab) {
 
 case 'stats_sales':
-    $earliest_order = $GLOBALS['db']->select('CubeCart_order_summary', array('MIN' => 'order_date'), array('status' => $select['status']), array('order_date' => 'ASC'));
-    $yearly = $monthly = $daily = $hourly = array();
+    // Order-status checkboxes. Default to Processing+Complete.
+    $default_statuses = array(2, 3);
+    if (isset($_GET['s']) && is_array($_GET['s'])) {
+        $statuses = array_values(array_unique(array_filter(array_map('intval', $_GET['s']), function ($s) {
+            return $s >= 1 && $s <= 6;
+        })));
+    } else {
+        $statuses = $default_statuses;
+    }
+    if (empty($statuses)) $statuses = $default_statuses;
+    sort($statuses);
+    $status_in = '(' . implode(',', $statuses) . ')';
+
+    $status_options = array();
+    for ($i = 1; $i <= 6; $i++) {
+        $status_options[] = array(
+            'id'      => $i,
+            'name'    => $lang['order_state']['name_'.$i] ?? ('Status '.$i),
+            'checked' => in_array($i, $statuses, true) ? ' checked="checked"' : '',
+        );
+    }
+    $GLOBALS['smarty']->assign('SALES_STATUSES', $status_options);
+
+    $earliest_order = $GLOBALS['db']->query(sprintf(
+        "SELECT MIN(`order_date`) AS `MIN_order_date` FROM `%sCubeCart_order_summary` WHERE `status` IN %s",
+        $glob['dbprefix'], $status_in
+    ));
+    $yearly = $monthly_curr = $monthly_prior = $daily = $hourly = array();
+    $totals = array(1 => array(0,0), 2 => array(0,0), 3 => array(0,0), 4 => array(0,0));
 
     if (!empty($earliest_order[0]['MIN_order_date'])) {
         $earliest = array(
@@ -94,53 +121,69 @@ case 'stats_sales':
             'h_day'   => (isset($_GET['h_day'])   && in_array((int)$_GET['h_day'],   range(1,31)))         ? str_pad((int)$_GET['h_day'],   2, '0', STR_PAD_LEFT)  : date('d'),
         );
 
-        $status = (int)$select['status'];
-
         // Date-range bounds per chart.
         $month_year_start = mktime(0, 0, 0, 1, 1, (int)$sf['m_year']);
         $month_year_end   = mktime(0, 0, 0, 1, 1, (int)$sf['m_year'] + 1);
+        $prior_year_start = mktime(0, 0, 0, 1, 1, (int)$sf['m_year'] - 1);
         $day_month_start  = mktime(0, 0, 0, (int)$sf['d_month'], 1, (int)$sf['d_year']);
         $day_month_end    = mktime(0, 0, 0, (int)$sf['d_month'] + 1, 1, (int)$sf['d_year']);
         $hour_day_start   = mktime(0, 0, 0, (int)$sf['h_month'], (int)$sf['h_day'], (int)$sf['h_year']);
         $hour_day_end     = mktime(0, 0, 0, (int)$sf['h_month'], (int)$sf['h_day'] + 1, (int)$sf['h_year']);
 
+        // Yearly + chart 1 totals.
         $yearly_rows = $GLOBALS['db']->query(sprintf(
-            "SELECT FROM_UNIXTIME(`order_date`, '%%Y') AS bucket, SUM(`total`) AS s FROM `%sCubeCart_order_summary` WHERE `status` = %d GROUP BY bucket",
-            $glob['dbprefix'], $status
+            "SELECT FROM_UNIXTIME(`order_date`, '%%Y') AS bucket, SUM(`total`) AS s, COUNT(*) AS c FROM `%sCubeCart_order_summary` WHERE `status` IN %s GROUP BY bucket",
+            $glob['dbprefix'], $status_in
         ));
         if ($yearly_rows) {
             foreach ($yearly_rows as $row) {
                 $yearly[$row['bucket']] = (float)$row['s'];
+                $totals[1][0] += (float)$row['s'];
+                $totals[1][1] += (int)$row['c'];
             }
         }
 
+        // Monthly query covers BOTH selected year and the prior year for YoY overlay.
         $monthly_rows = $GLOBALS['db']->query(sprintf(
-            "SELECT FROM_UNIXTIME(`order_date`, '%%m') AS bucket, SUM(`total`) AS s FROM `%sCubeCart_order_summary` WHERE `status` = %d AND `order_date` >= %d AND `order_date` < %d GROUP BY bucket",
-            $glob['dbprefix'], $status, $month_year_start, $month_year_end
+            "SELECT FROM_UNIXTIME(`order_date`, '%%Y') AS y, FROM_UNIXTIME(`order_date`, '%%m') AS m, SUM(`total`) AS s, COUNT(*) AS c FROM `%sCubeCart_order_summary` WHERE `status` IN %s AND `order_date` >= %d AND `order_date` < %d GROUP BY y, m",
+            $glob['dbprefix'], $status_in, $prior_year_start, $month_year_end
         ));
         if ($monthly_rows) {
+            $sf_my   = (int)$sf['m_year'];
+            $sf_my_p = $sf_my - 1;
             foreach ($monthly_rows as $row) {
-                $monthly[$row['bucket']] = (float)$row['s'];
+                $yr = (int)$row['y'];
+                if ($yr === $sf_my) {
+                    $monthly_curr[$row['m']] = (float)$row['s'];
+                    $totals[2][0] += (float)$row['s'];
+                    $totals[2][1] += (int)$row['c'];
+                } elseif ($yr === $sf_my_p) {
+                    $monthly_prior[$row['m']] = (float)$row['s'];
+                }
             }
         }
 
         $daily_rows = $GLOBALS['db']->query(sprintf(
-            "SELECT FROM_UNIXTIME(`order_date`, '%%d') AS bucket, SUM(`total`) AS s FROM `%sCubeCart_order_summary` WHERE `status` = %d AND `order_date` >= %d AND `order_date` < %d GROUP BY bucket",
-            $glob['dbprefix'], $status, $day_month_start, $day_month_end
+            "SELECT FROM_UNIXTIME(`order_date`, '%%d') AS bucket, SUM(`total`) AS s, COUNT(*) AS c FROM `%sCubeCart_order_summary` WHERE `status` IN %s AND `order_date` >= %d AND `order_date` < %d GROUP BY bucket",
+            $glob['dbprefix'], $status_in, $day_month_start, $day_month_end
         ));
         if ($daily_rows) {
             foreach ($daily_rows as $row) {
                 $daily[$row['bucket']] = (float)$row['s'];
+                $totals[3][0] += (float)$row['s'];
+                $totals[3][1] += (int)$row['c'];
             }
         }
 
         $hourly_rows = $GLOBALS['db']->query(sprintf(
-            "SELECT FROM_UNIXTIME(`order_date`, '%%H') AS bucket, SUM(`total`) AS s FROM `%sCubeCart_order_summary` WHERE `status` = %d AND `order_date` >= %d AND `order_date` < %d GROUP BY bucket",
-            $glob['dbprefix'], $status, $hour_day_start, $hour_day_end
+            "SELECT FROM_UNIXTIME(`order_date`, '%%H') AS bucket, SUM(`total`) AS s, COUNT(*) AS c FROM `%sCubeCart_order_summary` WHERE `status` IN %s AND `order_date` >= %d AND `order_date` < %d GROUP BY bucket",
+            $glob['dbprefix'], $status_in, $hour_day_start, $hour_day_end
         ));
         if ($hourly_rows) {
             foreach ($hourly_rows as $row) {
                 $hourly[$row['bucket']] = (float)$row['s'];
+                $totals[4][0] += (float)$row['s'];
+                $totals[4][1] += (int)$row['c'];
             }
         }
 
@@ -216,6 +259,15 @@ case 'stats_sales':
         $GLOBALS['smarty']->assign('H_DAYS',   $day_options($sf['h_day'], $sf['h_year'], $sf['h_month']));
         $GLOBALS['smarty']->assign('SALES_FILTER', $sf);
 
+        // Y-axis currency format: extract symbol from a sample priceFormat call.
+        $_sample = Tax::getInstance()->priceFormat(0);
+        $_sym    = '';
+        if (preg_match('/^([^\d\s\-\.]+)/u', $_sample, $_m)) {
+            $_sym = $_m[1];
+        }
+        $y_axis_format = ($_sym ? $_sym : '') . '#,###';
+        $tax = Tax::getInstance();
+
         // Chart 1: Yearly. Each bar gets its own year colour.
         if (count($yearly) >= 1) {
             $g_graph_data[1]['data'] = "['Year','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."',{role:'style'}],";
@@ -224,26 +276,49 @@ case 'stats_sales':
                 $value = isset($yearly[$i]) ? $yearly[$i] : 0;
                 $tmp[] = "['".$i."',".$value.",'color: ".$year_color[$i]."']";
             }
-            $g_graph_data[1]['data'] .= implode(',', $tmp);
-            $g_graph_data[1]['title'] = ($earliest['year'] == $now_year) ? sprintf($lang['statistics']['sales_in'], $now_year) : sprintf($lang['statistics']['sales_from_to'], $earliest['year'], $now_year);
-            $g_graph_data[1]['hAxis'] = '';
-            $g_graph_data[1]['vAxis'] = '';
-            $g_graph_data[1]['legend'] = 'none';
+            $g_graph_data[1]['data']    .= implode(',', $tmp);
+            $g_graph_data[1]['title']    = ($earliest['year'] == $now_year) ? sprintf($lang['statistics']['sales_in'], $now_year) : sprintf($lang['statistics']['sales_from_to'], $earliest['year'], $now_year);
+            $g_graph_data[1]['hAxis']    = '';
+            $g_graph_data[1]['vAxis']    = '';
+            $g_graph_data[1]['legend']   = 'none';
+            $g_graph_data[1]['y_format'] = $y_axis_format;
+            $g_graph_data[1]['drill']    = array('type' => 'year', 'years' => range($earliest['year'], $now_year));
         }
+        $g_graph_data[1]['total_sum']    = $tax->priceFormat((float)$totals[1][0]);
+        $g_graph_data[1]['total_count']  = number_format((int)$totals[1][1]);
 
-        // Chart 2: Monthly for $sf['m_year'].
-        $g_graph_data[2]['data'] = "['Month','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
+        // Chart 2: Monthly current vs prior year (YoY overlay).
+        // Drop the prior-year series when it's before the store's earliest order;
+        // there's no data and the colour-fallback makes the two legends collide.
+        $sf_my_p     = (int)$sf['m_year'] - 1;
+        $show_prior  = $sf_my_p >= $earliest['year'];
+        if ($show_prior) {
+            $g_graph_data[2]['data'] = "['Month','".$sf['m_year']."','".$sf_my_p."'],";
+        } else {
+            $g_graph_data[2]['data'] = "['Month','".$sf['m_year']."'],";
+        }
         $tmp = array();
         for ($i = 1; $i <= 12; ++$i) {
             $padded = str_pad($i, 2, '0', STR_PAD_LEFT);
-            $value  = isset($monthly[$padded]) ? $monthly[$padded] : 0;
-            $tmp[]  = "['".date('M', mktime(0, 0, 0, $i, 1))."',".$value."]";
+            $cv = $monthly_curr[$padded] ?? 0;
+            $row = "['".date('M', mktime(0, 0, 0, $i, 1))."',".$cv;
+            if ($show_prior) {
+                $pv = $monthly_prior[$padded] ?? 0;
+                $row .= ",".$pv;
+            }
+            $tmp[] = $row . "]";
         }
-        $g_graph_data[2]['data']  .= implode(',', $tmp);
-        $g_graph_data[2]['title']  = sprintf($lang['statistics']['sales_in_year'], $sf['m_year']);
-        $g_graph_data[2]['hAxis']  = '';
-        $g_graph_data[2]['vAxis']  = '';
-        $g_graph_data[2]['colors'] = "['".$color_for($sf['m_year'])."']";
+        $g_graph_data[2]['data']      .= implode(',', $tmp);
+        $g_graph_data[2]['title']      = sprintf($lang['statistics']['sales_in_year'], $sf['m_year']);
+        $g_graph_data[2]['hAxis']      = '';
+        $g_graph_data[2]['vAxis']      = '';
+        $g_graph_data[2]['colors']     = $show_prior
+            ? "['".$color_for($sf['m_year'])."','".$color_for($sf_my_p)."']"
+            : "['".$color_for($sf['m_year'])."']";
+        $g_graph_data[2]['y_format']   = $y_axis_format;
+        $g_graph_data[2]['drill']      = array('type' => 'month', 'year' => (int)$sf['m_year']);
+        $g_graph_data[2]['total_sum']  = $tax->priceFormat((float)$totals[2][0]);
+        $g_graph_data[2]['total_count']= number_format((int)$totals[2][1]);
 
         // Chart 3: Daily for $sf['d_year']/$sf['d_month'].
         $d_month_length = date('t', mktime(0, 0, 0, (int)$sf['d_month'], 1, (int)$sf['d_year']));
@@ -254,11 +329,15 @@ case 'stats_sales':
             $value  = isset($daily[$padded]) ? $daily[$padded] : 0;
             $tmp[]  = "['".(int)$padded."',".$value."]";
         }
-        $g_graph_data[3]['data']  .= implode(',', $tmp);
-        $g_graph_data[3]['title']  = sprintf($lang['statistics']['sales_in_month_year'], date('F', mktime(0, 0, 0, (int)$sf['d_month'], 1)), $sf['d_year']);
-        $g_graph_data[3]['hAxis']  = '';
-        $g_graph_data[3]['vAxis']  = '';
-        $g_graph_data[3]['colors'] = "['".$color_for($sf['d_year'])."']";
+        $g_graph_data[3]['data']      .= implode(',', $tmp);
+        $g_graph_data[3]['title']      = sprintf($lang['statistics']['sales_in_month_year'], date('F', mktime(0, 0, 0, (int)$sf['d_month'], 1)), $sf['d_year']);
+        $g_graph_data[3]['hAxis']      = '';
+        $g_graph_data[3]['vAxis']      = '';
+        $g_graph_data[3]['colors']     = "['".$color_for($sf['d_year'])."']";
+        $g_graph_data[3]['y_format']   = $y_axis_format;
+        $g_graph_data[3]['drill']      = array('type' => 'day', 'year' => (int)$sf['d_year'], 'month' => $sf['d_month']);
+        $g_graph_data[3]['total_sum']  = $tax->priceFormat((float)$totals[3][0]);
+        $g_graph_data[3]['total_count']= number_format((int)$totals[3][1]);
 
         // Chart 4: Hourly for $sf['h_year']/$sf['h_month']/$sf['h_day'].
         $g_graph_data[4]['data'] = "['Hour','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
@@ -268,11 +347,14 @@ case 'stats_sales':
             $value  = isset($hourly[$padded]) ? $hourly[$padded] : 0;
             $tmp[]  = "['".$padded.":00',".$value."]";
         }
-        $g_graph_data[4]['data']  .= implode(',', $tmp);
-        $g_graph_data[4]['title']  = sprintf($lang['statistics']['sales_on_dmy'], (int)$sf['h_day'], date('F', mktime(0, 0, 0, (int)$sf['h_month'], 1)), $sf['h_year']);
-        $g_graph_data[4]['hAxis']  = '';
-        $g_graph_data[4]['vAxis']  = '';
-        $g_graph_data[4]['colors'] = "['".$color_for($sf['h_year'])."']";
+        $g_graph_data[4]['data']      .= implode(',', $tmp);
+        $g_graph_data[4]['title']      = sprintf($lang['statistics']['sales_on_dmy'], (int)$sf['h_day'], date('F', mktime(0, 0, 0, (int)$sf['h_month'], 1)), $sf['h_year']);
+        $g_graph_data[4]['hAxis']      = '';
+        $g_graph_data[4]['vAxis']      = '';
+        $g_graph_data[4]['colors']     = "['".$color_for($sf['h_year'])."']";
+        $g_graph_data[4]['y_format']   = $y_axis_format;
+        $g_graph_data[4]['total_sum']  = $tax->priceFormat((float)$totals[4][0]);
+        $g_graph_data[4]['total_count']= number_format((int)$totals[4][1]);
 
         $GLOBALS['smarty']->assign('DISPLAY_SALES', true);
     }

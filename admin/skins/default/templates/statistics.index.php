@@ -20,8 +20,10 @@ window.chart_data = window.chart_data || [];
 window.chart_options = window.chart_options || [];
 
 window.whenChartsReady = function(fn) {
-    if (window.google && window.google.visualization && window.google.visualization.arrayToDataTable) {
-        fn();
+    // Use the proper async hook from the new gstatic loader so callbacks
+    // don't fire before all packages (corechart -> ColumnChart) are ready.
+    if (window.google && window.google.charts && typeof window.google.charts.setOnLoadCallback === 'function') {
+        google.charts.setOnLoadCallback(fn);
     } else {
         setTimeout(function() { window.whenChartsReady(fn); }, 50);
     }
@@ -84,8 +86,64 @@ window.drawChart = function(id, chart_data) {
     var custom = (window.chart_options && window.chart_options[id]) || {};
     if (custom.colors) options.colors = custom.colors;
     if (custom.legend === 'none') options.legend = 'none';
+    if (custom.yFormat) options.vAxis.format = custom.yFormat;
     var chart = new google.visualization.ColumnChart(container);
     chart.draw(data, options);
+
+    if (custom.drill && typeof window.statsHandleDrill === 'function') {
+        google.visualization.events.addListener(chart, 'select', function() {
+            var sel = chart.getSelection();
+            if (!sel.length || sel[0].row === null) return;
+            window.statsHandleDrill(custom.drill, sel[0].row, sel[0].column);
+        });
+    }
+};
+
+// Drill-down: translate a chart bar click into URL param updates and refetch.
+window.statsHandleDrill = function(drill, rowIdx, colIdx) {
+    var pad = function(n) { return String(n).padStart(2, '0'); };
+    var updates = {};
+    var scrollTo = null;
+    if (drill.type === 'year') {
+        updates.m_year = drill.years[rowIdx];
+        scrollTo = 'chart2';
+    } else if (drill.type === 'month') {
+        // YoY chart: col 1 = current year, col 2 = prior year.
+        var year = (colIdx === 1) ? drill.year : drill.year - 1;
+        updates.d_year  = year;
+        updates.d_month = pad(rowIdx + 1);
+        scrollTo = 'chart3';
+    } else if (drill.type === 'day') {
+        updates.h_year  = drill.year;
+        updates.h_month = drill.month;
+        updates.h_day   = pad(rowIdx + 1);
+        scrollTo = 'chart4';
+    }
+    window.statsDrillTo(updates, scrollTo);
+};
+
+window.statsDrillTo = function(updates, scrollTo) {
+    var tabDiv = document.getElementById('stats_sales');
+    if (!tabDiv) return;
+    var params = new URLSearchParams(window.location.search);
+    for (var k in updates) params.set(k, updates[k]);
+    params.set('tab', 'stats_sales');
+    var pushParams = new URLSearchParams(params.toString());
+    pushParams.delete('format');
+    var pushUrl = '?' + pushParams.toString() + '#stats_sales';
+    try { history.pushState({ tabId: 'stats_sales' }, '', pushUrl); } catch(_) {}
+    var ajaxParams = new URLSearchParams(params.toString());
+    ajaxParams.set('format', 'fragment');
+    statsFetchInto(tabDiv, '?' + ajaxParams.toString()).then(function() {
+        if (scrollTo) {
+            var target = document.getElementById(scrollTo);
+            if (target) {
+                // Scroll the next chart card (the .stat-chart wrapper) into view.
+                var card = target.closest('.stat-chart') || target;
+                card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    });
 };
 
 // Mirror ?tab= into the hash so admin.js's tab strip activates the right tab.
@@ -163,6 +221,18 @@ function statsFetchInto(div, url) {
                 }
                 oldS.parentNode.replaceChild(newS, oldS);
             }
+            // admin.js wraps native checkboxes in .custom-checkbox at document.ready;
+            // it doesn't see ones we inject post-load, so wrap them here.
+            var cbs = div.querySelectorAll('input[type="checkbox"]');
+            for (var j = 0; j < cbs.length; j++) {
+                var cb = cbs[j];
+                if (cb.parentNode && cb.parentNode.classList && cb.parentNode.classList.contains('custom-checkbox')) continue;
+                var wrap = document.createElement('div');
+                wrap.className = 'custom-checkbox';
+                if (cb.checked) wrap.classList.add('selected');
+                cb.parentNode.insertBefore(wrap, cb);
+                wrap.appendChild(cb);
+            }
         })
         .catch(function() {
             div.removeAttribute('data-loading');
@@ -175,6 +245,21 @@ function statsLoadTab(tabId) {
     if (!div || !div.hasAttribute('data-needs-load')) return;
     statsFetchInto(div, '?_g=statistics&format=fragment&tab=' + encodeURIComponent(tabId));
 }
+
+// Auto-submit a .stats-filter form when its select changes — so the user
+// doesn't have to click Go after every dropdown tweak. Go stays as the
+// explicit/keyboard fallback.
+document.addEventListener('change', function(e) {
+    var sel = e.target;
+    if (!sel || sel.tagName !== 'SELECT') return;
+    var form = sel.closest && sel.closest('.stats-filter');
+    if (!form) return;
+    if (typeof form.requestSubmit === 'function') {
+        form.requestSubmit();
+    } else {
+        form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    }
+});
 
 // AJAX-ify any in-tab filter form (.stats-filter) so submitting refreshes
 // just the tab and pushes a clean URL into history for sharing.

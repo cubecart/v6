@@ -246,10 +246,10 @@ $GLOBALS['main']->addTabControl($lang['dashboard']['title_dashboard'], 'dashboar
 ## Quick Stats
 if (Admin::getInstance()->permissions('statistics', CC_PERM_READ, false, false)) {
     if (!$GLOBALS['session']->has('chart_data')) {
-        $total_sales = $GLOBALS['db']->query('SELECT SUM(`total`) as `total_sales` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` WHERE `status` = 3;');
+        $total_sales = $GLOBALS['db']->query('SELECT SUM(`total`) as `total_sales` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` WHERE `status` IN (2,3);');
         $quick_stats['total_sales'] = Tax::getInstance()->priceFormat((float)$total_sales[0]['total_sales']);
 
-        $ave_order  = $GLOBALS['db']->query('SELECT AVG(`total`) as `ave_order` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` WHERE `status` = 3;');
+        $ave_order  = $GLOBALS['db']->query('SELECT AVG(`total`) as `ave_order` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` WHERE `status` IN (2,3);');
         $quick_stats['ave_order'] = Tax::getInstance()->priceFormat((float)$ave_order[0]['ave_order']);
 
         $this_year    = date('Y');

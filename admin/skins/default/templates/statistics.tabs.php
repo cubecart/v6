@@ -14,6 +14,26 @@
  *}
 {if $ACTIVE_TAB == 'stats_sales'}
    <h3>{$LANG.statistics.title_sales}</h3>
+
+   <form action="{$VAL_SELF}" class="ignore-dirty stats-filter stats-status-filter" method="get">
+      <span class="stats-status-label">Order status:</span>
+      {foreach from=$SALES_STATUSES item=st}
+      <label class="stats-status-option"><input type="checkbox" name="s[]" value="{$st.id}"{$st.checked}> {$st.name}</label>
+      {/foreach}
+      <input type="submit" class="tiny" value="{$LANG.common.go}">
+      <input type="hidden" name="_g" value="statistics">
+      <input type="hidden" name="tab" value="stats_sales">
+      {if isset($SALES_FILTER)}
+      <input type="hidden" name="m_year"  value="{$SALES_FILTER.m_year}">
+      <input type="hidden" name="m_month" value="{$SALES_FILTER.m_month}">
+      <input type="hidden" name="d_year"  value="{$SALES_FILTER.d_year}">
+      <input type="hidden" name="d_month" value="{$SALES_FILTER.d_month}">
+      <input type="hidden" name="h_year"  value="{$SALES_FILTER.h_year}">
+      <input type="hidden" name="h_month" value="{$SALES_FILTER.h_month}">
+      <input type="hidden" name="h_day"   value="{$SALES_FILTER.h_day}">
+      {/if}
+   </form>
+
    {if isset($DISPLAY_SALES) && $DISPLAY_SALES}
 
    <div class="stat-chart">
@@ -26,6 +46,7 @@
          <div id="chart1-hAxis" style="display:none">{$GRAPH_DATA.1.hAxis}</div>
          <div id="chart1-vAxis" style="display:none">{$GRAPH_DATA.1.vAxis}</div>
       </div>
+      <div class="stat-chart-footer">{$GRAPH_DATA.1.total_sum} &middot; {$GRAPH_DATA.1.total_count} orders</div>
    </div>
 
    <div class="stat-chart">
@@ -46,6 +67,7 @@
             <input type="hidden" name="h_year"  value="{$SALES_FILTER.h_year}">
             <input type="hidden" name="h_month" value="{$SALES_FILTER.h_month}">
             <input type="hidden" name="h_day"   value="{$SALES_FILTER.h_day}">
+            {foreach from=$SALES_STATUSES item=st}{if $st.checked}<input type="hidden" name="s[]" value="{$st.id}">{/if}{/foreach}
          </form>
       </div>
       <div class="stat-chart-body">
@@ -54,6 +76,7 @@
          <div id="chart2-hAxis" style="display:none">{$GRAPH_DATA.2.hAxis}</div>
          <div id="chart2-vAxis" style="display:none">{$GRAPH_DATA.2.vAxis}</div>
       </div>
+      <div class="stat-chart-footer">{$GRAPH_DATA.2.total_sum} &middot; {$GRAPH_DATA.2.total_count} orders</div>
    </div>
 
    <div class="stat-chart">
@@ -74,6 +97,7 @@
             <input type="hidden" name="h_year"  value="{$SALES_FILTER.h_year}">
             <input type="hidden" name="h_month" value="{$SALES_FILTER.h_month}">
             <input type="hidden" name="h_day"   value="{$SALES_FILTER.h_day}">
+            {foreach from=$SALES_STATUSES item=st}{if $st.checked}<input type="hidden" name="s[]" value="{$st.id}">{/if}{/foreach}
          </form>
       </div>
       <div class="stat-chart-body">
@@ -82,6 +106,7 @@
          <div id="chart3-hAxis" style="display:none">{$GRAPH_DATA.3.hAxis}</div>
          <div id="chart3-vAxis" style="display:none">{$GRAPH_DATA.3.vAxis}</div>
       </div>
+      <div class="stat-chart-footer">{$GRAPH_DATA.3.total_sum} &middot; {$GRAPH_DATA.3.total_count} orders</div>
    </div>
 
    <div class="stat-chart">
@@ -104,6 +129,7 @@
             <input type="hidden" name="m_month" value="{$SALES_FILTER.m_month}">
             <input type="hidden" name="d_year"  value="{$SALES_FILTER.d_year}">
             <input type="hidden" name="d_month" value="{$SALES_FILTER.d_month}">
+            {foreach from=$SALES_STATUSES item=st}{if $st.checked}<input type="hidden" name="s[]" value="{$st.id}">{/if}{/foreach}
          </form>
       </div>
       <div class="stat-chart-body">
@@ -112,6 +138,7 @@
          <div id="chart4-hAxis" style="display:none">{$GRAPH_DATA.4.hAxis}</div>
          <div id="chart4-vAxis" style="display:none">{$GRAPH_DATA.4.vAxis}</div>
       </div>
+      <div class="stat-chart-footer">{$GRAPH_DATA.4.total_sum} &middot; {$GRAPH_DATA.4.total_count} orders</div>
    </div>
 
    <script type="text/javascript">
@@ -119,7 +146,11 @@
       window.chart_options = window.chart_options || [];
       {foreach from=$GRAPH_DATA key=k item=v}
       window.chart_data[{$k}] = [{$v.data}];
-      window.chart_options[{$k}] = { {if isset($v.colors)}colors: {$v.colors}{if isset($v.legend)},{/if}{/if}{if isset($v.legend)}legend: '{$v.legend}'{/if} };
+      window.chart_options[{$k}] = {};
+      {if isset($v.colors)}window.chart_options[{$k}].colors = {$v.colors};{/if}
+      {if isset($v.legend)}window.chart_options[{$k}].legend = '{$v.legend}';{/if}
+      {if isset($v.y_format)}window.chart_options[{$k}].yFormat = '{$v.y_format}';{/if}
+      {if isset($v.drill)}window.chart_options[{$k}].drill = {$v.drill|json_encode};{/if}
       {/foreach}
       window.whenChartsReady(function() {
          {foreach from=$GRAPH_DATA key=k item=v}
