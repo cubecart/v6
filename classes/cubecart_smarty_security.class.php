@@ -22,19 +22,40 @@ class CubeCart_Smarty_Security extends Smarty_Security
         'pcntl_exec', 'eval', 'assert', 'create_function', 'call_user_func',
         'call_user_func_array', 'preg_replace_callback', 'usort', 'uasort',
         'uksort', 'array_map', 'array_filter', 'array_walk',
+        'forward_static_call', 'forward_static_call_array', 'iterator_apply',
         // File system writes / destructive
         'file_put_contents', 'fwrite', 'fputs', 'fopen', 'tmpfile',
         'mkdir', 'rmdir', 'rename', 'unlink', 'copy', 'move_uploaded_file',
         'chmod', 'chown', 'chgrp', 'symlink', 'link', 'tempnam',
+        // error_log writes to a file when message_type=3 — this is the
+        // RCE vector reported in GHSA-wpjx-g695-qc5j.
+        'error_log',
+        'fputcsv', 'gzwrite', 'gzputs', 'bzwrite',
+        'imagepng', 'imagejpeg', 'imagegif', 'imagewebp', 'imagebmp',
         // File reads (templates should use Smarty includes, not raw reads)
         'file_get_contents', 'file', 'readfile', 'fgets', 'fread',
         'highlight_file', 'show_source', 'parse_ini_file',
+        // Compressed/binary file readers — readgzfile is the file-disclosure
+        // vector reported in GHSA-wpjx-g695-qc5j.
+        'readgzfile', 'gzfile', 'gzopen', 'gzread', 'gzgets', 'gzgetss',
+        'gzpassthru', 'gzdecode', 'gzinflate',
+        'bzopen', 'bzread', 'bzdecompress',
+        'fpassthru', 'readlink', 'linkinfo', 'realpath',
+        'glob', 'scandir', 'opendir', 'readdir', 'closedir', 'rewinddir',
+        'pathinfo', 'fileowner', 'filegroup', 'fileperms',
+        // XML/HTML loaders that accept stream wrappers (file://, php://).
+        'simplexml_load_file', 'simplexml_import_dom',
         // Include / require
         'include', 'include_once', 'require', 'require_once',
         // Network
         'curl_init', 'curl_exec', 'fsockopen', 'pfsockopen',
         'stream_socket_client', 'stream_socket_server',
         'mail', 'header', 'setcookie',
+        'gethostbyname', 'gethostbyaddr', 'gethostbynamel', 'gethostname',
+        'dns_get_record', 'dns_check_record', 'checkdnsrr', 'getmxrr',
+        // Process control
+        'pclose', 'pcntl_fork', 'pcntl_signal', 'pcntl_wait', 'pcntl_waitpid',
+        'posix_kill', 'posix_setuid', 'posix_setgid', 'posix_setsid',
         // Info disclosure
         'phpinfo', 'php_uname', 'getenv', 'putenv',
         'get_defined_vars', 'get_defined_functions', 'get_defined_constants',
