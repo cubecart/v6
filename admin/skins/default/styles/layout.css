@@ -2127,6 +2127,10 @@ div#content .powered ul li img {
 }
 .report-table td { padding: 4px 8px }
 .report-table thead td { font-weight: 600 }
+.report-table.hide-extra .col-extra { display: none }
+.report-toggle { margin: 0 0 8px; font-size: 12px }
+.report-toggle label { cursor: pointer }
+.report-toggle input { vertical-align: middle; margin-right: 4px }
 .stats-filter.stats-status-filter {
     background: var(--panel);
     border: 1px solid var(--border);

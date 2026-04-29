@@ -158,7 +158,7 @@ if ($orders) {
                 $tally[$field] += $value;
             }
         }
-        $order_summary['country']	= (is_numeric($order_summary['country'])) ? getCountryFormat($order_summary['country']) : $order_summary['country'];
+        $order_summary['country']	= (is_numeric($order_summary['country'])) ? getCountryFormat($order_summary['country'], 'numcode', 'iso') : (getCountryFormat($order_summary['country'], 'name', 'iso') ?: $order_summary['country']);
         $order_summary['state']	= (is_numeric($order_summary['state'])) ? getStateFormat($order_summary['state']) : $order_summary['state'];
         $order_summary['date']	= formatTime($order_summary['order_date'], false, true);
 

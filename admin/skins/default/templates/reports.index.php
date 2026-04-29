@@ -12,8 +12,11 @@
 <form action="{$VAL_SELF}" class="ignore-dirty" method="post">
   <div id="results" class="tab_content">
 	<h3>{$REPORT_TITLE}</h3>
+	<div class="report-toggle">
+	  <label><input type="checkbox" id="toggle_report_columns"> {$LANG.reports.show_all_columns}</label>
+	</div>
 	<div class="report-scroll">
-	<table class="report-table">
+	<table class="report-table hide-extra">
 	  <thead>
 		<tr>
 		  <td>{$LANG.orders.order_number}</td>
@@ -23,18 +26,18 @@
 		  <td class="text-right">{$LANG.common.tax}</td>
 		  <td class="text-right">{$LANG.common.total}</td>
 		  <td>{$LANG.common.name}</td>
-		  <td>{$LANG.address.company_name}</td>
-		  <td>{$LANG.address.line1}</td>
-		  <td>{$LANG.address.line2}</td>
-		  <td>{$LANG.address.town}</td>
+		  <td class="col-extra">{$LANG.address.company_name}</td>
+		  <td class="col-extra">{$LANG.address.line1}</td>
+		  <td class="col-extra">{$LANG.address.line2}</td>
+		  <td class="col-extra">{$LANG.address.town}</td>
 		  <td>{$LANG.address.state}</td>
 		  <td>{$LANG.address.country}</td>
-		  <td>{$LANG.address.postcode}</td>
-		  <td>{$LANG.address.phone}</td>
-		  <td>{$LANG.address.mobile}</td>
+		  <td class="col-extra">{$LANG.address.postcode}</td>
+		  <td class="col-extra">{$LANG.address.phone}</td>
+		  <td class="col-extra">{$LANG.address.mobile}</td>
 		  <td>{$LANG.common.email}</td>
-		  <td>Payment</td>
-		  <td>{$LANG.common.status}</td>
+		  <td class="col-extra">{$LANG.orders.gateway_name}</td>
+		  <td class="col-extra">{$LANG.common.status}</td>
 		  <td>{$LANG.common.date_time}</td>
 		</tr>
 	  </thead>
@@ -48,18 +51,18 @@
 		  <td class="text-right">{$data.total_tax}</td>
 		  <td class="text-right">{$data.total}</td>
 		  <td><a href="?_g=customers&action=edit&customer_id={$data.customer_id}" class="capitalize">{$data.first_name} {$data.last_name}</a></td>
-		  <td>{$data.company_name}</td>
-		  <td>{$data.line1}</td>
-		  <td>{$data.line2}</td>
-		  <td>{$data.town}</td>
+		  <td class="col-extra">{$data.company_name}</td>
+		  <td class="col-extra">{$data.line1}</td>
+		  <td class="col-extra">{$data.line2}</td>
+		  <td class="col-extra">{$data.town}</td>
 		  <td>{$data.state}</td>
 		  <td>{$data.country}</td>
-		  <td>{$data.postcode}</td>
-		  <td nowrap="nowrap">{$data.phone}</td>
-		  <td nowrap="nowrap">{$data.mobile}</td>
+		  <td class="col-extra">{$data.postcode}</td>
+		  <td class="col-extra" nowrap="nowrap">{$data.phone}</td>
+		  <td class="col-extra" nowrap="nowrap">{$data.mobile}</td>
 		  <td>{$data.email}</td>
-		  <td>{$data.gateway}</td>
-		  <td>{$data.status}</td>
+		  <td class="col-extra">{$data.gateway}</td>
+		  <td class="col-extra">{$data.status}</td>
 		  <td class="text-center" nowrap="nowrap">{$data.date}</td>
 		</tr>
 		{foreachelse}
@@ -123,3 +126,31 @@
    {/if}   
    {include file='templates/element.hook_form_content.php'}
 </form>
+<script>
+(function(){
+	function init(){
+		var key = 'cc_report_show_all_cols';
+		var cb = document.getElementById('toggle_report_columns');
+		var tbl = document.querySelector('.report-table');
+		if (!cb || !tbl) return;
+		if (localStorage.getItem(key) === '1') {
+			cb.checked = true;
+			tbl.classList.remove('hide-extra');
+		}
+		cb.addEventListener('change', function(){
+			if (cb.checked) {
+				tbl.classList.remove('hide-extra');
+				localStorage.setItem(key, '1');
+			} else {
+				tbl.classList.add('hide-extra');
+				localStorage.removeItem(key);
+			}
+		});
+	}
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', init);
+	} else {
+		init();
+	}
+})();
+</script>
