@@ -2078,6 +2078,20 @@ div#content .powered ul li img {
 }
 .stat-trend--up   { background: rgba(60, 160, 80, 0.15);  color: #2c8a40 }
 .stat-trend--down { background: rgba(200, 60, 60, 0.15);  color: #b03030 }
+.stat-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 10px
+}
+.stat-badge--bot {
+    background: rgba(120, 130, 150, 0.18);
+    color: #5a6478
+}
+.row-at-checkout td {
+    background-color: rgba(255, 196, 0, 0.10)
+}
 .stats-filter.stats-status-filter {
     background: var(--panel);
     border: 1px solid var(--border);

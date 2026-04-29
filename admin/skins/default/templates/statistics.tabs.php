@@ -330,85 +330,123 @@
    </div>
 {elseif $ACTIVE_TAB == 'stats_best_customers'}
    <h3>{$LANG.statistics.title_customers_best}</h3>
-   {if isset($BEST_CUSTOMERS) && $BEST_CUSTOMERS}
-   <div id="chart8" class="google_chart"></div>
-   <div id="chart8-title" style="display:none">{$GRAPH_DATA.8.title}</div>
-   <div id="chart8-hAxis" style="display:none">{$GRAPH_DATA.8.hAxis}</div>
-   <div id="chart8-vAxis" style="display:none">{$GRAPH_DATA.8.vAxis}</div>
-   <div class="pagination">{$PAGINATION_BEST}</div>
-   <table width="100%">
-      <thead>
-         <tr>
-            <td width="20">&nbsp;</td>
-            <td>{$LANG.common.name}</td>
-            <td style="text-align:center">{$LANG.statistics.total_expenditure}</td>
-            <td style="text-align:center">{$LANG.statistics.percentage_of_total}</td>
-         </tr>
-      </thead>
-      <tbody>
-         {foreach from=$BEST_CUSTOMERS item=customer}
-         <tr>
-            <td style="text-align:center">{$customer.key}</td>
-            <td><a href="?_g=customers&node=index&action=edit&customer_id={$customer.customer_id}" class="capitalize">{$customer.last_name}, {$customer.first_name}</a></td>
-            <td style="text-align:center">{$customer.expenditure}</td>
-            <td style="text-align:center">{$customer.percent}</td>
-         </tr>
-         {/foreach}
-      </tbody>
-   </table>
-   <script type="text/javascript">
-      window.chart_data = window.chart_data || [];
-      window.chart_data[8] = [{$GRAPH_DATA.8.data}];
-      window.whenChartsReady(function() { window.drawChart(8, window.chart_data); });
-   </script>
-   {else}
-   {$LANG.statistics.notify_customers_none}
-   {/if}
+   <div class="stat-chart">
+      <div class="stat-chart-header">
+         <span class="stat-chart-title">{$LANG.statistics.title_customers_best}</span>
+         <form action="{$VAL_SELF}" class="ignore-dirty stats-filter" method="get">
+            <select name="bc_year" class="textbox">
+            {foreach from=$BC_YEAR_OPTIONS item=opt}<option value="{$opt.value}"{$opt.selected}>{$opt.label}</option>{/foreach}
+            </select>
+            <input type="submit" class="tiny" value="{$LANG.common.go}">
+            <input type="hidden" name="_g" value="statistics">
+            <input type="hidden" name="tab" value="stats_best_customers">
+         </form>
+      </div>
+      {if isset($BEST_CUSTOMERS) && $BEST_CUSTOMERS}
+      <div class="stat-chart-body">
+         <div id="chart8" class="google_chart"></div>
+         <div id="chart8-title" style="display:none">{$GRAPH_DATA.8.title}</div>
+         <div id="chart8-hAxis" style="display:none">{$GRAPH_DATA.8.hAxis}</div>
+         <div id="chart8-vAxis" style="display:none">{$GRAPH_DATA.8.vAxis}</div>
+         <div class="pagination">{$PAGINATION_BEST}</div>
+         <table width="100%" class="stat-table">
+            <thead>
+               <tr>
+                  <td></td>
+                  <td>{$LANG.common.name}</td>
+                  <td style="text-align: center" nowrap="nowrap">Orders</td>
+                  <td style="text-align: right" nowrap="nowrap">{$LANG.statistics.total_expenditure}</td>
+                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.percentage_of_total}</td>
+                  <td></td>
+               </tr>
+            </thead>
+            <tbody>
+               {foreach from=$BEST_CUSTOMERS item=customer}
+               <tr>
+                  <td style="text-align: center">{$customer.key}</td>
+                  <td><a href="?_g=customers&node=index&action=edit&customer_id={$customer.customer_id}" class="capitalize">{$customer.last_name}, {$customer.first_name}</a></td>
+                  <td style="text-align: center">{$customer.order_count}</td>
+                  <td style="text-align: right" nowrap="nowrap">{$customer.expenditure}</td>
+                  <td style="text-align: center">{$customer.percent}</td>
+                  <td style="text-align: center"><a href="?_g=customers&node=index&action=edit&customer_id={$customer.customer_id}" title="{$LANG.common.edit}"><i class="fa fa-user"></i></a></td>
+               </tr>
+               {/foreach}
+            </tbody>
+         </table>
+      </div>
+      <div class="stat-chart-footer">{$GRAPH_DATA.8.total_sum} &middot; {$GRAPH_DATA.8.total_count} customers</div>
+      <script type="text/javascript">
+         window.chart_data = window.chart_data || [];
+         window.chart_options = window.chart_options || [];
+         window.chart_data[8] = [{$GRAPH_DATA.8.data}];
+         window.chart_options[8] = {};
+         window.chart_options[8].colors = {$GRAPH_DATA.8.colors};
+         window.chart_options[8].drill = {$GRAPH_DATA.8.drill|json_encode};
+         window.whenChartsReady(function() { window.drawChart(8, window.chart_data); });
+      </script>
+      {else}
+      <div class="stat-chart-body" style="text-align: center; padding: 2em 0;">{$LANG.statistics.notify_customers_none}</div>
+      {/if}
+   </div>
 {elseif $ACTIVE_TAB == 'stats_online'}
    <h3>{$LANG.statistics.title_customers_active}</h3>
-   <p>
-      {if $BOTS==true}
-      <a href="?_g=statistics&bots=false&tab=stats_online#stats_online">{$LANG.statistics.display_customers_only}</a>
-      {else}
-      <a href="?_g=statistics&bots=true&tab=stats_online#stats_online">{$LANG.statistics.display_bots_and_customers}</a>
-      {/if}
-   </p>
-   <table width="100%">
-      <thead>
-         <tr>
-            <td>{$LANG.statistics.session_admin}</td>
-            <td>{$LANG.statistics.session_user}</td>
-            <td>{$LANG.statistics.session_location}</td>
-            <td>{$LANG.statistics.session_started}</td>
-            <td>{$LANG.statistics.session_last}</td>
-            <td>{$LANG.statistics.session_length}</td>
-            <td>{$LANG.common.ip_address}</td>
-         </tr>
-      </thead>
-      <tbody>
-         {foreach from=$USERS_ONLINE item=user}
-         <tr>
-            <td style="text-align:center"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$user.is_admin}.png"></td>
-            <td>
-               <strong>
-               {if !empty($user.customer_id)}
-               <a href="{$CONFIG.adminFile}?_g=customers&action=edit&customer_id={$user.customer_id}">{$user.name}</a>
-               {else}
-               {$user.name}
-               {/if}
-               </strong>
-            </td>
-            <td>{$STORE_URL}/{$user.location}{if strpos($user.location,"404") === false} <a href="{$STORE_URL}/{$user.location}" target="_blank">&raquo;</a>{/if}</td>
-            <td style="text-align:center">{$user.session_start}</td>
-            <td style="text-align:center">{$user.session_last}</td>
-            <td>{$user.session_length}</td>
-            <td>{if !empty($user.ip_address)}<a href="http://whois.domaintools.com/{$user.ip_address}" target="_blank">{$user.ip_address}</a>{/if}</td>
-         </tr>
-         {foreachelse}
-         <tr>
-            <td colspan="7" class="text-center">{$LANG.form.none}</td>
-         </tr>
-         {/foreach}
-      </tbody>
-   </table>
+   <div class="stat-chart">
+      <div class="stat-chart-header">
+         <span class="stat-chart-title">{$LANG.statistics.title_customers_active}</span>
+         <a href="#" class="button tiny stats-refresh" title="Refresh now"><i class="fa fa-refresh"></i></a>
+         {if $BOTS==true}
+         <a href="?_g=statistics&bots=false&tab=stats_online#stats_online" class="button tiny">{$LANG.statistics.display_customers_only}</a>
+         {else}
+         <a href="?_g=statistics&bots=true&tab=stats_online#stats_online" class="button tiny">{$LANG.statistics.display_bots_and_customers}</a>
+         {/if}
+      </div>
+      <div class="stat-chart-body">
+         <table width="100%" class="stat-table">
+            <thead>
+               <tr>
+                  <td></td>
+                  <td>{$LANG.statistics.session_user}</td>
+                  <td>{$LANG.statistics.session_location}</td>
+                  <td style="text-align:right" nowrap="nowrap">Cart</td>
+                  <td style="text-align:center" nowrap="nowrap">Active for</td>
+                  <td style="text-align:center" nowrap="nowrap">Last seen</td>
+                  <td style="text-align:center">Country</td>
+                  <td>{$LANG.common.ip_address}</td>
+               </tr>
+            </thead>
+            <tbody>
+               {foreach from=$USERS_ONLINE item=user}
+               <tr{if $user.is_checkout} class="row-at-checkout"{/if}>
+                  <td style="text-align:center" nowrap="nowrap">
+                     {if $user.is_bot}<span class="stat-badge stat-badge--bot">{$user.bot_name}</span>{else}<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$user.is_admin}.png" alt="">{/if}
+                  </td>
+                  <td>
+                     <strong>
+                     {if !empty($user.customer_id)}
+                     <a href="{$CONFIG.adminFile}?_g=customers&action=edit&customer_id={$user.customer_id}">{$user.name}</a>
+                     {else}
+                     {$user.name}
+                     {/if}
+                     </strong>
+                  </td>
+                  <td>
+                     {$user.location_label}
+                     {if !empty($user.location) && strpos($user.location, "404") === false} <a href="{$STORE_URL}/{$user.location}" target="_blank" rel="noopener" title="Open page"><i class="fa fa-external-link"></i></a>{/if}
+                  </td>
+                  <td style="text-align:right" nowrap="nowrap">{if $user.cart_value}<strong>{$user.cart_value}</strong>{else}&mdash;{/if}</td>
+                  <td style="text-align:center" nowrap="nowrap">{$user.active_for}</td>
+                  <td style="text-align:center" nowrap="nowrap">{$user.last_relative}</td>
+                  <td style="text-align:center">{if $user.country}{$user.country}{else}&mdash;{/if}</td>
+                  <td nowrap="nowrap">{if !empty($user.ip_address)}<a href="http://whois.domaintools.com/{$user.ip_address}" target="_blank" rel="noopener">{$user.ip_address}</a>{/if}</td>
+               </tr>
+               {foreachelse}
+               <tr><td colspan="8" class="text-center">{$LANG.form.none}</td></tr>
+               {/foreach}
+            </tbody>
+         </table>
+      </div>
+      <div class="stat-chart-footer">
+         {$USERS_SPLIT.total} online &middot; {$USERS_SPLIT.signed_in} signed-in &middot; {$USERS_SPLIT.guests} guests &middot; {$USERS_SPLIT.bots} bots
+      </div>
+   </div>
 {/if}

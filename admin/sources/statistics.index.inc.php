@@ -642,29 +642,94 @@ case 'stats_search':
     break;
 
 case 'stats_best_customers':
-    $per_page = 15;
-    $page     = (isset($_GET['page_customers']) && is_numeric($_GET['page_customers'])) ? $_GET['page_customers'] : 1;
-    $query    = "SELECT sum(`total`) as `customer_expenditure`, C.first_name, C.last_name, C.customer_id FROM `".$glob['dbprefix']."CubeCart_order_summary` as O INNER JOIN  `".$glob['dbprefix']."CubeCart_customer` as C on O.customer_id = C.customer_id WHERE O.status = 3 GROUP BY O.customer_id ORDER BY `customer_expenditure` DESC";
-    if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
-        $numrows = $GLOBALS['db']->numrows($query);
-        $divider = $GLOBALS['db']->query("SELECT sum(`total`) as `total_sales` FROM `".$glob['dbprefix']."CubeCart_order_summary` WHERE `status` = 3");
+    // Year filter (or 'all').
+    $bc_year_raw = isset($_GET['bc_year']) ? $_GET['bc_year'] : 'all';
+    $bc_year     = ($bc_year_raw === 'all' || !is_numeric($bc_year_raw)) ? 'all' : (int)$bc_year_raw;
 
+    $per_page = 15;
+    $page     = (isset($_GET['page_customers']) && is_numeric($_GET['page_customers'])) ? (int)$_GET['page_customers'] : 1;
+    $offset   = ($page - 1) * $per_page;
+
+    $now_year   = (int)date('Y');
+    $where_date = '';
+    if ($bc_year !== 'all') {
+        $year_start = mktime(0, 0, 0, 1, 1, $bc_year);
+        $year_end   = ($bc_year === $now_year) ? time() : mktime(0, 0, 0, 1, 1, $bc_year + 1);
+        $where_date = " AND `O`.`order_date` >= ".$year_start." AND `O`.`order_date` < ".$year_end;
+    }
+
+    // Year filter options (always built so the form survives empty results).
+    $earliest_q    = $GLOBALS['db']->query("SELECT MIN(`order_date`) AS `m` FROM `".$glob['dbprefix']."CubeCart_order_summary` WHERE `status` IN (2,3)");
+    $earliest_year = ($earliest_q && !empty($earliest_q[0]['m'])) ? (int)date('Y', $earliest_q[0]['m']) : $now_year;
+    $bc_year_options = array(
+        array('value' => 'all', 'label' => 'All time', 'selected' => $bc_year === 'all' ? ' selected="selected"' : ''),
+    );
+    for ($yr = $now_year; $yr >= $earliest_year; $yr--) {
+        $bc_year_options[] = array(
+            'value'    => $yr,
+            'label'    => $yr,
+            'selected' => ($bc_year === $yr) ? ' selected="selected"' : '',
+        );
+    }
+
+    // Year-colour palette, same as other tabs.
+    $hsl_to_hex = function ($h, $s, $l) {
+        $h = (($h % 360) + 360) % 360 / 360;
+        $q = $l < 0.5 ? $l * (1 + $s) : $l + $s - $l * $s;
+        $p = 2 * $l - $q;
+        $hue = function ($t) use ($p, $q) {
+            if ($t < 0) $t += 1;
+            if ($t > 1) $t -= 1;
+            if ($t < 1/6) return $p + ($q - $p) * 6 * $t;
+            if ($t < 1/2) return $q;
+            if ($t < 2/3) return $p + ($q - $p) * (2/3 - $t) * 6;
+            return $p;
+        };
+        return sprintf('#%02x%02x%02x', (int)round($hue($h + 1/3) * 255), (int)round($hue($h) * 255), (int)round($hue($h - 1/3) * 255));
+    };
+    if ($bc_year === 'all') {
+        $idx = ($now_year - $earliest_year) + 1;
+    } else {
+        $idx = max(0, $bc_year - $earliest_year);
+    }
+    $bc_color = $hsl_to_hex((int)round(fmod(210 + $idx * 137.5, 360)), 0.65, 0.45);
+
+    $GLOBALS['smarty']->assign('BC_YEAR_OPTIONS', $bc_year_options);
+    $GLOBALS['smarty']->assign('BC_YEAR',         $bc_year);
+
+    $query = "SELECT SUM(`O`.`total`) AS `customer_expenditure`, COUNT(*) AS `order_count`, `C`.`first_name`, `C`.`last_name`, `C`.`customer_id` FROM `".$glob['dbprefix']."CubeCart_order_summary` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_customer` AS `C` ON `O`.`customer_id` = `C`.`customer_id` WHERE `O`.`status` IN (2,3)".$where_date." GROUP BY `O`.`customer_id` ORDER BY `customer_expenditure` DESC LIMIT ".(int)$per_page." OFFSET ".(int)$offset;
+
+    if (($results = $GLOBALS['db']->query($query)) !== false && !empty($results)) {
+        $numrows_q = $GLOBALS['db']->query("SELECT COUNT(DISTINCT `O`.`customer_id`) AS `c` FROM `".$glob['dbprefix']."CubeCart_order_summary` AS `O` WHERE `O`.`status` IN (2,3)".$where_date);
+        $numrows   = $numrows_q ? (int)$numrows_q[0]['c'] : 0;
+
+        $divider       = $GLOBALS['db']->query("SELECT SUM(`total`) AS `total_sales` FROM `".$glob['dbprefix']."CubeCart_order_summary` AS `O` WHERE `O`.`status` IN (2,3)".$where_date);
+        $total_revenue = (float)($divider[0]['total_sales'] ?? 0);
+
+        $tax = Tax::getInstance();
         $g_graph_data[8]['data'] = "['".$lang['statistics']['percentage_of_views']."','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
 
         $smarty_data[8] = array();
+        $customer_ids_for_chart = array();
         foreach ($results as $key => $result) {
             $result['key']         = (($page - 1) * $per_page) + ($key + 1);
-            $result['expenditure'] = Tax::getInstance()->priceFormat($result['customer_expenditure']);
-            $result['percent']     = (float)$divider[0]['total_sales'] ? number_format(100 * ($result['customer_expenditure'] / $divider[0]['total_sales']), 2) : 0;
+            $result['expenditure'] = $tax->priceFormat($result['customer_expenditure']);
+            $result['percent']     = $total_revenue ? number_format(100 * ($result['customer_expenditure'] / $total_revenue), 2) : 0;
+            $result['order_count'] = number_format((int)$result['order_count']);
             $tmp_col_data[]        = "['".$result['key'].". ".addslashes($result['last_name'].", ".$result['first_name'])."',".$result['customer_expenditure']."]";
+            $customer_ids_for_chart[] = (int)$result['customer_id'];
             $smarty_data[8][]      = $result;
         }
 
         $g_graph_data[8]['data'] .= isset($tmp_col_data) ? implode(',', $tmp_col_data) : '';
         unset($tmp_col_data);
-        $g_graph_data[8]['title'] = '';
-        $g_graph_data[8]['hAxis'] = $lang['dashboard']['inv_customers'];
-        $g_graph_data[8]['vAxis'] = $lang['statistics']['total_expenditure'];
+        $g_graph_data[8]['title']        = '';
+        $g_graph_data[8]['hAxis']        = $lang['dashboard']['inv_customers'];
+        $g_graph_data[8]['vAxis']        = $lang['statistics']['total_expenditure'];
+        $g_graph_data[8]['colors']       = "['".$bc_color."']";
+        $g_graph_data[8]['drill']        = array('type' => 'customer', 'customer_ids' => $customer_ids_for_chart);
+        $g_graph_data[8]['total_sum']    = $tax->priceFormat($total_revenue);
+        $g_graph_data[8]['total_count']  = number_format((int)$numrows);
 
         $GLOBALS['smarty']->assign('BEST_CUSTOMERS', $smarty_data[8]);
         $GLOBALS['smarty']->assign('PAGINATION_BEST', $GLOBALS['db']->pagination($numrows, $per_page, $page, 5, 'page_customers', 'stats_best_customers', ' ', false));
@@ -673,15 +738,114 @@ case 'stats_best_customers':
     break;
 
 case 'stats_online':
-    $query = sprintf("SELECT S.*, C.first_name, C.last_name FROM %1\$sCubeCart_sessions AS S LEFT JOIN %1\$sCubeCart_customer AS C ON S.customer_id = C.customer_id WHERE S.acp = 0 AND ".$online_filter."S.session_last>".$timeLimit." ORDER BY S.session_last DESC", $glob['dbprefix']);
+    $tax_inst = Tax::getInstance();
+
+    // Counts split by type (always — used in the card footer regardless of bot filter).
+    $split_q = $GLOBALS['db']->query(sprintf(
+        "SELECT SUM(CASE WHEN customer_id > 0 THEN 1 ELSE 0 END) AS signed_in, SUM(CASE WHEN customer_id = 0 AND session_last > session_start THEN 1 ELSE 0 END) AS guests, SUM(CASE WHEN session_last = session_start THEN 1 ELSE 0 END) AS bots FROM `%sCubeCart_sessions` WHERE acp = 0 AND session_last > %d",
+        $glob['dbprefix'], $timeLimit
+    ));
+    $split = array('signed_in' => 0, 'guests' => 0, 'bots' => 0);
+    if ($split_q && !empty($split_q[0])) {
+        $split['signed_in'] = (int)$split_q[0]['signed_in'];
+        $split['guests']    = (int)$split_q[0]['guests'];
+        $split['bots']      = (int)$split_q[0]['bots'];
+    }
+    $split['total'] = $split['signed_in'] + $split['guests'] + $split['bots'];
+    $GLOBALS['smarty']->assign('USERS_SPLIT', $split);
+
+    // Helpers: friendly location label, bot identification, geo guess.
+    $bot_name_for = function ($ua) {
+        $ua = strtolower($ua ?? '');
+        if (strpos($ua, 'googlebot') !== false)            return 'Googlebot';
+        if (strpos($ua, 'bingbot') !== false)              return 'Bingbot';
+        if (strpos($ua, 'ahrefsbot') !== false)            return 'AhrefsBot';
+        if (strpos($ua, 'semrushbot') !== false)           return 'SemrushBot';
+        if (strpos($ua, 'facebookexternalhit') !== false)  return 'Facebook';
+        if (strpos($ua, 'twitterbot') !== false)           return 'Twitter';
+        if (strpos($ua, 'duckduckbot') !== false)          return 'DuckDuckGo';
+        if (strpos($ua, 'yandexbot') !== false)            return 'Yandex';
+        if (strpos($ua, 'applebot') !== false)             return 'Applebot';
+        if (strpos($ua, 'slurp') !== false)                return 'Yahoo';
+        if (strpos($ua, 'bot') !== false || strpos($ua, 'spider') !== false || strpos($ua, 'crawl') !== false) return 'Bot';
+        return 'Bot';
+    };
+    $location_label = function ($loc) {
+        $loc = (string)$loc;
+        // Special-case the 404 marker before stripping tags, so the
+        // <br><strike> markup CubeCart bakes in is not exposed.
+        if (strpos($loc, '_a=404') !== false) {
+            return array('label' => 'Missing page (404)', 'is_checkout' => false);
+        }
+        $loc = trim(strip_tags($loc));
+        if ($loc === '' || $loc === '/' || $loc === 'index.html')    return array('label' => 'Home', 'is_checkout' => false);
+        if (strpos($loc, 'cart.html') === 0)                          return array('label' => 'Cart', 'is_checkout' => true);
+        if (strpos($loc, 'checkout.html') === 0)                      return array('label' => 'Checkout', 'is_checkout' => true);
+        if (strpos($loc, 'account') === 0)                            return array('label' => 'Account', 'is_checkout' => false);
+        if (strpos($loc, 'login.html') === 0)                         return array('label' => 'Login', 'is_checkout' => false);
+        if (strpos($loc, 'register.html') === 0)                      return array('label' => 'Register', 'is_checkout' => false);
+        if (preg_match('#^category/(.+?)\.html#', $loc, $m))          return array('label' => 'Browsing: '.ucwords(str_replace(array('-','_'), ' ', $m[1])), 'is_checkout' => false);
+        if (preg_match('#^product/(.+?)\.html#', $loc, $m))           return array('label' => 'Viewing: '.ucwords(str_replace(array('-','_'), ' ', $m[1])), 'is_checkout' => false);
+        if (preg_match('#search.*[?&]search%5Bkeywords%5D=([^&]+)#', $loc, $m)) return array('label' => 'Searching: '.urldecode($m[1]), 'is_checkout' => false);
+        if (preg_match('#search.*[?&]search\[keywords\]=([^&]+)#', $loc, $m))  return array('label' => 'Searching: '.urldecode($m[1]), 'is_checkout' => false);
+        // Bare SEO slug (no slash/query): treat as a product/category page.
+        if (preg_match('#^[a-z0-9][a-z0-9_\-]*(?:\.html)?$#i', $loc)) {
+            $slug = preg_replace('/\.html$/', '', $loc);
+            return array('label' => 'Viewing: '.ucwords(str_replace(array('-','_'), ' ', $slug)), 'is_checkout' => false);
+        }
+        return array('label' => $loc, 'is_checkout' => false);
+    };
+    $country_for = function ($ip) {
+        // Hook for a real geo lookup (MaxMind GeoLite2 / ipapi). For now we
+        // just flag local/test IP ranges so seeded data renders cleanly.
+        if (empty($ip) || $ip === '127.0.0.1' || $ip === '::1')   return 'Local';
+        if (preg_match('#^(10\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.)#', $ip)) return 'Local';
+        if (preg_match('#^(192\.0\.2\.|198\.51\.100\.|203\.0\.113\.)#', $ip)) return 'Test';
+        return '';
+    };
+
+    $query = sprintf(
+        "SELECT S.*, C.first_name, C.last_name FROM %1\$sCubeCart_sessions AS S LEFT JOIN %1\$sCubeCart_customer AS C ON S.customer_id = C.customer_id WHERE S.acp = 0 AND ".$online_filter."S.session_last > %2\$d ORDER BY S.session_last DESC",
+        $glob['dbprefix'], $timeLimit
+    );
     if (($results = $GLOBALS['db']->query($query)) !== false) {
+        $now_t = time();
         $smarty_data['users_online'] = array();
         foreach ($results as $user) {
-            $user['is_admin']       = ((int)$user['admin_id'] > 0) ? 1 : 0;
-            $user['name']           = ((int)$user['customer_id'] != 0) ? sprintf('%s %s', $user['first_name'], $user['last_name']) : $lang['common']['guest'];
-            $user['session_length'] = sprintf('%.2F', ($user['session_last'] - $user['session_start']) / 60);
-            $user['session_start']  = formatTime($user['session_start']);
-            $user['session_last']   = formatTime($user['session_last']);
+            $user['is_admin']    = ((int)$user['admin_id'] > 0) ? 1 : 0;
+            $user['is_bot']      = ((int)$user['session_last'] === (int)$user['session_start']);
+            $user['bot_name']    = $user['is_bot'] ? $bot_name_for($user['useragent']) : '';
+            $user['name']        = ((int)$user['customer_id'] != 0) ? sprintf('%s %s', $user['first_name'], $user['last_name']) : $lang['common']['guest'];
+            $user['session_length_min'] = (int)round(($user['session_last'] - $user['session_start']) / 60);
+            $user['country']     = $country_for($user['ip_address']);
+
+            $loc = $location_label($user['location'] ?? '');
+            $user['location_label'] = $loc['label'];
+            $user['is_checkout']    = $loc['is_checkout'];
+
+            // Relative timestamps.
+            $rel_last  = max(0, $now_t - (int)$user['session_last']);
+            $rel_start = max(0, $now_t - (int)$user['session_start']);
+            $user['last_relative']  = ($rel_last  < 60) ? $rel_last.'s ago'  : (($rel_last  < 3600) ? floor($rel_last/60).'m ago'  : floor($rel_last/3600).'h ago');
+            $user['active_for']     = ($rel_start < 60) ? $rel_start.'s'    : (($rel_start < 3600) ? floor($rel_start/60).'m'    : floor($rel_start/3600).'h ' . floor(($rel_start%3600)/60).'m');
+
+            // Cart value: try to extract from serialised session_data. CubeCart
+            // namespaces the basket under "__basket" (Session::set('', x, 'basket')).
+            $user['cart_value'] = '';
+            if (!empty($user['session_data'])) {
+                $data = @unserialize($user['session_data'], ['allowed_classes' => false]);
+                if (is_array($data)) {
+                    $basket = $data['__basket'] ?? ($data['basket'] ?? null);
+                    if (is_array($basket)) {
+                        $total = $basket['total'] ?? ($basket['gross_total'] ?? null);
+                        if ($total !== null && (float)$total > 0) {
+                            $user['cart_value'] = $tax_inst->priceFormat((float)$total);
+                        }
+                    }
+                }
+            }
+
+            unset($user['session_data']); // never expose serialised blob to the template
             $smarty_data['users_online'][] = $user;
         }
         $GLOBALS['smarty']->assign('USERS_ONLINE', $smarty_data['users_online']);

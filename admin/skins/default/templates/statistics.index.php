@@ -122,6 +122,10 @@ window.statsHandleDrill = function(drill, rowIdx, colIdx) {
         var pid = drill.product_ids && drill.product_ids[rowIdx];
         if (pid) window.location.href = '?_g=statistics&node=product&product_id=' + pid;
         return; // full navigation, no AJAX refetch needed
+    } else if (drill.type === 'customer') {
+        var cid = drill.customer_ids && drill.customer_ids[rowIdx];
+        if (cid) window.location.href = '?_g=customers&node=index&action=edit&customer_id=' + cid;
+        return;
     } else if (drill.type === 'search') {
         var term = drill.terms && drill.terms[rowIdx];
         if (term && drill.storeURL) {
@@ -315,6 +319,49 @@ document.addEventListener('click', function(e) {
     statsFetchInto(tabDiv, ajaxUrl);
 });
 
+// Auto-refresh the Online tab. Fires on a 15s tick (when visible) and also
+// the moment the user switches focus back to the tab.
+function statsRefreshOnline() {
+    var div = document.getElementById('stats_online');
+    if (!div || div.offsetParent === null) return;     // tab not currently shown
+    if (div.hasAttribute('data-loading')) return;       // mid-fetch already
+    if (div.hasAttribute('data-needs-load')) return;    // not yet loaded once
+    var url = '?_g=statistics&format=fragment&tab=stats_online';
+    var qs  = new URLSearchParams(window.location.search);
+    if (qs.get('bots') !== null) url += '&bots=' + encodeURIComponent(qs.get('bots'));
+    fetch(url, { credentials: 'same-origin', cache: 'no-store' })
+        .then(function(r) { return r.ok ? r.text() : null; })
+        .then(function(html) {
+            if (html === null) return;
+            div.innerHTML = html;
+            var scripts = div.querySelectorAll('script');
+            for (var i = 0; i < scripts.length; i++) {
+                var n = document.createElement('script');
+                if (scripts[i].src) n.src = scripts[i].src;
+                else                n.textContent = scripts[i].textContent;
+                scripts[i].parentNode.replaceChild(n, scripts[i]);
+            }
+        })
+        .catch(function() { /* swallow — try again next tick */ });
+}
+setInterval(function() {
+    if (document.visibilityState !== 'visible') return;
+    statsRefreshOnline();
+}, 15000);
+document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') statsRefreshOnline();
+});
+window.addEventListener('focus', statsRefreshOnline);
+// Manual refresh trigger via .stats-refresh button in the card header.
+document.addEventListener('click', function(e) {
+    var btn = e.target && e.target.closest && e.target.closest('.stats-refresh');
+    if (!btn) return;
+    e.preventDefault();
+    var div = document.getElementById('stats_online');
+    if (div) div.setAttribute('data-needs-load', '1');
+    statsLoadTab('stats_online');
+});
+
 // Back/forward through paginated states: refetch the current URL as a fragment.
 window.addEventListener('popstate', function(e) {
     var state = e.state || {};
@@ -347,6 +394,12 @@ function statsRedrawTabCharts(tabId) {
 function statsSyncFromHash() {
     var h = window.location.hash.replace(/^#/, '');
     if (h && document.getElementById(h)) {
+        // Online tab is live data — always refetch on activation so the user
+        // doesn't see a stale snapshot waiting for the next 30s auto-tick.
+        if (h === 'stats_online') {
+            var div = document.getElementById('stats_online');
+            if (div) div.setAttribute('data-needs-load', '1');
+        }
         statsLoadTab(h);
         setTimeout(function() { statsRedrawTabCharts(h); }, 100);
     }
