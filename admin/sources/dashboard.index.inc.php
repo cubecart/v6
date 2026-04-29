@@ -532,8 +532,9 @@ if ($unsettled_orders) {
 
     foreach ($unsettled_orders as $order) {
         $cart_order_ids[] = "'".$order['cart_order_id']."'";
-        $order['icon'] = $customer_type[$order['customer_id']]==1 ? 'user_registered' : 'user_ghost'; // deprecated since 6.1.5
-        $order['type'] = (empty($customer_type[$order['customer_id']])) ? 2 : $customer_type[$order['customer_id']];
+        $cust_type_value  = $customer_type[$order['customer_id']] ?? null;
+        $order['icon'] = $cust_type_value == 1 ? 'user_registered' : 'user_ghost'; // deprecated since 6.1.5
+        $order['type'] = empty($cust_type_value) ? 2 : $cust_type_value;
         $order['cust_type'] = array("1" => 'title_key_registered', "2" => 'title_key_unregistered');
         $order['date'] = formatTime($order['order_date']);
         $order['total'] = Tax::getInstance()->priceFormat($order['total']);

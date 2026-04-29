@@ -134,7 +134,20 @@ class CubeCart_Smarty_Security extends Smarty_Security
         'array_slice', 'array_sum', 'array_unique', 'in_array',
         'count', 'sizeof',
         'nl2br', 'wordwrap',
-        'filter_var', 'is_numeric', 'is_array', 'is_string',
+        'filter_var', 'is_numeric', 'is_array', 'is_string', 'is_null',
+        'number_format', 'http_build_query', 'strip_tags', 'strlen',
+    );
+
+    /**
+     * Static classes accessible from templates as `ClassName::CONST` /
+     * `ClassName::method()`. Smarty 4+ deprecates unregistered static
+     * class access at compile time.
+     *
+     * @var array
+     */
+    private $trusted_static_classes = array(
+        'Catalogue'   => 'Catalogue',
+        'FileManager' => 'FileManager',
     );
 
     public function __construct($smarty)
@@ -159,6 +172,14 @@ class CubeCart_Smarty_Security extends Smarty_Security
                 continue;
             }
             $smarty->registered_plugins[Smarty::PLUGIN_MODIFIER][$fn] = array($fn, true, array());
+        }
+
+        // Register trusted static classes so {ClassName::CONST} compiles
+        // without a deprecation warning.
+        foreach ($this->trusted_static_classes as $alias => $class) {
+            if (!isset($smarty->registered_classes[$alias])) {
+                $smarty->registered_classes[$alias] = $class;
+            }
         }
 
         // Fallback for any PHP function not in the pre-registered list.
