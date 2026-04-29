@@ -102,15 +102,6 @@ $fields = array(
     'state',
     'country',
     'postcode',
-    'first_name_d',
-    'last_name_d',
-    'company_name_d',
-    'line1_d',
-    'line2_d',
-    'town_d',
-    'state_d',
-    'country_d',
-    'postcode_d',
     'phone',
     'mobile',
     'email',
@@ -141,6 +132,22 @@ if ($orders) {
     ## Tally up totals
     $tally = array();
     $i   = 0;
+    $tax = Tax::getInstance();
+    $price_fields = array('subtotal', 'discount', 'shipping', 'total_tax', 'total');
+    $xls_rows = array();
+
+    // Accounting bracket rule for export columns: discount > 0 (positive-stored
+    // deduction) and any genuinely negative price value get wrapped in (...).
+    $bracket_fmt = function ($value, $field) use ($price_fields) {
+        if (!in_array($field, $price_fields, true) || !is_numeric($value)) {
+            return $value;
+        }
+        $val = (float)$value;
+        $bracket = ($field === 'discount' && $val > 0) || $val < 0;
+        $cell = sprintf('%.2F', abs($val));
+        return $bracket ? '('.$cell.')' : $cell;
+    };
+
     foreach ($orders as $order_summary) {
         $order_summary['status'] = $lang['order_state']['name_'.(int)$order_summary['status']];
         foreach ($order_summary as $field => $value) {
@@ -153,8 +160,6 @@ if ($orders) {
         }
         $order_summary['country']	= (is_numeric($order_summary['country'])) ? getCountryFormat($order_summary['country']) : $order_summary['country'];
         $order_summary['state']	= (is_numeric($order_summary['state'])) ? getStateFormat($order_summary['state']) : $order_summary['state'];
-        $order_summary['country_d']	= (is_numeric($order_summary['country_d'])) ? getCountryFormat($order_summary['country_d']) : $order_summary['country_d'];
-        $order_summary['state_d']	= (is_numeric($order_summary['state_d'])) ? getStateFormat($order_summary['state_d']) : $order_summary['state_d'];
         $order_summary['date']	= formatTime($order_summary['order_date'], false, true);
 
         ## Run line of external report data
@@ -163,36 +168,126 @@ if ($orders) {
         }
 
         unset($order_summary['order_date'], $values);
+        $raw_row = array();
         foreach ($order_summary as $field => $value) {
             if ($i == 0) {
                 $headers[] = $field;
             }
-            $values[] = (is_numeric($value) || !strpos((string)$value, ',')) ? $value : sprintf('"%s"', addslashes($value));
+            $cell = $bracket_fmt($value, $field);
+            $raw_row[$field] = $cell;
+            // Bracketed values contain parens — quote them so CSV parses cleanly.
+            $values[] = (is_numeric($cell) || !preg_match('/[",\(\)]/', (string)$cell)) ? $cell : sprintf('"%s"', addslashes($cell));
         }
         if ($i == 0 && $add_headers) {
             $data[] = implode(',', $headers);
         }
         $data[] = implode(',', $values);
+        $xls_rows[] = $raw_row;
+        // Format price columns AFTER the CSV is built so the table on screen
+        // shows nicely-formatted currency while the CSV stays plain numeric.
+        // Accounting convention: discount > 0 (positive-stored deduction) and
+        // any genuinely negative value get wrapped in (parentheses) — using
+        // the absolute value inside so we don't end up with (-£5.00).
+        foreach ($price_fields as $f) {
+            if (isset($order_summary[$f])) {
+                $val       = (float)$order_summary[$f];
+                $bracket   = ($f === 'discount' && $val > 0) || $val < 0;
+                $formatted = $tax->priceFormat(abs($val));
+                $order_summary[$f] = $bracket ? '('.$formatted.')' : $formatted;
+            }
+        }
         $smarty_data['report_date'][] = $order_summary;
         $i++;
     }
     $GLOBALS['smarty']->assign('REPORT_DATE', $smarty_data['report_date']);
-    if (isset($_POST['download']) || (isset($_POST['external_report']) && is_array($_POST['external_report']))) {
+    if (isset($_POST['download']) || isset($_POST['download_xls']) || (isset($_POST['external_report']) && is_array($_POST['external_report']))) {
         $GLOBALS['debug']->supress(true);
-        if (isset($_POST['download'])) {
-            $file_content  = implode("\r\n", $data);
-            $file_name   = $lang['reports']['sales_data'].' '.$download_range;
-        } else {
-            $file_content  = $external_report->_report_data;
-            $file_name   = ucfirst($module_name[0]).' '.$lang['reports']['data'].' '.$download_range;
+
+        // Sortable, shell-friendly filename: ISO dates, no parens, hyphens for
+        // word separation, status hint appended only when not the default (2,3).
+        $iso_from = date('Y-m-d', $dates['from']);
+        $iso_to   = date('Y-m-d', $dates['to']);
+        $file_name = ($iso_from === $iso_to)
+            ? "sales-report_{$iso_from}"
+            : "sales-report_{$iso_from}_to_{$iso_to}";
+        if (isset($status) && is_array($status)) {
+            $sel = array_map('intval', $status);
+            sort($sel);
+            $defaults = array(2, 3);
+            if ($sel !== $defaults) {
+                $file_name .= '_status-'.implode('-', $sel);
+            }
         }
-        deliverFile(false, false, $file_content, $file_name.'.csv');
+        $file_ext    = 'csv';
+        if (isset($_POST['download_xls'])) {
+            // Build an Excel-compatible HTML table. Excel opens .xls files
+            // containing HTML transparently and lets the user re-save as a
+            // native xlsx if they want.
+            $xls = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body><table border=\"1\">";
+            $xls .= '<thead><tr>';
+            foreach ($headers as $h) {
+                $xls .= '<th>'.htmlspecialchars((string)$h).'</th>';
+            }
+            $xls .= '</tr></thead><tbody>';
+            foreach ($xls_rows as $row) {
+                $xls .= '<tr>';
+                foreach ($headers as $h) {
+                    $xls .= '<td>'.htmlspecialchars((string)($row[$h] ?? '')).'</td>';
+                }
+                $xls .= '</tr>';
+            }
+            // Totals row.
+            $xls .= '<tr><th>';
+            $first = true;
+            foreach ($headers as $idx => $field) {
+                if (!$first) $xls .= '<th>';
+                $first = false;
+                if (isset($tally[$field])) {
+                    $xls .= htmlspecialchars((string)$bracket_fmt($tally[$field], $field));
+                } elseif ($idx === 0) {
+                    $xls .= 'TOTAL';
+                }
+                $xls .= '</th>';
+            }
+            $xls .= '</tr></tbody></table></body></html>';
+            $file_content = $xls;
+            $file_ext     = 'xls';
+        } elseif (isset($_POST['download'])) {
+            // Append a totals row matching the column order of $headers so the
+            // CSV ends with subtotal/discount/shipping/total_tax/total totals.
+            $totals_row = array();
+            foreach ($headers as $idx => $field) {
+                if (isset($tally[$field])) {
+                    $cell = $bracket_fmt($tally[$field], $field);
+                    // Bracketed values contain parens — quote for clean parsing.
+                    $totals_row[] = (is_numeric($cell) || !preg_match('/[",\(\)]/', (string)$cell)) ? $cell : sprintf('"%s"', addslashes($cell));
+                } elseif ($idx === 0) {
+                    $totals_row[] = 'TOTAL';
+                } else {
+                    $totals_row[] = '';
+                }
+            }
+            $data[] = implode(',', $totals_row);
+
+            $file_content = implode("\r\n", $data);
+        } else {
+            $file_content = $external_report->_report_data;
+            $file_name    = ucfirst($module_name[0]).' '.$lang['reports']['data'].' '.$download_range;
+        }
+        deliverFile(false, false, $file_content, $file_name.'.'.$file_ext);
         exit;
     }
     ## Show table footer
     $tally['orders'] = count($orders);
     foreach ($tally as $key => $value) {
-        $tallyformatted[$key] = ($key=='orders') ? $value : sprintf('%.2F', $value);
+        if ($key === 'orders') {
+            $tallyformatted[$key] = $value;
+        } else {
+            $val       = (float)$value;
+            $bracket   = ($key === 'discount' && $val > 0) || $val < 0;
+            $formatted = $tax->priceFormat(abs($val));
+            $tallyformatted[$key] = $bracket ? '('.$formatted.')' : $formatted;
+        }
     }
     $smarty_data['tally']  = $tallyformatted;
     $GLOBALS['smarty']->assign('DOWNLOAD', true);

@@ -2116,6 +2116,17 @@ div#content .powered ul li img {
 }
 .funnel-bar-cell { width: 40% }
 .stat-loading { padding: 1em }
+.report-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch
+}
+.report-table {
+    min-width: 100%;
+    white-space: nowrap;
+    font-size: 12px
+}
+.report-table td { padding: 4px 8px }
+.report-table thead td { font-weight: 600 }
 .stats-filter.stats-status-filter {
     background: var(--panel);
     border: 1px solid var(--border);
