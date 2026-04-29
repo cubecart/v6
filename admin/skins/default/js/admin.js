@@ -84,7 +84,7 @@ $(document).ready(function() {
     const rel = this.getAttribute("rel");
     if (rel) {
         const target = document.getElementById(rel);
-        if (target) target.innerText = this.value.length;
+        if (target) target.innerText = this.value.length || '';
     }
     }, 150));
     
