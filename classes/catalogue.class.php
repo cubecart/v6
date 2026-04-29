@@ -2359,7 +2359,7 @@ class Catalogue
                         $this->_category_products = $search;
                         $this->_sort_by_relevance = true;
                         if ($page == 1 && count($this->_category_products)==1 && ctype_digit($this->_category_products[0]['product_id']) && (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH']!=='XMLHttpRequest')) {
-                            $GLOBALS['gui']->setNotify(sprintf($GLOBALS['language']->catalogue['notify_product_search_one'], $_REQUEST['search']['keywords']));
+                            $GLOBALS['gui']->setNotify(sprintf($GLOBALS['language']->catalogue['notify_product_search_one'], htmlspecialchars((string)$_REQUEST['search']['keywords'], ENT_QUOTES, 'UTF-8')));
                             httpredir('?_a=product&product_id='.$this->_category_products[0]['product_id']);
                         }
                         return true;
@@ -2451,7 +2451,7 @@ class Catalogue
                         $this->_category_count  = (int)count($count);
                         $this->_category_products = $search;
                         if ($page == 1 && count($this->_category_products)==1 && ctype_digit($this->_category_products[0]['product_id']) && (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH']!=='XMLHttpRequest')) {
-                            $GLOBALS['gui']->setNotify(sprintf($GLOBALS['language']->catalogue['notify_product_search_one'], $_REQUEST['search']['keywords']));
+                            $GLOBALS['gui']->setNotify(sprintf($GLOBALS['language']->catalogue['notify_product_search_one'], htmlspecialchars((string)$_REQUEST['search']['keywords'], ENT_QUOTES, 'UTF-8')));
                             httpredir('?_a=product&product_id='.$this->_category_products[0]['product_id']);
                         }
                         return true;
