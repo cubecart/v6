@@ -10,7 +10,7 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="{$HTML_LANG}">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>{$LANG.dashboard.title_admin_cp}</title>

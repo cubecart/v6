@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js" xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="utf-8">
+<html class="no-js" dir="ltr" lang="{$HTML_LANG}">
    <head>
       <meta charset="utf-8">
       <title>{$LANG.dashboard.title_admin_cp}</title>

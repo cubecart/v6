@@ -10,7 +10,7 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 <!DOCTYPE html>
-<html class="no-js" xmlns="http://www.w3.org/1999/xhtml" dir="{$TEXT_DIRECTION}" lang="{$HTML_LANG}">
+<html class="no-js" dir="{$TEXT_DIRECTION}" lang="{$HTML_LANG}">
    <head>
       <title>{$PAGE_TITLE}</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

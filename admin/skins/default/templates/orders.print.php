@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="{$HTML_LANG}">
 <head>
     <title>{$PAGE_TITLE}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

@@ -10,7 +10,7 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html lang="en">
 <head>
   <title>CubeCart&reg; {$VERSION} Installer</title>
   <meta charset="utf-8" />
