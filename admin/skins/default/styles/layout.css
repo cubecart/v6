@@ -2078,11 +2078,6 @@ div#content .powered ul li img {
 }
 .stat-trend--up   { background: rgba(60, 160, 80, 0.15);  color: #2c8a40 }
 .stat-trend--down { background: rgba(200, 60, 60, 0.15);  color: #b03030 }
-.stats-sort-link {
-    color: inherit;
-    text-decoration: none
-}
-.stats-sort-link:hover { text-decoration: underline }
 .stats-filter.stats-status-filter {
     background: var(--panel);
     border: 1px solid var(--border);

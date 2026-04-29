@@ -173,7 +173,6 @@
             <input type="submit" class="tiny" value="{$LANG.common.go}">
             <input type="hidden" name="_g" value="statistics">
             <input type="hidden" name="tab" value="stats_prod_sales">
-            <input type="hidden" name="ps_sort" value="{$PS_SORT}">
          </form>
       </div>
       {if isset($PRODUCT_SALES) && $PRODUCT_SALES}
@@ -188,10 +187,10 @@
                <tr>
                   <td></td>
                   <td>{$LANG.catalogue.product_name}</td>
-                  <td style="text-align: center" nowrap="nowrap"><a class="stats-sort-link" href="?_g=statistics&amp;tab=stats_prod_sales&amp;ps_sort=quantity&amp;ps_year={$PS_YEAR}#stats_prod_sales"><span title="{$LANG.statistics.quantity_sold}">{$LANG.common.quantity}</span>{if $PS_SORT == 'quantity'} <i class="fa fa-caret-down"></i>{/if}</a></td>
-                  <td style="text-align: center" nowrap="nowrap"><a class="stats-sort-link" href="?_g=statistics&amp;tab=stats_prod_sales&amp;ps_sort=revenue&amp;ps_year={$PS_YEAR}#stats_prod_sales">Revenue{if $PS_SORT == 'revenue'} <i class="fa fa-caret-down"></i>{/if}</a></td>
+                  <td style="text-align: center" nowrap="nowrap"><span title="{$LANG.statistics.quantity_sold}">{$LANG.common.quantity}</span></td>
+                  <td style="text-align: center" nowrap="nowrap">Revenue</td>
                   <td style="text-align: center" nowrap="nowrap"><span title="{$LANG.statistics.percentage_of_total}">{$LANG.common.percentage}</span></td>
-                  <td style="text-align: center" nowrap="nowrap"><a class="stats-sort-link" href="?_g=statistics&amp;tab=stats_prod_sales&amp;ps_sort=stock&amp;ps_year={$PS_YEAR}#stats_prod_sales">Stock{if $PS_SORT == 'stock'} <i class="fa fa-caret-up"></i>{/if}</a></td>
+                  <td style="text-align: center" nowrap="nowrap">Stock</td>
                   {if $PS_HAS_TREND}<td style="text-align: center" nowrap="nowrap">Trend</td>{/if}
                   <td></td>
                </tr>
@@ -228,77 +227,107 @@
    </div>
 {elseif $ACTIVE_TAB == 'stats_prod_views'}
    <h3>{$LANG.statistics.title_viewed}</h3>
-   {if isset($PRODUCT_VIEWS) && $PRODUCT_VIEWS}
-   <div id="chart6" class="google_chart"></div>
-   <div id="chart6-title" style="display:none">{$GRAPH_DATA.6.title}</div>
-   <div id="chart6-hAxis" style="display:none">{$GRAPH_DATA.6.hAxis}</div>
-   <div id="chart6-vAxis" style="display:none">{$GRAPH_DATA.6.vAxis}</div>
-   <div class="pagination">{$PAGINATION_VIEWS}</div>
-   <table width="100%">
-      <thead>
-         <tr>
-            <td width="20">&nbsp;</td>
-            <td>{$LANG.catalogue.product_name}</td>
-            <td style="text-align:center">{$LANG.statistics.product_views}</td>
-            <td style="text-align:center"><span title="{$LANG.statistics.percentage_of_views}">{$LANG.common.percentage}</span></td>
-         </tr>
-      </thead>
-      <tbody>
-         {foreach from=$PRODUCT_VIEWS item=view}
-         <tr>
-            <td style="text-align:center">{$view.key}</td>
-            <td>{$view.name}</td>
-            <td style="text-align:center">{$view.popularity}</td>
-            <td style="text-align:center">{$view.percent}</td>
-         </tr>
-         {/foreach}
-      </tbody>
-   </table>
-   <script type="text/javascript">
-      window.chart_data = window.chart_data || [];
-      window.chart_data[6] = [{$GRAPH_DATA.6.data}];
-      window.whenChartsReady(function() { window.drawChart(6, window.chart_data); });
-   </script>
-   {else}
-   <p>{$LANG.form.none}</p>
-   {/if}
+   <div class="stat-chart">
+      <div class="stat-chart-header">
+         <span class="stat-chart-title">{$LANG.statistics.title_viewed}</span>
+      </div>
+      {if isset($PRODUCT_VIEWS) && $PRODUCT_VIEWS}
+      <div class="stat-chart-body">
+         <div id="chart6" class="google_chart"></div>
+         <div id="chart6-title" style="display:none">{$GRAPH_DATA.6.title}</div>
+         <div id="chart6-hAxis" style="display:none">{$GRAPH_DATA.6.hAxis}</div>
+         <div id="chart6-vAxis" style="display:none">{$GRAPH_DATA.6.vAxis}</div>
+         <div class="pagination">{$PAGINATION_VIEWS}</div>
+         <table width="100%" class="stat-table">
+            <thead>
+               <tr>
+                  <td></td>
+                  <td>{$LANG.catalogue.product_name}</td>
+                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.product_views}</td>
+                  <td style="text-align: center" nowrap="nowrap"><span title="{$LANG.statistics.percentage_of_views}">{$LANG.common.percentage}</span></td>
+                  <td style="text-align: center" nowrap="nowrap">Stock</td>
+                  <td></td>
+               </tr>
+            </thead>
+            <tbody>
+               {foreach from=$PRODUCT_VIEWS item=view}
+               <tr>
+                  <td style="text-align: center">{$view.key}</td>
+                  <td><a href="?_g=statistics&amp;node=product&amp;product_id={$view.product_id}">{$view.name}</a></td>
+                  <td style="text-align: center">{$view.popularity}</td>
+                  <td style="text-align: center">{$view.percent}</td>
+                  <td style="text-align: center{if $view.stock_low}; color: var(--danger, #c33); font-weight: 600{/if}">{$view.stock_display}</td>
+                  <td style="text-align: center"><a href="?_g=statistics&amp;node=product&amp;product_id={$view.product_id}" title="{$LANG.statistics.title_viewed}"><i class="fa fa-bar-chart"></i></a></td>
+               </tr>
+               {/foreach}
+            </tbody>
+         </table>
+      </div>
+      <div class="stat-chart-footer">{$GRAPH_DATA.6.total_sum} &middot; {$GRAPH_DATA.6.total_count} products</div>
+      <script type="text/javascript">
+         window.chart_data = window.chart_data || [];
+         window.chart_options = window.chart_options || [];
+         window.chart_data[6] = [{$GRAPH_DATA.6.data}];
+         window.chart_options[6] = {};
+         window.chart_options[6].colors = {$GRAPH_DATA.6.colors};
+         window.chart_options[6].drill = {$GRAPH_DATA.6.drill|json_encode};
+         window.whenChartsReady(function() { window.drawChart(6, window.chart_data); });
+      </script>
+      {else}
+      <div class="stat-chart-body" style="text-align: center; padding: 2em 0;">{$LANG.form.none}</div>
+      {/if}
+   </div>
 {elseif $ACTIVE_TAB == 'stats_search'}
-   {if isset($SEARCH_TERMS) && $SEARCH_TERMS}<div class="right"><a href="?_g=maintenance&clearSearch=true&redir=searchlog" class="button delete" title="{$LANG.notification.confirm_continue}">{$LANG.maintain.clear_log}</a></div>{/if}
-   <h3 style="margin-bottom: 25px;">{$LANG.statistics.title_search}</h3>
-   {if isset($SEARCH_TERMS) && $SEARCH_TERMS}
-   <div id="chart7" class="google_chart"></div>
-   <div id="chart7-title" style="display:none">{$GRAPH_DATA.7.title}</div>
-   <div id="chart7-hAxis" style="display:none">{$GRAPH_DATA.7.hAxis}</div>
-   <div id="chart7-vAxis" style="display:none">{$GRAPH_DATA.7.vAxis}</div>
-   <div class="pagination">{$PAGINATION_SEARCH}</div>
-   <table width="100%">
-      <thead>
-         <tr>
-            <td width="20">&nbsp;</td>
-            <td>{$LANG.statistics.search_term}</td>
-            <td style="text-align:center">{$LANG.statistics.product_hits}</td>
-            <td style="text-align:center"><span title="{$LANG.statistics.percentage_of_search}">{$LANG.common.percentage}</span></td>
-         </tr>
-      </thead>
-      <tbody>
-         {foreach from=$SEARCH_TERMS item=term}
-         <tr>
-            <td style="text-align:center">{$term.key}</td>
-            <td>{$term.searchstr}</td>
-            <td style="text-align:center">{$term.hits}</td>
-            <td style="text-align:center">{$term.percent}</td>
-         </tr>
-         {/foreach}
-      </tbody>
-   </table>
-   <script type="text/javascript">
-      window.chart_data = window.chart_data || [];
-      window.chart_data[7] = [{$GRAPH_DATA.7.data}];
-      window.whenChartsReady(function() { window.drawChart(7, window.chart_data); });
-   </script>
-   {else}
-   {$LANG.statistics.notify_searches_none}
-   {/if}
+   <h3>{$LANG.statistics.title_search}</h3>
+   <div class="stat-chart">
+      <div class="stat-chart-header">
+         <span class="stat-chart-title">{$LANG.statistics.title_search}</span>
+         {if isset($SEARCH_TERMS) && $SEARCH_TERMS}<a href="?_g=maintenance&clearSearch=true&redir=searchlog" class="button delete" title="{$LANG.notification.confirm_continue}">{$LANG.maintain.clear_log}</a>{/if}
+      </div>
+      {if isset($SEARCH_TERMS) && $SEARCH_TERMS}
+      <div class="stat-chart-body">
+         <div id="chart7" class="google_chart"></div>
+         <div id="chart7-title" style="display:none">{$GRAPH_DATA.7.title}</div>
+         <div id="chart7-hAxis" style="display:none">{$GRAPH_DATA.7.hAxis}</div>
+         <div id="chart7-vAxis" style="display:none">{$GRAPH_DATA.7.vAxis}</div>
+         <div class="pagination">{$PAGINATION_SEARCH}</div>
+         <table width="100%" class="stat-table">
+            <thead>
+               <tr>
+                  <td></td>
+                  <td>{$LANG.statistics.search_term}</td>
+                  <td style="text-align:center">{$LANG.statistics.product_hits}</td>
+                  <td style="text-align:center"><span title="{$LANG.statistics.percentage_of_search}">{$LANG.common.percentage}</span></td>
+                  <td></td>
+               </tr>
+            </thead>
+            <tbody>
+               {foreach from=$SEARCH_TERMS item=term}
+               <tr>
+                  <td style="text-align:center">{$term.key}</td>
+                  <td><a href="{$term.search_url}" target="_blank" rel="noopener">{$term.searchstr}</a></td>
+                  <td style="text-align:center">{$term.hits}</td>
+                  <td style="text-align:center">{$term.percent}</td>
+                  <td style="text-align:center"><a href="{$term.search_url}" target="_blank" rel="noopener" title="View results"><i class="fa fa-external-link"></i></a></td>
+               </tr>
+               {/foreach}
+            </tbody>
+         </table>
+      </div>
+      <div class="stat-chart-footer">{$GRAPH_DATA.7.total_sum} &middot; {$GRAPH_DATA.7.total_count} terms</div>
+      <script type="text/javascript">
+         window.chart_data = window.chart_data || [];
+         window.chart_options = window.chart_options || [];
+         window.chart_data[7] = [{$GRAPH_DATA.7.data}];
+         window.chart_options[7] = {};
+         window.chart_options[7].colors = {$GRAPH_DATA.7.colors};
+         window.chart_options[7].drill = {$GRAPH_DATA.7.drill|json_encode};
+         window.whenChartsReady(function() { window.drawChart(7, window.chart_data); });
+      </script>
+      {else}
+      <div class="stat-chart-body" style="text-align: center; padding: 2em 0;">{$LANG.statistics.notify_searches_none}</div>
+      {/if}
+   </div>
 {elseif $ACTIVE_TAB == 'stats_best_customers'}
    <h3>{$LANG.statistics.title_customers_best}</h3>
    {if isset($BEST_CUSTOMERS) && $BEST_CUSTOMERS}

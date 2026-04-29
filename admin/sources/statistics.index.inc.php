@@ -365,10 +365,6 @@ case 'stats_prod_sales':
     $ps_year_raw = isset($_GET['ps_year']) ? $_GET['ps_year'] : 'all';
     $ps_year     = ($ps_year_raw === 'all' || !is_numeric($ps_year_raw)) ? 'all' : (int)$ps_year_raw;
 
-    // Sort: quantity (default), revenue, stock.
-    $ps_sort_in = isset($_GET['ps_sort']) ? $_GET['ps_sort'] : 'quantity';
-    $ps_sort    = in_array($ps_sort_in, array('quantity', 'revenue', 'stock'), true) ? $ps_sort_in : 'quantity';
-
     $per_page = 15;
     $page     = (isset($_GET['page_sales']) && is_numeric($_GET['page_sales'])) ? (int)$_GET['page_sales'] : 1;
     $offset   = ($page - 1) * $per_page;
@@ -390,11 +386,7 @@ case 'stats_prod_sales':
         $where_date  = " AND `S`.`order_date` >= ".$year_start." AND `S`.`order_date` < ".$year_end;
     }
 
-    switch ($ps_sort) {
-        case 'revenue': $order_by = '`t`.`revenue` DESC'; break;
-        case 'stock':   $order_by = '`I`.`stock_level` ASC'; break; // ascending — most at-risk first
-        default:        $order_by = '`t`.`quan` DESC';
-    }
+    $order_by = '`t`.`quan` DESC';
 
     // Year filter options always built so the filter form keeps showing
     // even when the active year has no results (otherwise the user has no way back).
@@ -438,7 +430,6 @@ case 'stats_prod_sales':
 
     $GLOBALS['smarty']->assign('PS_YEAR_OPTIONS', $ps_year_options);
     $GLOBALS['smarty']->assign('PS_YEAR',         $ps_year);
-    $GLOBALS['smarty']->assign('PS_SORT',         $ps_sort);
     $GLOBALS['smarty']->assign('PS_HAS_TREND',    $prior_start !== null);
 
     $query = "SELECT `t`.`quan`, `t`.`revenue`, `t`.`product_id`, `I`.`name`, `I`.`stock_level`, `I`.`use_stock_level` "
@@ -526,27 +517,63 @@ case 'stats_prod_sales':
 
 case 'stats_prod_views':
     $per_page = 15;
-    $page     = (isset($_GET['page_views']) && is_numeric($_GET['page_views'])) ? $_GET['page_views'] : 1;
-    $query    = "SELECT `popularity`, `name` FROM `".$glob['dbprefix']."CubeCart_inventory` WHERE `popularity` > 0 ORDER BY `popularity` DESC ";
-    $results  = $GLOBALS['db']->query($query, $per_page, $page);
-    if ($results) {
-        $numrows = $GLOBALS['db']->numrows($query);
-        $divider = $GLOBALS['db']->query('SELECT SUM(popularity) as `totalHits` FROM  `'.$glob['dbprefix'].'CubeCart_inventory`');
+    $page     = (isset($_GET['page_views']) && is_numeric($_GET['page_views'])) ? (int)$_GET['page_views'] : 1;
+    $offset   = ($page - 1) * $per_page;
+
+    $query   = "SELECT `product_id`, `popularity`, `name`, `stock_level`, `use_stock_level` FROM `".$glob['dbprefix']."CubeCart_inventory` WHERE `popularity` > 0 ORDER BY `popularity` DESC LIMIT ".(int)$per_page." OFFSET ".(int)$offset;
+    $results = $GLOBALS['db']->query($query);
+    if ($results !== false && !empty($results)) {
+        $numrows_q = $GLOBALS['db']->query("SELECT COUNT(*) AS `c` FROM `".$glob['dbprefix']."CubeCart_inventory` WHERE `popularity` > 0");
+        $numrows   = $numrows_q ? (int)$numrows_q[0]['c'] : 0;
+
+        $divider    = $GLOBALS['db']->query("SELECT SUM(`popularity`) AS `totalHits` FROM `".$glob['dbprefix']."CubeCart_inventory` WHERE `popularity` > 0");
+        $total_hits = (int)($divider[0]['totalHits'] ?? 0);
+
+        // Year-colour: same palette as the Sales tab. No per-period filter
+        // here so we use the current year's slot.
+        $hsl_to_hex = function ($h, $s, $l) {
+            $h = (($h % 360) + 360) % 360 / 360;
+            $q = $l < 0.5 ? $l * (1 + $s) : $l + $s - $l * $s;
+            $p = 2 * $l - $q;
+            $hue = function ($t) use ($p, $q) {
+                if ($t < 0) $t += 1;
+                if ($t > 1) $t -= 1;
+                if ($t < 1/6) return $p + ($q - $p) * 6 * $t;
+                if ($t < 1/2) return $q;
+                if ($t < 2/3) return $p + ($q - $p) * (2/3 - $t) * 6;
+                return $p;
+            };
+            return sprintf('#%02x%02x%02x', (int)round($hue($h + 1/3) * 255), (int)round($hue($h) * 255), (int)round($hue($h - 1/3) * 255));
+        };
+        $earliest_q    = $GLOBALS['db']->query("SELECT MIN(`order_date`) AS `m` FROM `".$glob['dbprefix']."CubeCart_order_summary` WHERE `status` IN (2,3)");
+        $earliest_year = ($earliest_q && !empty($earliest_q[0]['m'])) ? (int)date('Y', $earliest_q[0]['m']) : (int)date('Y');
+        $idx           = max(0, (int)date('Y') - $earliest_year);
+        $pv_color      = $hsl_to_hex((int)round(fmod(210 + $idx * 137.5, 360)), 0.65, 0.45);
 
         $g_graph_data[6]['data'] = "['".$lang['statistics']['percentage_of_views']."','".$lang['common']['percentage']."'],";
-
+        $product_ids_for_chart = array();
         foreach ($results as $key => $result) {
             $result['key']     = (($page - 1) * $per_page) + ($key + 1);
-            $result['percent'] = (float)$divider[0]['totalHits'] ? number_format(100 * ($result['popularity'] / $divider[0]['totalHits']), 2) : 0;
+            $result['percent'] = $total_hits ? number_format(100 * ($result['popularity'] / $total_hits), 2) : 0;
             $tmp_col_data[]    = "['".$result['key'].". ".addslashes($result['name'])."',".$result['percent']."]";
+            $product_ids_for_chart[] = (int)$result['product_id'];
+
+            $result['popularity']    = number_format((int)$result['popularity']);
+            $result['stock_display'] = ((int)$result['use_stock_level'] === 1) ? number_format((int)$result['stock_level']) : '&mdash;';
+            $result['stock_low']     = ((int)$result['use_stock_level'] === 1) && (int)$result['stock_level'] < 10;
+
             $smarty_data['product_views'][] = $result;
         }
 
         $g_graph_data[6]['data'] .= implode(',', $tmp_col_data);
         unset($tmp_col_data);
-        $g_graph_data[6]['title'] = $lang['statistics']['percentage_of_views'];
-        $g_graph_data[6]['hAxis'] = $lang['dashboard']['inv_products'];
-        $g_graph_data[6]['vAxis'] = $lang['common']['percentage'];
+        $g_graph_data[6]['title']        = $lang['statistics']['percentage_of_views'];
+        $g_graph_data[6]['hAxis']        = $lang['dashboard']['inv_products'];
+        $g_graph_data[6]['vAxis']        = $lang['common']['percentage'];
+        $g_graph_data[6]['colors']       = "['".$pv_color."']";
+        $g_graph_data[6]['drill']        = array('type' => 'product', 'product_ids' => $product_ids_for_chart);
+        $g_graph_data[6]['total_sum']    = number_format($total_hits) . ' views';
+        $g_graph_data[6]['total_count']  = number_format($numrows);
 
         $GLOBALS['smarty']->assign('PRODUCT_VIEWS', $smarty_data['product_views']);
         $GLOBALS['smarty']->assign('PAGINATION_VIEWS', $GLOBALS['db']->pagination($numrows, $per_page, $page, 5, 'page_views', 'stats_prod_views', ' ', false));
@@ -556,28 +583,57 @@ case 'stats_prod_views':
 
 case 'stats_search':
     $per_page = 15;
-    $page     = (isset($_GET['page_search']) && is_numeric($_GET['page_search'])) ? $_GET['page_search'] : 1;
+    $page     = (isset($_GET['page_search']) && is_numeric($_GET['page_search'])) ? (int)$_GET['page_search'] : 1;
     $query    = 'SELECT * FROM `'.$glob['dbprefix'].'CubeCart_search` ORDER BY hits DESC';
-    if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
-        $numrows = $GLOBALS['db']->numrows($query);
-        $divider = $GLOBALS['db']->query("SELECT SUM(hits) as `totalHits` FROM  `".$glob['dbprefix']."CubeCart_search`");
+    if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false && !empty($results)) {
+        $numrows    = $GLOBALS['db']->numrows($query);
+        $divider    = $GLOBALS['db']->query("SELECT SUM(hits) as `totalHits` FROM  `".$glob['dbprefix']."CubeCart_search`");
+        $total_hits = (int)($divider[0]['totalHits'] ?? 0);
+
+        // Year-colour palette, current year's slot.
+        $hsl_to_hex = function ($h, $s, $l) {
+            $h = (($h % 360) + 360) % 360 / 360;
+            $q = $l < 0.5 ? $l * (1 + $s) : $l + $s - $l * $s;
+            $p = 2 * $l - $q;
+            $hue = function ($t) use ($p, $q) {
+                if ($t < 0) $t += 1;
+                if ($t > 1) $t -= 1;
+                if ($t < 1/6) return $p + ($q - $p) * 6 * $t;
+                if ($t < 1/2) return $q;
+                if ($t < 2/3) return $p + ($q - $p) * (2/3 - $t) * 6;
+                return $p;
+            };
+            return sprintf('#%02x%02x%02x', (int)round($hue($h + 1/3) * 255), (int)round($hue($h) * 255), (int)round($hue($h - 1/3) * 255));
+        };
+        $earliest_q    = $GLOBALS['db']->query("SELECT MIN(`order_date`) AS `m` FROM `".$glob['dbprefix']."CubeCart_order_summary` WHERE `status` IN (2,3)");
+        $earliest_year = ($earliest_q && !empty($earliest_q[0]['m'])) ? (int)date('Y', $earliest_q[0]['m']) : (int)date('Y');
+        $idx           = max(0, (int)date('Y') - $earliest_year);
+        $search_color  = $hsl_to_hex((int)round(fmod(210 + $idx * 137.5, 360)), 0.65, 0.45);
 
         $g_graph_data[7]['data'] = "['".$lang['statistics']['percentage_of_views']."','".$lang['common']['percentage']."'],";
 
         $smarty_data['search_terms'] = array();
+        $search_terms_for_chart = array();
         foreach ($results as $key => $result) {
-            $result['percent']   = (float)$divider[0]['totalHits'] ? number_format(100 * ($result['hits'] / $divider[0]['totalHits']), 2) : 0;
-            $result['key']       = (($page - 1) * $per_page) + ($key + 1);
-            $result['searchstr'] = ucfirst(strtolower($result['searchstr']));
-            $tmp_col_data[]      = "['".$result['key'].". ".addslashes($result['searchstr'])."',".$result['percent']."]";
+            $result['percent']    = $total_hits ? number_format(100 * ($result['hits'] / $total_hits), 2) : 0;
+            $result['key']        = (($page - 1) * $per_page) + ($key + 1);
+            $result['searchstr']  = ucfirst(strtolower($result['searchstr']));
+            $tmp_col_data[]       = "['".$result['key'].". ".addslashes($result['searchstr'])."',".$result['percent']."]";
+            $search_terms_for_chart[] = $result['searchstr'];
+            $result['hits']       = number_format((int)$result['hits']);
+            $result['search_url'] = $GLOBALS['storeURL'].'/index.php?_a=search&search[keywords]='.urlencode($result['searchstr']);
             $smarty_data['search_terms'][] = $result;
         }
 
         $g_graph_data[7]['data'] .= isset($tmp_col_data) ? implode(',', $tmp_col_data) : '';
         unset($tmp_col_data);
-        $g_graph_data[7]['title'] = '';
-        $g_graph_data[7]['hAxis'] = $lang['statistics']['search_term'];
-        $g_graph_data[7]['vAxis'] = $lang['statistics']['percentage_of_search'];
+        $g_graph_data[7]['title']        = '';
+        $g_graph_data[7]['hAxis']        = $lang['statistics']['search_term'];
+        $g_graph_data[7]['vAxis']        = $lang['statistics']['percentage_of_search'];
+        $g_graph_data[7]['colors']       = "['".$search_color."']";
+        $g_graph_data[7]['drill']        = array('type' => 'search', 'terms' => $search_terms_for_chart, 'storeURL' => $GLOBALS['storeURL']);
+        $g_graph_data[7]['total_sum']    = number_format($total_hits) . ' searches';
+        $g_graph_data[7]['total_count']  = number_format((int)$numrows);
 
         $GLOBALS['smarty']->assign('SEARCH_TERMS', $smarty_data['search_terms']);
         $GLOBALS['smarty']->assign('PAGINATION_SEARCH', $GLOBALS['db']->pagination($numrows, $per_page, $page, 5, 'page_search', 'stats_search', ' ', false));

@@ -122,6 +122,12 @@ window.statsHandleDrill = function(drill, rowIdx, colIdx) {
         var pid = drill.product_ids && drill.product_ids[rowIdx];
         if (pid) window.location.href = '?_g=statistics&node=product&product_id=' + pid;
         return; // full navigation, no AJAX refetch needed
+    } else if (drill.type === 'search') {
+        var term = drill.terms && drill.terms[rowIdx];
+        if (term && drill.storeURL) {
+            window.open(drill.storeURL + '/index.php?_a=search&search[keywords]=' + encodeURIComponent(term), '_blank', 'noopener');
+        }
+        return;
     }
     window.statsDrillTo(updates, scrollTo);
 };
@@ -286,15 +292,16 @@ document.addEventListener('submit', function(e) {
     statsFetchInto(tabDiv, '?' + params.toString());
 });
 
-// AJAX-ify pagination + sort links inside any tab body so they don't full-reload.
+// AJAX-ify pagination links inside any tab body so paging doesn't full-reload.
 document.addEventListener('click', function(e) {
     var t = e.target;
-    var a = (t && t.closest) ? t.closest('.tab_content .pagination a, .tab_content .stats-sort-link') : null;
+    if (!t || !t.closest) return;
+    var a = t.closest('.tab_content .pagination a');
     if (!a) return;
-    var href = a.getAttribute('href');
-    if (!href || href.indexOf('_g=statistics') === -1) return;
     var tabDiv = a.closest('.tab_content');
     if (!tabDiv || !tabDiv.id) return;
+    var href = a.getAttribute('href');
+    if (!href || href.indexOf('_g=statistics') === -1) return;
     e.preventDefault();
 
     var hashIdx  = href.indexOf('#');
