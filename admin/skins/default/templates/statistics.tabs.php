@@ -42,9 +42,9 @@
       </div>
       <div class="stat-chart-body">
          <div id="chart1" class="google_chart"></div>
-         <div id="chart1-title" style="display:none"></div>
-         <div id="chart1-hAxis" style="display:none">{$GRAPH_DATA.1.hAxis}</div>
-         <div id="chart1-vAxis" style="display:none">{$GRAPH_DATA.1.vAxis}</div>
+         <div id="chart1-title" class="chart-meta"></div>
+         <div id="chart1-hAxis" class="chart-meta">{$GRAPH_DATA.1.hAxis}</div>
+         <div id="chart1-vAxis" class="chart-meta">{$GRAPH_DATA.1.vAxis}</div>
       </div>
       <div class="stat-chart-footer">{$LANG.statistics.footer_orders|sprintf:$GRAPH_DATA.1.total_sum:$GRAPH_DATA.1.total_count}</div>
    </div>
@@ -72,9 +72,9 @@
       </div>
       <div class="stat-chart-body">
          <div id="chart2" class="google_chart"></div>
-         <div id="chart2-title" style="display:none"></div>
-         <div id="chart2-hAxis" style="display:none">{$GRAPH_DATA.2.hAxis}</div>
-         <div id="chart2-vAxis" style="display:none">{$GRAPH_DATA.2.vAxis}</div>
+         <div id="chart2-title" class="chart-meta"></div>
+         <div id="chart2-hAxis" class="chart-meta">{$GRAPH_DATA.2.hAxis}</div>
+         <div id="chart2-vAxis" class="chart-meta">{$GRAPH_DATA.2.vAxis}</div>
       </div>
       <div class="stat-chart-footer">{$LANG.statistics.footer_orders|sprintf:$GRAPH_DATA.2.total_sum:$GRAPH_DATA.2.total_count}</div>
    </div>
@@ -102,9 +102,9 @@
       </div>
       <div class="stat-chart-body">
          <div id="chart3" class="google_chart"></div>
-         <div id="chart3-title" style="display:none"></div>
-         <div id="chart3-hAxis" style="display:none">{$GRAPH_DATA.3.hAxis}</div>
-         <div id="chart3-vAxis" style="display:none">{$GRAPH_DATA.3.vAxis}</div>
+         <div id="chart3-title" class="chart-meta"></div>
+         <div id="chart3-hAxis" class="chart-meta">{$GRAPH_DATA.3.hAxis}</div>
+         <div id="chart3-vAxis" class="chart-meta">{$GRAPH_DATA.3.vAxis}</div>
       </div>
       <div class="stat-chart-footer">{$LANG.statistics.footer_orders|sprintf:$GRAPH_DATA.3.total_sum:$GRAPH_DATA.3.total_count}</div>
    </div>
@@ -134,9 +134,9 @@
       </div>
       <div class="stat-chart-body">
          <div id="chart4" class="google_chart"></div>
-         <div id="chart4-title" style="display:none"></div>
-         <div id="chart4-hAxis" style="display:none">{$GRAPH_DATA.4.hAxis}</div>
-         <div id="chart4-vAxis" style="display:none">{$GRAPH_DATA.4.vAxis}</div>
+         <div id="chart4-title" class="chart-meta"></div>
+         <div id="chart4-hAxis" class="chart-meta">{$GRAPH_DATA.4.hAxis}</div>
+         <div id="chart4-vAxis" class="chart-meta">{$GRAPH_DATA.4.vAxis}</div>
       </div>
       <div class="stat-chart-footer">{$LANG.statistics.footer_orders|sprintf:$GRAPH_DATA.4.total_sum:$GRAPH_DATA.4.total_count}</div>
    </div>
@@ -172,19 +172,19 @@
             <thead>
                <tr>
                   <td>{$LANG.statistics.funnel_stage}</td>
-                  <td style="text-align: right" nowrap="nowrap">{$LANG.statistics.funnel_count}</td>
-                  <td style="text-align: right" nowrap="nowrap">{$LANG.statistics.funnel_pct_total}</td>
-                  <td style="text-align: right" nowrap="nowrap">{$LANG.statistics.funnel_pct_prev}</td>
-                  <td style="width: 40%">&nbsp;</td>
+                  <td class="text-right" nowrap="nowrap">{$LANG.statistics.funnel_count}</td>
+                  <td class="text-right" nowrap="nowrap">{$LANG.statistics.funnel_pct_total}</td>
+                  <td class="text-right" nowrap="nowrap">{$LANG.statistics.funnel_pct_prev}</td>
+                  <td class="funnel-bar-cell">&nbsp;</td>
                </tr>
             </thead>
             <tbody>
                {foreach from=$FUNNEL_STAGES item=stage}
                <tr>
                   <td><strong>{$stage.name}</strong></td>
-                  <td style="text-align: right" nowrap="nowrap">{$stage.count|number_format}</td>
-                  <td style="text-align: right" nowrap="nowrap">{$stage.pct_total}%</td>
-                  <td style="text-align: right" nowrap="nowrap">{if $stage.pct_prev !== null}{$stage.pct_prev}%{else}&mdash;{/if}</td>
+                  <td class="text-right" nowrap="nowrap">{$stage.count|number_format}</td>
+                  <td class="text-right" nowrap="nowrap">{$stage.pct_total}%</td>
+                  <td class="text-right" nowrap="nowrap">{if $stage.pct_prev !== null}{$stage.pct_prev}%{else}&mdash;{/if}</td>
                   <td><div class="funnel-bar" style="width: {$stage.pct_total}%"></div></td>
                </tr>
                {/foreach}
@@ -205,9 +205,9 @@
             <thead>
                <tr>
                   <td>{$LANG.statistics.abandoned_customer}</td>
-                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.abandoned_items}</td>
-                  <td style="text-align: right" nowrap="nowrap">{$LANG.statistics.abandoned_value}</td>
-                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.abandoned_idle}</td>
+                  <td class="text-center" nowrap="nowrap">{$LANG.statistics.abandoned_items}</td>
+                  <td class="text-right" nowrap="nowrap">{$LANG.statistics.abandoned_value}</td>
+                  <td class="text-center" nowrap="nowrap">{$LANG.statistics.abandoned_idle}</td>
                   <td>{$LANG.common.ip_address}</td>
                   <td></td>
                </tr>
@@ -223,11 +223,11 @@
                      {$ab.name}
                      {/if}
                   </td>
-                  <td style="text-align: center">{$ab.item_count}</td>
-                  <td style="text-align: right" nowrap="nowrap"><strong>{$ab.cart_value}</strong></td>
-                  <td style="text-align: center" nowrap="nowrap">{$ab.last_idle}</td>
+                  <td class="text-center">{$ab.item_count}</td>
+                  <td class="text-right" nowrap="nowrap"><strong>{$ab.cart_value}</strong></td>
+                  <td class="text-center" nowrap="nowrap">{$ab.last_idle}</td>
                   <td nowrap="nowrap"><a href="http://whois.domaintools.com/{$ab.ip_address}" target="_blank" rel="noopener">{$ab.ip_address}</a></td>
-                  <td style="text-align: center">{if $ab.email}<a href="mailto:{$ab.email}" title="{$LANG.statistics.email_customer}"><i class="fa fa-envelope"></i></a>{/if}</td>
+                  <td class="text-center">{if $ab.email}<a href="mailto:{$ab.email}" title="{$LANG.statistics.email_customer}"><i class="fa fa-envelope"></i></a>{/if}</td>
                </tr>
                {/foreach}
             </tbody>
@@ -235,7 +235,7 @@
       </div>
       <div class="stat-chart-footer">{$LANG.statistics.abandoned_total|sprintf:$ABANDONED_TOTAL:$ABANDONED_COUNT}</div>
       {else}
-      <div class="stat-chart-body" style="text-align: center; padding: 2em 0;">{$LANG.statistics.abandoned_none}</div>
+      <div class="stat-chart-body stat-empty">{$LANG.statistics.abandoned_none}</div>
       {/if}
    </div>
 {elseif $ACTIVE_TAB == 'stats_country'}
@@ -255,27 +255,27 @@
       {if $COUNTRY_ROWS}
       <div class="stat-chart-body">
          <div id="chart11" class="google_chart"></div>
-         <div id="chart11-title" style="display:none">{$GRAPH_DATA.11.title}</div>
-         <div id="chart11-hAxis" style="display:none">{$GRAPH_DATA.11.hAxis}</div>
-         <div id="chart11-vAxis" style="display:none">{$GRAPH_DATA.11.vAxis}</div>
+         <div id="chart11-title" class="chart-meta">{$GRAPH_DATA.11.title}</div>
+         <div id="chart11-hAxis" class="chart-meta">{$GRAPH_DATA.11.hAxis}</div>
+         <div id="chart11-vAxis" class="chart-meta">{$GRAPH_DATA.11.vAxis}</div>
          <table width="100%" class="stat-table">
             <thead>
                <tr>
                   <td></td>
                   <td>{$LANG.statistics.country_label}</td>
-                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.orders}</td>
-                  <td style="text-align: right" nowrap="nowrap">{$LANG.statistics.revenue}</td>
-                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.country_pct_total}</td>
+                  <td class="text-center" nowrap="nowrap">{$LANG.statistics.orders}</td>
+                  <td class="text-right" nowrap="nowrap">{$LANG.statistics.revenue}</td>
+                  <td class="text-center" nowrap="nowrap">{$LANG.statistics.country_pct_total}</td>
                </tr>
             </thead>
             <tbody>
                {foreach from=$COUNTRY_ROWS item=row}
                <tr>
-                  <td style="text-align: center">{$row.rank}</td>
+                  <td class="text-center">{$row.rank}</td>
                   <td>{if $row.flag}<span class="country-flag">{$row.flag}</span> {/if}{$row.name}</td>
-                  <td style="text-align: center">{$row.orders}</td>
-                  <td style="text-align: right" nowrap="nowrap">{$row.revenue}</td>
-                  <td style="text-align: center">{$row.percent}%</td>
+                  <td class="text-center">{$row.orders}</td>
+                  <td class="text-right" nowrap="nowrap">{$row.revenue}</td>
+                  <td class="text-center">{$row.percent}%</td>
                </tr>
                {/foreach}
             </tbody>
@@ -292,7 +292,7 @@
          window.whenChartsReady(function() { window.drawChart(11, window.chart_data); });
       </script>
       {else}
-      <div class="stat-chart-body" style="text-align: center; padding: 2em 0;">{$LANG.statistics.country_no_data}</div>
+      <div class="stat-chart-body stat-empty">{$LANG.statistics.country_no_data}</div>
       {/if}
    </div>
 {elseif $ACTIVE_TAB == 'stats_prod_sales'}
@@ -312,34 +312,34 @@
       {if isset($PRODUCT_SALES) && $PRODUCT_SALES}
       <div class="stat-chart-body">
          <div id="chart5" class="google_chart"></div>
-         <div id="chart5-title" style="display:none">{$GRAPH_DATA.5.title}</div>
-         <div id="chart5-hAxis" style="display:none">{$GRAPH_DATA.5.hAxis}</div>
-         <div id="chart5-vAxis" style="display:none">{$GRAPH_DATA.5.vAxis}</div>
+         <div id="chart5-title" class="chart-meta">{$GRAPH_DATA.5.title}</div>
+         <div id="chart5-hAxis" class="chart-meta">{$GRAPH_DATA.5.hAxis}</div>
+         <div id="chart5-vAxis" class="chart-meta">{$GRAPH_DATA.5.vAxis}</div>
          <div class="pagination">{$PAGINATION_SALES}</div>
          <table width="100%" class="stat-table">
             <thead>
                <tr>
                   <td></td>
                   <td>{$LANG.catalogue.product_name}</td>
-                  <td style="text-align: center" nowrap="nowrap"><span title="{$LANG.statistics.quantity_sold}">{$LANG.common.quantity}</span></td>
-                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.revenue}</td>
-                  <td style="text-align: center" nowrap="nowrap"><span title="{$LANG.statistics.percentage_of_total}">{$LANG.common.percentage}</span></td>
-                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.stock}</td>
-                  {if $PS_HAS_TREND}<td style="text-align: center" nowrap="nowrap">{$LANG.statistics.trend}</td>{/if}
+                  <td class="text-center" nowrap="nowrap"><span title="{$LANG.statistics.quantity_sold}">{$LANG.common.quantity}</span></td>
+                  <td class="text-center" nowrap="nowrap">{$LANG.statistics.revenue}</td>
+                  <td class="text-center" nowrap="nowrap"><span title="{$LANG.statistics.percentage_of_total}">{$LANG.common.percentage}</span></td>
+                  <td class="text-center" nowrap="nowrap">{$LANG.statistics.stock}</td>
+                  {if $PS_HAS_TREND}<td class="text-center" nowrap="nowrap">{$LANG.statistics.trend}</td>{/if}
                   <td></td>
                </tr>
             </thead>
             <tbody>
                {foreach from=$PRODUCT_SALES item=sale}
                <tr>
-                  <td style="text-align: center">{$sale.key}</td>
+                  <td class="text-center">{$sale.key}</td>
                   <td><a href="?_g=statistics&amp;node=product&amp;product_id={$sale.product_id}">{$sale.name}</a></td>
-                  <td style="text-align: center">{$sale.quan}</td>
-                  <td style="text-align: right" nowrap="nowrap">{$sale.revenue_formatted}</td>
-                  <td style="text-align: center">{$sale.percent}</td>
-                  <td style="text-align: center{if $sale.stock_low}; color: var(--danger, #c33); font-weight: 600{/if}">{$sale.stock_display}</td>
-                  {if $PS_HAS_TREND}<td style="text-align: center" nowrap="nowrap">{if $sale.trend}<span class="stat-trend stat-trend--{$sale.trend.dir}"><i class="fa fa-caret-{$sale.trend.dir}"></i> {$sale.trend.label}</span>{else}&mdash;{/if}</td>{/if}
-                  <td style="text-align: center"><a href="?_g=statistics&amp;node=product&amp;product_id={$sale.product_id}" title="{$LANG.statistics.title_popular}"><i class="fa fa-bar-chart"></i></a></td>
+                  <td class="text-center">{$sale.quan}</td>
+                  <td class="text-right" nowrap="nowrap">{$sale.revenue_formatted}</td>
+                  <td class="text-center">{$sale.percent}</td>
+                  <td class="text-center{if $sale.stock_low} stock-low{/if}">{$sale.stock_display}</td>
+                  {if $PS_HAS_TREND}<td class="text-center" nowrap="nowrap">{if $sale.trend}<span class="stat-trend stat-trend--{$sale.trend.dir}"><i class="fa fa-caret-{$sale.trend.dir}"></i> {$sale.trend.label}</span>{else}&mdash;{/if}</td>{/if}
+                  <td class="text-center"><a href="?_g=statistics&amp;node=product&amp;product_id={$sale.product_id}" title="{$LANG.statistics.title_popular}"><i class="fa fa-bar-chart"></i></a></td>
                </tr>
                {/foreach}
             </tbody>
@@ -356,7 +356,7 @@
          window.whenChartsReady(function() { window.drawChart(5, window.chart_data); });
       </script>
       {else}
-      <div class="stat-chart-body" style="text-align: center; padding: 2em 0;">{$LANG.statistics.notify_sales_none}</div>
+      <div class="stat-chart-body stat-empty">{$LANG.statistics.notify_sales_none}</div>
       {/if}
    </div>
 {elseif $ACTIVE_TAB == 'stats_prod_views'}
@@ -368,30 +368,30 @@
       {if isset($PRODUCT_VIEWS) && $PRODUCT_VIEWS}
       <div class="stat-chart-body">
          <div id="chart6" class="google_chart"></div>
-         <div id="chart6-title" style="display:none">{$GRAPH_DATA.6.title}</div>
-         <div id="chart6-hAxis" style="display:none">{$GRAPH_DATA.6.hAxis}</div>
-         <div id="chart6-vAxis" style="display:none">{$GRAPH_DATA.6.vAxis}</div>
+         <div id="chart6-title" class="chart-meta">{$GRAPH_DATA.6.title}</div>
+         <div id="chart6-hAxis" class="chart-meta">{$GRAPH_DATA.6.hAxis}</div>
+         <div id="chart6-vAxis" class="chart-meta">{$GRAPH_DATA.6.vAxis}</div>
          <div class="pagination">{$PAGINATION_VIEWS}</div>
          <table width="100%" class="stat-table">
             <thead>
                <tr>
                   <td></td>
                   <td>{$LANG.catalogue.product_name}</td>
-                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.product_views}</td>
-                  <td style="text-align: center" nowrap="nowrap"><span title="{$LANG.statistics.percentage_of_views}">{$LANG.common.percentage}</span></td>
-                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.stock}</td>
+                  <td class="text-center" nowrap="nowrap">{$LANG.statistics.product_views}</td>
+                  <td class="text-center" nowrap="nowrap"><span title="{$LANG.statistics.percentage_of_views}">{$LANG.common.percentage}</span></td>
+                  <td class="text-center" nowrap="nowrap">{$LANG.statistics.stock}</td>
                   <td></td>
                </tr>
             </thead>
             <tbody>
                {foreach from=$PRODUCT_VIEWS item=view}
                <tr>
-                  <td style="text-align: center">{$view.key}</td>
+                  <td class="text-center">{$view.key}</td>
                   <td><a href="?_g=statistics&amp;node=product&amp;product_id={$view.product_id}">{$view.name}</a></td>
-                  <td style="text-align: center">{$view.popularity}</td>
-                  <td style="text-align: center">{$view.percent}</td>
-                  <td style="text-align: center{if $view.stock_low}; color: var(--danger, #c33); font-weight: 600{/if}">{$view.stock_display}</td>
-                  <td style="text-align: center"><a href="?_g=statistics&amp;node=product&amp;product_id={$view.product_id}" title="{$LANG.statistics.title_viewed}"><i class="fa fa-bar-chart"></i></a></td>
+                  <td class="text-center">{$view.popularity}</td>
+                  <td class="text-center">{$view.percent}</td>
+                  <td class="text-center{if $view.stock_low} stock-low{/if}">{$view.stock_display}</td>
+                  <td class="text-center"><a href="?_g=statistics&amp;node=product&amp;product_id={$view.product_id}" title="{$LANG.statistics.title_viewed}"><i class="fa fa-bar-chart"></i></a></td>
                </tr>
                {/foreach}
             </tbody>
@@ -408,7 +408,7 @@
          window.whenChartsReady(function() { window.drawChart(6, window.chart_data); });
       </script>
       {else}
-      <div class="stat-chart-body" style="text-align: center; padding: 2em 0;">{$LANG.form.none}</div>
+      <div class="stat-chart-body stat-empty">{$LANG.form.none}</div>
       {/if}
    </div>
 {elseif $ACTIVE_TAB == 'stats_search'}
@@ -421,28 +421,28 @@
       {if isset($SEARCH_TERMS) && $SEARCH_TERMS}
       <div class="stat-chart-body">
          <div id="chart7" class="google_chart"></div>
-         <div id="chart7-title" style="display:none">{$GRAPH_DATA.7.title}</div>
-         <div id="chart7-hAxis" style="display:none">{$GRAPH_DATA.7.hAxis}</div>
-         <div id="chart7-vAxis" style="display:none">{$GRAPH_DATA.7.vAxis}</div>
+         <div id="chart7-title" class="chart-meta">{$GRAPH_DATA.7.title}</div>
+         <div id="chart7-hAxis" class="chart-meta">{$GRAPH_DATA.7.hAxis}</div>
+         <div id="chart7-vAxis" class="chart-meta">{$GRAPH_DATA.7.vAxis}</div>
          <div class="pagination">{$PAGINATION_SEARCH}</div>
          <table width="100%" class="stat-table">
             <thead>
                <tr>
                   <td></td>
                   <td>{$LANG.statistics.search_term}</td>
-                  <td style="text-align:center">{$LANG.statistics.product_hits}</td>
-                  <td style="text-align:center"><span title="{$LANG.statistics.percentage_of_search}">{$LANG.common.percentage}</span></td>
+                  <td class="text-center">{$LANG.statistics.product_hits}</td>
+                  <td class="text-center"><span title="{$LANG.statistics.percentage_of_search}">{$LANG.common.percentage}</span></td>
                   <td></td>
                </tr>
             </thead>
             <tbody>
                {foreach from=$SEARCH_TERMS item=term}
                <tr>
-                  <td style="text-align:center">{$term.key}</td>
+                  <td class="text-center">{$term.key}</td>
                   <td><a href="{$term.search_url}" target="_blank" rel="noopener">{$term.searchstr}</a></td>
-                  <td style="text-align:center">{$term.hits}</td>
-                  <td style="text-align:center">{$term.percent}</td>
-                  <td style="text-align:center"><a href="{$term.search_url}" target="_blank" rel="noopener" title="View results"><i class="fa fa-external-link"></i></a></td>
+                  <td class="text-center">{$term.hits}</td>
+                  <td class="text-center">{$term.percent}</td>
+                  <td class="text-center"><a href="{$term.search_url}" target="_blank" rel="noopener" title="View results"><i class="fa fa-external-link"></i></a></td>
                </tr>
                {/foreach}
             </tbody>
@@ -459,7 +459,7 @@
          window.whenChartsReady(function() { window.drawChart(7, window.chart_data); });
       </script>
       {else}
-      <div class="stat-chart-body" style="text-align: center; padding: 2em 0;">{$LANG.statistics.notify_searches_none}</div>
+      <div class="stat-chart-body stat-empty">{$LANG.statistics.notify_searches_none}</div>
       {/if}
    </div>
 {elseif $ACTIVE_TAB == 'stats_best_customers'}
@@ -479,30 +479,30 @@
       {if isset($BEST_CUSTOMERS) && $BEST_CUSTOMERS}
       <div class="stat-chart-body">
          <div id="chart8" class="google_chart"></div>
-         <div id="chart8-title" style="display:none">{$GRAPH_DATA.8.title}</div>
-         <div id="chart8-hAxis" style="display:none">{$GRAPH_DATA.8.hAxis}</div>
-         <div id="chart8-vAxis" style="display:none">{$GRAPH_DATA.8.vAxis}</div>
+         <div id="chart8-title" class="chart-meta">{$GRAPH_DATA.8.title}</div>
+         <div id="chart8-hAxis" class="chart-meta">{$GRAPH_DATA.8.hAxis}</div>
+         <div id="chart8-vAxis" class="chart-meta">{$GRAPH_DATA.8.vAxis}</div>
          <div class="pagination">{$PAGINATION_BEST}</div>
          <table width="100%" class="stat-table">
             <thead>
                <tr>
                   <td></td>
                   <td>{$LANG.common.name}</td>
-                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.orders}</td>
-                  <td style="text-align: right" nowrap="nowrap">{$LANG.statistics.total_expenditure}</td>
-                  <td style="text-align: center" nowrap="nowrap">{$LANG.statistics.percentage_of_total}</td>
+                  <td class="text-center" nowrap="nowrap">{$LANG.statistics.orders}</td>
+                  <td class="text-right" nowrap="nowrap">{$LANG.statistics.total_expenditure}</td>
+                  <td class="text-center" nowrap="nowrap">{$LANG.statistics.percentage_of_total}</td>
                   <td></td>
                </tr>
             </thead>
             <tbody>
                {foreach from=$BEST_CUSTOMERS item=customer}
                <tr>
-                  <td style="text-align: center">{$customer.key}</td>
+                  <td class="text-center">{$customer.key}</td>
                   <td><a href="?_g=customers&node=index&action=edit&customer_id={$customer.customer_id}" class="capitalize">{$customer.last_name}, {$customer.first_name}</a></td>
-                  <td style="text-align: center">{$customer.order_count}</td>
-                  <td style="text-align: right" nowrap="nowrap">{$customer.expenditure}</td>
-                  <td style="text-align: center">{$customer.percent}</td>
-                  <td style="text-align: center"><a href="?_g=customers&node=index&action=edit&customer_id={$customer.customer_id}" title="{$LANG.common.edit}"><i class="fa fa-user"></i></a></td>
+                  <td class="text-center">{$customer.order_count}</td>
+                  <td class="text-right" nowrap="nowrap">{$customer.expenditure}</td>
+                  <td class="text-center">{$customer.percent}</td>
+                  <td class="text-center"><a href="?_g=customers&node=index&action=edit&customer_id={$customer.customer_id}" title="{$LANG.common.edit}"><i class="fa fa-user"></i></a></td>
                </tr>
                {/foreach}
             </tbody>
@@ -519,7 +519,7 @@
          window.whenChartsReady(function() { window.drawChart(8, window.chart_data); });
       </script>
       {else}
-      <div class="stat-chart-body" style="text-align: center; padding: 2em 0;">{$LANG.statistics.notify_customers_none}</div>
+      <div class="stat-chart-body stat-empty">{$LANG.statistics.notify_customers_none}</div>
       {/if}
    </div>
 {elseif $ACTIVE_TAB == 'stats_online'}
@@ -541,17 +541,17 @@
                   <td></td>
                   <td>{$LANG.statistics.session_user}</td>
                   <td>{$LANG.statistics.session_location}</td>
-                  <td style="text-align:right" nowrap="nowrap">{$LANG.statistics.cart}</td>
-                  <td style="text-align:center" nowrap="nowrap">{$LANG.statistics.online_active_for}</td>
-                  <td style="text-align:center" nowrap="nowrap">{$LANG.statistics.online_last_seen}</td>
-                  <td style="text-align:center">{$LANG.statistics.country_label}</td>
+                  <td class="text-right" nowrap="nowrap">{$LANG.statistics.cart}</td>
+                  <td class="text-center" nowrap="nowrap">{$LANG.statistics.online_active_for}</td>
+                  <td class="text-center" nowrap="nowrap">{$LANG.statistics.online_last_seen}</td>
+                  <td class="text-center">{$LANG.statistics.country_label}</td>
                   <td>{$LANG.common.ip_address}</td>
                </tr>
             </thead>
             <tbody>
                {foreach from=$USERS_ONLINE item=user}
                <tr{if $user.is_checkout} class="row-at-checkout"{/if}>
-                  <td style="text-align:center" nowrap="nowrap">
+                  <td class="text-center" nowrap="nowrap">
                      {if $user.is_bot}<span class="stat-badge stat-badge--bot">{$user.bot_name}</span>{else}<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$user.is_admin}.png" alt="">{/if}
                   </td>
                   <td>
@@ -567,10 +567,10 @@
                      {$user.location_label}
                      {if !empty($user.location) && strpos($user.location, "404") === false} <a href="{$STORE_URL}/{$user.location}" target="_blank" rel="noopener" title="Open page"><i class="fa fa-external-link"></i></a>{/if}
                   </td>
-                  <td style="text-align:right" nowrap="nowrap">{if $user.cart_value}<strong>{$user.cart_value}</strong>{else}&mdash;{/if}</td>
-                  <td style="text-align:center" nowrap="nowrap">{$user.active_for}</td>
-                  <td style="text-align:center" nowrap="nowrap">{$user.last_relative}</td>
-                  <td style="text-align:center">{if $user.country}{$user.country}{else}&mdash;{/if}</td>
+                  <td class="text-right" nowrap="nowrap">{if $user.cart_value}<strong>{$user.cart_value}</strong>{else}&mdash;{/if}</td>
+                  <td class="text-center" nowrap="nowrap">{$user.active_for}</td>
+                  <td class="text-center" nowrap="nowrap">{$user.last_relative}</td>
+                  <td class="text-center">{if $user.country}{$user.country}{else}&mdash;{/if}</td>
                   <td nowrap="nowrap">{if !empty($user.ip_address)}<a href="http://whois.domaintools.com/{$user.ip_address}" target="_blank" rel="noopener">{$user.ip_address}</a>{/if}</td>
                </tr>
                {foreachelse}

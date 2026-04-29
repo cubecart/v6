@@ -2105,6 +2105,17 @@ div#content .powered ul li img {
     margin-right: 6px;
     vertical-align: -2px
 }
+.chart-meta { display: none }
+.stat-empty {
+    text-align: center;
+    padding: 2em 0
+}
+.stock-low {
+    color: var(--danger, #c33);
+    font-weight: 600
+}
+.funnel-bar-cell { width: 40% }
+.stat-loading { padding: 1em }
 .stats-filter.stats-status-filter {
     background: var(--panel);
     border: 1px solid var(--border);

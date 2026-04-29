@@ -221,7 +221,7 @@ window.addEventListener('resize', function() {
 // Vanilla JS — this script runs before jQuery is loaded by the admin layout.
 function statsFetchInto(div, url) {
     div.setAttribute('data-loading', '1');
-    div.innerHTML = '<p style="padding:1em;">Loading…</p>';
+    div.innerHTML = '<p class="stat-loading">Loading…</p>';
     return fetch(url, { credentials: 'same-origin' })
         .then(function(r) {
             if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -259,7 +259,7 @@ function statsFetchInto(div, url) {
         })
         .catch(function() {
             div.removeAttribute('data-loading');
-            div.innerHTML = '<p style="padding:1em;">Failed to load.</p>';
+            div.innerHTML = '<p class="stat-loading">Failed to load.</p>';
         });
 }
 
