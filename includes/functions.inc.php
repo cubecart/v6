@@ -659,8 +659,16 @@ function getCountryFormat($input, $match = 'numcode', $fetch = 'name')
     if($input == 999 && $match == 'numcode') {
         return $GLOBALS['language']->country['rest_of_world'];
     }
-    if (($match == 'id' || $match == 'numcode') && !ctype_digit((string)$input)) {
-        return $input;
+    if ($match == 'id' || $match == 'numcode') {
+        if (!ctype_digit((string)$input)) {
+            return $input;
+        }
+        // No real country has UN numcode 0 — Kosovo is seeded with 000 because
+        // the UN has not assigned one. Treating 0 as "no country" stops empty/
+        // unset country fields from leaking Kosovo into the storefront.
+        if ((int)$input === 0) {
+            return false;
+        }
     }
     $country = $GLOBALS['db']->select('CubeCart_geo_country', array($fetch), array($match => $input));
     return ($country) ? $country[0][$fetch] : false;
