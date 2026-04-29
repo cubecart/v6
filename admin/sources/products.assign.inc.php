@@ -202,10 +202,32 @@ if (!isset($_GET['prices'])) {
 }
 
 
-## Product list
-if (($products = $GLOBALS['db']->select('CubeCart_inventory', array('product_id', 'name', 'product_code'), false, array('name' => 'ASC'))) !== false) {
-    $GLOBALS['smarty']->assign('PRODUCTS', $products);
+## Pre-selected products carried over from products.index "Add to bulk price change".
+## The session is a one-shot delivery — the client merges into a localStorage
+## list so multiple round-trips accumulate.
+$preselected_json = '[]';
+if (isset($_GET['prices'])) {
+    $preselected_ids = $GLOBALS['session']->get('preselected', 'bulk_price');
+    if (is_array($preselected_ids) && $preselected_ids) {
+        $GLOBALS['session']->delete('preselected', 'bulk_price');
+        $ids = array_values(array_filter(array_map('intval', $preselected_ids)));
+        if ($ids) {
+            if (($rows = $GLOBALS['db']->select('CubeCart_inventory', array('product_id', 'name', 'product_code'), array('product_id' => $ids))) !== false) {
+                $payload = array();
+                foreach ($rows as $r) {
+                    $payload[] = array(
+                        'id'   => (int)$r['product_id'],
+                        'name' => (string)$r['name'],
+                        'code' => (string)$r['product_code'],
+                    );
+                }
+                $preselected_json = json_encode($payload, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+            }
+        }
+    }
 }
+$GLOBALS['smarty']->assign('PRESELECTED_PRODUCTS_JSON', $preselected_json);
+
 ## Customer groups (for bulk pricing group selector)
 if (($customer_groups = $GLOBALS['db']->select('CubeCart_customer_group', array('group_id', 'group_name'), false, array('group_name' => 'ASC'))) !== false) {
     $GLOBALS['smarty']->assign('CUSTOMER_GROUPS', $customer_groups);

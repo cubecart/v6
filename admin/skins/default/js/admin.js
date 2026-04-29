@@ -360,7 +360,7 @@ $(document).ready(function() {
                     }
                 }
                 var stepsComplete = allValid;
-                var itemsValid = $("input.products:checked").length > 0 || ($("input[name='category[]']:checked").length > 0 && $("#bulk_price_target").val() === 'categories');
+                var itemsValid = $("#selected_products input[name='product[]']").length > 0 || ($("input[name='category[]']:checked").length > 0 && $("#bulk_price_target").val() === 'categories');
                 if (!itemsValid) allValid = false;
                 $("#bulk_price_save").prop('disabled', !allValid);
 
@@ -387,7 +387,8 @@ $(document).ready(function() {
 
             $("#bulk_price_target, #bulk_price_method, #bulk_price_action, #bulk_price_field").on('change', bulkPriceValidate);
             $("#bulk_price_value").on('input', bulkPriceValidate);
-            $("input.products, input[name='category[]']").on('change', bulkPriceValidate);
+            $("input[name='category[]']").on('change', bulkPriceValidate);
+            window.bulkPriceValidate = bulkPriceValidate;
         }
     
     $("#redirect_type").change(function() {

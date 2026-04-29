@@ -469,6 +469,14 @@ if (isset($_POST['translate']) && isset($_POST['product_id']) && is_numeric($_PO
     httpredir(currentPage($rem_array, $add_array), 'translate');
 }
 
+if (isset($_POST['action']) && $_POST['action']=='bulk_price' && !empty($_POST['delete']) && is_array($_POST['delete']) && Admin::getInstance()->permissions('products', CC_PERM_EDIT)) {
+    $ids = array_values(array_filter(array_map('intval', $_POST['delete'])));
+    if ($ids) {
+        $GLOBALS['session']->set('preselected', $ids, 'bulk_price');
+    }
+    httpredir('?_g=products&node=assign&prices=1');
+}
+
 if (((isset($_GET['delete']) && !empty($_GET['delete'])) || (isset($_POST['delete']) && is_array($_POST['delete']) && $_POST['action']=='delete')) && Admin::getInstance()->permissions('products', CC_PERM_DELETE)) {
     // Delete Product
     foreach ($GLOBALS['hooks']->load('admin.product.delete') as $hook) {

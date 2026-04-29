@@ -140,13 +140,16 @@
                </td>
                <td colspan="12">
                   <a href="#" class="check-all" rel="table">{$LANG.form.check_uncheck}</a>
+                  &bull;
                   {$LANG.maintain.db_with_selected}
                   <select name="action" class="textbox">
                      <optgroup label="">
                         <option value="">{$LANG.form.please_select}</option>
+                        <option value="bulk_price">{$LANG.catalogue.add_to_bulk_prices}</option>
                         <option value="delete">{$LANG.common.delete}</option>
                      </optgroup>
                   </select>
+                  <input type="submit" class="tiny" value="{$LANG.common.go}">
                </td>
             </tr>
             <tr>
