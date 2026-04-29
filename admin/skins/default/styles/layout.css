@@ -2035,7 +2035,9 @@ div#content .powered ul li img {
     width: 100%;
     height: 500px
 }
-.nostripe {
+.nostripe,
+.nostripe > tbody > tr > td,
+.nostripe > tr > td {
     background: none!important
 }
 legend a.delete {

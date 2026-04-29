@@ -444,7 +444,7 @@ if (isset($_POST['template_default']) && ctype_digit($_POST['template_default'])
 }
 
 if (isset($_POST['template'])) {
-    $_POST['template']['content_html'] = urldecode(base64_decode($GLOBALS['RAW']['POST']['template']['content_html']));
+    $_POST['template']['content_html'] = preg_replace('/<script\b[^>]*>.*?<\/script>/is', '', $GLOBALS['RAW']['POST']['template']['content_html']);
 
     ## Save/Update Template
     $proceed = true;
@@ -485,7 +485,7 @@ if (isset($_POST['template'])) {
 }
 
 if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
-    $_POST['content']['content_html'] = urldecode(base64_decode($GLOBALS['RAW']['POST']['content']['content_html']));
+    $_POST['content']['content_html'] = preg_replace('/<script\b[^>]*>.*?<\/script>/is', '', $GLOBALS['RAW']['POST']['content']['content_html']);
 
     $proceed = true;
     $redirect = true;
@@ -547,6 +547,7 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
 
 ###########################################################
 $smarty_data = array();
+$tab_label = $lang['common']['general'];
 if (isset($_GET['action']) && isset($_GET['type'])) {
     switch (strtolower($_GET['type'])) {
     case 'content':
@@ -578,7 +579,7 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                 $content = $GLOBALS['db']->select('CubeCart_email_content', false, array('content_id' => (int)$_GET['content_id']));
                 if ($content) {
                     $data = $content[0];
-                    $breadcrumb = $data['subject'];
+                    $breadcrumb = (isset($email_types[$data['content_type']]['description']) ? $email_types[$data['content_type']]['description'] : $data['subject']).(!empty($data['language']) ? ' ('.$data['language'].')' : '');
                     $delete = (bool)$GLOBALS['smarty']->assign('LINK_DELETE', currentPage(null, array('action' => 'delete')));
                 } else {
                     ## redirect
@@ -591,7 +592,7 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                 $content = $GLOBALS['db']->select('CubeCart_email_content', array('content_type', 'language', 'subject', 'content_html'), array('content_type' => (string)$_GET['content_type'], 'language' => $GLOBALS['config']->get('config', 'default_language')));
                 $data  = $content[0];
                 $existing = $GLOBALS['db']->select('CubeCart_email_content', array('DISTINCT' => 'language'), array('content_type' => $_GET['content_type']));
-                $breadcrumb = $lang['common']['create'].': '.$_GET['content_type'];
+                $breadcrumb = $lang['common']['create'].': '.(isset($email_types[$_GET['content_type']]['description']) ? $email_types[$_GET['content_type']]['description'] : $_GET['content_type']);
             } else {
                 ## Back to main list
                 httpredir(currentPage(array('action', 'content_id', 'content_type', 'type')), 'email_contents');
@@ -638,7 +639,29 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                 }
                 $GLOBALS['smarty']->assign('CONTENT_MACROS', $smarty_data['macros']);
             }
+            $default_template = $GLOBALS['db']->select('CubeCart_email_template', array('content_html'), array('template_default' => '1'));
+            if (is_array($default_template) && !empty($default_template[0]['content_html'])) {
+                $tmpl_json = json_encode($default_template[0]['content_html'], JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
+                if ($tmpl_json !== false) {
+                    $GLOBALS['smarty']->assign('DEFAULT_TEMPLATE_JSON', $tmpl_json);
+                }
+            }
+            $preview_macros = array(
+                'logoURL'        => $GLOBALS['gui']->getLogo(true, 'emails'),
+                'store_name'     => $GLOBALS['config']->get('config', 'store_name'),
+                'storeName'      => $GLOBALS['config']->get('config', 'store_name'),
+                'storeURL'       => $GLOBALS['storeURL'],
+                'unsubscribeURL' => $GLOBALS['storeURL'].'/index.php?_a=unsubscribe',
+                'jsonLd'         => '',
+            );
+            $macros_json = json_encode($preview_macros, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
+            if ($macros_json !== false) {
+                $GLOBALS['smarty']->assign('PREVIEW_MACROS_JSON', $macros_json);
+            }
             $GLOBALS['smarty']->assign('DISPLAY_CONTENT_FORM', true);
+            if (!empty($data['content_type']) && isset($email_types[$data['content_type']]['description'])) {
+                $tab_label = $email_types[$data['content_type']]['description'].(!empty($data['language']) ? ' ('.$data['language'].')' : '');
+            }
         }
         break;
     case 'template':
@@ -690,15 +713,30 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                 array('name' => '{$DATA.unsubscribeURL}', 'description' => $lang['email']['macro_template_unsubscribe'], 'required' => 'No'),
             );
             $GLOBALS['smarty']->assign('TEMPLATE_MACROS', $macros);
+            $preview_macros = array(
+                'logoURL'        => $GLOBALS['gui']->getLogo(true, 'emails'),
+                'store_name'     => $GLOBALS['config']->get('config', 'store_name'),
+                'storeName'      => $GLOBALS['config']->get('config', 'store_name'),
+                'storeURL'       => $GLOBALS['storeURL'],
+                'unsubscribeURL' => $GLOBALS['storeURL'].'/index.php?_a=unsubscribe',
+                'jsonLd'         => '',
+            );
+            $macros_json = json_encode($preview_macros, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
+            if ($macros_json !== false) {
+                $GLOBALS['smarty']->assign('PREVIEW_MACROS_JSON', $macros_json);
+            }
             $GLOBALS['smarty']->assign('DISPLAY_TEMPLATE_FORM', true);
+            if (!empty($data['title'])) {
+                $tab_label = $data['title'];
+            }
         }
         break;
     default:
         httpredir(currentPage(array('action', 'type')));
     }
     ## Tabs
-    $GLOBALS['main']->addTabControl($lang['common']['general'], 'general');
-    $GLOBALS['main']->addTabControl($lang['email']['title_content_html'], 'email_html');
+    $GLOBALS['main']->addTabControl($tab_label, 'general');
+    $GLOBALS['main']->addTabControl($lang['email']['title_macros'], 'macros');
     ## Breadcrumbs
     $GLOBALS['gui']->addBreadcrumb($breadcrumb, currentPage());
     // Delete link

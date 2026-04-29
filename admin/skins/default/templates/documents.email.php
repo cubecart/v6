@@ -88,129 +88,152 @@
   <div id="general" class="tab_content">
 	<h3>{$ADD_EDIT_CONTENT}</h3>
 	{if $LANGUAGES}
-	<fieldset>
-	  <div><label for="content_subject">{$LANG.common.subject}</label><span><input type="text" name="content[subject]" id="content_subject" value="{$CONTENT.subject}" class="textbox"></span></div>
-	  <div><label for="content_language">{$LANG.common.language}</label><span>{if empty($CONTENT.content_id)}<select name="content[language]" id="content_language" class="textbox">
-	  {foreach from=$LANGUAGES item=language}<option value="{$language.code}"{$language.selected}>{$language.title}</option>{/foreach}
-	  </select>{else}<img src="language/flags/{$ASSIGNED_LANG.code}.png" alt="{$ASSIGNED_LANG.name}" class="flag">{/if}</span></div>
-	</fieldset>
+	<table class="nostripe">
+	  <tr>
+		<td><label for="content_subject">{$LANG.common.subject}</label></td>
+		<td><input type="text" name="content[subject]" id="content_subject" value="{$CONTENT.subject}" class="textbox"></td>
+	  </tr>
+		<tr>
+			<td colspan="2">
+				<textarea name="content[content_html]" id="content_html" class="textbox fck fck-full" data-fck-height="500">{$CONTENT.content_html|escape:'html'}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.preview}</button>
+			</td>
+			<td class="text-right">
+				<input type="submit" value="{$LANG.common.save}">{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="button delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}	
+			</td>
+		</tr>
+	</table>
+	{if isset($DEFAULT_TEMPLATE_JSON)}
+	<script>var EMAIL_DEFAULT_TEMPLATE = {$DEFAULT_TEMPLATE_JSON};</script>
 	{else}
-	<p>{$LANG.email.install_master_lang}</p> 
+	<script>var EMAIL_DEFAULT_TEMPLATE = null;</script>
 	{/if}
-  </div>
-  <div id="email_html" class="tab_content">
-    <h3>{$LANG.email.title_content_html}</h3>
-	{if $LANGUAGES}
-	<div id="template_html" class="ace_email_editor"></div>
-	<input type="hidden" name="content[content_html]" id="content_html" class="textbox" value="{base64_encode($CONTENT.content_html)}">
-	<script src="includes/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-	<script>
-		var input = document.getElementById('content_html');
-		var editor = ace.edit("template_html");
-		editor.session.setUseWrapMode(true);
-		var darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
-		editor.setOptions({ highlightActiveLine:true, showPrintMargin:false, theme: darkMQ.matches ? 'ace/theme/tomorrow_night' : 'ace/theme/github', mode: 'ace/mode/smarty' });
-		darkMQ.addEventListener('change', function(e) { editor.setTheme(e.matches ? 'ace/theme/tomorrow_night' : 'ace/theme/github'); });
-		document.addEventListener('DOMContentLoaded', function() { editor.setValue(b64DecodeUnicode(input.value), 1); });
-		editor.getSession().on("change", function () { input.value = b64EncodeUnicode(editor.getSession().getValue()); });
-	</script>
-	<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.test}</button>
-	<script>
+	{if isset($PREVIEW_MACROS_JSON)}
+	<script>var EMAIL_PREVIEW_MACROS = {$PREVIEW_MACROS_JSON};</script>
+	{else}
+	<script>var EMAIL_PREVIEW_MACROS = {};</script>
+	{/if}
+	<script>{literal}
 		function previewEmailTemplate() {
+			var content = CKEDITOR.instances.content_html.getData();
+			var rendered = EMAIL_DEFAULT_TEMPLATE ? EMAIL_DEFAULT_TEMPLATE.replace(/\{\$EMAIL_CONTENT\}/g, content) : content;
+			Object.keys(EMAIL_PREVIEW_MACROS).forEach(function(key) {
+				var pattern = new RegExp('\\{\\$DATA\\.' + key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\}', 'g');
+				rendered = rendered.replace(pattern, EMAIL_PREVIEW_MACROS[key]);
+			});
 			$.colorbox({
-				title: '{$CONTENT.subject}',
+				title: document.getElementById('content_subject').value,
 				width: '90%',
 				height: '90%',
-				html:function(){ 
-					var content = editor.getSession().getValue();
-					return '<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' srcdoc=\'<div style="margin: auto;width: 50%;">'+content+'</div>\'></iframe>';
+				html: function(){
+					return '<iframe width="100%" height="95%" frameBorder="0" srcdoc="<div style=&quot;margin:auto;width:50%;&quot;>'+rendered.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'</div>"></iframe>';
 				}
-			}); 
+			});
 		};
-	</script>
-  	<h3>{$LANG.email.title_macros}</h3>
-  	<p>{$LANG.email.important|escape:'htmlall'}</p>
-  	<table>
-  		<thead>
-  		  <tr>
-  			<td>{$LANG.email.email_macro}</td>
-  			<td>{$LANG.common.description}</td>
-  		  </tr>
-  		</thead>
-  		<tbody>
-		  {foreach from=$CONTENT_MACROS item=macro}
-  		  <tr>
-  			<td>{$macro.name}</td>
-  			<td>{$macro.description}</td>
-  		  </tr>
-  		  {/foreach}
-  		</tbody>
-  	</table>
-  	{else}
-	<p>{$LANG.email.install_master_lang}</p> 
+	{/literal}</script>
+	{else}
+	<p>{$LANG.email.install_master_lang}</p>
 	{/if}
   </div>
+  {if $LANGUAGES && isset($CONTENT_MACROS)}
+  <div id="macros" class="tab_content">
+	<h3>{$LANG.email.title_macros}</h3>
+	<p>{$LANG.email.important|escape:'htmlall'}</p>
+	<table>
+		<thead>
+		  <tr>
+			<td>{$LANG.email.email_macro}</td>
+			<td>{$LANG.common.description}</td>
+		  </tr>
+		</thead>
+		<tbody>
+		  {foreach from=$CONTENT_MACROS item=macro}
+		  <tr>
+			<td>{$macro.name}</td>
+			<td>{$macro.description}</td>
+		  </tr>
+		  {/foreach}
+		</tbody>
+	</table>
+  </div>
+  {/if}
   <input type="hidden" name="content[content_type]" value="{$CONTENT.content_type}">
   <input type="hidden" name="content[content_id]" value="{$CONTENT.content_id}">
   {/if}
 
   {if isset($DISPLAY_TEMPLATE_FORM)}
   <div id="general" class="tab_content">
-  	<h3>{$ADD_EDIT_TEMPLATE}</h3>
-  	<fieldset>
-  	<div><label for="template_desc">{$LANG.email.template_name}</label><span><input type="text" name="template[title]" id="template_desc" value="{$TEMPLATE.title}" class="textbox required"></span></div>
-  	</fieldset>
-  </div>
-  <div id="email_html" class="tab_content">
-    <h3>{$LANG.email.title_content_html}</h3>
-	<div id="template_html" class="ace_email_editor"></div>
-	<input type="hidden" name="template[content_html]" id="template_content_html" class="textbox" value="{base64_encode($TEMPLATE.content_html)}">
-	<script src="includes/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-	<script>
-		var input = document.getElementById('template_content_html');
-		var editor = ace.edit("template_html");
-		editor.session.setUseWrapMode(true);
-		var darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
-		editor.setOptions({ highlightActiveLine:true, showPrintMargin:false, theme: darkMQ.matches ? 'ace/theme/tomorrow_night' : 'ace/theme/github', mode: 'ace/mode/smarty' });
-		darkMQ.addEventListener('change', function(e) { editor.setTheme(e.matches ? 'ace/theme/tomorrow_night' : 'ace/theme/github'); });
-		document.addEventListener('DOMContentLoaded', function() { editor.setValue(b64DecodeUnicode(input.value), 1); });
-		editor.getSession().on("change", function () { input.value = b64EncodeUnicode(editor.getSession().getValue()); });
-	</script>
-	<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.test}</button>
-	<script>
-		function previewEmailTemplate() { 
+	<h3>{$ADD_EDIT_TEMPLATE}</h3>
+	<table class="nostripe">
+	  <tr>
+		<td><label for="template_desc">{$LANG.email.template_name}</label></td>
+		<td><input type="text" name="template[title]" id="template_desc" value="{$TEMPLATE.title}" class="textbox required"></td>
+	  </tr>
+		<tr>
+			<td colspan="2">
+				<textarea name="template[content_html]" id="template_content_html" class="textbox fck fck-full" data-fck-height="500">{$TEMPLATE.content_html|escape:'html'}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.preview}</button>
+			</td>
+			<td class="text-right">
+				<input type="submit" value="{$LANG.common.save}">{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="button delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
+			</td>
+		</tr>
+	</table>
+	{if isset($PREVIEW_MACROS_JSON)}
+	<script>var EMAIL_PREVIEW_MACROS = {$PREVIEW_MACROS_JSON};</script>
+	{else}
+	<script>var EMAIL_PREVIEW_MACROS = {};</script>
+	{/if}
+	<script>{literal}
+		function previewEmailTemplate() {
+			var rendered = CKEDITOR.instances.template_content_html.getData();
+			rendered = rendered.replace(/\{\$EMAIL_CONTENT\}/g, '<p style="padding:1em;border:2px dashed #999;color:#666;text-align:center;">[ Email content will appear here ]</p>');
+			Object.keys(EMAIL_PREVIEW_MACROS).forEach(function(key) {
+				var pattern = new RegExp('\\{\\$DATA\\.' + key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\}', 'g');
+				rendered = rendered.replace(pattern, EMAIL_PREVIEW_MACROS[key]);
+			});
 			$.colorbox({
-				title: '{$TEMPLATE.title}',
+				title: document.getElementById('template_desc').value,
 				width: '90%',
 				height: '90%',
-				html:function(){ 
-					var content = editor.getSession().getValue();
-					return '<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' srcdoc=\'<div style="margin: auto;width: 50%;">'+content+'</div>\'></iframe>';
+				html: function(){
+					return '<iframe width="100%" height="95%" frameBorder="0" srcdoc="<div style=&quot;margin:auto;width:50%;&quot;>'+rendered.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'</div>"></iframe>';
 				}
-			}); 
+			});
 		};
-	</script>
-  	<h3>{$LANG.email.title_macros}</h3>
-  	<table>
-  		<thead>
-  			<tr>
-  				<td>{$LANG.email.email_macro}</td>
-  				<td>{$LANG.common.description}</td>
-  				<td>{$LANG.common.required}</td>
-  			</tr>
-  		</thead>
-
-  		<tbody>
-		  {foreach from=$TEMPLATE_MACROS item=macro}
-  		  <tr>
-  			<td>{$macro.name}</td>
-  			<td>{$macro.description}</td>
-  			<td style="text-align:center">{$macro.required}</td>
-  		  </tr>
-  		  {/foreach}
-  		</tbody>
-  	</table>
+	{/literal}</script>
   </div>
+  {if isset($TEMPLATE_MACROS)}
+  <div id="macros" class="tab_content">
+	<h3>{$LANG.email.title_macros}</h3>
+	<table>
+		<thead>
+			<tr>
+				<td>{$LANG.email.email_macro}</td>
+				<td>{$LANG.common.description}</td>
+				<td>{$LANG.common.required}</td>
+			</tr>
+		</thead>
+		<tbody>
+		  {foreach from=$TEMPLATE_MACROS item=macro}
+		  <tr>
+			<td>{$macro.name}</td>
+			<td>{$macro.description}</td>
+			<td style="text-align:center">{$macro.required}</td>
+		  </tr>
+		  {/foreach}
+		</tbody>
+	</table>
+  </div>
+  {/if}
   <input type="hidden" name="template[template_id]" value="{$TEMPLATE.template_id}">
   {/if}
   
@@ -223,6 +246,8 @@
 
   <div class="form_control">
 	<input id="previous-tab" type="hidden" value="" name="previous-tab">
+	{if !isset($DISPLAY_CONTENT_FORM) && !isset($DISPLAY_TEMPLATE_FORM)}
 	<input type="submit" value="{$LANG.common.save}">{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
+	{/if}
   </div>
 </form>
