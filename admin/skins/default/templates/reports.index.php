@@ -88,7 +88,7 @@
   	<div>
 	{if $DOWNLOAD}
 		<input type="submit" name="download" class="submit" value="{$LANG.common.export} (CSV)">
-		<input type="submit" name="download_xls" class="submit" value="{$LANG.common.export} (XLS)">
+		<input type="submit" name="download_xls" class="submit" value="{$LANG.common.export} (XLSX)">
 	{/if}
 	{foreach from=$EXPORT item=module}
 		<input type="submit" name="external_report[{$module.folder}]" class="submit" value="{$LANG.customer.export_to} {$module.description}">

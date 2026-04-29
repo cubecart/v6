@@ -160,6 +160,7 @@ if ($orders) {
         }
         $order_summary['country']	= (is_numeric($order_summary['country'])) ? getCountryFormat($order_summary['country'], 'numcode', 'iso') : (getCountryFormat($order_summary['country'], 'name', 'iso') ?: $order_summary['country']);
         $order_summary['state']	= (is_numeric($order_summary['state'])) ? getStateFormat($order_summary['state']) : $order_summary['state'];
+        $raw_order_date         = $order_summary['order_date'];
         $order_summary['date']	= formatTime($order_summary['order_date'], false, true);
 
         ## Run line of external report data
@@ -174,9 +175,22 @@ if ($orders) {
                 $headers[] = $field;
             }
             $cell = $bracket_fmt($value, $field);
-            $raw_row[$field] = $cell;
             // Bracketed values contain parens — quote them so CSV parses cleanly.
             $values[] = (is_numeric($cell) || !preg_match('/[",\(\)]/', (string)$cell)) ? $cell : sprintf('"%s"', addslashes($cell));
+            // Keep the xlsx row unformatted so cells become real numbers/dates.
+            // Discount > 0 is stored as a deduction; flip its sign for the
+            // spreadsheet so SUM() works naturally.
+            if (in_array($field, $price_fields, true)) {
+                $raw_val = (float)$value;
+                if ($field === 'discount' && $raw_val > 0) {
+                    $raw_val = -$raw_val;
+                }
+                $raw_row[$field] = $raw_val;
+            } elseif ($field === 'date') {
+                $raw_row[$field] = (int)$raw_order_date;
+            } else {
+                $raw_row[$field] = $value;
+            }
         }
         if ($i == 0 && $add_headers) {
             $data[] = implode(',', $headers);
@@ -220,38 +234,46 @@ if ($orders) {
         }
         $file_ext    = 'csv';
         if (isset($_POST['download_xls'])) {
-            // Build an Excel-compatible HTML table. Excel opens .xls files
-            // containing HTML transparently and lets the user re-save as a
-            // native xlsx if they want.
-            $xls = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body><table border=\"1\">";
-            $xls .= '<thead><tr>';
+            require_once CC_CLASSES_DIR.'xlsxwriter.class.php';
+            $col_types = array();
             foreach ($headers as $h) {
-                $xls .= '<th>'.htmlspecialchars((string)$h).'</th>';
+                if ($h === 'date') {
+                    $col_types[] = XLSXWriter::TYPE_DATETIME;
+                } elseif (in_array($h, $price_fields, true)) {
+                    $col_types[] = XLSXWriter::TYPE_CURRENCY;
+                } else {
+                    $col_types[] = XLSXWriter::TYPE_STRING;
+                }
             }
-            $xls .= '</tr></thead><tbody>';
+            $xlsx = new XLSXWriter();
+            $xlsx->setSheetName($lang['reports']['sales_data'])
+                 ->setHeaders($headers)
+                 ->setColumnTypes($col_types);
             foreach ($xls_rows as $row) {
-                $xls .= '<tr>';
+                $ordered = array();
                 foreach ($headers as $h) {
-                    $xls .= '<td>'.htmlspecialchars((string)($row[$h] ?? '')).'</td>';
+                    $ordered[] = $row[$h] ?? '';
                 }
-                $xls .= '</tr>';
+                $xlsx->addRow($ordered);
             }
-            // Totals row.
-            $xls .= '<tr><th>';
-            $first = true;
+            // Totals row — flip discount sign to match per-row convention.
+            $totals = array();
             foreach ($headers as $idx => $field) {
-                if (!$first) $xls .= '<th>';
-                $first = false;
                 if (isset($tally[$field])) {
-                    $xls .= htmlspecialchars((string)$bracket_fmt($tally[$field], $field));
+                    $val = (float)$tally[$field];
+                    if ($field === 'discount' && $val > 0) {
+                        $val = -$val;
+                    }
+                    $totals[] = $val;
                 } elseif ($idx === 0) {
-                    $xls .= 'TOTAL';
+                    $totals[] = 'TOTAL';
+                } else {
+                    $totals[] = '';
                 }
-                $xls .= '</th>';
             }
-            $xls .= '</tr></tbody></table></body></html>';
-            $file_content = $xls;
-            $file_ext     = 'xls';
+            $xlsx->addRow($totals);
+            $file_content = $xlsx->build();
+            $file_ext     = 'xlsx';
         } elseif (isset($_POST['download'])) {
             // Append a totals row matching the column order of $headers so the
             // CSV ends with subtotal/discount/shipping/total_tax/total totals.
