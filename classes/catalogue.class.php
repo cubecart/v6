@@ -1669,7 +1669,6 @@ class Catalogue
      */
     public function imagePath($input, $mode = 'medium', $path = 'relative', $return_placeholder = true)
     {
-        global $glob;
         foreach ($GLOBALS['hooks']->load('class.catalogue.imagepath') as $hook) {
             include $hook;
         }
@@ -1733,7 +1732,8 @@ class Catalogue
                     $filename = sprintf('%s.%d%s', $match[1], $size, $match[2]);
                     ## Find the source
                     $image  = CC_ROOT_DIR.'/images/'.$folder.'/'.$filename;
-                    if(!isset($glob['block_thumbs']) || $glob['block_thumbs'] == 0) {
+
+                    if(!$GLOBALS['config']->get('config', 'block_thumbs')) {
                         if (!file_exists($image)) {
                             ## Check if the target folder exists - if not, create it!
                             if (!file_exists(dirname($image))) {

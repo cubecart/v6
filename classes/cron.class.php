@@ -265,9 +265,8 @@ class Cron
     public function processNewsletters() {
         // Defaults baked in. Override per-install via $glob in includes/global.inc.php
         // (see global.inc.php-dist for the documented example).
-        global $glob;
-        $per_tick     = isset($glob['newsletter_per_tick'])     ? (int)$glob['newsletter_per_tick']     : 50;
-        $hourly_limit = isset($glob['newsletter_hourly_limit']) ? (int)$glob['newsletter_hourly_limit'] : 200;
+        $per_tick     = (int)$GLOBALS['config']->get('config', 'newsletter_per_tick');
+        $hourly_limit = (int)$GLOBALS['config']->get('config', 'newsletter_hourly_limit');
         if ($per_tick     <= 0) { $per_tick     = 50;  }
         if ($hourly_limit <= 0) { $hourly_limit = 200; }
         $pfx = $GLOBALS['config']->get('config', 'dbprefix');

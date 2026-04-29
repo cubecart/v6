@@ -24,8 +24,6 @@ class Ajax
      */
     public static function load()
     {
-        global $glob;
-
         $json = '';
         //Kill debug
         $GLOBALS['debug']->supress();

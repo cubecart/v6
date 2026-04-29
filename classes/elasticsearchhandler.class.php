@@ -590,8 +590,7 @@ class ElasticsearchHandler
      * Get config
      */
     private function _getConfig($config) {
-        global $glob;
-        /* 
+        /*
         #############################
         # Config Variable Reference
         #############################
@@ -607,7 +606,7 @@ class ElasticsearchHandler
         */
 
         // Get config from master config which also merges global.inc.php file
-        if(isset($GLOBALS['config']) && $GLOBALS['config']->has('config', 'es_h')) { 
+        if(isset($GLOBALS['config']) && $GLOBALS['config']->has('config', 'es_h')) {
             $this->_config = array(
                 'es_h' => $GLOBALS['config']->get('config', 'es_h'),
                 'es_u' => $GLOBALS['config']->get('config', 'es_u'),
@@ -622,19 +621,6 @@ class ElasticsearchHandler
         } else {
             if(!empty($config)) { // Get config from $_POST of admin settings page
                 $this->_config = $config;
-            } elseif(!empty($glob['es_h'])) { // Get config from globals.inc.php file if set
-                $es_config = array(
-                    'es_h' => $glob['es_h'],
-                    'es_u' => $glob['es_u'],
-                    'es_p' => $glob['es_p'],
-                	'es_a' => $glob['es_a'],
-                	'es_t' => isset($glob['es_t']) ? $glob['es_t'] : 1,
-                    'es_i' => $glob['es_i'],
-                    'es_v' => $glob['es_v'],
-                    'es_c' => $glob['es_c'],
-                    'es_is' => isset($glob['es_is']) ? $glob['es_is'] : 1
-                );
-                $this->_config = $es_config;
             } else { // Get config from cached settings in json file
                 $this->_config = json_decode(file_get_contents($this->_config_file),true);
             }
