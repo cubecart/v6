@@ -19,7 +19,12 @@ The product list shows all products in a sortable table. Use the filters at the 
 | Translations | Flag icons linking to each translated version of the product. |
 | Status | Toggle to enable or disable the product directly from the list. |
 
-Actions per row include clone, preview (opens storefront), statistics, edit, and delete. Checkbox multi-select at the bottom allows bulk deletion.
+Actions per row include clone, preview (opens storefront), statistics, edit, and delete. Use the row checkboxes plus the **Check/Uncheck all** link at the bottom of the table, then choose an action from the **With Selected** dropdown and click **Go**:
+
+| Action | Effect |
+| --- | --- |
+| Add to Bulk Price Change | Sends the ticked products to the Bulk Price Update screen. The list accumulates across multiple trips — pick more products and choose this action again to append. See *Bulk Price Update* in the Product Assignment docs. |
+| Delete | Bulk-deletes the ticked products. |
 
 The list page also has shortcut tabs to **Add Product**, **Category Assignment** (bulk assign products to categories), **Option Set Assignment** (bulk assign option sets to products), and a **Search** sidebar.
 
