@@ -196,6 +196,7 @@ class Ajax
                 }
                 break;
             case 'product':
+            case 'prod':
                 // Limited to a maximum of 15 results, in order to prevent it going mental
                 if (($results = $GLOBALS['db']->select('CubeCart_inventory', false, array('~'.$search_string => array('name', 'product_code')), false, 15, false, false)) !== false) {
                     foreach ($results as $result) {
@@ -208,6 +209,30 @@ class Ajax
                             'display' => $result['name'],
                             'info'  => Tax::getInstance()->priceFormat($result['price']),
                             'data'  => $result,
+                        );
+                    }
+                }
+                break;
+            case 'cat':
+                if (($results = $GLOBALS['db']->select('CubeCart_category', array('cat_id', 'cat_name'), array('~'.$search_string => array('cat_name')), false, 15, false, false)) !== false) {
+                    foreach ($results as $result) {
+                        $data[] = array(
+                            'value'   => $result['cat_id'],
+                            'display' => $result['cat_name'],
+                            'info'    => '#'.$result['cat_id'],
+                            'data'    => $result,
+                        );
+                    }
+                }
+                break;
+            case 'doc':
+                if (($results = $GLOBALS['db']->select('CubeCart_documents', array('doc_id', 'doc_name'), array('~'.$search_string => array('doc_name')), false, 15, false, false)) !== false) {
+                    foreach ($results as $result) {
+                        $data[] = array(
+                            'value'   => $result['doc_id'],
+                            'display' => $result['doc_name'],
+                            'info'    => '#'.$result['doc_id'],
+                            'data'    => $result,
                         );
                     }
                 }

@@ -2284,7 +2284,24 @@ class Cubecart
             $uri = rtrim($uri, '/');
             $uri = htmlentities($uri, ENT_QUOTES);
         
-            if(!empty($uri)) {
+            // Skip asset misses — admins cannot fix these with a redirect and
+            // they swamp the useful page-level entries.
+            $is_asset = (bool)preg_match('/\.(png|jpe?g|gif|webp|svg|bmp|ico|avif|css|js|map|woff2?|ttf|eot|otf|mp3|mp4|webm|pdf|xml|json)$/i', $uri);
+            // Skip dotfile / hidden-segment recon (.DS_Store, .env, .git/*,
+            // .htaccess, etc.) — almost always bot probes.
+            $is_hidden = (bool)preg_match('#/\.[^/]+(?:/|$)#', $uri);
+            // Skip anything pointing at the admin area — recon for renamed
+            // admin folders/files plus genuine missing admin sub-pages don't
+            // belong in the storefront 404 log.
+            $admin_folder = $GLOBALS['config']->isEmpty('config', 'adminFolder') ? 'admin' : $GLOBALS['config']->get('config', 'adminFolder');
+            $admin_file   = $GLOBALS['config']->isEmpty('config', 'adminFile')   ? 'admin.php' : $GLOBALS['config']->get('config', 'adminFile');
+            $admin_pattern = '#^/?(?:'.preg_quote($admin_folder, '#').'(?:/|$)|'.preg_quote($admin_file, '#').'(?:/|\?|$))#';
+            $is_admin = (bool)preg_match($admin_pattern, $uri);
+            // Skip "undefined" — browser side-effect of a JS `el.src = undefined`
+            // (or template literal) reaching the browser as a literal URL.
+            $is_undefined = (bool)preg_match('#(^|/)undefined($|/)#i', $uri);
+
+            if(!empty($uri) && !$is_asset && !$is_hidden && !$is_admin && !$is_undefined) {
                 if($existing = $GLOBALS['db']->select('CubeCart_404_log', false, array('uri' => $uri), false, 1, false, false)) {
                     $warn = ($existing[0]['done'] == 1) ? 1 : 0;
                     $GLOBALS['db']->update('CubeCart_404_log', array('hits' => '+1', 'warn' => $warn), array('uri' => $uri));

@@ -2166,6 +2166,11 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="add_redirect" introduced="6.6.4"><![CDATA[Add Redirect]]></string>
+    <string name="clear_ignored" introduced="6.6.4"><![CDATA[Clear All Ignored]]></string>
+    <string name="dynamic_pages" introduced="6.6.4"><![CDATA[Dynamic Pages]]></string>
+    <string name="static_pages" introduced="6.6.4"><![CDATA[Static Pages]]></string>
+    <string name="ignored_cleared" introduced="6.6.4"><![CDATA[Ignored URIs cleared.]]></string>
     <string name="order_minimum" introduced="6.6.0"><![CDATA[Minimum Order Value]]></string>
     <string name="order_maximum" introduced="6.6.0"><![CDATA[Maximum Order Value]]></string>
     <string name="note_tariff_grouping" introduced="6.5.12"><![CDATA[Tariffs with the same display text will be grouped at checkout. Unique tariff names will be split separately.]]></string>
@@ -2193,7 +2198,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="guest_access_label" introduced="6.6.0"><![CDATA[Allow guest visitors]]></string>
     <string name="guest_access_help" introduced="6.6.0"><![CDATA[When group restrictions are set above, this controls whether visitors who are not logged in can still see this category.]]></string>
     <string name="currency_adjustment" introduced="6.5.4"><![CDATA[Percentage Adjustment]]></string>
-    <string name="404_desc" introduced="6.5.2"><![CDATA[The table below shows 404 (not found) page requests for the last 90 days. These can be fixed by creating a redirect to the current, correct page in the "Redirects" tab. Once created, it is possible to toggle its status in the "Done" column. A warning triangle may show for a 404 that is marked as done, but subsequent page requests have continued to fail.]]></string>
+    <string name="404_desc" introduced="6.5.2"><![CDATA[The table below lists 404 (not found) page requests from the last 90 days. Click the <i class="fa fa-plus-circle"></i> in the <strong>Add</strong> column to jump to the Redirects tab with the URI prefilled, then choose a destination and save. The <strong>Done</strong> column auto-flips to a green tick when a matching redirect exists. If a 404 has been marked done but the same URI is hit again, a warning triangle <i class="fa fa-exclamation-triangle"></i> appears alongside the tick — click it to acknowledge and clear.]]></string>
     <string name="ignored_uris" introduced="6.5.2"><![CDATA[Ignored]]></string>
     <string name="last_requested" introduced="6.5.2"><![CDATA[Last Requested]]></string>
     <string name="missing_uris" introduced="6.5.2"><![CDATA[404 Log]]></string>

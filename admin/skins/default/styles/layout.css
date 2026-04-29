@@ -909,6 +909,16 @@ input.textbox[disabled]:hover, input.textbox[disabled]:focus {
     min-height: 15px;
     width: 300px
 }
+.redirect-filter,
+.redirect-add { width: fit-content; min-width: 665px; max-width: 100% }
+.redirect-list { min-width: 665px }
+.redirect-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 6px }
+.redirect-filter > legend { flex-basis: 100% }
+.redirect-filter input.textbox { width: 220px }
+.redirect-filter select.textbox { width: auto; min-width: 0; max-width: none }
+.redirect-filter #filter_redirect { width: 90px }
+.redirect-filter #filter_type { width: 140px }
+.redirect-filter #filter_go { margin-left: auto }
 .textbox>option {
     margin-right: 5px
 }

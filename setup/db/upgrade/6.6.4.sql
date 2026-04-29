@@ -11,3 +11,9 @@ CREATE TABLE IF NOT EXISTS `CubeCart_newsletter_send_log` (`id` INT UNSIGNED NOT
 
 INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('processNewsletters', 'Process Newsletter Queue', 1, 600) ON DUPLICATE KEY UPDATE `method`=`method`; #EOQ
 UPDATE `CubeCart_inventory` SET `minimum_quantity` = 1 WHERE `minimum_quantity` IS NULL OR `minimum_quantity` = 0 OR `minimum_quantity` = ''; #EOQ
+
+ALTER TABLE `CubeCart_seo_urls` ADD COLUMN `hit_count` INT UNSIGNED NOT NULL DEFAULT 0 AFTER `redirect`; #EOQ
+ALTER TABLE `CubeCart_seo_urls` ADD COLUMN `last_hit` TIMESTAMP NULL DEFAULT NULL AFTER `hit_count`; #EOQ
+
+DELETE FROM `CubeCart_404_log` WHERE `uri` REGEXP '\\.(png|jpe?g|gif|webp|svg|bmp|ico|avif|css|js|map|woff2?|ttf|eot|otf|mp3|mp4|webm|pdf|xml|json)$'; #EOQ
+DELETE FROM `CubeCart_404_log` WHERE `uri` REGEXP '/\\.[^/]+(/|$)'; #EOQ

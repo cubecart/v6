@@ -1141,6 +1141,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_seo_urls` (
   `item_id` int(25) unsigned DEFAULT NULL,
   `custom` enum('0','1') NOT NULL DEFAULT '0',
   `redirect` enum('0','301','302') NOT NULL DEFAULT '0',
+  `hit_count` int(10) unsigned NOT NULL DEFAULT 0,
+  `last_hit` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `path` (`path`),
   KEY `type_item` (`type`, `item_id`),
