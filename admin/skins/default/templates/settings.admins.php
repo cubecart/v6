@@ -42,7 +42,7 @@
 	  <div class="nostripe">{$LANG.account.pw_cause_logout}</div>
 	</fieldset>
 	<fieldset><legend>{$LANG.common.notes}</legend>
-	  <div><label for="admin-notes">{$LANG.common.notes}</label><span><textarea name="admin[notes]" id="admin-notes" class="textbox">{$ADMIN.notes}</textarea></span></div>
+	  <div><textarea name="admin[notes]" id="admin-notes" class="textbox" style="width:calc(100% - 15px); height: 220px;">{$ADMIN.notes}</textarea></div>
 	</fieldset>
   </div>
 
