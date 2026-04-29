@@ -361,35 +361,165 @@ case 'stats_sales':
     break;
 
 case 'stats_prod_sales':
+    // Filter: year (or 'all'). Default all-time.
+    $ps_year_raw = isset($_GET['ps_year']) ? $_GET['ps_year'] : 'all';
+    $ps_year     = ($ps_year_raw === 'all' || !is_numeric($ps_year_raw)) ? 'all' : (int)$ps_year_raw;
+
+    // Sort: quantity (default), revenue, stock.
+    $ps_sort_in = isset($_GET['ps_sort']) ? $_GET['ps_sort'] : 'quantity';
+    $ps_sort    = in_array($ps_sort_in, array('quantity', 'revenue', 'stock'), true) ? $ps_sort_in : 'quantity';
+
     $per_page = 15;
-    $page     = (isset($_GET['page_sales']) && is_numeric($_GET['page_sales'])) ? $_GET['page_sales'] : 1;
+    $page     = (isset($_GET['page_sales']) && is_numeric($_GET['page_sales'])) ? (int)$_GET['page_sales'] : 1;
     $offset   = ($page - 1) * $per_page;
-    $query    = "SELECT `t`.`quan`, `t`.`product_id`, `I`.`name` FROM (SELECT SUM(`O`.`quantity`) AS `quan`, `O`.`product_id` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` WHERE `S`.`status` IN (2,3) GROUP BY `O`.`product_id` ORDER BY `quan` DESC LIMIT ".(int)$per_page." OFFSET ".(int)$offset.") AS `t` INNER JOIN `".$glob['dbprefix']."CubeCart_inventory` AS `I` ON `I`.`product_id` = `t`.`product_id` ORDER BY `t`.`quan` DESC";
 
-    if (($results = $GLOBALS['db']->query($query)) !== false) {
-        $numrows_result = $GLOBALS['db']->query("SELECT COUNT(DISTINCT `O`.`product_id`) AS `c` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` WHERE `S`.`status` IN (2,3)");
+    $now_year = (int)date('Y');
+    $where_date  = '';
+    $prior_start = null;
+    $prior_end   = null;
+    if ($ps_year !== 'all') {
+        $year_start = mktime(0, 0, 0, 1, 1, $ps_year);
+        if ($ps_year === $now_year) {
+            $year_end  = time();
+            $prior_end = strtotime('-1 year', $year_end);
+        } else {
+            $year_end  = mktime(0, 0, 0, 1, 1, $ps_year + 1);
+            $prior_end = $year_start;
+        }
+        $prior_start = mktime(0, 0, 0, 1, 1, $ps_year - 1);
+        $where_date  = " AND `S`.`order_date` >= ".$year_start." AND `S`.`order_date` < ".$year_end;
+    }
+
+    switch ($ps_sort) {
+        case 'revenue': $order_by = '`t`.`revenue` DESC'; break;
+        case 'stock':   $order_by = '`I`.`stock_level` ASC'; break; // ascending — most at-risk first
+        default:        $order_by = '`t`.`quan` DESC';
+    }
+
+    // Year filter options always built so the filter form keeps showing
+    // even when the active year has no results (otherwise the user has no way back).
+    $earliest_q = $GLOBALS['db']->query("SELECT MIN(`order_date`) AS `m` FROM `".$glob['dbprefix']."CubeCart_order_summary` WHERE `status` IN (2,3)");
+    $earliest_year = ($earliest_q && !empty($earliest_q[0]['m'])) ? (int)date('Y', $earliest_q[0]['m']) : $now_year;
+    $ps_year_options = array(
+        array('value' => 'all', 'label' => 'All time', 'selected' => $ps_year === 'all' ? ' selected="selected"' : ''),
+    );
+    for ($yr = $now_year; $yr >= $earliest_year; $yr--) {
+        $ps_year_options[] = array(
+            'value'    => $yr,
+            'label'    => $yr,
+            'selected' => ($ps_year === $yr) ? ' selected="selected"' : '',
+        );
+    }
+
+    // Per-year colour (same golden-angle hue rotation as the Sales tab so
+    // 2024=blue, 2025=red, 2026=green stay consistent across the page).
+    $hsl_to_hex = function ($h, $s, $l) {
+        $h = (($h % 360) + 360) % 360 / 360;
+        $q = $l < 0.5 ? $l * (1 + $s) : $l + $s - $l * $s;
+        $p = 2 * $l - $q;
+        $hue = function ($t) use ($p, $q) {
+            if ($t < 0) $t += 1;
+            if ($t > 1) $t -= 1;
+            if ($t < 1/6) return $p + ($q - $p) * 6 * $t;
+            if ($t < 1/2) return $q;
+            if ($t < 2/3) return $p + ($q - $p) * (2/3 - $t) * 6;
+            return $p;
+        };
+        return sprintf('#%02x%02x%02x', (int)round($hue($h + 1/3) * 255), (int)round($hue($h) * 255), (int)round($hue($h - 1/3) * 255));
+    };
+    if ($ps_year === 'all') {
+        // All-time gets the next slot in the hue rotation so it stays distinct
+        // from any per-year bar.
+        $idx_for_color = ($now_year - $earliest_year) + 1;
+    } else {
+        $idx_for_color = max(0, $ps_year - $earliest_year);
+    }
+    $ps_chart_color = $hsl_to_hex((int)round(fmod(210 + $idx_for_color * 137.5, 360)), 0.65, 0.45);
+
+    $GLOBALS['smarty']->assign('PS_YEAR_OPTIONS', $ps_year_options);
+    $GLOBALS['smarty']->assign('PS_YEAR',         $ps_year);
+    $GLOBALS['smarty']->assign('PS_SORT',         $ps_sort);
+    $GLOBALS['smarty']->assign('PS_HAS_TREND',    $prior_start !== null);
+
+    $query = "SELECT `t`.`quan`, `t`.`revenue`, `t`.`product_id`, `I`.`name`, `I`.`stock_level`, `I`.`use_stock_level` "
+           . "FROM (SELECT SUM(`O`.`quantity`) AS `quan`, SUM(`O`.`price` * `O`.`quantity`) AS `revenue`, `O`.`product_id` "
+           .       "FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` "
+           .       "INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` "
+           .       "WHERE `S`.`status` IN (2,3)".$where_date." "
+           .       "GROUP BY `O`.`product_id`) AS `t` "
+           . "INNER JOIN `".$glob['dbprefix']."CubeCart_inventory` AS `I` ON `I`.`product_id` = `t`.`product_id` "
+           . "ORDER BY ".$order_by." LIMIT ".(int)$per_page." OFFSET ".(int)$offset;
+
+    if (($results = $GLOBALS['db']->query($query)) !== false && !empty($results)) {
+        $numrows_result = $GLOBALS['db']->query("SELECT COUNT(DISTINCT `O`.`product_id`) AS `c` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` WHERE `S`.`status` IN (2,3)".$where_date);
         $numrows        = $numrows_result ? (int)$numrows_result[0]['c'] : 0;
-        $divider        = $GLOBALS['db']->query("SELECT SUM(`O`.`quantity`) as `totalProducts` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` WHERE `S`.`status` IN (2,3)");
 
+        $divider = $GLOBALS['db']->query("SELECT SUM(`O`.`quantity`) as `totalProducts`, SUM(`O`.`price` * `O`.`quantity`) as `totalRevenue` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` WHERE `S`.`status` IN (2,3)".$where_date);
+        $total_qty = (float)($divider[0]['totalProducts'] ?? 0);
+        $total_rev = (float)($divider[0]['totalRevenue'] ?? 0);
+
+        // Prior-period quantities for the products we're displaying — for the trend column.
+        $prior_qty = array();
+        if ($prior_start !== null && !empty($results)) {
+            $ids = array_map('intval', array_column($results, 'product_id'));
+            $ids_in = '(' . implode(',', $ids) . ')';
+            $prior_q = $GLOBALS['db']->query("SELECT `O`.`product_id`, SUM(`O`.`quantity`) AS `quan` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` WHERE `S`.`status` IN (2,3) AND `O`.`product_id` IN ".$ids_in." AND `S`.`order_date` >= ".$prior_start." AND `S`.`order_date` < ".$prior_end." GROUP BY `O`.`product_id`");
+            if ($prior_q) {
+                foreach ($prior_q as $row) {
+                    $prior_qty[(int)$row['product_id']] = (int)$row['quan'];
+                }
+            }
+        }
+
+        $tax = Tax::getInstance();
         $g_graph_data[5]['data'] = "['".$lang['statistics']['percentage_of_sales']."','".$lang['common']['percentage']."'],";
-
         $smarty_data[5] = array();
+        $product_ids_for_chart = array();
         foreach ($results as $key => $result) {
             $result['key']     = (($page - 1) * $per_page) + ($key + 1);
-            $result['percent'] = (float)$divider[0]['totalProducts'] ? number_format(100 * ($result['quan'] / $divider[0]['totalProducts']), 2) : 0;
+            $result['percent'] = $total_qty ? number_format(100 * ($result['quan'] / $total_qty), 2) : 0;
             $tmp_col_data[]    = "['".$result['key'].". ".addslashes($result['name'])."',".$result['percent']."]";
-            $smarty_data[5][]  = $result;
+            $product_ids_for_chart[] = (int)$result['product_id'];
+
+            $result['revenue_formatted'] = $tax->priceFormat((float)$result['revenue']);
+            $result['quan']              = number_format((int)$result['quan']);
+            $result['stock_display']     = ((int)$result['use_stock_level'] === 1) ? number_format((int)$result['stock_level']) : '&mdash;';
+            $result['stock_low']         = ((int)$result['use_stock_level'] === 1) && (int)$result['stock_level'] < 10;
+
+            // Trend
+            $current = (int)str_replace(',', '', $result['quan']);
+            $prior   = $prior_qty[(int)$result['product_id']] ?? 0;
+            if ($prior_start === null) {
+                $result['trend'] = null;
+            } elseif ($prior === 0 && $current === 0) {
+                $result['trend'] = null;
+            } elseif ($prior === 0) {
+                $result['trend'] = array('dir' => 'up', 'label' => 'NEW');
+            } else {
+                $pct = (int)round((($current - $prior) / $prior) * 100);
+                $result['trend'] = array(
+                    'dir'   => $pct >= 0 ? 'up' : 'down',
+                    'label' => ($pct >= 0 ? '+' : '').$pct.'%',
+                );
+            }
+
+            $smarty_data[5][] = $result;
         }
 
         $g_graph_data[5]['data'] .= isset($tmp_col_data) ? implode(',', $tmp_col_data) : '';
         unset($tmp_col_data);
 
-        $g_graph_data[5]['title'] = $lang['statistics']['percentage_of_sales'];
-        $g_graph_data[5]['hAxis'] = $lang['dashboard']['inv_products'];
-        $g_graph_data[5]['vAxis'] = $lang['common']['percentage'];
+        $g_graph_data[5]['title']        = $lang['statistics']['percentage_of_sales'];
+        $g_graph_data[5]['hAxis']        = $lang['dashboard']['inv_products'];
+        $g_graph_data[5]['vAxis']        = $lang['common']['percentage'];
+        $g_graph_data[5]['colors']       = "['".$ps_chart_color."']";
+        $g_graph_data[5]['drill']        = array('type' => 'product', 'product_ids' => $product_ids_for_chart);
+        $g_graph_data[5]['total_sum']    = $tax->priceFormat($total_rev);
+        $g_graph_data[5]['total_count']  = number_format((int)$numrows);
 
         $GLOBALS['smarty']->assign('PRODUCT_SALES', $smarty_data[5]);
         $GLOBALS['smarty']->assign('PAGINATION_SALES', $GLOBALS['db']->pagination($numrows, $per_page, $page, 5, 'page_sales', 'stats_prod_sales', ' ', false));
+
         unset($results, $result, $divider);
     }
     break;

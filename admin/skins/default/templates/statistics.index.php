@@ -118,6 +118,10 @@ window.statsHandleDrill = function(drill, rowIdx, colIdx) {
         updates.h_month = drill.month;
         updates.h_day   = pad(rowIdx + 1);
         scrollTo = 'chart4';
+    } else if (drill.type === 'product') {
+        var pid = drill.product_ids && drill.product_ids[rowIdx];
+        if (pid) window.location.href = '?_g=statistics&node=product&product_id=' + pid;
+        return; // full navigation, no AJAX refetch needed
     }
     window.statsDrillTo(updates, scrollTo);
 };
@@ -282,10 +286,10 @@ document.addEventListener('submit', function(e) {
     statsFetchInto(tabDiv, '?' + params.toString());
 });
 
-// AJAX-ify pagination links inside any tab body so paging doesn't full-reload.
+// AJAX-ify pagination + sort links inside any tab body so they don't full-reload.
 document.addEventListener('click', function(e) {
     var t = e.target;
-    var a = (t && t.closest) ? t.closest('.tab_content .pagination a') : null;
+    var a = (t && t.closest) ? t.closest('.tab_content .pagination a, .tab_content .stats-sort-link') : null;
     if (!a) return;
     var href = a.getAttribute('href');
     if (!href || href.indexOf('_g=statistics') === -1) return;

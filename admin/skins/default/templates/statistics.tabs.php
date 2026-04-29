@@ -163,42 +163,69 @@
    {/if}
 {elseif $ACTIVE_TAB == 'stats_prod_sales'}
    <h3>{$LANG.statistics.title_popular}</h3>
-   {if isset($PRODUCT_SALES) && $PRODUCT_SALES}
-   <div id="chart5" class="google_chart"></div>
-   <div id="chart5-title" style="display:none">{$GRAPH_DATA.5.title}</div>
-   <div id="chart5-hAxis" style="display:none">{$GRAPH_DATA.5.hAxis}</div>
-   <div id="chart5-vAxis" style="display:none">{$GRAPH_DATA.5.vAxis}</div>
-   <div class="pagination">
-      {$PAGINATION_SALES}
+   <div class="stat-chart">
+      <div class="stat-chart-header">
+         <span class="stat-chart-title">{$LANG.statistics.title_popular}</span>
+         <form action="{$VAL_SELF}" class="ignore-dirty stats-filter" method="get">
+            <select name="ps_year" class="textbox">
+            {foreach from=$PS_YEAR_OPTIONS item=opt}<option value="{$opt.value}"{$opt.selected}>{$opt.label}</option>{/foreach}
+            </select>
+            <input type="submit" class="tiny" value="{$LANG.common.go}">
+            <input type="hidden" name="_g" value="statistics">
+            <input type="hidden" name="tab" value="stats_prod_sales">
+            <input type="hidden" name="ps_sort" value="{$PS_SORT}">
+         </form>
+      </div>
+      {if isset($PRODUCT_SALES) && $PRODUCT_SALES}
+      <div class="stat-chart-body">
+         <div id="chart5" class="google_chart"></div>
+         <div id="chart5-title" style="display:none">{$GRAPH_DATA.5.title}</div>
+         <div id="chart5-hAxis" style="display:none">{$GRAPH_DATA.5.hAxis}</div>
+         <div id="chart5-vAxis" style="display:none">{$GRAPH_DATA.5.vAxis}</div>
+         <div class="pagination">{$PAGINATION_SALES}</div>
+         <table width="100%" class="stat-table">
+            <thead>
+               <tr>
+                  <td></td>
+                  <td>{$LANG.catalogue.product_name}</td>
+                  <td style="text-align: center" nowrap="nowrap"><a class="stats-sort-link" href="?_g=statistics&amp;tab=stats_prod_sales&amp;ps_sort=quantity&amp;ps_year={$PS_YEAR}#stats_prod_sales"><span title="{$LANG.statistics.quantity_sold}">{$LANG.common.quantity}</span>{if $PS_SORT == 'quantity'} <i class="fa fa-caret-down"></i>{/if}</a></td>
+                  <td style="text-align: center" nowrap="nowrap"><a class="stats-sort-link" href="?_g=statistics&amp;tab=stats_prod_sales&amp;ps_sort=revenue&amp;ps_year={$PS_YEAR}#stats_prod_sales">Revenue{if $PS_SORT == 'revenue'} <i class="fa fa-caret-down"></i>{/if}</a></td>
+                  <td style="text-align: center" nowrap="nowrap"><span title="{$LANG.statistics.percentage_of_total}">{$LANG.common.percentage}</span></td>
+                  <td style="text-align: center" nowrap="nowrap"><a class="stats-sort-link" href="?_g=statistics&amp;tab=stats_prod_sales&amp;ps_sort=stock&amp;ps_year={$PS_YEAR}#stats_prod_sales">Stock{if $PS_SORT == 'stock'} <i class="fa fa-caret-up"></i>{/if}</a></td>
+                  {if $PS_HAS_TREND}<td style="text-align: center" nowrap="nowrap">Trend</td>{/if}
+                  <td></td>
+               </tr>
+            </thead>
+            <tbody>
+               {foreach from=$PRODUCT_SALES item=sale}
+               <tr>
+                  <td style="text-align: center">{$sale.key}</td>
+                  <td><a href="?_g=statistics&amp;node=product&amp;product_id={$sale.product_id}">{$sale.name}</a></td>
+                  <td style="text-align: center">{$sale.quan}</td>
+                  <td style="text-align: right" nowrap="nowrap">{$sale.revenue_formatted}</td>
+                  <td style="text-align: center">{$sale.percent}</td>
+                  <td style="text-align: center{if $sale.stock_low}; color: var(--danger, #c33); font-weight: 600{/if}">{$sale.stock_display}</td>
+                  {if $PS_HAS_TREND}<td style="text-align: center" nowrap="nowrap">{if $sale.trend}<span class="stat-trend stat-trend--{$sale.trend.dir}"><i class="fa fa-caret-{$sale.trend.dir}"></i> {$sale.trend.label}</span>{else}&mdash;{/if}</td>{/if}
+                  <td style="text-align: center"><a href="?_g=statistics&amp;node=product&amp;product_id={$sale.product_id}" title="{$LANG.statistics.title_popular}"><i class="fa fa-bar-chart"></i></a></td>
+               </tr>
+               {/foreach}
+            </tbody>
+         </table>
+      </div>
+      <div class="stat-chart-footer">{$GRAPH_DATA.5.total_sum} &middot; {$GRAPH_DATA.5.total_count} products</div>
+      <script type="text/javascript">
+         window.chart_data = window.chart_data || [];
+         window.chart_options = window.chart_options || [];
+         window.chart_data[5] = [{$GRAPH_DATA.5.data}];
+         window.chart_options[5] = {};
+         window.chart_options[5].colors = {$GRAPH_DATA.5.colors};
+         window.chart_options[5].drill = {$GRAPH_DATA.5.drill|json_encode};
+         window.whenChartsReady(function() { window.drawChart(5, window.chart_data); });
+      </script>
+      {else}
+      <div class="stat-chart-body" style="text-align: center; padding: 2em 0;">{$LANG.statistics.notify_sales_none}</div>
+      {/if}
    </div>
-   <table width="100%">
-      <thead>
-         <tr>
-            <td></td>
-            <td>{$LANG.catalogue.product_name}</td>
-            <td style="text-align: center" nowrap="nowrap"><span title="{$LANG.statistics.quantity_sold}">{$LANG.common.quantity}</span></td>
-            <td style="text-align: center" nowrap="nowrap"><span title="{$LANG.statistics.percentage_of_total}">{$LANG.common.percentage}</span></td>
-         </tr>
-      </thead>
-      <tbody>
-         {foreach from=$PRODUCT_SALES item=sale}
-         <tr>
-            <td style="text-align: center">{$sale.key}</td>
-            <td><a href="?_g=statistics&amp;node=product&amp;product_id={$sale.product_id}">{$sale.name}</a></td>
-            <td style="text-align: center">{$sale.quan}</td>
-            <td style="text-align: center">{$sale.percent}</td>
-         </tr>
-         {/foreach}
-      </tbody>
-   </table>
-   <script type="text/javascript">
-      window.chart_data = window.chart_data || [];
-      window.chart_data[5] = [{$GRAPH_DATA.5.data}];
-      window.whenChartsReady(function() { window.drawChart(5, window.chart_data); });
-   </script>
-   {else}
-   <p>{$LANG.statistics.notify_sales_none}</p>
-   {/if}
 {elseif $ACTIVE_TAB == 'stats_prod_views'}
    <h3>{$LANG.statistics.title_viewed}</h3>
    {if isset($PRODUCT_VIEWS) && $PRODUCT_VIEWS}
