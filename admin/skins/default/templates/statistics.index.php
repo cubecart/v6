@@ -9,346 +9,258 @@
  * Email:  hello@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<div id="stats_sales" class="tab_content">
-   <h3>{$LANG.statistics.title_sales}</h3>
-   {if $DISPLAY_SALES}
-   <form action="{$VAL_SELF}" class="ignore-dirty" method="get">
-      <div>
-         <fieldset>
-            <legend>{$LANG.common.filter}</legend>
-            <select name="year" class="textbox">
-            {foreach from=$YEARS item=year}
-              <option value="{$year.value}" {$year.selected}>{$year.value}</option>
-            {/foreach}
-            </select>
-            <select name="month" class="textbox">
-            {foreach from=$MONTHS item=month}
-              <option value="{$month.value}"{$month.selected}>{$month.title}</option>
-            {/foreach}
-            </select>
-            <select name="day" class="textbox">
-            {foreach from=$DAYS item=day}
-              <option value="{$day.value}"{$day.selected}>{$day.value}</option>
-            {/foreach}
-            </select>
-            <input type="submit" class="tiny" value="{$LANG.common.go}">
-         </fieldset>
-      </div>
-   <input type="hidden" name="_g" value="statistics"> 
-   </form>
-   <div id="chart1" class="google_chart"></div>
-   <div id="chart1-title" style="display:none">{$GRAPH_DATA.1.title}</div>
-   <div id="chart1-hAxis" style="display:none">{$GRAPH_DATA.1.hAxis}</div>
-   <div id="chart1-vAxis" style="display:none">{$GRAPH_DATA.1.vAxis}</div>
-   <div id="chart2" class="google_chart"></div>
-   <div id="chart2-title" style="display:none">{$GRAPH_DATA.2.title}</div>
-   <div id="chart2-hAxis" style="display:none">{$GRAPH_DATA.2.hAxis}</div>
-   <div id="chart2-vAxis" style="display:none">{$GRAPH_DATA.2.vAxis}</div>
-   <div id="chart3" class="google_chart"></div>
-   <div id="chart3-title" style="display:none">{$GRAPH_DATA.3.title}</div>
-   <div id="chart3-hAxis" style="display:none">{$GRAPH_DATA.3.hAxis}</div>
-   <div id="chart3-vAxis" style="display:none">{$GRAPH_DATA.3.vAxis}</div>
-   <div id="chart4" class="google_chart"></div>
-   <div id="chart4-title" style="display:none">{$GRAPH_DATA.4.title}</div>
-   <div id="chart4-hAxis" style="display:none">{$GRAPH_DATA.4.hAxis}</div>
-   <div id="chart4-vAxis" style="display:none">{$GRAPH_DATA.4.vAxis}</div>
-   {else}
-   <p>{$LANG.statistics.notify_sales_none}</p>
-   {/if}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+{* Chart helpers must exist before the included tab body's inline script runs. *}
+<script type="text/javascript">
+{literal}
+google.charts.load('current', {packages: ['corechart']});
+
+window.chart_data = window.chart_data || [];
+window.chart_options = window.chart_options || [];
+
+window.whenChartsReady = function(fn) {
+    if (window.google && window.google.visualization && window.google.visualization.arrayToDataTable) {
+        fn();
+    } else {
+        setTimeout(function() { window.whenChartsReady(fn); }, 50);
+    }
+};
+
+window.drawChart = function(id, chart_data) {
+    var container = document.getElementById('chart' + id);
+    if (container == null) return false;
+    var chart_title = document.getElementById('chart' + id + '-title');
+    var chart_hAxis = document.getElementById('chart' + id + '-hAxis');
+    var chart_vAxis = document.getElementById('chart' + id + '-vAxis');
+
+    var data = google.visualization.arrayToDataTable(chart_data[id]);
+    var yMax = 0, gNOR = data.getNumberOfRows(), gNOC = data.getNumberOfColumns();
+    for (var x = 1; x < gNOC; x++) {
+        if (data.getColumnType(x) !== 'number') continue; // skip style/role columns
+        for (var y = 0; y < gNOR; y++) {
+            yMax = Math.max(data.getValue(y, x), yMax);
+        }
+    }
+
+    var log10yMax = Math.log10(yMax);
+    var floorexp = Math.floor(log10yMax);
+    var normyMax = yMax / Math.pow(10, floorexp);
+    var ceilnormyMax = Math.ceil(normyMax);
+    yMax = ceilnormyMax * Math.pow(10, floorexp);
+
+    if (yMax < 20 || isNaN(yMax)) { yMax = 20; }
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = isDark ? {
+        backgroundColor: '#171b1f',
+        chartAreaBg: '#171b1f',
+        text: '#e6e6e6',
+        gridline: '#2c343b'
+    } : {
+        backgroundColor: '#ffffff',
+        chartAreaBg: '#ffffff',
+        text: '#555555',
+        gridline: '#ddd'
+    };
+    var options = {
+        titleTextStyle: { color: theme.text },
+        backgroundColor: theme.backgroundColor,
+        chartArea: { backgroundColor: theme.chartAreaBg },
+        legend: { textStyle: { color: theme.text } },
+        title: chart_title ? chart_title.innerHTML : '',
+        hAxis: {
+            title: chart_hAxis ? chart_hAxis.innerHTML : '',
+            textStyle: { color: theme.text },
+            gridlines: { color: theme.gridline }
+        },
+        vAxis: {
+            title: chart_vAxis ? chart_vAxis.innerHTML : '',
+            textStyle: { color: theme.text },
+            gridlines: { color: theme.gridline },
+            viewWindowMode: 'explicit',
+            viewWindow: { min: 0, max: yMax }
+        }
+    };
+    var custom = (window.chart_options && window.chart_options[id]) || {};
+    if (custom.colors) options.colors = custom.colors;
+    if (custom.legend === 'none') options.legend = 'none';
+    var chart = new google.visualization.ColumnChart(container);
+    chart.draw(data, options);
+};
+
+// Mirror ?tab= into the hash so admin.js's tab strip activates the right tab.
+(function() {
+    try {
+        var t = new URLSearchParams(window.location.search).get('tab');
+        if (t && !window.location.hash) {
+            window.location.hash = t;
+        }
+    } catch(e) {}
+})();
+{/literal}
+</script>
+
+<div id="stats_sales" class="tab_content"{if $ACTIVE_TAB != 'stats_sales'} data-needs-load="1"{/if}>
+   {if $ACTIVE_TAB == 'stats_sales'}{include file='templates/statistics.tabs.php'}{/if}
 </div>
-<div id="stats_prod_sales" class="tab_content">
-   <h3>{$LANG.statistics.title_popular}</h3>
-   {if $PRODUCT_SALES}
-   <div id="chart5" class="google_chart"></div>
-   <div id="chart5-title" style="display:none">{$GRAPH_DATA.5.title}</div>
-   <div id="chart5-hAxis" style="display:none">{$GRAPH_DATA.5.hAxis}</div>
-   <div id="chart5-vAxis" style="display:none">{$GRAPH_DATA.5.vAxis}</div>
-   <div class="pagination">
-      {$PAGINATION_SALES}
-   </div>
-   <table width="100%">
-      <thead>
-         <tr>
-            <td></td>
-            <td>{$LANG.catalogue.product_name}</td>
-            <td style="text-align: center" nowrap="nowrap"><span title="{$LANG.statistics.quantity_sold}">{$LANG.common.quantity}</span></td>
-            <td style="text-align: center" nowrap="nowrap"><span title="{$LANG.statistics.percentage_of_total}">{$LANG.common.percentage}</span></td>
-         </tr>
-      </thead>
-      <tbody>
-         {foreach from=$PRODUCT_SALES item=sale}
-         <tr>
-            <td style="text-align: center">{$sale.key}</td>
-            <td><a href="?_g=statistics&amp;node=product&amp;product_id={$sale.product_id}">{$sale.name}</a></td>
-            <td style="text-align: center">{$sale.quan}</td>
-            <td style="text-align: center">{$sale.percent}</td>
-         </tr>
-         {/foreach}
-      </tbody>
-   </table>
-   {else}
-   <p>{$LANG.statistics.notify_sales_none}</p>
-   {/if}
+<div id="stats_prod_sales" class="tab_content"{if $ACTIVE_TAB != 'stats_prod_sales'} data-needs-load="1"{/if}>
+   {if $ACTIVE_TAB == 'stats_prod_sales'}{include file='templates/statistics.tabs.php'}{/if}
 </div>
-{if isset($PRODUCT_VIEWS)}
-<div id="stats_prod_views" class="tab_content">
-   <h3>{$LANG.statistics.title_viewed}</h3>
-   <div id="chart6" class="google_chart"></div>
-   <div id="chart6-title" style="display:none">{$GRAPH_DATA.6.title}</div>
-   <div id="chart6-hAxis" style="display:none">{$GRAPH_DATA.6.hAxis}</div>
-   <div id="chart6-vAxis" style="display:none">{$GRAPH_DATA.6.vAxis}</div>
-   <div class="pagination">{$PAGINATION_VIEWS}</div>
-   <table width="100%">
-      <thead>
-         <tr>
-            <td width="20">&nbsp;</td>
-            <td>{$LANG.catalogue.product_name}</td>
-            <td style="text-align:center">{$LANG.statistics.product_views}</td>
-            <td style="text-align:center"><span title="{$LANG.statistics.percentage_of_views}">{$LANG.common.percentage}</span></td>
-         </tr>
-      </thead>
-      <tbody>
-         {foreach from=$PRODUCT_VIEWS item=view}
-         <tr>
-            <td style="text-align:center">{$view.key}</td>
-            <td>{$view.name}</td>
-            <td style="text-align:center">{$view.popularity}</td>
-            <td style="text-align:center">{$view.percent}</td>
-         </tr>
-         {/foreach}
-      </tbody>
-   </table>
+<div id="stats_prod_views" class="tab_content"{if $ACTIVE_TAB != 'stats_prod_views'} data-needs-load="1"{/if}>
+   {if $ACTIVE_TAB == 'stats_prod_views'}{include file='templates/statistics.tabs.php'}{/if}
 </div>
-{/if}
-{if isset($SEARCH_TERMS)}
-<div id="stats_search" class="tab_content">
-   {if $SEARCH_TERMS}<div class="right"><a href="?_g=maintenance&clearSearch=true&redir=searchlog" class="button delete" title="{$LANG.notification.confirm_continue}">{$LANG.maintain.clear_log}</a></div>{/if}
-   <h3 style="margin-bottom: 25px;">{$LANG.statistics.title_search}</h3>
-   {if $SEARCH_TERMS}
-   <div id="chart7" class="google_chart"></div>
-   <div id="chart7-title" style="display:none">{$GRAPH_DATA.7.title}</div>
-   <div id="chart7-hAxis" style="display:none">{$GRAPH_DATA.7.hAxis}</div>
-   <div id="chart7-vAxis" style="display:none">{$GRAPH_DATA.7.vAxis}</div>
-   <div class="pagination">{$PAGINATION_SEARCH}</div>
-   <table width="100%">
-      <thead>
-         <tr>
-            <td width="20">&nbsp;</td>
-            <td>{$LANG.statistics.search_term}</td>
-            <td style="text-align:center">{$LANG.statistics.product_hits}</td>
-            <td style="text-align:center"><span title="{$LANG.statistics.percentage_of_search}">{$LANG.common.percentage}</span></td>
-         </tr>
-      </thead>
-      <tbody>
-         {foreach from=$SEARCH_TERMS item=term}
-         <tr>
-            <td style="text-align:center">{$term.key}</td>
-            <td>{$term.searchstr}</td>
-            <td style="text-align:center">{$term.hits}</td>
-            <td style="text-align:center">{$term.percent}</td>
-         </tr>
-         {/foreach}
-      </tbody>
-   </table>
-   {else}
-   {$LANG.statistics.notify_searches_none}
-   {/if}
+<div id="stats_search" class="tab_content"{if $ACTIVE_TAB != 'stats_search'} data-needs-load="1"{/if}>
+   {if $ACTIVE_TAB == 'stats_search'}{include file='templates/statistics.tabs.php'}{/if}
 </div>
-{/if}
-{if isset($BEST_CUSTOMERS)}
-<div id="stats_best_customers" class="tab_content">
-   <h3>{$LANG.statistics.title_customers_best}</h3>
-   {if $BEST_CUSTOMERS}
-   <div id="chart8" class="google_chart"></div>
-   <div id="chart8-title" style="display:none">{$GRAPH_DATA.8.title}</div>
-   <div id="chart8-hAxis" style="display:none">{$GRAPH_DATA.8.hAxis}</div>
-   <div id="chart8-vAxis" style="display:none">{$GRAPH_DATA.8.vAxis}</div>
-   <div id="chart8-data" style="display:none">[{$GRAPH_DATA.8.data}]</div>
-   <div class="pagination">{$PAGINATION_BEST}</div>
-   <table width="100%">
-      <thead>
-         <tr>
-            <td width="20">&nbsp;</td>
-            <td>{$LANG.common.name}</td>
-            <td style="text-align:center">{$LANG.statistics.total_expenditure}</td>
-            <td style="text-align:center">{$LANG.statistics.percentage_of_total}</td>
-         </tr>
-      </thead>
-      <tbody>
-         {foreach from=$BEST_CUSTOMERS item=customer}
-         <tr>
-            <td style="text-align:center">{$customer.key}</td>
-            <td><a href="?_g=customers&node=index&action=edit&customer_id={$customer.customer_id}" class="capitalize">{$customer.last_name}, {$customer.first_name}</a></td>
-            <td style="text-align:center">{$customer.expenditure}</td>
-            <td style="text-align:center">{$customer.percent}</td>
-         </tr>
-         {/foreach}
-      </tbody>
-   </table>
-   {else}
-   {$LANG.statistics.notify_customers_none}
-   {/if}
+<div id="stats_best_customers" class="tab_content"{if $ACTIVE_TAB != 'stats_best_customers'} data-needs-load="1"{/if}>
+   {if $ACTIVE_TAB == 'stats_best_customers'}{include file='templates/statistics.tabs.php'}{/if}
 </div>
-{/if}
-{if isset($PLUGIN_TABS)}
+
+{if isset($PLUGIN_TABS) && $PLUGIN_TABS}
    {foreach from=$PLUGIN_TABS item=tab}
       {$tab}
    {/foreach}
 {/if}
-{if isset($USERS_ONLINE)}
-<div id="stats_online" class="tab_content">
-   <h3>{$LANG.statistics.title_customers_active}</h3>
-   <p>
-      {if $BOTS==true}
-      <a href="?_g=statistics&bots=false#stats_online">{$LANG.statistics.display_customers_only}</a>
-      {else}
-      <a href="?_g=statistics&bots=true#stats_online">{$LANG.statistics.display_bots_and_customers}</a>
-      {/if}
-   </p>
-   <table width="100%">
-      <thead>
-      <tr>
-      <td>{$LANG.statistics.session_admin}</td>
-            <td>{$LANG.statistics.session_user}</td>
-            <td>{$LANG.statistics.session_location}</td>
-            <td>{$LANG.statistics.session_started}</td>
-            <td>{$LANG.statistics.session_last}</td>
-            <td>{$LANG.statistics.session_length}</td>
-            <td>{$LANG.common.ip_address}</td>
-         </tr>
-      </thead>
-      <tbody>
-         {foreach from=$USERS_ONLINE item=user}
-         <tr>
-            <td style="text-align:center"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$user.is_admin}.png"></td>
-            <td>
-               <strong>
-               {if !empty($user.customer_id)}
-               <a href="{$CONFIG.adminFile}?_g=customers&action=edit&customer_id={$user.customer_id}">{$user.name}</a>
-               {else}
-               {$user.name}
-               {/if}
-               </strong>
-            </td>
-            <td>{$STORE_URL}/{$user.location}{if strpos($user.location,"404") === false} <a href="{$STORE_URL}/{$user.location}" target="_blank">&raquo;</a>{/if}</td>
-            <td style="text-align:center">{$user.session_start}</td>
-            <td style="text-align:center"  >{$user.session_last}</td>
-            <td>{$user.session_length}</td>
-            <td>{if !empty($user.ip_address)}<a href="http://whois.domaintools.com/{$user.ip_address}" target="_blank">{$user.ip_address}</a>{/if}</td>
-         </tr>
-         {foreachelse}
-         <tr>
-            <td colspan="6" class="text-center">{$LANG.form.none}</td>
-         </tr>
-         {/foreach}
-      </tbody>
-   </table>
+
+<div id="stats_online" class="tab_content"{if $ACTIVE_TAB != 'stats_online'} data-needs-load="1"{/if}>
+   {if $ACTIVE_TAB == 'stats_online'}{include file='templates/statistics.tabs.php'}{/if}
 </div>
-{/if}
+
 <script type="text/javascript">
-   {literal}
-   google.load("visualization", "1", {packages: ["corechart"]});
-   
-   function drawChart(id, chart_data) {
-     var container = document.getElementById('chart'+id);
-     
-     if(container == null) { 
-       return false
-     }
-     var chart_title = document.getElementById('chart'+id+'-title');
-     var chart_hAxis = document.getElementById('chart'+id+'-hAxis');
-     var chart_vAxis = document.getElementById('chart'+id+'-vAxis');
-   
-     var data = google.visualization.arrayToDataTable(chart_data[id]);
-     var yMax = 0, gNOR = data.getNumberOfRows(), gNOC = data.getNumberOfColumns();
-     for(var x = 1; x < gNOC; x++) {
-       for(var y = 0; y < gNOR; y++) {
-         yMax = Math.max(data.getValue(y,x), yMax);
-       }
-     }
+{literal}
+// Redraw any visible charts on resize so they fit their container.
+window.addEventListener('resize', function() {
+    for (var id in window.chart_data) {
+        if (document.getElementById('chart' + id)) {
+            window.drawChart(id, window.chart_data);
+        }
+    }
+});
 
-     var log10yMax = Math.log10(yMax);
-     var floorexp = Math.floor(log10yMax);
-     var normyMax = yMax/Math.pow(10,floorexp);
-     var ceilnormyMax = Math.ceil(normyMax);
-     yMax = ceilnormyMax * Math.pow(10,floorexp);
+// Vanilla JS — this script runs before jQuery is loaded by the admin layout.
+function statsFetchInto(div, url) {
+    div.setAttribute('data-loading', '1');
+    div.innerHTML = '<p style="padding:1em;">Loading…</p>';
+    return fetch(url, { credentials: 'same-origin' })
+        .then(function(r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.text();
+        })
+        .then(function(html) {
+            div.removeAttribute('data-needs-load');
+            div.removeAttribute('data-loading');
+            div.innerHTML = html;
+            // innerHTML doesn't execute embedded <script> tags; clone-replace each
+            // so the chart-init scripts inside the fragment actually run.
+            var scripts = div.querySelectorAll('script');
+            for (var i = 0; i < scripts.length; i++) {
+                var oldS = scripts[i];
+                var newS = document.createElement('script');
+                if (oldS.src) {
+                    newS.src = oldS.src;
+                } else {
+                    newS.textContent = oldS.textContent;
+                }
+                oldS.parentNode.replaceChild(newS, oldS);
+            }
+        })
+        .catch(function() {
+            div.removeAttribute('data-loading');
+            div.innerHTML = '<p style="padding:1em;">Failed to load.</p>';
+        });
+}
 
-     if (yMax < 20 || isNaN(yMax)) { yMax = 20; }
-      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const theme = isDark ? {
-         backgroundColor: '#171b1f',
-         chartAreaBg: '#171b1f',
-         text: '#e6e6e6',
-         gridline: '#2c343b'
-      } : {
-         backgroundColor: '#ffffff',
-         chartAreaBg: '#ffffff',
-         text: '#555555',
-         gridline: '#ddd'
-      };
-      var options = {
-         titleTextStyle: {
-            color: theme.text,
-         },
-         backgroundColor: theme.backgroundColor,
-         chartArea: { backgroundColor: theme.chartAreaBg },
-         legend: { textStyle: { color: theme.text } },
-         hAxis: {
-            textStyle: { color: theme.text },
-            gridlines: { color: theme.gridline },
-         },
-         vAxis: {
-            textStyle: { color: theme.text },
-            gridlines: { color: theme.gridline },
-         },
-         title: chart_title.innerHTML,
-         hAxis: {title: chart_hAxis.innerHTML},
-         vAxis: {title: chart_vAxis.innerHTML,viewWindowMode:'explicit',viewWindow:{min:0,max:yMax}}
-      };
-     var chart = new google.visualization.ColumnChart(container);
-     chart.draw(data, options);
-   }
-   
-   var chart_data = []
-   {/literal}
-   {foreach from=$GRAPH_DATA key=k item=v}
-   chart_data[{$k}] = [{$v.data}];
-   {/foreach}
-   {literal}
+function statsLoadTab(tabId) {
+    var div = document.getElementById(tabId);
+    if (!div || !div.hasAttribute('data-needs-load')) return;
+    statsFetchInto(div, '?_g=statistics&format=fragment&tab=' + encodeURIComponent(tabId));
+}
 
-   const listener = ['resize','load'];
-   listener.forEach(addEL);
-   function addEL(l) {
-      addEventListener(l, (event) => {
-         {/literal}
-         {foreach from=$GRAPH_DATA key=k item=v}
-         drawChart({$k},chart_data);
-         {/foreach}
-         {literal}
-      });
-   }
+// AJAX-ify any in-tab filter form (.stats-filter) so submitting refreshes
+// just the tab and pushes a clean URL into history for sharing.
+document.addEventListener('submit', function(e) {
+    var form = e.target;
+    if (!form || !form.classList || !form.classList.contains('stats-filter')) return;
+    var tabDiv = form.closest('.tab_content');
+    if (!tabDiv || !tabDiv.id) return;
+    e.preventDefault();
 
-   var ms_delay = 10; // delay before resize so sizes can be calculated
-   
-   document.getElementById("tab_stats_sales").onclick = function(){
-     setTimeout(function() { drawChart(1,chart_data) },ms_delay);
-     setTimeout(function() { drawChart(2,chart_data) },ms_delay);
-     setTimeout(function() { drawChart(3,chart_data) },ms_delay);
-     setTimeout(function() { drawChart(4,chart_data) },ms_delay);
-   }
-   document.getElementById("tab_stats_prod_sales").onclick = function(){
-     setTimeout(function() { drawChart(5,chart_data) },ms_delay)
-   }
-   document.getElementById("tab_stats_prod_views").onclick = function(){
-     setTimeout(function() { drawChart(6,chart_data) },ms_delay)
-   }
-   document.getElementById("tab_stats_search").onclick = function(){
-     setTimeout(function() { drawChart(7,chart_data) },ms_delay)
-   }
-   document.getElementById("tab_stats_best_customers").onclick = function(){
-     setTimeout(function() { drawChart(8,chart_data) },ms_delay)
-   }
-   {/literal}
-   
+    var params = new URLSearchParams(new FormData(form));
+    params.set('format', 'fragment');
+    params.set('tab', tabDiv.id);
+
+    var pushParams = new URLSearchParams(params);
+    pushParams.delete('format');
+    var pushUrl = '?' + pushParams.toString() + '#' + tabDiv.id;
+    try { history.pushState({ tabId: tabDiv.id }, '', pushUrl); } catch(_) {}
+
+    statsFetchInto(tabDiv, '?' + params.toString());
+});
+
+// AJAX-ify pagination links inside any tab body so paging doesn't full-reload.
+document.addEventListener('click', function(e) {
+    var t = e.target;
+    var a = (t && t.closest) ? t.closest('.tab_content .pagination a') : null;
+    if (!a) return;
+    var href = a.getAttribute('href');
+    if (!href || href.indexOf('_g=statistics') === -1) return;
+    var tabDiv = a.closest('.tab_content');
+    if (!tabDiv || !tabDiv.id) return;
+    e.preventDefault();
+
+    var hashIdx  = href.indexOf('#');
+    var hrefBase = (hashIdx === -1) ? href : href.substring(0, hashIdx);
+    var hrefHash = (hashIdx === -1) ? ('#' + tabDiv.id) : href.substring(hashIdx);
+    var sep      = (hrefBase.indexOf('?') === -1) ? '?' : '&';
+    var ajaxUrl  = hrefBase + sep + 'format=fragment&tab=' + encodeURIComponent(tabDiv.id);
+    var pushUrl  = hrefBase + (hrefBase.indexOf('tab=') === -1 ? sep + 'tab=' + encodeURIComponent(tabDiv.id) : '') + hrefHash;
+    try { history.pushState({ tabId: tabDiv.id }, '', pushUrl); } catch(_) {}
+
+    statsFetchInto(tabDiv, ajaxUrl);
+});
+
+// Back/forward through paginated states: refetch the current URL as a fragment.
+window.addEventListener('popstate', function(e) {
+    var state = e.state || {};
+    if (!state.tabId) return; // not one of our pushStates
+    var div = document.getElementById(state.tabId);
+    if (!div) return;
+    var search = window.location.search.replace(/^\?/, '');
+    var parts = search ? search.split('&').filter(function(p) { return p && p.indexOf('format=') !== 0; }) : [];
+    parts.push('format=fragment');
+    if (!parts.some(function(p) { return p.indexOf('tab=') === 0; })) {
+        parts.push('tab=' + encodeURIComponent(state.tabId));
+    }
+    statsFetchInto(div, '?' + parts.join('&'));
+});
+
+function statsRedrawTabCharts(tabId) {
+    var div = document.getElementById(tabId);
+    if (!div || div.offsetParent === null) return;
+    var charts = div.querySelectorAll('.google_chart');
+    for (var i = 0; i < charts.length; i++) {
+        var chartId = charts[i].id.replace('chart', '');
+        if (window.chart_data && window.chart_data[chartId]) {
+            (function(id) {
+                window.whenChartsReady(function() { window.drawChart(id, window.chart_data); });
+            })(chartId);
+        }
+    }
+}
+
+function statsSyncFromHash() {
+    var h = window.location.hash.replace(/^#/, '');
+    if (h && document.getElementById(h)) {
+        statsLoadTab(h);
+        setTimeout(function() { statsRedrawTabCharts(h); }, 100);
+    }
+}
+
+window.addEventListener('hashchange', statsSyncFromHash);
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', statsSyncFromHash);
+} else {
+    statsSyncFromHash();
+}
+{/literal}
 </script>

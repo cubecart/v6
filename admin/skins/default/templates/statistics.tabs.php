@@ -1,0 +1,327 @@
+{*
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2026. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   https://www.cubecart.com
+ * Email:  hello@cubecart.com
+ * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ *
+ * Per-tab body. Used by initial render via {include} in statistics.index.php
+ * and as the standalone AJAX fragment response.
+ *}
+{if $ACTIVE_TAB == 'stats_sales'}
+   <h3>{$LANG.statistics.title_sales}</h3>
+   {if isset($DISPLAY_SALES) && $DISPLAY_SALES}
+
+   <div class="stat-chart">
+      <div class="stat-chart-header">
+         <span class="stat-chart-title">{$GRAPH_DATA.1.title}</span>
+      </div>
+      <div class="stat-chart-body">
+         <div id="chart1" class="google_chart"></div>
+         <div id="chart1-title" style="display:none"></div>
+         <div id="chart1-hAxis" style="display:none">{$GRAPH_DATA.1.hAxis}</div>
+         <div id="chart1-vAxis" style="display:none">{$GRAPH_DATA.1.vAxis}</div>
+      </div>
+   </div>
+
+   <div class="stat-chart">
+      <div class="stat-chart-header">
+         <span class="stat-chart-title">{$GRAPH_DATA.2.title}</span>
+         <form action="{$VAL_SELF}" class="ignore-dirty stats-filter" method="get">
+            <select name="m_year" class="textbox">
+            {foreach from=$M_YEARS item=year}<option value="{$year.value}" {$year.selected}>{$year.value}</option>{/foreach}
+            </select>
+            <select name="m_month" class="textbox">
+            {foreach from=$M_MONTHS item=month}<option value="{$month.value}"{$month.selected}{$month.disabled}>{$month.title}</option>{/foreach}
+            </select>
+            <input type="submit" class="tiny" value="{$LANG.common.go}">
+            <input type="hidden" name="_g" value="statistics">
+            <input type="hidden" name="tab" value="stats_sales">
+            <input type="hidden" name="d_year"  value="{$SALES_FILTER.d_year}">
+            <input type="hidden" name="d_month" value="{$SALES_FILTER.d_month}">
+            <input type="hidden" name="h_year"  value="{$SALES_FILTER.h_year}">
+            <input type="hidden" name="h_month" value="{$SALES_FILTER.h_month}">
+            <input type="hidden" name="h_day"   value="{$SALES_FILTER.h_day}">
+         </form>
+      </div>
+      <div class="stat-chart-body">
+         <div id="chart2" class="google_chart"></div>
+         <div id="chart2-title" style="display:none"></div>
+         <div id="chart2-hAxis" style="display:none">{$GRAPH_DATA.2.hAxis}</div>
+         <div id="chart2-vAxis" style="display:none">{$GRAPH_DATA.2.vAxis}</div>
+      </div>
+   </div>
+
+   <div class="stat-chart">
+      <div class="stat-chart-header">
+         <span class="stat-chart-title">{$GRAPH_DATA.3.title}</span>
+         <form action="{$VAL_SELF}" class="ignore-dirty stats-filter" method="get">
+            <select name="d_year" class="textbox">
+            {foreach from=$D_YEARS item=year}<option value="{$year.value}" {$year.selected}>{$year.value}</option>{/foreach}
+            </select>
+            <select name="d_month" class="textbox">
+            {foreach from=$D_MONTHS item=month}<option value="{$month.value}"{$month.selected}{$month.disabled}>{$month.title}</option>{/foreach}
+            </select>
+            <input type="submit" class="tiny" value="{$LANG.common.go}">
+            <input type="hidden" name="_g" value="statistics">
+            <input type="hidden" name="tab" value="stats_sales">
+            <input type="hidden" name="m_year"  value="{$SALES_FILTER.m_year}">
+            <input type="hidden" name="m_month" value="{$SALES_FILTER.m_month}">
+            <input type="hidden" name="h_year"  value="{$SALES_FILTER.h_year}">
+            <input type="hidden" name="h_month" value="{$SALES_FILTER.h_month}">
+            <input type="hidden" name="h_day"   value="{$SALES_FILTER.h_day}">
+         </form>
+      </div>
+      <div class="stat-chart-body">
+         <div id="chart3" class="google_chart"></div>
+         <div id="chart3-title" style="display:none"></div>
+         <div id="chart3-hAxis" style="display:none">{$GRAPH_DATA.3.hAxis}</div>
+         <div id="chart3-vAxis" style="display:none">{$GRAPH_DATA.3.vAxis}</div>
+      </div>
+   </div>
+
+   <div class="stat-chart">
+      <div class="stat-chart-header">
+         <span class="stat-chart-title">{$GRAPH_DATA.4.title}</span>
+         <form action="{$VAL_SELF}" class="ignore-dirty stats-filter" method="get">
+            <select name="h_year" class="textbox">
+            {foreach from=$H_YEARS item=year}<option value="{$year.value}" {$year.selected}>{$year.value}</option>{/foreach}
+            </select>
+            <select name="h_month" class="textbox">
+            {foreach from=$H_MONTHS item=month}<option value="{$month.value}"{$month.selected}{$month.disabled}>{$month.title}</option>{/foreach}
+            </select>
+            <select name="h_day" class="textbox">
+            {foreach from=$H_DAYS item=day}<option value="{$day.value}"{$day.selected}{$day.disabled}>{$day.value}</option>{/foreach}
+            </select>
+            <input type="submit" class="tiny" value="{$LANG.common.go}">
+            <input type="hidden" name="_g" value="statistics">
+            <input type="hidden" name="tab" value="stats_sales">
+            <input type="hidden" name="m_year"  value="{$SALES_FILTER.m_year}">
+            <input type="hidden" name="m_month" value="{$SALES_FILTER.m_month}">
+            <input type="hidden" name="d_year"  value="{$SALES_FILTER.d_year}">
+            <input type="hidden" name="d_month" value="{$SALES_FILTER.d_month}">
+         </form>
+      </div>
+      <div class="stat-chart-body">
+         <div id="chart4" class="google_chart"></div>
+         <div id="chart4-title" style="display:none"></div>
+         <div id="chart4-hAxis" style="display:none">{$GRAPH_DATA.4.hAxis}</div>
+         <div id="chart4-vAxis" style="display:none">{$GRAPH_DATA.4.vAxis}</div>
+      </div>
+   </div>
+
+   <script type="text/javascript">
+      window.chart_data = window.chart_data || [];
+      window.chart_options = window.chart_options || [];
+      {foreach from=$GRAPH_DATA key=k item=v}
+      window.chart_data[{$k}] = [{$v.data}];
+      window.chart_options[{$k}] = { {if isset($v.colors)}colors: {$v.colors}{if isset($v.legend)},{/if}{/if}{if isset($v.legend)}legend: '{$v.legend}'{/if} };
+      {/foreach}
+      window.whenChartsReady(function() {
+         {foreach from=$GRAPH_DATA key=k item=v}
+         window.drawChart({$k}, window.chart_data);
+         {/foreach}
+      });
+   </script>
+   {else}
+   <p>{$LANG.statistics.notify_sales_none}</p>
+   {/if}
+{elseif $ACTIVE_TAB == 'stats_prod_sales'}
+   <h3>{$LANG.statistics.title_popular}</h3>
+   {if isset($PRODUCT_SALES) && $PRODUCT_SALES}
+   <div id="chart5" class="google_chart"></div>
+   <div id="chart5-title" style="display:none">{$GRAPH_DATA.5.title}</div>
+   <div id="chart5-hAxis" style="display:none">{$GRAPH_DATA.5.hAxis}</div>
+   <div id="chart5-vAxis" style="display:none">{$GRAPH_DATA.5.vAxis}</div>
+   <div class="pagination">
+      {$PAGINATION_SALES}
+   </div>
+   <table width="100%">
+      <thead>
+         <tr>
+            <td></td>
+            <td>{$LANG.catalogue.product_name}</td>
+            <td style="text-align: center" nowrap="nowrap"><span title="{$LANG.statistics.quantity_sold}">{$LANG.common.quantity}</span></td>
+            <td style="text-align: center" nowrap="nowrap"><span title="{$LANG.statistics.percentage_of_total}">{$LANG.common.percentage}</span></td>
+         </tr>
+      </thead>
+      <tbody>
+         {foreach from=$PRODUCT_SALES item=sale}
+         <tr>
+            <td style="text-align: center">{$sale.key}</td>
+            <td><a href="?_g=statistics&amp;node=product&amp;product_id={$sale.product_id}">{$sale.name}</a></td>
+            <td style="text-align: center">{$sale.quan}</td>
+            <td style="text-align: center">{$sale.percent}</td>
+         </tr>
+         {/foreach}
+      </tbody>
+   </table>
+   <script type="text/javascript">
+      window.chart_data = window.chart_data || [];
+      window.chart_data[5] = [{$GRAPH_DATA.5.data}];
+      window.whenChartsReady(function() { window.drawChart(5, window.chart_data); });
+   </script>
+   {else}
+   <p>{$LANG.statistics.notify_sales_none}</p>
+   {/if}
+{elseif $ACTIVE_TAB == 'stats_prod_views'}
+   <h3>{$LANG.statistics.title_viewed}</h3>
+   {if isset($PRODUCT_VIEWS) && $PRODUCT_VIEWS}
+   <div id="chart6" class="google_chart"></div>
+   <div id="chart6-title" style="display:none">{$GRAPH_DATA.6.title}</div>
+   <div id="chart6-hAxis" style="display:none">{$GRAPH_DATA.6.hAxis}</div>
+   <div id="chart6-vAxis" style="display:none">{$GRAPH_DATA.6.vAxis}</div>
+   <div class="pagination">{$PAGINATION_VIEWS}</div>
+   <table width="100%">
+      <thead>
+         <tr>
+            <td width="20">&nbsp;</td>
+            <td>{$LANG.catalogue.product_name}</td>
+            <td style="text-align:center">{$LANG.statistics.product_views}</td>
+            <td style="text-align:center"><span title="{$LANG.statistics.percentage_of_views}">{$LANG.common.percentage}</span></td>
+         </tr>
+      </thead>
+      <tbody>
+         {foreach from=$PRODUCT_VIEWS item=view}
+         <tr>
+            <td style="text-align:center">{$view.key}</td>
+            <td>{$view.name}</td>
+            <td style="text-align:center">{$view.popularity}</td>
+            <td style="text-align:center">{$view.percent}</td>
+         </tr>
+         {/foreach}
+      </tbody>
+   </table>
+   <script type="text/javascript">
+      window.chart_data = window.chart_data || [];
+      window.chart_data[6] = [{$GRAPH_DATA.6.data}];
+      window.whenChartsReady(function() { window.drawChart(6, window.chart_data); });
+   </script>
+   {else}
+   <p>{$LANG.form.none}</p>
+   {/if}
+{elseif $ACTIVE_TAB == 'stats_search'}
+   {if isset($SEARCH_TERMS) && $SEARCH_TERMS}<div class="right"><a href="?_g=maintenance&clearSearch=true&redir=searchlog" class="button delete" title="{$LANG.notification.confirm_continue}">{$LANG.maintain.clear_log}</a></div>{/if}
+   <h3 style="margin-bottom: 25px;">{$LANG.statistics.title_search}</h3>
+   {if isset($SEARCH_TERMS) && $SEARCH_TERMS}
+   <div id="chart7" class="google_chart"></div>
+   <div id="chart7-title" style="display:none">{$GRAPH_DATA.7.title}</div>
+   <div id="chart7-hAxis" style="display:none">{$GRAPH_DATA.7.hAxis}</div>
+   <div id="chart7-vAxis" style="display:none">{$GRAPH_DATA.7.vAxis}</div>
+   <div class="pagination">{$PAGINATION_SEARCH}</div>
+   <table width="100%">
+      <thead>
+         <tr>
+            <td width="20">&nbsp;</td>
+            <td>{$LANG.statistics.search_term}</td>
+            <td style="text-align:center">{$LANG.statistics.product_hits}</td>
+            <td style="text-align:center"><span title="{$LANG.statistics.percentage_of_search}">{$LANG.common.percentage}</span></td>
+         </tr>
+      </thead>
+      <tbody>
+         {foreach from=$SEARCH_TERMS item=term}
+         <tr>
+            <td style="text-align:center">{$term.key}</td>
+            <td>{$term.searchstr}</td>
+            <td style="text-align:center">{$term.hits}</td>
+            <td style="text-align:center">{$term.percent}</td>
+         </tr>
+         {/foreach}
+      </tbody>
+   </table>
+   <script type="text/javascript">
+      window.chart_data = window.chart_data || [];
+      window.chart_data[7] = [{$GRAPH_DATA.7.data}];
+      window.whenChartsReady(function() { window.drawChart(7, window.chart_data); });
+   </script>
+   {else}
+   {$LANG.statistics.notify_searches_none}
+   {/if}
+{elseif $ACTIVE_TAB == 'stats_best_customers'}
+   <h3>{$LANG.statistics.title_customers_best}</h3>
+   {if isset($BEST_CUSTOMERS) && $BEST_CUSTOMERS}
+   <div id="chart8" class="google_chart"></div>
+   <div id="chart8-title" style="display:none">{$GRAPH_DATA.8.title}</div>
+   <div id="chart8-hAxis" style="display:none">{$GRAPH_DATA.8.hAxis}</div>
+   <div id="chart8-vAxis" style="display:none">{$GRAPH_DATA.8.vAxis}</div>
+   <div class="pagination">{$PAGINATION_BEST}</div>
+   <table width="100%">
+      <thead>
+         <tr>
+            <td width="20">&nbsp;</td>
+            <td>{$LANG.common.name}</td>
+            <td style="text-align:center">{$LANG.statistics.total_expenditure}</td>
+            <td style="text-align:center">{$LANG.statistics.percentage_of_total}</td>
+         </tr>
+      </thead>
+      <tbody>
+         {foreach from=$BEST_CUSTOMERS item=customer}
+         <tr>
+            <td style="text-align:center">{$customer.key}</td>
+            <td><a href="?_g=customers&node=index&action=edit&customer_id={$customer.customer_id}" class="capitalize">{$customer.last_name}, {$customer.first_name}</a></td>
+            <td style="text-align:center">{$customer.expenditure}</td>
+            <td style="text-align:center">{$customer.percent}</td>
+         </tr>
+         {/foreach}
+      </tbody>
+   </table>
+   <script type="text/javascript">
+      window.chart_data = window.chart_data || [];
+      window.chart_data[8] = [{$GRAPH_DATA.8.data}];
+      window.whenChartsReady(function() { window.drawChart(8, window.chart_data); });
+   </script>
+   {else}
+   {$LANG.statistics.notify_customers_none}
+   {/if}
+{elseif $ACTIVE_TAB == 'stats_online'}
+   <h3>{$LANG.statistics.title_customers_active}</h3>
+   <p>
+      {if $BOTS==true}
+      <a href="?_g=statistics&bots=false&tab=stats_online#stats_online">{$LANG.statistics.display_customers_only}</a>
+      {else}
+      <a href="?_g=statistics&bots=true&tab=stats_online#stats_online">{$LANG.statistics.display_bots_and_customers}</a>
+      {/if}
+   </p>
+   <table width="100%">
+      <thead>
+         <tr>
+            <td>{$LANG.statistics.session_admin}</td>
+            <td>{$LANG.statistics.session_user}</td>
+            <td>{$LANG.statistics.session_location}</td>
+            <td>{$LANG.statistics.session_started}</td>
+            <td>{$LANG.statistics.session_last}</td>
+            <td>{$LANG.statistics.session_length}</td>
+            <td>{$LANG.common.ip_address}</td>
+         </tr>
+      </thead>
+      <tbody>
+         {foreach from=$USERS_ONLINE item=user}
+         <tr>
+            <td style="text-align:center"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$user.is_admin}.png"></td>
+            <td>
+               <strong>
+               {if !empty($user.customer_id)}
+               <a href="{$CONFIG.adminFile}?_g=customers&action=edit&customer_id={$user.customer_id}">{$user.name}</a>
+               {else}
+               {$user.name}
+               {/if}
+               </strong>
+            </td>
+            <td>{$STORE_URL}/{$user.location}{if strpos($user.location,"404") === false} <a href="{$STORE_URL}/{$user.location}" target="_blank">&raquo;</a>{/if}</td>
+            <td style="text-align:center">{$user.session_start}</td>
+            <td style="text-align:center">{$user.session_last}</td>
+            <td>{$user.session_length}</td>
+            <td>{if !empty($user.ip_address)}<a href="http://whois.domaintools.com/{$user.ip_address}" target="_blank">{$user.ip_address}</a>{/if}</td>
+         </tr>
+         {foreachelse}
+         <tr>
+            <td colspan="7" class="text-center">{$LANG.form.none}</td>
+         </tr>
+         {/foreach}
+      </tbody>
+   </table>
+{/if}

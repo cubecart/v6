@@ -2035,6 +2035,58 @@ div#content .powered ul li img {
     width: 100%;
     height: 500px
 }
+.stat-chart {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 14px;
+    overflow: hidden
+}
+.stat-chart-header {
+    padding: 9px 18px;
+    background: var(--panel-muted);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap
+}
+.stat-chart-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px
+}
+.stats-filter {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    flex-wrap: wrap
+}
+.stats-filter select.textbox {
+    padding: 2px 6px;
+    height: auto;
+    min-width: 0;
+    width: auto
+}
+.stats-filter select[name="year"]  { width: 75px }
+.stats-filter select[name="month"] { width: 95px }
+.stats-filter select[name="day"]   { width: 55px }
+.stats-filter input[type=submit] {
+    padding: 2px 12px;
+    height: auto
+}
+.stat-chart-body {
+    padding: 14px 18px
+}
+.stat-chart-body .google_chart {
+    height: 320px
+}
 .nostripe,
 .nostripe > tbody > tr > td,
 .nostripe > tr > td {

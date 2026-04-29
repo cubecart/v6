@@ -15,316 +15,430 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('statistics', CC_PERM_READ, true);
 
-$select['year']  = (isset($_GET['year']) && is_numeric($_GET['year'])) ? (int)$_GET['year'] : date('Y');
-$select['month'] = (isset($_GET['month']) && in_array($_GET['month'], range(1, 12))) ? str_pad((int)$_GET['month'], 2, '0', STR_PAD_LEFT) : date('m');
-$select['day']  = (isset($_GET['day']) && in_array($_GET['day'], range(1, 31))) ? str_pad((int)$_GET['day'], 2, '0', STR_PAD_LEFT) : date('d');
+// Active tab + request mode (AJAX-per-tab loading).
+// Plugins may push their own tab IDs into $valid_tabs via this hook so that
+// `?tab=plugin_x` is accepted by the active-tab gate. Plugin content itself
+// is rendered via the existing `admin.statistics.tabs` hook below — plugins
+// gate their own SQL on $active_tab to opt into lazy loading.
+$valid_tabs  = array('stats_sales', 'stats_prod_sales', 'stats_prod_views', 'stats_search', 'stats_best_customers', 'stats_online');
+foreach ($GLOBALS['hooks']->load('admin.statistics.tabs.register') as $hook) {
+    include $hook;
+}
+$active_tab  = (isset($_GET['tab']) && in_array($_GET['tab'], $valid_tabs, true)) ? $_GET['tab'] : 'stats_sales';
+$is_fragment = isset($_GET['format']) && $_GET['format'] === 'fragment';
 
+if ($is_fragment) {
+    // Strip the fragment marker out of REQUEST_URI so pagination links (built
+    // from it) don't carry format=fragment back into user-facing navigation.
+    $_SERVER['REQUEST_URI'] = preg_replace('/([?&])format=fragment(&|$)/', '$1', $_SERVER['REQUEST_URI']);
+    $_SERVER['REQUEST_URI'] = preg_replace('/[?&]$/', '', $_SERVER['REQUEST_URI']);
+}
+
+$select['year']   = (isset($_GET['year']) && is_numeric($_GET['year'])) ? (int)$_GET['year'] : date('Y');
+$select['month']  = (isset($_GET['month']) && in_array($_GET['month'], range(1, 12))) ? str_pad((int)$_GET['month'], 2, '0', STR_PAD_LEFT) : date('m');
+$select['day']    = (isset($_GET['day']) && in_array($_GET['day'], range(1, 31))) ? str_pad((int)$_GET['day'], 2, '0', STR_PAD_LEFT) : date('d');
 $select['status'] = (isset($_GET['status']) && in_array($_GET['status'], range(1, 6))) ? (int)$_GET['status'] : 3;
 
-// Sales
-$GLOBALS['main']->addTabControl($lang['statistics']['title_sales'], 'stats_sales');
-$earliest_order = $GLOBALS['db']->select('CubeCart_order_summary', array('MIN' => 'order_date'), array('status' => $select['status']), array('order_date' => 'ASC'));
-// $earliest_order will always return true but MIN_order_date may not have a value
+// Online users filter applies to both the badge count and the full table.
+$timeLimit = time() - 1800; // 30 minutes
+if (isset($_GET['bots']) && $_GET['bots'] == 'false') {
+    $online_filter = '(S.session_last > S.session_start) AND ';
+    $GLOBALS['smarty']->assign('BOTS', false);
+} else {
+    $online_filter = '';
+    $GLOBALS['smarty']->assign('BOTS', true);
+}
 
-$yearly = $monthly = $daily = $hourly = array();
+// Cheap count for the stats_online tab badge.
+$online_count_q = $GLOBALS['db']->query(sprintf(
+    "SELECT COUNT(*) AS c FROM `%1\$sCubeCart_sessions` AS S WHERE S.acp = 0 AND %2\$sS.session_last > %3\$d",
+    $glob['dbprefix'], $online_filter, $timeLimit
+));
+$online_count = $online_count_q ? (int)$online_count_q[0]['c'] : 0;
 
-if (!empty($earliest_order[0]['MIN_order_date'])) {
-    $earliest = array(
-        'year' => date('Y', $earliest_order[0]['MIN_order_date']),
-        'month' => date('m', $earliest_order[0]['MIN_order_date']),
-        'day' => date('d', $earliest_order[0]['MIN_order_date']),
-    );
+// Register every tab button up front so the strip is consistent regardless of which tab is active.
+$GLOBALS['main']->addTabControl($lang['statistics']['title_sales'],            'stats_sales');
+$GLOBALS['main']->addTabControl($lang['statistics']['title_popular'],          'stats_prod_sales');
+$GLOBALS['main']->addTabControl($lang['statistics']['title_viewed'],           'stats_prod_views');
+$GLOBALS['main']->addTabControl($lang['statistics']['title_search'],           'stats_search');
+$GLOBALS['main']->addTabControl($lang['statistics']['title_customers_best'],   'stats_best_customers');
+$GLOBALS['main']->addTabControl($lang['statistics']['title_customers_active'], 'stats_online', false, false, $online_count);
 
-    $orders_all = $GLOBALS['db']->select('CubeCart_order_summary', array('total', 'cart_order_id', 'order_date'), array('status' => (int)$select['status']));
-    if ($orders_all) {
-        foreach ($orders_all as $key => $data) {
-            $orderdate = array(
-                'year' => date('Y', $data['order_date']),
-                'month' => date('m', $data['order_date']),
-                'day' => date('d', $data['order_date']),
-                'hour' => date('H', $data['order_date']),
-            );
-            if (!isset($yearly[$orderdate['year']])) {
-                $yearly[$orderdate['year']] = 0;
-            }
-            $yearly[$orderdate['year']] += $data['total'];
-            if ($orderdate['year'] == $select['year']) {
-                // Fetch Months
-                if (!isset($monthly[$orderdate['month']])) {
-                    $monthly[$orderdate['month']] = 0;
-                }
-                $monthly[$orderdate['month']] += $data['total'];
-                if ($orderdate['month'] == $select['month']) {
-                    // Fetch Days
-                    if (!isset($daily[$orderdate['day']])) {
-                        $daily[$orderdate['day']] = 0;
-                    }
-                    $daily[$orderdate['day']] += $data['total'];
-                    if ($orderdate['day'] == $select['day']) {
-                        // Fetch Hours
-                        if (!isset($hourly[$orderdate['hour']])) {
-                            $hourly[$orderdate['hour']] = 0;
-                        }
-                        $hourly[$orderdate['hour']] += $data['total'];
-                    }
-                }
+$g_graph_data = array();
+$smarty_data  = array();
+
+// Run only the active tab's SQL.
+switch ($active_tab) {
+
+case 'stats_sales':
+    $earliest_order = $GLOBALS['db']->select('CubeCart_order_summary', array('MIN' => 'order_date'), array('status' => $select['status']), array('order_date' => 'ASC'));
+    $yearly = $monthly = $daily = $hourly = array();
+
+    if (!empty($earliest_order[0]['MIN_order_date'])) {
+        $earliest = array(
+            'year'  => (int)date('Y', $earliest_order[0]['MIN_order_date']),
+            'month' => date('m', $earliest_order[0]['MIN_order_date']),
+            'day'   => date('d', $earliest_order[0]['MIN_order_date']),
+        );
+        $now_year = (int)date('Y');
+
+        // Per-chart filter selectors. Each chart owns its own URL params so
+        // changing one chart's filter doesn't bleed into the others.
+        $sf = array(
+            'm_year'  => (isset($_GET['m_year'])  && is_numeric($_GET['m_year']))                          ? (int)$_GET['m_year']                                  : $now_year,
+            'm_month' => (isset($_GET['m_month']) && in_array((int)$_GET['m_month'], range(1,12)))         ? str_pad((int)$_GET['m_month'], 2, '0', STR_PAD_LEFT)  : date('m'),
+            'd_year'  => (isset($_GET['d_year'])  && is_numeric($_GET['d_year']))                          ? (int)$_GET['d_year']                                  : $now_year,
+            'd_month' => (isset($_GET['d_month']) && in_array((int)$_GET['d_month'], range(1,12)))         ? str_pad((int)$_GET['d_month'], 2, '0', STR_PAD_LEFT)  : date('m'),
+            'h_year'  => (isset($_GET['h_year'])  && is_numeric($_GET['h_year']))                          ? (int)$_GET['h_year']                                  : $now_year,
+            'h_month' => (isset($_GET['h_month']) && in_array((int)$_GET['h_month'], range(1,12)))         ? str_pad((int)$_GET['h_month'], 2, '0', STR_PAD_LEFT)  : date('m'),
+            'h_day'   => (isset($_GET['h_day'])   && in_array((int)$_GET['h_day'],   range(1,31)))         ? str_pad((int)$_GET['h_day'],   2, '0', STR_PAD_LEFT)  : date('d'),
+        );
+
+        $status = (int)$select['status'];
+
+        // Date-range bounds per chart.
+        $month_year_start = mktime(0, 0, 0, 1, 1, (int)$sf['m_year']);
+        $month_year_end   = mktime(0, 0, 0, 1, 1, (int)$sf['m_year'] + 1);
+        $day_month_start  = mktime(0, 0, 0, (int)$sf['d_month'], 1, (int)$sf['d_year']);
+        $day_month_end    = mktime(0, 0, 0, (int)$sf['d_month'] + 1, 1, (int)$sf['d_year']);
+        $hour_day_start   = mktime(0, 0, 0, (int)$sf['h_month'], (int)$sf['h_day'], (int)$sf['h_year']);
+        $hour_day_end     = mktime(0, 0, 0, (int)$sf['h_month'], (int)$sf['h_day'] + 1, (int)$sf['h_year']);
+
+        $yearly_rows = $GLOBALS['db']->query(sprintf(
+            "SELECT FROM_UNIXTIME(`order_date`, '%%Y') AS bucket, SUM(`total`) AS s FROM `%sCubeCart_order_summary` WHERE `status` = %d GROUP BY bucket",
+            $glob['dbprefix'], $status
+        ));
+        if ($yearly_rows) {
+            foreach ($yearly_rows as $row) {
+                $yearly[$row['bucket']] = (float)$row['s'];
             }
         }
-    }
 
-    $now['year'] = date('Y');
-    for ($i = $earliest['year'];$i <= $now['year']; ++$i) {
-        $selected = ($select['year'] == $i) ? ' selected="selected"' : '';
-        $smarty_data['years'][] = array('value' => $i, 'selected' => $selected);
-    }
-    $GLOBALS['smarty']->assign('YEARS', $smarty_data['years']);
-
-    if (count($yearly) >= 1) {
-        $g_graph_data[1]['data'] = "['Year','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
-        
-        for ($i = $earliest['year']; $i <= $now['year']; ++$i) {
-            $value = isset($yearly[$i]) ? $yearly[$i] : 0;
-            $tmp_col_data[] = "['".$i."',".$value."]";
+        $monthly_rows = $GLOBALS['db']->query(sprintf(
+            "SELECT FROM_UNIXTIME(`order_date`, '%%m') AS bucket, SUM(`total`) AS s FROM `%sCubeCart_order_summary` WHERE `status` = %d AND `order_date` >= %d AND `order_date` < %d GROUP BY bucket",
+            $glob['dbprefix'], $status, $month_year_start, $month_year_end
+        ));
+        if ($monthly_rows) {
+            foreach ($monthly_rows as $row) {
+                $monthly[$row['bucket']] = (float)$row['s'];
+            }
         }
-        $g_graph_data[1]['data'] .= implode(',', $tmp_col_data);
+
+        $daily_rows = $GLOBALS['db']->query(sprintf(
+            "SELECT FROM_UNIXTIME(`order_date`, '%%d') AS bucket, SUM(`total`) AS s FROM `%sCubeCart_order_summary` WHERE `status` = %d AND `order_date` >= %d AND `order_date` < %d GROUP BY bucket",
+            $glob['dbprefix'], $status, $day_month_start, $day_month_end
+        ));
+        if ($daily_rows) {
+            foreach ($daily_rows as $row) {
+                $daily[$row['bucket']] = (float)$row['s'];
+            }
+        }
+
+        $hourly_rows = $GLOBALS['db']->query(sprintf(
+            "SELECT FROM_UNIXTIME(`order_date`, '%%H') AS bucket, SUM(`total`) AS s FROM `%sCubeCart_order_summary` WHERE `status` = %d AND `order_date` >= %d AND `order_date` < %d GROUP BY bucket",
+            $glob['dbprefix'], $status, $hour_day_start, $hour_day_end
+        ));
+        if ($hourly_rows) {
+            foreach ($hourly_rows as $row) {
+                $hourly[$row['bucket']] = (float)$row['s'];
+            }
+        }
+
+        // Per-year colours, golden-angle hue rotation — matches dashboard year cards.
+        $hsl_to_hex = function ($h, $s, $l) {
+            $h = (($h % 360) + 360) % 360 / 360;
+            $q = $l < 0.5 ? $l * (1 + $s) : $l + $s - $l * $s;
+            $p = 2 * $l - $q;
+            $hue = function ($t) use ($p, $q) {
+                if ($t < 0) $t += 1;
+                if ($t > 1) $t -= 1;
+                if ($t < 1/6) return $p + ($q - $p) * 6 * $t;
+                if ($t < 1/2) return $q;
+                if ($t < 2/3) return $p + ($q - $p) * (2/3 - $t) * 6;
+                return $p;
+            };
+            return sprintf('#%02x%02x%02x', (int)round($hue($h + 1/3) * 255), (int)round($hue($h) * 255), (int)round($hue($h - 1/3) * 255));
+        };
+        $year_color = array();
+        $idx = 0;
+        for ($i = $earliest['year']; $i <= $now_year; ++$i) {
+            $year_color[$i] = $hsl_to_hex((int)round(fmod(210 + $idx * 137.5, 360)), 0.65, 0.45);
+            $idx++;
+        }
+        $color_for = function ($yr) use ($year_color) {
+            return $year_color[(int)$yr] ?? reset($year_color);
+        };
+
+        // Build per-chart year/month/day option lists. Future periods (relative
+        // to today) are flagged as `disabled` so impossible selections are greyed.
+        $now_month = (int)date('m');
+        $now_day   = (int)date('d');
+        $year_options = function ($selected_year) use ($earliest, $now_year) {
+            $out = array();
+            for ($i = $earliest['year']; $i <= $now_year; ++$i) {
+                $out[] = array('value' => $i, 'selected' => ($selected_year == $i) ? ' selected="selected"' : '');
+            }
+            return $out;
+        };
+        $month_options = function ($selected_month, $year_for_bounds) use ($now_year, $now_month) {
+            $out = array();
+            $cap = ((int)$year_for_bounds === $now_year) ? $now_month : 12;
+            for ($i = 1; $i <= 12; ++$i) {
+                $padded = str_pad($i, 2, '0', STR_PAD_LEFT);
+                $out[] = array(
+                    'value'    => $padded,
+                    'title'    => date('F', mktime(0, 0, 0, $i, 1)),
+                    'selected' => ((int)$selected_month == $i) ? ' selected="selected"' : '',
+                    'disabled' => ($i > $cap) ? ' disabled="disabled"' : '',
+                );
+            }
+            return $out;
+        };
+        $day_options = function ($selected_day, $year, $month) use ($now_year, $now_month, $now_day) {
+            $out = array();
+            $len = date('t', mktime(0, 0, 0, (int)$month, 1, (int)$year));
+            $cap = ((int)$year === $now_year && (int)$month === $now_month) ? $now_day : $len;
+            for ($d = 1; $d <= $len; ++$d) {
+                $out[] = array(
+                    'value'    => $d,
+                    'selected' => ((int)$selected_day == $d) ? ' selected="selected"' : '',
+                    'disabled' => ($d > $cap) ? ' disabled="disabled"' : '',
+                );
+            }
+            return $out;
+        };
+        $GLOBALS['smarty']->assign('M_YEARS',  $year_options($sf['m_year']));
+        $GLOBALS['smarty']->assign('M_MONTHS', $month_options($sf['m_month'], $sf['m_year']));
+        $GLOBALS['smarty']->assign('D_YEARS',  $year_options($sf['d_year']));
+        $GLOBALS['smarty']->assign('D_MONTHS', $month_options($sf['d_month'], $sf['d_year']));
+        $GLOBALS['smarty']->assign('H_YEARS',  $year_options($sf['h_year']));
+        $GLOBALS['smarty']->assign('H_MONTHS', $month_options($sf['h_month'], $sf['h_year']));
+        $GLOBALS['smarty']->assign('H_DAYS',   $day_options($sf['h_day'], $sf['h_year'], $sf['h_month']));
+        $GLOBALS['smarty']->assign('SALES_FILTER', $sf);
+
+        // Chart 1: Yearly. Each bar gets its own year colour.
+        if (count($yearly) >= 1) {
+            $g_graph_data[1]['data'] = "['Year','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."',{role:'style'}],";
+            $tmp = array();
+            for ($i = $earliest['year']; $i <= $now_year; ++$i) {
+                $value = isset($yearly[$i]) ? $yearly[$i] : 0;
+                $tmp[] = "['".$i."',".$value.",'color: ".$year_color[$i]."']";
+            }
+            $g_graph_data[1]['data'] .= implode(',', $tmp);
+            $g_graph_data[1]['title'] = ($earliest['year'] == $now_year) ? sprintf($lang['statistics']['sales_in'], $now_year) : sprintf($lang['statistics']['sales_from_to'], $earliest['year'], $now_year);
+            $g_graph_data[1]['hAxis'] = '';
+            $g_graph_data[1]['vAxis'] = '';
+            $g_graph_data[1]['legend'] = 'none';
+        }
+
+        // Chart 2: Monthly for $sf['m_year'].
+        $g_graph_data[2]['data'] = "['Month','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
+        $tmp = array();
+        for ($i = 1; $i <= 12; ++$i) {
+            $padded = str_pad($i, 2, '0', STR_PAD_LEFT);
+            $value  = isset($monthly[$padded]) ? $monthly[$padded] : 0;
+            $tmp[]  = "['".date('M', mktime(0, 0, 0, $i, 1))."',".$value."]";
+        }
+        $g_graph_data[2]['data']  .= implode(',', $tmp);
+        $g_graph_data[2]['title']  = sprintf($lang['statistics']['sales_in_year'], $sf['m_year']);
+        $g_graph_data[2]['hAxis']  = '';
+        $g_graph_data[2]['vAxis']  = '';
+        $g_graph_data[2]['colors'] = "['".$color_for($sf['m_year'])."']";
+
+        // Chart 3: Daily for $sf['d_year']/$sf['d_month'].
+        $d_month_length = date('t', mktime(0, 0, 0, (int)$sf['d_month'], 1, (int)$sf['d_year']));
+        $g_graph_data[3]['data'] = "['Day','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
+        $tmp = array();
+        for ($i = 1; $i <= $d_month_length; ++$i) {
+            $padded = str_pad($i, 2, '0', STR_PAD_LEFT);
+            $value  = isset($daily[$padded]) ? $daily[$padded] : 0;
+            $tmp[]  = "['".(int)$padded."',".$value."]";
+        }
+        $g_graph_data[3]['data']  .= implode(',', $tmp);
+        $g_graph_data[3]['title']  = sprintf($lang['statistics']['sales_in_month_year'], date('F', mktime(0, 0, 0, (int)$sf['d_month'], 1)), $sf['d_year']);
+        $g_graph_data[3]['hAxis']  = '';
+        $g_graph_data[3]['vAxis']  = '';
+        $g_graph_data[3]['colors'] = "['".$color_for($sf['d_year'])."']";
+
+        // Chart 4: Hourly for $sf['h_year']/$sf['h_month']/$sf['h_day'].
+        $g_graph_data[4]['data'] = "['Hour','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
+        $tmp = array();
+        for ($i = 0; $i <= 23; ++$i) {
+            $padded = str_pad($i, 2, '0', STR_PAD_LEFT);
+            $value  = isset($hourly[$padded]) ? $hourly[$padded] : 0;
+            $tmp[]  = "['".$padded.":00',".$value."]";
+        }
+        $g_graph_data[4]['data']  .= implode(',', $tmp);
+        $g_graph_data[4]['title']  = sprintf($lang['statistics']['sales_on_dmy'], (int)$sf['h_day'], date('F', mktime(0, 0, 0, (int)$sf['h_month'], 1)), $sf['h_year']);
+        $g_graph_data[4]['hAxis']  = '';
+        $g_graph_data[4]['vAxis']  = '';
+        $g_graph_data[4]['colors'] = "['".$color_for($sf['h_year'])."']";
+
+        $GLOBALS['smarty']->assign('DISPLAY_SALES', true);
+    }
+    break;
+
+case 'stats_prod_sales':
+    $per_page = 15;
+    $page     = (isset($_GET['page_sales']) && is_numeric($_GET['page_sales'])) ? $_GET['page_sales'] : 1;
+    $offset   = ($page - 1) * $per_page;
+    $query    = "SELECT `t`.`quan`, `t`.`product_id`, `I`.`name` FROM (SELECT SUM(`O`.`quantity`) AS `quan`, `O`.`product_id` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` WHERE `S`.`status` IN (2,3) GROUP BY `O`.`product_id` ORDER BY `quan` DESC LIMIT ".(int)$per_page." OFFSET ".(int)$offset.") AS `t` INNER JOIN `".$glob['dbprefix']."CubeCart_inventory` AS `I` ON `I`.`product_id` = `t`.`product_id` ORDER BY `t`.`quan` DESC";
+
+    if (($results = $GLOBALS['db']->query($query)) !== false) {
+        $numrows_result = $GLOBALS['db']->query("SELECT COUNT(DISTINCT `O`.`product_id`) AS `c` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` WHERE `S`.`status` IN (2,3)");
+        $numrows        = $numrows_result ? (int)$numrows_result[0]['c'] : 0;
+        $divider        = $GLOBALS['db']->query("SELECT SUM(`O`.`quantity`) as `totalProducts` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` WHERE `S`.`status` IN (2,3)");
+
+        $g_graph_data[5]['data'] = "['".$lang['statistics']['percentage_of_sales']."','".$lang['common']['percentage']."'],";
+
+        $smarty_data[5] = array();
+        foreach ($results as $key => $result) {
+            $result['key']     = (($page - 1) * $per_page) + ($key + 1);
+            $result['percent'] = (float)$divider[0]['totalProducts'] ? number_format(100 * ($result['quan'] / $divider[0]['totalProducts']), 2) : 0;
+            $tmp_col_data[]    = "['".$result['key'].". ".addslashes($result['name'])."',".$result['percent']."]";
+            $smarty_data[5][]  = $result;
+        }
+
+        $g_graph_data[5]['data'] .= isset($tmp_col_data) ? implode(',', $tmp_col_data) : '';
         unset($tmp_col_data);
-    
-        $g_graph_data[1]['title'] = ($earliest['year'] == $now['year']) ? sprintf($lang['statistics']['sales_in'], $now['year']) : sprintf($lang['statistics']['sales_from_to'], $earliest['year'], $now['year']);
-        $g_graph_data[1]['hAxis'] = '';
-        $g_graph_data[1]['vAxis'] = '';
+
+        $g_graph_data[5]['title'] = $lang['statistics']['percentage_of_sales'];
+        $g_graph_data[5]['hAxis'] = $lang['dashboard']['inv_products'];
+        $g_graph_data[5]['vAxis'] = $lang['common']['percentage'];
+
+        $GLOBALS['smarty']->assign('PRODUCT_SALES', $smarty_data[5]);
+        $GLOBALS['smarty']->assign('PAGINATION_SALES', $GLOBALS['db']->pagination($numrows, $per_page, $page, 5, 'page_sales', 'stats_prod_sales', ' ', false));
+        unset($results, $result, $divider);
     }
+    break;
 
-    $g_graph_data[2]['data'] = "['Month','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
+case 'stats_prod_views':
+    $per_page = 15;
+    $page     = (isset($_GET['page_views']) && is_numeric($_GET['page_views'])) ? $_GET['page_views'] : 1;
+    $query    = "SELECT `popularity`, `name` FROM `".$glob['dbprefix']."CubeCart_inventory` WHERE `popularity` > 0 ORDER BY `popularity` DESC ";
+    $results  = $GLOBALS['db']->query($query, $per_page, $page);
+    if ($results) {
+        $numrows = $GLOBALS['db']->numrows($query);
+        $divider = $GLOBALS['db']->query('SELECT SUM(popularity) as `totalHits` FROM  `'.$glob['dbprefix'].'CubeCart_inventory`');
 
-    for ($i = 1; $i <= 12; ++$i) {
-        $i    = str_pad($i, 2, '0', STR_PAD_LEFT);
-        $value   = isset($monthly[$i]) ? $monthly[$i] : 0;
-        $month_text  = date('F', mktime(0, 0, 0, $i, 1));
-        $tmp_col_data[] = "['".date('M', mktime(0, 0, 0, $i, 1))."',".$value."]";
-        $monthList[$i] = $month_text;
-        $selected  = ((int)$select['month'] == (int)$i) ? ' selected="selected"' : '';
-        $smarty_data['months'][] = array('value' => $i, 'title' => $month_text, 'selected' => $selected);
+        $g_graph_data[6]['data'] = "['".$lang['statistics']['percentage_of_views']."','".$lang['common']['percentage']."'],";
+
+        foreach ($results as $key => $result) {
+            $result['key']     = (($page - 1) * $per_page) + ($key + 1);
+            $result['percent'] = (float)$divider[0]['totalHits'] ? number_format(100 * ($result['popularity'] / $divider[0]['totalHits']), 2) : 0;
+            $tmp_col_data[]    = "['".$result['key'].". ".addslashes($result['name'])."',".$result['percent']."]";
+            $smarty_data['product_views'][] = $result;
+        }
+
+        $g_graph_data[6]['data'] .= implode(',', $tmp_col_data);
+        unset($tmp_col_data);
+        $g_graph_data[6]['title'] = $lang['statistics']['percentage_of_views'];
+        $g_graph_data[6]['hAxis'] = $lang['dashboard']['inv_products'];
+        $g_graph_data[6]['vAxis'] = $lang['common']['percentage'];
+
+        $GLOBALS['smarty']->assign('PRODUCT_VIEWS', $smarty_data['product_views']);
+        $GLOBALS['smarty']->assign('PAGINATION_VIEWS', $GLOBALS['db']->pagination($numrows, $per_page, $page, 5, 'page_views', 'stats_prod_views', ' ', false));
+        unset($results, $result, $divider);
     }
-    
-    $g_graph_data[2]['data'] .= implode(',', $tmp_col_data);
-    unset($tmp_col_data);
-    
-    $GLOBALS['smarty']->assign('MONTHS', $smarty_data['months']);
-        
-    $g_graph_data[2]['title'] = sprintf($lang['statistics']['sales_in_year'], $select['year']);
-    $g_graph_data[2]['hAxis'] = '';
-    $g_graph_data[2]['vAxis'] = '';
-    
-    
-    $monthLength = date('t', mktime(0, 0, 0, $select['month'], 1, $select['year']));
-    for ($day = 1; $day <= $monthLength; ++$day) {
-        $dayList[$day] = $day;
-        $selected = ((int)$select['day'] == (int)$day) ? ' selected="selected"' : '';
-        $smarty_data['days'][] = array('value' => $day, 'selected' => $selected);
+    break;
+
+case 'stats_search':
+    $per_page = 15;
+    $page     = (isset($_GET['page_search']) && is_numeric($_GET['page_search'])) ? $_GET['page_search'] : 1;
+    $query    = 'SELECT * FROM `'.$glob['dbprefix'].'CubeCart_search` ORDER BY hits DESC';
+    if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
+        $numrows = $GLOBALS['db']->numrows($query);
+        $divider = $GLOBALS['db']->query("SELECT SUM(hits) as `totalHits` FROM  `".$glob['dbprefix']."CubeCart_search`");
+
+        $g_graph_data[7]['data'] = "['".$lang['statistics']['percentage_of_views']."','".$lang['common']['percentage']."'],";
+
+        $smarty_data['search_terms'] = array();
+        foreach ($results as $key => $result) {
+            $result['percent']   = (float)$divider[0]['totalHits'] ? number_format(100 * ($result['hits'] / $divider[0]['totalHits']), 2) : 0;
+            $result['key']       = (($page - 1) * $per_page) + ($key + 1);
+            $result['searchstr'] = ucfirst(strtolower($result['searchstr']));
+            $tmp_col_data[]      = "['".$result['key'].". ".addslashes($result['searchstr'])."',".$result['percent']."]";
+            $smarty_data['search_terms'][] = $result;
+        }
+
+        $g_graph_data[7]['data'] .= isset($tmp_col_data) ? implode(',', $tmp_col_data) : '';
+        unset($tmp_col_data);
+        $g_graph_data[7]['title'] = '';
+        $g_graph_data[7]['hAxis'] = $lang['statistics']['search_term'];
+        $g_graph_data[7]['vAxis'] = $lang['statistics']['percentage_of_search'];
+
+        $GLOBALS['smarty']->assign('SEARCH_TERMS', $smarty_data['search_terms']);
+        $GLOBALS['smarty']->assign('PAGINATION_SEARCH', $GLOBALS['db']->pagination($numrows, $per_page, $page, 5, 'page_search', 'stats_search', ' ', false));
+        unset($results, $result, $divider);
     }
-    $GLOBALS['smarty']->assign('DAYS', $smarty_data['days']);
+    break;
 
-    $g_graph_data[3]['data'] = "['Day','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
+case 'stats_best_customers':
+    $per_page = 15;
+    $page     = (isset($_GET['page_customers']) && is_numeric($_GET['page_customers'])) ? $_GET['page_customers'] : 1;
+    $query    = "SELECT sum(`total`) as `customer_expenditure`, C.first_name, C.last_name, C.customer_id FROM `".$glob['dbprefix']."CubeCart_order_summary` as O INNER JOIN  `".$glob['dbprefix']."CubeCart_customer` as C on O.customer_id = C.customer_id WHERE O.status = 3 GROUP BY O.customer_id ORDER BY `customer_expenditure` DESC";
+    if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
+        $numrows = $GLOBALS['db']->numrows($query);
+        $divider = $GLOBALS['db']->query("SELECT sum(`total`) as `total_sales` FROM `".$glob['dbprefix']."CubeCart_order_summary` WHERE `status` = 3");
 
-    for ($i = 1;$i <= $monthLength; ++$i) {
-        $i    = str_pad($i, 2, '0', STR_PAD_LEFT);
-        $value   = isset($daily[$i]) ? $daily[$i] : 0;
-        $tmp_col_data[] = "['".(int)$i."',".$value."]";
+        $g_graph_data[8]['data'] = "['".$lang['statistics']['percentage_of_views']."','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
+
+        $smarty_data[8] = array();
+        foreach ($results as $key => $result) {
+            $result['key']         = (($page - 1) * $per_page) + ($key + 1);
+            $result['expenditure'] = Tax::getInstance()->priceFormat($result['customer_expenditure']);
+            $result['percent']     = (float)$divider[0]['total_sales'] ? number_format(100 * ($result['customer_expenditure'] / $divider[0]['total_sales']), 2) : 0;
+            $tmp_col_data[]        = "['".$result['key'].". ".addslashes($result['last_name'].", ".$result['first_name'])."',".$result['customer_expenditure']."]";
+            $smarty_data[8][]      = $result;
+        }
+
+        $g_graph_data[8]['data'] .= isset($tmp_col_data) ? implode(',', $tmp_col_data) : '';
+        unset($tmp_col_data);
+        $g_graph_data[8]['title'] = '';
+        $g_graph_data[8]['hAxis'] = $lang['dashboard']['inv_customers'];
+        $g_graph_data[8]['vAxis'] = $lang['statistics']['total_expenditure'];
+
+        $GLOBALS['smarty']->assign('BEST_CUSTOMERS', $smarty_data[8]);
+        $GLOBALS['smarty']->assign('PAGINATION_BEST', $GLOBALS['db']->pagination($numrows, $per_page, $page, 5, 'page_customers', 'stats_best_customers', ' ', false));
+        unset($results, $result, $divider);
     }
-    $g_graph_data[3]['data'] .= implode(',', $tmp_col_data);
-    unset($tmp_col_data);
-    $g_graph_data[3]['title'] = sprintf($lang['statistics']['sales_in_month_year'], $monthList[$select['month']], $select['year']);
-    $g_graph_data[3]['hAxis'] = '';
-    $g_graph_data[3]['vAxis'] = '';
-    
+    break;
 
-    $g_graph_data[4]['data'] = "['Hour','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
-
-    for ($i = 0; $i <= 23; ++$i) {
-        $i    = str_pad($i, 2, '0', STR_PAD_LEFT);
-        $value   = isset($hourly[$i]) ? $hourly[$i] : 0;
-        $tmp_col_data[] = "['".$i.":00',".$value."]";
+case 'stats_online':
+    $query = sprintf("SELECT S.*, C.first_name, C.last_name FROM %1\$sCubeCart_sessions AS S LEFT JOIN %1\$sCubeCart_customer AS C ON S.customer_id = C.customer_id WHERE S.acp = 0 AND ".$online_filter."S.session_last>".$timeLimit." ORDER BY S.session_last DESC", $glob['dbprefix']);
+    if (($results = $GLOBALS['db']->query($query)) !== false) {
+        $smarty_data['users_online'] = array();
+        foreach ($results as $user) {
+            $user['is_admin']       = ((int)$user['admin_id'] > 0) ? 1 : 0;
+            $user['name']           = ((int)$user['customer_id'] != 0) ? sprintf('%s %s', $user['first_name'], $user['last_name']) : $lang['common']['guest'];
+            $user['session_length'] = sprintf('%.2F', ($user['session_last'] - $user['session_start']) / 60);
+            $user['session_start']  = formatTime($user['session_start']);
+            $user['session_last']   = formatTime($user['session_last']);
+            $smarty_data['users_online'][] = $user;
+        }
+        $GLOBALS['smarty']->assign('USERS_ONLINE', $smarty_data['users_online']);
     }
-    $g_graph_data[4]['data'] .= implode(',', $tmp_col_data);
-    unset($tmp_col_data);
-    $g_graph_data[4]['title'] = sprintf($lang['statistics']['sales_on_dmy'], $select['day'], $monthList[$select['month']], $select['year']);
-    $g_graph_data[4]['hAxis'] = '';
-    $g_graph_data[4]['vAxis'] = '';
-
-    // Populate dropdowns
-    $select_options = array('month' => $monthList);
-    $GLOBALS['smarty']->assign('DISPLAY_SALES', true);
+    break;
 }
 
-#############################################
-// Percentages
-
-## Product Sales
-$per_page = 15;
-$page = (isset($_GET['page_sales']) && is_numeric($_GET['page_sales'])) ? $_GET['page_sales'] : 1;
-$offset = ($page-1)*$per_page;
-$query = "SELECT `t`.`quan`, `t`.`product_id`, `I`.`name` FROM (SELECT SUM(`O`.`quantity`) AS `quan`, `O`.`product_id` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` WHERE `S`.`status` IN (2,3) GROUP BY `O`.`product_id` ORDER BY `quan` DESC LIMIT ".(int)$per_page." OFFSET ".(int)$offset.") AS `t` INNER JOIN `".$glob['dbprefix']."CubeCart_inventory` AS `I` ON `I`.`product_id` = `t`.`product_id` ORDER BY `t`.`quan` DESC";
-
-if (($results = $GLOBALS['db']->query($query)) !== false) {
-    $GLOBALS['main']->addTabControl($lang['statistics']['title_popular'], 'stats_prod_sales');
-    $numrows_result = $GLOBALS['db']->query("SELECT COUNT(DISTINCT `O`.`product_id`) AS `c` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` WHERE `S`.`status` IN (2,3)");
-    $numrows = $numrows_result ? (int)$numrows_result[0]['c'] : 0;
-    $divider = $GLOBALS['db']->query("SELECT SUM(`O`.`quantity`) as `totalProducts` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` WHERE `S`.`status` IN (2,3)");
-    
-    $g_graph_data[5]['data'] = "['".$lang['statistics']['percentage_of_sales']."','".$lang['common']['percentage']."'],";
-    
-    $smarty_data[5] = array();
-    foreach ($results as $key => $result) {
-        $result['key']  = (($page-1)*$per_page)+($key+1);
-        $result['percent'] = (float)$divider[0]['totalProducts'] ? number_format(100*($result['quan']/$divider[0]['totalProducts']),2) : 0;
-        $tmp_col_data[] = "['".$result['key'].". ".addslashes($result['name'])."',".$result['percent']."]";
-        // Create a product legend
-        $smarty_data[5][] = $result;
-    }
-    
-    $g_graph_data[5]['data'] .= isset($tmp_col_data) ? implode(',', $tmp_col_data) : '';
-    unset($tmp_col_data);
-    
-    $g_graph_data[5]['title'] = $lang['statistics']['percentage_of_sales'];
-    $g_graph_data[5]['hAxis'] = $lang['dashboard']['inv_products'];
-    $g_graph_data[5]['vAxis'] = $lang['common']['percentage'];
-    
-    $GLOBALS['smarty']->assign('PRODUCT_SALES', $smarty_data[5]);
-    
-    $GLOBALS['smarty']->assign('PAGINATION_SALES', $GLOBALS['db']->pagination($numrows, $per_page, $page, 5, 'page_sales', 'stats_prod_sales', ' ', false));
-    unset($results,$result,$divider);
-}
-
-## Product Views
-$per_page = 15;
-$page = (isset($_GET['page_views']) && is_numeric($_GET['page_views'])) ? $_GET['page_views'] : 1;
-$query  = "SELECT `popularity`, `name` FROM `".$glob['dbprefix']."CubeCart_inventory` WHERE `popularity` > 0 ORDER BY `popularity` DESC ";
-$results = $GLOBALS['db']->query($query, $per_page, $page);
-if ($results) {
-    $GLOBALS['main']->addTabControl($lang['statistics']['title_viewed'], 'stats_prod_views');
-    $numrows = $GLOBALS['db']->numrows($query);
-    $divider = $GLOBALS['db']->query('SELECT SUM(popularity) as `totalHits` FROM  `'.$glob['dbprefix'].'CubeCart_inventory`');
-    $max_percent = 0;
-    
-    $g_graph_data[6]['data'] = "['".$lang['statistics']['percentage_of_views']."','".$lang['common']['percentage']."'],";
-    
-    foreach ($results as $key => $result) {
-        $result['key']  = (($page-1)*$per_page)+($key+1);
-        $result['percent'] = (float)$divider[0]['totalHits'] ? number_format(100*($result['popularity']/$divider[0]['totalHits']),2) : 0;
-        // not used // $max_percent = ($result['percent']>$max_percent) ? $result['percent'] : $max_percent;
-        $tmp_col_data[] = "['".$result['key'].". ".addslashes($result['name'])."',".$result['percent']."]";
-        // Create a product legend
-        $smarty_data['product_views'][] = $result;
-    }
-    
-    $g_graph_data[6]['data'] .= implode(',', $tmp_col_data);
-    unset($tmp_col_data);
-    $g_graph_data[6]['title'] = $lang['statistics']['percentage_of_views'];
-    $g_graph_data[6]['hAxis'] = $lang['dashboard']['inv_products'];
-    $g_graph_data[6]['vAxis'] = $lang['common']['percentage'];
-    
-    $GLOBALS['smarty']->assign('PRODUCT_VIEWS', $smarty_data['product_views']);
-
-    $GLOBALS['smarty']->assign('PAGINATION_VIEWS', $GLOBALS['db']->pagination($numrows, $per_page, $page, 5, 'page_views', 'stats_prod_views', ' ', false));
-    unset($results, $result, $divider);
-}
-
-## Search Popularity
-$per_page = 15;
-$page  = (isset($_GET['page_search']) && is_numeric($_GET['page_search'])) ? $_GET['page_search'] : 1;
-$query  = 'SELECT * FROM `'.$glob['dbprefix'].'CubeCart_search` ORDER BY hits DESC';
-if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
-    $GLOBALS['main']->addTabControl($lang['statistics']['title_search'], 'stats_search');
-    $numrows = $GLOBALS['db']->numrows($query);
-    $divider = $GLOBALS['db']->query("SELECT SUM(hits) as `totalHits` FROM  `".$glob['dbprefix']."CubeCart_search`");
-    $max_percent = 0;
-    
-    $g_graph_data[7]['data'] = "['".$lang['statistics']['percentage_of_views']."','".$lang['common']['percentage']."'],";
-    
-    $smarty_data['search_terms'] = array();
-    foreach ($results as $key => $result) {
-        $result['percent']  = (float)$divider[0]['totalHits'] ? number_format(100*($result['hits']/$divider[0]['totalHits']),2) : 0;
-        $result['key']   = (($page-1)*$per_page)+($key+1);
-        $result['searchstr']  = ucfirst(strtolower($result['searchstr']));
-        $tmp_col_data[] = "['".$result['key'].". ".addslashes($result['searchstr'])."',".$result['percent']."]";
-        $smarty_data['search_terms'][] = $result;
-    }
-    
-    $g_graph_data[7]['data'] .= isset($tmp_col_data) ? implode(',', $tmp_col_data) : '';
-    unset($tmp_col_data);
-    $g_graph_data[7]['title'] = '';
-    $g_graph_data[7]['hAxis'] = $lang['statistics']['search_term'];
-    $g_graph_data[7]['vAxis'] = $lang['statistics']['percentage_of_search'];
-    
-    $GLOBALS['smarty']->assign('SEARCH_TERMS', $smarty_data['search_terms']);
-    
-    $GLOBALS['smarty']->assign('PAGINATION_SEARCH', $GLOBALS['db']->pagination($numrows, $per_page, $page, 5, 'page_search', 'stats_search', ' ', false));
-    unset($results, $result, $divider);
-}
-## Best Customers
-$per_page = 15;
-$page = (isset($_GET['page_customers']) && is_numeric($_GET['page_customers'])) ? $_GET['page_customers'] : 1;
-$query = "SELECT sum(`total`) as `customer_expenditure`, C.first_name, C.last_name, C.customer_id FROM `".$glob['dbprefix']."CubeCart_order_summary` as O INNER JOIN  `".$glob['dbprefix']."CubeCart_customer` as C on O.customer_id = C.customer_id WHERE O.status = 3 GROUP BY O.customer_id ORDER BY `customer_expenditure` DESC";
-if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
-    $GLOBALS['main']->addTabControl($lang['statistics']['title_customers_best'], 'stats_best_customers');
-    $numrows = $GLOBALS['db']->numrows($query);
-    $divider = $GLOBALS['db']->query("SELECT sum(`total`) as `total_sales` FROM `".$glob['dbprefix']."CubeCart_order_summary` WHERE `status` = 3");
-    
-    $g_graph_data[8]['data'] = "['".$lang['statistics']['percentage_of_views']."','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
-    
-    $smarty_data[8] = array();
-    foreach ($results as $key => $result) {
-        $result['key']  = (($page-1)*$per_page)+($key+1);
-        $result['expenditure'] = Tax::getInstance()->priceFormat($result['customer_expenditure']);
-        $result['percent'] = (float)$divider[0]['total_sales'] ? number_format(100*($result['customer_expenditure']/$divider[0]['total_sales']), 2) : 0;
-        $tmp_col_data[] = "['".$result['key'].". ".addslashes($result['last_name'].", ".$result['first_name'])."',".$result['customer_expenditure']."]";
-        // Create a customer legend
-        $smarty_data[8][] = $result;
-    }
-    
-    $g_graph_data[8]['data'] .= isset($tmp_col_data) ? implode(',', $tmp_col_data) : '';
-    unset($tmp_col_data);
-    $g_graph_data[8]['title'] = '';
-    $g_graph_data[8]['hAxis'] = $lang['dashboard']['inv_customers'];
-    $g_graph_data[8]['vAxis'] = $lang['statistics']['total_expenditure'];
-    
-    $GLOBALS['smarty']->assign('BEST_CUSTOMERS', $smarty_data[8]);
-
-    $GLOBALS['smarty']->assign('PAGINATION_BEST', $GLOBALS['db']->pagination($numrows, $per_page, $page, 5, 'page_customers', 'stats_best_customers', ' ', false));
-    unset($results, $result, $divider);
-}
+// Plugin-supplied tabs run on every load so the strip stays consistent;
+// plugins manage their own SQL gating if they want lazy loading.
 $smarty_data['plugin_tabs'] = array();
 foreach ($GLOBALS['hooks']->load('admin.statistics.tabs') as $hook) {
     include $hook;
 }
 $GLOBALS['smarty']->assign('PLUGIN_TABS', ($smarty_data['plugin_tabs'] ?? false));
 
-// Customers Online
-$timeLimit = time()-1800;  // 30 minutes
+$GLOBALS['smarty']->assign('GRAPH_DATA',  $g_graph_data);
+$GLOBALS['smarty']->assign('ACTIVE_TAB',  $active_tab);
+$GLOBALS['smarty']->assign('IS_FRAGMENT', $is_fragment);
 
-if (isset($_GET['bots']) && $_GET['bots']=='false') {
-    $filter = '(S.session_last > S.session_start) AND ';
-    $GLOBALS['smarty']->assign('BOTS', false);
-} else {
-    $filter = '';
-    $GLOBALS['smarty']->assign('BOTS', true);
+if ($is_fragment) {
+    // AJAX-per-tab: emit just the tab body and skip the admin layout wrapper.
+    $suppress_output = true;
+    @ob_end_clean();
+    echo $GLOBALS['smarty']->fetch('templates/statistics.tabs.php');
+    return;
 }
-
-$query  = sprintf("SELECT S.*, C.first_name, C.last_name FROM %1\$sCubeCart_sessions AS S LEFT JOIN %1\$sCubeCart_customer AS C ON S.customer_id = C.customer_id WHERE S.acp = 0 AND ".$filter."S.session_last>".$timeLimit." ORDER BY S.session_last DESC", $glob['dbprefix']);
-if (($results = $GLOBALS['db']->query($query)) !== false) {
-    $GLOBALS['main']->addTabControl($lang['statistics']['title_customers_active'], 'stats_online', false, false, count($results));
-    $smarty_data['users_online'] = array();
-    foreach ($results as $user) {
-        $user['is_admin']  = ((int)$user['admin_id'] > 0) ? 1 : 0;
-        $user['name']   = ((int)$user['customer_id'] != 0) ? sprintf('%s %s', $user['first_name'], $user['last_name']) : $lang['common']['guest'];
-        $user['session_length'] = sprintf('%.2F', ($user['session_last']-$user['session_start'])/60);
-        $user['session_start'] = formatTime($user['session_start']);
-        $user['session_last'] = formatTime($user['session_last']);
-        $smarty_data['users_online'][] = $user;
-    }
-    $GLOBALS['smarty']->assign('USERS_ONLINE', $smarty_data['users_online']);
-}
-
-$GLOBALS['smarty']->assign('GRAPH_DATA', $g_graph_data);
 
 $page_content = $GLOBALS['smarty']->fetch('templates/statistics.index.php');
