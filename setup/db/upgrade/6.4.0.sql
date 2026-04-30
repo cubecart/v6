@@ -1,4 +1,3 @@
-DELETE FROM `CubeCart_cookie_consent` WHERE `log_hash` = 'd41d8cd98f00b204e9800998ecf8427e'; #EOQ
 ALTER TABLE `CubeCart_coupons` ADD `coupon_per_customer` INT(10) UNSIGNED NULL DEFAULT NULL; #EOQ
 CREATE TABLE `CubeCart_customer_coupon` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,

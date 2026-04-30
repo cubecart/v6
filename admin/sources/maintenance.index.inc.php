@@ -361,15 +361,6 @@ if (isset($_POST['clear_sessions'])) {
     }
     $clear_post = true;
 }
-if (isset($_POST['clearCookieConsent'])) {
-    if ($GLOBALS['db']->truncate('CubeCart_cookie_consent')) {
-        $GLOBALS['db']->truncate('CubeCart_cookie_consent_text');
-        $GLOBALS['main']->successMessage($lang['maintain']['cookie_consent_cleared']);
-    } else {
-        $GLOBALS['main']->errorMessage($lang['maintain']['cookie_consent_not_cleared']);
-    }
-    $clear_post = true;
-}
 if (isset($_POST['truncate_seo_custom'])) {
     if ($GLOBALS['db']->delete('CubeCart_seo_urls', array('custom' => 1))) {
         $GLOBALS['main']->successMessage($lang['maintain']['seo_urls_emptied']);

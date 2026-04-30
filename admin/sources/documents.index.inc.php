@@ -57,16 +57,13 @@ if (isset($_POST['document']) && Admin::getInstance()->permissions('documents', 
     httpredir(currentPage($rem_array));
 }
 
-if (isset($_POST['privacy']) ||isset($_POST['terms']) || isset($_POST['home']) || isset($_POST['order']) || isset($_POST['status'])) {
+if (isset($_POST['terms']) || isset($_POST['home']) || isset($_POST['order']) || isset($_POST['status'])) {
     if (Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
         foreach ($GLOBALS['hooks']->load('admin.documents.status') as $hook) {
             include $hook;
         }
         $updated = false;
         $docs = array();
-        if (isset($_POST['privacy']) && ctype_digit($_POST['privacy'])) { ## Set document as privacy
-            $docs[] = array('key' => 'privacy', 'id' => $_POST['privacy']);
-        }
         if (isset($_POST['terms']) && ctype_digit($_POST['terms'])) { ## Set document as terms & conditions
             $docs[] = array('key' => 'terms', 'id' => $_POST['terms']);
         }
@@ -235,7 +232,6 @@ if (isset($_GET['action'])) {
             $document['flag']	= file_exists('language/flags/'.$document['doc_lang'].'.png') ? 'language/flags/'.$document['doc_lang'].'.png' : 'language/flags/unknown.png';
             $document['terms']  = ($document['doc_terms']) ? 'checked="checked"' : '';
             $document['homepage'] = ($document['doc_home']) ? 'checked="checked"' : '';
-            $document['privacy'] = ($document['doc_privacy']) ? 'checked="checked"' : '';
             $smarty_data['documents'][] = $document;
         }
         $GLOBALS['smarty']->assign('DOCUMENTS', $smarty_data['documents']);

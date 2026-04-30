@@ -380,15 +380,6 @@ if ((!empty($_GET['action'] ??= "") || isset($_POST['multi-action'])) && Admin::
         if (($customer = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => (int)$_GET['customer_id']))) !== false) {
             $no_orders = $GLOBALS['db']->count('CubeCart_order_summary', false, array('customer_id' => (int)$_GET['customer_id']));
             $GLOBALS['main']->addTabControl($lang['settings']['title_orders'], '', '?_g=orders&customer_id='.(int)$_GET['customer_id'], null, $no_orders);
-            $GLOBALS['main']->addTabControl($lang['customer']['cookie_consent'], 'consent');
-            $consent_table = '`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_cookie_consent` AS `L` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_cookie_consent_text` AS `T` ON `L`.`dialogue_id` = `T`.`id`';
-            $consent_where = '`L`.`customer_id` = '.(int)$_GET['customer_id'];
-            $consent_per_page = 50;
-            $consent_page = (isset($_GET['consent-page'])) ? (int)$_GET['consent-page'] : 1;
-            $consent_count = $GLOBALS['db']->count($consent_table, false, $consent_where);
-            $cookie_consent = $GLOBALS['db']->select($consent_table, false, $consent_where, false, $consent_per_page, $consent_page);
-            $GLOBALS['smarty']->assign('COOKIE_CONSENT', $cookie_consent);
-            $GLOBALS['smarty']->assign('CONSENT_PAGINATION', $GLOBALS['db']->pagination($consent_count, $consent_per_page, $consent_page, 5, 'consent-page', 'consent'));
 
             $customer = $customer[0];
             

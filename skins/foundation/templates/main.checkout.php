@@ -26,7 +26,6 @@
       <div class="off-canvas-wrap" data-offcanvas>
          <div class="inner-wrap">
             {include file='templates/box.off_canvas.left.php'}
-            {include file='templates/box.eu_cookie.php'}
             <div class="row marg-top" id="top_header">
                <div class="small-4 large-3 columns">
                   <a href="{$ROOT_PATH}" class="main-logo"><img src="{$STORE_LOGO}" alt="{$CONFIG.store_name}"></a>

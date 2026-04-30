@@ -127,7 +127,6 @@ $default_config_settings = array(
   'disable_mobile_skin' => '1',
   'disable_checkout_terms' => '',
   'allow_no_shipping' => '',
-  'cookie_dialogue' => '',
   'debug_ip_addresses' => '',
   'twitter' => 'https://x.com',
   'facebook' => 'https://facebook.com',

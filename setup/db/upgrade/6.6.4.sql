@@ -18,6 +18,9 @@ ALTER TABLE `CubeCart_seo_urls` ADD COLUMN `last_hit` TIMESTAMP NULL DEFAULT NUL
 DELETE FROM `CubeCart_404_log` WHERE `uri` REGEXP '\\.(png|jpe?g|gif|webp|svg|bmp|ico|avif|css|js|map|woff2?|ttf|eot|otf|mp3|mp4|webm|pdf|xml|json)$'; #EOQ
 DELETE FROM `CubeCart_404_log` WHERE `uri` REGEXP '/\\.[^/]+(/|$)'; #EOQ
 
+DROP TABLE IF EXISTS `CubeCart_cookie_consent`; #EOQ
+DROP TABLE IF EXISTS `CubeCart_cookie_consent_text`; #EOQ
+
 SET @c := (SELECT COUNT(*) FROM information_schema.STATISTICS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'CubeCart_inventory' AND INDEX_NAME = 'idx_latest_products'); #EOQ
 SET @s := IF(@c = 0, 'ALTER TABLE `CubeCart_inventory` ADD INDEX `idx_latest_products` (`status`, `latest`, `date_added`)', 'SELECT 1'); #EOQ
 PREPARE stmt FROM @s; #EOQ

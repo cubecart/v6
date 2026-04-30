@@ -501,7 +501,6 @@ INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) SELECT 'con
 
 -- Widen session_id columns for new 64-char CSPRNG session IDs
 ALTER TABLE `CubeCart_sessions` MODIFY `session_id` varchar(64) NOT NULL; #EOQ
-ALTER TABLE `CubeCart_cookie_consent` MODIFY `session_id` varchar(64) DEFAULT NULL; #EOQ
 
 -- Clear old sessions (old PHP session format incompatible with new serialization)
 TRUNCATE TABLE `CubeCart_sessions`; #EOQ

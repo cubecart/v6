@@ -392,8 +392,6 @@ class GUI
         $GLOBALS['smarty']->assign('CRUMBS', $this->_breadcrumb);
         //Show any errors or warnings
         $this->_displayErrors();
-        // Display cookie warning is needed
-        $this->_displayCookieDialogue();
         // Display admin tools
         $this->_displayAdminToolBar();
     }
@@ -1062,41 +1060,6 @@ class GUI
         $GLOBALS['smarty']->assign('ACP_DATA', $acp_data);
         $GLOBALS['smarty']->assign('ACP_WIDGET', $GLOBALS['smarty']->fetch('string:'.$html));
     }
-
-    /**
-     * Display cookie acceptance dialogue
-     */
-    private function _displayCookieDialogue()
-    {
-        if (CC_IN_ADMIN || $GLOBALS['user']->isBot()) {
-            return false;
-        }
-
-        //If there is a session id already unset and destory it
-        if (isset($_POST['accept_cookies_submit'])) {
-            $accept = (isset($_POST['accept_cookies'])) ? true : false;
-            $dialogue = ($accept) ? 'Accepted chosen.' : 'Blocked chosen.';
-            $GLOBALS['user']->logConsent($dialogue);
-            $GLOBALS['session']->set_cookie('cc_accept_cookies', true, time()+31536000);
-            httpredir();
-        }
-        if (Config::getInstance()->get('config', 'cookie_dialogue') && !isset($_COOKIE['cc_accept_cookies'])) {
-            if ($privacy = $GLOBALS['db']->select('CubeCart_documents', 'doc_id', array('doc_privacy' => '1'))) {
-                $dialogue = str_replace('%1$s', $GLOBALS['config']->get('config', 'store_name'), $GLOBALS['language']->notification['cookie_dialogue']);
-                $dialogue = str_replace('%s', $GLOBALS['config']->get('config', 'store_name'), $dialogue);
-                $dialogue = str_replace('%PRIVACY_URL%', $GLOBALS['seo']->buildURL('doc', $privacy[0]['doc_id']), $dialogue);
-            } else {
-                $dialogue = str_replace(array('%s','%1$s'), $GLOBALS['config']->get('config', 'store_name'), $GLOBALS['language']->notification['cookie_dialogue']);
-                $dialogue = preg_replace('/<\/?a[^>]*>/', '', $dialogue);
-            }
-            $GLOBALS['smarty']->assign('COOKIE_DIALOGUE_TEXT', $dialogue);
-            $GLOBALS['user']->logConsent($dialogue);
-            $GLOBALS['smarty']->assign('COOKIE_DIALOGUE', true);
-        } else {
-            $GLOBALS['smarty']->assign('COOKIE_DIALOGUE', false);
-        }
-    }
-
 
     /**
      * Display currency switch box

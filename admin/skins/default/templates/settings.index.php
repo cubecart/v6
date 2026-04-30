@@ -672,10 +672,6 @@
          <div><label for="product_clone_translations">{$LANG.settings.product_clone_translations}</label><span><input name="config[product_clone_translations]" id="product_clone_translations" type="hidden" class="toggle" value="{$CONFIG.product_clone_translations}"></span></div>
          <div><label for="product_clone_redirect">{$LANG.settings.product_clone_redirect}</label><span><input name="config[product_clone_redirect]" id="product_clone_redirect" type="hidden" class="toggle" value="{$CONFIG.product_clone_redirect}"></span></div>
       </fieldset>
-      <fieldset>
-         <legend>{$LANG.settings.gdpr}</legend>
-         <div><label for="cookie_dialogue">{$LANG.settings.cookie_dialogue}</label><span><input name="config[cookie_dialogue]" id="cookie_dialogue" type="hidden" class="toggle" value="{$CONFIG.cookie_dialogue}"></span></div>
-      </fieldset>
    </div>
       {if isset($PLUGIN_TABS)}
    {foreach from=$PLUGIN_TABS item=tab}

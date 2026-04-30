@@ -327,38 +327,6 @@
 	</div>
 	{/if}
 
-	<div id="consent" class="tab_content">
-	  <h3>{$LANG.customer.cookie_consent}</h3>
-		{if $COOKIE_CONSENT}
-	  <table>
-			<thead>
-			<tr>
-					<th>{$LANG.common.log}</th>
-					<th>{$LANG.common.ip_address}</th>
-					<th>{$LANG.common.time}</th>
-				</tr>
-			</thead>
-			<tbody>
-			{foreach from=$COOKIE_CONSENT item=log}
-			<tr>
-					<td>{$log.log}</td>
-					<td>{$log.ip_address}</td>
-					<td>{$log.time|date_format:"{$CONFIG.time_format}"}</td>
-				</tr>
-			{/foreach}
-			</tbody>
-		</table>
-			{if $CONSENT_PAGINATION}
-			<div class="pagination">
-				<span><strong>{$LANG.common.total}:</strong> {number_format($TOTAL_RESULTS)}</span>
-				{$CONSENT_PAGINATION}&nbsp;
-			</div>
-			{/if}
-		{else}
-		{$LANG.form.none}
-		{/if}
-	</div>
-	
 	{if isset($PLUGIN_TABS)}
 	  {foreach from=$PLUGIN_TABS item=tab}
 		{$tab}

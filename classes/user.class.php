@@ -274,7 +274,6 @@ class User
                     // possibly replaceable with session_set_save_handler?
                     $GLOBALS['session']->regenerateSessionId();
                     $GLOBALS['db']->update('CubeCart_sessions', array('customer_id' => $user[0]['customer_id']), array('session_id' => $GLOBALS['session']->getId()));
-                    $GLOBALS['db']->update('CubeCart_cookie_consent', array('customer_id' => $user[0]['customer_id']), array('session_id' => $GLOBALS['session']->getId()));
                     $GLOBALS['session']->set('language', $user[0]['language'], 'client');
                     // Load user data
                     $this->_load();
@@ -735,30 +734,6 @@ class User
             }
         }
         return $this->_bot;
-    }
-
-    /**
-     * Log Consent
-     */
-    public function logConsent($dialogue)
-    {
-        $hash = md5($dialogue);
-        if($e = $GLOBALS['db']->select('CubeCart_cookie_consent_text', 'id', array('hash' => $hash), false, 1, false, false)) {
-            $id = $e[0]['id'];
-        } else {
-            $id = $GLOBALS['db']->insert('CubeCart_cookie_consent_text', array('hash' => $hash, 'log' => $dialogue));
-        }
-        if(!$GLOBALS['db']->select('CubeCart_cookie_consent', false, array('dialogue_id' => $id, 'session_id' => $GLOBALS['session']->getId()), false, 1, false, false)) {
-            $consent_log = array(
-                'ip_address' => get_ip_address(),
-                'session_id' => $GLOBALS['session']->getId(),
-                'customer_id' => $this->getId(),
-                'dialogue_id' => $id,
-                'url_shown' => str_replace($GLOBALS['storeURL'].'/','',currentPage()),
-                'time' => time()
-            );
-            $GLOBALS['db']->insert('CubeCart_cookie_consent', $consent_log);
-        }
     }
 
     /**

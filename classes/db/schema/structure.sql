@@ -1177,21 +1177,6 @@ CREATE TABLE IF NOT EXISTS `CubeCart_invoice_template` (
   KEY `hash` (`hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
-CREATE TABLE IF NOT EXISTS `CubeCart_cookie_consent` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `ip_address` varchar(45) DEFAULT NULL,
-  `session_id` varchar(64) DEFAULT NULL,
-  `customer_id` int(11) DEFAULT NULL,
-  `dialogue_id` int UNSIGNED NOT NULL,
-  `time` INT UNSIGNED NOT NULL DEFAULT '0',
-  `url_shown` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `ip_address` (`ip_address`),
-  KEY `session_id` (`session_id`),
-  KEY `customer_id` (`customer_id`),
-  KEY `dialogue_id` (`dialogue_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
-
 CREATE TABLE IF NOT EXISTS `CubeCart_customer_coupon` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `customer_id` int(10) UNSIGNED NOT NULL,
@@ -1202,14 +1187,6 @@ CREATE TABLE IF NOT EXISTS `CubeCart_customer_coupon` (
   KEY `customer_id` (`customer_id`),
   KEY `email` (`email`),
   KEY `coupon` (`coupon`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
-
-CREATE TABLE IF NOT EXISTS `CubeCart_cookie_consent_text` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `hash` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `log` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `hash` (`hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_tariff` (

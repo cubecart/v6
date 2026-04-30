@@ -1044,7 +1044,6 @@ This email is sent from the store's master email address but it is possible to r
   <group name="customer">
     <string name="no_customer_groups" introduced="6.5.6"><![CDATA[No customer groups exist.]]></string>
     <string name="delete_customer" introduced="6.5.4"><![CDATA[Delete Customer]]></string>
-    <string name="cookie_consent" introduced="6.2.1"><![CDATA[Cookie Consent]]></string>
     <string name="delete_guests" introduced="6.2.1"><![CDATA[Delete all guest accounts]]></string>
     <string name="delete_guests_success" introduced="6.2.1"><![CDATA[All guest accounts have been deleted.]]></string>
     <string name="delete_guests_fail" introduced="6.2.1"><![CDATA[No guest accounts were deleted.]]></string>
@@ -1183,7 +1182,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="document_edit" introduced="5.0.0"><![CDATA[Edit Document]]></string>
     <string name="document_translate" introduced="5.0.0"><![CDATA[Translate Document]]></string>
     <string name="document_homepage" introduced="5.0.0"><![CDATA[Homepage]]></string>
-    <string name="document_privacy" introduced="6.2.1"><![CDATA[Privacy]]></string>
     <string name="document_terms" introduced="5.0.0"><![CDATA[T&amp;Cs]]></string>
     <string name="document_title" introduced="5.0.0"><![CDATA[Title]]></string>
     <string name="document_url" introduced="5.0.0"><![CDATA[URL]]></string>
@@ -1203,7 +1201,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="notify_document_home" introduced="5.0.0"><![CDATA[Document set as homepage.]]></string>
     <string name="notify_document_status" introduced="5.0.0"><![CDATA[Document status successfully updated.]]></string>
     <string name="notify_document_terms" introduced="5.0.0"><![CDATA[Document set as Terms &amp; Conditions.]]></string>
-    <string name="notify_document_privacy" introduced="6.2.1"><![CDATA[Document set as Privacy Policy.]]></string>
     <string name="notify_document_update" introduced="5.0.0"><![CDATA[Document successfully updated.]]></string>
     <string name="rating" introduced="5.0.0"><![CDATA[Rating]]></string>
     <string name="send_message" introduced="5.0.0"><![CDATA[Send Message]]></string>
@@ -1686,12 +1683,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="logs_email" introduced="6.1.0"><![CDATA[Email log]]></string>
     <string name="logs_transaction" introduced="5.0.0"><![CDATA[Transaction log]]></string>
     <string name="clear_search" introduced="6.0.8"><![CDATA[Search terms]]></string>
-    <string name="clear_cookie_consent" introduced="6.2.7"><![CDATA[Cookie consent log]]></string>
     <string name="clear_sessions" introduced="6.4.0"><![CDATA[All session data]]></string>
     <string name="sessions_cleared" introduced="6.4.0"><![CDATA[Session data has been cleared.]]></string>
     <string name="sessions_not_cleared" introduced="6.4.0"><![CDATA[Failed to clear session data.]]></string>
-    <string name="cookie_consent_cleared" introduced="6.2.7"><![CDATA[Cookie consent log has been cleared.]]></string>
-    <string name="cookie_consent_not_cleared" introduced="6.2.7"><![CDATA[Failed to clear cookie consent log.]]></string>
     <string name="notify_search_clear" introduced="6.0.8"><![CDATA[Search has been cleared.]]></string>
     <string name="error_search_clear" introduced="6.0.8"><![CDATA[Failed to clear search.]]></string>
     <string name="notify_cache_image" introduced="5.0.0"><![CDATA[Image cache has been cleared.]]></string>
@@ -1950,13 +1944,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="notify_object_not_found" introduced="6.4.0"><![CDATA[Target product, category or document not found.]]></string>
     <string name="confirm_delete_folder" introduced="6.4.0"><![CDATA[Are you sure you want to delete the folder '%1$s'?\n\nWARNING: All files contained within it will be deleted permanently!]]></string>
     <string name="confirm_delete_file" introduced="6.2.2"><![CDATA[Are you sure you want to delete '%1$s'?]]></string>
-    <string name="cookies_blocked" introduced="6.2.1"><![CDATA[Non-essential cookies have been blocked.]]></string>
-    <string name="cookies_accepted" introduced="6.2.1"><![CDATA[All cookies have been allowed.]]></string>
-    <string name="cookie_switch" introduced="6.2.1"><![CDATA[Cookie Switch]]></string>
-    <string name="cookie_switch_desc" introduced="6.5.2"><![CDATA[The switch below allows you to accept or block non-essential cookies. Non-essential cookies are any cookies that do not fall within the definition of essential cookies, such as cookies used to analyse your behaviour on a website ('analytical' cookies) or cookies used to display advertisements to you ('advertising' cookies).]]></string>
     <string name="confirm_cancel" introduced="5.2.8"><![CDATA[Are you sure you want to cancel?]]></string>
-    <string name="cookie_dialogue" introduced="5.0.0"><![CDATA[%1$s uses cookies. For more detailed information about these cookies please see our <a href="%PRIVACY_URL%">privacy policy</a>. Please accept to continue or block all non-essential cookies.]]></string>
-    <string name="cookie_dialogue_declaration" introduced="5.0.0"><![CDATA[I accept cookies from this site.]]></string>
     <string name="confirm_delete" introduced="5.0.0"><![CDATA[Are you sure you want to delete?]]></string>
     <string name="confirm_delete_product" introduced="6.1.2"><![CDATA[WARNING: You are about to delete %1$s - are you sure you want to delete this entire product?]]></string>
     <string name="confirm_revert" introduced="5.0.0"><![CDATA[Are you sure you want to revert?]]></string>
@@ -2261,7 +2249,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="most_expensive" introduced="6.2.7"><![CDATA[Most expensive]]></string>
     <string name="shipping_defaults" introduced="6.2.7"><![CDATA[Default Shipping Selection]]></string>
     <string name="enable_exit_modal" introduced="6.2.6"><![CDATA[Show exit modal when enabled]]></string>
-    <string name="gdpr" introduced="6.2.0"><![CDATA[General Data Protection Regulation (GDPR)]]></string>
     <string name="dbl_opt" introduced="6.2.0"><![CDATA[Double Opt-In (Required under GDPR)]]></string>
     <string name="enabled_for_all" introduced="6.1.2"><![CDATA[Enabled for all customers]]></string>
     <string name="enabled_for_logged_in" introduced="6.1.2"><![CDATA[Enabled for logged in customers only]]></string>
@@ -2310,7 +2297,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="catalogue_mode" introduced="5.0.0"><![CDATA[Disable Checkout (Catalogue Mode Only)]]></string>
     <string name="changes_not_made" introduced="5.0.0"><![CDATA[No changes have been made.]]></string>
     <string name="check" introduced="5.0.0"><![CDATA[Check]]></string>
-    <string name="cookie_dialogue" introduced="5.0.0"><![CDATA[Cookie Compliance Dialogue]]></string>
     <string name="currency_decimal_places" introduced="5.0.0"><![CDATA[Decimal Places]]></string>
     <string name="currency_ecb" introduced="5.0.0"><![CDATA[Fetch Rates]]></string>
     <string name="currency_exchange_rate" introduced="5.0.0"><![CDATA[Exchange Rate]]></string>

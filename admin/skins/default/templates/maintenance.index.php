@@ -32,7 +32,6 @@
 	<div><label for="emptyRequestLogs">{$LANG.maintain.logs_request}</label><span><input type="checkbox" id="emptyRequestLogs" name="emptyRequestLogs" value="1"></span></div>
 	<div><label for="emptyTransLogs">{$LANG.maintain.logs_transaction}</label><span><input type="checkbox" id="emptyTransLogs" name="emptyTransLogs" value="1"></span></div>
 	<div><label for="clearSearch">{$LANG.maintain.clear_search}</label><span><input type="checkbox" id="clearSearch" name="clearSearch" value="1"></span></div>
-	<div><label for="clearCookieConsent">{$LANG.maintain.clear_cookie_consent}</label><span><input type="checkbox" id="clearCookieConsent" name="clearCookieConsent" value="1"></span></div>
 	<div><label for="clear_sessions">{$LANG.maintain.clear_sessions}</label><span><input type="checkbox" id="clear_sessions" name="clear_sessions" value="1"></span></div>
 	<div><label for="clearApiLog">API Request Log</label><span><input type="checkbox" id="clearApiLog" name="clearApiLog" value="1"></span></div>
   </fieldset>

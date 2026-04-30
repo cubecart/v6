@@ -147,20 +147,6 @@ jQuery(document).ready(function ($) {
     }
 
     // -------------------------------
-    // EU cookie consent
-    // -------------------------------
-    $(".eu_cookie_button").on('click', function () {
-        var accept = ($(this).attr('name') == 'accept_cookies_submit');
-        if ($(this).attr('data-alert-text')) {
-            alert($(this).attr('data-alert-text'));
-        }
-        $('#eu_cookie_dialogue').slideUp();
-        $.cookie('cc_accept_cookies', accept, { expires: 365 });
-        $.ajax({ url: '?_g=ajax_cookie_consent&accept=' + (accept ? '1' : '0'), cache: false });
-        return false;
-    });
-
-    // -------------------------------
     // Top bar label -> link
     // -------------------------------
     $(".top-bar label").on('click', function () {

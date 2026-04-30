@@ -282,31 +282,6 @@ class Session
     }
 
     /**
-     * Have cookied been accepted or not
-     *
-     * Deprecated but left for backward compatibility
-     *
-     * @param string $token
-     * @return bool
-     */
-    public function cookiesBlocked()
-    {
-
-        // Check cookies exists for verified and if so return value
-        if (isset($_COOKIE['cc_accept_cookies']) && $_COOKIE['cc_accept_cookies']=='false') {
-            return false;
-        } elseif (!$GLOBALS['config']->get('config', 'cookie_dialogue')) {
-            return false;
-        }
-
-        if ($GLOBALS['db']->select('CubeCart_geo_country', false, array('numcode' => $GLOBALS['config']->get('config', 'store_country'), 'eu' => '1')) !== false) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Delete something from the session
      *
      * @param string $name
