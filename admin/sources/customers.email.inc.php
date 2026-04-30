@@ -197,8 +197,9 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
     $GLOBALS['smarty']->assign('NEWSLETTER_AUTO_REFRESH', $has_active_send);
 
     // Throttle banner: only computed when something is actually in flight.
-    // Reads the rolling-hour counter from the same send_log table the cron uses, so
-    // the numbers shown to admin and the numbers the cron is gating on are identical.
+    // Reads from the same email_log table the cron uses, so the numbers shown to admin
+    // and the numbers the cron is gating on are identical. Counts ALL outgoing email
+    // (newsletter + transactional) — host SMTP caps don't discriminate.
     if ($has_active_send) {
         global $glob;
         $pfx = $GLOBALS['config']->get('config', 'dbprefix');
@@ -207,7 +208,7 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
             $hourly_limit = 200;
         }
         $rows = $GLOBALS['db']->misc(sprintf(
-            "SELECT COUNT(*) AS c, UNIX_TIMESTAMP(MIN(sent_at)) AS oldest FROM `%sCubeCart_newsletter_send_log` WHERE sent_at >= (NOW() - INTERVAL 1 HOUR)",
+            "SELECT COUNT(*) AS c, UNIX_TIMESTAMP(MIN(`date`)) AS oldest FROM `%sCubeCart_email_log` WHERE `date` >= (NOW() - INTERVAL 1 HOUR)",
             $pfx
         ));
         $sent_last_hour = isset($rows[0]['c']) ? (int)$rows[0]['c'] : 0;

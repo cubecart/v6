@@ -203,4 +203,4 @@
    }
 {/literal}</script>
 <hr>
-<p><small>Newsletters are sent in batches by a background task. Enable the &quot;Process Newsletter Queue&quot; <a href="?_g=settings#Scheduled_Tasks">scheduled task</a> and make sure a cron job is set up to trigger it. To protect your sending reputation, sending is paced out — see <a href="https://kb.cubecart.com/administration/admin-panel/how-cubecart-throttles-newsletter-email-sending" target="_blank">how email sending is throttled</a> for what to expect and how to adjust the limits.</small></p>
+<p><small>Newsletters are sent in batches by a background task. Enable the &quot;Process Newsletter Queue&quot; <a href="?_g=settings#Scheduled_Tasks">scheduled task</a> and make sure a cron job is set up to trigger it. To protect your sending reputation, sending is paced out — and the hourly cap counts all outgoing email (including order confirmations and other transactional messages), not just newsletters. See <a href="https://kb.cubecart.com/administration/admin-panel/how-cubecart-throttles-newsletter-email-sending" target="_blank">how email sending is throttled</a> for what to expect and how to adjust the limits.</small></p>

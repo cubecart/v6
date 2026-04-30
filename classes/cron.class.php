@@ -281,8 +281,10 @@ class Cron
         }
         $newsletter_id = (int)$queued[0]['newsletter_id'];
 
-        // Hourly quota: count send_log rows in the last 60 minutes
-        $rows = $GLOBALS['db']->misc(sprintf("SELECT COUNT(*) AS c FROM `%sCubeCart_newsletter_send_log` WHERE `sent_at` >= (NOW() - INTERVAL 1 HOUR)", $pfx));
+        // Hourly quota: count every outgoing email (newsletter + transactional) in the
+        // last 60 minutes. Host SMTP caps don't distinguish between message types, so the
+        // throttle has to consider everything the mailer has sent.
+        $rows = $GLOBALS['db']->misc(sprintf("SELECT COUNT(*) AS c FROM `%sCubeCart_email_log` WHERE `date` >= (NOW() - INTERVAL 1 HOUR)", $pfx));
         $sent_last_hour = isset($rows[0]['c']) ? (int)$rows[0]['c'] : 0;
         $remaining_quota = $hourly_limit - $sent_last_hour;
         if ($remaining_quota <= 0) {
