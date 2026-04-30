@@ -314,6 +314,8 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                 $GLOBALS['db']->insert('CubeCart_email_log', $email_data);
                 if (executionChance(2)) { // 2% probability
                     $GLOBALS['db']->delete('CubeCart_email_log', 'date < DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY)', 500);
+                    // After the row delete, sweep any attachment files no longer referenced.
+                    self::pruneOrphanedAttachments();
                 }
             } elseif (empty($log_days) || !$log_days) {
                 $GLOBALS['db']->insert('CubeCart_email_log', $email_data);
@@ -406,6 +408,60 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                 @trigger_error('Async email send failed: '.$e->getMessage(), E_USER_NOTICE);
             }
         }
+    }
+
+    /**
+     * Sweep CC_FILES_DIR/attachments/ for files no longer referenced by any
+     * email_log row and delete them. Called when the log is truncated or pruned
+     * by retention so the on-disk files don't outlive their log entries.
+     *
+     * Skips dotfiles and the standard directory-listing guards (index.html,
+     * index.php, .htaccess) so they survive across sweeps.
+     *
+     * @return int Number of files removed.
+     */
+    public static function pruneOrphanedAttachments()
+    {
+        $dir = CC_FILES_DIR.'attachments/';
+        if (!is_dir($dir)) {
+            return 0;
+        }
+
+        // Build a set of every filename still referenced by any remaining log row.
+        $keep = array();
+        $rows = $GLOBALS['db']->select('CubeCart_email_log', array('attachment'), "`attachment` IS NOT NULL AND `attachment` <> ''");
+        if (is_array($rows)) {
+            foreach ($rows as $r) {
+                $decoded = json_decode($r['attachment'] ?? '', true);
+                if (is_array($decoded)) {
+                    foreach ($decoded as $f) {
+                        if (is_string($f) && $f !== '') {
+                            $keep[$f] = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        $deleted = 0;
+        $entries = @scandir($dir);
+        if ($entries === false) {
+            return 0;
+        }
+        $reserved = array('index.html' => true, 'index.php' => true, '.htaccess' => true);
+        foreach ($entries as $entry) {
+            if ($entry === '.' || $entry === '..' || $entry === '' || $entry[0] === '.' || isset($reserved[$entry])) {
+                continue;
+            }
+            $path = $dir.$entry;
+            if (!is_file($path)) {
+                continue;
+            }
+            if (!isset($keep[$entry]) && @unlink($path)) {
+                $deleted++;
+            }
+        }
+        return $deleted;
     }
 
     //=====[ Private ]=======================================

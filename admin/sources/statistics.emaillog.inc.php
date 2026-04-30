@@ -20,50 +20,40 @@ if (isset($_GET['reset']) && !empty($_GET['reset'])) {
     httpredir('?_g=statistics&node=emaillog');
 }
 
-if (isset($_GET['resend']) && $_GET['resend']>0) {
+if (isset($_GET['resend']) && $_GET['resend']>0 && isset($_GET['token']) && $_GET['token'] === SESSION_TOKEN) {
     $email_data = $GLOBALS['db']->select('CubeCart_email_log', false, array('id' => (int)$_GET['resend']));
 
     if ($email_data) {
+        $original_to = $email_data[0]['to'];
+        $contents = array(
+            'subject'      => $email_data[0]['subject'],
+            'content_html' => $email_data[0]['content_html'],
+        );
+        // Route resends through Mailer::sendEmail() so hooks fire, the email is logged
+        // through the standard path, and a fresh open-tracking pixel/token is generated
+        // (instead of inheriting the original's tracking state).
         $mailer = new Mailer();
+        $result = $mailer->sendEmail($original_to, $contents);
 
-        $mailer->Subject = $email_data[0]['subject'];
-
-        if (empty($email_data[0]['content_html'])) {
-            $mailer->IsHTML(false);
-            $mailer->Body = $email_data[0]['content_text'];
-        } else {
-            $mailer->Body = $email_data[0]['content_html'];
-            $mailer->AltBody = $email_data[0]['content_text'];
-        }
-
-        $recipients = explode(',', $email_data[0]['to']);
-        foreach ($recipients as $recipient) {
-            $recipient = User::getEmailAddressParts($recipient);
-            $mailer->AddAddress($recipient['email']);
-        }
-    
-        $from = User::getEmailAddressParts($email_data[0]['from']);
-        $mailer->Sender = $from['email'];
-        
-        $email_data[0]['result'] = $mailer->Send();
-        unset($email_data[0]['date'], $email_data[0]['id']);
-
-        if ($email_data[0]['result']) {
-            $GLOBALS['main']->successMessage(sprintf($lang['statistics']['email_resent'], $mailer->Subject, htmlspecialchars($email_data[0]['to'])));
+        if ($result) {
+            $GLOBALS['main']->successMessage(sprintf($lang['statistics']['email_resent'], htmlspecialchars($contents['subject']), htmlspecialchars($original_to)));
         } else {
             $GLOBALS['main']->errorMessage($lang['statistics']['email_not_resent']);
         }
-        $email_data[0]['fail_reason'] = !empty($mailer->ErrorInfo) ? htmlentities($mailer->ErrorInfo, ENT_QUOTES) : '';
-        $GLOBALS['db']->insert('CubeCart_email_log', $email_data[0]);
-        httpredir(currentPage(array('resend')));
+        httpredir(currentPage(array('resend', 'token')));
     }
 }
 
 if (isset($_POST['email_filter'])) {
-    if (empty($_POST['email_filter'])) {
+    $raw_filter = trim((string)$_POST['email_filter']);
+    if ($raw_filter === '') {
         $GLOBALS['session']->delete('email_filter');
-    } elseif (preg_match('/[a-z0-9\._-]/i', $_POST['email_filter'])) {
-        $GLOBALS['session']->set('email_filter', $_POST['email_filter']);
+    } elseif (preg_match('/^[a-z0-9._@+-]+$/i', $raw_filter)) {
+        // Anchored regex: the WHOLE input must be a plausible email-fragment.
+        // Stops a previously-undetected injection vector where unanchored validation
+        // accepted any string with at least one alphanum/punct character — the value
+        // was then interpolated directly into the LIKE clause below.
+        $GLOBALS['session']->set('email_filter', $raw_filter);
     }
 }
 
@@ -75,14 +65,17 @@ if ($GLOBALS['session']->has('email_filter') && $email_filter = $GLOBALS['sessio
     if (filter_var($email_filter, FILTER_VALIDATE_EMAIL)) {
         $where = array('to' => $email_filter);
     } else {
-        $where = "`to` LIKE '%$email_filter%'";
+        // Belt-and-braces: the value is already constrained by the anchored regex on
+        // assign, but escape again so any future code path that stores looser data
+        // still can't inject through this LIKE clause.
+        $where = "`to` LIKE '%".$GLOBALS['db']->sqlSafe($email_filter)."%'";
     }
 } else {
     $where = false;
 }
 
 $per_page = 25;
-$page = (isset($_GET['page'])) ? $_GET['page'] : 1;
+$page = (isset($_GET['page']) && is_numeric($_GET['page'])) ? (int)$_GET['page'] : 1;
 $email_logs = $GLOBALS['db']->select('CubeCart_email_log', false, $where, array('date' => 'DESC'), $per_page, $page, false);
 $email_log = array();
 $count = $GLOBALS['db']->getFoundRows();
@@ -98,8 +91,8 @@ $method_labels = array(
 );
 
 if ($email_logs!==false) {
-    $row['to_email'] = array();
     foreach ($email_logs as $row) {
+        $row['to_email'] = array();
         $row['email_method_label'] = isset($method_labels[$row['email_method']])
             ? $method_labels[$row['email_method']]
             : $row['email_method'];

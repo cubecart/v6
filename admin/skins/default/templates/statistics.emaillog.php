@@ -66,15 +66,17 @@
 		</td>
 		<td style="text-align:center">{$log.email_method_label|default:'—'}</td>
 		<td>{$log.date}</td>
-		<td>
+		<td style="text-align:center">
 			{if !empty($log.attachment)}
-			{foreach from=$log.attachment item=file}	
+			{foreach from=$log.attachment item=file}
 			<a href="?_g=filemanager&download_file={$file.download_file}">{$file.name}</a><br>
 			{/foreach}
+			{else}
+			&mdash;
 			{/if}
 		</td>
 		<td style="text-align:center">{if $log.email_content_id>0}<a href="?_g=documents&amp;node=email&amp;type=content&amp;action=edit&amp;content_id={$log.email_content_id}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>{/if}</td>
-		<td style="text-align:center"><a href="?_g=statistics&node=emaillog&resend={$log.id}"><i class="fa fa-paper-plane" title="{$LANG.common.resend}" aria-hidden="true"></i></i></a></td>
+		<td style="text-align:center"><a href="?_g=statistics&node=emaillog&resend={$log.id}&token={$SESSION_TOKEN}"><i class="fa fa-paper-plane" title="{$LANG.common.resend}" aria-hidden="true"></i></a></td>
 	  </tr>
 		{if !empty($log.fail_reason)}
 		<tr>

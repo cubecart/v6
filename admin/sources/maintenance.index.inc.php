@@ -402,6 +402,8 @@ if (isset($_REQUEST['emptyTransLogs']) && Admin::getInstance()->permissions('mai
 
 if (isset($_REQUEST['emptyEmailLogs']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
     if ($GLOBALS['db']->truncate(array('CubeCart_email_log'))) {
+        // Sweep on-disk attachments now that no rows reference any of them.
+        Mailer::pruneOrphanedAttachments();
         $GLOBALS['main']->successMessage($lang['maintain']['notify_logs_email']);
     } else {
         $GLOBALS['main']->errorMessage($lang['maintain']['error_logs_email']);
