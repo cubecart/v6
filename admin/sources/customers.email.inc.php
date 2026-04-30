@@ -111,9 +111,10 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
             httpredir(currentPage(array('newsletter_id')));
         }
     }
-    // Get template list
-    if (($templates = $GLOBALS['db']->select('CubeCart_email_template', array('template_default', 'template_id', 'title'))) !== false) {
-        foreach ($templates as $template) {
+    // Get template list (form path only — used by the dropdown).
+    if (($form_templates = $GLOBALS['db']->select('CubeCart_email_template', array('template_default', 'template_id', 'title'))) !== false) {
+        $existing_templates = array();
+        foreach ($form_templates as $template) {
             if (isset($content)) {
                 $template['selected'] = ($template['template_id'] == $content[0]['template_id']) ? ' selected="selected"' : '';
             } else {
@@ -123,6 +124,7 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
         }
         $GLOBALS['smarty']->assign('EXISTING_TEMPLATES', $existing_templates);
     }
+
     $GLOBALS['smarty']->assign('DISPLAY_FORM', true);
 } else {
     $GLOBALS['main']->addTabControl($lang['email']['title_newsletters'], 'newsletter-list');
@@ -224,4 +226,51 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
 
     $GLOBALS['smarty']->assign('DISPLAY_LIST', true);
 }
+
+// ----------------------------------------------------------------------
+// Preview support (shared by the editor's Preview button and the list's
+// magnifier icon). We expose:
+//   * NEWSLETTER_TEMPLATES_JSON — { template_id: content_html, ... }
+//   * PREVIEW_MACROS_JSON       — values for {$DATA.X} substitution
+//   * NEWSLETTERS_PREVIEW_JSON  — { newsletter_id: {subject, content_html, template_id}, ... }
+// ----------------------------------------------------------------------
+if (($all_templates = $GLOBALS['db']->select('CubeCart_email_template', array('template_id', 'content_html'))) !== false) {
+    $template_map = array();
+    foreach ($all_templates as $t) {
+        $template_map[(int)$t['template_id']] = (string)$t['content_html'];
+    }
+    $tmpl_json = json_encode($template_map, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
+    if ($tmpl_json !== false) {
+        $GLOBALS['smarty']->assign('NEWSLETTER_TEMPLATES_JSON', $tmpl_json);
+    }
+}
+
+$preview_macros = array(
+    'logoURL'        => $GLOBALS['gui']->getLogo(true, 'emails'),
+    'store_name'     => $GLOBALS['config']->get('config', 'store_name'),
+    'storeName'      => $GLOBALS['config']->get('config', 'store_name'),
+    'storeURL'       => $GLOBALS['storeURL'],
+    'unsubscribeURL' => $GLOBALS['storeURL'].'/index.php?_a=unsubscribe',
+    'jsonLd'         => '',
+);
+$macros_json = json_encode($preview_macros, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
+if ($macros_json !== false) {
+    $GLOBALS['smarty']->assign('PREVIEW_MACROS_JSON', $macros_json);
+}
+
+if (!empty($smarty_data['newsletters'])) {
+    $news_preview = array();
+    foreach ($smarty_data['newsletters'] as $row) {
+        $news_preview[(int)$row['newsletter_id']] = array(
+            'subject'      => (string)$row['subject'],
+            'content_html' => (string)$row['content_html'],
+            'template_id'  => (int)$row['template_id'],
+        );
+    }
+    $news_json = json_encode($news_preview, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
+    if ($news_json !== false) {
+        $GLOBALS['smarty']->assign('NEWSLETTERS_PREVIEW_JSON', $news_json);
+    }
+}
+
 $page_content = $GLOBALS['smarty']->fetch('templates/customers.email.php');

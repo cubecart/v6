@@ -51,6 +51,7 @@
       <h3>{$LANG.email.title_content_html}</h3>
       <p>{$LANG.email.help_content_html}</p>
       <textarea name="newsletter[content_html]" id="content_html" class="textbox fck">{$NEWSLETTER.content_html|escape:"html"}</textarea>
+      <p><button type="button" class="button" id="preview_newsletter" onclick="previewNewsletter()">{$LANG.common.preview}</button></p>
    </div>
    <div id="send_test" class="tab_content">
       <h3>{$LANG.email.title_send_test}</h3>
@@ -70,7 +71,7 @@
       <input type="hidden" name="previous-tab" id="previous-tab" value="">
       <input type="submit" value="{$LANG.common.save}">
    </div>
-   
+
 </form>
 {/if}
 {if isset($DISPLAY_LIST)}
@@ -105,6 +106,7 @@
             <td>{$newsletter.date_created_formatted}</td>
             <td>{$newsletter.status_text}</td>
             <td><span class="actions">
+               <a href="#" class="preview" title="{$LANG.common.preview}" onclick="previewNewsletterRow({$newsletter.newsletter_id});return false;"><i class="fa fa-search" title="{$LANG.common.preview}"></i></a>
                {if $newsletter.can_edit}
                <a href="{$newsletter.edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
                {/if}
@@ -134,3 +136,56 @@
    {/if}
 </div>
 {/if}
+
+{if isset($NEWSLETTER_TEMPLATES_JSON)}
+<script>var NEWSLETTER_TEMPLATES = {$NEWSLETTER_TEMPLATES_JSON nofilter};</script>
+{else}
+<script>var NEWSLETTER_TEMPLATES = {ldelim}{rdelim};</script>
+{/if}
+{if isset($PREVIEW_MACROS_JSON)}
+<script>var EMAIL_PREVIEW_MACROS = {$PREVIEW_MACROS_JSON nofilter};</script>
+{else}
+<script>var EMAIL_PREVIEW_MACROS = {ldelim}{rdelim};</script>
+{/if}
+{if isset($NEWSLETTERS_PREVIEW_JSON)}
+<script>var NEWSLETTERS_PREVIEW = {$NEWSLETTERS_PREVIEW_JSON nofilter};</script>
+{else}
+<script>var NEWSLETTERS_PREVIEW = {ldelim}{rdelim};</script>
+{/if}
+<script>{literal}
+   // Shared renderer — wraps body in the chosen template, substitutes
+   // {$DATA.X} macros, and opens the result in a Colorbox iframe.
+   function _renderNewsletterPreview(content, templateId, subject) {
+      var wrapper = (NEWSLETTER_TEMPLATES && NEWSLETTER_TEMPLATES[templateId]) ? NEWSLETTER_TEMPLATES[templateId] : '';
+      var rendered = wrapper ? wrapper.replace(/\{\$EMAIL_CONTENT\}/g, content) : content;
+      Object.keys(EMAIL_PREVIEW_MACROS).forEach(function(key) {
+         var pattern = new RegExp('\\{\\$DATA\\.' + key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\}', 'g');
+         rendered = rendered.replace(pattern, EMAIL_PREVIEW_MACROS[key]);
+      });
+      $.colorbox({
+         title: subject || '',
+         width: '90%',
+         height: '90%',
+         html: function(){
+            return '<iframe width="100%" height="95%" frameBorder="0" srcdoc="<div style=&quot;margin:auto;width:50%;&quot;>'+rendered.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'</div>"></iframe>';
+         }
+      });
+   }
+
+   // Editor button — pulls live data from the form fields.
+   function previewNewsletter() {
+      var content = (typeof CKEDITOR !== 'undefined' && CKEDITOR.instances.content_html)
+         ? CKEDITOR.instances.content_html.getData()
+         : (document.getElementById('content_html') || {}).value || '';
+      var tplId   = parseInt((document.getElementById('template_id') || {}).value || 0, 10);
+      var subject = (document.getElementById('email_subject') || {}).value || '';
+      _renderNewsletterPreview(content, tplId, subject);
+   }
+
+   // List magnifier — pulls saved data from the per-row map.
+   function previewNewsletterRow(id) {
+      var row = NEWSLETTERS_PREVIEW && NEWSLETTERS_PREVIEW[id];
+      if (!row) return;
+      _renderNewsletterPreview(row.content_html || '', parseInt(row.template_id || 0, 10), row.subject || '');
+   }
+{/literal}</script>
