@@ -510,7 +510,7 @@ class Order
                             foreach ($GLOBALS['hooks']->load('class.order.order_status.admin_notify') as $hook) {
                                 include $hook;
                             }
-                            $admin_mailer->sendEmail($admin_notify, $content);
+                            $admin_mailer->sendEmailAsync($admin_notify, $content);
                             $GLOBALS['session']->set($message_id, true, 'email');
                         }
                         unset($content);
@@ -546,7 +546,7 @@ class Order
                     // Compose the Order Confirmation email to the customer
                     if (!$already_sent && $this->_email_enabled && ($content = $mailer->loadContent('cart.order_confirmation', $order_summary['lang'])) !== false) {
                         $this->assignOrderDetails();
-                        $mailer->sendEmail($this->_order_summary['email'], $content);
+                        $mailer->sendEmailAsync($this->_order_summary['email'], $content);
                     }
                     unset($content);
 
@@ -561,7 +561,7 @@ class Order
                             foreach ($GLOBALS['hooks']->load('class.order.order_status.admin_notify') as $hook) {
                                 include $hook;
                             }
-                            $admin_mailer->sendEmail($admin_notify, $content);
+                            $admin_mailer->sendEmailAsync($admin_notify, $content);
                             $GLOBALS['session']->set($message_id, true, 'email');
                         }
                         unset($content);
@@ -614,7 +614,7 @@ class Order
                     /* no need to send this email for digital only orders */
                     if (!$this->_skip_order_complete_email && $this->_email_enabled && ($content = $mailer->loadContent('cart.order_complete', $order_summary['lang'])) !== false) {
                         $this->assignOrderDetails();
-                        $mailer->sendEmail($this->_order_summary['email'], $content);
+                        $mailer->sendEmailAsync($this->_order_summary['email'], $content);
                     }
                     unset($content);
 
@@ -640,7 +640,7 @@ class Order
             }
             if ($this->_email_enabled && isset($content)) {
                 $this->assignOrderDetails();
-                $mailer->sendEmail($this->_order_summary['email'], $content);
+                $mailer->sendEmailAsync($this->_order_summary['email'], $content);
             }
 
             // Update the status level
@@ -700,7 +700,7 @@ class Order
             }
             if ($this->_email_enabled && isset($content)) {
                 $this->assignOrderDetails();
-                $mailer->sendEmail($this->_order_summary['email'], $content);
+                $mailer->sendEmailAsync($this->_order_summary['email'], $content);
             }
         }
     }
@@ -1194,7 +1194,7 @@ class Order
                         $downloads[] = $download;
                     }
                     $GLOBALS['smarty']->assign('DOWNLOADS', $downloads);
-                    return $mailer->sendEmail($email, $contents);
+                    return $mailer->sendEmailAsync($email, $contents);
                 }
             }
         }

@@ -779,7 +779,7 @@ class User
                         $link['reset_link'] = CC_STORE_URL.'/index.php?_a=recovery&validate='.$validation;
                         $data = array_merge($user[0], $link);
                         $content = $mailer->loadContent('account.password_recovery', $GLOBALS['language']->current(), $data);
-                        $mailer->sendEmail($user[0]['email'], $content);
+                        $mailer->sendEmailAsync($user[0]['email'], $content);
                         return true;
                     }
                 }

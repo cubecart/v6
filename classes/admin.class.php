@@ -225,7 +225,7 @@ class Admin
                     if ($content) {
                         $GLOBALS['smarty']->assign('DATA', $data);
                         $GLOBALS['session']->set('recover_login', true);
-                        return $mailer->sendEmail($check[0]['email'], $content);
+                        return $mailer->sendEmailAsync($check[0]['email'], $content);
                     }
                 }
             }

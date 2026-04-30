@@ -31,6 +31,8 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
     private $_content_type = '';
     private $_import_new = false;
     private $_method = '';
+    private $_async_queue = array();
+    private $_shutdown_registered = false;
 
     protected static $_instance;
 
@@ -303,6 +305,90 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
         }
 
         return false;
+    }
+
+    /**
+     * Queue an email to be sent after the HTTP response has been flushed to the
+     * client. Use for transactional email triggered during a customer-facing request
+     * (order confirmations, password resets, status changes) so the SMTP latency
+     * doesn't sit on the user's checkout / login response time.
+     *
+     * Returns true to indicate the message was accepted into the queue. The actual
+     * send happens during shutdown; the result lands in CubeCart_email_log just like
+     * a synchronous send. Failures are not visible to the original caller.
+     *
+     * Falls back to synchronous behaviour on CLI / unsupported SAPIs (mod_php
+     * without an FPM equivalent) - the response still goes out, just not as early.
+     *
+     * @param string $email
+     * @param array $contents
+     * @param int $template_id
+     * @return bool
+     */
+    public function sendEmailAsync($email = false, $contents = array(), $template_id = false)
+    {
+        $this->_async_queue[] = array(
+            'email'       => $email,
+            'contents'    => $contents,
+            'template_id' => $template_id,
+            'from'        => $this->From,
+            'from_name'   => $this->FromName,
+        );
+        if (!$this->_shutdown_registered) {
+            $this->_shutdown_registered = true;
+            @ignore_user_abort(true);
+            register_shutdown_function(array($this, '_drainAsyncQueue'));
+        }
+        return true;
+    }
+
+    /**
+     * Shutdown handler. Flushes the response so the user sees the page immediately,
+     * then drains the async queue by calling sendEmail() for each entry. The
+     * session is closed first to release its lock so the customer's next request
+     * isn't blocked waiting for the SMTP send to finish.
+     *
+     * Public so register_shutdown_function() can reach it; not part of the public API.
+     */
+    public function _drainAsyncQueue()
+    {
+        if (empty($this->_async_queue)) {
+            return;
+        }
+
+        // Release the response to the client before doing slow SMTP work.
+        // Order matters: close session lock, drain output buffers, then signal FPM/LiteSpeed.
+        if (function_exists('session_write_close')) {
+            @session_write_close();
+        }
+        while (ob_get_level() > 0) {
+            @ob_end_flush();
+        }
+        @flush();
+        if (function_exists('fastcgi_finish_request')) {
+            @fastcgi_finish_request();
+        } elseif (function_exists('litespeed_finish_request')) {
+            @litespeed_finish_request();
+        }
+
+        $queue = $this->_async_queue;
+        $this->_async_queue = array();
+        foreach ($queue as $entry) {
+            try {
+                if (!empty($entry['from'])) {
+                    $this->From = $entry['from'];
+                }
+                if (!empty($entry['from_name'])) {
+                    $this->FromName = $entry['from_name'];
+                }
+                $this->sendEmail($entry['email'], $entry['contents'], $entry['template_id']);
+            } catch (\Throwable $e) {
+                // The user has already received their response - swallow and rely on
+                // CubeCart_email_log for the failure record. Trigger a notice so the
+                // hosting error log shows it for debugging.
+                @trigger_error('Async email send failed: '.$e->getMessage(), E_USER_NOTICE);
+            }
+        }
     }
 
     //=====[ Private ]=======================================

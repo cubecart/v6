@@ -3086,7 +3086,7 @@ class Cubecart
                     $record['product_name'] = $product['name'];
                     $content    = $mail->loadContent('admin.review_added', $GLOBALS['language']->current(), $record);
                     if (!empty($content)) {
-                        $mail->sendEmail($GLOBALS['config']->get('config', 'email_address'), $content);
+                        $mail->sendEmailAsync($GLOBALS['config']->get('config', 'email_address'), $content);
                     }
                 } else {
                     $GLOBALS['gui']->setError($GLOBALS['language']->catalogue['error_review_submit']);
