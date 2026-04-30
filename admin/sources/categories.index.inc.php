@@ -499,6 +499,7 @@ if (isset($_GET['action'])) {
             $category['total_count'] = $category['primary_count'] + $category['additional_count'];
             $category['children'] = currentPage(null, array('parent' => $category['cat_id']));
             $category['translate'] = currentPage(null, array('action' => 'translate', 'cat_id' => $category['cat_id']));
+            $category['fully_translated'] = $GLOBALS['language']->fullyTranslated('category', (int)$category['cat_id']);
             $category['edit']  = currentPage(null, array('action' => 'edit', 'cat_id' => $category['cat_id']));
             $category['delete']  = currentPage(null, array('delete' => $category['cat_id'], 'token' => SESSION_TOKEN));
             $children = false;

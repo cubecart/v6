@@ -62,7 +62,7 @@
 	    	{foreach from=$category.translations item=translation}
 	  	    <a href="{$translation.edit}"><img src="language/flags/{$translation.language}.png" alt="{$translation.language}" title="{$translation.language}" class="flag"></a>
 	  	    {/foreach}
-			<a href="{$category.translate}" title="{$LANG.translate.trans_add}"><i class="fa fa-plus-circle" title="{$LANG.translate.trans_add}"></i></a>
+			{if !$category.fully_translated}<a href="{$category.translate}" title="{$LANG.translate.trans_add}"><i class="fa fa-plus-circle" title="{$LANG.translate.trans_add}"></i></a>{/if}
 	      </td>
 	      <td>
 		  	<a href="?_g=products&cat_id={$category.cat_id}" title="{$LANG.dashboard.inv_products}"><i class="fa fa-filter" title="{$LANG.dashboard.inv_products}"></i></a>
