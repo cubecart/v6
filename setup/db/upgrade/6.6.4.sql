@@ -26,3 +26,6 @@ SET @s := IF(@c = 0, 'ALTER TABLE `CubeCart_inventory` ADD INDEX `idx_latest_pro
 PREPARE stmt FROM @s; #EOQ
 EXECUTE stmt; #EOQ
 DEALLOCATE PREPARE stmt; #EOQ
+
+INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) VALUES ('config', 'catalogue_related_products', '1') ON DUPLICATE KEY UPDATE `config_key`=`config_key`; #EOQ
+INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) VALUES ('config', 'catalogue_related_products_count', '5') ON DUPLICATE KEY UPDATE `config_key`=`config_key`; #EOQ

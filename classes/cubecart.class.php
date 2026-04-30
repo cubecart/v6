@@ -2044,43 +2044,61 @@ class Cubecart
             if (!empty($list_checkouts) && $load_checkouts==true) {
                 $GLOBALS['smarty']->assign('CHECKOUTS', $list_checkouts);
             }
-            // Related Products from most recent 30 orders containing this product.
-            if (!empty($product_list) && ($related_orders = $GLOBALS['db']->select('CubeCart_order_inventory', array('DISTINCT' => 'cart_order_id'), array('product_id' => $product_list), array('id' => 'DESC'), 30)) !== false) {
-                foreach ($related_orders as $key => $data) {
-                    $related[] = "'".$data['cart_order_id']."'";
+            // Related Products ("Customers who bought this also bought") - skip entirely if disabled.
+            $related_enabled = $GLOBALS['config']->get('config', 'catalogue_related_products');
+            if ($related_enabled === null || $related_enabled === '') {
+                $related_enabled = '1';
+            }
+            if (!empty($product_list) && $related_enabled == '1') {
+                $related_count = (int)$GLOBALS['config']->get('config', 'catalogue_related_products_count');
+                if ($related_count <= 0) {
+                    $related_count = 5;
                 }
-                if (($related_products = $GLOBALS['db']->select('CubeCart_order_inventory', array('DISTINCT' => 'product_id'), array('cart_order_id' => $related, '!product_id' => $product_list), false, 10)) !== false) {
-                    $i = 0;
-                    $related_list = []; // Looking for 5 related products (possibly configurable in the future)
-                    foreach ($related_products as $related) {
-                        if (!empty($related['product_id']) && !in_array($related['product_id'], $product_list)) {
+                $related_count = min(20, $related_count);
+                // Pull a wider candidate pool than $related_count so that out-of-stock filtering still has options.
+                $candidate_pool = max(10, $related_count * 4);
+                if (($related_orders = $GLOBALS['db']->select('CubeCart_order_inventory', array('DISTINCT' => 'cart_order_id'), array('product_id' => $product_list), array('id' => 'DESC'), 30)) !== false) {
+                    $related = array();
+                    foreach ($related_orders as $key => $data) {
+                        $related[] = "'".$data['cart_order_id']."'";
+                    }
+                    if (($related_products = $GLOBALS['db']->select('CubeCart_order_inventory', array('DISTINCT' => 'product_id'), array('cart_order_id' => $related, '!product_id' => $product_list), false, $candidate_pool)) !== false) {
+                        $related_list = array();
+                        foreach ($related_products as $related) {
+                            if (empty($related['product_id']) || in_array($related['product_id'], $product_list)) {
+                                continue;
+                            }
                             $related = $GLOBALS['catalogue']->getProductData($related['product_id']);
-                            if($related == false) {
+                            if ($related == false) {
+                                continue;
+                            }
+                            // Exclude when stock control is enabled and the item is out of stock,
+                            // regardless of the store-wide hide_out_of_stock setting.
+                            if (!empty($related['use_stock_level']) && (int)$related['stock_level'] <= 0) {
                                 continue;
                             }
                             $related['img_src'] = $GLOBALS['gui']->getProductImage($related['product_id']);
                             $related['url'] = $GLOBALS['seo']->buildURL('prod', $related['product_id'], '&');
-                            
+
                             $related['ctrl_sale'] = (!$GLOBALS['tax']->salePrice($related['price'], $related['sale_price']) || !$GLOBALS['config']->get('config', 'catalogue_sale_mode')) ? false : true;
-                            
+
                             $GLOBALS['catalogue']->getProductPrice($related);
                             $sale = $GLOBALS['tax']->salePrice($related['price'], $related['sale_price']);
-                            
+
                             $related['price_unformatted']  = $related['price'];
                             $related['sale_price_unformatted'] = ($sale) ? $related['sale_price'] : null;
                             $related['price']  = $GLOBALS['tax']->priceFormat($related['price']);
                             $related['sale_price'] = ($sale) ? $GLOBALS['tax']->priceFormat($related['sale_price']) : null;
-                            
-                            if ($related['product_id']>0) {
+
+                            if ($related['product_id'] > 0) {
                                 $related_list[] = $related;
+                                if (count($related_list) >= $related_count) {
+                                    break;
+                                }
                             }
                         }
-                        $i++;
-                        if($i==5) {
-                            break;
-                        }
+                        $GLOBALS['smarty']->assign('RELATED', $related_list);
                     }
-                    $GLOBALS['smarty']->assign('RELATED', $related_list);
                 }
             }
             foreach ($GLOBALS['hooks']->load('class.cubecart.display_basket') as $hook) {

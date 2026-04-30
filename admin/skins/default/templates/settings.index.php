@@ -264,6 +264,8 @@
             {foreach from=$OPT_CATALOGUE_POPULAR_PRODUCTS_SOURCE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span>
          </div>
+         <div><label for="catalogue_related_products">{$LANG.settings.product_related}</label><span><input name="config[catalogue_related_products]" id="catalogue_related_products" type="hidden" class="toggle" value="{$CONFIG.catalogue_related_products|default:'1'}"></span></div>
+         <div><label for="catalogue_related_products_count">{$LANG.settings.product_related_number}</label><span><input name="config[catalogue_related_products_count]" id="catalogue_related_products_count" type="number" min="1" max="20" class="textbox number" value="{$CONFIG.catalogue_related_products_count|default:'5'}"></span></div>
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_skins}</legend>
