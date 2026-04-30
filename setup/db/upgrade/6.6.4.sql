@@ -41,3 +41,9 @@ EXECUTE stmt; #EOQ
 DEALLOCATE PREPARE stmt; #EOQ
 
 INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) VALUES ('config', 'email_track_opens', '1') ON DUPLICATE KEY UPDATE `config_key`=`config_key`; #EOQ
+
+SET @c := (SELECT COUNT(*) FROM information_schema.STATISTICS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'CubeCart_order_summary' AND INDEX_NAME = 'status_orderdate_total'); #EOQ
+SET @s := IF(@c = 0, 'ALTER TABLE `CubeCart_order_summary` ADD INDEX `status_orderdate_total` (`status`, `order_date`, `total`)', 'SELECT 1'); #EOQ
+PREPARE stmt FROM @s; #EOQ
+EXECUTE stmt; #EOQ
+DEALLOCATE PREPARE stmt; #EOQ

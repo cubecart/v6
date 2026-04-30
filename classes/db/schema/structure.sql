@@ -890,6 +890,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	UNIQUE KEY `custom_oid` (`custom_oid`),
 	KEY `customer_id` (`customer_id`),
 	KEY `status_cartorder` (`status`, `cart_order_id`),
+	KEY `status_orderdate_total` (`status`, `order_date`, `total`),
 	KEY `email` (`email`),
 	KEY `order_date` (`order_date`),
 	KEY `dashboard` (`dashboard`),
