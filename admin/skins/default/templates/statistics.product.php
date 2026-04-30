@@ -12,7 +12,7 @@
  <div id="general" class="tab_content">
    {if $PRODUCT}
    <h3>{$PRODUCT.name} ({$PRODUCT.product_code})</h3>
-   <a href="?_g=products&node=index&action=edit&product_id={$PRODUCT.product_id}">&larr; {$LANG.catalogue.title_product_update}</a>
+   <a href="#" onclick="history.back();return false;">&larr; {$LANG.common.back}</a>
    <form action="{$VAL_SELF}" class="ignore-dirty" method="get">
       <div style="max-width: 700px">
          <fieldset class="date-range-filter">
