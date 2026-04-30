@@ -202,3 +202,4 @@
       _renderNewsletterPreview(row.content_html || '', parseInt(row.template_id || 0, 10), row.subject || '');
    }
 {/literal}</script>
+<p>Newsletters are sent in batches by a background task. Enable the &quot;Process Newsletter Queue&quot; <a href="?_g=settings#Scheduled_Tasks">scheduled task</a> and ensure a cron job is configured to trigger it.</p>
