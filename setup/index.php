@@ -638,8 +638,12 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
         if ($installed) {
             $GLOBALS['smarty']->assign('LANG_UPGRADE_CUBECART_TITLE', sprintf($strings['setup']['upgrade_cubecart_title'], CC_VERSION));
             $GLOBALS['smarty']->assign('SHOW_UPGRADE', true);
+            $GLOBALS['smarty']->assign('MODE_METHOD', true);
+        } else {
+            // No existing install — install is the only option, skip the method-choice screen.
+            $_SESSION['setup']['method'] = 'install';
+            httpredir('index.php');
         }
-        $GLOBALS['smarty']->assign('MODE_METHOD', true);
     } elseif (!isset($_SESSION['setup']['complete'])) {
         if (in_array($_SESSION['setup']['method'], array(
             'install', 'upgrade'))) {

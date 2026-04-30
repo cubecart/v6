@@ -43,7 +43,7 @@
   <form action="index.php" method="post" enctype="multipart/form-data">
 	<div id="content">
   {if isset($STEP_HEADING)}<h1>{$STEP_HEADING}</h1>{/if}
-  {if isset($SHOW_LANG_BACK) && $SHOW_LANG_BACK && !isset($MODE_LANGUAGE) && (isset($MODE_COMPAT) || isset($MODE_METHOD))}
+  {if isset($SHOW_LANG_BACK) && $SHOW_LANG_BACK && !isset($MODE_LANGUAGE) && (isset($MODE_COMPAT) || isset($MODE_METHOD) || isset($MODE_PERMS) || isset($MODE_INSTALL))}
 	  <p style="margin: 0 0 16px;"><a href="?reset_language=1">&larr; Change language</a></p>
   {/if}
   {if isset($MODE_LANGUAGE)}
@@ -62,7 +62,7 @@
 		<div style="text-align:center;">
 		  <label for="select_language" class="visually-hidden" style="position:absolute; clip:rect(0 0 0 0); width:1px; height:1px; overflow:hidden;">Language</label>
 		  <select name="select_language" id="select_language" class="textbox" style="display:inline-block;" onchange="this.form.submit()">
-			{foreach from=$API_LANGUAGES item=lang}<option value="{$lang.code}"{$lang.selected}>{$lang.name_native} ({$lang.code})</option>{/foreach}
+			{foreach from=$API_LANGUAGES item=lang}<option value="{$lang.code}"{$lang.selected}>{$lang.name_native}</option>{/foreach}
 		  </select>
 		  <noscript><p style="margin-top:12px;"><input type="submit" value="Go &rarr;" /></p></noscript>
 		</div>
