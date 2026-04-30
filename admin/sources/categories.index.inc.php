@@ -473,7 +473,10 @@ if (isset($_GET['action'])) {
     }
     $GLOBALS['smarty']->assign('PLUGIN_TABS', ($smarty_data['plugin_tabs'] ?? false));
     $GLOBALS['main']->addTabControl($lang['settings']['title_category'], 'categories');
-    $GLOBALS['main']->addTabControl($lang['settings']['title_category_add'], null, currentPage(null, array('action' => 'add')));
+    $add_label = (isset($_GET['parent']) && (int)$_GET['parent'] > 0)
+        ? $lang['settings']['title_subcategory_add']
+        : $lang['settings']['title_category_add'];
+    $GLOBALS['main']->addTabControl($add_label, null, currentPage(null, array('action' => 'add')));
     if (($categories = $GLOBALS['db']->select('CubeCart_category', false, array('cat_parent_id' => (isset($_GET['parent'])) ? (int)$_GET['parent'] : 0), array('priority' => 'ASC'))) !== false) {
         $i = 1;
         foreach ($categories as $category) {
@@ -502,6 +505,7 @@ if (isset($_GET['action'])) {
             $children = $GLOBALS['db']->count('CubeCart_category', 'cat_id', array('cat_parent_id' => $category['cat_id']));
             $category['no_children'] = $children;
             $category['alt_text'] = sprintf(((int)$children == 1) ? $lang['settings']['category_has_subcat'] : $lang['settings']['category_has_subcats'], (int)$children);
+            $category['subcategories'] = (int)$children;
             $category['visible'] = $category['hide'] ? 0 : 1;
             $category_list[] = $category;
             ++$i;

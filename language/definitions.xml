@@ -2199,7 +2199,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="es_ssl_v" introduced="6.5.0"><![CDATA[Strict SSL Validation]]></string>
     <string name="no_elasticsearch" introduced="6.5.0"><![CDATA[Elasticsearch isn't available or the provided settings are incorrect. Please contact <a href="https://support.cubecart.com/hc/en-gb/requests/new">CubeCart support</a>.]]></string>
     <string name="size_unit" introduced="6.4.10"><![CDATA[Default Size Unit]]></string>
-    <string name="subcategories_of" introduced="6.4.10"><![CDATA[Sub-Categories of %1$s]]></string>
+    <string name="subcategories_of" introduced="6.4.10"><![CDATA[Subcategories of %1$s]]></string>
     <string name="return_parent_category" introduced="6.4.10"><![CDATA[Return to parent category]]></string>
     <string name="item_id" introduced="6.4.8"><![CDATA[Item ID]]></string>
     <string name="redirect_from" introduced="6.4.8"><![CDATA[Redirect from Path]]></string>
@@ -2531,6 +2531,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_category" introduced="5.0.0"><![CDATA[Categories]]></string>
     <string name="title_categories" introduced="5.0.0"><![CDATA[Categories]]></string>
     <string name="title_category_add" introduced="5.0.0"><![CDATA[Add Category]]></string>
+    <string name="title_subcategory_add" introduced="6.6.4"><![CDATA[Add Subcategory]]></string>
     <string name="title_category_details" introduced="5.0.0"><![CDATA[Category Details]]></string>
     <string name="title_copyright" introduced="5.0.0"><![CDATA[Copyright Text]]></string>
     <string name="title_currency" introduced="5.0.0"><![CDATA[Currencies]]></string>

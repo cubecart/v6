@@ -24,9 +24,9 @@
 		  <td align="center">{$LANG.settings.item_id}</td>
 		  <td>{$LANG.common.arrange}</td>
 		  <td>{$LANG.common.visible}</td>
-		  <td>{$LANG.common.status}</td>
+		  <td>{$LANG.common.enabled}</td>
 		  <td>{$LANG.settings.category_name}</td>
-		  <td colspan="2">{$LANG.catalogue.product_count}</td>
+		  <td>{$LANG.catalogue.product_count}</td>
 		  <td>{$LANG.translate.title_translations}</td>
 		  <td>&nbsp;</td>
 		</tr>
@@ -50,25 +50,24 @@
 	      </td>
 	      <td>
 			{if $category.no_children}
-		    <a href="{$category.children}" title="{$category.alt_text}">{$category.cat_name}</a>
+		    <a href="{$category.children}" title="{$category.alt_text}"><span style="color:#888;margin-right:4px" aria-hidden="true">&#9656;</span>{$category.cat_name}</a>
 		    {else}
-		    {$category.cat_name}
+		    <span style="visibility:hidden;margin-right:4px" aria-hidden="true">&#9656;</span>{$category.cat_name}
 		    {/if}
 	      </td>
-		  <td style="text-align:center; padding: 0 7px; font-weight: bold">{$category.total_count}</td>
-		  <td style="text-align:center; display: flex;flex-direction: row;">
-		  	<div style="width: 50px; text-align: left; font-size: 10px">{$LANG.common.primary}<br>{$LANG.common.additional}</div>
-		  	<div style="width: 15px; text-align: center; font-size: 10px">{$category.primary_count}<br>{$category.additional_count}</div>
+		  <td style="text-align:center">
+			<span style="cursor:help" title="{$LANG.common.primary}: {$category.primary_count} / {$LANG.common.additional}: {$category.additional_count}">{$category.total_count}</span>
 		  </td>
 	      <td style="text-align:center" class="language_list">
 	    	{foreach from=$category.translations item=translation}
 	  	    <a href="{$translation.edit}"><img src="language/flags/{$translation.language}.png" alt="{$translation.language}" title="{$translation.language}" class="flag"></a>
 	  	    {/foreach}
+			<a href="{$category.translate}" title="{$LANG.translate.trans_add}"><i class="fa fa-plus-circle" title="{$LANG.translate.trans_add}"></i></a>
 	      </td>
 	      <td>
 		  	<a href="?_g=products&cat_id={$category.cat_id}" title="{$LANG.dashboard.inv_products}"><i class="fa fa-filter" title="{$LANG.dashboard.inv_products}"></i></a>
 		  	<a href="index.php?_a=category&cat_id={$category.cat_id}" title="{$LANG.common.view}" target="_blank"><i class="fa fa-search" title="{$LANG.common.view}"></i></a>
-		    <a href="{$category.translate}" title="{$LANG.translate.trans_add}"><i class="fa fa-plus-circle" title="{$LANG.translate.trans_add}"></i></a>
+		    <a href="?_g=categories&action=add&parent={$category.cat_id}" title="{$LANG.settings.title_subcategory_add}"><i class="fa fa-plus-circle" title="{$LANG.settings.title_subcategory_add}"></i></a>
 		    <a href="{$category.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 		    <a href="{$category.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 	      </td>
