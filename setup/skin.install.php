@@ -43,18 +43,28 @@
   <form action="index.php" method="post" enctype="multipart/form-data">
 	<div id="content">
   {if isset($STEP_HEADING)}<h1>{$STEP_HEADING}</h1>{/if}
+  {if isset($SHOW_LANG_BACK) && $SHOW_LANG_BACK && !isset($MODE_LANGUAGE) && (isset($MODE_COMPAT) || isset($MODE_METHOD))}
+	  <p style="margin: 0 0 16px;"><a href="?reset_language=1">&larr; Change language</a></p>
+  {/if}
   {if isset($MODE_LANGUAGE)}
-	  <h2 class="first">{$LANG.setup.title_select_language}</h2>
-	  <p>{$LANG.setup.select_language_note}</p>
+	  <div class="lang-select-prompt" style="text-align:center; margin: 0 0 24px;">
+		<div style="font-size: 48px; line-height: 1;" aria-hidden="true">&#127760;</div>
+		<ul style="list-style:none; padding:0; margin:12px 0 0; font-size: 16px; line-height: 1.7;">
+		  <li>Select your language</li>
+		  <li lang="fr">Choisissez votre langue</li>
+		  <li lang="es">Selecciona tu idioma</li>
+		  <li lang="de">W&auml;hle deine Sprache</li>
+		  <li lang="zh">&#36873;&#25321;&#24744;&#30340;&#35821;&#35328;</li>
+		</ul>
+	  </div>
 	  {if isset($API_LANGUAGES)}
 	  <fieldset>
-		<div>
-		  <label for="select_language">{$LANG.common.language}</label>
-		  <span>
-			<select name="select_language" id="select_language" class="textbox">
-			  {foreach from=$API_LANGUAGES item=lang}<option value="{$lang.code}"{$lang.selected}>{$lang.name} ({$lang.code})</option>{/foreach}
-			</select>
-		  </span>
+		<div style="text-align:center;">
+		  <label for="select_language" class="visually-hidden" style="position:absolute; clip:rect(0 0 0 0); width:1px; height:1px; overflow:hidden;">Language</label>
+		  <select name="select_language" id="select_language" class="textbox" style="display:inline-block;" onchange="this.form.submit()">
+			{foreach from=$API_LANGUAGES item=lang}<option value="{$lang.code}"{$lang.selected}>{$lang.name_native} ({$lang.code})</option>{/foreach}
+		  </select>
+		  <noscript><p style="margin-top:12px;"><input type="submit" value="Go &rarr;" /></p></noscript>
 		</div>
 	  </fieldset>
 	  {/if}
@@ -215,7 +225,7 @@
 	  </div>
 	{/if}
 	  <div id="toolbar">
-		{if isset($CONTROLLER.continue)}<span class="continue"><input type="submit" name="proceed" value="{$LANG.common.continue} &rarr;" /></span>{/if}
+		{if isset($CONTROLLER.continue) && !isset($MODE_LANGUAGE)}<span class="continue"><input type="submit" name="proceed" value="{$LANG.common.continue} &rarr;" /></span>{/if}
 		{if isset($CONTROLLER.retry)}<span class="continue"><input type="submit" name="retry" value="{$LANG.setup.button_retry}" /></span>{/if}
 		{if isset($CONTROLLER.restart)}<span class="cancel"><input type="submit" name="cancel" value="{$LANG.setup.button_restart}" class="cancel" /></span>{/if}
 	  </div>

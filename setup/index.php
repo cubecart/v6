@@ -279,6 +279,7 @@ $GLOBALS['smarty']->assign('LANG', $strings);
 $GLOBALS['smarty']->assign('VERSION', CC_VERSION);
 $GLOBALS['smarty']->assign('ROOT', CC_ROOT_DIR);
 $GLOBALS['smarty']->assign('SESSION_LANGUAGE', $_SESSION['language']);
+$GLOBALS['smarty']->assign('SHOW_LANG_BACK', !empty($_SESSION['language_selected']));
 
 // Header shown above every step once the method is locked in (e.g. "Install CubeCart 6.6.4"
 // or "Upgrade CubeCart 6.6.4"). install_cubecart_title is parameterised; for upgrade we
@@ -333,6 +334,25 @@ if (file_exists($global_file) && filesize($global_file) > 0) {
         $is_upgrade = true;
     }
     unset($glob);
+}
+
+// Reset selected language: delete the downloaded pack files and clear the session
+// flag so the user lands back on the language-select screen with a clean slate.
+if (isset($_GET['reset_language']) || isset($_POST['reset_language'])) {
+    $code = isset($_SESSION['language']) ? $_SESSION['language'] : '';
+    if ($code !== '' && preg_match('/^[a-z]{2}(-[A-Z]{2})?$/', $code)) {
+        $files_to_remove = array(
+            CC_LANGUAGE_DIR . $code . '.xml',
+            CC_LANGUAGE_DIR . 'email_' . $code . '.xml',
+        );
+        foreach ($files_to_remove as $f) {
+            if (file_exists($f) && is_writable($f)) {
+                @unlink($f);
+            }
+        }
+    }
+    unset($_SESSION['language'], $_SESSION['language_selected']);
+    httpredir('index.php');
 }
 
 // Handle language selection POST (fresh install only)
@@ -440,12 +460,86 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
     if ($json) {
         $api_data = json_decode($json, true);
         if ($api_data && !empty($api_data['languages'])) {
+            // Native names for the more widely-shipped CubeCart packs. Falls back to the
+            // API-provided English name when a code isn't listed here.
+            $native_names = array(
+                'en-GB' => 'English (UK)',     'en-US' => 'English (US)',
+                'fr-FR' => 'Français',         'de-DE' => 'Deutsch',
+                'es-ES' => 'Español',          'it-IT' => 'Italiano',
+                'pt-PT' => 'Português',        'pt-BR' => 'Português (Brasil)',
+                'nl-NL' => 'Nederlands',       'pl-PL' => 'Polski',
+                'ru-RU' => 'Русский',          'zh-CN' => '中文 (简体)',
+                'ja-JP' => '日本語',            'ko-KR' => '한국어',
+                'ar-SA' => 'العربية',          'tr-TR' => 'Türkçe',
+                'sv-SE' => 'Svenska',          'da-DK' => 'Dansk',
+                'no-NO' => 'Norsk',            'fi-FI' => 'Suomi',
+                'cs-CZ' => 'Čeština',          'el-GR' => 'Ελληνικά',
+                'bg-BG' => 'Български',        'ro-RO' => 'Română',
+                'hu-HU' => 'Magyar',           'vi-VN' => 'Tiếng Việt',
+                'th-TH' => 'ไทย',              'id-ID' => 'Bahasa Indonesia',
+                'ms-MY' => 'Bahasa Melayu',    'he-IL' => 'עברית',
+                'uk-UA' => 'Українська',       'hi-IN' => 'हिन्दी',
+                'sk-SK' => 'Slovenčina',       'hr-HR' => 'Hrvatski',
+                'sl-SI' => 'Slovenščina',      'lt-LT' => 'Lietuvių',
+                'lv-LV' => 'Latviešu',         'et-EE' => 'Eesti',
+            );
+
+            // Pick a default pre-selection from the browser's Accept-Language header.
+            // Sort entries by quality factor desc, then try exact match, then primary-language fallback.
+            $available_codes = array();
+            foreach ($api_data['languages'] as $api_lang) {
+                $available_codes[] = $api_lang['code'];
+            }
+            $best_match = 'en-GB';
+            $accept_raw = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '';
+            if ($accept_raw !== '') {
+                $prefs = array();
+                foreach (explode(',', $accept_raw) as $entry) {
+                    $entry = trim($entry);
+                    if ($entry === '') continue;
+                    $q = 1.0;
+                    $tag = $entry;
+                    if (strpos($entry, ';') !== false) {
+                        list($tag, $rest) = explode(';', $entry, 2);
+                        if (preg_match('/q\s*=\s*([0-9.]+)/i', $rest, $m)) {
+                            $q = (float)$m[1];
+                        }
+                    }
+                    $prefs[] = array('tag' => trim($tag), 'q' => $q);
+                }
+                usort($prefs, function ($a, $b) {
+                    if ($a['q'] === $b['q']) return 0;
+                    return ($a['q'] < $b['q']) ? 1 : -1;
+                });
+                $available_lc = array_map('strtolower', $available_codes);
+                foreach ($prefs as $p) {
+                    $tag_lc = strtolower($p['tag']);
+                    $i = array_search($tag_lc, $available_lc, true);
+                    if ($i !== false) {
+                        $best_match = $available_codes[$i];
+                        break;
+                    }
+                    $primary = strtolower(strtok($p['tag'], '-'));
+                    $hit = false;
+                    foreach ($available_lc as $i => $code_lc) {
+                        if (strtok($code_lc, '-') === $primary) {
+                            $best_match = $available_codes[$i];
+                            $hit = true;
+                            break;
+                        }
+                    }
+                    if ($hit) break;
+                }
+            }
+
             $api_lang_list = array();
             foreach ($api_data['languages'] as $api_lang) {
+                $code = $api_lang['code'];
                 $api_lang_list[] = array(
-                    'code' => $api_lang['code'],
-                    'name' => $api_lang['name'],
-                    'selected' => ($api_lang['code'] === 'en-GB') ? ' selected="selected"' : ''
+                    'code'        => $code,
+                    'name'        => $api_lang['name'],
+                    'name_native' => isset($native_names[$code]) ? $native_names[$code] : $api_lang['name'],
+                    'selected'    => ($code === $best_match) ? ' selected="selected"' : '',
                 );
             }
             $GLOBALS['smarty']->assign('API_LANGUAGES', $api_lang_list);
