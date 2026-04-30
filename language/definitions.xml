@@ -616,7 +616,7 @@
     <string name="title_product_options_matrix" introduced="5.2.0"><![CDATA[Options Matrix]]></string>
     <string name="title_product_update" introduced="5.0.0"><![CDATA[Edit Product]]></string>
     <string name="title_products" introduced="5.0.0"><![CDATA[Products]]></string>
-    <string name="title_products_assigned" introduced="5.0.0"><![CDATA[Assigned Products]]></string>
+    <string name="title_products_assigned" introduced="5.0.0"><![CDATA[Linked Products]]></string>
     <string name="title_saleitems" introduced="5.0.0"><![CDATA[On Sale]]></string>
     <string name="title_stock" introduced="5.0.0"><![CDATA[Stock]]></string>
     <string name="title_stock_control" introduced="5.0.0"><![CDATA[Stock Control]]></string>
