@@ -60,8 +60,8 @@
   <div id="seo" class="tab_content">
 	<h3>{$LANG.settings.title_seo}</h3>
 	<fieldset><legend>{$LANG.settings.title_seo_meta_data}</legend>
-	  <div><label for="seo_meta_title">{$LANG.settings.seo_meta_title}</label><span><input type="text" name="gc[seo_meta_title]" id="seo_meta_title" value="{$GC.seo_meta_title}" class="textbox strlen" rel="seo_meta_title_strlen"></span> <span id="seo_meta_title_strlen">{if $GC.seo_meta_title}{strlen($GC.seo_meta_title)}{/if}</span></div>
-	  <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="gc[seo_meta_description]" id="seo_meta_description" class="textbox strlen" rel="seo_meta_description_strlen">{$GC.seo_meta_description}</textarea></span> <span id="seo_meta_description_strlen">{if $GC.seo_meta_description}{strlen($GC.seo_meta_description)}{/if}</span></div>
+	  <div><label for="seo_meta_title">{$LANG.settings.seo_meta_title}</label><span><input type="text" name="gc[seo_meta_title]" id="seo_meta_title" value="{$GC.seo_meta_title|escape:'html'}" class="textbox strlen" rel="seo_meta_title_strlen"></span> <span id="seo_meta_title_strlen">{if $GC.seo_meta_title}{strlen($GC.seo_meta_title)}{/if}</span></div>
+	  <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="gc[seo_meta_description]" id="seo_meta_description" class="textbox strlen" rel="seo_meta_description_strlen">{$GC.seo_meta_description|escape:'html'}</textarea></span> <span id="seo_meta_description_strlen">{if $GC.seo_meta_description}{strlen($GC.seo_meta_description)}{/if}</span></div>
 	</fieldset>
   </div>
     {if isset($PLUGIN_TABS)}
