@@ -7,7 +7,7 @@
     <div><label for="manu_town">{$LANG.address.town}</label><span><input type="text" class="textbox" id="manu_town" name="manufacturer[town]" value="{$EDIT.town}"></span></div>
     <div><label for="country_list">{$LANG.address.country}</label>
         <span>
-            <select name="manufacturer[country]" id="country-list" class="textbox">
+            <select name="manufacturer[country]" id="country_list" rel="state-list" class="country-list textbox">
             {foreach from=$COUNTRIES item=country}<option value="{$country.id}" {$country.selected}>{$country.name}</option>{/foreach}
             </select>
         </span>
@@ -24,9 +24,9 @@
     <div><label for="manu_eu_line1">{$LANG.address.line1}</label><span><input type="text" class="textbox" id="manu_eu_line1" name="manufacturer[eu_line1]" value="{$EDIT.eu_line1}"></span></div>
     <div><label for="manu_eu_line2">{$LANG.address.line2}</label><span><input type="text" class="textbox" id="manu_eu_line2" name="manufacturer[eu_line2]" value="{$EDIT.eu_line2}"></span></div>
     <div><label for="manu_eu_town">{$LANG.address.town}</label><span><input type="text" class="textbox" id="manu_eu_town" name="manufacturer[eu_town]" value="{$EDIT.eu_town}"></span></div>
-    <div><label for="country_list">{$LANG.address.country}</label>
+    <div><label for="eu_country_list">{$LANG.address.country}</label>
         <span>
-            <select name="manufacturer[eu_country]" id="country_list" rel="eu_state" class="country-list textbox">
+            <select name="manufacturer[eu_country]" id="eu_country_list" rel="eu_state" class="country-list textbox">
             {foreach from=$EU_COUNTRIES item=country}<option value="{$country.id}" {$country.selected}>{$country.name}</option>{/foreach}
             </select>
         </span>

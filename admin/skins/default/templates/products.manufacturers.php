@@ -34,7 +34,9 @@
 		{/foreach}
 	  </tbody>
 	</table>
+	{if $PAGINATION}
 	<div class="pagination"><span><strong>{number_format($TOTAL_RESULTS)}</strong></span>{$PAGINATION}</div>
+	{/if}
 	{else}
 	<p>{$LANG.catalogue.error_manufacturer_none}</p>
 	{/if}
@@ -42,7 +44,6 @@
   <div id="manu_add" class="tab_content">
 	<h3>{$LANG.catalogue.title_manufacturer_add}</h3>
 	{include file='templates/products.manufacturers.fields.php'}
-	</fieldset>
 	{if isset($PLUGIN_TABS)}
 	{foreach from=$PLUGIN_TABS item=tab}
 		{$tab}
@@ -51,7 +52,7 @@
 	{include file='templates/element.hook_form_content.php'}
 	<div class="form_control">
 	<input type="hidden" name="previous-tab" id="previous-tab" value="">
-	<input type="submit" value="{$LANG.form.submit}" class="submit">
+	<input type="submit" value="{$LANG.common.save}" class="submit">
   </div>
   </div>
 
@@ -61,7 +62,6 @@
   <div id="manu_edit" class="tab_content">
 	<h3>{$LANG.catalogue.title_manufacturer_edit}</h3>
 	{include file='templates/products.manufacturers.fields.php'}
-	</fieldset>
 	{if isset($PLUGIN_TABS)}
 	{foreach from=$PLUGIN_TABS item=tab}
 		{$tab}
@@ -70,7 +70,7 @@
 	{include file='templates/element.hook_form_content.php'}
 	<div class="form_control">
 	<input type="hidden" name="previous-tab" id="previous-tab" value="">
-	<input type="submit" value="{$LANG.form.submit}" class="submit">
+	<input type="submit" value="{$LANG.common.save}" class="submit">
   </div>
   </div>
   {/if}

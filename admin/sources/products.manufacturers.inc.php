@@ -14,7 +14,7 @@
 if (!defined('CC_INI_SET')) {
     die('Access Denied');
 }
-Admin::getInstance()->permissions('reviews', CC_PERM_READ, true);
+Admin::getInstance()->permissions('products', CC_PERM_READ, true);
 
 
 ## Delete Manufacturer
@@ -35,27 +35,47 @@ if (isset($_POST['manufacturer']) && is_array($_POST['manufacturer'])) {
     foreach ($GLOBALS['hooks']->load('admin.product.manufacturers.save.pre_process') as $hook) {
         include $hook;
     }
+    // URL hygiene: only http/https are allowed. Anything else (javascript:, data:,
+    // vbscript:) gets the http:// prefix prepended so the URL can't carry an active
+    // payload when the admin clicks through from the manufacturer list.
     if (!empty($_POST['manufacturer']['URL'])) {
-        $url_parts = parse_url($_POST['manufacturer']['URL']);
-        if (!isset($url_parts['scheme']) || empty($url_parts['scheme'])) {
-            $_POST['manufacturer']['URL'] = "http://".$_POST['manufacturer']['URL'];
+        $raw_url = (string)$_POST['manufacturer']['URL'];
+        $url_parts = @parse_url($raw_url);
+        $scheme = (is_array($url_parts) && !empty($url_parts['scheme'])) ? strtolower($url_parts['scheme']) : '';
+        if (!in_array($scheme, array('http', 'https'), true)) {
+            $_POST['manufacturer']['URL'] = 'http://'.$raw_url;
         }
     }
+    $name = isset($_POST['manufacturer']['name']) ? trim($_POST['manufacturer']['name']) : '';
     if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
-        if ($GLOBALS['db']->update('CubeCart_manufacturers', $_POST['manufacturer'], array('id' => (int)$_GET['edit']))) {
+        $edit_id = (int)$_GET['edit'];
+        // Prevent renaming to a name already in use by a different manufacturer.
+        $existing = $name !== '' ? $GLOBALS['db']->select('CubeCart_manufacturers', array('id'), array('name' => $name)) : false;
+        $duplicate = false;
+        if ($existing) {
+            foreach ($existing as $row) {
+                if ((int)$row['id'] !== $edit_id) {
+                    $duplicate = true;
+                    break;
+                }
+            }
+        }
+        if ($duplicate) {
+            $GLOBALS['main']->errorMessage($lang['catalogue']['error_manufacturer_duplicate']);
+        } elseif ($GLOBALS['db']->update('CubeCart_manufacturers', $_POST['manufacturer'], array('id' => $edit_id))) {
             $GLOBALS['main']->successMessage($lang['catalogue']['notify_manufacturer_update']);
         } else {
             $GLOBALS['main']->errorMessage($lang['catalogue']['error_manufacturer_update']);
         }
-    } elseif(isset($_POST['manufacturer']['name']) && !empty($_POST['manufacturer']['name'])) {
-        if (!$GLOBALS['db']->select('CubeCart_manufacturers', array('id'), array('name' => $_POST['manufacturer']['name']))) {
+    } elseif ($name !== '') {
+        if (!$GLOBALS['db']->select('CubeCart_manufacturers', array('id'), array('name' => $name))) {
             if ($GLOBALS['db']->insert('CubeCart_manufacturers', $_POST['manufacturer'])) {
                 $GLOBALS['main']->successMessage($lang['catalogue']['notify_manufacturer_create']);
             } else {
                 $GLOBALS['main']->errorMessage($lang['catalogue']['error_manufacturer_create']);
             }
         } else {
-            $GLOBALS['main']->errorMessage($lang['catalogue']['error_manufacturer_create']);
+            $GLOBALS['main']->errorMessage($lang['catalogue']['error_manufacturer_duplicate']);
         }
     }
     foreach ($GLOBALS['hooks']->load('admin.product.manufacturers.save.post_process') as $hook) {
