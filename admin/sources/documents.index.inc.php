@@ -20,22 +20,24 @@ if (isset($_POST['document']) && Admin::getInstance()->permissions('documents', 
     foreach ($GLOBALS['hooks']->load('admin.documents.save.pre_process') as $hook) {
         include $hook;
     }
+    $action = isset($_GET['action']) ? strtolower($_GET['action']) : '';
     ## Check for existing translations
-    if ($_GET['action']=='translate' && $duplicates = $GLOBALS['db']->select('CubeCart_documents', array('doc_id'), array('doc_lang' => $_POST['document']['doc_lang'], 'doc_parent_id' => (int)$_POST['document']['doc_parent_id']))) {
+    if ($action === 'translate' && $duplicates = $GLOBALS['db']->select('CubeCart_documents', array('doc_id'), array('doc_lang' => $_POST['document']['doc_lang'], 'doc_parent_id' => (int)$_POST['document']['doc_parent_id']))) {
         $_POST['document']['doc_id'] = $duplicates[0]['doc_id'];
     }
     ## Do the database magic
     $rem_array = array();
     $_POST['document']['doc_content'] = $GLOBALS['RAW']['POST']['document']['doc_content'];
     if (isset($_POST['document']['doc_id']) && is_numeric($_POST['document']['doc_id'])) {
-        $GLOBALS['db']->update('CubeCart_documents', $_POST['document'], array('doc_id' => $_POST['document']['doc_id']), true);
+        $doc_id = (int)$_POST['document']['doc_id'];
+        $GLOBALS['db']->update('CubeCart_documents', $_POST['document'], array('doc_id' => $doc_id), true);
         $doc_changed = $GLOBALS['db']->affected() > 0;
         if(empty($_POST['seo_path'])) {
-            $GLOBALS['seo']->unsetdbPath('doc', $_POST['document']['doc_id']);
+            $GLOBALS['seo']->unsetdbPath('doc', $doc_id);
         }
-        $GLOBALS['seo']->setdbPath('doc', $_POST['document']['doc_id'], $_POST['seo_path'], true, true);
+        $GLOBALS['seo']->setdbPath('doc', $doc_id, $_POST['seo_path'], true, true);
         if ($doc_changed) {
-            $GLOBALS['db']->update('CubeCart_documents', array('updated' => date('Y-m-d H:i:s')), array('doc_id' => $_POST['document']['doc_id']));
+            $GLOBALS['db']->update('CubeCart_documents', array('updated' => date('Y-m-d H:i:s')), array('doc_id' => $doc_id));
             $GLOBALS['main']->successMessage($lang['documents']['notify_document_update']);
             $rem_array = array('action','doc_id');
         } else {
@@ -73,9 +75,11 @@ if (isset($_POST['terms']) || isset($_POST['home']) || isset($_POST['order']) ||
 
         if (count($docs)>0) {
             foreach ($docs as $doc) {
-                $document = $GLOBALS['db']->select('CubeCart_documents', array('doc_name'), array('doc_id' => $doc['id']));
-                $GLOBALS['db']->update('CubeCart_documents', array('doc_'.$doc['key'] => 1), array('doc_id' => $doc['id'], 'doc_parent_id' => 0), true);
-                $GLOBALS['db']->update('CubeCart_documents', array('doc_'.$doc['key'] => 0), 'doc_id <> '.$doc['id']);
+                $target_id = (int)$doc['id'];
+                $GLOBALS['db']->update('CubeCart_documents', array('doc_'.$doc['key'] => 1), array('doc_id' => $target_id, 'doc_parent_id' => 0), true);
+                // Clear the flag on every other parent doc (translations live under
+                // doc_parent_id > 0 and shouldn't be touched by this list-level toggle).
+                $GLOBALS['db']->update('CubeCart_documents', array('doc_'.$doc['key'] => 0), 'doc_parent_id = 0 AND doc_id <> '.$target_id);
                 if ($GLOBALS['db']->affected() > 0) {
                     $GLOBALS['main']->successMessage($lang['documents']['notify_document_'.$doc['key']]);
                     $updated = true;
@@ -100,7 +104,8 @@ if (isset($_POST['terms']) || isset($_POST['home']) || isset($_POST['order']) ||
         if (isset($_POST['status']) && is_array($_POST['status'])) {
             $status_updated = false;
             foreach ($_POST['status'] as $doc_id => $status) {
-                $GLOBALS['db']->update('CubeCart_documents', array('doc_status' => (int)$status), array('doc_id' => (int)$doc_id));
+                $clamped = ((int)$status === 1) ? 1 : 0;
+                $GLOBALS['db']->update('CubeCart_documents', array('doc_status' => $clamped), array('doc_id' => (int)$doc_id));
                 if ($GLOBALS['db']->affected() > 0) {
                     $status_updated = true;
                 }
@@ -117,25 +122,25 @@ if (isset($_POST['terms']) || isset($_POST['home']) || isset($_POST['order']) ||
     }
 }
 
-if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
+if (isset($_GET['delete']) && is_numeric($_GET['delete']) && isset($_GET['token']) && $_GET['token'] === SESSION_TOKEN) {
     foreach ($GLOBALS['hooks']->load('admin.documents.delete') as $hook) {
         include $hook;
     }
     if (Admin::getInstance()->permissions('documents', CC_PERM_DELETE)) {
-        ## Load from db, and assign
-        $document = $GLOBALS['db']->select('CubeCart_documents', array('doc_name'), array('doc_id' => $_GET['delete']));
-        $GLOBALS['db']->delete('CubeCart_documents', array('doc_parent_id' => $_GET['delete']));
-        $GLOBALS['db']->delete('CubeCart_documents', array('doc_id' => $_GET['delete']));
-        $GLOBALS['seo']->delete('doc', $_GET['delete']);
+        $delete_id = (int)$_GET['delete'];
+        $GLOBALS['db']->delete('CubeCart_documents', array('doc_parent_id' => $delete_id));
+        $GLOBALS['db']->delete('CubeCart_documents', array('doc_id' => $delete_id));
+        $GLOBALS['seo']->delete('doc', $delete_id);
         $GLOBALS['main']->successMessage($lang['documents']['notify_document_delete']);
     } else {
         $GLOBALS['main']->errorMessage($lang['documents']['error_document_delete']);
     }
-    httpredir(currentPage(array('delete')));
+    httpredir(currentPage(array('delete', 'token')));
 }
 
 ###############################################
 if (isset($_GET['action'])) {
+    $smarty_data = array();
     foreach ($GLOBALS['hooks']->load('admin.documents.pre_display') as $hook) {
         include $hook;
     }
@@ -143,19 +148,21 @@ if (isset($_GET['action'])) {
     $GLOBALS['main']->addTabControl($lang['common']['general'], 'general');
     $GLOBALS['main']->addTabControl($lang['documents']['tab_content'], 'article');
     $GLOBALS['main']->addTabControl($lang['settings']['tab_seo'], 'seo');
-    $GLOBALS['smarty']->assign("REDIRECTS", $GLOBALS['seo']->getRedirects('doc', $_GET['doc_id']));
-    if (strtolower($_GET['action']) == ('edit' || 'translate') && isset($_GET['doc_id']) && is_numeric($_GET['doc_id'])) {
+    $action = strtolower($_GET['action']);
+    $doc_id = (isset($_GET['doc_id']) && is_numeric($_GET['doc_id'])) ? (int)$_GET['doc_id'] : 0;
+    $GLOBALS['smarty']->assign("REDIRECTS", $GLOBALS['seo']->getRedirects('doc', $doc_id));
+    if (in_array($action, array('edit', 'translate'), true) && $doc_id > 0) {
 
         // Check to see if translation space is available
-        if ($_GET['action'] == 'translate' && $GLOBALS['language']->fullyTranslated('document', $_GET['doc_id'])) {
+        if ($action === 'translate' && $GLOBALS['language']->fullyTranslated('document', $doc_id)) {
             $GLOBALS['main']->errorMessage($lang['common']['all_translated']);
             httpredir('?_g=documents');
         }
 
-        $GLOBALS['smarty']->assign('ADD_EDIT_DOCUMENT', $_GET['action'] == 'translate' ? $lang['documents']['document_translate'] : $lang['documents']['document_edit']);
-        if (($document = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_id' => (int)$_GET['doc_id']))) !== false) {
+        $GLOBALS['smarty']->assign('ADD_EDIT_DOCUMENT', $action === 'translate' ? $lang['documents']['document_translate'] : $lang['documents']['document_edit']);
+        if (($document = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_id' => $doc_id))) !== false) {
             $data = $document[0];
-            if (strtolower($_GET['action']) == 'translate') {
+            if ($action === 'translate') {
                 $data['doc_parent_id'] = $document[0]['doc_parent_id'] = $document[0]['doc_id'];
                 unset($data['doc_id']);
             } else {
@@ -171,7 +178,7 @@ if (isset($_GET['action'])) {
     ## Generate language list
     if (($languages = $GLOBALS['language']->listLanguages()) !== false) {
         foreach ($languages as $option) {
-            if ($_GET['action']=='translate' && $option['code'] == $GLOBALS['config']->get('config', 'default_language')) {
+            if ($action === 'translate' && $option['code'] == $GLOBALS['config']->get('config', 'default_language')) {
                 continue;
             }
 
@@ -182,18 +189,14 @@ if (isset($_GET['action'])) {
     }
 
     $select_options = array('doc_url_openin' => array($lang['documents']['document_url_open_same'], $lang['documents']['document_url_open_new']));
-    if (isset($select_options)) {
-        foreach ($select_options as $field => $options) {
-            if (!is_array($options) || empty($options)) {
-                $options = array($lang['common']['no'], $lang['common']['yes']);
-            }
-            foreach ($options as $value => $title) {
-                $selected = (isset($data[$field]) && $data[$field] == $value) ? ' selected="selected"' : '';
-                $smarty_data['targets'][] = array('value' => $value, 'title' => $title, 'selected' => $selected);
-            }
+    $smarty_data['targets'] = array();
+    foreach ($select_options as $field => $options) {
+        foreach ($options as $value => $title) {
+            $selected = (isset($data[$field]) && $data[$field] == $value) ? ' selected="selected"' : '';
+            $smarty_data['targets'][] = array('value' => $value, 'title' => $title, 'selected' => $selected);
         }
-        $GLOBALS['smarty']->assign('TARGETS', $smarty_data['targets']);
     }
+    $GLOBALS['smarty']->assign('TARGETS', $smarty_data['targets']);
     $data['seo_path'] = isset($data['doc_id']) ? $GLOBALS['seo']->getdbPath('doc', $data['doc_id']) : '';
     if (!isset($data['navigation_link'])) {
         $data['navigation_link'] = 1;
@@ -205,6 +208,7 @@ if (isset($_GET['action'])) {
     $GLOBALS['smarty']->assign('PLUGIN_TABS', ($smarty_data['plugin_tabs'] ?? false));
     $GLOBALS['smarty']->assign('DISPLAY_FORM', true);
 } else {
+    $smarty_data = array('documents' => array());
     $GLOBALS['main']->addTabControl($lang['common']['overview'], 'overview');
     $GLOBALS['main']->addTabControl($lang['documents']['document_create'], null, currentPage(array('doc_id'), array('action' => 'add')));
     $GLOBALS['main']->addTabControl($lang['orders']['invoice_editor'], '', '?_g=documents&node=invoice');
@@ -232,6 +236,7 @@ if (isset($_GET['action'])) {
             $document['flag']	= file_exists('language/flags/'.$document['doc_lang'].'.png') ? 'language/flags/'.$document['doc_lang'].'.png' : 'language/flags/unknown.png';
             $document['terms']  = ($document['doc_terms']) ? 'checked="checked"' : '';
             $document['homepage'] = ($document['doc_home']) ? 'checked="checked"' : '';
+            $document['fully_translated'] = $GLOBALS['language']->fullyTranslated('document', $document['doc_id']);
             $smarty_data['documents'][] = $document;
         }
         $GLOBALS['smarty']->assign('DOCUMENTS', $smarty_data['documents']);
