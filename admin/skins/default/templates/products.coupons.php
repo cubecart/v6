@@ -141,9 +141,9 @@
 		</span>
 	  </div>
 	  <div>
-		<label for="form-shipping">{$LANG.catalogue.shipping_limit}</label>
+		<label for="form-shipping_id">{$LANG.catalogue.shipping_limit}</label>
 		<span>
-		<select name="coupon[shipping][]" id="form-shipping" data-placeholder="{$LANG.catalogue.choose_shipping}" multiple class="chzn-select textbox">
+		<select name="coupon[shipping_id][]" id="form-shipping_id" data-placeholder="{$LANG.catalogue.choose_shipping}" multiple class="chzn-select textbox">
 			{foreach from=$SHIPPING key=k item=v}
 			<option value="{$k}"{if $v} selected="selected"{/if}>{ucwords(str_replace('_',' ',$k))}</option>
             {/foreach}

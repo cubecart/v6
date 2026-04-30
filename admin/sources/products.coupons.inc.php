@@ -55,7 +55,7 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
         'product_id' => null,
         'manufacturer_id' => serialize($_POST['coupon']['manufacturer']),
         'category_id' => serialize($_POST['coupon']['category']),
-        'shipping_id' => serialize($_POST['coupon']['shipping']),
+        'shipping_id' => serialize(isset($_POST['coupon']['shipping_id']) ? $_POST['coupon']['shipping_id'] : array()),
         'starts'  => $_POST['coupon']['starts'],
         'expires'  => $_POST['coupon']['expires'],
         'allowed_uses' => (int)$_POST['coupon']['allowed_uses'],

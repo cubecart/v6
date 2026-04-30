@@ -557,8 +557,11 @@ class Cart
                         }
                     }
                 }
-                if ($coupon['free_shipping_excluded']=='1' && (!isset($this->basket['shipping']) || floatval($this->basket['shipping']['value'])==0)) {
-                    // Minimum subtotal for voucher has not been met
+                if ($coupon['free_shipping_excluded']=='1' && isset($this->basket['shipping']) && floatval($this->basket['shipping']['value'])==0) {
+                    // Cart already has free shipping — coupon is configured to be disallowed in this case.
+                    // Defer the check until a shipping method has actually been selected; rejecting on
+                    // an unset basket['shipping'] confused customers who applied the coupon before
+                    // reaching the shipping picker.
                     $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_free_shipping']);
                     return false;
                 }
@@ -596,15 +599,14 @@ class Cart
 
                 $include = array();
 
-                // Check shipping is allowed
-                if (!empty($coupon['shipping_id'])) {
+                // Check shipping is allowed. Defer the check until a shipping method has been
+                // selected — rejecting on an unset basket['shipping'] meant customers applying
+                // the coupon on the basket page (before the shipping picker) saw a misleading
+                // "shipping method not allowed" error.
+                if (!empty($coupon['shipping_id']) && isset($this->basket['shipping']['folder'])) {
                     $qualifying_shipping = unserialize($coupon['shipping_id']);
                     if(is_array($qualifying_shipping) && count($qualifying_shipping)>0) {
-                        $proceed = false;
-                        if(in_array($this->basket["shipping"]["folder"], $qualifying_shipping)) {
-                            $proceed = true;
-                        }
-                        if(!$proceed) {
+                        if(!in_array($this->basket['shipping']['folder'], $qualifying_shipping)) {
                             $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_shipping']);
                             return false;
                         }
@@ -651,6 +653,8 @@ class Cart
                     }
                 }
 
+                $qualifying_products = array();
+                $incexc = '';
                 if (!empty($coupon['product_id'])) {
                     $qualifying_products = unserialize($coupon['product_id']);
 
