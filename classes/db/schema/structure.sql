@@ -546,6 +546,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_inventory` (
   KEY `featured` (`featured`),
   KEY `use_stock_level` (`use_stock_level`),
   KEY `manufacturer` (`manufacturer`),
+  KEY `idx_latest_products` (`status`, `latest`, `date_added`),
   FULLTEXT KEY `fulltext` (`product_code`,`description`,`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
