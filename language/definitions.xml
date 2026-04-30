@@ -2791,6 +2791,11 @@ This email was sent automatically by the CubeCart setup tool.]]></string>
     <string name="footer_searches" introduced="6.6.4"><![CDATA[%1$s searches]]></string>
     <string name="footer_views" introduced="6.6.4"><![CDATA[%1$s views]]></string>
     <string name="bot_generic" introduced="6.6.4"><![CDATA[Bot]]></string>
+    <string name="refunded_cancelled" introduced="6.6.4"><![CDATA[Refunded / Cancelled]]></string>
+    <string name="days_of_stock" introduced="6.6.4"><![CDATA[Days of Stock]]></string>
+    <string name="top_variants" introduced="6.6.4"><![CDATA[Top Variants]]></string>
+    <string name="vs_prior_period" introduced="6.6.4"><![CDATA[vs. prior period]]></string>
+    <string name="profit" introduced="6.6.4"><![CDATA[Profit]]></string>
   </group>
   <group name="translate">
     <string name="no_phrases_found" introduced="6.4.3"><![CDATA[No phrases found containing &quot;%1$s&quot;.]]></string>
