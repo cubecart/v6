@@ -129,11 +129,20 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
 } else {
     $GLOBALS['main']->addTabControl($lang['email']['title_newsletters'], 'newsletter-list');
     $GLOBALS['main']->addTabControl($lang['email']['title_news_create'], false, currentPage(null, array('action' => 'add')));
+    // Build a template_id => title map once so the list rows can show the
+    // human-readable template name without an N+1 lookup.
+    $template_titles = array();
+    if (($list_templates = $GLOBALS['db']->select('CubeCart_email_template', array('template_id', 'title'))) !== false) {
+        foreach ($list_templates as $t) {
+            $template_titles[(int)$t['template_id']] = (string)$t['title'];
+        }
+    }
     // List newsletters, reverse chronology
     $has_active_send = false;
     if (($contents = $GLOBALS['db']->select('CubeCart_newsletter', false)) !== false) {
         foreach ($contents as $content) {
             $nid = (int)$content['newsletter_id'];
+            $content['template_title'] = isset($template_titles[(int)$content['template_id']]) ? $template_titles[(int)$content['template_id']] : '';
             $content['edit']   = currentPage(null, array('action' => 'edit',   'newsletter_id' => $nid));
             $content['send']   = currentPage(null, array('action' => 'send',   'newsletter_id' => $nid, 'token' => SESSION_TOKEN));
             $content['delete'] = currentPage(null, array('action' => 'delete', 'newsletter_id' => $nid, 'token' => SESSION_TOKEN));

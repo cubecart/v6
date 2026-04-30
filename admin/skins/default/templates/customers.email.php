@@ -46,12 +46,16 @@
          </div>
       </fieldset>
       * {$LANG.email.dbl_opt_strict}
+      <p><input type="submit" value="{$LANG.common.save}"></p>
    </div>
    <div id="email_html" class="tab_content">
       <h3>{$LANG.email.title_content_html}</h3>
       <p>{$LANG.email.help_content_html}</p>
       <textarea name="newsletter[content_html]" id="content_html" class="textbox fck">{$NEWSLETTER.content_html|escape:"html"}</textarea>
-      <p><button type="button" class="button" id="preview_newsletter" onclick="previewNewsletter()">{$LANG.common.preview}</button></p>
+      <p>
+         <input type="submit" value="{$LANG.common.save}">
+         <button type="button" class="button" id="preview_newsletter" onclick="previewNewsletter()">{$LANG.common.preview}</button>
+      </p>
    </div>
    <div id="send_test" class="tab_content">
       <h3>{$LANG.email.title_send_test}</h3>
@@ -66,11 +70,8 @@
    {/foreach}
    {/if}
 {include file='templates/element.hook_form_content.php'}
-   <div class="form_control">
-      <input type="hidden" name="newsletter[newsletter_id]" value="{$NEWSLETTER.newsletter_id}">
-      <input type="hidden" name="previous-tab" id="previous-tab" value="">
-      <input type="submit" value="{$LANG.common.save}">
-   </div>
+   <input type="hidden" name="newsletter[newsletter_id]" value="{$NEWSLETTER.newsletter_id}">
+   <input type="hidden" name="previous-tab" id="previous-tab" value="">
 
 </form>
 {/if}
@@ -94,25 +95,38 @@
       <thead>
          <tr>
             <td>{$LANG.email.news_subject}</td>
+            <td>{$LANG.email.news_sender_name}</td>
+            <td>{$LANG.email.news_sender_email}</td>
+            <td class="text-center" nowrap="nowrap">{$LANG.email.news_dbl_opt_only}</td>
+            <td>{$LANG.email.email_template}</td>
             <td>{$LANG.common.created}</td>
             <td>{$LANG.email.news_status}</td>
+            <td></td>
             <td></td>
          </tr>
       </thead>
       <tbody>
          {foreach from=$NEWSLETTERS item=newsletter}
          <tr>
-            <td><a href="{$newsletter.edit}" class="edit">{$newsletter.subject}</a></td>
+            <td>{if $newsletter.can_edit}<a href="{$newsletter.edit}" class="edit">{$newsletter.subject}</a>{else}{$newsletter.subject}{/if}</td>
+            <td>{$newsletter.sender_name}</td>
+            <td>{$newsletter.sender_email}</td>
+            <td class="text-center">{if $newsletter.dbl_opt}<i class="fa fa-check" style="color:#28a745"></i>{else}<i class="fa fa-times" style="color:#dc3545"></i>{/if}</td>
+            <td>{$newsletter.template_title|default:'&mdash;' nofilter}</td>
             <td>{$newsletter.date_created_formatted}</td>
             <td>{$newsletter.status_text}</td>
-            <td><span class="actions">
-               <a href="#" class="preview" title="{$LANG.common.preview}" onclick="previewNewsletterRow({$newsletter.newsletter_id});return false;"><i class="fa fa-search" title="{$LANG.common.preview}"></i></a>
+            <td>
+               <span class="actions">
                {if $newsletter.can_edit}
                <a href="{$newsletter.edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
-               {/if}
+               {/if}   
+               <a href="#" class="preview" title="{$LANG.common.preview}" onclick="previewNewsletterRow({$newsletter.newsletter_id});return false;"><i class="fa fa-search" title="{$LANG.common.preview}"></i></a>
                {if $newsletter.can_delete}
                <a href="{$newsletter.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
                {/if}
+               </span>
+            </td>
+            <td class="text-center">
                {if $newsletter.can_send}
                <a href="{$newsletter.send}" class="button tiny confirm" title="{$LANG.email.confirm_send}"><i class="fa fa-plane"></i> {$LANG.common.send}</a>
                {/if}
@@ -125,7 +139,6 @@
                {if $newsletter.can_cancel}
                <a href="{$newsletter.cancel}" class="button tiny delete confirm" title="{$LANG.email.confirm_cancel}">{$LANG.common.cancel}</a>
                {/if}
-               </span>
             </td>
          </tr>
          {/foreach}
