@@ -24,19 +24,69 @@ if (isset($_GET['resend']) && $_GET['resend']>0 && isset($_GET['token']) && $_GE
     $email_data = $GLOBALS['db']->select('CubeCart_email_log', false, array('id' => (int)$_GET['resend']));
 
     if ($email_data) {
-        $original_to = $email_data[0]['to'];
-        $contents = array(
-            'subject'      => $email_data[0]['subject'],
-            'content_html' => $email_data[0]['content_html'],
-        );
-        // Route resends through Mailer::sendEmail() so hooks fire, the email is logged
-        // through the standard path, and a fresh open-tracking pixel/token is generated
-        // (instead of inheriting the original's tracking state).
+        // Resend bypasses Mailer::sendEmail() because the stored content is already
+        // template-wrapped and contains literal `{`/`}` from CSS/JSON-LD that Smarty's
+        // string-fetch would choke on. Manual mailer path, but with a freshly generated
+        // open-tracking token so the new log row tracks independently of the original.
         $mailer = new Mailer();
-        $result = $mailer->sendEmail($original_to, $contents);
+        $mailer->Subject = $email_data[0]['subject'];
 
-        if ($result) {
-            $GLOBALS['main']->successMessage(sprintf($lang['statistics']['email_resent'], htmlspecialchars($contents['subject']), htmlspecialchars($original_to)));
+        $body_html = $email_data[0]['content_html'];
+        $new_token = null;
+        if (!empty($body_html) && $GLOBALS['config']->get('config', 'email_track_opens')) {
+            $new_token = bin2hex(random_bytes(16));
+            $new_pixel_url = rtrim($GLOBALS['storeURL'], '/').'/track/open.php?t='.$new_token;
+            $new_pixel_tag = '<img src="'.htmlspecialchars($new_pixel_url, ENT_QUOTES).'" width="1" height="1" alt="" border="0" style="display:none;max-height:0;visibility:hidden;overflow:hidden;mso-hide:all;">';
+            // Replace any existing tracking pixel so the resend doesn't ping both rows
+            $stripped = preg_replace('#<img[^>]+/track/open\.php\?t=[^"\']*["\'][^>]*>#i', '', $body_html);
+            if ($stripped !== null) {
+                $body_html = $stripped;
+            }
+            if (stripos($body_html, '</body>') !== false) {
+                $body_html = str_ireplace('</body>', $new_pixel_tag.'</body>', $body_html);
+            } else {
+                $body_html .= $new_pixel_tag;
+            }
+        }
+
+        if (empty($body_html)) {
+            $mailer->IsHTML(false);
+            $mailer->Body = $email_data[0]['content_text'];
+        } else {
+            $mailer->Body = $body_html;
+            $mailer->AltBody = $email_data[0]['content_text'];
+        }
+
+        $recipients = explode(',', $email_data[0]['to']);
+        foreach ($recipients as $recipient) {
+            if ($parts = User::getEmailAddressParts($recipient)) {
+                $mailer->AddAddress($parts['email']);
+            }
+        }
+        if ($from = User::getEmailAddressParts($email_data[0]['from'])) {
+            $mailer->Sender = $from['email'];
+        }
+
+        $send_result = $mailer->Send();
+
+        // Build the new log row from scratch (don't carry tracking state from the original).
+        $new_row = array(
+            'subject'          => $email_data[0]['subject'],
+            'content_html'     => $body_html,
+            'content_text'     => $email_data[0]['content_text'],
+            'to'               => $email_data[0]['to'],
+            'from'             => $email_data[0]['from'],
+            'result'           => $send_result ? 1 : 0,
+            'email_method'     => $email_data[0]['email_method'],
+            'email_content_id' => $email_data[0]['email_content_id'],
+            'attachment'       => $email_data[0]['attachment'],
+            'fail_reason'      => !empty($mailer->ErrorInfo) ? htmlspecialchars($mailer->ErrorInfo, ENT_QUOTES) : '',
+            'tracking_token'   => $new_token,
+        );
+        $GLOBALS['db']->insert('CubeCart_email_log', $new_row);
+
+        if ($send_result) {
+            $GLOBALS['main']->successMessage(sprintf($lang['statistics']['email_resent'], htmlspecialchars($email_data[0]['subject']), htmlspecialchars($email_data[0]['to'])));
         } else {
             $GLOBALS['main']->errorMessage($lang['statistics']['email_not_resent']);
         }
