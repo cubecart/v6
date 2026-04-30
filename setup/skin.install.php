@@ -61,10 +61,10 @@
 	  <fieldset>
 		<div style="text-align:center;">
 		  <label for="select_language" class="visually-hidden" style="position:absolute; clip:rect(0 0 0 0); width:1px; height:1px; overflow:hidden;">Language</label>
-		  <select name="select_language" id="select_language" class="textbox" style="display:inline-block;" onchange="this.form.submit()">
+		  <select name="select_language" id="select_language" class="textbox" style="display:inline-block;">
 			{foreach from=$API_LANGUAGES item=lang}<option value="{$lang.code}"{$lang.selected}>{$lang.name_native}</option>{/foreach}
 		  </select>
-		  <noscript><p style="margin-top:12px;"><input type="submit" value="Go &rarr;" /></p></noscript>
+		  <div style="margin-top: 12px;"><button type="submit" aria-label="Go" style="cursor: pointer;">&rarr;</button></div>
 		</div>
 	  </fieldset>
 	  {/if}
