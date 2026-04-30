@@ -334,11 +334,23 @@ if (isset($_GET['action'])) {
             $GLOBALS['smarty']->assign('TRANS', array('cat_id' => (int)$_GET['cat_id']));
         }
         if (($languages = $GLOBALS['language']->listLanguages()) !== false) {
+            // Disable codes already in use by another translation of this category;
+            // exempt the current edit's translation so it stays pre-selected.
+            $used = array();
+            $existing = $GLOBALS['db']->select('CubeCart_category_language', array('language', 'translation_id'), array('cat_id' => (int)$_GET['cat_id']));
+            if ($existing) {
+                $current_tid = isset($_GET['translation_id']) ? (int)$_GET['translation_id'] : 0;
+                foreach ($existing as $row) {
+                    if ((int)$row['translation_id'] === $current_tid) continue;
+                    $used[$row['language']] = true;
+                }
+            }
             foreach ($languages as $option) {
                 if ($option['code'] == $GLOBALS['config']->get('config', 'default_language')) {
                     continue;
                 }
                 $option['selected'] = ($option['code'] == $translation[0]['language']) ? ' selected="selected"' : '';
+                $option['disabled'] = isset($used[$option['code']]) ? ' disabled="disabled"' : '';
                 $smarty_data['languages'][] = $option;
             }
         }

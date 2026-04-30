@@ -175,7 +175,30 @@ if (isset($_GET['action'])) {
         $GLOBALS['smarty']->assign('ADD_EDIT_DOCUMENT', $lang['documents']['document_create']);
         $data = array();
     }
-    ## Generate language list
+    ## Generate language list. On translate, mark codes already in use as disabled
+    ## so the merchant can see them but can't pick a duplicate. The doc being
+    ## translated has its own row in CubeCart_documents (parent + children share the
+    ## same parent_id once a translation row is added).
+    $used = array();
+    if ($action === 'translate' && $doc_id > 0) {
+        $parent_id = isset($document[0]['doc_parent_id']) && (int)$document[0]['doc_parent_id'] > 0
+            ? (int)$document[0]['doc_parent_id']
+            : $doc_id;
+        $siblings = $GLOBALS['db']->select(
+            'CubeCart_documents',
+            array('doc_id', 'doc_lang'),
+            '`doc_id` = '.$parent_id.' OR `doc_parent_id` = '.$parent_id
+        );
+        if ($siblings) {
+            foreach ($siblings as $row) {
+                // Don't mark the doc currently being edited as used.
+                if ((int)$row['doc_id'] === $doc_id) continue;
+                if (!empty($row['doc_lang'])) {
+                    $used[$row['doc_lang']] = true;
+                }
+            }
+        }
+    }
     if (($languages = $GLOBALS['language']->listLanguages()) !== false) {
         foreach ($languages as $option) {
             if ($action === 'translate' && $option['code'] == $GLOBALS['config']->get('config', 'default_language')) {
@@ -183,6 +206,7 @@ if (isset($_GET['action'])) {
             }
 
             $option['selected'] = ((isset($document[0]['doc_lang']) && $option['code'] == $document[0]['doc_lang']) || (!isset($document[0]['doc_lang']) && $option['code']==$GLOBALS['config']->get('config', 'default_language'))) ? ' selected="selected"' : '';
+            $option['disabled'] = isset($used[$option['code']]) ? ' disabled="disabled"' : '';
             $smarty_data['languages'][] = $option;
         }
         $GLOBALS['smarty']->assign('LANGUAGES', $smarty_data['languages']);

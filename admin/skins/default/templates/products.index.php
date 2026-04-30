@@ -119,6 +119,7 @@
                   {foreach from=$product.translations item=translation}
                   <a href="{$translation.link}"><img src="language/flags/{$translation.language}.png" alt="{$translation.language}" class="flag"></a>
                   {/foreach}
+                  {if !$product.fully_translated}<a href="{$product.translate}" title="{$LANG.translate.trans_add}"><i class="fa fa-plus-circle" title="{$LANG.translate.trans_add}"></i></a>{/if}
                </td>
                <td style="text-align:center"><input type="hidden" name="status[{$product.product_id}]" id="status_{$product.product_id}" value="{$product.status}" class="toggle"></td>
                <td style="text-align:center" nowrap="nowrap">
@@ -797,7 +798,7 @@
       <fieldset>
          <div><label for="trans_name">{$LANG.catalogue.product_name}</label><span><input type="text" name="translate[name]" id="trans_name" value="{$TRANS.name}" class="textbox"></span></div>
          <div><label for="trans_lang">{$LANG.common.language}</label><span><select name="translate[language]" id="trans_lang" class="textbox">
-            {if isset($LANGUAGES)} {foreach from=$LANGUAGES item=language}<option value="{$language.code}"{$language.selected}>{$language.title}</option>{/foreach} {/if}
+            {if isset($LANGUAGES)} {foreach from=$LANGUAGES item=language}<option value="{$language.code}"{$language.selected}{$language.disabled}>{$language.title}</option>{/foreach} {/if}
             </select></span>
          </div>
       </fieldset>

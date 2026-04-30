@@ -734,11 +734,24 @@ if (isset($_GET['action'])) {
             $GLOBALS['smarty']->assign('TRANS', array('product_id' => (int)$_GET['product_id']));
         }
         if (($languages = $GLOBALS['language']->listLanguages()) !== false) {
+            // Mark language codes already in use by another translation of this
+            // product as disabled — visible to the merchant but not selectable. The
+            // current edit's translation stays enabled so it remains pre-selected.
+            $used = array();
+            $existing = $GLOBALS['db']->select('CubeCart_inventory_language', array('language', 'translation_id'), array('product_id' => (int)$_GET['product_id']));
+            if ($existing) {
+                $current_tid = isset($_GET['translation_id']) ? (int)$_GET['translation_id'] : 0;
+                foreach ($existing as $row) {
+                    if ((int)$row['translation_id'] === $current_tid) continue;
+                    $used[$row['language']] = true;
+                }
+            }
             foreach ($languages as $option) {
                 if ($option['code'] == $GLOBALS['config']->get('config', 'default_language')) {
                     continue;
                 }
                 $option['selected'] = ($option['code'] == $translation[0]['language']) ? ' selected="selected"' : '';
+                $option['disabled'] = isset($used[$option['code']]) ? ' disabled="disabled"' : '';
                 $smarty_data['list_langs'][] = $option;
             }
             $GLOBALS['smarty']->assign('LANGUAGES', $smarty_data['list_langs']);
@@ -1400,6 +1413,8 @@ if (isset($_GET['action'])) {
                     $result['translations'][] = $translation;
                 }
             }
+            $result['translate'] = currentPage(null, array('action' => 'translate', 'product_id' => $result['product_id']));
+            $result['fully_translated'] = $GLOBALS['language']->fullyTranslated('product', (int)$result['product_id']);
             $updated_time  = $result['updated'];
             $result['updated']  = $updated_time ? $updated_time : $lang['common']['unknown'];
             $smarty_data['products'][] = $result;

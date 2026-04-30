@@ -68,7 +68,7 @@
 	<fieldset><legend>{$LANG.common.general}</legend>
 	  <div><label for="doc-name">{$LANG.documents.document_title}</label><span><input type="text" name="document[doc_name]" id="doc-name" value="{$DOCUMENT.doc_name}" class="textbox required"></span></div>
 	  <div><label for="doc-lang">{$LANG.common.language}</label><span><select name="document[doc_lang]" id="doc-lang" class="textbox">
-		{foreach from=$LANGUAGES item=language}<option value="{$language.code}"{$language.selected}>{$language.title}</option>{/foreach}
+		{foreach from=$LANGUAGES item=language}<option value="{$language.code}"{$language.selected}{$language.disabled}>{$language.title}</option>{/foreach}
 	  </select></span></div>
 		<div><label for="doc-status">{$LANG.common.status}</label><span><input type="hidden" id="doc_status" name="document[doc_status]" value="{$DOCUMENT.doc_status}" class="toggle"></span></div>
 		<div><label for="doc-hide_title">{$LANG.documents.hide_title}</label><span><input type="hidden" id="doc-hide_title" name="document[hide_title]" value="{$DOCUMENT.hide_title}" class="toggle"></span></div>
