@@ -29,3 +29,15 @@ DEALLOCATE PREPARE stmt; #EOQ
 
 INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) VALUES ('config', 'catalogue_related_products', '1') ON DUPLICATE KEY UPDATE `config_key`=`config_key`; #EOQ
 INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) VALUES ('config', 'catalogue_related_products_count', '5') ON DUPLICATE KEY UPDATE `config_key`=`config_key`; #EOQ
+
+ALTER TABLE `CubeCart_email_log` ADD COLUMN `tracking_token` VARCHAR(32) NULL DEFAULT NULL AFTER `email_method`; #EOQ
+ALTER TABLE `CubeCart_email_log` ADD COLUMN `seen_at` TIMESTAMP NULL DEFAULT NULL AFTER `tracking_token`; #EOQ
+ALTER TABLE `CubeCart_email_log` ADD COLUMN `seen_count` INT UNSIGNED NOT NULL DEFAULT 0 AFTER `seen_at`; #EOQ
+
+SET @c := (SELECT COUNT(*) FROM information_schema.STATISTICS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'CubeCart_email_log' AND INDEX_NAME = 'tracking_token'); #EOQ
+SET @s := IF(@c = 0, 'ALTER TABLE `CubeCart_email_log` ADD INDEX `tracking_token` (`tracking_token`)', 'SELECT 1'); #EOQ
+PREPARE stmt FROM @s; #EOQ
+EXECUTE stmt; #EOQ
+DEALLOCATE PREPARE stmt; #EOQ
+
+INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) VALUES ('config', 'email_track_opens', '1') ON DUPLICATE KEY UPDATE `config_key`=`config_key`; #EOQ

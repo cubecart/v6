@@ -256,6 +256,22 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                 $this->_text = $this->_htmlToText($this->_html);
             }
 
+            // Open tracking: stamp a 1x1 pixel with a unique token onto the HTML body
+            // so we can record the open in CubeCart_email_log when the recipient
+            // (or their mail client's prefetcher) loads it. The text alternative is
+            // never tracked and the toggle can be disabled per-store.
+            $tracking_token = null;
+            if ($GLOBALS['config']->get('config', 'email_track_opens') && !empty($this->_html)) {
+                $tracking_token = bin2hex(random_bytes(16));
+                $pixel_url = rtrim($GLOBALS['storeURL'], '/').'/track/open.php?t='.$tracking_token;
+                $pixel_tag = '<img src="'.htmlspecialchars($pixel_url, ENT_QUOTES).'" width="1" height="1" alt="" border="0" style="display:none;max-height:0;visibility:hidden;overflow:hidden;mso-hide:all;">';
+                if (stripos($this->_html, '</body>') !== false) {
+                    $this->_html = str_ireplace('</body>', $pixel_tag.'</body>', $this->_html);
+                } else {
+                    $this->_html .= $pixel_tag;
+                }
+            }
+
             $this->Body            = $this->_html;
             $this->AltBody         = $this->_text;
             $this->AltBodyEncoding = 'quoted-printable';
@@ -279,7 +295,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
             if(!$disable_send) {
                 $result = $this->Send();
             }
-            
+
             // Log email
             $email_data = array(
                 'subject' => $this->Subject,
@@ -290,7 +306,8 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                 'result' => $result,
                 'email_method' => $GLOBALS['config']->get('config', 'email_method') ?: 'phpmail',
                 'email_content_id' => $this->_email_content_id,
-                'fail_reason' => !empty($this->ErrorInfo) ? htmlentities($this->ErrorInfo, ENT_QUOTES) : ''
+                'fail_reason' => !empty($this->ErrorInfo) ? htmlentities($this->ErrorInfo, ENT_QUOTES) : '',
+                'tracking_token' => $tracking_token,
             );
             $log_days = $GLOBALS['config']->get('config', 'r_email');
             if (ctype_digit((string)$log_days) &&  $log_days > 0) {

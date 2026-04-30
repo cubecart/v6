@@ -918,6 +918,7 @@
     <string name="quantity" introduced="5.0.0"><![CDATA[Quantity]]></string>
     <string name="quantity_abbreviated" introduced="6.0.0"><![CDATA[Qty]]></string>
     <string name="read" introduced="5.0.0"><![CDATA[Read]]></string>
+    <string name="opened" introduced="6.6.4"><![CDATA[Opened]]></string>
     <string name="read_only" introduced="5.0.0"><![CDATA[Read-Only]]></string>
     <string name="received" introduced="5.0.0"><![CDATA[Response received]]></string>
     <string name="refresh" introduced="5.0.0"><![CDATA[Refresh]]></string>
@@ -2427,6 +2428,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="product_popular_sales" introduced="5.0.0"><![CDATA[Product Sales]]></string>
     <string name="product_related" introduced="6.6.4"><![CDATA[Show 'Customers who bought this also bought' on basket?]]></string>
     <string name="product_related_number" introduced="6.6.4"><![CDATA[Number of related products to display]]></string>
+    <string name="email_track_opens" introduced="6.6.4"><![CDATA[Track when emails are opened (adds a 1x1 pixel to outgoing HTML emails)]]></string>
     <string name="product_precis" introduced="5.0.0"><![CDATA[Maximum Short Description Length]]></string>
     <string name="proxy_enable" introduced="5.0.0"><![CDATA[Does this server use a proxy?]]></string>
     <string name="proxy_host" introduced="5.0.0"><![CDATA[Proxy Host]]></string>
