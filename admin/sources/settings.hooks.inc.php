@@ -149,6 +149,7 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
     if ($raw_hook_code !== null && strlen($raw_hook_code) > 0 && isset($_GET['hook_id']) && is_numeric($_GET['hook_id'])) {
         if (($hf = $GLOBALS['db']->select('CubeCart_hooks', false, array('hook_id' => (int)$_GET['hook_id']))) !== false) {
             $hf_full = $resolve_hook_path($hf[0]);
+            $hf_dir  = dirname($hf_full);
             if (file_exists($hf_full) && is_writable($hf_full)) {
                 // Only save if content actually changed
                 if (md5($raw_hook_code) !== md5_file($hf_full)) {
@@ -175,6 +176,14 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
                     } else {
                         $GLOBALS['main']->errorMessage($lang['hooks']['error_hook_file_save']);
                     }
+                }
+            } elseif (!file_exists($hf_full) && is_dir($hf_dir) && is_writable($hf_dir)) {
+                // File is missing but the plugin's hooks/ directory exists and is writable —
+                // create the file from the editor content. No backup since there's nothing to preserve.
+                if (file_put_contents($hf_full, $raw_hook_code) !== false) {
+                    $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_file_saved']);
+                } else {
+                    $GLOBALS['main']->errorMessage($lang['hooks']['error_hook_file_save']);
                 }
             }
         }
@@ -205,7 +214,20 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
                 }
                 httpredir(currentPage(array('action', 'hook_id')));
             } else {
-                if ($GLOBALS['db']->insert('CubeCart_hooks', $_POST['hook'])) {
+                $new_hook_id = $GLOBALS['db']->insert('CubeCart_hooks', $_POST['hook']);
+                if ($new_hook_id) {
+                    // If the merchant supplied PHP in the Hook Code editor, write the file now.
+                    $raw_hook_code = isset($GLOBALS['RAW']['POST']['hook_file_code']) ? $GLOBALS['RAW']['POST']['hook_file_code'] : null;
+                    if ($raw_hook_code !== null && strlen($raw_hook_code) > 0) {
+                        $row = $GLOBALS['db']->select('CubeCart_hooks', false, array('hook_id' => (int)$new_hook_id));
+                        if ($row) {
+                            $hf_full = $resolve_hook_path($row[0]);
+                            $hf_dir  = dirname($hf_full);
+                            if (!file_exists($hf_full) && is_dir($hf_dir) && is_writable($hf_dir)) {
+                                file_put_contents($hf_full, $raw_hook_code);
+                            }
+                        }
+                    }
                     $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_create']);
                     httpredir(currentPage(array('action', 'hook_id')));
                 } else {
@@ -233,10 +255,60 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
         }
         httpredir(currentPage());
     }
+
+    // Delete all hook rows for a plugin whose folder no longer exists. Only fires
+    // when the plugin folder is genuinely missing — refuses on installed plugins so
+    // a stray click can't wipe live hook configuration.
+    if (isset($_GET['delete_orphans']) && isset($_GET['token']) && $_GET['token'] === SESSION_TOKEN) {
+        $orphan_plugin = preg_replace('#[^a-zA-Z0-9._-]#', '', (string)$_GET['delete_orphans']);
+        if ($orphan_plugin !== '' && !is_dir(CC_ROOT_DIR.'/modules/plugins/'.$orphan_plugin)) {
+            $GLOBALS['db']->delete('CubeCart_hooks', array('plugin' => $orphan_plugin));
+            $GLOBALS['main']->successMessage(sprintf($lang['hooks']['notify_orphans_deleted'], $orphan_plugin));
+        }
+        httpredir(currentPage(array('delete_orphans', 'token')));
+    }
+
+    // Delete a single hook row whose backing file is missing. Useful when a plugin
+    // is half-uninstalled (folder still present but a hook PHP file was removed).
+    if (isset($_GET['delete_hook']) && is_numeric($_GET['delete_hook']) && isset($_GET['token']) && $_GET['token'] === SESSION_TOKEN) {
+        $del_id = (int)$_GET['delete_hook'];
+        if (($hook = $GLOBALS['db']->select('CubeCart_hooks', false, array('hook_id' => $del_id))) !== false) {
+            $hf_full = $resolve_hook_path($hook[0]);
+            // Only allow deletion if the hook file is genuinely absent.
+            if (!file_exists($hf_full)) {
+                $GLOBALS['db']->delete('CubeCart_hooks', array('hook_id' => $del_id));
+                $GLOBALS['main']->successMessage($lang['hooks']['notify_orphan_hook_deleted']);
+            }
+        }
+        httpredir(currentPage(array('delete_hook', 'token')));
+    }
 }
 // Create list of enabled plugin folders
 $plugins = $GLOBALS['hooks']->scan_all_plugins('plugins', true);
 $smarty_data = array();
+
+// Helper used by both the index list and the per-plugin view: resolve a hook
+// file's absolute path the same way the loader does.
+$resolve_hook_path_check = function($plugin, $hook_row) {
+    $hf_path = (!empty($hook_row['filepath'])) ? $hook_row['filepath'] : 'hooks/'.$hook_row['trigger'].'.php';
+    $hf_path = preg_replace(array('#[^a-z0-9.\\\\_/-]#i', '#\.{1,2}/#'), '', $hf_path);
+    return CC_ROOT_DIR.'/modules/plugins/'.$plugin.'/'.$hf_path;
+};
+
+// Allow the per-plugin view for orphaned plugins (folder gone, hook rows still in
+// CubeCart_hooks). Synthesise an entry in $plugins so the breadcrumb / PLUGIN var
+// downstream don't blow up.
+if (isset($_GET['plugin']) && !is_numeric($_GET['plugin']) && preg_match('#^[a-zA-Z0-9._-]+$#', (string)$_GET['plugin'])) {
+    if (!isset($plugins[(string)$_GET['plugin']])) {
+        $orphan_name = (string)$_GET['plugin'];
+        if ($GLOBALS['db']->count('CubeCart_hooks', 'hook_id', array('plugin' => $orphan_name)) > 0) {
+            $plugins[$orphan_name] = array(
+                'plugin' => $orphan_name,
+                'name'   => str_replace('_', ' ', $orphan_name),
+            );
+        }
+    }
+}
 
 if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_numeric($_GET['plugin'])) {
     $GLOBALS['gui']->addBreadcrumb(ucwords($plugins[$_GET['plugin']]['name']), currentPage(array('hook_id', 'action')));
@@ -253,7 +325,11 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
     $this_plugin = (isset($_POST['hook']['plugin'])) ? $_POST['hook']['plugin'] : $_GET['plugin'];
 
     if (isset($_GET['hook_id']) && is_numeric($_GET['hook_id']) || isset($_GET['action']) && $_GET['action'] == 'add') {
-        $GLOBALS['main']->AddTabControl($lang['hooks']['title_hook'], 'hook_edit');
+        $is_add_hook = (isset($_GET['action']) && $_GET['action'] == 'add');
+        $GLOBALS['main']->AddTabControl(
+            $is_add_hook ? $lang['hooks']['title_hook_add'] : $lang['hooks']['title_hook_edit'],
+            'hook_edit'
+        );
         if (isset($_GET['hook_id'])) {
             // Edit hook
             if (($hook = $GLOBALS['db']->select('CubeCart_hooks', false, array('hook_id' => (int)$_GET['hook_id']))) !== false) {
@@ -266,6 +342,7 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
                 $hook_filepath = preg_replace(array('#[^a-z0-9.\\\\_/-]#i', '#\.{1,2}/#'), '', $hook_filepath);
                 $hook_full_path = CC_ROOT_DIR.'/modules/plugins/'.$hook_data['plugin'].'/'.$hook_filepath;
 
+                $hook_dir = dirname($hook_full_path);
                 if (file_exists($hook_full_path)) {
                     $hook_writable = is_writable($hook_full_path);
 
@@ -309,6 +386,19 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
                         'code' => base64_encode(file_get_contents($hook_full_path)),
                         'writable' => $hook_writable,
                         'backups' => $hook_backups,
+                        'missing' => false,
+                    );
+                    $GLOBALS['smarty']->assign('HOOK_FILE', $hook_file_data);
+                    $GLOBALS['main']->AddTabControl($lang['hooks']['title_hook_code'], 'hook_code');
+                } elseif (is_dir($hook_dir)) {
+                    // File missing but the hooks/ directory is on disk — let the merchant
+                    // recreate it via the editor. Save path also handles this case.
+                    $hook_file_data = array(
+                        'path' => 'modules/plugins/'.$hook_data['plugin'].'/'.$hook_filepath,
+                        'code' => base64_encode(''),
+                        'writable' => is_writable($hook_dir),
+                        'backups' => array(),
+                        'missing' => true,
                     );
                     $GLOBALS['smarty']->assign('HOOK_FILE', $hook_file_data);
                     $GLOBALS['main']->AddTabControl($lang['hooks']['title_hook_code'], 'hook_code');
@@ -325,6 +415,18 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
                 }
                 $GLOBALS['smarty']->assign('PLUGINS', $smarty_data['plugins']);
             }
+            // Expose an empty Hook Code editor on the add screen. The save handler
+            // resolves the actual filesystem path from the new row's plugin/trigger/filepath
+            // and writes the file once the hook has been inserted.
+            $GLOBALS['smarty']->assign('HOOK_FILE', array(
+                'path'     => sprintf($lang['hooks']['hook_file_path_pending'], 'modules/plugins/'.$this_plugin.'/hooks/'),
+                'code'     => base64_encode(''),
+                'writable' => is_dir(CC_ROOT_DIR.'/modules/plugins/'.$this_plugin.'/hooks') && is_writable(CC_ROOT_DIR.'/modules/plugins/'.$this_plugin.'/hooks'),
+                'backups'  => array(),
+                'missing'  => true,
+                'pending'  => true,
+            ));
+            $GLOBALS['main']->AddTabControl($lang['hooks']['title_hook_code'], 'hook_code');
         }
 
         // List dynamic hooks
@@ -376,18 +478,23 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
             }
         }
 
-        // Display all hooks for the selected plugin
+        // Display all hooks for the selected plugin. Each row carries a `file_missing`
+        // flag and a `delete` URL for half-installed plugins (folder exists but a
+        // hook file was removed) so the merchant can clean up without dropping into SQL.
         if (($hook_list = $GLOBALS['db']->select('CubeCart_hooks', false, array('plugin' => $this_plugin))) !== false) {
             foreach ($hook_list as $hook) {
-                // Edit link
                 if (empty($hook['hook_name'])) {
                     $hook['hook_name'] = $hook['trigger'];
                 }
                 $hook['edit'] = currentPage(null, array('hook_id' => $hook['hook_id']));
+                $hook['file_missing'] = !file_exists($resolve_hook_path_check($this_plugin, $hook));
+                $hook['delete'] = currentPage(null, array('delete_hook' => $hook['hook_id'], 'token' => SESSION_TOKEN));
                 $smarty_data['hooks'][] = $hook;
             }
             $GLOBALS['smarty']->assign('HOOKS', $smarty_data['hooks']);
         }
+        // Revert is only possible if the plugin's config.xml is on disk for install() to read.
+        $GLOBALS['smarty']->assign('CAN_REVERT', file_exists(CC_ROOT_DIR.'/modules/plugins/'.$this_plugin.'/config.xml'));
         $GLOBALS['smarty']->assign('DISPLAY_HOOKS', true);
         $GLOBALS['smarty']->assign('PLUGIN', $plugins[$this_plugin]['name']);
     }
@@ -395,14 +502,52 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
     $GLOBALS['main']->AddTabControl($lang['hooks']['title_hook'], 'plugins');
     $GLOBALS['main']->AddTabControl($lang['hooks']['title_code_snippets'], 'snippets');
     $GLOBALS['main']->AddTabControl($lang['hooks']['title_import_code_snippets'], 'snippets_import');
-    ## List all plugins using hooks
+    ## List all plugins using hooks. Two-pass build:
+    ##   1. Folder-based plugins (the legacy "installed" list).
+    ##   2. Distinct plugins from CubeCart_hooks whose folder no longer exists -
+    ##      these are flagged orphaned with a delete-all-hooks action so admins
+    ##      can clean up the "Hook 'X' was not found" notices without SQL.
+    $plugin_rows = array();
     if (isset($plugins) && is_array($plugins)) {
         foreach ($plugins as $plugin) {
             $plugin['edit'] = currentPage(null, array('plugin' => $plugin['plugin']));
-            $smarty_data['plugins'][] = $plugin;
+            $plugin['orphaned'] = false;
+            $plugin_rows[$plugin['plugin']] = $plugin;
         }
-        $GLOBALS['smarty']->assign('PLUGINS', isset($smarty_data['plugins']) ? $smarty_data['plugins'] : array());
     }
+    $db_plugins = $GLOBALS['db']->misc(
+        sprintf('SELECT DISTINCT `plugin` FROM `%sCubeCart_hooks` WHERE `plugin` <> \'\'', $GLOBALS['config']->get('config', 'dbprefix')),
+        false
+    );
+    if (is_array($db_plugins)) {
+        foreach ($db_plugins as $r) {
+            $name = (string)$r['plugin'];
+            if ($name === '' || isset($plugin_rows[$name])) continue;
+            $plugin_rows[$name] = array(
+                'plugin'   => $name,
+                'name'     => str_replace('_', ' ', $name),
+                'edit'     => currentPage(null, array('plugin' => $name)),
+                'orphaned' => true,
+                'delete'   => currentPage(null, array('delete_orphans' => $name, 'token' => SESSION_TOKEN)),
+            );
+        }
+    }
+    // Tally hook counts per plugin so the list can show "(N hooks, M missing)".
+    foreach ($plugin_rows as $key => $p) {
+        $count = (int)$GLOBALS['db']->count('CubeCart_hooks', 'hook_id', array('plugin' => $key));
+        $plugin_rows[$key]['hooks_total'] = $count;
+        $missing = 0;
+        if ($count > 0 && empty($p['orphaned'])) {
+            if (($hook_rows = $GLOBALS['db']->select('CubeCart_hooks', array('trigger', 'filepath'), array('plugin' => $key))) !== false) {
+                foreach ($hook_rows as $hr) {
+                    if (!file_exists($resolve_hook_path_check($key, $hr))) $missing++;
+                }
+            }
+        }
+        $plugin_rows[$key]['hooks_missing'] = $missing;
+    }
+    ksort($plugin_rows);
+    $GLOBALS['smarty']->assign('PLUGINS', array_values($plugin_rows));
     $GLOBALS['smarty']->assign('DISPLAY_PLUGINS', true);
 
     if ($smarty_data['snippets'] = $GLOBALS['db']->select('CubeCart_code_snippet', '*', array(), array('priority' => 'ASC'))) {

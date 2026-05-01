@@ -1560,6 +1560,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="path_to_file_desc" introduced="6.1.14"><![CDATA[Default file is %1$s]]></string>
     <string name="title_hook" introduced="5.0.0"><![CDATA[Hooks]]></string>
     <string name="title_hook_add" introduced="5.0.0"><![CDATA[Add Hook]]></string>
+    <string name="title_hook_edit" introduced="6.6.4"><![CDATA[Edit Hook]]></string>
     <string name="title_hook_available" introduced="5.0.0"><![CDATA[Available Hooks]]></string>
     <string name="title_hook_code" introduced="6.6.0"><![CDATA[Hook Code]]></string>
     <string name="title_hook_configure" introduced="5.0.0"><![CDATA[Edit Hook]]></string>
@@ -1578,6 +1579,17 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_plugin" introduced="5.0.0"><![CDATA[Extension]]></string>
     <string name="title_plugins" introduced="5.0.0"><![CDATA[Extensions]]></string>
     <string name="title_plugins_installed" introduced="5.0.0"><![CDATA[Installed Extensions (enabled only)]]></string>
+    <string name="orphaned" introduced="6.6.4"><![CDATA[Orphaned]]></string>
+    <string name="orphaned_plugin_help" introduced="6.6.4"><![CDATA[This extension's folder is no longer present. Delete to remove its hook entries from the database.]]></string>
+    <string name="missing_files" introduced="6.6.4"><![CDATA[missing files]]></string>
+    <string name="file_missing" introduced="6.6.4"><![CDATA[File missing]]></string>
+    <string name="hooks_missing_help" introduced="6.6.4"><![CDATA[One or more hook files for this extension are missing on disk. Open the extension to remove the orphaned entries.]]></string>
+    <string name="hook_file_missing_help" introduced="6.6.4"><![CDATA[The PHP file backing this hook is missing. Delete this row to stop the hook loader logging not-found notices on every page load.]]></string>
+    <string name="hook_file_missing_create" introduced="6.6.4"><![CDATA[The hook file is missing. Saving will create it from the editor content below.]]></string>
+    <string name="hook_file_path_pending" introduced="6.6.4"><![CDATA[New hook — the file will be created in %s once the form is saved.]]></string>
+    <string name="confirm_delete_orphans" introduced="6.6.4"><![CDATA[Remove all hook entries for this missing extension?]]></string>
+    <string name="notify_orphans_deleted" introduced="6.6.4"><![CDATA[Removed orphaned hook entries for "%s".]]></string>
+    <string name="notify_orphan_hook_deleted" introduced="6.6.4"><![CDATA[Orphaned hook removed.]]></string>
     <string name="trigger" introduced="5.0.0"><![CDATA[Trigger]]></string>
     <string name="unique_id" introduced="5.2.0"><![CDATA[Unique ID]]></string>
     <string name="php_code" introduced="5.2.0"><![CDATA[PHP Code]]></string>

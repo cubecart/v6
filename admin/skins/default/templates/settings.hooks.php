@@ -9,20 +9,85 @@
  * Email:  hello@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
+<style>
+   .hooks-status { display:inline-block; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.4px; }
+   .hooks-status--ok      { background: rgba(60,160,80,0.15);  color:#2c8a40; }
+   .hooks-status--orphan  { background: rgba(200,60,60,0.15);  color:#b03030; }
+   .hooks-status--issue   { background: rgba(220,190,30,0.20); color:#856900; }
+   .hooks-col-status { width:120px; }
+   .hooks-col-count  { width:90px; }
+   .hooks-col-action { width:80px; }
+   .hooks-row-icon, .hooks-row-name { vertical-align: middle; }
+   .hooks-count-warn { color:#b56a13; }
+   .hooks-badge-warning {
+      display:inline-block; margin-left:6px; padding:1px 8px;
+      font-size:11px; font-weight:600;
+      background: rgba(220,190,30,0.20); color:#856900;
+      border-radius:10px;
+   }
+   .hooks-pathbar {
+      background:#5a6168; color:#fff;
+      font-family:Menlo,Consolas,monospace; font-size:12px;
+      padding:10px 22px;
+      border:1px solid #4a5058; border-bottom:none;
+      border-radius:6px 6px 0 0;
+   }
+   .hooks-pathbar .stat-chart-title { color:#fff; text-transform:none; letter-spacing:0; font-family:inherit; }
+   .hooks-pathbar-warning { color:#ffd28a !important; }
+   .hooks-code-editor {
+      height:500px;
+      background:none !important;
+      border:1px solid var(--border); border-top:none;
+      border-radius:0 0 6px 6px;
+      text-indent:0 !important;
+   }
+</style>
 <form action="{$VAL_SELF}" id="hook_form" method="post" enctype="multipart/form-data">
    {if $DISPLAY_PLUGINS}
    <div id="plugins" class="tab_content">
       <h3>{$LANG.hooks.title_plugins_installed}</h3>
-      <fieldset>
-         {foreach from=$PLUGINS item=plugin}
-         <div>
-            <span class="actions">&nbsp;</span>
-            <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/plugin.png" alt=""> <a href="{$plugin.edit}">{$plugin.name}</a>
-         </div>
-         {foreachelse}
-         <div>{$LANG.hooks.error_plugin_none}</div>
-         {/foreach}
-      </fieldset>
+      {if $PLUGINS}
+      <table>
+         <thead>
+            <tr>
+               <th>{$LANG.hooks.title_plugin}</th>
+               <th class="text-center hooks-col-status">{$LANG.common.status}</th>
+               <th class="text-center hooks-col-count">{$LANG.hooks.title_hook}</th>
+               <th class="text-center hooks-col-count">{$LANG.hooks.missing_files|capitalize}</th>
+               <th class="text-center hooks-col-action">{$LANG.form.action}</th>
+            </tr>
+         </thead>
+         <tbody>
+            {foreach from=$PLUGINS item=plugin}
+            <tr>
+               <td>
+                  <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/plugin.png" alt="" class="hooks-row-icon">
+                  <a href="{$plugin.edit}" class="hooks-row-name">{$plugin.name}</a>
+               </td>
+               <td class="text-center">
+                  {if $plugin.orphaned}
+                     <span class="hooks-status hooks-status--orphan" title="{$LANG.hooks.orphaned_plugin_help}">{$LANG.hooks.orphaned}</span>
+                  {elseif $plugin.hooks_missing > 0}
+                     <span class="hooks-status hooks-status--issue" title="{$LANG.hooks.hooks_missing_help}">{$LANG.common.warning}</span>
+                  {else}
+                     <span class="hooks-status hooks-status--ok">{$LANG.common.installed}</span>
+                  {/if}
+               </td>
+               <td class="text-center">{if $plugin.hooks_total > 0}{$plugin.hooks_total}{else}&mdash;{/if}</td>
+               <td class="text-center">{if $plugin.hooks_missing > 0}<strong class="hooks-count-warn">{$plugin.hooks_missing}</strong>{else}&mdash;{/if}</td>
+               <td class="text-center">
+                  <span class="actions">
+                     <a href="{$plugin.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o"></i></a>
+                     {if $plugin.orphaned}<a href="{$plugin.delete}" class="delete" title="{$LANG.hooks.confirm_delete_orphans}"><i class="fa fa-trash"></i></a>{/if}
+                  </span>
+               </td>
+            </tr>
+            {/foreach}
+         </tbody>
+      </table>
+      {else}
+      <p>{$LANG.hooks.error_plugin_none}</p>
+      {/if}
    </div>
    <div id="snippets" class="tab_content">
       <h3>{$LANG.hooks.title_code_snippets}</h3>
@@ -154,10 +219,16 @@
             {foreach from=$HOOKS item=hook}
             <tr>
                 <td  align="center" width="10"><input type="hidden" name="status[{$hook.hook_id}]" value="{$hook.enabled}" id="status_{$hook.hook_id}" class="toggle"></td>
-                <td><a href="{$hook.edit}">{$hook.hook_name}</a></td>
+                <td>
+                  <a href="{$hook.edit}">{$hook.hook_name}</a>
+                  {if $hook.file_missing}<span class="hooks-badge-warning" title="{$LANG.hooks.hook_file_missing_help}"><i class="fa fa-exclamation-triangle"></i> {$LANG.hooks.file_missing}</span>{/if}
+                </td>
                 <td class="courier">{$hook.trigger}</td>
-                <td style="text-align:center">{$hook.priority}</td>
-                <td style="text-align:center"><a href="{$hook.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a></td>
+                <td class="text-center">{$hook.priority}</td>
+                <td class="text-center">
+                  <a href="{$hook.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+                  {if $hook.file_missing}<a href="{$hook.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>{/if}
+                </td>
             </tr>
             {/foreach}
          </tbody>
@@ -166,7 +237,7 @@
         <p>{$LANG.hooks.error_hook_none}</p>
         {/if}
       <p>{$LANG.hooks.notify_hook_magic}</p>
-      <p><a href="?_g=settings&node=hooks&plugin={$HOOKS.0.plugin}&revert=1" title="{$LANG.notification.confirm_revert}" class="button small delete">{$LANG.hooks.revert_default}</a></p>
+      {if $CAN_REVERT}<p><a href="?_g=settings&node=hooks&plugin={$HOOKS.0.plugin}&revert=1" title="{$LANG.notification.confirm_revert}" class="button small delete">{$LANG.hooks.revert_default}</a></p>{/if}
    </div>
    {/if}
    {if $DISPLAY_FORM}
@@ -211,9 +282,13 @@
    {if isset($HOOK_FILE)}
    <div id="hook_code" class="tab_content">
       <h3>{$LANG.hooks.title_hook_code}</h3>
-      <p><small>{$HOOK_FILE.path}{if !$HOOK_FILE.writable} &mdash; <strong>{$LANG.hooks.hook_file_readonly}</strong>{/if}</small></p>
+      {if $HOOK_FILE.missing}<p class="notice"><i class="fa fa-exclamation-triangle"></i> {$LANG.hooks.hook_file_missing_create}</p>{/if}
       <fieldset>
-         <div id="hook_code_editor" style="height:500px; background:none !important; border-bottom:1px solid #ccc; border-right:1px solid #ccc; text-indent:0 !important;"></div>
+         <div class="hooks-pathbar stat-chart-header">
+            <span class="stat-chart-title">{$HOOK_FILE.path}</span>
+            {if !$HOOK_FILE.writable}<span class="stat-chart-title hooks-pathbar-warning">{$LANG.hooks.hook_file_readonly}</span>{/if}
+         </div>
+         <div id="hook_code_editor" class="hooks-code-editor"></div>
          <input type="hidden" id="hook_file_code_b64" value="{$HOOK_FILE.code}">
          {if $HOOK_FILE.writable}<input type="hidden" name="hook_file_code" id="hook_file_code_input" value="">{/if}
       </fieldset>
@@ -260,7 +335,7 @@
             <tr>
                <th>{$LANG.common.date}</th>
                <th>{$LANG.hooks.file_size}</th>
-               <th width="80" style="text-align:center">{$LANG.form.action}</th>
+               <th width="80" class="text-center">{$LANG.form.action}</th>
             </tr>
          </thead>
          <tbody>
@@ -268,7 +343,7 @@
             <tr>
                <td>{$backup.date}</td>
                <td>{($backup.size/1024)|string_format:"%.1f"} KB</td>
-               <td style="text-align:center">
+               <td class="text-center">
                   <a href="#" title="{$LANG.common.view}" onclick="viewBackup('{$backup.timestamp}'); return false;"><i class="fa fa-eye"></i></a>
                   &nbsp;
                   <a href="{$backup.restore_url}#hook_code" title="{$LANG.hooks.restore_backup}" onclick="return confirm('{$LANG.notification.confirm_continue}');"><i class="fa fa-undo"></i></a>
