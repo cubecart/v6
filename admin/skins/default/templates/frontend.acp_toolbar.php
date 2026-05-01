@@ -68,22 +68,6 @@
 .acp_widget a.button.cache-clear:hover {
     background: #ffc96b;
 }
-.acp_widget a.button.status-online {
-    background: #b8e6c8;
-    border-color: #7ec99a;
-    color: #155724;
-}
-.acp_widget a.button.status-online:hover {
-    background: #9adbb0;
-}
-.acp_widget a.button.status-offline {
-    background: #f5c6cb;
-    border-color: #e4959e;
-    color: #721c24;
-}
-.acp_widget a.button.status-offline:hover {
-    background: #f0a8b0;
-}
 .acp_widget .close a {
     position: absolute;
     top: 50%;
@@ -142,7 +126,6 @@
     <a href="{$ACP_DATA.edit_url}" class="button" target="acp_window">{$ACP_DATA.url_text}</a>
     {/if}
     <a href="?acp_action=clear_cache&amp;acp_redirect={$ACP_DATA.current_url}" class="button cache-clear">{$LANG.maintain.cache_clear|ucwords}</a>
-    <a href="?acp_action=toggle_maintenance&amp;acp_redirect={$ACP_DATA.current_url}" class="button {if $ACP_DATA.is_offline}status-offline{else}status-online{/if}">{if $ACP_DATA.is_offline}{$LANG.settings.tab_offline}{else}{$LANG.settings.tab_online}{/if}</a>
     <a href="?acp_action=logout" class="button">{$LANG.account.logout}</a>
 </div>
 <script>

@@ -1017,10 +1017,6 @@ class GUI
             if ($action === 'clear_cache' && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
                 $GLOBALS['cache']->clear();
                 $GLOBALS['cache']->tidy();
-            } elseif ($action === 'toggle_maintenance') {
-                $offline = $GLOBALS['config']->get('config', 'offline') ? 0 : 1;
-                $GLOBALS['config']->set('config', 'offline', $offline);
-                $GLOBALS['cache']->clear();
             } elseif ($action === 'logout') {
                 Admin::getInstance()->logout('front');
             }
@@ -1053,7 +1049,6 @@ class GUI
 
         $admin = Admin::getInstance();
         $acp_data['admin_name'] = ucwords($admin->name ?: $admin->username);
-        $acp_data['is_offline'] = (bool)$GLOBALS['config']->get('config', 'offline');
         $acp_data['current_url'] = urlencode($_SERVER['REQUEST_URI']);
 
         $html = file_get_contents(CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/skins/default/templates/frontend.acp_toolbar.php');
