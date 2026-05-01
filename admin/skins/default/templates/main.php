@@ -101,6 +101,7 @@
          });
          {/literal}
       </script>
+      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.modal.js?{$VERSION_HASH}"></script>
       <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.js?{$VERSION_HASH}"></script>
       <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.components.js?{$VERSION_HASH}"></script>
       {if isset($CLOSE_WINDOW)}
