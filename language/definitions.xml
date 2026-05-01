@@ -1578,7 +1578,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_hook_required" introduced="5.0.0"><![CDATA[Required Configuration]]></string>
     <string name="title_plugin" introduced="5.0.0"><![CDATA[Extension]]></string>
     <string name="title_plugins" introduced="5.0.0"><![CDATA[Extensions]]></string>
-    <string name="title_plugins_installed" introduced="5.0.0"><![CDATA[Installed Extensions (enabled only)]]></string>
+    <string name="title_plugins_installed" introduced="5.0.0"><![CDATA[Extensions with Hooks]]></string>
     <string name="orphaned" introduced="6.6.4"><![CDATA[Orphaned]]></string>
     <string name="orphaned_plugin_help" introduced="6.6.4"><![CDATA[This extension's folder is no longer present. Delete to remove its hook entries from the database.]]></string>
     <string name="missing_files" introduced="6.6.4"><![CDATA[missing files]]></string>
