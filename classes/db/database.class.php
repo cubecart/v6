@@ -1129,7 +1129,12 @@ class Database_Contoller
     protected function _logError()
     {
         $trace = debug_backtrace();
-        Database::getInstance()->insert('CubeCart_system_error_log', array('message' => 'File: ['.basename($trace[2]['file']).'] Line: ['.$trace[2]['line'].'] "'.$this->_query.'" - '.$this->errorInfo(), 'time' => time()));
+        $message = 'File: ['.basename($trace[2]['file']).'] Line: ['.$trace[2]['line'].'] "'.$this->_query.'" - '.$this->errorInfo();
+        if (class_exists('Debug')) {
+            Debug::writeSystemErrorLog($message);
+        } else {
+            Database::getInstance()->insert('CubeCart_system_error_log', array('message' => $message, 'time' => time()));
+        }
     }
 
     /**

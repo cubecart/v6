@@ -158,7 +158,7 @@
     <string name="default_delivery_address" introduced="5.0.0"><![CDATA[Default Delivery Address]]></string>
     <string name="delivery_address" introduced="5.0.0"><![CDATA[Delivery Address]]></string>
     <string name="delivery_is_billing" introduced="5.0.0"><![CDATA[Deliver to billing address.]]></string>
-    <string name="form_address_select" introduced="5.0.0"><![CDATA[-- Predefined Addresses --]]></string>
+    <string name="form_address_select" introduced="5.0.0"><![CDATA[— Predefined Addresses —]]></string>
     <string name="line1" introduced="5.0.0"><![CDATA[Address]]></string>
     <string name="line2" introduced="5.0.0"></string>
     <string name="mobile" introduced="5.0.0"><![CDATA[Mobile]]></string>
@@ -430,10 +430,10 @@
     <string name="image_main" introduced="5.0.0"><![CDATA[Main Image]]></string>
     <string name="image_comma" introduced="6.0.0"><![CDATA[Images (Comma Separated)]]></string>
     <string name="import_disclaimer" introduced="6.0.9"><![CDATA[Important: This tool has <u>not</u> been designed to manage existing inventory. Please use it to import new products only.]]></string>
-    <string name="import_column_ignore" introduced="5.0.0"><![CDATA[-- Ignore --]]></string>
+    <string name="import_column_ignore" introduced="5.0.0"><![CDATA[— Ignore —]]></string>
     <string name="import_csv_headers" introduced="5.0.0"><![CDATA[CSV has column headers]]></string>
     <string name="import_format" introduced="5.0.0"><![CDATA[Format]]></string>
-    <string name="import_format_unknown" introduced="5.0.0"><![CDATA[-- Unknown Format or Generic CSV --]]></string>
+    <string name="import_format_unknown" introduced="5.0.0"><![CDATA[— Unknown Format or Generic CSV —]]></string>
     <string name="import_replace_existing" introduced="5.0.0"><![CDATA[Replace existing inventory]]></string>
     <string name="import_source" introduced="5.0.0"><![CDATA[Source]]></string>
     <string name="imported" introduced="5.0.0"><![CDATA[Imported]]></string>
@@ -935,6 +935,7 @@
     <string name="save" introduced="5.0.0"><![CDATA[Save]]></string>
     <string name="save_reload" introduced="5.0.0"><![CDATA[Save &amp; Reload]]></string>
     <string name="search" introduced="5.0.0"><![CDATA[Search]]></string>
+    <string name="severity" introduced="6.6.4"><![CDATA[Severity]]></string>
     <string name="send" introduced="5.0.0"><![CDATA[Send]]></string>
     <string name="show" introduced="5.0.0"><![CDATA[Show]]></string>
     <string name="size" introduced="5.0.0"><![CDATA[Size]]></string>
@@ -1488,12 +1489,12 @@ This email is sent from the store's master email address but it is possible to r
     <string name="field_required" introduced="6.0.0"><![CDATA[This field is required.]]></string>
     <string name="action" introduced="5.0.0"><![CDATA[Action]]></string>
     <string name="check_uncheck" introduced="5.0.0"><![CDATA[Check/Uncheck all]]></string>
-    <string name="ignore" introduced="5.0.0"><![CDATA[-- Ignore --]]></string>
+    <string name="ignore" introduced="5.0.0"><![CDATA[— Ignore —]]></string>
     <string name="mark_read" introduced="5.0.0"><![CDATA[Mark as Read]]></string>
     <string name="mark_unread" introduced="5.0.0"><![CDATA[Mark as Unread]]></string>
-    <string name="none" introduced="5.0.0"><![CDATA[-- None --]]></string>
-    <string name="please_select" introduced="5.0.0"><![CDATA[-- Please Select --]]></string>
-    <string name="select" introduced="5.0.0"><![CDATA[-- Select --]]></string>
+    <string name="none" introduced="5.0.0"><![CDATA[— None —]]></string>
+    <string name="please_select" introduced="5.0.0"><![CDATA[— Please Select —]]></string>
+    <string name="select" introduced="5.0.0"><![CDATA[— Select —]]></string>
     <string name="select_all" introduced="5.0.0"><![CDATA[Select All]]></string>
     <string name="sort" introduced="5.0.0"><![CDATA[Sort]]></string>
     <string name="sort_by" introduced="5.0.0"><![CDATA[Sort by]]></string>
@@ -1503,7 +1504,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="uncheck" introduced="5.0.0"><![CDATA[Uncheck all]]></string>
     <string name="verify_human" introduced="5.0.0"><![CDATA[Verify you are a human]]></string>
     <string name="verify_human_fail" introduced="5.0.0"><![CDATA[The verification code was incorrect. Please try again.]]></string>
-    <string name="with_selected" introduced="5.0.0"><![CDATA[-- With Selected --]]></string>
+    <string name="with_selected" introduced="5.0.0"><![CDATA[— With Selected —]]></string>
   </group>
   <group name="gateway">
     <string name="none_defined" introduced="6.0.9"><![CDATA[No payment methods have been defined for your region. Please contact the merchant for assistance.]]></string>
@@ -2376,6 +2377,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="matrix_in_use" introduced="5.2.6"><![CDATA[(Matrix stock level in use only!)]]></string>
     <string name="message_marked_read" introduced="5.0.0"><![CDATA[Message marked as read.]]></string>
     <string name="message_marked_unread" introduced="5.0.0"><![CDATA[Message marked as unread.]]></string>
+    <string name="message_deleted" introduced="6.6.4"><![CDATA[Selected messages deleted.]]></string>
     <string name="no_admin_affect" introduced="5.1.0"><![CDATA[(Does not affect admin)]]></string>
     <string name="no_skip_processing_check" introduced="5.0.0"><![CDATA[Allow order &quot;Processing&quot; status to be skipped?]]></string>
     <string name="notify_archive_create" introduced="5.0.0"><![CDATA[Archive successfully created.]]></string>

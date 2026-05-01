@@ -47,3 +47,19 @@ SET @s := IF(@c = 0, 'ALTER TABLE `CubeCart_order_summary` ADD INDEX `status_ord
 PREPARE stmt FROM @s; #EOQ
 EXECUTE stmt; #EOQ
 DEALLOCATE PREPARE stmt; #EOQ
+
+# Error log: switch to hash-deduped rows so identical errors update a counter
+# instead of stacking duplicate rows. Existing rows are truncated — the data was
+# noisy and the merchant can re-accumulate cleanly with the new schema.
+TRUNCATE TABLE `CubeCart_admin_error_log`; #EOQ
+TRUNCATE TABLE `CubeCart_system_error_log`; #EOQ
+
+ALTER TABLE `CubeCart_admin_error_log` ADD COLUMN `message_hash` CHAR(40) NOT NULL DEFAULT '' AFTER `admin_id`; #EOQ
+ALTER TABLE `CubeCart_admin_error_log` ADD COLUMN `first_time` INT UNSIGNED NOT NULL DEFAULT 0 AFTER `time`; #EOQ
+ALTER TABLE `CubeCart_admin_error_log` ADD COLUMN `occurrences` INT UNSIGNED NOT NULL DEFAULT 1 AFTER `first_time`; #EOQ
+ALTER TABLE `CubeCart_admin_error_log` ADD UNIQUE KEY `admin_message_hash` (`admin_id`, `message_hash`); #EOQ
+
+ALTER TABLE `CubeCart_system_error_log` ADD COLUMN `message_hash` CHAR(40) NOT NULL DEFAULT '' AFTER `log_id`; #EOQ
+ALTER TABLE `CubeCart_system_error_log` ADD COLUMN `first_time` INT UNSIGNED NOT NULL DEFAULT 0 AFTER `time`; #EOQ
+ALTER TABLE `CubeCart_system_error_log` ADD COLUMN `occurrences` INT UNSIGNED NOT NULL DEFAULT 1 AFTER `first_time`; #EOQ
+ALTER TABLE `CubeCart_system_error_log` ADD UNIQUE KEY `message_hash` (`message_hash`); #EOQ

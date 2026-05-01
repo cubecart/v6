@@ -69,10 +69,14 @@ CREATE TABLE IF NOT EXISTS `CubeCart_admin_log` (
 CREATE TABLE IF NOT EXISTS `CubeCart_admin_error_log` (
 	`log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 	`admin_id` int(10) unsigned NOT NULL,
+	`message_hash` char(40) NOT NULL DEFAULT '',
 	`time` int(10) unsigned NOT NULL,
+	`first_time` int(10) unsigned NOT NULL DEFAULT 0,
+	`occurrences` int(10) unsigned NOT NULL DEFAULT 1,
 	`message` text NOT NULL,
 	`read` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (`log_id`),
+  UNIQUE KEY `admin_message_hash` (`admin_id`, `message_hash`),
   KEY `admin_id` (`admin_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
@@ -1063,12 +1067,16 @@ CREATE TABLE IF NOT EXISTS `CubeCart_shipping_zones` (
 
 CREATE TABLE IF NOT EXISTS `CubeCart_system_error_log` (
 	`log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+	`message_hash` char(40) NOT NULL DEFAULT '',
 	`time` int(10) unsigned NOT NULL,
+	`first_time` int(10) unsigned NOT NULL DEFAULT 0,
+	`occurrences` int(10) unsigned NOT NULL DEFAULT 1,
 	`message` text NOT NULL,
 	`url` varchar(255) NOT NULL,
 	`backtrace` TEXT NOT NULL,
 	`read` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (`log_id`),
+  UNIQUE KEY `message_hash` (`message_hash`),
   KEY `time` (`time`),
   KEY `read` (`read`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ

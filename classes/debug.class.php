@@ -696,16 +696,55 @@ class Debug
         $url = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         if (isset($GLOBALS['db']) && $GLOBALS['db']->connected) {
             $log_days = (is_object($GLOBALS['config']) && method_exists($GLOBALS['config'], 'get')) ? $GLOBALS['config']->get('config', 'r_system_error') : 7;
-            if (ctype_digit((string)$log_days) &&  $log_days > 0) {
-                $GLOBALS['db']->insert('CubeCart_system_error_log', array('message' => $message, 'url' => $url, 'backtrace' => $backtrace, 'time' => time()));
+            if (ctype_digit((string)$log_days) && $log_days > 0) {
+                self::writeSystemErrorLog($message, $url, $backtrace);
                 if (executionChance(2)) { // 2% probability
                     $GLOBALS['db']->delete('CubeCart_system_error_log', 'time < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY))', 500);
                 }
             } elseif (empty($log_days) || !$log_days) {
-                $GLOBALS['db']->insert('CubeCart_system_error_log', array('message' => $message, 'url' => $url, 'backtrace' => $backtrace, 'time' => time()));
+                self::writeSystemErrorLog($message, $url, $backtrace);
             }
         } elseif ($type == 'Exception' || $type == E_PARSE) {
             echo $message;
         }
+    }
+
+    /**
+     * Hash-deduped writer for CubeCart_system_error_log. The unique index on
+     * `message_hash` collapses identical errors into a single row whose
+     * `occurrences` counter increments each time the same error fires; `time`
+     * is updated to the latest occurrence and `first_time` is preserved on
+     * first insert. Public + static so other classes (cubecart.class.php,
+     * database.class.php) can route their inserts through the same path.
+     *
+     * @param string $message
+     * @param string $url
+     * @param string $backtrace
+     */
+    public static function writeSystemErrorLog($message, $url = '', $backtrace = '')
+    {
+        if (!isset($GLOBALS['db']) || !$GLOBALS['db']->connected) {
+            return;
+        }
+        // Strip CC_ROOT_DIR from message and backtrace so logged paths are
+        // document-relative — same error from different installs (or a path
+        // change after a move) hashes to the same row.
+        if (defined('CC_ROOT_DIR') && CC_ROOT_DIR !== '' && CC_ROOT_DIR !== '/') {
+            $message   = str_replace(CC_ROOT_DIR, './', (string)$message);
+            $backtrace = str_replace(CC_ROOT_DIR, './', (string)$backtrace);
+        }
+        $now  = time();
+        $hash = sha1((string)$message);
+        $pfx  = $GLOBALS['config']->get('config', 'dbprefix');
+        $msg_q = $GLOBALS['db']->sqlSafe((string)$message, true);
+        $url_q = $GLOBALS['db']->sqlSafe((string)$url, true);
+        $bt_q  = $GLOBALS['db']->sqlSafe((string)$backtrace, true);
+        $sql = sprintf(
+            'INSERT INTO `%sCubeCart_system_error_log` (`message_hash`, `message`, `url`, `backtrace`, `time`, `first_time`, `occurrences`, `read`)
+             VALUES (\'%s\', %s, %s, %s, %d, %d, 1, 0)
+             ON DUPLICATE KEY UPDATE `occurrences` = `occurrences` + 1, `time` = VALUES(`time`), `url` = VALUES(`url`), `backtrace` = VALUES(`backtrace`), `read` = 0',
+            $pfx, $hash, $msg_q, $url_q, $bt_q, $now, $now
+        );
+        $GLOBALS['db']->misc($sql, false);
     }
 }

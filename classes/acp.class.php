@@ -448,20 +448,37 @@ class ACP
         if (empty($message)) {
             return;
         }
-        // Log message and don't show again to current staff member
+        // Log message and don't show again to current staff member.
+        // The unique (admin_id, message_hash) key collapses duplicates into a single row
+        // and bumps `occurrences` + `time` on each recurrence — no manual select needed.
         if ($show_once) {
-            if (!$GLOBALS['db']->select('CubeCart_admin_error_log', 'log_id', array('message' => $message, 'admin_id' => Admin::getInstance()->get('admin_id')))) {
-                $log_days = $GLOBALS['config']->get('config', 'r_admin_error');
-                if (ctype_digit((string)$log_days) &&  $log_days > 0) {
-                    $GLOBALS['db']->insert('CubeCart_admin_error_log', array('message' => $message, 'admin_id' => Admin::getInstance()->get('admin_id'), 'time' => time()));
-                    if (executionChance(10)) { // 10% probability
-                        $GLOBALS['db']->delete('CubeCart_admin_error_log', 'time < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY))', 500);
-                    }
-                } elseif (empty($log_days) || !$log_days) {
-                    $GLOBALS['db']->insert('CubeCart_admin_error_log', array('message' => $message, 'admin_id' => Admin::getInstance()->get('admin_id'), 'time' => time()));
+            $admin_id = (int)Admin::getInstance()->get('admin_id');
+            $log_days = $GLOBALS['config']->get('config', 'r_admin_error');
+            $write = (ctype_digit((string)$log_days) && $log_days > 0) || empty($log_days) || !$log_days;
+            if ($write) {
+                // Strip CC_ROOT_DIR from the message so logged paths are document-relative.
+                if (defined('CC_ROOT_DIR') && CC_ROOT_DIR !== '' && CC_ROOT_DIR !== '/') {
+                    $message = str_replace(CC_ROOT_DIR, './', (string)$message);
                 }
-
-                if ($display) {
+                $now  = time();
+                $hash = sha1((string)$message);
+                $pfx  = $GLOBALS['config']->get('config', 'dbprefix');
+                $msg_q = $GLOBALS['db']->sqlSafe((string)$message, true);
+                $sql = sprintf(
+                    'INSERT INTO `%sCubeCart_admin_error_log` (`admin_id`, `message_hash`, `message`, `time`, `first_time`, `occurrences`, `read`)
+                     VALUES (%d, \'%s\', %s, %d, %d, 1, 0)
+                     ON DUPLICATE KEY UPDATE `occurrences` = `occurrences` + 1, `time` = VALUES(`time`), `read` = 0',
+                    $pfx, $admin_id, $hash, $msg_q, $now, $now
+                );
+                $GLOBALS['db']->misc($sql, false);
+                // MySQL returns affected=1 for INSERT, 2 for UPDATE on ON DUPLICATE KEY.
+                // Preserve original "show once" semantics: first occurrence displays,
+                // subsequent ones silently bump the counter.
+                $is_first_occurrence = ((int)$GLOBALS['db']->affected() === 1);
+                if (ctype_digit((string)$log_days) && $log_days > 0 && executionChance(10)) { // 10% probability
+                    $GLOBALS['db']->delete('CubeCart_admin_error_log', 'time < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY))', 500);
+                }
+                if ($display && $is_first_occurrence) {
                     $GLOBALS['gui']->setError($message);
                 }
             }

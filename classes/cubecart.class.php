@@ -790,12 +790,11 @@ class Cubecart
                 $de = $GLOBALS['config']->get('config', 'disable_estimates');
                 if (($de == '1' && $this->_basket['delivery_address']['user_defined']) || ($de == '0' || !$de)) {
                     $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_shipping']);
-                    $GLOBALS['db']->insert('CubeCart_system_error_log', array(
-                        'message' => 'Shipping error - no suitable methods for basket',
-                        'url' => "https://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}",
-                        'backtrace' => json_encode($this->_basket, JSON_PRETTY_PRINT),
-                        'time' => time()
-                    ));
+                    Debug::writeSystemErrorLog(
+                        'Shipping error - no suitable methods for basket',
+                        "https://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}",
+                        json_encode($this->_basket, JSON_PRETTY_PRINT)
+                    );
                 }
                 $gatway_proceed = false;
             }
