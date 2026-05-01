@@ -123,7 +123,9 @@ class FileManager
                             } else {
                                 $GLOBALS['gui']->setError($GLOBALS['language']->filemanager['error_file_update']);
                             }
-                        } else {
+                        } elseif (empty($_POST['resize']['w']) || empty($_POST['resize']['h'])) {
+                            // Only flag "no changes" when there's no concurrent crop submission
+                            // (cropping doesn't touch the details fields, so $update is false but the crop itself is a real change).
                             $GLOBALS['gui']->setError($GLOBALS['language']->filemanager['error_file_not_changed']);
                         }
                     } else {
@@ -242,6 +244,42 @@ class FileManager
         $new_subdir = $this->formatPath(str_replace($this->_manage_root, '', $target_path), false);
         $record = array('filepath' => empty($new_subdir) ? 'NULL' : $this->formatPath($new_subdir));
         return (bool)$GLOBALS['db']->update('CubeCart_filemanager', $record, array('file_id' => (int)$file_id));
+    }
+
+    /**
+     * Replace the binary contents of an existing file_id with a freshly-uploaded
+     * file. Filename and folder stay the same so existing product/category
+     * references via file_id keep working. Returns true on success.
+     *
+     * @param int $file_id
+     * @param array $upload entry from $_FILES (e.g. $_FILES['replacement'])
+     * @return bool
+     */
+    public function replaceFile($file_id, array $upload)
+    {
+        if (empty($upload['tmp_name']) || !is_uploaded_file($upload['tmp_name'])) return false;
+        if ($upload['error'] !== UPLOAD_ERR_OK) return false;
+        $row = $GLOBALS['db']->select('CubeCart_filemanager', false, array('file_id' => (int)$file_id, 'type' => (int)$this->_mode), false, 1);
+        if (!$row) return false;
+        $file = $row[0];
+        // Disallow extension change so links to /files/foo.pdf or images keep working.
+        $old_ext = strtolower(pathinfo($file['filename'], PATHINFO_EXTENSION));
+        $new_ext = strtolower(pathinfo($upload['name'], PATHINFO_EXTENSION));
+        if ($old_ext !== $new_ext) return false;
+        $abs = $this->_manage_root.'/'.$file['filepath'].$file['filename'];
+        if (!@move_uploaded_file($upload['tmp_name'], $abs)) return false;
+        @chmod($abs, chmod_writable());
+        clearstatcache(true, $abs);
+        $update = array(
+            'filesize' => filesize($abs),
+            'mimetype' => $this->getMimeType($abs),
+            'md5hash'  => $this->md5file($abs, filesize($abs), true),
+        );
+        // Bust cached image renders if this is an image.
+        if ($this->_mode == self::FM_FILETYPE_IMG) {
+            $this->deleteCachedImages($abs);
+        }
+        return (bool)$GLOBALS['db']->update('CubeCart_filemanager', $update, array('file_id' => (int)$file_id));
     }
 
     /**
@@ -1201,11 +1239,28 @@ class FileManager
                 $parent_link = currentPage(array('subdir'));
             }
             $GLOBALS['smarty']->assign('FOLDER_PARENT', $parent_link);
+
+            // Full breadcrumb: root + each ancestor segment of the current subdir.
+            $crumb_parts = array_filter(explode('/', trim((string)$_GET['subdir'], '/')));
+            $crumbs = array(array('name' => '/', 'link' => currentPage(array('subdir'))));
+            $accum = array();
+            foreach ($crumb_parts as $segment) {
+                $accum[] = $segment;
+                $crumbs[] = array(
+                    'name' => $segment,
+                    'link' => currentPage(null, array('subdir' => implode('/', $accum))),
+                );
+            }
+            $GLOBALS['smarty']->assign('FOLDER_BREADCRUMB', $crumbs);
         }
 
         $filepath_where  = empty($this->_sub_dir) ? 'IS NULL' : '= \''.$GLOBALS['db']->sqlSafe(str_replace('\\', '/', $this->_sub_dir)).'\'';
         $where = '`disabled` = 0 AND `type` = '.(int)$this->_mode.' AND `filepath` '.$filepath_where;
-        $GLOBALS['smarty']->assign('FM_SIZE', isset($_COOKIE['cc_fm_size']) ? 'fm-item-'.$_COOKIE['cc_fm_size'] : 'fm-item-medium');
+
+
+        $fm_size_cookie = isset($_COOKIE['cc_fm_size']) ? (string)$_COOKIE['cc_fm_size'] : 'medium';
+        if (!in_array($fm_size_cookie, array('list', 'small', 'medium', 'large'), true)) $fm_size_cookie = 'medium';
+        $GLOBALS['smarty']->assign('FM_SIZE', 'fm-item-'.$fm_size_cookie);
         
         $sort = array('filename' => 'ASC');
         if(isset($_POST['fm-sort']) && !empty($_POST['fm-sort'])) {
@@ -1222,10 +1277,55 @@ class FileManager
             }
         }
         
+        // Unused-images filter (image mode only). Best-effort: cross-references
+        // FK columns and greps HTML content fields. Cannot detect references
+        // from skin templates, CSS, JS or external URLs — disclaimer shown.
+        $unused_filter = ($this->_mode == self::FM_FILETYPE_IMG && isset($_GET['fm-unused']));
+        $referenced_ids = array();
+        $html_haystack = '';
+        if ($unused_filter) {
+            $GLOBALS['smarty']->assign('FM_UNUSED_FILTER', true);
+            // FK lookups
+            if (($r = $GLOBALS['db']->select('CubeCart_inventory_images', 'file_id')) !== false) {
+                foreach ($r as $row) $referenced_ids[(int)$row['file_id']] = true;
+            }
+            if (($r = $GLOBALS['db']->select('CubeCart_category', 'cat_image', '`cat_image` > 0')) !== false) {
+                foreach ($r as $row) $referenced_ids[(int)$row['cat_image']] = true;
+            }
+            if (($r = $GLOBALS['db']->select('CubeCart_manufacturers', 'image', '`image` IS NOT NULL AND `image` > 0')) !== false) {
+                foreach ($r as $row) $referenced_ids[(int)$row['image']] = true;
+            }
+            // Gift-cert image stored as a config value
+            $gc_img = (int)$GLOBALS['config']->get('gift_certs', 'image');
+            if ($gc_img > 0) $referenced_ids[$gc_img] = true;
+            // HTML content sweep — concat into one big string for fast strpos lookup later.
+            foreach (array(
+                array('CubeCart_inventory', 'description'),
+                array('CubeCart_inventory', 'short_description'),
+                array('CubeCart_category', 'cat_desc'),
+                array('CubeCart_email_content', 'content_html'),
+                array('CubeCart_email_template', 'content_html'),
+                array('CubeCart_documents', 'doc_content'),
+            ) as $src) {
+                if (($r = $GLOBALS['db']->select($src[0], $src[1])) !== false) {
+                    foreach ($r as $row) $html_haystack .= ' '.(string)$row[$src[1]];
+                }
+            }
+        }
+
         if (($files = $GLOBALS['db']->select('CubeCart_filemanager', false, $where, $sort)) !== false) {
             $catalogue = $GLOBALS['catalogue']->getInstance();
             $GLOBALS['smarty']->assign('ROOT_REL', $GLOBALS['rootRel']);
+            $stats_total_bytes = 0;
+            $stats_count = 0;
             foreach ($files as $key => $file) {
+                // Skip images that look used when the unused filter is active.
+                if ($unused_filter) {
+                    if (isset($referenced_ids[(int)$file['file_id']])) continue;
+                    if ($file['filename'] !== '' && strpos($html_haystack, $file['filename']) !== false) continue;
+                }
+                $stats_total_bytes += (int)$file['filesize'];
+                $stats_count++;
                 $file['icon']   = $this->getFileIcon($file['mimetype']);
                 $file['class']   = (preg_match('#^image#', $file['mimetype'])) ? 'colorbox' : '';
                 $file['edit']   = currentPage(null, array('fm-edit' => $file['file_id']));
@@ -1234,6 +1334,17 @@ class FileManager
                 $file['random']   = mt_rand();
                 $file['description'] = (!empty($file['description'])) ? $file['description'] : $file['filename'];
                 $file['master_filepath']= str_replace(chr(92), "/", $this->_manage_dir.'/'.$file['filepath'].$file['filename']);
+                // Image dimensions (fast: getimagesize hits disk per file but the
+                // grid usually shows < 100 thumbs at a time).
+                $file['dimensions'] = '';
+                if ($this->_mode == self::FM_FILETYPE_IMG && preg_match('#^image#', $file['mimetype'])) {
+                    $abs = $this->_manage_root.'/'.$file['filepath'].$file['filename'];
+                    if (file_exists($abs)) {
+                        $info = @getimagesize($abs);
+                        if (is_array($info)) $file['dimensions'] = $info[0].'x'.$info[1];
+                    }
+                }
+                $file['date_added_formatted'] = !empty($file['date_added']) ? formatTime(strtotime($file['date_added'])) : '';
                 $file['filepath']   = ($this->_mode == self::FM_FILETYPE_IMG) ? $catalogue->imagePath($file['file_id'], 'medium') : $this->_manage_dir.'/'.$file['filepath'].$file['filename'];
                 $file['select_button'] = (bool)$select_button;
                 $file['filesize'] = formatBytes($file['filesize'], true);
@@ -1249,6 +1360,8 @@ class FileManager
                 $GLOBALS['smarty']->assign('HILIGHTED_FILE', $_GET['file_id']);
             }
             $GLOBALS['smarty']->assign('FILES', $list_files);
+            $GLOBALS['smarty']->assign('FM_STATS_COUNT', $stats_count);
+            $GLOBALS['smarty']->assign('FM_STATS_SIZE', formatBytes($stats_total_bytes, true));
             return $list_files;
         }
         return false;
@@ -1458,6 +1571,20 @@ class FileManager
                         $GLOBALS['config']->set('gift_certs', 'image', (int)$fid);
                     }
                     move_uploaded_file($file['tmp_name'], $target);
+                    // Strip EXIF/metadata from JPEG uploads (privacy: removes GPS,
+                    // device, timestamps; bonus: smaller filesize). Lossless via
+                    // imagejpeg() at the highest quality. JPEG only because EXIF
+                    // is the metadata container of concern; PNG/WebP have minor
+                    // ancillary chunks that we leave alone.
+                    if ($this->_mode == self::FM_FILETYPE_IMG && $record['mimetype'] === 'image/jpeg') {
+                        $img = @imagecreatefromjpeg($target);
+                        if ($img !== false) {
+                            @imagejpeg($img, $target, 95);
+                            @imagedestroy($img);
+                            clearstatcache(true, $target);
+                            $GLOBALS['db']->update('CubeCart_filemanager', array('filesize' => filesize($target)), array('file_id' => (int)$fid));
+                        }
+                    }
                     foreach ($GLOBALS['hooks']->load('class.filemanager.upload') as $hook) include $hook;
                     chmod($target, chmod_writable());
                 }

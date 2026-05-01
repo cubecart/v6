@@ -72,6 +72,19 @@ if(isset($_FILES['file0']) && $_FILES['file0']['size']==0) {
     unset($_FILES);
 }
 
+// Replace existing file (preserve file_id so product/category references survive).
+if (isset($_FILES['replacement']) && !empty($_POST['file_id']) && is_numeric($_POST['file_id']) && Admin::getInstance()->permissions('filemanager', CC_PERM_EDIT)) {
+    if ($_FILES['replacement']['size'] > 0) {
+        if ($fm->replaceFile((int)$_POST['file_id'], $_FILES['replacement'])) {
+            $GLOBALS['main']->successMessage($lang['filemanager']['notify_file_replaced'] ?? 'File replaced.');
+        } else {
+            $GLOBALS['main']->errorMessage($lang['filemanager']['error_file_replace'] ?? 'Could not replace file (extension must match).');
+        }
+        httpredir(currentPage(null, array('fm-edit' => (int)$_POST['file_id'])));
+    }
+    unset($_FILES['replacement']);
+}
+
 if ((!empty($_FILES)) && Admin::getInstance()->permissions('filemanager', CC_PERM_EDIT)) {
     if ($fm->upload()) {
         if (count($_FILES)>1) {

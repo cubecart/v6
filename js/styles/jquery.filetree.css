@@ -27,8 +27,8 @@ ul.filetree a:hover {
 }
 
 /* Core Styles */
-.filetree li.directory { background: url(../../images/icons/folder.png) left top no-repeat; }
-.filetree li.expanded { background: url(../../images/icons/folder_open.png) left top no-repeat; }
+.filetree li.directory { background: url(../../images/icons/folder.svg) left top no-repeat; background-size: 16px 16px; }
+.filetree li.expanded { background: url(../../images/icons/folder_open.svg) left top no-repeat; background-size: 16px 16px; }
 .filetree li.file { background: url(../../images/icons/page_generic.png) left top no-repeat; }
 .filetree li.wait { background: url(../../images/icons/spinner.gif) left top no-repeat; }
 

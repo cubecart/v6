@@ -954,18 +954,22 @@ $(document).ready(function() {
     $("#filemanager .toggle span").on("click", function() {
         var size = $(this).attr("class");
         $.cookie('cc_fm_size', size, {expires: 365});
+        // Switching into or out of list view changes the server-rendered markup
+        // (grid <div>s vs <table>), so reload to pick up the new layout.
+        var wasList = $("#filemanager .toggle span.list").hasClass("active");
+        if (size === 'list' || wasList) {
+            location.reload();
+            return;
+        }
         $("#filemanager .fm-item").removeClass('fm-item-xlarge fm-item-large fm-item-medium fm-item-small fm-item-list');
         $("#filemanager .fm-item").addClass('fm-item-'+size);
         $("#filemanager .toggle span").removeClass("active");
         $(this).addClass("active");
         $("#page_content").height($("#fm-wrapper"));
-        if(size == 'list') {
-            $("#filemanager .list-filesize").show();
-        } else {
-            $("#filemanager .list-filesize").hide();
-        }
     });
     var fm_size = $.cookie('cc_fm_size');
+    // xlarge was retired; migrate any stale cookie value to large.
+    if (fm_size === 'xlarge') { fm_size = 'large'; $.cookie('cc_fm_size', 'large', {expires: 365}); }
     if(fm_size === undefined) {
         $("#filemanager .toggle span.medium").addClass("active");
     } else {
