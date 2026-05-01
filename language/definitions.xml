@@ -340,7 +340,7 @@
     <string name="available_for_purchase" introduced="6.0.0"><![CDATA[Available for purchase]]></string>
     <string name="added_to_basket" introduced="6.0.0"><![CDATA[Added to Basket]]></string>
     <string name="add_to_basket" introduced="5.0.0"><![CDATA[Add to Basket]]></string>
-    <string name="add_to_bulk_prices" introduced="6.6.4"><![CDATA[Add to Bulk Price Change]]></string>
+    <string name="add_to_bulk_prices" introduced="6.7.0"><![CDATA[Add to Bulk Price Change]]></string>
     <string name="allowed_uses" introduced="5.0.0"><![CDATA[Allowed Uses]]></string>
     <string name="all_sale_items" introduced="5.0.0"><![CDATA[All Sale Items]]></string>
     <string name="average_rating" introduced="5.0.0"><![CDATA[Average Rating]]></string>
@@ -390,7 +390,7 @@
     <string name="error_import_invalid" introduced="5.0.0"><![CDATA[Invalid file format. Document must be of plain text content. e.g. *.txt or *.csv]]></string>
     <string name="error_import_upload" introduced="5.0.0"><![CDATA[Upload failed.]]></string>
     <string name="error_manufacturer_create" introduced="5.0.0"><![CDATA[Failed to add manufacturer or manufacturer with the same name already exists.]]></string>
-    <string name="error_manufacturer_duplicate" introduced="6.6.4"><![CDATA[A manufacturer with that name already exists.]]></string>
+    <string name="error_manufacturer_duplicate" introduced="6.7.0"><![CDATA[A manufacturer with that name already exists.]]></string>
     <string name="error_manufacturer_delete" introduced="5.0.0"><![CDATA[Failed to delete manufacturer.]]></string>
     <string name="error_manufacturer_found" introduced="5.0.0"><![CDATA[Unable to find manufacturer.]]></string>
     <string name="error_manufacturer_none" introduced="5.0.0"><![CDATA[No manufacturers have been added.]]></string>
@@ -810,8 +810,8 @@
     <string name="blank_to_disable" introduced="5.0.0"><![CDATA[(Leave blank to disable)]]></string>
     <string name="blank_for_no_expire" introduced="5.0.0"><![CDATA[(Leave blank to never expire)]]></string>
     <string name="cancel" introduced="5.0.0"><![CDATA[Cancel]]></string>
-    <string name="pause" introduced="6.6.4"><![CDATA[Pause]]></string>
-    <string name="resume" introduced="6.6.4"><![CDATA[Resume]]></string>
+    <string name="pause" introduced="6.7.0"><![CDATA[Pause]]></string>
+    <string name="resume" introduced="6.7.0"><![CDATA[Resume]]></string>
     <string name="change_currency" introduced="5.0.0"><![CDATA[Change Currency]]></string>
     <string name="change_language" introduced="5.0.0"><![CDATA[Change Language]]></string>
     <string name="change_skin" introduced="5.0.0"><![CDATA[Change Skin]]></string>
@@ -919,7 +919,7 @@
     <string name="quantity" introduced="5.0.0"><![CDATA[Quantity]]></string>
     <string name="quantity_abbreviated" introduced="6.0.0"><![CDATA[Qty]]></string>
     <string name="read" introduced="5.0.0"><![CDATA[Read]]></string>
-    <string name="opened" introduced="6.6.4"><![CDATA[Opened]]></string>
+    <string name="opened" introduced="6.7.0"><![CDATA[Opened]]></string>
     <string name="read_only" introduced="5.0.0"><![CDATA[Read-Only]]></string>
     <string name="received" introduced="5.0.0"><![CDATA[Response received]]></string>
     <string name="refresh" introduced="5.0.0"><![CDATA[Refresh]]></string>
@@ -935,7 +935,7 @@
     <string name="save" introduced="5.0.0"><![CDATA[Save]]></string>
     <string name="save_reload" introduced="5.0.0"><![CDATA[Save &amp; Reload]]></string>
     <string name="search" introduced="5.0.0"><![CDATA[Search]]></string>
-    <string name="severity" introduced="6.6.4"><![CDATA[Severity]]></string>
+    <string name="severity" introduced="6.7.0"><![CDATA[Severity]]></string>
     <string name="send" introduced="5.0.0"><![CDATA[Send]]></string>
     <string name="show" introduced="5.0.0"><![CDATA[Show]]></string>
     <string name="size" introduced="5.0.0"><![CDATA[Size]]></string>
@@ -1231,8 +1231,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_no_message" introduced="6.0.3"><![CDATA[Please enter the newsletter content.]]></string>
     <string name="install_master_lang" introduced="6.0.0"><![CDATA[Your store currently only has one master language. Before the email contents can be translated the master language file must be installed from our <a href="?_g=marketplace">extensions marketplace</a>.]]></string>
     <string name="confirm_cancel" introduced="5.0.0"><![CDATA[Are you sure you want to cancel the sending of this newsletter? Subscribers already sent to will not be re-sent.]]></string>
-    <string name="confirm_pause" introduced="6.6.4"><![CDATA[Pause sending? The cron will stop after the current batch. You can resume from where it left off.]]></string>
-    <string name="confirm_resume" introduced="6.6.4"><![CDATA[Resume sending from where it was paused?]]></string>
+    <string name="confirm_pause" introduced="6.7.0"><![CDATA[Pause sending? The cron will stop after the current batch. You can resume from where it left off.]]></string>
+    <string name="confirm_resume" introduced="6.7.0"><![CDATA[Resume sending from where it was paused?]]></string>
     <string name="confirm_send" introduced="5.0.0"><![CDATA[Are you sure you want to send this newsletter?]]></string>
     <string name="email_macro" introduced="5.0.0"><![CDATA[Macro]]></string>
     <string name="email_macro_available" introduced="5.0.0"><![CDATA[Always Available]]></string>
@@ -1251,10 +1251,10 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_news_delete" introduced="5.0.0"><![CDATA[Failed to delete newsletter]]></string>
     <string name="error_news_export_empty" introduced="5.0.0"><![CDATA[There are no mailing list subscribers.]]></string>
     <string name="error_news_save" introduced="5.0.0"><![CDATA[Failed to save newsletter.]]></string>
-    <string name="error_news_queue" introduced="6.6.4"><![CDATA[Failed to queue newsletter. Check that there are confirmed subscribers.]]></string>
-    <string name="error_news_pause" introduced="6.6.4"><![CDATA[Could not pause newsletter — it may already be in another state.]]></string>
-    <string name="error_news_resume" introduced="6.6.4"><![CDATA[Could not resume newsletter — it may already be sending.]]></string>
-    <string name="error_news_cancel" introduced="6.6.4"><![CDATA[Could not cancel newsletter — it may already be sent or cancelled.]]></string>
+    <string name="error_news_queue" introduced="6.7.0"><![CDATA[Failed to queue newsletter. Check that there are confirmed subscribers.]]></string>
+    <string name="error_news_pause" introduced="6.7.0"><![CDATA[Could not pause newsletter — it may already be in another state.]]></string>
+    <string name="error_news_resume" introduced="6.7.0"><![CDATA[Could not resume newsletter — it may already be sending.]]></string>
+    <string name="error_news_cancel" introduced="6.7.0"><![CDATA[Could not cancel newsletter — it may already be sent or cancelled.]]></string>
     <string name="example_email" introduced="5.0.0"><![CDATA[(e.g. amy.jones@example.com)]]></string>
     <string name="example_fullname_long" introduced="5.0.0"><![CDATA[(e.g. Miss Amy Jones)]]></string>
     <string name="example_fullname_short" introduced="5.0.0"><![CDATA[(e.g. Amy Jones)]]></string>
@@ -1350,28 +1350,28 @@ This email is sent from the store's master email address but it is possible to r
     <string name="news_sender_email" introduced="5.0.0"><![CDATA[Sender's Email Address]]></string>
     <string name="news_sender_name" introduced="5.0.0"><![CDATA[Sender's Name]]></string>
     <string name="news_subject" introduced="5.0.0"><![CDATA[Newsletter Subject]]></string>
-    <string name="news_status" introduced="6.6.4"><![CDATA[Status]]></string>
-    <string name="news_status_draft" introduced="6.6.4"><![CDATA[Draft]]></string>
-    <string name="news_status_queued" introduced="6.6.4"><![CDATA[Queued (%d subscribers)]]></string>
-    <string name="news_status_sending" introduced="6.6.4"><![CDATA[Sending: %d / %d]]></string>
-    <string name="news_status_paused" introduced="6.6.4"><![CDATA[Paused (%d of %d sent)]]></string>
-    <string name="news_status_cancelled" introduced="6.6.4"><![CDATA[Cancelled (%d of %d sent)]]></string>
-    <string name="news_status_sent" introduced="6.6.4"><![CDATA[Sent]]></string>
-    <string name="throttle_status" introduced="6.6.4"><![CDATA[Throttle: %d / %d sent this hour]]></string>
-    <string name="throttle_status_capped" introduced="6.6.4"><![CDATA[Throttled: %d / %d sent this hour — sending paused]]></string>
-    <string name="throttle_next_batch" introduced="6.6.4"><![CDATA[Next batch: %s]]></string>
-    <string name="throttle_window_resets" introduced="6.6.4"><![CDATA[Window resets %s]]></string>
-    <string name="background_send_notice" introduced="6.6.4"><![CDATA[Sending runs in the background via the scheduled task — it's safe to navigate away.]]></string>
+    <string name="news_status" introduced="6.7.0"><![CDATA[Status]]></string>
+    <string name="news_status_draft" introduced="6.7.0"><![CDATA[Draft]]></string>
+    <string name="news_status_queued" introduced="6.7.0"><![CDATA[Queued (%d subscribers)]]></string>
+    <string name="news_status_sending" introduced="6.7.0"><![CDATA[Sending: %d / %d]]></string>
+    <string name="news_status_paused" introduced="6.7.0"><![CDATA[Paused (%d of %d sent)]]></string>
+    <string name="news_status_cancelled" introduced="6.7.0"><![CDATA[Cancelled (%d of %d sent)]]></string>
+    <string name="news_status_sent" introduced="6.7.0"><![CDATA[Sent]]></string>
+    <string name="throttle_status" introduced="6.7.0"><![CDATA[Throttle: %d / %d sent this hour]]></string>
+    <string name="throttle_status_capped" introduced="6.7.0"><![CDATA[Throttled: %d / %d sent this hour — sending paused]]></string>
+    <string name="throttle_next_batch" introduced="6.7.0"><![CDATA[Next batch: %s]]></string>
+    <string name="throttle_window_resets" introduced="6.7.0"><![CDATA[Window resets %s]]></string>
+    <string name="background_send_notice" introduced="6.7.0"><![CDATA[Sending runs in the background via the scheduled task — it's safe to navigate away.]]></string>
     <string name="notify_content_create" introduced="5.0.0"><![CDATA[Email content saved.]]></string>
     <string name="notify_content_delete" introduced="5.0.0"><![CDATA[Email content deleted.]]></string>
     <string name="notify_content_update" introduced="5.0.0"><![CDATA[Email content updated.]]></string>
     <string name="notify_export_language" introduced="5.0.0"><![CDATA[Language has been exported from database to the file %1$s]]></string>
     <string name="notify_news_delete" introduced="5.0.0"><![CDATA[Newsletter deleted.]]></string>
     <string name="notify_news_save" introduced="5.0.0"><![CDATA[Newsletter Saved.]]></string>
-    <string name="notify_news_queued" introduced="6.6.4"><![CDATA[Newsletter queued — the cron task will send it in throttled batches.]]></string>
-    <string name="notify_news_paused" introduced="6.6.4"><![CDATA[Newsletter paused. Resume when ready to continue.]]></string>
-    <string name="notify_news_resumed" introduced="6.6.4"><![CDATA[Newsletter resumed — the cron will continue sending on the next tick.]]></string>
-    <string name="notify_news_cancelled" introduced="6.6.4"><![CDATA[Newsletter cancelled. No further emails will be sent.]]></string>
+    <string name="notify_news_queued" introduced="6.7.0"><![CDATA[Newsletter queued — the cron task will send it in throttled batches.]]></string>
+    <string name="notify_news_paused" introduced="6.7.0"><![CDATA[Newsletter paused. Resume when ready to continue.]]></string>
+    <string name="notify_news_resumed" introduced="6.7.0"><![CDATA[Newsletter resumed — the cron will continue sending on the next tick.]]></string>
+    <string name="notify_news_cancelled" introduced="6.7.0"><![CDATA[Newsletter cancelled. No further emails will be sent.]]></string>
     <string name="notify_news_sent" introduced="5.0.0"><![CDATA[Newsletter sent.]]></string>
     <string name="notify_news_test_sent" introduced="5.0.0"><![CDATA[Test newsletter sent.]]></string>
     <string name="notify_template_create" introduced="5.0.0"><![CDATA[Template created.]]></string>
@@ -1560,7 +1560,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="path_to_file_desc" introduced="6.1.14"><![CDATA[Default file is %1$s]]></string>
     <string name="title_hook" introduced="5.0.0"><![CDATA[Hooks]]></string>
     <string name="title_hook_add" introduced="5.0.0"><![CDATA[Add Hook]]></string>
-    <string name="title_hook_edit" introduced="6.6.4"><![CDATA[Edit Hook]]></string>
+    <string name="title_hook_edit" introduced="6.7.0"><![CDATA[Edit Hook]]></string>
     <string name="title_hook_available" introduced="5.0.0"><![CDATA[Available Hooks]]></string>
     <string name="title_hook_code" introduced="6.6.0"><![CDATA[Hook Code]]></string>
     <string name="title_hook_configure" introduced="5.0.0"><![CDATA[Edit Hook]]></string>
@@ -1579,17 +1579,17 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_plugin" introduced="5.0.0"><![CDATA[Extension]]></string>
     <string name="title_plugins" introduced="5.0.0"><![CDATA[Extensions]]></string>
     <string name="title_plugins_installed" introduced="5.0.0"><![CDATA[Extensions with Hooks]]></string>
-    <string name="orphaned" introduced="6.6.4"><![CDATA[Orphaned]]></string>
-    <string name="orphaned_plugin_help" introduced="6.6.4"><![CDATA[This extension's folder is no longer present. Delete to remove its hook entries from the database.]]></string>
-    <string name="missing_files" introduced="6.6.4"><![CDATA[missing files]]></string>
-    <string name="file_missing" introduced="6.6.4"><![CDATA[File missing]]></string>
-    <string name="hooks_missing_help" introduced="6.6.4"><![CDATA[One or more hook files for this extension are missing on disk. Open the extension to remove the orphaned entries.]]></string>
-    <string name="hook_file_missing_help" introduced="6.6.4"><![CDATA[The PHP file backing this hook is missing. Delete this row to stop the hook loader logging not-found notices on every page load.]]></string>
-    <string name="hook_file_missing_create" introduced="6.6.4"><![CDATA[The hook file is missing. Saving will create it from the editor content below.]]></string>
-    <string name="hook_file_path_pending" introduced="6.6.4"><![CDATA[New hook — the file will be created in %s once the form is saved.]]></string>
-    <string name="confirm_delete_orphans" introduced="6.6.4"><![CDATA[Remove all hook entries for this missing extension?]]></string>
-    <string name="notify_orphans_deleted" introduced="6.6.4"><![CDATA[Removed orphaned hook entries for "%s".]]></string>
-    <string name="notify_orphan_hook_deleted" introduced="6.6.4"><![CDATA[Orphaned hook removed.]]></string>
+    <string name="orphaned" introduced="6.7.0"><![CDATA[Orphaned]]></string>
+    <string name="orphaned_plugin_help" introduced="6.7.0"><![CDATA[This extension's folder is no longer present. Delete to remove its hook entries from the database.]]></string>
+    <string name="missing_files" introduced="6.7.0"><![CDATA[missing files]]></string>
+    <string name="file_missing" introduced="6.7.0"><![CDATA[File missing]]></string>
+    <string name="hooks_missing_help" introduced="6.7.0"><![CDATA[One or more hook files for this extension are missing on disk. Open the extension to remove the orphaned entries.]]></string>
+    <string name="hook_file_missing_help" introduced="6.7.0"><![CDATA[The PHP file backing this hook is missing. Delete this row to stop the hook loader logging not-found notices on every page load.]]></string>
+    <string name="hook_file_missing_create" introduced="6.7.0"><![CDATA[The hook file is missing. Saving will create it from the editor content below.]]></string>
+    <string name="hook_file_path_pending" introduced="6.7.0"><![CDATA[New hook — the file will be created in %s once the form is saved.]]></string>
+    <string name="confirm_delete_orphans" introduced="6.7.0"><![CDATA[Remove all hook entries for this missing extension?]]></string>
+    <string name="notify_orphans_deleted" introduced="6.7.0"><![CDATA[Removed orphaned hook entries for "%s".]]></string>
+    <string name="notify_orphan_hook_deleted" introduced="6.7.0"><![CDATA[Orphaned hook removed.]]></string>
     <string name="trigger" introduced="5.0.0"><![CDATA[Trigger]]></string>
     <string name="unique_id" introduced="5.2.0"><![CDATA[Unique ID]]></string>
     <string name="php_code" introduced="5.2.0"><![CDATA[PHP Code]]></string>
@@ -2123,7 +2123,7 @@ This email is sent from the store's master email address but it is possible to r
   <group name="reports">
     <string name="data" introduced="5.0.0"><![CDATA[Data]]></string>
     <string name="sales_data" introduced="5.0.0"><![CDATA[Sales Data]]></string>
-    <string name="show_all_columns" introduced="6.6.4"><![CDATA[Show all columns]]></string>
+    <string name="show_all_columns" introduced="6.7.0"><![CDATA[Show all columns]]></string>
     <string name="tab_results" introduced="5.0.0"><![CDATA[Results]]></string>
     <string name="title_reports_from" introduced="5.0.0"><![CDATA[Sales report from %1$s]]></string>
     <string name="title_reports_from_to" introduced="5.0.0"><![CDATA[Sales Report from %1$s to %2$s]]></string>
@@ -2169,11 +2169,11 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
-    <string name="add_redirect" introduced="6.6.4"><![CDATA[Add Redirect]]></string>
-    <string name="clear_ignored" introduced="6.6.4"><![CDATA[Clear All Ignored]]></string>
-    <string name="dynamic_pages" introduced="6.6.4"><![CDATA[Dynamic Pages]]></string>
-    <string name="static_pages" introduced="6.6.4"><![CDATA[Static Pages]]></string>
-    <string name="ignored_cleared" introduced="6.6.4"><![CDATA[Ignored URIs cleared.]]></string>
+    <string name="add_redirect" introduced="6.7.0"><![CDATA[Add Redirect]]></string>
+    <string name="clear_ignored" introduced="6.7.0"><![CDATA[Clear All Ignored]]></string>
+    <string name="dynamic_pages" introduced="6.7.0"><![CDATA[Dynamic Pages]]></string>
+    <string name="static_pages" introduced="6.7.0"><![CDATA[Static Pages]]></string>
+    <string name="ignored_cleared" introduced="6.7.0"><![CDATA[Ignored URIs cleared.]]></string>
     <string name="order_minimum" introduced="6.6.0"><![CDATA[Minimum Order Value]]></string>
     <string name="order_maximum" introduced="6.6.0"><![CDATA[Maximum Order Value]]></string>
     <string name="note_tariff_grouping" introduced="6.5.12"><![CDATA[Tariffs with the same display text will be grouped at checkout. Unique tariff names will be split separately.]]></string>
@@ -2357,7 +2357,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_logo_upload" introduced="5.0.0"><![CDATA[Failed to upload logo.]]></string>
     <string name="error_module_install" introduced="5.0.0"><![CDATA[Module was not installed.]]></string>
     <string name="error_settings_update" introduced="5.0.0"><![CDATA[Failed to update settings.]]></string>
-    <string name="error_gc_min_max" introduced="6.6.4"><![CDATA[Gift certificate minimum value cannot be greater than the maximum.]]></string>
+    <string name="error_gc_min_max" introduced="6.7.0"><![CDATA[Gift certificate minimum value cannot be greater than the maximum.]]></string>
     <string name="error_mobile_vs_responsive" introduced="6.0.0"><![CDATA[Mobile skin has been disabled as the chosen default front-end skin is responsive.]]></string>
     <string name="error_tax_class_add" introduced="5.0.0"><![CDATA[Failed to add Tax Class.]]></string>
     <string name="error_tax_class_delete" introduced="5.0.0"><![CDATA[Failed to delete Tax Class.]]></string>
@@ -2384,7 +2384,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="matrix_in_use" introduced="5.2.6"><![CDATA[(Matrix stock level in use only!)]]></string>
     <string name="message_marked_read" introduced="5.0.0"><![CDATA[Message marked as read.]]></string>
     <string name="message_marked_unread" introduced="5.0.0"><![CDATA[Message marked as unread.]]></string>
-    <string name="message_deleted" introduced="6.6.4"><![CDATA[Selected messages deleted.]]></string>
+    <string name="message_deleted" introduced="6.7.0"><![CDATA[Selected messages deleted.]]></string>
     <string name="no_admin_affect" introduced="5.1.0"><![CDATA[(Does not affect admin)]]></string>
     <string name="no_skip_processing_check" introduced="5.0.0"><![CDATA[Allow order &quot;Processing&quot; status to be skipped?]]></string>
     <string name="notify_archive_create" introduced="5.0.0"><![CDATA[Archive successfully created.]]></string>
@@ -2437,9 +2437,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="product_popular_source" introduced="5.0.0"><![CDATA[Source data for popular products]]></string>
     <string name="product_popular_views" introduced="5.0.0"><![CDATA[Product Views]]></string>
     <string name="product_popular_sales" introduced="5.0.0"><![CDATA[Product Sales]]></string>
-    <string name="product_related" introduced="6.6.4"><![CDATA[Show 'Customers who bought this also bought' on basket?]]></string>
-    <string name="product_related_number" introduced="6.6.4"><![CDATA[Number of related products to display]]></string>
-    <string name="email_track_opens" introduced="6.6.4"><![CDATA[Track when emails are opened (adds a 1x1 pixel to outgoing HTML emails)]]></string>
+    <string name="product_related" introduced="6.7.0"><![CDATA[Show 'Customers who bought this also bought' on basket?]]></string>
+    <string name="product_related_number" introduced="6.7.0"><![CDATA[Number of related products to display]]></string>
+    <string name="email_track_opens" introduced="6.7.0"><![CDATA[Track when emails are opened (adds a 1x1 pixel to outgoing HTML emails)]]></string>
     <string name="product_precis" introduced="5.0.0"><![CDATA[Maximum Short Description Length]]></string>
     <string name="proxy_enable" introduced="5.0.0"><![CDATA[Does this server use a proxy?]]></string>
     <string name="proxy_host" introduced="5.0.0"><![CDATA[Proxy Host]]></string>
@@ -2542,7 +2542,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_category" introduced="5.0.0"><![CDATA[Categories]]></string>
     <string name="title_categories" introduced="5.0.0"><![CDATA[Categories]]></string>
     <string name="title_category_add" introduced="5.0.0"><![CDATA[Add Category]]></string>
-    <string name="title_subcategory_add" introduced="6.6.4"><![CDATA[Add Subcategory]]></string>
+    <string name="title_subcategory_add" introduced="6.7.0"><![CDATA[Add Subcategory]]></string>
     <string name="title_category_details" introduced="5.0.0"><![CDATA[Category Details]]></string>
     <string name="title_copyright" introduced="5.0.0"><![CDATA[Copyright Text]]></string>
     <string name="title_currency" introduced="5.0.0"><![CDATA[Currencies]]></string>
@@ -2629,8 +2629,8 @@ This email is sent from the store's master email address but it is possible to r
 <p>This message and the slider above (including the images) can be edited using the <strong><span style="color: red;">Rich</span> <span style="color: blue;">Text</span> <span style="color: green;">Editor</span></strong> which can be found in the admin control panel of your store under <i>File Manager &gt; Documents</i>.</p>]]></string>
     <string name="db_host" introduced="5.0.0"><![CDATA[Database Host]]></string>
     <string name="db_name" introduced="5.0.0"><![CDATA[Database Name]]></string>
-    <string name="db_username" introduced="6.6.4"><![CDATA[Database Username]]></string>
-    <string name="db_password" introduced="6.6.4"><![CDATA[Database Password]]></string>
+    <string name="db_username" introduced="6.7.0"><![CDATA[Database Username]]></string>
+    <string name="db_password" introduced="6.7.0"><![CDATA[Database Password]]></string>
     <string name="db_prefix" introduced="5.0.0"><![CDATA[Table Prefix]]></string>
     <string name="error_action_required" introduced="5.0.0"><![CDATA[Please click on the action you wish to perform, before continuing.]]></string>
     <string name="error_db_doesnt_exist" introduced="5.0.0"><![CDATA[That database doesn't exist.]]></string>
@@ -2649,15 +2649,15 @@ This email is sent from the store's master email address but it is possible to r
     <string name="link_admin_panel_note" introduced="6.1.0"><![CDATA[Please save this as a bookmark in your browser.]]></string>
     <string name="link_store_front" introduced="5.0.0"><![CDATA[Store Front]]></string>
     <string name="title_admin_profile" introduced="5.0.0"><![CDATA[Administrator Profile]]></string>
-    <string name="test_connection" introduced="6.6.4"><![CDATA[Test Connection]]></string>
-    <string name="test_connection_ok" introduced="6.6.4"><![CDATA[Connection successful.]]></string>
-    <string name="test_connection_missing" introduced="6.6.4"><![CDATA[Please enter database host, name and username before testing.]]></string>
-    <string name="test_connection_error" introduced="6.6.4"><![CDATA[Test failed — could not reach the server.]]></string>
-    <string name="password_weak" introduced="6.6.4"><![CDATA[Weak]]></string>
-    <string name="password_fair" introduced="6.6.4"><![CDATA[Fair]]></string>
-    <string name="password_strong" introduced="6.6.4"><![CDATA[Strong]]></string>
-    <string name="password_requirements" introduced="6.6.4"><![CDATA[Use at least 10 characters with a mix of upper and lower case letters, numbers and symbols.]]></string>
-    <string name="error_password_weak" introduced="6.6.4"><![CDATA[Please choose a stronger password.]]></string>
+    <string name="test_connection" introduced="6.7.0"><![CDATA[Test Connection]]></string>
+    <string name="test_connection_ok" introduced="6.7.0"><![CDATA[Connection successful.]]></string>
+    <string name="test_connection_missing" introduced="6.7.0"><![CDATA[Please enter database host, name and username before testing.]]></string>
+    <string name="test_connection_error" introduced="6.7.0"><![CDATA[Test failed — could not reach the server.]]></string>
+    <string name="password_weak" introduced="6.7.0"><![CDATA[Weak]]></string>
+    <string name="password_fair" introduced="6.7.0"><![CDATA[Fair]]></string>
+    <string name="password_strong" introduced="6.7.0"><![CDATA[Strong]]></string>
+    <string name="password_requirements" introduced="6.7.0"><![CDATA[Use at least 10 characters with a mix of upper and lower case letters, numbers and symbols.]]></string>
+    <string name="error_password_weak" introduced="6.7.0"><![CDATA[Please choose a stronger password.]]></string>
     <string name="select_language_note" introduced="6.6.0"><![CDATA[Please select your language. It will be downloaded and used for the setup process and your store.]]></string>
     <string name="title_compat_check" introduced="5.0.0"><![CDATA[Compatibility Check]]></string>
     <string name="title_select_language" introduced="6.6.0"><![CDATA[Select Language]]></string>
@@ -2743,75 +2743,75 @@ This email was sent automatically by the CubeCart setup tool.]]></string>
     <string name="total_expenditure" introduced="5.0.0"><![CDATA[Total Expenditure]]></string>
     <string name="display_customers_only" introduced="5.2.6"><![CDATA[Display Customers Only]]></string>
     <string name="display_bots_and_customers" introduced="5.2.6"><![CDATA[Display Webbots &amp; Customers]]></string>
-    <string name="title_funnel" introduced="6.6.4"><![CDATA[Conversion]]></string>
-    <string name="title_abandoned" introduced="6.6.4"><![CDATA[Abandoned Carts]]></string>
-    <string name="title_country" introduced="6.6.4"><![CDATA[Sales by Country]]></string>
-    <string name="all_time" introduced="6.6.4"><![CDATA[All time]]></string>
-    <string name="order_status_label" introduced="6.6.4"><![CDATA[Order status:]]></string>
-    <string name="trend" introduced="6.6.4"><![CDATA[Trend]]></string>
-    <string name="trend_new" introduced="6.6.4"><![CDATA[NEW]]></string>
-    <string name="stock" introduced="6.6.4"><![CDATA[Stock]]></string>
-    <string name="revenue" introduced="6.6.4"><![CDATA[Revenue]]></string>
-    <string name="orders" introduced="6.6.4"><![CDATA[Orders]]></string>
-    <string name="cart" introduced="6.6.4"><![CDATA[Cart]]></string>
-    <string name="refresh_now" introduced="6.6.4"><![CDATA[Refresh now]]></string>
-    <string name="email_customer" introduced="6.6.4"><![CDATA[Email customer]]></string>
-    <string name="last_7_days" introduced="6.6.4"><![CDATA[Last 7 days]]></string>
-    <string name="funnel_stage" introduced="6.6.4"><![CDATA[Stage]]></string>
-    <string name="funnel_count" introduced="6.6.4"><![CDATA[Count]]></string>
-    <string name="funnel_pct_total" introduced="6.6.4"><![CDATA[% of sessions]]></string>
-    <string name="funnel_pct_prev" introduced="6.6.4"><![CDATA[% of previous]]></string>
-    <string name="funnel_sessions" introduced="6.6.4"><![CDATA[Sessions]]></string>
-    <string name="funnel_carts" introduced="6.6.4"><![CDATA[Created cart]]></string>
-    <string name="funnel_submitted" introduced="6.6.4"><![CDATA[Order submitted]]></string>
-    <string name="funnel_paid" introduced="6.6.4"><![CDATA[Order paid]]></string>
-    <string name="funnel_submitted_value" introduced="6.6.4"><![CDATA[Submitted: %1$s]]></string>
-    <string name="funnel_paid_value" introduced="6.6.4"><![CDATA[Paid: %1$s]]></string>
-    <string name="abandoned_subtitle" introduced="6.6.4"><![CDATA[Active sessions with non-empty baskets (last 24h)]]></string>
-    <string name="abandoned_customer" introduced="6.6.4"><![CDATA[Customer]]></string>
-    <string name="abandoned_items" introduced="6.6.4"><![CDATA[Items]]></string>
-    <string name="abandoned_value" introduced="6.6.4"><![CDATA[Cart Value]]></string>
-    <string name="abandoned_idle" introduced="6.6.4"><![CDATA[Idle]]></string>
-    <string name="abandoned_none" introduced="6.6.4"><![CDATA[No abandoned carts in the last 24 hours.]]></string>
-    <string name="abandoned_total" introduced="6.6.4"><![CDATA[%1$s in %2$s abandoned baskets]]></string>
-    <string name="country_top_revenue" introduced="6.6.4"><![CDATA[Top 10 by revenue]]></string>
-    <string name="country_label" introduced="6.6.4"><![CDATA[Country]]></string>
-    <string name="country_pct_total" introduced="6.6.4"><![CDATA[% of total]]></string>
-    <string name="country_no_data" introduced="6.6.4"><![CDATA[No sales data for the selected period.]]></string>
-    <string name="country_total" introduced="6.6.4"><![CDATA[%1$s &middot; %2$s countries]]></string>
-    <string name="online_active_for" introduced="6.6.4"><![CDATA[Active for]]></string>
-    <string name="online_last_seen" introduced="6.6.4"><![CDATA[Last seen]]></string>
-    <string name="online_total_summary" introduced="6.6.4"><![CDATA[%1$s online &middot; %2$s signed-in &middot; %3$s guests &middot; %4$s bots]]></string>
-    <string name="loc_home" introduced="6.6.4"><![CDATA[Home]]></string>
-    <string name="loc_cart" introduced="6.6.4"><![CDATA[Cart]]></string>
-    <string name="loc_checkout" introduced="6.6.4"><![CDATA[Checkout]]></string>
-    <string name="loc_account" introduced="6.6.4"><![CDATA[Account]]></string>
-    <string name="loc_login" introduced="6.6.4"><![CDATA[Login]]></string>
-    <string name="loc_register" introduced="6.6.4"><![CDATA[Register]]></string>
-    <string name="loc_browsing" introduced="6.6.4"><![CDATA[Browsing: %1$s]]></string>
-    <string name="loc_viewing" introduced="6.6.4"><![CDATA[Viewing: %1$s]]></string>
-    <string name="loc_searching" introduced="6.6.4"><![CDATA[Searching: %1$s]]></string>
-    <string name="loc_404" introduced="6.6.4"><![CDATA[Missing page (404)]]></string>
-    <string name="time_ago_seconds" introduced="6.6.4"><![CDATA[%1$ds ago]]></string>
-    <string name="time_ago_minutes" introduced="6.6.4"><![CDATA[%1$dm ago]]></string>
-    <string name="time_ago_hours" introduced="6.6.4"><![CDATA[%1$dh ago]]></string>
-    <string name="duration_seconds" introduced="6.6.4"><![CDATA[%1$ds]]></string>
-    <string name="duration_minutes" introduced="6.6.4"><![CDATA[%1$dm]]></string>
-    <string name="duration_hours" introduced="6.6.4"><![CDATA[%1$dh %2$dm]]></string>
-    <string name="ip_local" introduced="6.6.4"><![CDATA[Local]]></string>
-    <string name="ip_test" introduced="6.6.4"><![CDATA[Test]]></string>
-    <string name="footer_orders" introduced="6.6.4"><![CDATA[%1$s &middot; %2$s orders]]></string>
-    <string name="footer_products" introduced="6.6.4"><![CDATA[%1$s &middot; %2$s products]]></string>
-    <string name="footer_terms" introduced="6.6.4"><![CDATA[%1$s &middot; %2$s terms]]></string>
-    <string name="footer_customers" introduced="6.6.4"><![CDATA[%1$s &middot; %2$s customers]]></string>
-    <string name="footer_searches" introduced="6.6.4"><![CDATA[%1$s searches]]></string>
-    <string name="footer_views" introduced="6.6.4"><![CDATA[%1$s views]]></string>
-    <string name="bot_generic" introduced="6.6.4"><![CDATA[Bot]]></string>
-    <string name="refunded_cancelled" introduced="6.6.4"><![CDATA[Refunded / Cancelled]]></string>
-    <string name="days_of_stock" introduced="6.6.4"><![CDATA[Days of Stock]]></string>
-    <string name="top_variants" introduced="6.6.4"><![CDATA[Top Variants]]></string>
-    <string name="vs_prior_period" introduced="6.6.4"><![CDATA[vs. prior period]]></string>
-    <string name="profit" introduced="6.6.4"><![CDATA[Profit]]></string>
+    <string name="title_funnel" introduced="6.7.0"><![CDATA[Conversion]]></string>
+    <string name="title_abandoned" introduced="6.7.0"><![CDATA[Abandoned Carts]]></string>
+    <string name="title_country" introduced="6.7.0"><![CDATA[Sales by Country]]></string>
+    <string name="all_time" introduced="6.7.0"><![CDATA[All time]]></string>
+    <string name="order_status_label" introduced="6.7.0"><![CDATA[Order status:]]></string>
+    <string name="trend" introduced="6.7.0"><![CDATA[Trend]]></string>
+    <string name="trend_new" introduced="6.7.0"><![CDATA[NEW]]></string>
+    <string name="stock" introduced="6.7.0"><![CDATA[Stock]]></string>
+    <string name="revenue" introduced="6.7.0"><![CDATA[Revenue]]></string>
+    <string name="orders" introduced="6.7.0"><![CDATA[Orders]]></string>
+    <string name="cart" introduced="6.7.0"><![CDATA[Cart]]></string>
+    <string name="refresh_now" introduced="6.7.0"><![CDATA[Refresh now]]></string>
+    <string name="email_customer" introduced="6.7.0"><![CDATA[Email customer]]></string>
+    <string name="last_7_days" introduced="6.7.0"><![CDATA[Last 7 days]]></string>
+    <string name="funnel_stage" introduced="6.7.0"><![CDATA[Stage]]></string>
+    <string name="funnel_count" introduced="6.7.0"><![CDATA[Count]]></string>
+    <string name="funnel_pct_total" introduced="6.7.0"><![CDATA[% of sessions]]></string>
+    <string name="funnel_pct_prev" introduced="6.7.0"><![CDATA[% of previous]]></string>
+    <string name="funnel_sessions" introduced="6.7.0"><![CDATA[Sessions]]></string>
+    <string name="funnel_carts" introduced="6.7.0"><![CDATA[Created cart]]></string>
+    <string name="funnel_submitted" introduced="6.7.0"><![CDATA[Order submitted]]></string>
+    <string name="funnel_paid" introduced="6.7.0"><![CDATA[Order paid]]></string>
+    <string name="funnel_submitted_value" introduced="6.7.0"><![CDATA[Submitted: %1$s]]></string>
+    <string name="funnel_paid_value" introduced="6.7.0"><![CDATA[Paid: %1$s]]></string>
+    <string name="abandoned_subtitle" introduced="6.7.0"><![CDATA[Active sessions with non-empty baskets (last 24h)]]></string>
+    <string name="abandoned_customer" introduced="6.7.0"><![CDATA[Customer]]></string>
+    <string name="abandoned_items" introduced="6.7.0"><![CDATA[Items]]></string>
+    <string name="abandoned_value" introduced="6.7.0"><![CDATA[Cart Value]]></string>
+    <string name="abandoned_idle" introduced="6.7.0"><![CDATA[Idle]]></string>
+    <string name="abandoned_none" introduced="6.7.0"><![CDATA[No abandoned carts in the last 24 hours.]]></string>
+    <string name="abandoned_total" introduced="6.7.0"><![CDATA[%1$s in %2$s abandoned baskets]]></string>
+    <string name="country_top_revenue" introduced="6.7.0"><![CDATA[Top 10 by revenue]]></string>
+    <string name="country_label" introduced="6.7.0"><![CDATA[Country]]></string>
+    <string name="country_pct_total" introduced="6.7.0"><![CDATA[% of total]]></string>
+    <string name="country_no_data" introduced="6.7.0"><![CDATA[No sales data for the selected period.]]></string>
+    <string name="country_total" introduced="6.7.0"><![CDATA[%1$s &middot; %2$s countries]]></string>
+    <string name="online_active_for" introduced="6.7.0"><![CDATA[Active for]]></string>
+    <string name="online_last_seen" introduced="6.7.0"><![CDATA[Last seen]]></string>
+    <string name="online_total_summary" introduced="6.7.0"><![CDATA[%1$s online &middot; %2$s signed-in &middot; %3$s guests &middot; %4$s bots]]></string>
+    <string name="loc_home" introduced="6.7.0"><![CDATA[Home]]></string>
+    <string name="loc_cart" introduced="6.7.0"><![CDATA[Cart]]></string>
+    <string name="loc_checkout" introduced="6.7.0"><![CDATA[Checkout]]></string>
+    <string name="loc_account" introduced="6.7.0"><![CDATA[Account]]></string>
+    <string name="loc_login" introduced="6.7.0"><![CDATA[Login]]></string>
+    <string name="loc_register" introduced="6.7.0"><![CDATA[Register]]></string>
+    <string name="loc_browsing" introduced="6.7.0"><![CDATA[Browsing: %1$s]]></string>
+    <string name="loc_viewing" introduced="6.7.0"><![CDATA[Viewing: %1$s]]></string>
+    <string name="loc_searching" introduced="6.7.0"><![CDATA[Searching: %1$s]]></string>
+    <string name="loc_404" introduced="6.7.0"><![CDATA[Missing page (404)]]></string>
+    <string name="time_ago_seconds" introduced="6.7.0"><![CDATA[%1$ds ago]]></string>
+    <string name="time_ago_minutes" introduced="6.7.0"><![CDATA[%1$dm ago]]></string>
+    <string name="time_ago_hours" introduced="6.7.0"><![CDATA[%1$dh ago]]></string>
+    <string name="duration_seconds" introduced="6.7.0"><![CDATA[%1$ds]]></string>
+    <string name="duration_minutes" introduced="6.7.0"><![CDATA[%1$dm]]></string>
+    <string name="duration_hours" introduced="6.7.0"><![CDATA[%1$dh %2$dm]]></string>
+    <string name="ip_local" introduced="6.7.0"><![CDATA[Local]]></string>
+    <string name="ip_test" introduced="6.7.0"><![CDATA[Test]]></string>
+    <string name="footer_orders" introduced="6.7.0"><![CDATA[%1$s &middot; %2$s orders]]></string>
+    <string name="footer_products" introduced="6.7.0"><![CDATA[%1$s &middot; %2$s products]]></string>
+    <string name="footer_terms" introduced="6.7.0"><![CDATA[%1$s &middot; %2$s terms]]></string>
+    <string name="footer_customers" introduced="6.7.0"><![CDATA[%1$s &middot; %2$s customers]]></string>
+    <string name="footer_searches" introduced="6.7.0"><![CDATA[%1$s searches]]></string>
+    <string name="footer_views" introduced="6.7.0"><![CDATA[%1$s views]]></string>
+    <string name="bot_generic" introduced="6.7.0"><![CDATA[Bot]]></string>
+    <string name="refunded_cancelled" introduced="6.7.0"><![CDATA[Refunded / Cancelled]]></string>
+    <string name="days_of_stock" introduced="6.7.0"><![CDATA[Days of Stock]]></string>
+    <string name="top_variants" introduced="6.7.0"><![CDATA[Top Variants]]></string>
+    <string name="vs_prior_period" introduced="6.7.0"><![CDATA[vs. prior period]]></string>
+    <string name="profit" introduced="6.7.0"><![CDATA[Profit]]></string>
   </group>
   <group name="translate">
     <string name="no_phrases_found" introduced="6.4.3"><![CDATA[No phrases found containing &quot;%1$s&quot;.]]></string>

@@ -282,8 +282,8 @@ $GLOBALS['smarty']->assign('ROOT', CC_ROOT_DIR);
 $GLOBALS['smarty']->assign('SESSION_LANGUAGE', $_SESSION['language']);
 $GLOBALS['smarty']->assign('SHOW_LANG_BACK', !empty($_SESSION['language_selected']));
 
-// Header shown above every step once the method is locked in (e.g. "Install CubeCart 6.6.4"
-// or "Upgrade CubeCart 6.6.4"). install_cubecart_title is parameterised; for upgrade we
+// Header shown above every step once the method is locked in (e.g. "Install CubeCart 6.7.0"
+// or "Upgrade CubeCart 6.7.0"). install_cubecart_title is parameterised; for upgrade we
 // compose from the plain label to avoid the marketing-flavoured upgrade_cubecart_title.
 if (isset($_SESSION['setup']['method'])) {
     if ($_SESSION['setup']['method'] === 'install') {
