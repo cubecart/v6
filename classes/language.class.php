@@ -650,9 +650,10 @@ class Language
                                     // See GitHub #1511
                                     $record['content_'.(string)$content->attributes()->type] = str_replace(array('empty({$','})}','DATA.'.$traditional_oid_col), array('empty($',')}','DATA.'.$oid_col), trim((string)$content));
                                 }
-                                if ($GLOBALS['db']->select('CubeCart_email_content', array('content_id'), array('language' => $record['language'], 'content_type' => $record['content_type']), false, 1, false, false)) {
-                                    $GLOBALS['db']->update('CubeCart_email_content', $record, array('language' => $record['language'], 'content_type' => $record['content_type']));
-                                } else {
+                                // Only insert rows that don't yet exist. Existing rows are preserved
+                                // because merchants may have intentionally edited them; we don't want
+                                // a language-pack upgrade or self-heal to silently overwrite their copy.
+                                if (!$GLOBALS['db']->select('CubeCart_email_content', array('content_id'), array('language' => $record['language'], 'content_type' => $record['content_type']), false, 1, false, false)) {
                                     $GLOBALS['db']->insert('CubeCart_email_content', $record);
                                 }
                             }
