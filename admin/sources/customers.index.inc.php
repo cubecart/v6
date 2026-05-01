@@ -47,12 +47,36 @@ if (isset($_POST['external_report']) && is_array($_POST['external_report'])) {
                 $zone_name[$zone['id']] = $zone['name'];
             }
         }
+        // Bulk-fetch billing addresses keyed by customer_id so the loop doesn't
+        // fire one SELECT per row.
+        $billing_by_cid = array();
+        $cust_ids = array();
+        foreach ($customers_export as $c) {
+            if (!empty($c['customer_id'])) $cust_ids[] = (int)$c['customer_id'];
+        }
+        if (!empty($cust_ids)) {
+            $cust_ids = array_values(array_unique($cust_ids));
+            $cid_in = implode(',', array_map('intval', $cust_ids));
+            $prefix = $GLOBALS['config']->get('config', 'dbprefix');
+            if (($rows = $GLOBALS['db']->misc("SELECT `customer_id`, `company_name`, `line1`, `line2`, `town`, `state`, `postcode`, `country` FROM `{$prefix}CubeCart_addressbook` WHERE `billing`='1' AND `customer_id` IN ($cid_in)")) !== false && is_array($rows)) {
+                foreach ($rows as $row) {
+                    // Keep the first billing row per customer (matches the original
+                    // behaviour of `select(..., LIMIT implicit 1)` plus `[0]`).
+                    if (!isset($billing_by_cid[(int)$row['customer_id']])) {
+                        $billing_by_cid[(int)$row['customer_id']] = $row;
+                    }
+                }
+            }
+        }
         foreach ($customers_export as $customer) {
-            // Find default address
-            $address = $GLOBALS['db']->select('CubeCart_addressbook', array('company_name', 'line1', 'line2', 'town', 'state', 'postcode', 'country'), array('customer_id' => $customer['customer_id'], 'billing' => '1'));
+            $address = isset($billing_by_cid[(int)$customer['customer_id']])
+                ? $billing_by_cid[(int)$customer['customer_id']]
+                : array('company_name'=>'', 'line1'=>'', 'line2'=>'', 'town'=>'', 'state'=>'', 'postcode'=>'', 'country'=>'');
             // Get state name if it is numeric
-            $address[0]['state'] = is_numeric($address[0]['state']) ? $zone_name[$address[0]['state']] : $address[0]['state'];
-            $data = array_merge($address[0], $customer);
+            if (is_numeric($address['state']) && isset($zone_name[$address['state']])) {
+                $address['state'] = $zone_name[$address['state']];
+            }
+            $data = array_merge($address, $customer);
             $external_report->report_customer_data($data);
         }
     }

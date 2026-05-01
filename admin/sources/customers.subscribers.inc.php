@@ -55,23 +55,40 @@ if (isset($GLOBALS['RAW']['POST']['maillist_format'])) {
             '{$FIRST_NAME}',
             '{$LAST_NAME}'
         );
+        // Bulk-fetch customer names so the loop doesn't fire one SELECT per subscriber.
+        $customer_by_id = array();
+        $customer_ids = array();
+        foreach ($maillist as $m) {
+            if (!empty($m['customer_id'])) $customer_ids[] = (int)$m['customer_id'];
+        }
+        if (!empty($customer_ids)) {
+            $customer_ids = array_values(array_unique($customer_ids));
+            $cid_in = implode(',', array_map('intval', $customer_ids));
+            $prefix = $GLOBALS['config']->get('config', 'dbprefix');
+            if (($rows = $GLOBALS['db']->misc("SELECT `customer_id`, `first_name`, `last_name` FROM `{$prefix}CubeCart_customer` WHERE `customer_id` IN ($cid_in)")) !== false && is_array($rows)) {
+                foreach ($rows as $row) {
+                    $customer_by_id[(int)$row['customer_id']] = $row;
+                }
+            }
+        }
         // Loop through
         foreach ($maillist as $member) {
-            if ($member['customer_id']) {
-                $customer = $GLOBALS['db']->select('CubeCart_customer', array('first_name', 'last_name'), array('customer_id' => $member['customer_id']));
-                if ($customer) {
-                    $member = array_merge($member, $customer[0]);
-                    if (!empty($member['first_name'])) {
-                        $long_name[]  = $member['first_name'];
-                        $short_name[]  = $member['first_name'];
-                    }
-                    if (!empty($member['last_name'])) {
-                        $long_name[]  = $member['last_name'];
-                        $short_name[]  = $member['last_name'];
-                    }
-                    $member['long_name'] = implode(' ', $long_name);
-                    $member['short_name'] = implode(' ', $short_name);
+            // Per-subscriber name accumulators (must reset; previous code carried
+            // names across iterations, which would have produced compounding output).
+            $long_name = array();
+            $short_name = array();
+            if ($member['customer_id'] && isset($customer_by_id[(int)$member['customer_id']])) {
+                $member = array_merge($member, $customer_by_id[(int)$member['customer_id']]);
+                if (!empty($member['first_name'])) {
+                    $long_name[]  = $member['first_name'];
+                    $short_name[]  = $member['first_name'];
                 }
+                if (!empty($member['last_name'])) {
+                    $long_name[]  = $member['last_name'];
+                    $short_name[]  = $member['last_name'];
+                }
+                $member['long_name'] = implode(' ', $long_name);
+                $member['short_name'] = implode(' ', $short_name);
             }
 
             $replace  = array(

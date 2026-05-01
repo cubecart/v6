@@ -136,23 +136,42 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
         include $hook;
     }
 
-    function updateCatsWithHierPosition($cat_id = 0, $position = 0){
-        if($cat_id == 0){
-            $GLOBALS['db']->update('CubeCart_category', array('cat_hier_position' => 0));
-            $cats = $GLOBALS['db']->select('CubeCart_category', array('cat_id'), array('cat_parent_id' => 0), array('priority' => 'ASC'));
-        } else {
-            $cats = $GLOBALS['db']->select('CubeCart_category', array('cat_id'), array('cat_parent_id' => $cat_id), array('priority' => 'ASC'));
+    // Recompute cat_hier_position for the whole tree. Previously this fired one
+    // SELECT per parent and one UPDATE per category — linear in tree size and
+    // catastrophic on stores with thousands of categories. Now a single SELECT
+    // builds the adjacency list in memory, DFS assigns positions, and a single
+    // UPDATE...CASE writes all rows in one round-trip.
+    $all_cats = $GLOBALS['db']->select('CubeCart_category', array('cat_id', 'cat_parent_id'), false, array('priority' => 'ASC'));
+    if (is_array($all_cats) && !empty($all_cats)) {
+        $children_by_parent = array();
+        foreach ($all_cats as $c) {
+            $children_by_parent[(int)$c['cat_parent_id']][] = (int)$c['cat_id'];
         }
-        if(isset($cats) && is_array($cats) && !empty($cats)){
-            foreach($cats as $cat){
-                if($position > 0){
-                    $GLOBALS['db']->update('CubeCart_category', array('cat_hier_position' => $position), array('cat_id' => $cat['cat_id']));
-                }
-                updateCatsWithHierPosition($cat['cat_id'], ($position+1));
+        $positions = array();
+        $position = 0;
+        $walk = function($parent_id) use (&$walk, &$positions, &$position, &$children_by_parent) {
+            if (empty($children_by_parent[$parent_id])) return;
+            foreach ($children_by_parent[$parent_id] as $cat_id) {
+                $position++;
+                $positions[$cat_id] = $position;
+                $walk($cat_id);
             }
+        };
+        $walk(0);
+
+        $prefix = $GLOBALS['config']->get('config', 'dbprefix');
+        if (!empty($positions)) {
+            $cases = '';
+            foreach ($positions as $cid => $pos) {
+                $cases .= ' WHEN '.(int)$cid.' THEN '.(int)$pos;
+            }
+            $ids = implode(',', array_map('intval', array_keys($positions)));
+            $GLOBALS['db']->misc("UPDATE `{$prefix}CubeCart_category` SET `cat_hier_position` = CASE `cat_id`{$cases} ELSE 0 END WHERE `cat_id` IN ({$ids})");
         }
+        // Reset any rows not touched (parent=0 roots whose position was 0 before).
+        $touched_ids = !empty($positions) ? implode(',', array_map('intval', array_keys($positions))) : '0';
+        $GLOBALS['db']->misc("UPDATE `{$prefix}CubeCart_category` SET `cat_hier_position` = 0 WHERE `cat_id` NOT IN ({$touched_ids})");
     }
-    updateCatsWithHierPosition();
     if (isset($_POST['submit_cont'])) {
         httpredir(currentPage(null, array('action' => 'edit', 'cat_id' => (int)$cat_id)));
     } else if ($redirect) {

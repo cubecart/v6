@@ -83,6 +83,13 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
             if ($cycle == 1) {
                 $GLOBALS['session']->set('date_added', date('Y-m-d H:i:s', time()), 'import');
             }
+            // In-memory caches so repeated lookups during a single import don't
+            // fire one SELECT per row. Big imports (10k+) typically have a small
+            // number of unique manufacturer/category/image values shared across
+            // many rows, so this collapses thousands of SELECTs into dozens.
+            $import_manuf_cache = array(); // name(lower) => id
+            $import_image_cache = array(); // path|name => file_id
+            $import_cat_cache = array();   // parent_id|name => cat_id
             while (($data = fgetcsv($fp, false, str_replace('tab', "\t", $delimiter))) !== false) {
                 $row++;
                 if ($cycle == 1 && $has_header && $row == 1) {
@@ -95,11 +102,17 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
                     if (in_array($field_name, array('price','sale_price','cost_price'))) {
                         $value = preg_replace("/[^0-9\.]/", "", $value);
                     } elseif ($field_name == 'manufacturer' && !empty($value) && !is_numeric($value)) {
-                        if (($manufacturer = $GLOBALS['db']->select('CubeCart_manufacturers', false, array('name' => $value), false, 1)) !== false) {
-                            $value	= $manufacturer[0]['id'];
+                        $manuf_key = strtolower(trim($value));
+                        if (isset($import_manuf_cache[$manuf_key])) {
+                            $value = $import_manuf_cache[$manuf_key];
                         } else {
-                            ## Insert new manufacturer?
-                            $value = $GLOBALS['db']->insert('CubeCart_manufacturers', array('name' => $value));
+                            if (($manufacturer = $GLOBALS['db']->select('CubeCart_manufacturers', false, array('name' => $value), false, 1)) !== false) {
+                                $value	= $manufacturer[0]['id'];
+                            } else {
+                                ## Insert new manufacturer?
+                                $value = $GLOBALS['db']->insert('CubeCart_manufacturers', array('name' => $value));
+                            }
+                            $import_manuf_cache[$manuf_key] = $value;
                         }
                     } elseif ($field_name == 'image' && !empty($value) && !is_numeric($value)) {
                         foreach ($GLOBALS['hooks']->load('admin.product.import.image.pre_process') as $hook) {
@@ -114,8 +127,13 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
                             if (!empty($image_path)) {
                                 $image_path .= '/';
                             }
+                            $img_cache_key = (empty($image_path) ? 'NULL' : $image_path).'|'.$image_name;
+                            if (isset($import_image_cache[$img_cache_key])) {
+                                $images[] = $import_image_cache[$img_cache_key];
+                                continue;
+                            }
                             $image = $GLOBALS['db']->select('CubeCart_filemanager', array('file_id'), array('filename' => $image_name, 'type' => 1, 'filepath' => empty($image_path) ? 'NULL' : $image_path), false, 1);
-                            
+
                             if (!$image) {
                                 $root_image_path = CC_ROOT_DIR.'/images/source/'.$image_path.$image_name;
                                 if (file_exists($root_image_path)) {
@@ -135,9 +153,11 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 
                                 if ($image_id = $GLOBALS['db']->insert('CubeCart_filemanager', array('type' => 1, 'filepath' => empty($image_path) ? 'NULL' : $image_path, 'filename' => $image_name, 'filesize' => $filesize, 'mimetype' => $mime, 'md5hash' => md5($root_image_path)))) {
                                     $images[] = $image_id;
+                                    $import_image_cache[$img_cache_key] = $image_id;
                                 }
                             } else {
                                 $images[] = $image[0]['file_id'];
+                                $import_image_cache[$img_cache_key] = $image[0]['file_id'];
                             }
                         }
                     }
@@ -185,19 +205,17 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 								if(!empty($breadcrumbs[0])) {
 									foreach($breadcrumbs as $key => $breadcrumb) {
 										$breadcrumb = trim($breadcrumb);
-										if($key===0) {
-											if($existing = $GLOBALS['db']->select('CubeCart_category', array('cat_id'), array('cat_name' => $breadcrumb, 'cat_parent_id' => $cat), false, false, false, false)) {
-												$cat = $existing[0]['cat_id'];
-											} else {
-												$cat = $GLOBALS['db']->insert('CubeCart_category', array('cat_name' => $breadcrumb, 'cat_parent_id' => $cat));
-											}
-										} else {
-											if($existing = $GLOBALS['db']->select('CubeCart_category', array('cat_id'), array('cat_name' => $breadcrumb, 'cat_parent_id' => $cat), false, false, false, false)) {
-												$cat = $existing[0]['cat_id'];
-											} else {
-												$cat = $GLOBALS['db']->insert('CubeCart_category', array('cat_name' => $breadcrumb, 'cat_parent_id' => $cat));
-											}
+										$cat_cache_key = $cat.'|'.$breadcrumb;
+										if (isset($import_cat_cache[$cat_cache_key])) {
+											$cat = $import_cat_cache[$cat_cache_key];
+											continue;
 										}
+										if($existing = $GLOBALS['db']->select('CubeCart_category', array('cat_id'), array('cat_name' => $breadcrumb, 'cat_parent_id' => $cat), false, false, false, false)) {
+											$cat = $existing[0]['cat_id'];
+										} else {
+											$cat = $GLOBALS['db']->insert('CubeCart_category', array('cat_name' => $breadcrumb, 'cat_parent_id' => $cat));
+										}
+										$import_cat_cache[$cat_cache_key] = $cat;
 									}
 								}
 							}

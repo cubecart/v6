@@ -65,15 +65,76 @@ if (isset($_GET['format']) && !empty($_GET['format'])) {
             include $hook;
         }
 
+        // ---- Bulk pre-fetch to avoid per-row N+1 queries ----------------------
+        // Previously each iteration of this loop fired ~5 SELECTs (manufacturer,
+        // category_index, image_index, seo_urls via generatePath, filemanager via
+        // imagePath). On a 240k-product store that meant >1M round-trips per export.
+        // Now we resolve everything once per page in O(constant) queries keyed by id.
+        $prefix = $GLOBALS['config']->get('config', 'dbprefix');
+        $product_ids  = array();
+        $manuf_ids    = array();
+        foreach ($results as $r) {
+            if (!empty($r['product_id'])) $product_ids[] = (int)$r['product_id'];
+            if (!empty($r['manufacturer'])) $manuf_ids[] = (int)$r['manufacturer'];
+        }
+        $product_ids = array_values(array_unique($product_ids));
+        $manuf_ids   = array_values(array_unique($manuf_ids));
+        $pid_in = implode(',', array_map('intval', $product_ids));
+
+        $cat_index_by_pid = array();
+        $image_files_by_pid = array();
+        $manuf_name_by_id = array();
+        $filemanager_by_id = array();
+
+        if (!empty($product_ids)) {
+            // Categories per product, primary first.
+            if (($rows = $GLOBALS['db']->misc("SELECT `product_id`, `cat_id` FROM `{$prefix}CubeCart_category_index` WHERE `product_id` IN ($pid_in) ORDER BY `primary` DESC")) !== false && is_array($rows)) {
+                foreach ($rows as $row) {
+                    $cat_index_by_pid[(int)$row['product_id']][] = (int)$row['cat_id'];
+                }
+            }
+            // Image file_ids per product, main_img first.
+            $all_file_ids = array();
+            if (($rows = $GLOBALS['db']->misc("SELECT `product_id`, `file_id` FROM `{$prefix}CubeCart_image_index` WHERE `product_id` IN ($pid_in) ORDER BY `main_img` DESC")) !== false && is_array($rows)) {
+                foreach ($rows as $row) {
+                    $image_files_by_pid[(int)$row['product_id']][] = (int)$row['file_id'];
+                    $all_file_ids[(int)$row['file_id']] = true;
+                }
+            }
+            // Resolve filemanager rows in one shot (used by imagePath()).
+            if (!empty($all_file_ids)) {
+                $fid_in = implode(',', array_map('intval', array_keys($all_file_ids)));
+                if (($rows = $GLOBALS['db']->misc("SELECT `file_id`, `filepath`, `filename` FROM `{$prefix}CubeCart_filemanager` WHERE `file_id` IN ($fid_in)")) !== false && is_array($rows)) {
+                    foreach ($rows as $row) {
+                        $filemanager_by_id[(int)$row['file_id']] = $row['filepath'].$row['filename'];
+                    }
+                }
+            }
+            // SEO product paths — bulk-loaded once and seeded into the SEO
+            // class cache so generatePath() skips its own per-row SELECT.
+            if (($rows = $GLOBALS['db']->misc("SELECT `type`, `item_id`, `path` FROM `{$prefix}CubeCart_seo_urls` WHERE `type`='prod' AND `redirect`=0 AND `item_id` IN ($pid_in)")) !== false && is_array($rows)) {
+                $seo->primeSeoUrls($rows);
+            }
+        }
+        if (!empty($manuf_ids)) {
+            $mid_in = implode(',', array_map('intval', $manuf_ids));
+            if (($rows = $GLOBALS['db']->misc("SELECT `id`, `name` FROM `{$prefix}CubeCart_manufacturers` WHERE `id` IN ($mid_in)")) !== false && is_array($rows)) {
+                foreach ($rows as $row) {
+                    $manuf_name_by_id[(int)$row['id']] = $row['name'];
+                }
+            }
+        }
+        $store_url = $GLOBALS['storeURL'];
+        $oos_purchase = $GLOBALS['config']->get('config', 'basket_out_of_stock_purchase');
+        $tax  = Tax::getInstance();
+
         foreach ($results as $i => $result) {
             # strip tags is plain text file CSV should be good to keep but lose two double quotes
-            $stock_level = $GLOBALS['catalogue']->getProductStock($result['product_id']);
-            if ($result['use_stock_level'] && !$GLOBALS['config']->get('config', 'basket_out_of_stock_purchase')) {
-                if ($stock_level <= 0) {
-                    $result['availability'] = 'out of stock';
-                } else {
-                    $result['availability'] = 'in stock';
-                }
+            // The result row already has stock_level from CubeCart_inventory; no need
+            // to re-query via getProductStock for the simple availability flag.
+            $stock_level = $result['stock_level'];
+            if ($result['use_stock_level'] && !$oos_purchase) {
+                $result['availability'] = ($stock_level <= 0) ? 'out of stock' : 'in stock';
             } else {
                 $result['availability'] = 'in stock';
             }
@@ -85,6 +146,8 @@ if (isset($_GET['format']) && !empty($_GET['format'])) {
                 $result['description'] = preg_replace('#[\s]{2,}#', ' ', str_replace(array("&nbsp;", "\t", "\r", "\n", "\0", "\x0B"), '', strip_tags($result['description'])));
             }
 
+            // getDirectory() uses an internal in-process cache of the full category
+            // tree (built once from one query), so these calls are PHP-only.
             $result['store_category'] = $GLOBALS['seo']->getDirectory($result['cat_id'], false, ' > ');
             $result['shopping_com_category'] = $GLOBALS['seo']->getDirectory($result['cat_id'], false, ' -> ');
             if (isset($result['mpn']) && empty($result['mpn']) && isset($result['gtin']) && empty($result['gtin'])) {
@@ -95,38 +158,39 @@ if (isset($_GET['format']) && !empty($_GET['format'])) {
 
             $result['condition'] = (empty($result['condition'])) ? 'new' : $result['condition'];
 
-            if($cats = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => $result['product_id']), array('primary' => 'DESC'))) {
-                $cat_ids = array();
-                foreach($cats as $cat) {
-                    array_push($cat_ids, $cat['cat_id']);
-                }
-                $result['cat_id'] = implode(',',$cat_ids);
+            $pid = (int)$result['product_id'];
+            if (!empty($cat_index_by_pid[$pid])) {
+                $result['cat_id'] = implode(',', $cat_index_by_pid[$pid]);
             }
-            
+
             # Manufacturer
             if (!empty($result['manufacturer'])) {
-                $result['manufacturer'] = ($manuf = $GLOBALS['db']->select('CubeCart_manufacturers', array('name'), array('id' => (int)$result['manufacturer']))) ? $manuf[0]['name'] : '';
+                $result['manufacturer'] = isset($manuf_name_by_id[(int)$result['manufacturer']]) ? $manuf_name_by_id[(int)$result['manufacturer']] : '';
             } else {
                 $result['manufacturer'] = '';
             }
 
             # Price
-            $sale    = Tax::getInstance()->salePrice($result['price'], $result['sale_price'], false);
+            $sale    = $tax->salePrice($result['price'], $result['sale_price'], false);
             $result['price'] = ($sale > 0 && strtolower($_GET['format']) != 'cubecart') ? $sale : $result['price'];
 
-            $result['price_formatted'] = Tax::getInstance()->priceFormat($result['price'], true);
+            $result['price_formatted'] = $tax->priceFormat($result['price'], true);
 
-            ## Generate Product URL
-            $url = $seo->generatePath($result['product_id'], 'product', 'product_id', true);
+            ## Generate Product URL — generatePath now hits the cache primed above (no per-row SELECT).
+            $url = $seo->generatePath($pid, 'product', 'product_id', true);
             $result['url'] = $seo->fullURL($url, true);
 
-            ## Generate Image URL
-            if (($images = $GLOBALS['db']->select('CubeCart_image_index', array('file_id'), array('product_id' => $result['product_id']), array('main_img' => 'DESC'))) !== false) {
+            ## Generate Image URL — resolve via the pre-fetched filemanager map.
+            if (!empty($image_files_by_pid[$pid])) {
                 $image_array = array();
-                foreach($images as $image) {
-                    array_push($image_array, $catalogue->imagePath($image['file_id'], $image_mode, $image_path, false));
+                foreach ($image_files_by_pid[$pid] as $file_id) {
+                    if (isset($filemanager_by_id[$file_id])) {
+                        // mode='source', path='filename' just yields the bare filename;
+                        // we replicate that without a CubeCart_filemanager round-trip.
+                        $image_array[] = basename($filemanager_by_id[$file_id]);
+                    }
                 }
-                $result['image'] = implode(',',$image_array);
+                $result['image'] = implode(',', $image_array);
             } else {
                 $result['image'] = '';
             }

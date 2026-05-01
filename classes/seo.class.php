@@ -35,6 +35,14 @@ class SEO
         'Google-Extended',
     ];
     /**
+     * In-process cache for CubeCart_seo_urls rows, keyed [type][item_id] => path.
+     * Populated lazily by generatePath() on miss, and may be pre-seeded in bulk
+     * by callers via primeSeoUrls() to avoid per-row SELECTs in hot loops.
+     *
+     * @var array
+     */
+    private $_seo_url_cache = array();
+    /**
      * Category directories
      *
      * @var array of strings
@@ -310,6 +318,26 @@ class SEO
     }
 
     /**
+     * Pre-populate the in-process SEO URL cache. Hot loops (admin product
+     * export, sitemap rebuild, etc.) can fetch CubeCart_seo_urls in a single
+     * `WHERE item_id IN (...)` query and seed the cache here, so subsequent
+     * generatePath() calls skip the per-row SELECT.
+     *
+     * @param array $rows  Array of rows shaped {type, item_id, path[, custom]}
+     */
+    public function primeSeoUrls(array $rows)
+    {
+        foreach ($rows as $row) {
+            if (!isset($row['type'], $row['item_id'])) continue;
+            $type = strtolower((string)$row['type']);
+            $this->_seo_url_cache[$type][(int)$row['item_id']] = array(
+                'path'   => isset($row['path']) ? $row['path'] : '',
+                'custom' => isset($row['custom']) ? (bool)$row['custom'] : false,
+            );
+        }
+    }
+
+    /**
      * Generate SEO path
      *
      * @param string $id
@@ -351,7 +379,13 @@ class SEO
                 case 'viewcat':
                     // check its not been made already
                     $custom = false;
-                    if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', array('path', 'custom'), array('type' => 'cat', 'item_id' => $id, 'redirect' => 0), false, 1, false, false)) !== false) {
+                    $existing = false;
+                    if (isset($this->_seo_url_cache['cat'][(int)$id])) {
+                        $cached = $this->_seo_url_cache['cat'][(int)$id];
+                        $existing = array(array('path' => $cached['path'], 'custom' => $cached['custom'] ? 1 : 0));
+                        $path = $cached['path'];
+                        $custom = (bool)$cached['custom'];
+                    } elseif (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', array('path', 'custom'), array('type' => 'cat', 'item_id' => $id, 'redirect' => 0), false, 1, false, false)) !== false) {
                         $path = $existing[0]['path'];
                         $custom = (bool)$existing[0]['custom'];
                     } elseif (is_numeric($id) && isset($this->_cat_dirs[$id])) {
@@ -393,7 +427,12 @@ class SEO
                 case 'product':
                 case 'viewprod':
                     // check its not been made already
-                    if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'path', array('type' => 'prod', 'item_id' => $id, 'redirect' => 0), false, 1, false, false)) !== false) {
+                    $existing = false;
+                    if (isset($this->_seo_url_cache['prod'][(int)$id])) {
+                        $cached = $this->_seo_url_cache['prod'][(int)$id];
+                        $existing = array(array('path' => $cached['path']));
+                        $path = $cached['path'];
+                    } elseif (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'path', array('type' => 'prod', 'item_id' => $id, 'redirect' => 0), false, 1, false, false)) !== false) {
                         $path = $existing[0]['path'];
                     } elseif (($prods = $GLOBALS['db']->select('CubeCart_inventory', array('product_id', 'name', 'cat_id'), array('product_id' => (int)$id), false, 1)) !== false) {
                         if ($GLOBALS['config']->get('config', 'seo_add_cats')==0) {
