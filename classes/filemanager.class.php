@@ -373,9 +373,13 @@ class FileManager
     {
         $dir = (!empty($dir)) ? $dir : $this->_manage_root.'/'.$this->_sub_dir;
         findFiles($file_array, $dir);
+        // Hash-keyed membership lookup so the per-file "already indexed" check
+        // is O(1) instead of in_array()'s O(N). On a 10k-file rebuild this
+        // collapses ~100M comparisons into ~10k.
+        $exists_lookup = array();
         if (($existing = $GLOBALS['db']->select('CubeCart_filemanager', array('filename', 'filepath'), false, array('filename' => 'ASC'))) !== false) {
             foreach ($existing as $file) {
-                $exists[] = $file['filepath'].$file['filename'];
+                $exists_lookup[$file['filepath'].$file['filename']] = true;
             }
         }
         if ($file_array) {
@@ -385,6 +389,14 @@ class FileManager
                     // from disk and skip indexing so they never enter the DB.
                     if (preg_match('/^print\.[a-f0-9]{32}\.php$/i', basename($file))) {
                         @unlink($file);
+                        continue;
+                    }
+                    // Skip already-indexed files BEFORE the expensive image
+                    // validation below — opening every JPG/PNG/GIF/WebP just to
+                    // re-confirm something we already know is in the DB was the
+                    // dominant cost on rebuilds.
+                    $rel_path = str_replace(array($this->_manage_root.'/', 'source/'), '', $file);
+                    if (isset($exists_lookup[$rel_path])) {
                         continue;
                     }
                     // Skip file if it is not an image and we're in image mode
@@ -465,11 +477,6 @@ class FileManager
                                 }
                             }
                         }
-                    }
-
-                    // Skip existing entries, and sources/thumbs
-                    if (isset($exists) && in_array(str_replace(array($this->_manage_root.'/', 'source/'), '', $file), $exists)) {
-                        continue;
                     }
 
                     $newfilename = $this->makeFilename($file);

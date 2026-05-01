@@ -52,6 +52,13 @@ if (!(bool)$GLOBALS['config']->get('config', 'debug')) {
     define('HTML_MINIFY_URL_ENABLED', false);
     include(CC_INCLUDES_DIR.'smarty/filters/HTMLMinify.smarty.php');
     $GLOBALS['smarty']->registerFilter("output", "minify_html");
+    // In production (debug off + cache on), skip the per-render filemtime
+    // check on each compiled template — the compiled cache is invalidated by
+    // the existing "Clear Cache" admin action. Saves ~1ms per render across
+    // dozens of partials per request.
+    if ((bool)$GLOBALS['config']->get('config', 'cache')) {
+        $GLOBALS['smarty']->setCompileCheck(false);
+    }
 }
 //Initialize language
 $GLOBALS['language'] = Language::getInstance();
