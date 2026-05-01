@@ -458,7 +458,8 @@ class ACP
             if ($write) {
                 // Strip CC_ROOT_DIR from the message so logged paths are document-relative.
                 if (defined('CC_ROOT_DIR') && CC_ROOT_DIR !== '' && CC_ROOT_DIR !== '/') {
-                    $message = str_replace(CC_ROOT_DIR, './', (string)$message);
+                    // Render as document-root-relative ("/classes/foo.php") — see Debug::writeSystemErrorLog.
+                    $message = str_replace(CC_ROOT_DIR, '/', (string)$message);
                 }
                 $now  = time();
                 $hash = sha1((string)$message);
