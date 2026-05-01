@@ -9,7 +9,7 @@
  * Email:  hello@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<what3words-autosuggest api_key="{$CONFIG.w3w}" id="{$as_id}" value="{$value}">
+<what3words-autosuggest{if !empty($CONFIG.w3w_user_key)} api_key="{$CONFIG.w3w_user_key}"{/if} id="{$as_id}" value="{$value}">
 <input type="text" name="{$input_name}" id="{$input_id}" value="{$value}" />
 </what3words-autosuggest>
 <script>
