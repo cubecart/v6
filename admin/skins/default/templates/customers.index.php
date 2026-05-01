@@ -287,7 +287,7 @@
 		  </tbody>
 		</table>
 		{else}
-		<div>{$LANG.address.notify_address_none}</div>
+		<p>{$LANG.form.none}</p>
 		{/if}
 	  </div>
 	  {else}
