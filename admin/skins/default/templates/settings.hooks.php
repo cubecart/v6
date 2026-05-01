@@ -9,39 +9,6 @@
  * Email:  hello@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<style>
-   .hooks-status { display:inline-block; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.4px; }
-   .hooks-status--ok      { background: rgba(60,160,80,0.15);  color:#2c8a40; }
-   .hooks-status--orphan  { background: rgba(200,60,60,0.15);  color:#b03030; }
-   .hooks-status--issue   { background: rgba(220,190,30,0.20); color:#856900; }
-   .hooks-col-status { width:120px; }
-   .hooks-col-count  { width:90px; }
-   .hooks-col-action { width:80px; }
-   .hooks-row-icon, .hooks-row-name { vertical-align: middle; }
-   .hooks-count-warn { color:#b56a13; }
-   .hooks-badge-warning {
-      display:inline-block; margin-left:6px; padding:1px 8px;
-      font-size:11px; font-weight:600;
-      background: rgba(220,190,30,0.20); color:#856900;
-      border-radius:10px;
-   }
-   .hooks-pathbar {
-      background:#5a6168; color:#fff;
-      font-family:Menlo,Consolas,monospace; font-size:12px;
-      padding:10px 22px;
-      border:1px solid #4a5058; border-bottom:none;
-      border-radius:6px 6px 0 0;
-   }
-   .hooks-pathbar .stat-chart-title { color:#fff; text-transform:none; letter-spacing:0; font-family:inherit; }
-   .hooks-pathbar-warning { color:#ffd28a !important; }
-   .hooks-code-editor {
-      height:500px;
-      background:none !important;
-      border:1px solid var(--border); border-top:none;
-      border-radius:0 0 6px 6px;
-      text-indent:0 !important;
-   }
-</style>
 <form action="{$VAL_SELF}" id="hook_form" method="post" enctype="multipart/form-data">
    {if $DISPLAY_PLUGINS}
    <div id="plugins" class="tab_content">

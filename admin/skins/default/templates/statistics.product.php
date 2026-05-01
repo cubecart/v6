@@ -9,31 +9,6 @@
  * Email:  hello@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<style>
-  .product-stats { max-width: 1100px; }
-  .product-stats .ps-header { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 16px; }
-  .product-stats .ps-header h3 { margin: 0 0 4px 0; }
-  .product-stats .ps-header-text { flex: 1; }
-  .product-stats .ps-header img { max-width: 110px; max-height: 110px; flex-shrink: 0; border-radius: 4px; }
-  .product-stats .date-range-filter { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; background: var(--highlight); padding: 10px 14px; margin: 0 0 16px; line-height: 1; border-radius: 4px; }
-  .product-stats .date-range-filter label { width: auto !important; margin-right: 6px; }
-  .product-stats .date-range-filter > div { display: inline-flex; align-items: center; }
-  .product-stats .date-range-filter input.date { width: 110px; }
-  .product-stats .date-range-filter input[type=submit].tiny { height: 24px; padding: 0 10px; }
-  .product-stats .ps-presets { display: inline-flex; gap: 4px; margin-left: auto; }
-  .product-stats .ps-presets a { display: inline-flex; align-items: center; padding: 0 10px; height: 24px; border: 1px solid var(--border); border-radius: 12px; font-size: 12px; line-height: 1; text-decoration: none; }
-  .product-stats .ps-presets a.active { background: var(--panel-muted); font-weight: 600; }
-  .product-stats .ps-kpis { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
-  .product-stats .ps-kpi { flex: 1; min-width: 180px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; }
-  .product-stats .ps-kpi .ps-kpi-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px; }
-  .product-stats .ps-kpi .ps-kpi-value { font-size: 22px; font-weight: 600; line-height: 1.1; }
-  .product-stats .ps-kpi .ps-kpi-meta { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
-  .product-stats .ps-kpi--warn .ps-kpi-value { color: #b03030; }
-  .product-stats .ps-grid { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
-  .product-stats .ps-grid > * { flex: 1; min-width: 320px; }
-  .product-stats table { width: 100%; }
-  .product-stats .ps-section { margin-top: 20px; }
-</style>
 <div id="general" class="tab_content product-stats">
    {if $PRODUCT}
    <div class="ps-header">

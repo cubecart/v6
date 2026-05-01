@@ -11,17 +11,6 @@
       <link rel="stylesheet" type="text/css" href="{$style}?{$VERSION_HASH}" media="screen">
       {/foreach}
       <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/styles/styles.php?{$VERSION_HASH}" media="screen">
-      <style>
-      #help-panel-overlay { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.3); z-index:9998; }
-      #help-panel { position:fixed; top:0; right:-420px; width:400px; height:100%; background:var(--panel); box-shadow:-2px 0 8px rgba(0,0,0,0.2); z-index:9999; transition:right 0.3s ease; display:flex; flex-direction:column; border-left:1px solid var(--border); }
-      #help-panel.open { right:0; }
-      #help-panel-overlay.open { display:block; }
-      #help-panel-header { display:flex; justify-content:space-between; align-items:center; padding:9px 16px; background:var(--primary); color:var(--text-invert); border-bottom:3px solid var(--primary-accent); flex-shrink:0; }
-      #help-panel-title { font-size:14px; font-weight:600; }
-      #help-panel-close, #help-panel-close:hover, #help-panel-close .fa { color:#fff !important; font-size:16px; text-decoration:none; }
-      #help-panel-close:hover { opacity:0.8; }
-      #help-panel-iframe { flex:1; border:none; width:100%; background:var(--bg); }
-      </style>
       {foreach from=$HEAD_JS item=js_src}
       <script type="text/javascript" src="{$js_src}?{$VERSION_HASH}"></script>
       {/foreach}
@@ -113,6 +102,7 @@
          {/literal}
       </script>
       <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.js?{$VERSION_HASH}"></script>
+      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.components.js?{$VERSION_HASH}"></script>
       {if isset($CLOSE_WINDOW)}
       <script type="text/javascript">
          $(document).ready(function () {

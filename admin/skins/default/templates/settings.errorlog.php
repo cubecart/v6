@@ -9,23 +9,6 @@
  * Email:  hello@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<style>
-  .errorlog-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
-  .errorlog-badge--red    { background: rgba(200, 60, 60, 0.15);  color: #b03030; }
-  .errorlog-badge--orange { background: rgba(220, 130, 30, 0.18); color: #b56a13; }
-  .errorlog-badge--yellow { background: rgba(220, 190, 30, 0.20); color: #856900; }
-  .errorlog-badge--gray   { background: rgba(120, 130, 150, 0.15); color: #5a6478; }
-  .errorlog-occurrences { display: inline-block; min-width: 22px; padding: 1px 6px; background: var(--panel-muted); border-radius: 10px; font-size: 11px; font-weight: 600; text-align: center; }
-  .errorlog-row td.errorlog-msg { cursor: pointer; }
-  .errorlog-row td.errorlog-msg:hover { background: var(--panel-muted); }
-  .errorlog-filter { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 8px 0 12px; padding: 8px 12px; background: var(--highlight); border-radius: 4px; }
-  .errorlog-filter input.q { width: 280px; }
-  .errorlog-detail { padding: 8px 4px; }
-  .errorlog-detail h4 { margin: 12px 0 4px; }
-  .errorlog-detail pre { white-space: pre-wrap; word-break: break-word; background: var(--panel-muted); padding: 10px; border-radius: 4px; font-size: 12px; max-height: 60vh; overflow: auto; }
-  .errorlog-detail .copy-btn { float: right; }
-</style>
-
 <div id="admin_error_log" class="tab_content">
   <h3>{$LANG.settings.title_error_log}</h3>
   {if $ADMIN_ERROR_LOG}
@@ -152,53 +135,3 @@
   <p>&mdash; {$LANG.form.none} &mdash;</p>
   {/if}
 </div>
-
-<script>{literal}
-(function(){
-  // Open the colorbox detail modal when an admin clicks the message cell.
-  $(document).on('click', '.errorlog-row .errorlog-msg', function(e) {
-    var $row = $(this).closest('.errorlog-row');
-    var msg = $row.attr('data-message') || '';
-    var url = $row.attr('data-url') || '';
-    var backtrace = $row.attr('data-backtrace') || '';
-    var severity = $row.attr('data-severity') || '';
-    var time = $row.attr('data-time') || '';
-    var first = $row.attr('data-first') || '';
-    var occurrences = parseInt($row.attr('data-occurrences') || '1', 10);
-
-    var html = '<div class="errorlog-detail">';
-    html += '<button type="button" class="copy-btn tiny" data-copy="error">Copy</button>';
-    html += '<h4>' + severity.toUpperCase() + ' &middot; ' + (occurrences > 1 ? (occurrences + ' occurrences') : '1 occurrence') + '</h4>';
-    html += '<p><strong>Last seen:</strong> ' + time + (occurrences > 1 ? ' &middot; <strong>First seen:</strong> ' + first : '') + '</p>';
-    html += '<h4>Message</h4><pre id="errorlog-detail-msg">' + msg + '</pre>';
-    if (url) {
-      html += '<h4>URL</h4><p><a href="' + url + '" target="_blank" rel="noopener">' + url + '</a></p>';
-    }
-    if (backtrace) {
-      html += '<h4>Backtrace</h4><pre id="errorlog-detail-backtrace">' + backtrace + '</pre>';
-    }
-    html += '</div>';
-    $.colorbox({ title: 'Error detail', width: '85%', height: '80%', html: html });
-  });
-
-  // Copy the visible detail (message + backtrace) to the clipboard.
-  $(document).on('click', '.errorlog-detail .copy-btn', function() {
-    var msg = ($('#errorlog-detail-msg').text() || '');
-    var bt  = ($('#errorlog-detail-backtrace').text() || '');
-    var text = msg + (bt ? ('\n\n' + bt) : '');
-    if (navigator.clipboard) navigator.clipboard.writeText(text);
-  });
-
-  // The bulk-action select carries either status=1/0 or delete; mirror the
-  // status into the appropriate hidden field so the server gets a clean value.
-  $(document).on('change', '.errorlog-row select[name=bulk_action], form select[name=bulk_action]', function() {
-    var $sel = $(this);
-    var $opt = $sel.find('option:selected');
-    var $form = $sel.closest('form');
-    var status = $opt.attr('data-status');
-    if (typeof status !== 'undefined') {
-      $form.find('.bulk-status-mirror').val(status);
-    }
-  });
-})();
-{/literal}</script>
