@@ -3755,3 +3755,7 @@ textarea#query {
 /* customers.index.php — customer-type legend in customer search */
 .customer-type-legend tbody tr:nth-child(even) td { background-color:transparent !important; }
 .customer-type-legend tbody td { height:auto; padding:1px 6px; line-height:1.2; font-size:12px; }
+
+/* settings.logs.php — success/fail icons in access logs */
+.log-success-yes { color:#3c763d; font-size:16px; }
+.log-success-no  { color:#a94442; font-size:16px; }

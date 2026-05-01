@@ -27,7 +27,7 @@
 		<td>{$log.username}</td>
 		<td>{$log.date}</td>
 		<td><a href="http://whois.domaintools.com/{$log.ip_address}" target="_blank">{$log.ip_address}</a></td>
-		<td style="text-align:center"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$log.img}.png" alt="{$log.success}"></td>
+		<td class="text-center">{if $log.success eq 'Y'}<i class="fa fa-check-circle log-success-yes" title="{$LANG.common.yes}"></i>{else}<i class="fa fa-times-circle log-success-no" title="{$LANG.common.no}"></i>{/if}</td>
 	  </tr>
 	{/foreach}
 	</tbody>
@@ -44,6 +44,7 @@
 	<thead>
 	  <tr>
 		<td>{$THEAD_ACTIVITY.username}</td>
+		<td>{$LANG.common.name}</td>
 		<td>{$THEAD_ACTIVITY.description}</td>
 		<td>{$LANG.common.item}</td>
 		<td>{$THEAD_ACTIVITY.date}</td>
@@ -53,14 +54,15 @@
 	<tbody>
 	{foreach from=$ADMIN_ACTIVITY item=log}
 	  <tr>
-		<td>{$log.admin.username} ({$log.admin.name})</td>
+		<td>{$log.admin.username}</td>
+		<td>{$log.admin.name}</td>
 		<td>{$log.description}</td>
 		<td>
 		{if !empty($log.item_name)}
 		<a href="{$log.item_link}">{$log.item_name}</a>
-		{/if}	
+		{/if}
 		</td>
-		<td style="text-align:center">{$log.date}</td>
+		<td class="text-center">{$log.date}</td>
 		<td><a href="http://whois.domaintools.com/{$log.ip_address}" target="_blank">{$log.ip_address}</a></td>
 	  </tr>
 	{/foreach}
@@ -88,7 +90,7 @@
 		<td>{$log.username}</td>
 		<td>{$log.date}</td>
 		<td><a href="http://whois.domaintools.com/{$log.ip_address}" target="_blank">{$log.ip_address}</a></td>
-		<td style="text-align:center"><img src="images/icons/{$log.img}.png" alt="{$log.success}"></td>
+		<td class="text-center">{if $log.success eq 'Y'}<i class="fa fa-check-circle log-success-yes" title="{$LANG.common.yes}"></i>{else}<i class="fa fa-times-circle log-success-no" title="{$LANG.common.no}"></i>{/if}</td>
 	  </tr>
 	  {/foreach}
 	</tbody>

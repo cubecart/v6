@@ -47,7 +47,6 @@ if ($logs_admin) {
     $GLOBALS['main']->addTabControl($lang['settings']['title_logs_access_admin'], $anchor);
     foreach ($logs_admin as $log) {
         $log['date'] = formatTime($log['time']);
-        $log['img']  = ($log['success']=='Y') ? 1 : 0;
         $smarty_data['admin_logs'][] = $log;
     }
     $GLOBALS['smarty']->assign('PAGINATION_ADMIN_ACCESS', $GLOBALS['db']->pagination(false, $per_page, $page_admin, 5, $page_var, $anchor));
@@ -127,9 +126,10 @@ if (!isset($_GET[$sort_var]) || !is_array($_GET[$sort_var])) {
 }
 $current_page = currentPage(array($sort_var));
 $thead_sort = array(
-    'username'   => $GLOBALS['db']->column_sort('admin_id', $lang['account']['username'], $sort_var, $current_page, $_GET[$sort_var], $anchor),
+    'username'   => $GLOBALS['db']->column_sort('username', $lang['account']['username'], $sort_var, $current_page, $_GET[$sort_var], $anchor),
+    'date'       => $GLOBALS['db']->column_sort('time', $lang['common']['date'], $sort_var, $current_page, $_GET[$sort_var], $anchor),
     'ip_address' => $GLOBALS['db']->column_sort('ip_address', $lang['common']['ip_address'], $sort_var, $current_page, $_GET[$sort_var], $anchor),
-    'time'    => $GLOBALS['db']->column_sort('time', $lang['common']['date'], $sort_var, $current_page, $_GET[$sort_var], $anchor)
+    'success'    => $GLOBALS['db']->column_sort('success', 'Success?', $sort_var, $current_page, $_GET[$sort_var], $anchor),
 );
 $GLOBALS['smarty']->assign('THEAD_CUSTOMER', $thead_sort);
 $page_customer  = (isset($_GET[$page_var])) ? $_GET[$page_var] : 1;
@@ -137,7 +137,6 @@ if (($logs_admin = $GLOBALS['db']->select('CubeCart_access_log', false, array('t
     $GLOBALS['main']->addTabControl($lang['settings']['title_logs_access_customer'], $anchor);
     foreach ($logs_admin as $log) {
         $log['date'] = formatTime($log['time']);
-        $log['img'] = ($log['success']=='Y') ? 1 : 0;
         $smarty_data['customer_activity'][] = $log;
     }
     $GLOBALS['smarty']->assign('PAGINATION_CUSTOMER', $GLOBALS['db']->pagination(false, $per_page, $page_customer, 5, $page_var, $anchor));
