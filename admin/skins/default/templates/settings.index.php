@@ -9,6 +9,10 @@
  * Email:  hello@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
+<div class="settings-search-bar">
+   <span id="settings-search-count" class="settings-search-count" hidden></span>
+   <input type="search" id="settings-search" class="textbox" placeholder="{$LANG.common.search|default:'Search'} settings…" autocomplete="off">
+</div>
 <form id="form-settings" action="{$PHP_SELF}" method="post" enctype="multipart/form-data">
    <div id="General" class="tab_content">
       <h3>{$LANG.common.general}</h3>
@@ -50,16 +54,12 @@
          <legend>{$LANG.settings.social_accounts}</legend>
          <div><label for="bsky">Bluesky</label><span><input name="config[bsky]" id="bsky" type="text" class="textbox" value="{$CONFIG.bsky}"></span></div>
          <div><label for="facebook">Facebook</label><span><input name="config[facebook]" id="facebook" type="text" class="textbox" value="{$CONFIG.facebook}"></span></div>
-         <div><label for="flickr">Flickr</label><span><input name="config[flickr]" id="flickr" type="text" class="textbox" value="{$CONFIG.flickr}"></span></div>
          <div><label for="instagram">Instagram</label><span><input name="config[instagram]" id="instagram" type="text" class="textbox" value="{$CONFIG.instagram}"></span></div>
          <div><label for="linkedin">LinkedIn</label><span><input name="config[linkedin]" id="linkedin" type="text" class="textbox" value="{$CONFIG.linkedin}"></span></div>
          <div><label for="pinterest">Pinterest</label><span><input name="config[pinterest]" id="pinterest" type="text" class="textbox" value="{$CONFIG.pinterest}"></span></div>
-         <div><label for="vimeo">Vimeo</label><span><input name="config[vimeo]" id="vimeo" type="text" class="textbox" value="{$CONFIG.vimeo}"></span></div>
-         <div><label for="wordpress">WordPress</label><span><input name="config[wordpress]" id="wordpress" type="text" class="textbox" value="{$CONFIG.wordpress}"></span></div>
-         <div><label for="youtube">YouTube</label><span><input name="config[youtube]" id="youtube" type="text" class="textbox" value="{$CONFIG.youtube}"></span></div>
          <div><label for="reddit">Reddit</label><span><input name="config[reddit]" id="reddit" type="text" class="textbox" value="{$CONFIG.reddit}"></span></div>
-         <div><label for="tumblr">Tumblr</label><span><input name="config[tumblr]" id="tumblr" type="text" class="textbox" value="{$CONFIG.tumblr}"></span></div>
          <div><label for="twitter">X</label><span><input name="config[twitter]" id="twitter" type="text" class="textbox" value="{$CONFIG.twitter}"></span></div>
+         <div><label for="youtube">YouTube</label><span><input name="config[youtube]" id="youtube" type="text" class="textbox" value="{$CONFIG.youtube}"></span></div>
       </fieldset>
    </div>
    <div id="Features" class="tab_content">
@@ -114,18 +114,7 @@
                   <br><small>{$LANG.orders.oid_force_desc}</small>
             </div>
         </div>
-      <div><label for="order_format_preview">&nbsp;</label><span>
-            <button type="button" class="button tiny" id="order_format_preview" onclick="previewOrderFormat()">{$LANG.common.preview}</button>
-            <script>
-            function previewOrderFormat() {
-                  var qstring = '';
-                  $(".preview_order").each(function() {
-                        qstring += '&'+this.id+'='+encodeURI(this.value);
-                  });
-                  $.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&function=previewOrderFormat'+qstring})
-            }
-            </script>
-      </div>
+      <div><label>{$LANG.common.preview}</label><span><code id="oid_format_preview" class="oid-preview">&mdash;</code></span></div>
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_sales}</legend>
@@ -178,6 +167,7 @@
       <fieldset>
          <legend>{$LANG.address.w3w} - <a href="https://what3words.com/business/ecommerce/" target="_blank">{$LANG.common.learn_more}</a></legend>
          <div><label for="w3w">{$LANG.settings.w3w_status}</label><span><input name="config[w3w_status]" id="w3w_status" type="hidden" class="toggle" value="{$CONFIG.w3w_status}"></span></div>
+         <div><label for="w3w_user_key">{$LANG.settings.w3w_user_key|default:'Your API key'}</label><span><input name="config[w3w_user_key]" id="w3w_user_key" type="text" class="textbox" value="{$CONFIG.w3w_user_key}" placeholder="{$LANG.common.optional}"><br><small>{$LANG.settings.w3w_user_key_desc|default:'Leave blank to use the auto-provisioned partner key. Enter your own key from <a href="https://accounts.what3words.com/" target="_blank">accounts.what3words.com</a> to use the latest SDK.'}</small></span></div>
          {if !$w3w_compatibility}
          <p><strong>{$LANG.settings.w3w_na}</strong></p>
          {/if}
@@ -205,6 +195,36 @@
          <div><label for="emailconf">{$LANG.settings.emailconf}</label><span><input name="config[emailconf]" id="emailconf" type="hidden" class="toggle" value="{$CONFIG.emailconf}"></span></div>
          <div><label for="admin_login_notify">{$LANG.settings.admin_login_notify}</label><span><input name="config[admin_login_notify]" id="admin_login_notify" type="hidden" class="toggle" value="{$CONFIG.admin_login_notify}"></span></div>
          <div><label for="allow_telemetry">{$LANG.settings.allow_telemetry}</label><span><input name="config[allow_telemetry]" id="allow_telemetry" type="hidden" class="toggle" value="{$CONFIG.allow_telemetry}"></span></div>
+      </fieldset>
+      <fieldset>
+         <legend>{$LANG.settings.title_digital}</legend>
+         <div><label for="download_expire">{$LANG.settings.digital_expiry}</label><span><input name="config[download_expire]" id="download_expire" type="text" class="textbox number" value="{$CONFIG.download_expire}"> {$LANG.common.blank_to_disable}</span></div>
+         <div><label for="download_update_existing">{$LANG.settings.download_update_existing}</label><span><input name="download_update_existing" id="download_update_existing" type="hidden" class="toggle" value="0"><input name="download_expire_old" type="hidden" value="{$CONFIG.download_expire}"></span></div>
+         <div><label for="download_count">{$LANG.settings.digital_attempts}</label><span><input name="config[download_count]" id="download_count" type="text" class="textbox number" value="{$CONFIG.download_count}"> {$LANG.common.blank_to_disable}</span></div>
+      </fieldset>
+      <fieldset>
+         <legend>{$LANG.settings.title_stock_general}</legend>
+         <div><label for="stock_level">{$LANG.settings.stock_show}</label><span><input name="config[stock_level]" id="stock_level" type="hidden" class="toggle" value="{$CONFIG.stock_level}"></span></div>
+         <div><label for="basket_out_of_stock_purchase">{$LANG.settings.stock_allow_oos}</label><span><input name="config[basket_out_of_stock_purchase]" id="basket_out_of_stock_purchase" type="hidden" class="toggle" value="{$CONFIG.basket_out_of_stock_purchase}"></span></div>
+         <div><label for="stock_warn_type">{$LANG.settings.stock_warning_method}</label><span><select name="config[stock_warn_type]" id="stock_warn_type" class="textbox">
+            {foreach from=$OPT_STOCK_WARN_TYPE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
+            </select></span>
+         </div>
+         <div><label for="stock_warn_level">{$LANG.settings.stock_warning_level}</label><span><input name="config[stock_warn_level]" id="stock_warn_level" type="text" class="textbox number" value="{$CONFIG.stock_warn_level}"></span></div>
+         <div><label for="stock_change_time">{$LANG.settings.stock_reduce}</label><span><select name="config[stock_change_time]" id="stock_change_time" class="textbox">
+            {foreach from=$OPT_STOCK_CHANGE_TIME item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
+            </select></span>
+         </div>
+         <div><label for="hide_out_of_stock">{$LANG.settings.title_hide_out_of_stock}</label><span><input name="config[hide_out_of_stock]" id="hide_out_of_stock" type="hidden" class="toggle" value="{$CONFIG.hide_out_of_stock}"></span>&nbsp;{$LANG.settings.no_admin_affect}</div>
+         <div><label for="update_main_stock">{$LANG.settings.update_main_stock}</label><span><input name="config[update_main_stock]" id="update_main_stock" type="hidden" class="toggle" value="{$CONFIG.update_main_stock}"></span>&nbsp;{$LANG.settings.matrix_in_use}</div>
+         <div><label for="image_delete">{$LANG.settings.image_delete}</label><span><input name="config[image_delete]" id="image_delete" type="hidden" class="toggle" value="{$CONFIG.image_delete}"></span></div>
+         <div><label for="image_upload_format">{$LANG.settings.image_upload_format}</label><span><select name="config[image_upload_format]" id="image_upload_format" class="textbox">
+            <option value="webp"{if $CONFIG.image_upload_format=='webp'} selected="selected"{/if}>{$LANG.settings.image_upload_format_webp}</option>
+            <option value="jpeg"{if $CONFIG.image_upload_format=='jpeg'} selected="selected"{/if}>{$LANG.settings.image_upload_format_jpeg}</option>
+            <option value="png"{if $CONFIG.image_upload_format=='png'} selected="selected"{/if}>{$LANG.settings.image_upload_format_png}</option>
+            <option value="original"{if $CONFIG.image_upload_format=='original'} selected="selected"{/if}>{$LANG.settings.image_upload_format_original}</option>
+            </select></span>
+         </div>
       </fieldset>
    </div>
    <div id="Layout" class="tab_content">
@@ -301,38 +321,65 @@
          	<input name="config[disable_mobile_skin]" id="disable_mobile_skin" type="hidden" value="1">
          {/if}
       </fieldset>
-   </div>
-   <div id="Stock" class="tab_content">
-      <h3>{$LANG.settings.title_stock}</h3>
+      {if isset($LOGOS)}
       <fieldset>
-         <legend>{$LANG.settings.title_digital}</legend>
-         <div><label for="download_expire">{$LANG.settings.digital_expiry}</label><span><input name="config[download_expire]" id="download_expire" type="text" class="textbox number" value="{$CONFIG.download_expire}"> {$LANG.common.blank_to_disable}</span></div>
-         <div><label for="download_update_existing">{$LANG.settings.download_update_existing}</label><span><input name="download_update_existing" id="download_update_existing" type="hidden" class="toggle" value="0"><input name="download_expire_old" type="hidden" value="{$CONFIG.download_expire}"></span></div>
-         <div><label for="download_count">{$LANG.settings.digital_attempts}</label><span><input name="config[download_count]" id="download_count" type="text" class="textbox number" value="{$CONFIG.download_count}"> {$LANG.common.blank_to_disable}</span></div>
+         <legend>{$LANG.settings.title_logo}</legend>
+         <table width="100%">
+         <thead>
+         <tr>
+         <td>
+         {$LANG.common.status}
+         </td>
+         <td>{$LANG.common.logo}</td>
+         <td>{$LANG.module.scope}</td>
+         <td>{$LANG.form.action}</td>
+         </tr>
+         </thead>
+         <tbody>
+         {foreach from=$LOGOS item=logo}
+         <tr>
+            <td>
+            <input type="hidden" name="logo[{$logo.logo_id}][status]" id="logo_{$logo.logo_id}_status" value="{$logo.status}" class="toggle">
+            </td>
+            <td>
+
+            <a href="images/logos/{$logo.filename}" target="_blank" class="colorbox"><img src="images/logos/{$logo.filename}" alt="{$logo.filename}" height="50"></a>
+            </td>
+            <td>
+               <input type="hidden" class="default-style" value="{$logo.style}">
+               <select id="logo_{$logo.logo_id}_skin" name="logo[{$logo.logo_id}][skin]" class="textbox select-skin">
+                  <optgroup label="Skins">
+                     <option value="">{$LANG.settings.logo_all_skins}</option>
+                     {foreach from=$SKINS_ALL item=skin}
+                     {if isset($skin.other_optgroup) && $skin.other_optgroup}
+                  </optgroup>
+                  <optgroup label="{$LANG.common.other}">
+                     {/if}
+                     <option value="{$skin.name}" {if ($skin.name == $logo.skin)} selected="selected"{/if}>{$skin.display}</option>
+                     {/foreach}
+                  </optgroup>
+               </select>
+               <select id="logo_{$logo.logo_id}_style" name="logo[{$logo.logo_id}][style]" class="textbox select-style">
+                  <option value="">{$LANG.settings.logo_all_styles}</option>
+               </select>
+
+            </td>
+            <td>
+<a href="{$logo.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+            </td>
+         </tr>
+         {/foreach}
+         </tbody>
+         </table>
+      </fieldset>
+      {/if}
+      <fieldset>
+         <legend>{$LANG.settings.title_logo_upload}</legend>
+         <div><input type="file" name="logo" class="multiple"></div>
       </fieldset>
       <fieldset>
-         <legend>{$LANG.settings.title_stock_general}</legend>
-         <div><label for="stock_level">{$LANG.settings.stock_show}</label><span><input name="config[stock_level]" id="stock_level" type="hidden" class="toggle" value="{$CONFIG.stock_level}"></span></div>
-         <div><label for="basket_out_of_stock_purchase">{$LANG.settings.stock_allow_oos}</label><span><input name="config[basket_out_of_stock_purchase]" id="basket_out_of_stock_purchase" type="hidden" class="toggle" value="{$CONFIG.basket_out_of_stock_purchase}"></span></div>
-         <div><label for="stock_warn_type">{$LANG.settings.stock_warning_method}</label><span><select name="config[stock_warn_type]" id="stock_warn_type" class="textbox">
-            {foreach from=$OPT_STOCK_WARN_TYPE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
-            </select></span>
-         </div>
-         <div><label for="stock_warn_level">{$LANG.settings.stock_warning_level}</label><span><input name="config[stock_warn_level]" id="stock_warn_level" type="text" class="textbox number" value="{$CONFIG.stock_warn_level}"></span></div>
-         <div><label for="stock_change_time">{$LANG.settings.stock_reduce}</label><span><select name="config[stock_change_time]" id="stock_change_time" class="textbox">
-            {foreach from=$OPT_STOCK_CHANGE_TIME item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
-            </select></span>
-         </div>
-         <div><label for="hide_out_of_stock">{$LANG.settings.title_hide_out_of_stock}</label><span><input name="config[hide_out_of_stock]" id="hide_out_of_stock" type="hidden" class="toggle" value="{$CONFIG.hide_out_of_stock}"></span>&nbsp;{$LANG.settings.no_admin_affect}</div>
-         <div><label for="update_main_stock">{$LANG.settings.update_main_stock}</label><span><input name="config[update_main_stock]" id="update_main_stock" type="hidden" class="toggle" value="{$CONFIG.update_main_stock}"></span>&nbsp;{$LANG.settings.matrix_in_use}</div>
-         <div><label for="image_delete">{$LANG.settings.image_delete}</label><span><input name="config[image_delete]" id="image_delete" type="hidden" class="toggle" value="{$CONFIG.image_delete}"></span></div>
-         <div><label for="image_upload_format">{$LANG.settings.image_upload_format}</label><span><select name="config[image_upload_format]" id="image_upload_format" class="textbox">
-            <option value="webp"{if $CONFIG.image_upload_format=='webp'} selected="selected"{/if}>{$LANG.settings.image_upload_format_webp}</option>
-            <option value="jpeg"{if $CONFIG.image_upload_format=='jpeg'} selected="selected"{/if}>{$LANG.settings.image_upload_format_jpeg}</option>
-            <option value="png"{if $CONFIG.image_upload_format=='png'} selected="selected"{/if}>{$LANG.settings.image_upload_format_png}</option>
-            <option value="original"{if $CONFIG.image_upload_format=='original'} selected="selected"{/if}>{$LANG.settings.image_upload_format_original}</option>
-            </select></span>
-         </div>
+         <legend>{$LANG.settings.title_copyright}</legend>
+         <div><span><textarea name="config[store_copyright]" id="copyright_content" class="textbox fck">{$CONFIG.store_copyright|escape:"html"}</textarea></span></div>
       </fieldset>
    </div>
    <div id="Search_Engines" class="tab_content">
@@ -360,78 +407,6 @@
             {foreach from=$OPT_SEO_METADATA item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span>
          </div>
-      </fieldset>
-   </div>
-   <div id="Offline" class="tab_content">
-      <h3>{$LANG.settings.title_offline}</h3>
-      <fieldset>
-         <legend>{$LANG.settings.title_offline}</legend>
-         <div><label for="offline">{$LANG.settings.offline_enable}</label><span><select name="config[offline]" id="offline" class="textbox">
-            {foreach from=$OPT_OFFLINE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
-            </select></span>
-         </div>
-      </fieldset>
-      <fieldset>
-         <legend>{$LANG.settings.offline_message}</legend>
-         <textarea name="config[offline_content]" id="offline_content" class="textbox fck fck-full">{$CONFIG.offline_content|escape:"html"}</textarea>
-      </fieldset>
-   </div>
-   <div id="Logos" class="tab_content">
-      <h3>{$LANG.settings.title_logo}</h3>
-      {if isset($LOGOS)}
-      <fieldset>
-         <table width="100%">
-         <thead>
-         <tr>
-         <td>
-         {$LANG.common.status}
-         </td>
-         <td>{$LANG.common.logo}</td>
-         <td>{$LANG.module.scope}</td>
-         <td>{$LANG.form.action}</td>
-         </tr>
-         </thead>
-         <tbody>
-         {foreach from=$LOGOS item=logo}
-         <tr>
-            <td>
-            <input type="hidden" name="logo[{$logo.logo_id}][status]" id="logo_{$logo.logo_id}_status" value="{$logo.status}" class="toggle">
-            </td>
-            <td>
-           
-            <a href="images/logos/{$logo.filename}" target="_blank" class="colorbox"><img src="images/logos/{$logo.filename}" alt="{$logo.filename}" height="50"></a>
-            </td>
-            <td>
-               <input type="hidden" class="default-style" value="{$logo.style}">
-               <select id="logo_{$logo.logo_id}_skin" name="logo[{$logo.logo_id}][skin]" class="textbox select-skin">
-                  <optgroup label="Skins">
-                     <option value="">{$LANG.settings.logo_all_skins}</option>
-                     {foreach from=$SKINS_ALL item=skin}
-                     {if isset($skin.other_optgroup) && $skin.other_optgroup}
-                  </optgroup>
-                  <optgroup label="{$LANG.common.other}">
-                     {/if}
-                     <option value="{$skin.name}" {if ($skin.name == $logo.skin)} selected="selected"{/if}>{$skin.display}</option>
-                     {/foreach}
-                  </optgroup>
-               </select>
-               <select id="logo_{$logo.logo_id}_style" name="logo[{$logo.logo_id}][style]" class="textbox select-style">
-                  <option value="">{$LANG.settings.logo_all_styles}</option>
-               </select>
-               
-            </td>
-            <td>
-<a href="{$logo.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
-            </td>
-         </tr>
-         {/foreach}
-         </tbody>
-         </table>
-      </fieldset>
-      {/if}
-      <fieldset>
-         <legend>{$LANG.settings.title_logo_upload}</legend>
-         <div><input type="file" name="logo" class="multiple"></div>
       </fieldset>
    </div>
    <div id="Advanced_Settings" class="tab_content">
@@ -577,11 +552,16 @@
          <div><label for="feed_access_key">{$LANG.settings.feed_access_key}</label><span><input name="config[feed_access_key]" id="feed_access_key" type="text" class="textbox" value="{$CONFIG.feed_access_key}"></span></div>
          <div><label for="hide_chat">{$LANG.settings.hide_chat}</label><span><input name="config[hide_chat]" id="chat" type="hidden" class="toggle" value="{$CONFIG.hide_chat}"></span></div>
       </fieldset>
-   </div>
-   <div id="Copyright" class="tab_content">
-      <h3>{$LANG.settings.title_copyright}</h3>
       <fieldset>
-         <div><span><textarea name="config[store_copyright]" id="copyright_content" class="textbox fck">{$CONFIG.store_copyright|escape:"html"}</textarea></span></div>
+         <legend>{$LANG.settings.title_offline}</legend>
+         <div><label for="offline">{$LANG.settings.offline_enable}</label><span><select name="config[offline]" id="offline" class="textbox">
+            {foreach from=$OPT_OFFLINE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
+            </select></span>
+         </div>
+      </fieldset>
+      <fieldset>
+         <legend>{$LANG.settings.offline_message}</legend>
+         <textarea name="config[offline_content]" id="offline_content" class="textbox fck fck-full">{$CONFIG.offline_content|escape:"html"}</textarea>
       </fieldset>
    </div>
    <div id="Cart_Recovery" class="tab_content">
@@ -694,5 +674,174 @@
    var county_list = {if !empty($VAL_JSON_COUNTY)}{$VAL_JSON_COUNTY}{else}false{/if};
    {if $JSON_STYLES}var json_skins	= {$JSON_STYLES};{/if}
 </script>
+<script>{literal}
+document.addEventListener('DOMContentLoaded', function() {
+
+   // -- Live order-ID format preview ----------------------------------------
+   // Replicates classes/order.class.php setOrderFormat() client-side. MySQL
+   // DATE_FORMAT specifiers in prefix/postfix are substituted with "now",
+   // sequence is zero-padded, and we sample the *next* order ID using max+1.
+   var ORDER_NEXT_ID = {/literal}{if isset($ORDER_NEXT_ID)}{$ORDER_NEXT_ID}{else}1{/if}{literal};
+
+   // -- Tab health badges ---------------------------------------------------
+   {/literal}{if $TAB_HEALTH_CRON}$('#tab_Scheduled_Tasks').addClass('tab-health-warning').attr('title', 'A scheduled task is overdue — check the Scheduled Tasks tab');{/if}
+   {if $TAB_HEALTH_GENERAL}$('#tab_General').addClass('tab-health-warning').attr('title', 'Standard URL does not match the current scheme or host');{/if}{literal}
+
+
+   function pad2(n) { return ('0'+n).slice(-2); }
+   function expandDateSpecifiers(str) {
+      if (!str || str.indexOf('%') === -1) return str || '';
+      var d = new Date();
+      var Y = d.getFullYear();
+      var m = d.getMonth() + 1;
+      var day = d.getDate();
+      var H = d.getHours();
+      var i = d.getMinutes();
+      var s = d.getSeconds();
+      var map = {
+         '%Y': String(Y), '%y': pad2(Y % 100),
+         '%m': pad2(m),  '%c': String(m),
+         '%d': pad2(day),'%e': String(day),
+         '%H': pad2(H),  '%k': String(H),
+         '%h': pad2(((H+11)%12)+1), '%I': pad2(((H+11)%12)+1), '%l': String(((H+11)%12)+1),
+         '%i': pad2(i),
+         '%s': pad2(s),  '%S': pad2(s),
+         '%p': H < 12 ? 'AM' : 'PM'
+      };
+      return str.replace(/%[YymcdeHkhIlispSp]/g, function(m){ return map[m] !== undefined ? map[m] : m; });
+   }
+   function lpad(n, len) {
+      var s = String(n);
+      while (s.length < len) s = '0' + s;
+      return s;
+   }
+   function buildOidSample(prefix, postfix, zeros, start, oid) {
+      zeros = parseInt(zeros, 10) || 0;
+      start = parseInt(start, 10) || 0;
+      var num = (oid + start);
+      var seq = zeros > 0 ? lpad(num, zeros) : String(num);
+      return expandDateSpecifiers(prefix) + seq + expandDateSpecifiers(postfix);
+   }
+   function updateOidPreview() {
+      var $out = $('#oid_format_preview');
+      if (!$out.length) return;
+      var mode = $('#oid_mode').val();
+      var prefix  = $('#oid_prefix').val()  || '';
+      var postfix = $('#oid_postfix').val() || '';
+      var zeros   = $('#oid_zeros').val();
+      var start   = $('#oid_start').val();
+      var sample;
+      if (mode === 't') {
+         var d = new Date();
+         sample = pad2(d.getFullYear() % 100) + pad2(d.getMonth()+1) + pad2(d.getDate())
+                + '-' + pad2(d.getHours()) + pad2(d.getMinutes()) + pad2(d.getSeconds())
+                + '-' + Math.floor(1000 + Math.random() * 9000);
+      } else {
+         sample = buildOidSample(prefix, postfix, zeros, start, ORDER_NEXT_ID);
+      }
+      $out.text(sample);
+   }
+   $('.preview_order').on('input change', updateOidPreview);
+   updateOidPreview();
+
+   // -- Settings search filter ---------------------------------------------
+   var $search = $('#settings-search');
+   var $form   = $('#form-settings');
+   var $tabBar = $('#tab_control');
+   var $count  = $('#settings-search-count');
+   var savedActiveTab = null; // tab content id active when search started
+
+   // Inject a pseudo-tab that activates while searching. Clicking it clears search.
+   var $pseudoTab = $('<div class="tab settings-search-tab" id="tab_settings_search" style="display:none;"><a href="#">Search</a></div>');
+   $pseudoTab.find('a').on('click', function(e) {
+      e.preventDefault();
+      $search.val('');
+      clearSearchFilter();
+      $search.focus();
+   });
+   $tabBar.append($pseudoTab);
+
+   function rememberActiveTab() {
+      // Detect the tab the framework had marked active (it sets inline display:block).
+      var $active = $form.find('.tab_content').filter(function(){ return this.style.display === 'block'; }).first();
+      if (!$active.length) {
+         var hash = (window.location.hash || '').replace('#','');
+         $active = hash ? $('#' + hash + '.tab_content') : $form.find('.tab_content').first();
+      }
+      savedActiveTab = $active.attr('id') || null;
+   }
+   function clearSearchFilter() {
+      $form.removeClass('searching');
+      $form.find('.tab_content').css('display', '');
+      $form.find('fieldset, fieldset > div, .tab_content > div').css('display', '');
+      $count.hide().text('');
+      // Restore selection state: hide pseudo-tab, re-mark the previously-active tab.
+      $pseudoTab.removeClass('tab-selected').hide();
+      if (savedActiveTab) {
+         $('#' + savedActiveTab + '.tab_content').css('display', 'block');
+         $tabBar.find('.tab').removeClass('tab-selected');
+         $('#tab_' + savedActiveTab).addClass('tab-selected');
+      }
+   }
+   function applySearchFilter(q) {
+      q = (q || '').trim().toLowerCase();
+      if (!q) { clearSearchFilter(); return; }
+      if (!$form.hasClass('searching')) rememberActiveTab();
+      $form.addClass('searching');
+      // Activate the pseudo-tab; deselect real tabs.
+      $tabBar.find('.tab').removeClass('tab-selected');
+      $pseudoTab.show().addClass('tab-selected');
+      var matchCount = 0;
+      $form.find('.tab_content').each(function() {
+         var $tab = $(this);
+         var legend = '';
+         var anyTabMatch = false;
+         $tab.find('fieldset').each(function() {
+            var $fs = $(this);
+            legend = $fs.find('> legend').text().toLowerCase();
+            var anyFsMatch = false;
+            $fs.find('> div').each(function() {
+               var $row = $(this);
+               var labelText = $row.find('label').text().toLowerCase();
+               var smallText = $row.find('small').text().toLowerCase();
+               var idHint    = ($row.find('input,select,textarea').attr('id') || '').toLowerCase();
+               var hay = labelText + ' ' + smallText + ' ' + idHint + ' ' + legend;
+               if (hay.indexOf(q) !== -1) {
+                  $row.css('display', '');
+                  anyFsMatch = true;
+                  matchCount++;
+               } else {
+                  $row.hide();
+               }
+            });
+            if (anyFsMatch) {
+               $fs.css('display', '');
+               anyTabMatch = true;
+            } else {
+               $fs.hide();
+            }
+         });
+         // Also handle non-fieldset rows (rare)
+         $tab.children('div, p').not('[id]').each(function() {
+            var $r = $(this);
+            if ($r.text().toLowerCase().indexOf(q) !== -1) { $r.css('display',''); anyTabMatch = true; matchCount++; }
+            else $r.hide();
+         });
+         $tab.css('display', anyTabMatch ? 'block' : 'none');
+      });
+      $count.text(matchCount + ' match' + (matchCount === 1 ? '' : 'es')).show();
+   }
+   var searchTimer;
+   $search.on('input', function() {
+      var v = this.value;
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(function(){ applySearchFilter(v); }, 80);
+   });
+   $search.on('keydown', function(e) {
+      if (e.key === 'Escape') { this.value=''; clearSearchFilter(); }
+   });
+
+});
+{/literal}</script>
 
 

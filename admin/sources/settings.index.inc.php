@@ -270,11 +270,7 @@ if (isset($_GET['logo']) && isset($_GET['logo_id'])) {
 $GLOBALS['main']->addTabControl($lang['common']['general'], 'General');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_features'], 'Features');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_layout'], 'Layout');
-$GLOBALS['main']->addTabControl($lang['settings']['tab_stock'], 'Stock');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_seo'], 'Search_Engines');
-$GLOBALS['main']->addTabControl($lang['settings']['tab_offline'], 'Offline');
-$GLOBALS['main']->addTabControl($lang['settings']['tab_logos'], 'Logos');
-$GLOBALS['main']->addTabControl($lang['settings']['tab_copyright'], 'Copyright');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_advanced'], 'Advanced_Settings');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_cart_recovery'], 'Cart_Recovery');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_cron'], 'Scheduled_Tasks', null, null, false, '_self', 98);
@@ -283,6 +279,31 @@ $GLOBALS['main']->addTabControl($lang['settings']['tab_extra'], 'Extra', null, n
 if ($GLOBALS['db']->select('CubeCart_order_summary', 'id', "`custom_oid` <> ''", false, 1, false, false)) {
     $GLOBALS['smarty']->assign('LOCK_ORDER_NUMBER', true);
 }
+
+// Sample order ID for the live order-format preview (max(id)+1 or 1 if empty).
+$next_oid_row = $GLOBALS['db']->select('CubeCart_order_summary', 'MAX(`id`) AS `max_oid`');
+$GLOBALS['smarty']->assign('ORDER_NEXT_ID', (is_array($next_oid_row) && !empty($next_oid_row[0]['max_oid'])) ? ((int)$next_oid_row[0]['max_oid'] + 1) : 1);
+
+// Tab health badges — flag the Scheduled Tasks tab if any enabled task is overdue
+// (last_run NULL or older than 2× its frequency), and the General tab if the
+// configured standard_url disagrees with the current admin request scheme/host.
+$cron_stale = false;
+$stale_rows = $GLOBALS['db']->misc("SELECT 1 FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_cron_tasks` WHERE `enabled`=1 AND (`last_run` IS NULL OR `last_run` < DATE_SUB(NOW(), INTERVAL `frequency` * 2 SECOND)) LIMIT 1");
+if (is_array($stale_rows) && !empty($stale_rows)) $cron_stale = true;
+
+$general_warn = false;
+$standard_url = (string)$GLOBALS['config']->get('config', 'standard_url');
+if ($standard_url !== '') {
+    $current_scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $current_host   = isset($_SERVER['HTTP_HOST']) ? strtolower((string)$_SERVER['HTTP_HOST']) : '';
+    $parsed = parse_url($standard_url);
+    if (is_array($parsed)) {
+        if (!empty($parsed['scheme']) && strtolower($parsed['scheme']) !== $current_scheme) $general_warn = true;
+        if (!empty($parsed['host']) && $current_host !== '' && strtolower($parsed['host']) !== $current_host) $general_warn = true;
+    }
+}
+$GLOBALS['smarty']->assign('TAB_HEALTH_CRON', $cron_stale);
+$GLOBALS['smarty']->assign('TAB_HEALTH_GENERAL', $general_warn);
 
 ## Get Front End skins
 if (($skins = $GLOBALS['gui']->listSkins()) !== false) {

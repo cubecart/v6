@@ -3776,3 +3776,14 @@ dialog.cc-modal[open] { animation:cc-modal-fade-in 0.18s ease-out; }
 .cc-modal__body--iframe iframe { width:100%; height:100%; border:0; display:block; }
 .cc-modal__body--photo { padding:0; display:flex; align-items:center; justify-content:center; background:#000; }
 .cc-modal__body--photo img { max-width:100%; max-height:100%; display:block; }
+
+/* settings.index.php — search bar + live order-ID preview + dated-social disclosure */
+.settings-search-bar { float:right; display:inline-flex; align-items:center; gap:10px; margin:0 0 0 10px; padding:0; }
+.settings-search-bar input.textbox { width:280px; }
+.settings-search-count { font-size:12px; color:var(--text-muted); }
+#form-settings.searching .tab_content > h3 { display:block; opacity:0.65; font-size:14px; margin:14px 0 6px; }
+.oid-preview { display:inline-block; padding:4px 10px; background:#1e2329; color:#9cdcfe; font-family:Menlo,Consolas,monospace; font-size:12px; border-radius:4px; }
+
+/* Tab health-warning dot — settings.index.php cron staleness / URL mismatch */
+.tab.tab-health-warning { position:relative; }
+.tab.tab-health-warning::after { content:''; position:absolute; top:6px; right:6px; width:8px; height:8px; border-radius:50%; background:#d9534f; box-shadow:0 0 0 2px var(--panel); }
