@@ -58,7 +58,7 @@
 			<tr>
 				<th width="20">{$LANG.common.default}</th>
 				<th>{$LANG.email.template_name}</th>
-				<th colspan="3">&nbsp;</th>
+				<th colspan="4">&nbsp;</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -68,6 +68,7 @@
 					<input type="radio" name="template_default" id="template_default_{$template.template_id}" value="{$template.template_id}"{if $template.template_default==1} checked="checked"{/if}>
 				</td>
 				<td><a href="{$template.edit}">{$template.title}</a></td>
+				<td width="10"><a href="#" class="preview-template" data-template-id="{$template.template_id}" data-template-title="{$template.title|escape:'html'}" title="{$LANG.common.preview}"><i class="fa fa-search"></i></a></td>
 				<td width="10"><a href="{$template.clone}"><i class="fa fa-files-o" title="{$LANG.common.clone}"></i></a></td>
 				<td width="10"><a href="{$template.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a></td>
 				<td width="10"><a href="{$template.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
@@ -75,6 +76,36 @@
 			{/foreach}
 		</tbody>
 	  </table>
+	  {if isset($EMAIL_TEMPLATE_HTML_JSON)}
+	  <script>
+		var EMAIL_TEMPLATE_HTML = {$EMAIL_TEMPLATE_HTML_JSON};
+		var EMAIL_PREVIEW_MACROS = {if isset($PREVIEW_MACROS_JSON)}{$PREVIEW_MACROS_JSON}{else}{ldelim}{rdelim}{/if};
+	  </script>
+	  <script>{literal}
+		document.addEventListener('DOMContentLoaded', function() {
+			$(document).on('click', '.preview-template', function(e) {
+				e.preventDefault();
+				var $btn = $(this);
+				var id = parseInt($btn.attr('data-template-id'), 10);
+				var title = $btn.attr('data-template-title') || '';
+				var rendered = (EMAIL_TEMPLATE_HTML && EMAIL_TEMPLATE_HTML[id]) ? EMAIL_TEMPLATE_HTML[id] : '';
+				rendered = rendered.replace(/\{\$EMAIL_CONTENT\}/g, '<p style="padding:24px;text-align:center;color:#888;font-style:italic;">[Email body preview]</p>');
+				Object.keys(EMAIL_PREVIEW_MACROS).forEach(function(key) {
+					var pattern = new RegExp('\\{\\$DATA\\.' + key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\}', 'g');
+					rendered = rendered.replace(pattern, EMAIL_PREVIEW_MACROS[key]);
+				});
+				$.colorbox({
+					title: title,
+					width: '90%',
+					height: '90%',
+					html: function(){
+						return '<iframe width="100%" height="95%" frameBorder="0" srcdoc="<div style=&quot;margin:auto;width:50%;&quot;>'+rendered.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'</div>"></iframe>';
+					}
+				});
+			});
+		});
+	  {/literal}</script>
+	  {/if}
 	  {else}
 	  <div>{$EMAIL.email.templates_none}</div>
 	  {/if}

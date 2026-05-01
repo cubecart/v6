@@ -785,13 +785,25 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
     }
     // List Templates
     if (($templates = $GLOBALS['db']->select('CubeCart_email_template')) !== false) {
+        $template_html_map = array();
         foreach ($templates as $template) {
             $template['clone'] = currentPage(null, array('action' => 'clone', 'type' => 'template', 'template_id' => $template['template_id']));
             $template['delete'] = currentPage(null, array('action' => 'delete', 'type' => 'template', 'template_id' => $template['template_id'], 'token' => SESSION_TOKEN));
             $template['edit'] = currentPage(null, array('action' => 'edit', 'type' => 'template', 'template_id' => $template['template_id']));
+            $template_html_map[(int)$template['template_id']] = (string)$template['content_html'];
             $smarty_data['e_templates'][] = $template;
         }
         $GLOBALS['smarty']->assign('EMAIL_TEMPLATES', $smarty_data['e_templates']);
+        $GLOBALS['smarty']->assign('EMAIL_TEMPLATE_HTML_JSON', json_encode($template_html_map, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE));
+        $list_preview_macros = array(
+            'logoURL'        => $GLOBALS['gui']->getLogo(true, 'emails'),
+            'store_name'     => $GLOBALS['config']->get('config', 'store_name'),
+            'storeName'      => $GLOBALS['config']->get('config', 'store_name'),
+            'storeURL'       => $GLOBALS['storeURL'],
+            'unsubscribeURL' => $GLOBALS['storeURL'].'/index.php?_a=unsubscribe',
+            'jsonLd'         => '',
+        );
+        $GLOBALS['smarty']->assign('PREVIEW_MACROS_JSON', json_encode($list_preview_macros, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE));
     }
     $GLOBALS['smarty']->assign('TEMPLATE_CREATE', currentPage(null, array('action' => 'create', 'type' => 'template')));
     $GLOBALS['smarty']->assign('DISPLAY_EMAIL_LIST', true);
