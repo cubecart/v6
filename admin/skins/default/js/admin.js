@@ -480,10 +480,12 @@ $(document).ready(function() {
         Dropzone.autoDiscover = false;
         var dropzone_url = $("div#dropzone_url").text();
         var imageUploadFormat = ($("#val_image_upload_format").text() || 'webp').trim();
+        // Digital file manager allows any file type; images mode restricts to image MIME types.
+        var isDigitalMode = /[?&]mode=digital(&|$)/.test(window.location.search);
 
         var dropzoneConfig = {
             url: dropzone_url,
-            acceptedFiles: 'image/gif,image/jpeg,image/png,image/webp',
+            acceptedFiles: isDigitalMode ? null : 'image/gif,image/jpeg,image/png,image/webp',
             init: function () {
                 this.on("error", function(file, message) {
                     console.error("Dropzone Error:", message);
@@ -514,7 +516,7 @@ $(document).ready(function() {
             }
         };
 
-        if (imageUploadFormat === 'webp' || imageUploadFormat === 'jpeg' || imageUploadFormat === 'png') {
+        if (!isDigitalMode && (imageUploadFormat === 'webp' || imageUploadFormat === 'jpeg' || imageUploadFormat === 'png')) {
             var formatMap = {
                 'webp': { mime: 'image/webp', ext: '.webp', quality: 0.8 },
                 'jpeg': { mime: 'image/jpeg', ext: '.jpg', quality: 0.85 },

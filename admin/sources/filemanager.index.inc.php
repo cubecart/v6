@@ -85,6 +85,22 @@ if ((!empty($_FILES)) && Admin::getInstance()->permissions('filemanager', CC_PER
     httpredir(currentPage());
 }
 
+// Bulk move — runs before bulk delete so the same checkbox set can drive either action via submit-button name.
+if (isset($_POST['bulk_move']) && !empty($_POST['multi_delete']) && !empty($_POST['move_to_folder']) && Admin::getInstance()->permissions('filemanager', CC_PERM_EDIT)) {
+    $moved = 0;
+    foreach ((array)$_POST['multi_delete'] as $item) {
+        if (is_numeric($item) && $fm->moveFile((int)$item, (string)$_POST['move_to_folder'])) {
+            $moved++;
+        }
+    }
+    if ($moved > 0) {
+        $GLOBALS['main']->successMessage(sprintf($lang['filemanager']['notify_files_moved'] ?? '%d file(s) moved.', $moved));
+    } else {
+        $GLOBALS['main']->errorMessage($lang['filemanager']['error_file_moved']);
+    }
+    httpredir(currentPage());
+}
+
 if (isset($_GET['delete']) || isset($_POST['multi_delete']) && Admin::getInstance()->permissions('filemanager', CC_PERM_DELETE)) {
     if(isset($_GET['delete'])) {
         $items = array($_GET['delete']);

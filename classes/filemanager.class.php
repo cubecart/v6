@@ -180,9 +180,68 @@ class FileManager
             $GLOBALS['smarty']->assign('CK_FUNC_NUM', (int)$_GET['CKEditorFuncNum']);
         }
 
+        // Folder list for the bulk-move dropdown. Excludes system folders the
+        // merchant should never move uploaded files into (image cache subdirs
+        // for image mode; the entire order-attachment tree for digital).
+        // $this->_directories is already populated by the constructor.
+        $dirs = array();
+        if ($this->_directories) {
+            $img_excluded_names    = array('thumbs', 'source'); // exclude these by basename anywhere
+            $dl_excluded_prefixes  = array('/attachments/');    // exclude this path and any descendant
+            $list = array('/');
+            foreach ($this->_directories as $root => $folders) {
+                if ($this->_mode == self::FM_FILETYPE_IMG && in_array(basename($root), $img_excluded_names)) continue;
+                foreach ($folders as $folder) {
+                    if ($this->_mode == self::FM_FILETYPE_IMG && in_array(basename($folder), $img_excluded_names)) continue;
+                    $path = '/'.str_replace($this->_manage_dir, '', $root).$folder.'/';
+                    if ($this->_mode == self::FM_FILETYPE_DL) {
+                        $excluded = false;
+                        foreach ($dl_excluded_prefixes as $prefix) {
+                            if (strpos($path, $prefix) === 0) { $excluded = true; break; }
+                        }
+                        if ($excluded) continue;
+                    }
+                    $list[] = $path;
+                }
+            }
+            natsort($list);
+            foreach ($list as $dir) {
+                $dirs[] = array('path' => $dir);
+            }
+            $GLOBALS['smarty']->assign('DIRS', $dirs);
+        }
+
         $GLOBALS['smarty']->assign('mode_list', true);
 
         return $GLOBALS['smarty']->fetch('templates/filemanager.index.php');
+    }
+
+    /**
+     * Move a single file to a different folder under the current manage root.
+     * Returns true on success.
+     *
+     * @param int $file_id
+     * @param string $target_subdir e.g. "/" or "/albums/"
+     * @return bool
+     */
+    public function moveFile($file_id, $target_subdir)
+    {
+        $file = $GLOBALS['db']->select('CubeCart_filemanager', false, array('file_id' => (int)$file_id, 'type' => (int)$this->_mode), false, 1);
+        if (!$file) return false;
+        $row = $file[0];
+        $current_path = $this->_manage_root.'/'.$row['filepath'];
+        $target_path  = $this->_manage_root.'/'.$this->formatPath($target_subdir);
+        if (!is_dir($target_path)) return false;
+        if (rtrim($current_path, '/') === rtrim($target_path, '/')) return true; // already there
+
+        $src = $current_path.$row['filename'];
+        $dst = $target_path.$row['filename'];
+        if (!file_exists($src) || file_exists($dst)) return false;
+        if (!rename($src, $dst)) return false;
+
+        $new_subdir = $this->formatPath(str_replace($this->_manage_root, '', $target_path), false);
+        $record = array('filepath' => empty($new_subdir) ? 'NULL' : $this->formatPath($new_subdir));
+        return (bool)$GLOBALS['db']->update('CubeCart_filemanager', $record, array('file_id' => (int)$file_id));
     }
 
     /**
@@ -284,6 +343,12 @@ class FileManager
         if ($file_array) {
             foreach ($file_array as $key => $file) {
                 if (!is_dir($file)) {
+                    // Stale order-print temp files (print.<32hex>.php). Delete
+                    // from disk and skip indexing so they never enter the DB.
+                    if (preg_match('/^print\.[a-f0-9]{32}\.php$/i', basename($file))) {
+                        @unlink($file);
+                        continue;
+                    }
                     // Skip file if it is not an image and we're in image mode
                     if ($this->_mode == 1) {
                         // Check mime matches extension

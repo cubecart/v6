@@ -3787,3 +3787,18 @@ dialog.cc-modal[open] { animation:cc-modal-fade-in 0.18s ease-out; }
 /* Tab health-warning dot — settings.index.php cron staleness / URL mismatch */
 .tab.tab-health-warning { position:relative; }
 .tab.tab-health-warning::after { content:''; position:absolute; top:6px; right:6px; width:8px; height:8px; border-radius:50%; background:#d9534f; box-shadow:0 0 0 2px var(--panel); }
+
+/* filemanager.index.php — digital file manager table layout */
+.fm-digital-table { width:100%; }
+.fm-digital-table thead th { text-align:left; }
+.fm-digital-table .fm-row td { vertical-align:middle; }
+.fm-digital-table .fm-row td:nth-child(1),
+.fm-digital-table .fm-row td:nth-child(2) { text-align:center; }
+.fm-digital-table .fm-row--folder td .fa-folder { color:#d4a93a; }
+.fm-digital-table .fm-row a.item_link { text-decoration:none; }
+.fm-digital-table .fm-row a.item_link:hover { text-decoration:underline; }
+.fm-digital-table .fm-row .fa { font-size:14px; }
+.fm-parent-link { margin:6px 0 10px; }
+.fm-bulk-actions .fm-bulk-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.fm-bulk-actions .fm-bulk-move { display:inline-flex; align-items:center; gap:6px; margin-left:auto; }
+.fm-bulk-actions .fm-bulk-move select { width:auto; min-width:200px; }
