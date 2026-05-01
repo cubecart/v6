@@ -2006,7 +2006,7 @@ class Cubecart
             if (!$digital_only && isset($this->_basket['digital_only'])) {
                 unset($this->_basket['digital_only']); // Digital good removed fix
             }
-            $ship_display = (isset($this->_basket['shipping'])) ? ($this->_basket['shipping']['value_inclusive'] ?? $this->_basket['shipping']['value']) : null;
+            $ship_display = isset($this->_basket['shipping']) ? ($this->_basket['shipping']['value_inclusive'] ?? $this->_basket['shipping']['value'] ?? null) : null;
             $GLOBALS['smarty']->assign('SHIPPING_VALUE', ($ship_display !== null) ? $GLOBALS['tax']->priceFormat($ship_display, true) : '-');
             $GLOBALS['smarty']->assign('HIDE_OPTION_GROUPS', $GLOBALS['config']->get('config', 'disable_shipping_groups'));
             if (!$digital_only && $shipping) {

@@ -2077,8 +2077,7 @@ class Catalogue
                         $this->_sort_by_relevance = true;
                         return true;
                     } else {
-                        $this->_elasticsearch = false;
-                        return $this->searchCatalogue($original_search_data, $page, $per_page, 'fulltext');  
+                        return $this->searchCatalogue($original_search_data, $page, $per_page, 'fulltext');
                     }
                 } else {
                     return $this->searchCatalogue($original_search_data, $page, $per_page, 'fulltext');
