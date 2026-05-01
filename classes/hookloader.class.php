@@ -79,15 +79,118 @@ class HookLoader
      */
     protected static $_instance;
 
+    /**
+     * Cache key for the pre-compiled hook + snippet map.
+     */
+    const CACHE_KEY = 'hookloader.compiled';
+
     final protected function __construct()
     {
         // Define the plugins directory
         $this->_hook_dir = CC_ROOT_DIR.'/modules/plugins';
         // Define the code snippets directory
         $this->_snippet_dir = CC_ROOT_DIR.'/includes/extra';
-        // Generate a list of all hooks
-        $this->_build_hooks_list(null, true);
-        $this->_build_code_snippet_list(null, true);
+
+        // Try to read the pre-compiled map (built once, reused until a plugin
+        // or snippet changes). Avoids two DB selects + per-call regex/file_exists
+        // work on every request.
+        $compiled = (isset($GLOBALS['cache']) && is_object($GLOBALS['cache']))
+            ? $GLOBALS['cache']->read(self::CACHE_KEY)
+            : false;
+        if (!is_array($compiled) || !isset($compiled['hooks'], $compiled['snippets'], $compiled['plugins'])) {
+            $compiled = $this->_compile();
+            if (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) {
+                $GLOBALS['cache']->write($compiled, self::CACHE_KEY);
+            }
+        }
+        $this->_hook_list = $compiled['hooks'];
+        $this->_snippet_list = $compiled['snippets'];
+        $this->_plugin_list = $compiled['plugins'];
+
+        // Add each plugin's directory to the PHP include_path. Must run every
+        // request because include_path affects the PHP runtime, not the cache.
+        if (!empty($this->_plugin_list)) {
+            $extra = '';
+            foreach ($this->_plugin_list as $plugin) {
+                $extra .= CC_PS.$this->_hook_dir.'/'.$plugin;
+            }
+            ini_set('include_path', ini_get('include_path').$extra);
+        }
+    }
+
+    /**
+     * Invalidate the compiled hook/snippet map. Called whenever the underlying
+     * CubeCart_hooks or CubeCart_code_snippet tables are modified (plugin
+     * install/uninstall, hook enable/disable, snippet add/edit/delete).
+     */
+    public function clearCache()
+    {
+        if (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) {
+            $GLOBALS['cache']->delete(self::CACHE_KEY);
+        }
+    }
+
+    /**
+     * Build the compiled map from the source-of-truth tables. Resolves and
+     * sanitises plugin names + filepaths once, checks file existence once,
+     * indexes everything by trigger so load() is O(matched hooks).
+     *
+     * @return array {hooks, snippets, plugins}
+     */
+    private function _compile()
+    {
+        $compiled = array('hooks' => array(), 'snippets' => array(), 'plugins' => array());
+        $plugin_set = array();
+
+        if (($hooks = $GLOBALS['db']->select('CubeCart_hooks', false, array('enabled' => '1'), array('priority' => 'ASC'))) !== false) {
+            foreach ($hooks as $hook) {
+                $this->_security_check($hook['filepath']);
+                // Sanitise plugin name; don't use _plugin_name() here as it
+                // mutates include_path/_plugin_list — the constructor handles
+                // those uniformly from the cached _plugin_list.
+                $hook['plugin'] = preg_replace('#[^a-z0-9]#iU', '_', $hook['plugin']);
+                $filepath = !empty($hook['filepath']) ? $hook['filepath'] : 'hooks/'.$hook['trigger'].'.php';
+                $fullpath = $this->_hook_dir.'/'.$hook['plugin'].'/'.$filepath;
+                if (!file_exists($fullpath)) {
+                    continue;
+                }
+                $compiled['hooks'][$hook['trigger']][] = array(
+                    'plugin'   => $hook['plugin'],
+                    'fullpath' => $fullpath,
+                    'priority' => (int)$hook['priority'],
+                );
+                $plugin_set[$hook['plugin']] = true;
+            }
+        }
+
+        if (($snippets = $GLOBALS['db']->select('CubeCart_code_snippet', false, array('enabled' => '1'), array('priority' => 'ASC'))) !== false) {
+            foreach ($snippets as $snippet) {
+                $file_name = $this->_snippet_dir.'/'.$this->_snippet_prefix.md5($snippet['unique_id']).'.php';
+                if (!file_exists($file_name)) {
+                    @file_put_contents($file_name, base64_decode($snippet['php_code']));
+                }
+                if (!file_exists($file_name)) {
+                    continue;
+                }
+                $compiled['snippets'][$snippet['hook_trigger']][] = array(
+                    'fullpath' => $file_name,
+                    'priority' => (int)$snippet['priority'],
+                );
+            }
+        }
+
+        // Pre-sort each trigger bucket by priority so load() doesn't have to.
+        foreach ($compiled['hooks'] as &$bucket) {
+            usort($bucket, function($a, $b) { return $a['priority'] - $b['priority']; });
+        }
+        unset($bucket);
+        foreach ($compiled['snippets'] as &$bucket) {
+            usort($bucket, function($a, $b) { return $a['priority'] - $b['priority']; });
+        }
+        unset($bucket);
+
+        $compiled['plugins'] = array_keys($plugin_set);
+        return $compiled;
     }
 
     /**
@@ -184,6 +287,7 @@ class HookLoader
                             }
                             $this->delete_snippet_file($snippet->unique_id);
                         }
+                        $this->clearCache();
                         return true;
                     } catch (Exception $e) {
                         trigger_error($e->getMessage(), E_USER_WARNING);
@@ -236,6 +340,7 @@ class HookLoader
                     }
                     // remove hooks not allowed
                     $GLOBALS['db']->misc("DELETE FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_hooks` WHERE `plugin` = '".$plugin."' AND `trigger` NOT IN ('".implode("','", $allowed_hooks)."')");
+                    $this->clearCache();
                     return true;
                 } catch (Exception $e) {
                     trigger_error($e->getMessage(), E_USER_WARNING);
@@ -271,66 +376,33 @@ class HookLoader
      */
     public function load($trigger)
     {
+        if (!$this->_enabled || empty($trigger)) {
+            return array();
+        }
+        $safe_mode = $GLOBALS['config']->get('config', 'safe_mode');
+        if ($safe_mode === true) {
+            return array();
+        }
+
+        $entries = array();
+        if ($safe_mode !== 'hooks' && isset($this->_hook_list[$trigger])) {
+            foreach ($this->_hook_list[$trigger] as $hook) {
+                $this->_plugin_language($hook['plugin']);
+                $entries[] = $hook;
+            }
+        }
+        if ($safe_mode !== 'snippets' && isset($this->_snippet_list[$trigger])) {
+            foreach ($this->_snippet_list[$trigger] as $snippet) {
+                $entries[] = $snippet;
+            }
+        }
+
+        if (count($entries) > 1) {
+            usort($entries, function($a, $b) { return $a['priority'] - $b['priority']; });
+        }
         $return = array();
-
-        if ($GLOBALS['config']->get('config', 'safe_mode')===true) {
-            return $return;
-        }
-
-        if ($GLOBALS['config']->get('config', 'safe_mode')!=='hooks' && $this->_enabled && !empty($trigger) && !empty($this->_hook_list)) {
-            // Find all registered hooks
-            if (is_array($this->_hook_list) && isset($this->_hook_list[$trigger]) && !empty($this->_hook_list[$trigger])) {
-                // Load hooks for plugins
-                foreach ($this->_hook_list[$trigger] as $hook) {
-                    $this->_plugin_name($hook['plugin']);
-                    $this->_plugin_language($hook['plugin']);
-                    $hook['filepath'] = (!empty($hook['filepath'])) ? str_replace('/', '/', $hook['filepath']) : 'hooks/'.$trigger.'.php';
-                    $this->_security_check($hook['filepath']);
-                    if (file_exists($this->_hook_dir.'/'.$hook['plugin'].'/'.$hook['filepath'])) {
-                        $include[] =
-                            array(
-                            'fullpath' => $this->_hook_dir.'/'.$hook['plugin'].'/'.$hook['filepath'],
-                            'priority' => (int)$hook['priority'],
-                            );
-                    } else {
-                        trigger_error("Error: Hook '".$hook['plugin'].'/'.$hook['filepath']."' was not found", E_USER_NOTICE);
-                    }
-                }
-            }
-        }
-
-        // Load hook for code snippets
-        if ($GLOBALS['config']->get('config', 'safe_mode')!=='snippets' && $this->_snippet_list) {
-            foreach ($this->_snippet_list as $snippet) {
-                if ($snippet['hook_trigger'] == $trigger) {
-                    $file_name = $this->_snippet_dir.'/'.$this->_snippet_prefix.md5($snippet['unique_id']).'.php';
-                    if (file_exists($file_name)) {
-                        $include[] =
-                            array(
-                            'fullpath' => $file_name,
-                            'priority' => (int)$snippet['priority'],
-                            );
-                    } else {
-                        if (file_put_contents($file_name, base64_decode($snippet['php_code']))) {
-                            $include[] =
-                                array(
-                                'fullpath' => $file_name,
-                                'priority' => (int)$snippet['priority'],
-                                );
-                        } else {
-                            trigger_error("Error: Failed to write code snippet for '".$snippet['description']."'", E_USER_NOTICE);
-                        }
-                    }
-                }
-            }
-        }
-
-        if (isset($include) && is_array($include)) {
-            // sort $include based on priority
-            uasort($include, 'cmpmc');
-            foreach ($include as $inc) {
-                $return[] = $inc['fullpath'];
-            }
+        foreach ($entries as $e) {
+            $return[] = $e['fullpath'];
         }
         return $return;
     }
@@ -393,64 +465,13 @@ class HookLoader
     public function uninstall($plugin)
     {
         if (!empty($plugin)) {
-            return $GLOBALS['db']->delete('CubeCart_hooks', array('plugin' => $plugin));
+            $deleted = $GLOBALS['db']->delete('CubeCart_hooks', array('plugin' => $plugin));
+            $this->clearCache();
+            return $deleted;
         }
     }
 
     //=====[ Private ]=======================================
-
-    /**
-     * Build hook list
-     *
-     * @param string $trigger
-     * @param bool $enabled_only
-     * @return bool
-     */
-    private function _build_code_snippet_list($trigger = null, $enabled_only = true)
-    {
-        $where = array();
-        if (!is_null($trigger) && !empty($trigger)) {
-            $where['hook_trigger'] = $trigger;
-        }
-        if ($enabled_only) {
-            $where['enabled'] = '1';
-        }
-
-        if ($snippets = $GLOBALS['db']->select('CubeCart_code_snippet', false, $where, array('priority' => 'ASC'))) {
-            $this->_snippet_list = $snippets;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Build hook list
-     *
-     * @param string $trigger
-     * @param bool $enabled_only
-     * @return bool
-     */
-    private function _build_hooks_list($trigger = null, $enabled_only = true)
-    {
-        $where = array();
-        if (!is_null($trigger) && !empty($trigger)) {
-            $where['trigger'] = $trigger;
-        }
-        if ($enabled_only) {
-            $where['enabled'] = '1';
-        }
-
-        if (($hooks = $GLOBALS['db']->select('CubeCart_hooks', false, $where, array('priority' => 'ASC'))) !== false) {
-            foreach ($hooks as $hook) {
-                $this->_security_check($hook['filepath']);
-                $this->_plugin_name($hook['plugin']);
-                $this->_hook_list[$hook['trigger']][$hook['plugin']] = $hook;
-            }
-            return true;
-        }
-        return false;
-    }
 
     /**
      * Get hook unique ID

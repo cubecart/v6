@@ -209,6 +209,7 @@ if ($is_ajax && $_POST['ajax_action'] === 'delete_extension') {
         $GLOBALS['db']->delete('CubeCart_config', array('name' => $ext_module));
         $GLOBALS['db']->delete('CubeCart_modules', array('folder' => $ext_module));
         $GLOBALS['db']->delete('CubeCart_hooks', array('plugin' => $ext_module));
+        $GLOBALS['hooks']->clearCache();
 
         if (file_exists($dir)) {
             _ajax_respond(array('success' => false, 'message' => $lang['module']['plugin_still_exists']));
@@ -219,6 +220,7 @@ if ($is_ajax && $_POST['ajax_action'] === 'delete_extension') {
         $GLOBALS['db']->delete('CubeCart_config', array('name' => $ext_module));
         $GLOBALS['db']->delete('CubeCart_modules', array('folder' => $ext_module));
         $GLOBALS['db']->delete('CubeCart_hooks', array('plugin' => $ext_module));
+        $GLOBALS['hooks']->clearCache();
         _ajax_respond(array('success' => true, 'message' => $lang['module']['plugin_deleted_already']));
     }
 }
@@ -269,6 +271,7 @@ if (isset($_GET['delete']) && $_GET['delete']==1 && !empty($_GET['type']) && !em
             $GLOBALS['db']->delete('CubeCart_config', array('name' => $module));
             $GLOBALS['db']->delete('CubeCart_modules', array('folder' => $module));
             $GLOBALS['db']->delete('CubeCart_hooks', array('plugin' => $module));
+            $GLOBALS['hooks']->clearCache();
             if (file_exists($dir)) {
                 $GLOBALS['main']->errorMessage($lang['module']['plugin_still_exists']);
             } else {
@@ -278,6 +281,7 @@ if (isset($_GET['delete']) && $_GET['delete']==1 && !empty($_GET['type']) && !em
             $GLOBALS['db']->delete('CubeCart_config', array('name' => $module));
             $GLOBALS['db']->delete('CubeCart_modules', array('folder' => $module));
             $GLOBALS['db']->delete('CubeCart_hooks', array('plugin' => $module));
+            $GLOBALS['hooks']->clearCache();
             $GLOBALS['main']->successMessage($lang['module']['plugin_deleted_already']);
         }
     }

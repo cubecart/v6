@@ -27,6 +27,7 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
                 $snippet_redirect = true;
             }
         }
+        if ($snippet_redirect) $GLOBALS['hooks']->clearCache();
     }
 
     if (!empty($_FILES['code_snippet_import']['tmp_name'])) {
@@ -43,6 +44,7 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
             if (isset($_POST['snippet']['snippet_id']) && is_numeric($_POST['snippet']['snippet_id'])) {
                 if ($GLOBALS['db']->update('CubeCart_code_snippet', $_POST['snippet'], array('snippet_id' => (int)$_POST['snippet']['snippet_id']))) {
                     $GLOBALS['main']->successMessage($lang['hooks']['notify_snippet_updated']);
+                    $GLOBALS['hooks']->clearCache();
                 }
             } else {
                 if ($GLOBALS['db']->select('CubeCart_code_snippet', array('snippet_id'), array('unique_id' => $_POST['snippet']['unique_id']))) {
@@ -51,6 +53,7 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
                     if ($GLOBALS['db']->insert('CubeCart_code_snippet', $_POST['snippet'])==true) {
                         $GLOBALS['main']->successMessage($lang['hooks']['notify_snippet_added']);
                         $snippet_redirect = true;
+                        $GLOBALS['hooks']->clearCache();
                     } else {
                         $GLOBALS['main']->setACPWarn($lang['hooks']['notify_snippet_not_added']);
                     }
@@ -64,6 +67,7 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
             $GLOBALS['hooks']->delete_snippet_file($_GET['delete_snippet']);
             $GLOBALS['main']->successMessage($lang['hooks']['notify_snippet_deleted']);
             $snippet_redirect = true;
+            $GLOBALS['hooks']->clearCache();
         }
     }
 
@@ -207,6 +211,7 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
                 $GLOBALS['db']->update('CubeCart_hooks', $_POST['hook'], array('hook_id' => $_POST['hook']['hook_id']));
                 if ($GLOBALS['db']->affected() > 0) {
                     $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_update']);
+                    $GLOBALS['hooks']->clearCache();
                 }
                 if (isset($_POST['submit_cont'])) {
                     $tab = !empty($_POST['previous-tab']) ? preg_replace('/[^a-z0-9_#-]/i', '', $_POST['previous-tab']) : '#hook_code';
@@ -216,6 +221,7 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
             } else {
                 $new_hook_id = $GLOBALS['db']->insert('CubeCart_hooks', $_POST['hook']);
                 if ($new_hook_id) {
+                    $GLOBALS['hooks']->clearCache();
                     // If the merchant supplied PHP in the Hook Code editor, write the file now.
                     $raw_hook_code = isset($GLOBALS['RAW']['POST']['hook_file_code']) ? $GLOBALS['RAW']['POST']['hook_file_code'] : null;
                     if ($raw_hook_code !== null && strlen($raw_hook_code) > 0) {
@@ -250,6 +256,7 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
         }
         if ($updated) {
             $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_status']);
+            $GLOBALS['hooks']->clearCache();
         } else {
             $GLOBALS['main']->errorMessage($lang['hooks']['error_hook_status']);
         }
@@ -263,6 +270,7 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
         $orphan_plugin = preg_replace('#[^a-zA-Z0-9._-]#', '', (string)$_GET['delete_orphans']);
         if ($orphan_plugin !== '' && !is_dir(CC_ROOT_DIR.'/modules/plugins/'.$orphan_plugin)) {
             $GLOBALS['db']->delete('CubeCart_hooks', array('plugin' => $orphan_plugin));
+            $GLOBALS['hooks']->clearCache();
             $GLOBALS['main']->successMessage(sprintf($lang['hooks']['notify_orphans_deleted'], $orphan_plugin));
         }
         httpredir(currentPage(array('delete_orphans', 'token')));
@@ -277,6 +285,7 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
             // Only allow deletion if the hook file is genuinely absent.
             if (!file_exists($hf_full)) {
                 $GLOBALS['db']->delete('CubeCart_hooks', array('hook_id' => $del_id));
+                $GLOBALS['hooks']->clearCache();
                 $GLOBALS['main']->successMessage($lang['hooks']['notify_orphan_hook_deleted']);
             }
         }
