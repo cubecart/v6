@@ -266,23 +266,43 @@ class Request
         if (!$this->_log) {
             return false;
         }
-        $data = array(
-            'request_url'       => $this->_request_protocol.'://'.$this->_request_url.$this->_request_path,
-            'request'           => (!empty($request)) ? $request : "",
-            'result'    	    => $result,
-            'response_code'     => (string)$this->server_response_code,
-            'error'   		    => $error,
-            'is_curl'           => $this->_curl ? 1 : 0,
-            'request_headers'   => implode(' ', $this->_request_headers),
-            'response_headers'  => $this->_request_return_headers ? $this->_response_headers : null,
-        );
+        $url               = $this->_request_protocol.'://'.$this->_request_url.$this->_request_path;
+        $request_body      = (!empty($request)) ? $request : '';
+        $response_code     = (string)$this->server_response_code;
+        $is_curl           = $this->_curl ? 1 : 0;
+        $request_headers   = implode(' ', $this->_request_headers);
+        $response_headers  = $this->_request_return_headers ? (string)$this->_response_headers : '';
+
+        // Hash on URL + method-ish (curl flag) + status + request body so repeated
+        // identical calls collapse into a single row with a counter.
+        $hash = sha1($url.'|'.$is_curl.'|'.$response_code.'|'.$request_body);
+
         $log_days = $GLOBALS['config']->get('config', 'r_request');
-        if (ctype_digit((string)$log_days) &&  $log_days > 0) {
-            if (executionChance(2)) { // 2% probability
-                $GLOBALS['db']->delete('CubeCart_request_log', 'time < DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY)', 500);
-            }
+        if (ctype_digit((string)$log_days) && $log_days > 0 && executionChance(2)) {
+            $GLOBALS['db']->delete('CubeCart_request_log', 'time < DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY)', 500);
         }
-        $GLOBALS['db']->insert('CubeCart_request_log', $data);
+
+        $pfx = $GLOBALS['config']->get('config', 'dbprefix');
+        $sql = sprintf(
+            'INSERT INTO `%sCubeCart_request_log` (`request_hash`, `request_url`, `request`, `result`, `response_code`, `is_curl`, `error`, `request_headers`, `response_headers`)
+             VALUES (\'%s\', %s, %s, %s, %s, \'%d\', %s, %s, %s)
+             ON DUPLICATE KEY UPDATE
+               `result` = VALUES(`result`),
+               `error` = VALUES(`error`),
+               `response_headers` = VALUES(`response_headers`),
+               `time` = CURRENT_TIMESTAMP,
+               `occurrences` = `occurrences` + 1',
+            $pfx, $hash,
+            $GLOBALS['db']->sqlSafe($url, true),
+            $GLOBALS['db']->sqlSafe($request_body, true),
+            $GLOBALS['db']->sqlSafe((string)$result, true),
+            $GLOBALS['db']->sqlSafe($response_code, true),
+            $is_curl,
+            $GLOBALS['db']->sqlSafe((string)$error, true),
+            $GLOBALS['db']->sqlSafe($request_headers, true),
+            $GLOBALS['db']->sqlSafe($response_headers, true)
+        );
+        $GLOBALS['db']->misc($sql, false);
     }
 
 

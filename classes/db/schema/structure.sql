@@ -1131,6 +1131,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_transactions` (
 
 CREATE TABLE IF NOT EXISTS `CubeCart_request_log` (
 	`request_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+	`request_hash` char(40) NOT NULL DEFAULT '',
 	`request_url` varchar(255) DEFAULT NULL,
 	`request` blob NOT NULL,
 	`result` blob NOT NULL,
@@ -1138,9 +1139,12 @@ CREATE TABLE IF NOT EXISTS `CubeCart_request_log` (
   	`is_curl` enum('1','0') DEFAULT NULL,
 	`error` blob NOT NULL,
 	`time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`first_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`occurrences` int(10) unsigned NOT NULL DEFAULT 1,
 	`request_headers` blob NULL,
   	`response_headers` blob NULL,
   PRIMARY KEY (`request_id`),
+  UNIQUE KEY `request_hash` (`request_hash`),
   KEY `time` (`time`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 

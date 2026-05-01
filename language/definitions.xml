@@ -1538,6 +1538,7 @@ This email is sent from the store's master email address but it is possible to r
   </group>
   <group name="gui_message">
     <string name="error" introduced="5.0.0"><![CDATA[Error]]></string>
+    <string name="errors_only" introduced="6.7.0"><![CDATA[Errors only]]></string>
     <string name="errors_detected" introduced="5.0.0"><![CDATA[The following errors were detected:]]></string>
     <string name="warning" introduced="5.0.0"><![CDATA[Warning]]></string>
     <string name="error_oops" introduced="5.0.0"><![CDATA[Something went wrong.]]></string>
@@ -1692,6 +1693,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_logs_request" introduced="5.0.0"><![CDATA[Request logs were not emptied.]]></string>
     <string name="error_reset_product" introduced="5.0.0"><![CDATA[Product views have not been reset.]]></string>
     <string name="clear_log" introduced="6.6.0"><![CDATA[Clear log]]></string>
+    <string name="request_log_retention_note" introduced="6.7.0"><![CDATA[Entries older than %d days are auto-pruned.]]></string>
     <string name="logs_admin" introduced="5.0.0"><![CDATA[Admin activity log]]></string>
     <string name="logs_request" introduced="5.0.0"><![CDATA[Request log]]></string>
     <string name="logs_error" introduced="5.0.0"><![CDATA[Error log]]></string>

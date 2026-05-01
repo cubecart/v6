@@ -63,3 +63,10 @@ ALTER TABLE `CubeCart_system_error_log` ADD COLUMN `message_hash` CHAR(40) NOT N
 ALTER TABLE `CubeCart_system_error_log` ADD COLUMN `first_time` INT UNSIGNED NOT NULL DEFAULT 0 AFTER `time`; #EOQ
 ALTER TABLE `CubeCart_system_error_log` ADD COLUMN `occurrences` INT UNSIGNED NOT NULL DEFAULT 1 AFTER `first_time`; #EOQ
 ALTER TABLE `CubeCart_system_error_log` ADD UNIQUE KEY `message_hash` (`message_hash`); #EOQ
+# Request log: hash-deduped rows so identical outbound HTTP calls update a counter
+# instead of stacking duplicates. Existing rows are truncated.
+TRUNCATE TABLE `CubeCart_request_log`; #EOQ
+ALTER TABLE `CubeCart_request_log` ADD COLUMN `request_hash` CHAR(40) NOT NULL DEFAULT '' AFTER `request_id`; #EOQ
+ALTER TABLE `CubeCart_request_log` ADD COLUMN `first_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `time`; #EOQ
+ALTER TABLE `CubeCart_request_log` ADD COLUMN `occurrences` INT UNSIGNED NOT NULL DEFAULT 1 AFTER `first_time`; #EOQ
+ALTER TABLE `CubeCart_request_log` ADD UNIQUE KEY `request_hash` (`request_hash`); #EOQ

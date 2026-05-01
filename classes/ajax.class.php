@@ -462,12 +462,13 @@ class Ajax
 
                 if (!empty($test_mailer_test_results)) {
                     $test_mailer_test_results_data = array(
+                        'request_hash' => sha1('mailto:'.$GLOBALS['RAW']['POST']['email_address'].'|test_mailer|'.($test_success ? 'ok' : 'fail')),
                         'request_url' => 'mailto:'.$GLOBALS['RAW']['POST']['email_address'],
                         'request' => 'Subject: Testing CubeCart',
                         'result' => $test_mailer_test_results,
                         'error' => ($test_success) ? null : "Mailer Failed" ,
                     );
-                    $GLOBALS['db']->insert('CubeCart_request_log', $test_mailer_test_results_data);
+                    $GLOBALS['db']->upsert('CubeCart_request_log', $test_mailer_test_results_data, array('result', 'error', 'time'));
                     $json .= $test_mailer_test_results;
                 } else {
                     $json .= "Test failed to execute. ".$test_mailer->ErrorInfo;
