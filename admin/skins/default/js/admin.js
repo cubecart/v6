@@ -1515,10 +1515,30 @@ function fmSearch(mode, term, token) {
        data: requestData,
        dataType: "text",
        success: function(responseData) {
-          $.colorbox({html:responseData,width:860,height:600})
+          // Strip the AJAX endpoint's modal wrapper (kept for backward compat
+          // with any caller still using colorbox) and render inline above the
+          // file grid. Hide the normal listing while results are displayed.
+          var $grid = $('#fm-wrapper');
+          var $bulk = $('.form_control.fm-bulk-actions');
+          $('#fm-search-results').remove();
+          $grid.hide();
+          $bulk.hide();
+          var inner = $(responseData);
+          if (inner.hasClass('mail_modal')) inner = inner.children();
+          var $box = $('<div id="fm-search-results" class="fm-search-results"></div>');
+          $box.append('<div class="fm-search-results__head"><a href="#" class="button tiny fm-search-clear"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to all files</a></div>');
+          $box.append(inner);
+          $box.insertBefore($grid);
        }
     });
 }
+$(document).on('click', '.fm-search-clear', function(e) {
+    e.preventDefault();
+    $('#fm-search-results').remove();
+    $('#fm-wrapper').show();
+    $('.form_control.fm-bulk-actions').show();
+    $('#fm-search-term').val('').focus();
+});
 
 /* When the tab row wraps, move the active tab to the end of #tab_control so it
    lands on the last (bottom) row, keeping its visual merge with the page below. */
