@@ -230,6 +230,12 @@ class ACP
     public function hideNavigation($status = false)
     {
         $this->_hide_navigation = (bool)$status;
+        // Expose to the layout template so the header + breadcrumbs can also
+        // be suppressed (used by CKEditor file-browser popups so the picker
+        // chrome doesn't show CubeCart's logo / clear-cache / log-out bar).
+        if (isset($GLOBALS['smarty']) && is_object($GLOBALS['smarty'])) {
+            $GLOBALS['smarty']->assign('HIDE_NAVIGATION', (bool)$status);
+        }
     }
 
     /**

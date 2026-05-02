@@ -3833,3 +3833,9 @@ dialog.cc-modal[open] { animation:cc-modal-fade-in 0.18s ease-out; }
 .fm-search-results ul.fmsearch_digital li { padding:6px 8px; border-bottom:1px solid var(--border); }
 .fm-search-results ul.fmsearch_digital li a { color:var(--primary-accent); text-decoration:none; }
 .fm-search-results ul.fmsearch_digital li a:hover { text-decoration:underline; }
+
+/* Chromeless mode (CKEditor file-browser popups, etc.) — no header, no
+   sidebar, no breadcrumbs. Dropped the sidebar margin and breadcrumb gap. */
+body.chromeless #content { margin-left: 0; }
+body.chromeless #breadcrumbs { display: none; }
+body.chromeless #content_body { border-left: 0; }

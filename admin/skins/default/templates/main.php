@@ -25,25 +25,29 @@
       {/if}
       <meta name="robots" content="noindex,nofollow">
    </head>
-   <body>
+   <body{if isset($HIDE_NAVIGATION) && $HIDE_NAVIGATION} class="chromeless"{/if}>
       {if !isset($CONFIG.hide_chat) || (isset($CONFIG.hide_chat) && $CONFIG.hide_chat == '0')}
       {literal}
       <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KK9N36X3"
       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       {/literal}
       {/if}
+      {if !isset($HIDE_NAVIGATION) || !$HIDE_NAVIGATION}
       <div id="header">
          <a href="?"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/logo.cubecart.svg" width="158" height="30" id="logo"></a>
          <span class="user_info">
             <a href="?_g=settings&node=admins&action=edit&admin_id={$ADMIN_UID}" id="admin_id">{$ADMIN_USER}</a> {if $VERSION_AVAILABLE_LABEL}<a href="{$VERSION_UPGRADE_URL}" target="_blank" title="{$VERSION_AVAILABLE_LABEL}" class="btn btn-version-available"><i class="fa fa-arrow-up"></i> {$VERSION_AVAILABLE_LABEL}</a>{/if} {if $CONFIG.cache}<span id="clear_cache_master"{if $CLEAR_CACHE} class="clear"{/if}><a href="{$SKIN_VARS.clear_cache_link}" title="{$LANG.maintain.cache_clear}" class="btn btn-clear-cache"><i class="fa fa-refresh"></i> {$LANG.maintain.cache_clear}</a></span>{/if} <a href="?_g=logout&amp;token={$SESSION_TOKEN}" title="{$LANG.account.logout}" class="btn btn-signout"><i class="fa fa-sign-out"></i> {$LANG.account.logout}</a>
          </span>
       </div>
+      {/if}
       <div id="wrapper">
+         {if !isset($HIDE_NAVIGATION) || !$HIDE_NAVIGATION}
          <div id="navigation">
             {include file='templates/common.search.php'}
             {include file='templates/common.navigation.php'}
          </div>
          {include file='templates/common.breadcrumb.php'}
+         {/if}
          <div id="content">
             <div id="tab_control">
             {foreach from=$TABS item=tab}
