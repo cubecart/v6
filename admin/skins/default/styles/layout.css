@@ -2414,6 +2414,11 @@ table.filter td {
     font-family: 'Courier New', monospace;
     text-align: center;
 }
+/* Cropper selection rectangle (jQuery UI resizable+draggable). */
+.crop_select.ui-resizable.ui-draggable {
+    border: 1px dashed var(--primary-accent);
+    box-sizing: border-box;
+}
 .fm-item {
     float: left;
     margin: 5px 5px 50px 5px;
