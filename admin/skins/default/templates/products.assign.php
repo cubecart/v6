@@ -139,7 +139,9 @@
 <script>window.CC_PRESELECTED = {$PRESELECTED_PRODUCTS_JSON nofilter};</script>
 <script>
 (function(){
-   var STORE_KEY = 'cc_bulk_price_products';
+   /* Different STORE_KEY per mode so the bulk-price-change running list and
+      the category-assign running list don't share state. */
+   var STORE_KEY = '{if $MODE=="prices"}cc_bulk_price_products{else}cc_assign_category_products{/if}';
 
    function loadList(){ try { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]') || []; } catch(e){ return []; } }
    function saveList(l){ localStorage.setItem(STORE_KEY, JSON.stringify(l)); }

@@ -3858,6 +3858,13 @@ body.chromeless #content_body { border-left: 0; }
 #tab_control .tab.tab--external > a { padding:4px; color:var(--primary-accent); text-transform:capitalize; font-weight:600; }
 #tab_control .tab.tab--external:hover > a { color:var(--text-invert); }
 
+/* Bulk-action product pickers (bulk price change + assign option sets). The
+   global `tbody tr:nth-child(even) td` rule fights with other dynamic-content
+   rules and ends up invisible here, so apply explicit alternating bands. */
+#selected_products_table tbody tr:nth-child(odd)  td { background-color: var(--bg); }
+#selected_products_table tbody tr:nth-child(even) td { background-color: var(--highlight); }
+#selected_products_table tbody tr:hover td { background-color: var(--panel-muted); }
+
 /* External action tabs (e.g. "Clear log") — destructive variant. */
 #tab_control .tab.tab--action--danger { border-color:#FF0000; }
 #tab_control .tab.tab--action--danger > a { color:#FF0000; }

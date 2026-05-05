@@ -147,6 +147,8 @@
                      <optgroup label="">
                         <option value="">{$LANG.form.please_select}</option>
                         <option value="bulk_price">{$LANG.catalogue.add_to_bulk_prices}</option>
+                        <option value="option_sets">{$LANG.catalogue.add_to_option_sets}</option>
+                        <option value="category">{$LANG.catalogue.add_to_category}</option>
                         <option value="delete">{$LANG.common.delete}</option>
                      </optgroup>
                   </select>

@@ -16,10 +16,12 @@ if (!defined('CC_INI_SET')) {
 Admin::getInstance()->permissions('products', CC_PERM_READ, true);
 
 ## Option Sets - Assign
-if (isset($_POST['set'])) {
+if (isset($_POST['set']) && is_array($_POST['set']) && !empty($_POST['product']) && is_array($_POST['product'])) {
     $updated = false;
     foreach ($_POST['set'] as $set_id) {
+        if (!is_numeric($set_id)) continue;
         foreach ($_POST['product'] as $product_id) {
+            if (!is_numeric($product_id)) continue;
             $set_search = array('product_id' => (int)$product_id, 'set_id' => (int)$set_id);
             if (!$GLOBALS['db']->select('CubeCart_options_set_product', array('set_product_id'), $set_search)) {
                 if ($GLOBALS['db']->insert('CubeCart_options_set_product', $set_search)) {
@@ -51,9 +53,28 @@ if (($option_sets = $GLOBALS['db']->select('CubeCart_options_set')) !== false) {
     $GLOBALS['smarty']->assign('OPTION_SETS', $option_sets);
 }
 
-## List products
-if (($products = $GLOBALS['db']->select('CubeCart_inventory', false, false, array('name' => 'ASC'))) !== false) {
-    $GLOBALS['smarty']->assign('PRODUCTS', $products);
+## Pre-selected products carried over from products.index "Assign Option Sets" multi-action.
+## One-shot delivery - the client merges into a localStorage list so multiple
+## round-trips accumulate.
+$preselected_json = '[]';
+$preselected_ids = $GLOBALS['session']->get('preselected', 'option_sets');
+if (is_array($preselected_ids) && $preselected_ids) {
+    $GLOBALS['session']->delete('preselected', 'option_sets');
+    $ids = array_values(array_filter(array_map('intval', $preselected_ids)));
+    if ($ids) {
+        if (($rows = $GLOBALS['db']->select('CubeCart_inventory', array('product_id', 'name', 'product_code'), array('product_id' => $ids))) !== false) {
+            $payload = array();
+            foreach ($rows as $r) {
+                $payload[] = array(
+                    'id'   => (int)$r['product_id'],
+                    'name' => (string)$r['name'],
+                    'code' => (string)$r['product_code'],
+                );
+            }
+            $preselected_json = json_encode($payload, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+        }
+    }
 }
+$GLOBALS['smarty']->assign('PRESELECTED_PRODUCTS_JSON', $preselected_json);
 
 $page_content = $GLOBALS['smarty']->fetch('templates/products.optionsets.php');
