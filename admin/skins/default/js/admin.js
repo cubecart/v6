@@ -504,6 +504,13 @@ $(document).ready(function() {
                             });
                         }
                     }
+                    // Picker hook: when the queue empties, fire a global so the
+                    // image picker (products.index image tab) can refresh.
+                    if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+                        if (typeof window.ccImagePickerOnUploadComplete === 'function') {
+                            try { window.ccImagePickerOnUploadComplete(); } catch (e) {}
+                        }
+                    }
                 });
 
                 this.on("processing", function(file) {

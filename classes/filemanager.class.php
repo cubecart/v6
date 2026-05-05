@@ -1670,10 +1670,19 @@ class FileManager
                 $main_image = '1';
             }
 
+            // Append at the end of the existing drag-order so new uploads sit
+            // last in the picker's assigned strip.
+            $pfx  = $GLOBALS['config']->get('config', 'dbprefix');
+            $next = 1;
+            if (($mx = $GLOBALS['db']->misc('SELECT MAX(`position`) AS `mx` FROM `'.$pfx.'CubeCart_image_index` WHERE `product_id` = '.(int)$product_id, false)) !== false && isset($mx[0]['mx'])) {
+                $next = (int)$mx[0]['mx'] + 1;
+            }
+
             $record = array(
-                'file_id'  => $file_id,
+                'file_id'    => $file_id,
                 'product_id' => $product_id,
-                'main_img'  => $main_image
+                'main_img'   => $main_image,
+                'position'   => $next,
             );
             $GLOBALS['db']->insert('CubeCart_image_index', $record);
         } else {

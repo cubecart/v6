@@ -176,7 +176,7 @@
 			{if isset($FOLDERS)}
 			{foreach from=$FOLDERS item=folder}
 			<div class="fm-item folder {$FM_SIZE}">
-				<a href="{$folder.link}" class="thumbnail fm_folder fm_location item_link"><img src="{$SKIN_VARS.admin_folder}/skins/default/images/folder_large.svg" alt="" /></a>
+				<a href="{$folder.link}" class="thumbnail fm_folder fm_location item_link"><img src="{$SKIN_VARS.admin_folder}/skins/default/images/folder.svg" alt="" /></a>
 				<span class="actions">
 				{if NOT is_null($folder.delete)}
 				<input type="checkbox" value="{$folder.value}" class="multi_delete" name="multi_delete[]">

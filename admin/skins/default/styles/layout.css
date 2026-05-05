@@ -3879,6 +3879,27 @@ body.chromeless #content_body { border-left: 0; }
 .img-picker { display:flex; flex-direction:column; gap:18px; margin:14px 0; }
 .img-picker-hint { color:var(--text-muted); margin:0 0 8px; font-size:13px; }
 
+/* Top row: selected strip + dropzone side-by-side. Selected grows; dropzone
+   stays a fixed-ish width so the drop hint reads naturally. */
+.img-picker__top { display:flex; gap:14px; align-items:stretch; }
+.img-picker__top > .img-picker__selected { flex:1 1 auto; min-width:0; }
+.img-picker__top > .img-picker__upload { flex:0 0 280px; }
+/* Override Dropzone's default white/2px-dark-border look so the upload tile
+   matches the selected-strip card next to it. */
+.img-picker__upload.dropzone {
+   display:flex; align-items:center; justify-content:center;
+   margin:0; padding:10px 12px; min-height:0;
+   background:var(--panel);
+   border:1px solid var(--border); border-radius:4px;
+   color:var(--text-muted);
+}
+.img-picker__upload.dropzone.dz-drag-hover { border:1px dashed var(--primary-accent); background:var(--highlight); color:var(--primary-accent); }
+.img-picker__upload.dropzone .dz-message { margin:0; font-size:13px; }
+@media (max-width: 900px) {
+   .img-picker__top { flex-direction:column; }
+   .img-picker__top > .img-picker__upload { flex:0 0 auto; }
+}
+
 /* Selected strip */
 .img-picker__selected { background:var(--panel); border:1px solid var(--border); border-radius:4px; padding:10px 12px; }
 .img-picker__selected h4 { margin:0 0 8px; font-size:14px; }
@@ -3908,10 +3929,11 @@ body.chromeless #content_body { border-left: 0; }
 
 .img-picker__folder { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; padding:12px 6px; border:1px solid transparent; border-radius:4px; cursor:pointer; color:var(--text); }
 .img-picker__folder:hover { background:var(--highlight); border-color:var(--border); }
-.img-picker__folder .fa-folder { font-size:34px; color:#cca85a; }
+.img-picker__folder-icon { width:48px; height:48px; pointer-events:none; }
 .img-picker__folder span { font-size:12px; line-height:1.2; word-break:break-all; text-align:center; max-height:2.4em; overflow:hidden; color:var(--text); }
 .img-picker__tile-name { color:var(--text); }
-.img-picker__breadcrumb a { color:var(--primary-accent); }
+.img-picker__breadcrumb a { color:var(--primary-accent); display:inline-flex; align-items:center; gap:4px; }
+.img-picker__breadcrumb-icon { width:16px; height:16px; }
 
 .img-picker__tile { position:relative; padding:6px; border:1px solid var(--border); border-radius:4px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:4px; background:var(--bg); transition:border-color 0.15s, box-shadow 0.15s; }
 .img-picker__tile:hover { border-color:var(--primary-accent); }

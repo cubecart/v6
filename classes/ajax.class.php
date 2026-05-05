@@ -54,6 +54,9 @@ class Ajax
             case 'fmFolder':
                 $return_data = self::fmFolder();
             break;
+            case 'productImages':
+                $return_data = self::productImages((int)($_GET['product_id'] ?? 0));
+            break;
             case 'doneToggle':
                 $return_data = self::doneToggle();
             break;
@@ -473,6 +476,35 @@ class Ajax
             'folders' => $folders,
             'images'  => $images,
         ));
+    }
+
+    /**
+     * Return a product's currently-assigned image gallery as JSON, ordered the
+     * same way the picker stores it. Used to refresh the assigned strip after
+     * Dropzone uploads (which auto-assign via FileManager::_assignProduct()).
+     */
+    public static function productImages($product_id) {
+        if (!CC_IN_ADMIN || $product_id <= 0) {
+            return json_encode(array());
+        }
+        $pfx = $GLOBALS['config']->get('config', 'dbprefix');
+        $sql = "SELECT i.file_id, f.filename, f.filepath
+                FROM `{$pfx}CubeCart_image_index` AS i
+                INNER JOIN `{$pfx}CubeCart_filemanager` AS f ON i.file_id = f.file_id
+                WHERE i.product_id = ".(int)$product_id."
+                ORDER BY i.main_img DESC, IF(i.position = 0, 999999, i.position) ASC, i.id ASC";
+        $out = array();
+        if (($rows = $GLOBALS['db']->misc($sql, false)) !== false) {
+            foreach ($rows as $r) {
+                $out[] = array(
+                    'file_id'  => (int)$r['file_id'],
+                    'filename' => (string)$r['filename'],
+                    'filepath' => (string)($r['filepath'] ?? ''),
+                    'thumb'    => $GLOBALS['catalogue']->imagePath((int)$r['file_id'], 'small', 'url'),
+                );
+            }
+        }
+        return json_encode($out);
     }
 
     /**

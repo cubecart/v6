@@ -665,10 +665,15 @@
       <p class="img-picker-hint">{$LANG.catalogue.image_main} = position 1. Click an image to add. Drag to reorder.</p>
 
       <div class="img-picker">
-         <div class="img-picker__selected">
-            <h4>{$LANG.catalogue.title_products} &mdash; {$LANG.settings.title_images}</h4>
-            <ol id="img_picker_selected" class="img-picker__sel-grid"></ol>
-            <p id="img_picker_empty" class="img-picker__empty">{$LANG.common.none}</p>
+         <div class="img-picker__top">
+            <div class="img-picker__selected">
+               <h4>{$LANG.catalogue.title_products} &mdash; {$LANG.settings.title_images}</h4>
+               <ol id="img_picker_selected" class="img-picker__sel-grid"></ol>
+               <p id="img_picker_empty" class="img-picker__empty">{$LANG.common.none}</p>
+            </div>
+            <div class="dropzone img-picker__upload">
+               <div class="dz-default dz-message"><span>{$LANG.filemanager.file_upload_note}</span></div>
+            </div>
          </div>
 
          <div class="img-picker__browser">
@@ -680,9 +685,7 @@
          </div>
       </div>
 
-      <div class="dropzone">
-         <div class="dz-default dz-message"><span>{$LANG.filemanager.file_upload_note}</span></div>
-      </div>
+      <div id="val_subdir" hidden></div>
       <div id="dropzone_url" style="display: none;">?_g=filemanager&amp;product_id={$PRODUCT.product_id}</div>
       <div id="val_product_id" style="display: none;">{$PRODUCT.product_id}</div>
    </div>
@@ -696,7 +699,13 @@
          existing POST handler in products.index.inc.php gets ordered data
          (1 = main, 2..N = drag order) without any other server-side change. */
       var INITIAL = window.CC_IMAGE_PICKER_INITIAL || [];
-      var selected = INITIAL.slice(); // [{file_id, filename, filepath, thumb}]
+      var selected = INITIAL.slice();
+      // Build the folder-icon URL from the admin skin vars (set by main.php).
+      var folderIcon = (function(){
+         var af = (document.getElementById('val_admin_folder') || {}).innerText || 'admin';
+         var sf = (document.getElementById('val_skin_folder')  || {}).innerText || 'default';
+         return af + '/skins/' + sf + '/images/folder.svg';
+      })(); // [{file_id, filename, filepath, thumb}]
       var currentPath = '';
       var $sel, $bread, $grid, $empty, $loading;
 
@@ -710,7 +719,11 @@
          if (!$sel.length) return;
 
          renderSelected();
-         loadFolder('');
+         var lsPath = '';
+         try {
+            lsPath = localStorage.getItem('cc_img_picker_path_' + ((document.getElementById('val_product_id') || {}).innerText || '0')) || '';
+         } catch(e) {}
+         loadFolder(lsPath);
 
          /* jQuery UI sortable powers reordering. On drop we re-derive
             positions (and the main image) from DOM order, so there's no
@@ -748,6 +761,14 @@
             loadFolder(jQuery(this).attr('data-path'));
          });
 
+         // Refresh hook: admin.js's Dropzone 'complete' handler invokes this
+         // global once the upload queue empties. Avoids racing on Dropzone init.
+         window.ccImagePickerOnUploadComplete = function(){
+            $loading.attr('hidden', 'hidden');
+            loadFolder(currentPath);
+            refreshAssigned();
+         };
+
          $grid.on('click', '.img-picker__tile', function(e){
             e.preventDefault();
             var $tile = jQuery(this);
@@ -770,12 +791,39 @@
          });
       }
 
+      function refreshAssigned(){
+         var pid = parseInt((document.getElementById('val_product_id') || {}).innerText, 10);
+         if (!pid) return;
+         var af = adminFile();
+         jQuery.getJSON('./' + af, {_g: 'xml', 'function': 'productImages', product_id: pid}, function(rows){
+            if (!Array.isArray(rows)) return;
+            selected = rows;
+            renderSelected();
+            // Refresh selection state on any visible tiles.
+            var sel = {};
+            selected.forEach(function(p){ sel[p.file_id] = true; });
+            $grid.find('.img-picker__tile').each(function(){
+               var fid = parseInt(this.getAttribute('data-fid'), 10);
+               jQuery(this).toggleClass('is-selected', !!sel[fid]);
+            });
+         });
+      }
+
+      function adminFile(){
+         return (typeof ADMIN_FILE !== 'undefined' && ADMIN_FILE) ? ADMIN_FILE : (jQuery('#val_admin_file').text() || 'admin.php');
+      }
+
       function loadFolder(path){
          currentPath = path || '';
+         // Sync the upload target dir for Dropzone (admin.js reads #val_subdir).
+         var $sub = jQuery('#val_subdir'); if ($sub.length) $sub.text(currentPath.replace(/\/+$/, ''));
+         // Persist the location so a page refresh resumes here.
+         try {
+            localStorage.setItem('cc_img_picker_path_' + ((document.getElementById('val_product_id') || {}).innerText || '0'), currentPath);
+         } catch(e) {}
          $loading.removeAttr('hidden');
          $grid.attr('aria-busy', 'true').empty();
-         var adminFile = (typeof ADMIN_FILE !== 'undefined' && ADMIN_FILE) ? ADMIN_FILE : (jQuery('#val_admin_file').text() || 'admin.php');
-         jQuery.getJSON('./' + adminFile, {_g: 'xml', 'function': 'fmFolder', path: currentPath}, function(data){
+         jQuery.getJSON('./' + adminFile(), {_g: 'xml', 'function': 'fmFolder', path: currentPath}, function(data){
             if (!data) data = {folders: [], images: []};
             renderBreadcrumb(currentPath);
             renderGrid(data);
@@ -786,7 +834,7 @@
       }
 
       function renderBreadcrumb(path){
-         var html = '<a href="#" data-path=""><i class="fa fa-folder-open"></i> /</a>';
+         var html = '<a href="#" data-path=""><img src="' + folderIcon + '" class="img-picker__breadcrumb-icon" alt=""> /</a>';
          if (path) {
             var parts = path.replace(/\/+$/, '').split('/');
             var acc = '';
@@ -805,7 +853,7 @@
          var html = '';
          (data.folders || []).forEach(function(name){
             html += '<div class="img-picker__folder" data-path="' + escAttr(currentPath + name + '/') + '" title="' + escAttr(name) + '">'
-                 +     '<i class="fa fa-folder"></i>'
+                 +     '<img src="' + folderIcon + '" class="img-picker__folder-icon" alt="">'
                  +     '<span>' + escHtml(name) + '</span>'
                  +  '</div>';
          });
