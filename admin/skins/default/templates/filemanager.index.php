@@ -260,24 +260,61 @@
 	{if isset($mode_form)}
 	<div id="fm-details" class="tab_content">
 		<h3>{$LANG.filemanager.title_file_edit}</h3>
-		{if $FILE.type == 1}
-		<a href="{$FILE.filepath}{$FILE.filename}?_={$smarty.now}" target="_blank" title="{$LANG.filemanager.opens_new_window}"><img src="{$FILE.filepath}{$FILE.filename}"{if !empty($FILE.alt)} alt="{$FILE.alt}"{/if} style="max-height:200px;" /></a>
-		<div>{$LANG.common.size}: {$FILE.width}px x {$FILE.height}px</div>
-		{/if}
+		<div class="fm-edit-grid">
+			<div class="fm-edit-grid__preview">
+				{if $FILE.type == 1}
+				<a href="{$FILE.filepath}{$FILE.filename}?_={$smarty.now}" target="_blank" title="{$LANG.filemanager.opens_new_window}"><img src="{$FILE.filepath}{$FILE.filename}"{if !empty($FILE.alt)} alt="{$FILE.alt}"{/if}></a>
+				<div class="fm-edit-grid__meta">
+					<strong>{$FILE.filename}</strong>
+					<small>{$FILE.width}&times;{$FILE.height}px &middot; {formatBytes($FILE.filesize)}</small>
+				</div>
+				{else}
+				<i class="fa fa-file-o" aria-hidden="true"></i>
+				<div class="fm-edit-grid__meta">
+					<strong>{$FILE.filename}</strong>
+					<small>{formatBytes($FILE.filesize)}</small>
+				</div>
+				{/if}
+			</div>
+			<fieldset class="fm-edit-grid__form">
+				<legend>{$LANG.common.details}</legend>
+				<div>
+					<label for="filename">{$LANG.filemanager.file_name}</label>
+					<span><input type="text" id="filename" name="details[filename]" class="textbox" value="{$FILE.filename}"></span>
+				</div>
+				<div>
+					<label for="move">{$LANG.filemanager.file_subfolder}</label>
+					<span>
+						<select name="details[move]" id="move" class="textbox">
+							<option value="">{$LANG.form.please_select}</option>
+							{if isset($DIRS)}{foreach from=$DIRS item=dir}<option value="{$dir.path}"{$dir.selected}>{$dir.path}</option>{/foreach}{/if}
+						</select>
+					</span>
+				</div>
+				{if $FILE.type == 1}
+				<div>
+					<label for="alt">{$LANG.filemanager.alt}</label>
+					<span><input type="text" id="alt" name="details[alt]" class="textbox" value="{$FILE.alt}"></span>
+				</div>
+				{/if}
+				<div>
+					<label for="title">{$LANG.filemanager.title}</label>
+					<span><input type="text" id="title" name="details[title]" class="textbox" value="{$FILE.title}"></span>
+				</div>
+				{if $STREAMABLE}
+				<div>
+					<label for="description">{$LANG.common.description}</label>
+					<span><textarea name="details[description]" id="description" class="textbox">{$FILE.description}</textarea></span>
+				</div>
+				<div>
+					<label for="stream">{$LANG.filemanager.stream}</label>
+					<span><input type="hidden" name="details[stream]" id="stream" value="{$FILE.stream}" class="toggle"></span>
+				</div>
+				{/if}
+			</fieldset>
+		</div>
 		<fieldset>
-			<div>
-				<label for="filename">{$LANG.filemanager.file_name}</label>
-				<span><input type="text" id="filename" name="details[filename]" class="textbox" value="{$FILE.filename}"></span>
-			</div>
-			<div>
-				<label for="move">{$LANG.filemanager.file_subfolder}</label>
-				<span>
-					<select name="details[move]" id="move" class="textbox">
-						<option value="">{$LANG.form.please_select}</option>
-						{if isset($DIRS)}{foreach from=$DIRS item=dir}<option value="{$dir.path}"{$dir.selected}>{$dir.path}</option>{/foreach}{/if}
-					</select>
-				</span>
-			</div>
+			<legend>{$LANG.filemanager.replace_file|default:'Replace file'}</legend>
 			<div>
 				<label for="replacement">{$LANG.filemanager.replace_file|default:'Replace file'}</label>
 				<span>
@@ -285,34 +322,6 @@
 					<br><small>{$LANG.filemanager.replace_file_desc|default:'Upload a new version with the same extension. Existing product/category links to this file are preserved.'}</small>
 				</span>
 			</div>
-			{if $FILE.type == 1}
-			<div>
-				<label for="alt">{$LANG.filemanager.alt}</label>
-				<span>
-				<input type="text" id="alt" name="details[alt]" class="textbox" value="{$FILE.alt}">
-				</span>
-			</div>
-			{/if}
-			<div>
-				<label for="title">{$LANG.filemanager.title}</label>
-				<span>
-				<input type="text" id="title" name="details[title]" class="textbox" value="{$FILE.title}">
-				</span>
-			</div>
-			{if $STREAMABLE}
-			<div>
-				<label for="description">{$LANG.common.description}</label>
-				<span>
-				<textarea name="details[description]" id="description" class="textbox">{$FILE.description}</textarea>
-				</span>
-			</div>
-			<div>
-				<label for="stream">{$LANG.filemanager.stream}</label>
-				<span>
-				<input type="hidden" name="details[stream]" id="stream" value="{$FILE.stream}" class="toggle">
-				</span>
-			</div>
-			{/if}
 		</fieldset>
 	</div>
 	{if isset($SHOW_CROP)}

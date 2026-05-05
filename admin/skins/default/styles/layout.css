@@ -1038,6 +1038,15 @@ div.tab_content fieldset small.recommended {
     color: #666;
     margin-left: 5px
 }
+/* `<small>` helper text under a field (e.g. "Replace file" hint) needs its
+   own block + indent — the parent div's text-indent only applies to the
+   first line and the helper sits after a <br>. */
+.tb-form fieldset > div small,
+div.tab_content fieldset > div small {
+    display: block;
+    text-indent: 5px;
+    color: var(--text-muted);
+}
 #disabled-zone-list div,
 #enabled-zones div {
     clear: left;
@@ -3936,6 +3945,24 @@ body.chromeless #content_body { border-left: 0; }
 .img-picker__folder-icon { width:100%; height:90px; object-fit:contain; pointer-events:none; }
 .img-picker__folder span { font-size:12px; line-height:1.2; word-break:break-all; text-align:center; max-height:2.4em; overflow:hidden; color:var(--text); }
 .img-picker__tile-name { color:var(--text); }
+
+/* Filemanager edit screen — preview tile + metadata form side-by-side instead
+   of the legacy stretched single-column layout. Replace-file gets its own
+   bordered fieldset since it's a destructive action. */
+.fm-edit-grid { display:grid; grid-template-columns:280px 1fr; gap:20px; align-items:start; margin:14px 0 18px; }
+.fm-edit-grid__preview { background:var(--panel); border:1px solid var(--border); border-radius:4px; padding:14px; text-align:center; }
+.fm-edit-grid__preview img { max-width:100%; max-height:240px; height:auto; border-radius:2px; }
+.fm-edit-grid__preview > .fa-file-o { font-size:96px; color:var(--text-muted); display:block; margin:20px 0; }
+.fm-edit-grid__meta { margin-top:10px; word-break:break-all; }
+.fm-edit-grid__meta strong { display:block; font-size:13px; }
+.fm-edit-grid__meta small { display:block; color:var(--text-muted); margin-top:4px; font-size:12px; }
+.fm-edit-grid__form { border:0; padding:0; margin:0; }
+.fm-edit-grid__form input.textbox,
+.fm-edit-grid__form select.textbox,
+.fm-edit-grid__form textarea.textbox { max-width:480px; }
+@media (max-width: 800px) {
+   .fm-edit-grid { grid-template-columns:1fr; }
+}
 
 /* Pick-and-close mode (e.g. per-option image picker dialog): the selected
    strip is meaningless (picks close instantly) but the dropzone stays so
