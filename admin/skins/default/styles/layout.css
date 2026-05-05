@@ -3855,5 +3855,5 @@ body.chromeless #content_body { border-left: 0; }
 #tab_control .tab.tab--external-first { margin-left:auto; }
 #tab_control .tab.tab--external:last-child { margin-right:3px; }
 #tab_control .tab.tab--external:hover { background:var(--primary-accent); border-color:var(--primary-accent); }
-#tab_control .tab.tab--external > a { padding:4px 10px; color:var(--primary-accent); text-transform:capitalize; font-weight:600; }
+#tab_control .tab.tab--external > a { padding:4px; color:var(--primary-accent); text-transform:capitalize; font-weight:600; }
 #tab_control .tab.tab--external:hover > a { color:var(--text-invert); }
