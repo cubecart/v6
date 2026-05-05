@@ -130,24 +130,28 @@
 
   <div id="customer-groups" class="tab_content">
 	<h3>{$LANG.customer.title_groups}</h3>
-	<fieldset id="group-list"><legend>{$LANG.customer.title_groups_available}</legend>
+	<fieldset id="group-list">
 	  {if isset($CUSTOMER_GROUPS)}
-	  {foreach from=$CUSTOMER_GROUPS item=group}
-	  <div>
-		<span class="actions">
-		  <a href="#" class="remove" name="group_delete" rel="{$group.group_id}" title="{$LANG.common.delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
-		</span>
-		<strong><span class="editable" name="group_edit[{$group.group_id}][name]">{$group.group_name}</span></strong>
-		<br>
-		{if !empty($group.group_description)}
-		<span class="editable" name="group_edit[{$group.group_id}][description]">{$group.group_description}</span>
-		{else}
-		<span class="editable" name="group_edit[{$group.group_id}][description]"></span>
-		{/if}
-	  </div>
-	  {/foreach}
+	  <table class="customer-groups-table">
+		<thead>
+		  <tr>
+			<th>{$LANG.common.name}</th>
+			<th>{$LANG.common.description}</th>
+			<th width="10" class="text-center">{$LANG.form.action}</th>
+		  </tr>
+		</thead>
+		<tbody>
+		{foreach from=$CUSTOMER_GROUPS item=group}
+		  <tr>
+			<td><strong><span class="editable" name="group_edit[{$group.group_id}][name]">{$group.group_name}</span></strong></td>
+			<td><span class="editable customer-groups-table__desc" name="group_edit[{$group.group_id}][description]">{$group.group_description}</span></td>
+			<td  width="10" class="text-center"><a href="?_g=customers&group_delete={$group.group_id}&token={$SESSION_TOKEN}#customer-groups" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+		  </tr>
+		{/foreach}
+		</tbody>
+	  </table>
 	  {else}
-	  <div>{$LANG.form.none}</div>
+	  <p>{$LANG.form.none}</p>
 	  {/if}
 	</fieldset>
 	<fieldset><legend>{$LANG.customer.title_groups_create}</legend>

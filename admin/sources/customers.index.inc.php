@@ -313,16 +313,55 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
         $GLOBALS['main']->successMessage($lang['customer']['notify_groups_delete']);
         $send_redirect = true;
     }
+    // Immediate single-group delete via GET (one-click trash icon in the list).
+    // Confirmed with a JS confirm() prompt on the link's title attribute.
+    if (isset($_GET['group_delete']) && is_numeric($_GET['group_delete']) && isset($_GET['token']) && $_GET['token'] === SESSION_TOKEN && Admin::getInstance()->permissions('customers', CC_PERM_DELETE)) {
+        $group_id = (int)$_GET['group_delete'];
+        foreach ($GLOBALS['hooks']->load('admin.customer.group_delete') as $hook) {
+            include $hook;
+        }
+        if (($GLOBALS['db']->delete('CubeCart_customer_group', array('group_id' => $group_id))) !== false) {
+            $GLOBALS['db']->delete('CubeCart_customer_membership', array('group_id' => $group_id));
+            $GLOBALS['db']->delete('CubeCart_pricing_quantity', array('group_id' => $group_id));
+            $GLOBALS['db']->delete('CubeCart_pricing_group', array('group_id' => $group_id));
+            $GLOBALS['main']->successMessage($lang['customer']['notify_groups_delete']);
+        }
+        httpredir(currentPage(array('group_delete', 'token')), 'customer-groups');
+    }
     if (isset($_POST['status']) && is_array($_POST['status']) && Admin::getInstance()->permissions('customers', CC_PERM_EDIT)) {
-        foreach ($_POST['status'] as $customer_id => $status) {
-            // Delete any active session
-            if((int)$status===0) $GLOBALS['db']->delete('CubeCart_sessions', array('customer_id' => (int)$customer_id));
-            $result = $GLOBALS['db']->update('CubeCart_customer', array('status' => (int)$status), array('customer_id' => (int)$customer_id));
-            if ($result) {
-                $GLOBALS['main']->successMessage($lang['customer']['notify_customer_status']);
+        // The customers list and customer-groups tab share a form, so saving
+        // groups re-submits every customer status toggle on the page. Compare
+        // posted values to current state and only UPDATE + emit the message
+        // when something actually changed.
+        $cust_ids = array_map('intval', array_keys($_POST['status']));
+        $cust_ids = array_filter($cust_ids);
+        $current_status = array();
+        if (!empty($cust_ids)) {
+            $prefix = $GLOBALS['config']->get('config', 'dbprefix');
+            $cid_in = implode(',', $cust_ids);
+            if (($rows = $GLOBALS['db']->misc("SELECT `customer_id`, `status` FROM `{$prefix}CubeCart_customer` WHERE `customer_id` IN ($cid_in)")) !== false && is_array($rows)) {
+                foreach ($rows as $row) {
+                    $current_status[(int)$row['customer_id']] = (int)$row['status'];
+                }
             }
         }
-        $send_redirect = true;
+        $changed = 0;
+        foreach ($_POST['status'] as $customer_id => $status) {
+            $cid = (int)$customer_id;
+            $new_status = (int)$status;
+            if (!isset($current_status[$cid]) || $current_status[$cid] === $new_status) {
+                continue;
+            }
+            // Delete any active session when deactivating
+            if ($new_status === 0) $GLOBALS['db']->delete('CubeCart_sessions', array('customer_id' => $cid));
+            if ($GLOBALS['db']->update('CubeCart_customer', array('status' => $new_status), array('customer_id' => $cid))) {
+                $changed++;
+            }
+        }
+        if ($changed > 0) {
+            $GLOBALS['main']->successMessage($lang['customer']['notify_customer_status']);
+            $send_redirect = true;
+        }
     }
     if (isset($_GET['delete_addr']) && isset($_GET['customer_id']) && is_numeric($_GET['delete_addr'])) {
         if ($GLOBALS['db']->delete('CubeCart_addressbook', array('address_id' => (int)$_GET['delete_addr'], 'customer_id' => (int)$_GET['customer_id']))) {

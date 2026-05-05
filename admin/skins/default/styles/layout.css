@@ -3839,3 +3839,9 @@ dialog.cc-modal[open] { animation:cc-modal-fade-in 0.18s ease-out; }
 body.chromeless #content { margin-left: 0; }
 body.chromeless #breadcrumbs { display: none; }
 body.chromeless #content_body { border-left: 0; }
+
+/* customers.index.php — customer groups table */
+.customer-groups-table { width:100%; }
+.customer-groups-table th { text-align:left; }
+.customer-groups-table .editable { display:inline-block; min-width:120px; }
+.customer-groups-table__desc:empty::before { content:'\2014'; color:var(--text-muted); }
