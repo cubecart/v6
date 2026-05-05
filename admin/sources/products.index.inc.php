@@ -53,7 +53,9 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
     $record = $_POST;
     $record['description'] = preg_replace('/<script\b[^>]*>.*?<\/script>/is', '', $GLOBALS['RAW']['POST']['description']);
     $record['description_short'] = preg_replace('/<script\b[^>]*>.*?<\/script>/is', '', $GLOBALS['RAW']['POST']['description_short']);
-    $record['spec_copy'] = strip_tags($GLOBALS['RAW']['POST']['spec_copy']);
+    // spec_copy is a CKEditor field — keep formatting + <img>; strip only <script>
+    // (consistent with `description` / `description_short` above).
+    $record['spec_copy'] = preg_replace('/<script\b[^>]*>.*?<\/script>/is', '', $GLOBALS['RAW']['POST']['spec_copy']);
     if (!empty($record['name'])) {
         $record['name'] = strip_tags($record['name']);
     }

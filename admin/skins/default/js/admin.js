@@ -1383,21 +1383,53 @@ if (typeof CKEDITOR !== 'undefined') {
         var infoTab = def.getContents('info');
         if (!infoTab) return;
         var browseBtn = infoTab.get('browse');
-        if (!browseBtn) return;
-        browseBtn.hidden = false;
-        browseBtn.onClick = function() {
-            var ckDialog = this.getDialog();
-            ccOpenImagePickerDialog({
-                storageKey: 'ckeditor_dialog',
-                onPick: function(d) {
-                    var path = (d.filepath || '') + (d.filename || '');
-                    var url  = 'images/source/' + path;
-                    var urlEl = ckDialog.getContentElement('info', 'txtUrl');
-                    if (urlEl) urlEl.setValue(url);
-                    $.colorbox.close();
+        if (browseBtn) {
+            browseBtn.hidden = false;
+            browseBtn.onClick = function() {
+                var ckDialog = this.getDialog();
+                ccOpenImagePickerDialog({
+                    storageKey: 'ckeditor_dialog',
+                    onPick: function(d) {
+                        var path = (d.filepath || '') + (d.filename || '');
+                        var url  = 'images/source/' + path;
+                        var urlEl = ckDialog.getContentElement('info', 'txtUrl');
+                        if (urlEl) urlEl.setValue(url);
+                        $.colorbox.close();
+                    }
+                });
+            };
+        }
+        // Storefronts are responsive — width/height attrs override the skin's
+        // `max-width:100%; height:auto` rules. We don't hide the dialog fields
+        // (CKEditor uses them for the live preview), but the output filter
+        // below strips them from the saved HTML.
+    });
+
+    // Strip width/height attributes AND inline width/height styles from every
+    // <img> in the editor's serialised output so the responsive front-end CSS
+    // (`max-width:100%; height:auto`) can size images naturally.
+    //
+    // Important gotcha: CKEditor's parser splits `style="..."` into a
+    // separate `el.styles` map BEFORE filter rules run, so the style
+    // declarations don't live in `el.attributes.style` — they live in
+    // `el.styles.width` / `el.styles.height`.
+    CKEDITOR.on('instanceReady', function(ev) {
+        var ed = ev.editor;
+        if (!ed.dataProcessor || !ed.dataProcessor.htmlFilter) return;
+        ed.dataProcessor.htmlFilter.addRules({
+            elements: {
+                img: function(el) {
+                    if (el.attributes) {
+                        delete el.attributes.width;
+                        delete el.attributes.height;
+                    }
+                    if (el.styles) {
+                        delete el.styles.width;
+                        delete el.styles.height;
+                    }
                 }
-            });
-        };
+            }
+        });
     });
 }
 $(".remove_option_img").on("click", function(a) {
