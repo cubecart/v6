@@ -790,6 +790,13 @@ $(document).ready(function() {
                 a = i.split("#");
             $("#wikihelp").attr("href", a[0] + e)
         }
+        // Mirror the tab anchor into the clear-cache link so a page-load (i.e.
+        // user hasn't clicked any tab yet) returns to the same tab after clearing.
+        if ($("#clear_cache_master").length) {
+            var ccHref = $('#clear_cache_master a').attr('href') || '';
+            var ccBase = ccHref.split('#');
+            $('#clear_cache_master a').attr('href', ccBase[0] + e);
+        }
         $("#previous-tab").val(e), $("input.previous-tab").val(e), window.scrollTo(-81, 0)
     }).on("click", function() {
         var t = $(this).children("a").attr("href");
