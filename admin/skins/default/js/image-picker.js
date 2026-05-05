@@ -65,6 +65,7 @@
         var self = this;
         self.root       = rootEl;
         self.single     = rootEl.getAttribute('data-cc-single') === '1';
+        self.pickAndClose = rootEl.getAttribute('data-cc-pick-and-close') === '1';
         self.storageKey = 'cc_img_picker_path_' + (rootEl.getAttribute('data-cc-storage-key') || 'default');
         self.langNone   = window.CC_LANG_NONE || 'None';
         self.folderIcon = buildFolderIcon(rootEl);
@@ -132,6 +133,16 @@
             var $tile = jQuery(this);
             var fid = parseInt($tile.attr('data-fid'), 10);
             if (!fid) return;
+            // Pick-and-close mode: don't update internal selection. Fire an event
+            // on the root and let the host (e.g. an option-image dialog) handle
+            // write-back + close.
+            if (self.pickAndClose) {
+                self.root.dispatchEvent(new CustomEvent('cc:image-picked', {
+                    bubbles: true,
+                    detail: self.tileToItem($tile, fid)
+                }));
+                return;
+            }
             var idx = self.selected.findIndex(function(p){ return p.file_id === fid; });
             if (self.single) {
                 if (idx >= 0) {
@@ -331,4 +342,63 @@
     } else {
         autoInit();
     }
+
+    // Public API: build a picker root + spawn an instance on demand. Used by
+    // dialog-mode callers (e.g. the per-option image picker) that inject markup
+    // after page load.
+    window.CCImagePicker = {
+        Picker: Picker,
+        init: autoInit,
+        /**
+         * Build the picker markup as an HTML string. Caller is responsible for
+         * injecting it into a container and then calling CCImagePicker.init()
+         * (or new CCImagePicker.Picker(rootEl) directly).
+         *
+         * Options:
+         *   single          bool   - single-select mode
+         *   pickAndClose    bool   - on tile click, fire cc:image-picked event
+         *   storageKey      string - localStorage suffix for path memory
+         *   placeholder     string - URL of the empty-state placeholder image
+         *   uploadNote      string - text inside the dropzone (optional)
+         *   newDirLabel     string - placeholder for the new-folder input
+         *   showDropzone    bool   - render the dropzone (default true)
+         */
+        renderHtml: function(opts){
+            opts = opts || {};
+            function attr(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
+            var html = '<div class="img-picker"'
+                     + ' data-cc-image-picker'
+                     + (opts.single ? ' data-cc-single="1"' : '')
+                     + (opts.pickAndClose ? ' data-cc-pick-and-close="1"' : '')
+                     + ' data-cc-storage-key="' + attr(opts.storageKey || 'dialog') + '"'
+                     + ' data-cc-initial-json="[]">';
+            html += '<div class="img-picker__top">'
+                  + '<div class="img-picker__selected">'
+                  +   '<ol class="img-picker__sel-grid"></ol>'
+                  +   '<div class="img-picker__empty"><img src="' + attr(opts.placeholder || '') + '" alt=""></div>'
+                  + '</div>';
+            if (opts.showDropzone !== false) {
+                html += '<div class="dropzone img-picker__upload">'
+                      +   '<div class="dz-default dz-message"><span>' + attr(opts.uploadNote || '') + '</span></div>'
+                      + '</div>';
+            }
+            html += '</div>';
+            html += '<div class="img-picker__browser">'
+                  +   '<div class="img-picker__bar">'
+                  +     '<nav class="img-picker__breadcrumb fm-breadcrumb"></nav>'
+                  +     '<div class="img-picker__newdir">'
+                  +       '<input type="text" class="img-picker__newdir-name textbox" placeholder="' + attr(opts.newDirLabel || 'New folder') + '" autocomplete="off">'
+                  +       '<button type="button" class="img-picker__newdir-btn button tiny"><i class="fa fa-plus"></i></button>'
+                  +     '</div>'
+                  +   '</div>'
+                  +   '<div class="img-picker__panel">'
+                  +     '<div class="img-picker__grid" aria-busy="false"></div>'
+                  +     '<div class="img-picker__loading" hidden><i class="fa fa-spinner fa-spin"></i></div>'
+                  +   '</div>'
+                  + '</div>';
+            html += '<div class="img-picker__val-subdir" hidden></div>';
+            html += '</div>';
+            return html;
+        }
+    };
 })();

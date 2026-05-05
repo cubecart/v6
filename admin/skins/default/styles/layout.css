@@ -3937,6 +3937,14 @@ body.chromeless #content_body { border-left: 0; }
 .img-picker__folder span { font-size:12px; line-height:1.2; word-break:break-all; text-align:center; max-height:2.4em; overflow:hidden; color:var(--text); }
 .img-picker__tile-name { color:var(--text); }
 
+/* Pick-and-close mode (e.g. per-option image picker dialog): the selected
+   strip is meaningless (picks close instantly) but the dropzone stays so
+   users can upload new files and pick them in the same dialog. */
+.img-picker[data-cc-pick-and-close] .img-picker__selected { display:none; }
+.img-picker[data-cc-pick-and-close] .img-picker__top > .img-picker__upload { flex:1 1 auto; }
+/* Padding when the picker is hosted inside a modal dialog. */
+.cc-modal__body .img-picker { margin:16px; }
+
 .img-picker__tile { position:relative; padding:6px; border:1px solid var(--border); border-radius:4px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:4px; background:var(--bg); transition:border-color 0.15s, box-shadow 0.15s; }
 .img-picker__tile:hover { border-color:var(--primary-accent); }
 .img-picker__tile img { width:100%; height:90px; object-fit:contain; background:var(--panel-subtle); border-radius:2px; }

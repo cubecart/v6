@@ -1264,26 +1264,113 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
 $(".fm_location").on("click", function() {
     localStorage.setItem('fm_folder_href', $(this).attr('href'))
 });
-$(".choose_option_img").on("click", function(a) {
-    var filemanager_path = '?_g=filemanager&mode=fck&source=options';
-    var filepath = $(this).attr('data-filepath');
-    if(filepath!=='') {
-        filemanager_path = filemanager_path + '&subdir=' + filepath;
-    }
-    var fm_folder_href = localStorage.getItem('fm_folder_href');
-    if(fm_folder_href) {
-        filemanager_path = fm_folder_href;
-    }
-    var opnr = window.open(filemanager_path,'chooser','toolbar=no,menubar=no,width=600,height=600');
-    var selector = $(this);
-    var assign_id = selector.attr("rel");
-    window.addEventListener('message', function(event) {
-        $('#option_image_id_'+assign_id).val(event.data.image_id);
-        $('#option_image_preview_'+assign_id).attr('src',event.data.path);
-        $('#remove_image_id_'+assign_id).show();
-        $('#selector_image_id_'+assign_id).hide();
-    }, { once:true} );
+/* Open the shared image-picker in a modal dialog (single-select, pick-and-close
+   mode). Caller passes an `onPick` callback that receives {file_id, filename,
+   filepath, thumb} and is responsible for closing the dialog when ready
+   (typically: write back to inputs, then $.colorbox.close()). */
+function ccOpenImagePickerDialog(opts) {
+    opts = opts || {};
+    if (typeof window.CCImagePicker === 'undefined') return;
+    var html = '<div class="cc-option-picker-host">'
+             + window.CCImagePicker.renderHtml({
+                  single: true,
+                  pickAndClose: true,
+                  storageKey: opts.storageKey || 'image_dialog',
+                  placeholder: '',
+                  newDirLabel: 'New folder',
+                  uploadNote: 'Drop image files here to upload.'
+               })
+             + '</div>';
+    $.colorbox({
+        html: html,
+        width: '90%',
+        height: '85%',
+        onComplete: function() {
+            var root = document.querySelector('.cc-modal__body .img-picker[data-cc-image-picker]');
+            if (!root) return;
+            window.CCImagePicker.init();
+            root.addEventListener('cc:image-picked', function(ev) {
+                if (typeof opts.onPick === 'function') {
+                    try { opts.onPick(ev.detail || {}); } catch (e) { if (window.console) console.error(e); }
+                }
+            });
+            // The dialog's <div.dropzone> is injected after admin.js's page-load
+            // init ran, so initialise it here. Posts to filemanager (no product
+            // assignment), reads the active folder from the picker's val-subdir.
+            if (typeof Dropzone !== 'undefined') {
+                var dzEl = root.querySelector('.dropzone');
+                var $valSubdir = $(root).find('.img-picker__val-subdir');
+                if (dzEl && !dzEl.dropzone) {
+                    new Dropzone(dzEl, {
+                        url: '?_g=filemanager',
+                        acceptedFiles: 'image/gif,image/jpeg,image/png,image/webp',
+                        init: function() {
+                            var dz = this;
+                            dz.on('processing', function() {
+                                var sub = ($valSubdir.text() || '').replace(/\/+$/, '');
+                                dz.options.url = '?_g=filemanager' + (sub ? '&subdir=' + encodeURIComponent(sub) : '');
+                            });
+                            dz.on('complete', function() {
+                                if (dz.getUploadingFiles().length === 0 && dz.getQueuedFiles().length === 0) {
+                                    if (typeof window.ccImagePickerOnUploadComplete === 'function') {
+                                        try { window.ccImagePickerOnUploadComplete(); } catch (e) {}
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+        }
+    });
+}
+window.ccOpenImagePickerDialog = ccOpenImagePickerDialog;
+
+/* Per-option image picker: opens the shared dialog and writes the chosen
+   file_id + thumb URL back to the option row's hidden inputs. */
+$(document).on('click', '.choose_option_img', function() {
+    var $sel = $(this);
+    var assign_id = $sel.attr('rel');
+    if (!assign_id) return;
+    ccOpenImagePickerDialog({
+        storageKey: 'option_dialog',
+        onPick: function(d) {
+            $('#option_image_id_'  + assign_id).val(d.file_id || 0);
+            $('#option_image_preview_' + assign_id).attr('src', d.thumb || '');
+            $('#remove_image_id_'  + assign_id).show();
+            $('#selector_image_id_' + assign_id).hide();
+            $.colorbox.close();
+        }
+    });
 });
+
+/* CKEditor "Browse Server" override: replace the popup-window file browser
+   with the shared image-picker dialog. Hooks the image dialog's browse button
+   onClick and writes the chosen file's source URL into the URL field. */
+if (typeof CKEDITOR !== 'undefined') {
+    CKEDITOR.on('dialogDefinition', function(ev) {
+        if (ev.data.name !== 'image') return;
+        var def = ev.data.definition;
+        var infoTab = def.getContents('info');
+        if (!infoTab) return;
+        var browseBtn = infoTab.get('browse');
+        if (!browseBtn) return;
+        browseBtn.hidden = false;
+        browseBtn.onClick = function() {
+            var ckDialog = this.getDialog();
+            ccOpenImagePickerDialog({
+                storageKey: 'ckeditor_dialog',
+                onPick: function(d) {
+                    var path = (d.filepath || '') + (d.filename || '');
+                    var url  = 'images/source/' + path;
+                    var urlEl = ckDialog.getContentElement('info', 'txtUrl');
+                    if (urlEl) urlEl.setValue(url);
+                    $.colorbox.close();
+                }
+            });
+        };
+    });
+}
 $(".remove_option_img").on("click", function(a) {
     var assign_id = $(this).attr("rel");
     $('#option_image_id_'+assign_id).val(0);
