@@ -478,13 +478,16 @@ $(document).ready(function() {
     });
     if ($("div.dropzone").length) {
         Dropzone.autoDiscover = false;
-        var dropzone_url = $("div#dropzone_url").text();
+        var globalDropzoneUrl = $("div#dropzone_url").text();
         var imageUploadFormat = ($("#val_image_upload_format").text() || 'webp').trim();
         // Digital file manager allows any file type; images mode restricts to image MIME types.
         var isDigitalMode = /[?&]mode=digital(&|$)/.test(window.location.search);
 
         var dropzoneConfig = {
-            url: dropzone_url,
+            // URL is set per-instance below (data-dropzone-url on each .dropzone
+            // wins over the global #dropzone_url). The `processing` handler
+            // re-applies the base + subdir on every upload.
+            url: globalDropzoneUrl || '?_g=filemanager',
             acceptedFiles: isDigitalMode ? null : 'image/gif,image/jpeg,image/png,image/webp',
             init: function () {
                 this.on("error", function(file, message) {
@@ -514,11 +517,20 @@ $(document).ready(function() {
                 });
 
                 this.on("processing", function(file) {
+                    // Per-instance URL: data attribute on the dropzone element
+                    // wins over the global `#dropzone_url`. Subdir comes from
+                    // either a scoped .img-picker__val-subdir (multi-picker
+                    // pages) or the legacy global #val_subdir.
+                    var $el = $(this.element);
+                    var baseUrl = $el.attr('data-dropzone-url') || globalDropzoneUrl;
                     var subdir = '';
-                    if ($("#val_subdir").length) {
-                        subdir = '&subdir=' + $("#val_subdir").text();
+                    var $scoped = $el.closest('.img-picker').find('.img-picker__val-subdir');
+                    if ($scoped.length) {
+                        subdir = $scoped.text();
+                    } else if ($("#val_subdir").length) {
+                        subdir = $("#val_subdir").text();
                     }
-                    this.options.url = dropzone_url + subdir;
+                    this.options.url = baseUrl + (subdir ? '&subdir=' + encodeURIComponent(subdir) : '');
                 });
             }
         };
@@ -586,7 +598,19 @@ $(document).ready(function() {
             };
         }
 
-        $("div.dropzone").dropzone(dropzoneConfig);
+        // Init each dropzone individually so per-element settings (URL, mode)
+        // can override the shared base config.
+        $("div.dropzone").each(function() {
+            var $el = $(this);
+            if (this.dropzone) return; // already initialised (e.g. by dialog)
+            var elUrl  = $el.attr('data-dropzone-url') || globalDropzoneUrl || '';
+            var elDig  = /[?&]mode=digital(&|$)/.test(elUrl) || isDigitalMode;
+            var cfg    = $.extend({}, dropzoneConfig, {
+                url: elUrl || dropzoneConfig.url,
+                acceptedFiles: elDig ? null : 'image/gif,image/jpeg,image/png,image/webp'
+            });
+            $el.dropzone(cfg);
+        });
     }
 
     $(":input.required").blur(function() {

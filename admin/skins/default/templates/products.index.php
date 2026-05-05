@@ -673,10 +673,15 @@
       <div id="digital" class="tab_content">
       <h3>{$LANG.catalogue.title_digital_options}</h3>
       <p>{$LANG.catalogue.title_digital_explain}</p>
-      <div class="fm-container">
-         <div class="loading">{$LANG.common.loading} <i class="fa fa-spinner fa-spin fa-fw"></i></div>
-         <div id="download" rel="2" class="fm-filelist unique"></div>
-      </div>
+      {include file='templates/element.image_picker.php'
+         single=true
+         mode="digital"
+         input_name="download"
+         storage_key="prod_dig_`$PRODUCT.product_id`"
+         dropzone_url="?_g=filemanager&product_id=`$PRODUCT.product_id`&mode=digital"
+         initial_json=$DIGITAL_PICKER_JSON
+         placeholder=""
+         hint="Pick the download file customers will receive after purchase."}
       <fieldset>
          <legend>{$LANG.catalogue.title_file_path_custom}</legend>
          <div id="digital_freetype"><label for="digital_path">{$LANG.catalogue.file_path}</label><span> <input name="digital_path" id="digital_path" class="textbox" type="text" value="{$PRODUCT.digital_path}" {$VAL_DIGITALDIR_EMPTY}></span></div>

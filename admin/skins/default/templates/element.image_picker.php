@@ -23,6 +23,8 @@
 <div class="img-picker"
      data-cc-image-picker
      {if !empty($single)}data-cc-single="1"{/if}
+     {if !empty($mode)}data-cc-mode="{$mode|escape:'html'}"{/if}
+     {if !empty($input_name)}data-cc-input-name="{$input_name|escape:'html'}"{/if}
      data-cc-storage-key="{$storage_key|escape:'html'}"
      data-cc-initial-json="{$initial_json|escape:'html'}">
 
@@ -35,7 +37,7 @@
          <ol class="img-picker__sel-grid"></ol>
          <div class="img-picker__empty"><img src="{$placeholder}" alt=""></div>
       </div>
-      <div class="dropzone img-picker__upload">
+      <div class="dropzone img-picker__upload" data-dropzone-url="{$dropzone_url|escape:'html'}">
          <div class="dz-default dz-message"><span>{$LANG.filemanager.file_upload_note}</span></div>
       </div>
    </div>
@@ -54,10 +56,9 @@
       </div>
    </div>
 
-   <div class="img-picker__val-subdir" id="val_subdir" hidden></div>
+   <div class="img-picker__val-subdir" hidden></div>
 </div>
 
-<div id="dropzone_url" style="display: none;">{$dropzone_url}</div>
 {if !empty($product_id_value)}
 <div id="val_product_id" style="display: none;">{$product_id_value}</div>
 {/if}

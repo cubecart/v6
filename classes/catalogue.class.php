@@ -1661,11 +1661,13 @@ class Catalogue
     /**
      * Build the JSON-ready payload for the admin image picker.
      *
-     * @param array $file_ids ordered list of file_ids that are currently
-     *                        selected (main first); missing rows are skipped.
+     * @param array  $file_ids ordered list of file_ids that are currently
+     *                         selected (main first); missing rows are skipped.
+     * @param string $mode     'images' (default) or 'digital'. Digital files
+     *                         have no thumbnail; the JS falls back to an icon.
      * @return array  [{file_id, filename, filepath, thumb}, ...]
      */
-    public function imagePickerPayload(array $file_ids)
+    public function imagePickerPayload(array $file_ids, $mode = 'images')
     {
         $file_ids = array_values(array_filter(array_map('intval', $file_ids)));
         if (empty($file_ids)) {
@@ -1690,7 +1692,7 @@ class Catalogue
                 'file_id'  => (int)$r['file_id'],
                 'filename' => (string)$r['filename'],
                 'filepath' => (string)($r['filepath'] ?? ''),
-                'thumb'    => $this->imagePath($fid, 'small', 'url'),
+                'thumb'    => ($mode === 'digital') ? '' : $this->imagePath($fid, 'small', 'url'),
             );
         }
         return $out;

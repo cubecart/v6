@@ -434,6 +434,11 @@ class Ajax
         // `%` so a folder literally named `Foo_bar` doesn't over-match siblings.
         $like = addcslashes($safe, '\\_%');
         $depth = ($path === '') ? 0 : substr_count($path, '/'); // e.g. 'A/B/' = 2
+        // mode=digital reads CubeCart_filemanager.type=2 + filesystem `/files/`.
+        // Default: type=1 + `/images/source/`.
+        $mode    = (isset($_GET['mode']) && $_GET['mode'] === 'digital') ? 'digital' : 'images';
+        $type    = $mode === 'digital' ? 2 : 1;
+        $fs_root = CC_ROOT_DIR . ($mode === 'digital' ? '/files/' : '/images/source/');
         // Subfolders: pick DISTINCT next-level segment from filepaths under $path.
         // Union with a filesystem scandir() of images/source/<path>/ so empty folders
         // (newly created or not yet indexed) are visible too.
@@ -441,7 +446,7 @@ class Ajax
         $seen    = array();
         $sub_sql = "SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING(`filepath`, ".(strlen($path)+1)."), '/', 1) AS `seg`
                     FROM `{$pfx}CubeCart_filemanager`
-                    WHERE `type` = 1
+                    WHERE `type` = ".(int)$type."
                       AND `filepath` IS NOT NULL
                       AND `filepath` <> ''
                       AND `filepath` LIKE '".$like."%' ESCAPE '\\\\'
@@ -455,7 +460,7 @@ class Ajax
                 }
             }
         }
-        $fs_dir = CC_ROOT_DIR.'/images/source/'.$path;
+        $fs_dir = $fs_root . $path;
         if (is_dir($fs_dir) && ($scan = @scandir($fs_dir)) !== false) {
             foreach ($scan as $entry) {
                 if ($entry === '.' || $entry === '..') continue;
@@ -467,20 +472,22 @@ class Ajax
             }
             sort($folders, SORT_NATURAL | SORT_FLAG_CASE);
         }
-        // Images at exactly this path (NULL filepath counts as root).
+        // Files at exactly this path (NULL filepath counts as root).
         $images = array();
         $where  = ($path === '')
-            ? "(`filepath` IS NULL OR `filepath` = '') AND `type` = 1 AND `disabled` = 0"
-            : "`filepath` = '".$safe."' AND `type` = 1 AND `disabled` = 0";
+            ? "(`filepath` IS NULL OR `filepath` = '') AND `type` = ".(int)$type." AND `disabled` = 0"
+            : "`filepath` = '".$safe."' AND `type` = ".(int)$type." AND `disabled` = 0";
         $img_sql = "SELECT `file_id`, `filename`, `filepath` FROM `{$pfx}CubeCart_filemanager` WHERE $where ORDER BY `filename` ASC";
         if (($rows = $GLOBALS['db']->misc($img_sql, false)) !== false) {
             foreach ($rows as $r) {
-                $thumb = $GLOBALS['catalogue']->imagePath((int)$r['file_id'], 'small', 'url');
+                // Digital files have no image thumbnail — leave empty so the JS
+                // tile falls back to a generic file icon.
+                $thumb = ($mode === 'digital') ? '' : (string)$GLOBALS['catalogue']->imagePath((int)$r['file_id'], 'small', 'url');
                 $images[] = array(
                     'file_id'  => (int)$r['file_id'],
                     'filename' => (string)$r['filename'],
                     'filepath' => (string)$r['filepath'],
-                    'thumb'    => (string)$thumb,
+                    'thumb'    => $thumb,
                 );
             }
         }
@@ -526,7 +533,10 @@ class Ajax
             return json_encode(array('success' => false, 'error' => 'invalid_name'));
         }
 
-        $abs = CC_ROOT_DIR.'/images/source/'.$path.$name;
+        // Match fmFolder mode: digital writes under /files/, default under /images/source/.
+        $mode    = (isset($_POST['mode']) && $_POST['mode'] === 'digital') ? 'digital' : 'images';
+        $fs_root = CC_ROOT_DIR . ($mode === 'digital' ? '/files/' : '/images/source/');
+        $abs     = $fs_root . $path . $name;
         if (file_exists($abs)) {
             return json_encode(array('success' => false, 'error' => 'exists'));
         }

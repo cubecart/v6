@@ -66,6 +66,13 @@
         self.root       = rootEl;
         self.single     = rootEl.getAttribute('data-cc-single') === '1';
         self.pickAndClose = rootEl.getAttribute('data-cc-pick-and-close') === '1';
+        // 'images' or 'digital' — drives which CubeCart_filemanager.type is queried
+        // and where uploads land on disk.
+        self.mode       = rootEl.getAttribute('data-cc-mode') === 'digital' ? 'digital' : 'images';
+        // Form input name for the hidden inputs on the selected list. Default
+        // 'imageset'; digital pages typically use 'download' to match the
+        // existing save handler.
+        self.inputName  = rootEl.getAttribute('data-cc-input-name') || 'imageset';
         self.storageKey = 'cc_img_picker_path_' + (rootEl.getAttribute('data-cc-storage-key') || 'default');
         self.langNone   = window.CC_LANG_NONE || 'None';
         self.folderIcon = buildFolderIcon(rootEl);
@@ -218,7 +225,7 @@
         var af = adminFile();
         jQuery.ajax({ url: './' + af + '?response=token', dataType: 'text', cache: false }).done(function(token){
             token = (token || '').trim();
-            jQuery.post('./' + af + '?_g=xml&function=fmCreateFolder', { path: self.currentPath, name: name, token: token }, function(res){
+            jQuery.post('./' + af + '?_g=xml&function=fmCreateFolder', { path: self.currentPath, name: name, token: token, mode: self.mode }, function(res){
                 self.$newdirBtn.prop('disabled', false);
                 if (res && res.success) {
                     self.$newdirIn.val('');
@@ -239,17 +246,15 @@
     Picker.prototype.loadFolder = function(path){
         var self = this;
         self.currentPath = path || '';
-        // Sync the upload target dir for Dropzone (admin.js reads #val_subdir).
+        // Sync the upload target dir for Dropzone. admin.js's `processing`
+        // handler now reads `.img-picker__val-subdir` scoped within the same
+        // .img-picker as the dropzone, so multi-picker pages don't collide.
         if (self.$valSubdir.length) self.$valSubdir.text(trimPath(self.currentPath));
-        var $globalSubdir = jQuery('#val_subdir');
-        if ($globalSubdir.length && !$globalSubdir.is(self.$valSubdir)) {
-            $globalSubdir.text(trimPath(self.currentPath));
-        }
         try { localStorage.setItem(self.storageKey, self.currentPath); } catch (e) {}
 
         self.$loading.removeAttr('hidden');
         self.$grid.attr('aria-busy', 'true').empty();
-        jQuery.getJSON('./' + adminFile(), { _g: 'xml', 'function': 'fmFolder', path: self.currentPath }, function(data){
+        jQuery.getJSON('./' + adminFile(), { _g: 'xml', 'function': 'fmFolder', path: self.currentPath, mode: self.mode }, function(data){
             if (!data) data = { folders: [], images: [] };
             self.renderBreadcrumb(self.currentPath);
             self.renderGrid(data);
@@ -286,13 +291,18 @@
         });
         (data.images || []).forEach(function(img){
             var cls = sel_ids[img.file_id] ? ' is-selected' : '';
+            // Image files: render the thumbnail. Digital files (no thumb URL):
+            // render a generic file icon.
+            var preview = img.thumb
+                ? '<img src="' + escAttr(img.thumb) + '" alt="" loading="lazy" decoding="async">'
+                : '<i class="fa fa-file-o img-picker__tile-fileicon" aria-hidden="true"></i>';
             html += '<div class="img-picker__tile' + cls + '"'
                  +     ' data-fid="' + img.file_id + '"'
                  +     ' data-filename="' + escAttr(img.filename) + '"'
                  +     ' data-filepath="' + escAttr(img.filepath) + '"'
                  +     ' data-thumb="' + escAttr(img.thumb) + '"'
                  +     ' title="' + escAttr(img.filename) + '">'
-                 +     '<img src="' + escAttr(img.thumb) + '" alt="" loading="lazy" decoding="async">'
+                 +     preview
                  +     '<span class="img-picker__tile-name">' + escHtml(img.filename) + '</span>'
                  +     '<span class="img-picker__tile-check"><i class="fa fa-check"></i></span>'
                  +  '</div>';
@@ -315,11 +325,14 @@
         var html = '';
         self.selected.forEach(function(p, i){
             var pos = i + 1;
+            var preview = p.thumb
+                ? '<img src="' + escAttr(p.thumb) + '" alt="" loading="lazy" decoding="async">'
+                : '<i class="fa fa-file-o img-picker__sel-fileicon" aria-hidden="true"></i>';
             html += '<li class="img-picker__sel" data-fid="' + p.file_id + '">'
-                 +     '<input type="hidden" name="imageset[' + p.file_id + ']" value="' + pos + '">'
+                 +     '<input type="hidden" name="' + escAttr(self.inputName) + '[' + p.file_id + ']" value="' + pos + '">'
                  +     ((pos === 1 && !self.single) ? '<span class="img-picker__main-badge"><i class="fa fa-star"></i></span>' : '')
                  +     (self.single ? '' : '<span class="img-picker__sel-pos">' + pos + '</span>')
-                 +     '<img src="' + escAttr(p.thumb) + '" alt="" loading="lazy" decoding="async">'
+                 +     preview
                  +     '<span class="img-picker__sel-name">' + escHtml(p.filename) + '</span>'
                  +     '<a href="#" class="img-picker__sel-remove" title="Remove"><i class="fa fa-times"></i></a>'
                  +  '</li>';

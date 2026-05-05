@@ -1198,6 +1198,10 @@ if (isset($_GET['action'])) {
         $GLOBALS['smarty']->assign('IMAGE_PICKER_JSON', json_encode($GLOBALS['catalogue']->imagePickerPayload($gallery_file_ids), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT));
         $GLOBALS['smarty']->assign('IMG_PICKER_PLACEHOLDER', $GLOBALS['catalogue']->imagePath(false, 'small', 'url'));
 
+        // Digital tab — currently selected download (inventory.digital is a file_id, or 0 / 1 for placeholder).
+        $digital_ids = (isset($result[0]['digital']) && (int)$result[0]['digital'] > 1) ? array((int)$result[0]['digital']) : array();
+        $GLOBALS['smarty']->assign('DIGITAL_PICKER_JSON', json_encode($GLOBALS['catalogue']->imagePickerPayload($digital_ids, 'digital'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT));
+
         // Update global stock level when matrix stock level in use
         if ($GLOBALS['config']->get('config', 'update_main_stock')) {
             $options_stock = $GLOBALS['db']->select('CubeCart_option_matrix', 'SUM(stock_level) AS stock', array('product_id' => $product_id, 'status' => 1, 'use_stock' => 1));
