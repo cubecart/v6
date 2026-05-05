@@ -51,9 +51,9 @@
          <div id="content">
             <div id="tab_control">
             {foreach from=$TABS item=tab}
-               <div {if !empty($tab.tab_id)}id="{$tab.tab_id}" {/if}class="tab{if !empty($tab.is_external)} tab--external{/if}{if !empty($tab.is_external_first)} tab--external-first{/if}">
+               <div {if !empty($tab.tab_id)}id="{$tab.tab_id}" {/if}class="tab{if !empty($tab.is_external)} tab--external{/if}{if !empty($tab.is_external_first)} tab--external-first{/if}{if !empty($tab.is_action)} tab--action tab--action--{$tab.action_modifier}{/if}"{if !empty($tab.action_map)} data-action-map="{$tab.action_map|escape:'html'}"{/if}>
                {if !empty($tab.notify)}<span class="tab_notify">{$tab.notify}</span>{/if}
-               <a href="{$tab.url}{$tab.target}"{if !empty($tab.accesskey)} accesskey="{$tab.accesskey}"{/if}{if !empty($tab.onclick)} onclick="{$tab.onclick}"{/if} target="{$tab.a_target}">{$tab.name}</a>
+               <a href="{$tab.url}{$tab.target}"{if !empty($tab.accesskey)} accesskey="{$tab.accesskey}"{/if}{if !empty($tab.onclick)} onclick="{$tab.onclick}"{/if} target="{$tab.a_target}"{if !empty($tab.is_action)} class="delete" title="{if !empty($tab.confirm)}{$tab.confirm}{else}{$LANG.notification.confirm_continue}{/if}"{/if}>{if !empty($tab.is_action) && $tab.action_modifier eq 'danger'}<i class="fa fa-trash" aria-hidden="true"></i> {/if}{$tab.name}</a>
             </div>
             {/foreach}
          </div>

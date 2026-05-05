@@ -29,7 +29,6 @@
       <label><input type="checkbox" name="errors_only" value="1"{if $FILTER_ERRORS_ONLY} checked="checked"{/if}> {$LANG.common.errors_only}</label>
       <input type="submit" value="{$LANG.common.go}" class="button tiny">
       {if $FILTER_ACTIVE}<a href="?_g=settings&node=requestlog&reset_filter=1">{$LANG.common.reset}</a>{/if}
-      {if $REQUEST_LOG}<a href="?_g=maintenance&emptyRequestLogs=true&redir=viewlog" class="button delete tiny reqlog-clear" title="{$LANG.notification.confirm_continue}">{$LANG.maintain.clear_log}</a>{/if}
    </form>
    {if $REQUEST_LOG}
    <table>

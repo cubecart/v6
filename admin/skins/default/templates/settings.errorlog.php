@@ -11,9 +11,6 @@
  *}
 <div id="admin_error_log" class="tab_content">
   <h3>{$LANG.settings.title_error_log}</h3>
-  {if $ADMIN_ERROR_LOG}
-  <div class="right"><a href="?_g=maintenance&clearLogs=true&redir=viewlog" class="button delete" title="{$LANG.notification.confirm_continue}">{$LANG.maintain.clear_log}</a></div>
-  {/if}
   <form action="{$VAL_SELF}#admin_error_log" method="post" class="errorlog-filter ignore-dirty">
     <input type="hidden" name="filter_scope" value="admin">
     <input type="text" name="q" class="textbox q" placeholder="{$LANG.common.search}" value="{$ADMIN_FILTER.q|escape:'html'}">
@@ -73,9 +70,6 @@
 </div>
 
 <div id="system_error_log" class="tab_content">
-  {if $SYSTEM_ERROR_LOG}
-  <div class="right"><a href="?_g=maintenance&emptyErrorLogs=true&redir=viewlog" class="delete button" title="{$LANG.notification.confirm_continue}">{$LANG.maintain.clear_log}</a></div>
-  {/if}
   <h3>{$LANG.settings.title_system_error_log}</h3>
   <p>{$LANG.settings.error_general_desc}</p>
   <form action="{$VAL_SELF}#system_error_log" method="post" class="errorlog-filter ignore-dirty">
@@ -132,6 +126,6 @@
   </form>
   <div class="pagination">{$PAGINATION_SYSTEM_ERROR_LOG}</div>
   {else}
-  <p>&mdash; {$LANG.form.none} &mdash;</p>
+  <p>{$LANG.form.none}</p>
   {/if}
 </div>

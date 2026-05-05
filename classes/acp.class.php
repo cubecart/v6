@@ -129,6 +129,48 @@ class ACP
      * @param string $notify_count
      * @return bool
      */
+    /**
+     * Register a destructive/utility tab that points to another URL (e.g.
+     * "Clear log"). Renders right-aligned in #tab_control like an external
+     * tab, but with a danger-colour treatment + JS confirm dialog.
+     *
+     * @param string       $name      Visible label.
+     * @param string|array $url       Destination URL, or a `['#tab_anchor' => url]` map. With a map, JS swaps
+     *                                the rendered href as the user switches tabs; the first entry is used as
+     *                                the initial href.
+     * @param string       $confirm   Optional confirm-dialog text (uses LANG.notification.confirm_continue if empty).
+     * @param string       $modifier  CSS modifier suffix (e.g. 'danger' → tab--action--danger).
+     * @param int          $priority  Tab order (higher = later).
+     */
+    public function addTabAction($name, $url = '', $confirm = '', $modifier = 'danger', $priority = null)
+    {
+        if (!empty($name) && !empty($url)) {
+            $priority = $this->_setTabPriority($priority);
+            $action_map = '';
+            if (is_array($url)) {
+                // Serialise the per-tab URL map so JS can swap the rendered href
+                // when the active tab changes. Default href is the first entry.
+                $action_map = json_encode($url);
+                $url = reset($url);
+            }
+            $this->_tabs[$this->_tab_key_prefix.$priority] = array(
+                'name'      => $name,
+                'target'    => '',
+                'url'       => $url,
+                'accesskey' => null,
+                'notify'    => '',
+                'a_target'  => '_self',
+                'onclick'   => '',
+                'is_action' => true,
+                'action_modifier' => preg_replace('/[^a-z0-9_-]/i', '', $modifier),
+                'confirm'   => $confirm,
+                'action_map' => $action_map,
+            );
+            return true;
+        }
+        return false;
+    }
+
     public function addTabControl($name, $target = '', $url = null, $accesskey = null, $notify_count = false, $a_target = '_self', $priority = null, $onclick = '')
     {
         if (!empty($name)) {
@@ -716,6 +758,10 @@ class ACP
                 // different page rather than switching the in-page tab content.
                 // Group them at the end and flag for distinct styling.
                 $tab['is_external'] = !empty($tab['url']);
+                if (empty($tab['is_action'])) $tab['is_action'] = false;
+                if (empty($tab['action_modifier'])) $tab['action_modifier'] = '';
+                if (empty($tab['confirm'])) $tab['confirm'] = '';
+                if (empty($tab['action_map'])) $tab['action_map'] = '';
                 if ($tab['is_external']) {
                     $external[] = $tab;
                 } else {

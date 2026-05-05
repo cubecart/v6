@@ -416,14 +416,26 @@ if (isset($_REQUEST['emptyEmailLogs']) && Admin::getInstance()->permissions('mai
 }
 
 if (isset($_REQUEST['emptyErrorLogs']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
-    if ($GLOBALS['db']->truncate(array('CubeCart_system_error_log', 'CubeCart_admin_error_log'))) {
+    // Scope by value: 'admin' / 'system' clears just that log; anything else clears both.
+    $scope = (string)$_REQUEST['emptyErrorLogs'];
+    if ($scope === 'admin') {
+        $tables = array('CubeCart_admin_error_log');
+        $redir_anchor = 'admin_error_log';
+    } elseif ($scope === 'system') {
+        $tables = array('CubeCart_system_error_log');
+        $redir_anchor = 'system_error_log';
+    } else {
+        $tables = array('CubeCart_system_error_log', 'CubeCart_admin_error_log');
+        $redir_anchor = 'system_error_log';
+    }
+    if ($GLOBALS['db']->truncate($tables)) {
         $GLOBALS['main']->successMessage($lang['maintain']['notify_logs_error']);
     } else {
         $GLOBALS['main']->errorMessage($lang['maintain']['error_logs_error']);
     }
     $clear_post = true;
     if(isset($_GET['redir']) && $_GET['redir']=='viewlog') {
-        httpredir('?_g=settings&node=errorlog','system_error_log');
+        httpredir('?_g=settings&node=errorlog', $redir_anchor);
         exit;
     }
 }

@@ -108,6 +108,10 @@ if (isset($_POST['email_filter'])) {
 }
 
 $GLOBALS['main']->addTabControl($lang['settings']['title_email_log'], 'email_log');
+// Surface "Clear log" as a destructive action tab when there's anything to clear.
+if ($GLOBALS['db']->select('CubeCart_email_log', array('id'), false, false, 1, false, false)) {
+    $GLOBALS['main']->addTabAction($lang['maintain']['clear_log'], '?_g=maintenance&emptyEmailLogs=true&redir=emaillog');
+}
 $GLOBALS['gui']->addBreadcrumb($lang['settings']['title_email_log'], currentPage());
 
 if ($GLOBALS['session']->has('email_filter') && $email_filter = $GLOBALS['session']->get('email_filter')) {

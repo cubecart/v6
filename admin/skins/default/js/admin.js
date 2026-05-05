@@ -797,6 +797,7 @@ $(document).ready(function() {
             var ccBase = ccHref.split('#');
             $('#clear_cache_master a').attr('href', ccBase[0] + e);
         }
+        ccSyncActionTabs(e);
         $("#previous-tab").val(e), $("input.previous-tab").val(e), window.scrollTo(-81, 0)
     }).on("click", function() {
         var t = $(this).children("a").attr("href");
@@ -809,6 +810,7 @@ $(document).ready(function() {
             var ccp = cc.split("#");
             $('#clear_cache_master a').attr('href', ccp[0] + t);
         }
+        if (t && t.charAt(0) === '#') ccSyncActionTabs(t);
         if ($("#navigation").height() < e && $("#page_content").css('min-height',e + 100 +'px'), "#sidebar" == t) return $("#sidebar_control").click(), !1;
         if (t.match(/^#/)) {
             if (document.location.hash = t, $(".tab").removeClass("tab-selected"), $(this).addClass("tab-selected"), $("div.tab_content").hide(), $(t).show(), window.scrollTo(-81, 0), $("#previous-tab").val(t), $("input.previous-tab").val(t), $("#wikihelp").exists()) {
@@ -1546,6 +1548,29 @@ $(document).on('click', '.fm-search-clear', function(e) {
     $('.form_control.fm-bulk-actions').show();
     $('#fm-search-term').val('').focus();
 });
+
+/* For action tabs registered with a `[#tab => url]` map (data-action-map),
+   swap the rendered href to match the currently active tab. Called on page-load
+   tab init and on tab click. Hides the tab on anchors with no entry — e.g. a
+   "Clear log" tab is hidden when the active sub-tab has nothing to clear. */
+function ccSyncActionTabs(activeAnchor) {
+    if (!activeAnchor) return;
+    $('#tab_control .tab--action[data-action-map]').each(function() {
+        var raw = $(this).attr('data-action-map');
+        if (!raw) return;
+        var map;
+        try { map = JSON.parse(raw); } catch (e) { return; }
+        if (!map) return;
+        // Match either "#anchor" or "anchor" key forms.
+        var url = map[activeAnchor] || map[activeAnchor.replace(/^#/, '')];
+        if (url) {
+            $(this).children('a').attr('href', url);
+            $(this).show();
+        } else {
+            $(this).hide();
+        }
+    });
+}
 
 /* When the tab row wraps, move the active tab to the end of #tab_control so it
    lands on the last (bottom) row, keeping its visual merge with the page below. */

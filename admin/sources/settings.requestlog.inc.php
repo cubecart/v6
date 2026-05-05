@@ -16,6 +16,10 @@ if (!defined('CC_INI_SET')) {
 Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
 
 $GLOBALS['main']->addTabControl($lang['navigation']['nav_request_log'], 'request_log');
+// Surface "Clear log" as a destructive action tab in the tab bar when there's anything to clear.
+if ($GLOBALS['db']->select('CubeCart_request_log', array('request_id'), false, false, 1, false, false)) {
+    $GLOBALS['main']->addTabAction($lang['maintain']['clear_log'], '?_g=maintenance&emptyRequestLogs=true&redir=viewlog');
+}
 $GLOBALS['gui']->addBreadcrumb($lang['navigation']['nav_request_log'], currentPage());
 
 if (Admin::getInstance()->superUser()) {

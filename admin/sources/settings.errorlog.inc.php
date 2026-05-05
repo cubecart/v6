@@ -216,4 +216,18 @@ if (Admin::getInstance()->superUser()) {
     $GLOBALS['smarty']->assign('SYSTEM_FILTER', array('q' => $sys_q, 'severity' => $sys_sev));
     $GLOBALS['smarty']->assign('PAGINATION_SYSTEM_ERROR_LOG', $GLOBALS['db']->pagination($sys_total, $per_page, $page, 5, 'page', 'system_error_log'));
 }
+
+// Single "Clear log" tab whose URL JS swaps based on the currently active sub-tab.
+// Map keys are the in-page tab anchors (#admin_error_log / #system_error_log).
+// `emptyErrorLogs=admin|system` scopes the truncation to the focused table only.
+$clear_map = array();
+if (!empty($admin_log)) {
+    $clear_map['#admin_error_log'] = '?_g=maintenance&emptyErrorLogs=admin&redir=viewlog';
+}
+if (Admin::getInstance()->superUser() && !empty($sys_log)) {
+    $clear_map['#system_error_log'] = '?_g=maintenance&emptyErrorLogs=system&redir=viewlog';
+}
+if (!empty($clear_map)) {
+    $GLOBALS['main']->addTabAction($lang['maintain']['clear_log'], $clear_map);
+}
 $page_content = $GLOBALS['smarty']->fetch('templates/settings.errorlog.php');

@@ -3857,3 +3857,11 @@ body.chromeless #content_body { border-left: 0; }
 #tab_control .tab.tab--external:hover { background:var(--primary-accent); border-color:var(--primary-accent); }
 #tab_control .tab.tab--external > a { padding:4px; color:var(--primary-accent); text-transform:capitalize; font-weight:600; }
 #tab_control .tab.tab--external:hover > a { color:var(--text-invert); }
+
+/* External action tabs (e.g. "Clear log") — destructive variant. */
+#tab_control .tab.tab--action--danger { border-color:#FF0000; }
+#tab_control .tab.tab--action--danger > a { color:#FF0000; }
+#tab_control .tab.tab--action--danger > a .fa-trash { font-size:11px; margin-right:2px; }
+#tab_control .tab.tab--action--danger:hover { background:#FF0000; border-color:#FF0000; }
+#tab_control .tab.tab--action--danger:hover > a,
+#tab_control .tab.tab--action--danger:hover > a .fa-trash { color:#fff; }
