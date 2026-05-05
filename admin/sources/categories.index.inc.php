@@ -454,6 +454,10 @@ if (isset($_GET['action'])) {
                 $cat_display_data['master_image'] = !empty($master_image) ? $master_image : 'images/general/px.gif';
             }
 
+            $cat_image_ids = !empty($cat_display_data['cat_image']) ? array((int)$cat_display_data['cat_image']) : array();
+            $GLOBALS['smarty']->assign('IMAGE_PICKER_JSON', json_encode($GLOBALS['catalogue']->imagePickerPayload($cat_image_ids), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT));
+            $GLOBALS['smarty']->assign('IMG_PICKER_PLACEHOLDER', $GLOBALS['catalogue']->imagePath(false, 'small', 'url'));
+
             $GLOBALS['smarty']->assign('CATEGORY', $cat_display_data);
         }
 

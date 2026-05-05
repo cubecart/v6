@@ -1659,6 +1659,44 @@ class Catalogue
     }
 
     /**
+     * Build the JSON-ready payload for the admin image picker.
+     *
+     * @param array $file_ids ordered list of file_ids that are currently
+     *                        selected (main first); missing rows are skipped.
+     * @return array  [{file_id, filename, filepath, thumb}, ...]
+     */
+    public function imagePickerPayload(array $file_ids)
+    {
+        $file_ids = array_values(array_filter(array_map('intval', $file_ids)));
+        if (empty($file_ids)) {
+            return array();
+        }
+        $pfx = $GLOBALS['config']->get('config', 'dbprefix');
+        $in  = implode(',', $file_ids);
+        $rows = $GLOBALS['db']->misc("SELECT `file_id`, `filename`, `filepath` FROM `{$pfx}CubeCart_filemanager` WHERE `file_id` IN ($in)", false);
+        if (!is_array($rows)) {
+            return array();
+        }
+        // Re-order by the caller's input so position 1 = main is preserved.
+        $by_id = array();
+        foreach ($rows as $r) {
+            $by_id[(int)$r['file_id']] = $r;
+        }
+        $out = array();
+        foreach ($file_ids as $fid) {
+            if (!isset($by_id[$fid])) continue;
+            $r = $by_id[$fid];
+            $out[] = array(
+                'file_id'  => (int)$r['file_id'],
+                'filename' => (string)$r['filename'],
+                'filepath' => (string)($r['filepath'] ?? ''),
+                'thumb'    => $this->imagePath($fid, 'small', 'url'),
+            );
+        }
+        return $out;
+    }
+
+    /**
      * Get image path
      *
      * @param int/string $input

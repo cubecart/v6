@@ -28,34 +28,13 @@
   </div>
     <div id="gift_images" class="tab_content">
 	<h3>{$LANG.settings.gc_images}</h3>
-	<div class="fm-container">
-		<div class="loading">{$LANG.common.loading} <i class="fa fa-spinner fa-spin fa-fw"></i></div>
-		<div id="imageset" rel="1" class="fm-filelist unique"></div>
-		<div class="master_image">
-			<span>{$LANG.catalogue.image_main}</span>:<br><br>
-			<div id="master_image_block">
-				<img src="{$GC.master_image}" id="master_image_preview"><div id="preview_image"><img src="{$GC.master_image}"></div>
-			</div>
-		</div>
-		
-	</div>
-	<div class="dropzone">
-		<div class="dz-default dz-message"><span>{$LANG.filemanager.file_upload_note}</span></div>
-	</div>
-	<div id="dropzone_url" style="display: none;">?_g=filemanager&amp;gc=1</div>
-	<div id="val_unique_image" style="display: none;">{$GC.image}</div>
-	<div id="val_lang_go" style="display: none;">{$LANG.common.go}</div>
-	<div id="val_lang_preview" style="display: none;">{$LANG.common.preview}</div>
-	<div id="val_lang_main_image" style="display: none;">{$LANG.catalogue.image_main}</div>
-	<div id="val_lang_show_assigned" style="display: none;">{$LANG.filemanager.show_assigned}</div>
-	<div id="val_lang_show_all" style="display: none;">{$LANG.filemanager.show_all}</div>
-	<div id="val_lang_folder_create" style="display: none;">{$LANG.filemanager.folder_create}:</div>
-	<div id="val_lang_refresh_files" style="display: none;">{$LANG.filemanager.refresh_files}</div>
-	<div id="val_lang_upload_destination" style="display: none;">{$LANG.filemanager.upload_destination}:</div>
-	<div id="val_lang_enable" style="display: none;">{$LANG.common.enable}</div>
-	<div id="val_lang_disable" style="display: none;">{$LANG.common.disable}</div>
-	<div id="val_lang_enabled" style="display: none;">{$LANG.common.enabled}</div>
-	<div id="val_lang_disabled" style="display: none;">{$LANG.common.disabled}</div>
+	{include file='templates/element.image_picker.php'
+	   single=true
+	   storage_key="gc"
+	   dropzone_url="?_g=filemanager&gc=1"
+	   initial_json=$IMAGE_PICKER_JSON
+	   placeholder=$IMG_PICKER_PLACEHOLDER
+	   hint="Click an image to select it as the gift-certificate image."}
   </div>
   <div id="seo" class="tab_content">
 	<h3>{$LANG.settings.title_seo}</h3>

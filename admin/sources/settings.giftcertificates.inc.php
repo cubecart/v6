@@ -75,6 +75,11 @@ if (isset($gc['image'])) {
     $GLOBALS['smarty']->assign('JSON_IMAGES', json_encode(array($gc['image'])));
 }
 
+// Image picker payload (shared admin element).
+$gc_image_ids = (isset($gc['image']) && (int)$gc['image'] > 0) ? array((int)$gc['image']) : array();
+$GLOBALS['smarty']->assign('IMAGE_PICKER_JSON', json_encode($GLOBALS['catalogue']->imagePickerPayload($gc_image_ids), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT));
+$GLOBALS['smarty']->assign('IMG_PICKER_PLACEHOLDER', $GLOBALS['catalogue']->imagePath(false, 'small', 'url'));
+
 $GLOBALS['smarty']->assign('GC', $gc);
 $select_options = array(
     'delivery' => array(1 => $lang['settings']['gc_type_digital'], 2 => $lang['settings']['gc_type_physical'], 3 => $lang['settings']['gc_type_both']),
