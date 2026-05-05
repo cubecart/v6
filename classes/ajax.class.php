@@ -57,6 +57,9 @@ class Ajax
             case 'productImages':
                 $return_data = self::productImages((int)($_GET['product_id'] ?? 0));
             break;
+            case 'fmCreateFolder':
+                $return_data = self::fmCreateFolder();
+            break;
             case 'doneToggle':
                 $return_data = self::doneToggle();
             break;
@@ -427,23 +430,42 @@ class Ajax
         $path = $raw;
         $pfx  = $GLOBALS['config']->get('config', 'dbprefix');
         $safe = $GLOBALS['db']->sqlSafe($path);
+        // For LIKE patterns we also need to escape the SQL wildcards `_` and
+        // `%` so a folder literally named `Foo_bar` doesn't over-match siblings.
+        $like = addcslashes($safe, '\\_%');
         $depth = ($path === '') ? 0 : substr_count($path, '/'); // e.g. 'A/B/' = 2
         // Subfolders: pick DISTINCT next-level segment from filepaths under $path.
+        // Union with a filesystem scandir() of images/source/<path>/ so empty folders
+        // (newly created or not yet indexed) are visible too.
         $folders = array();
+        $seen    = array();
         $sub_sql = "SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING(`filepath`, ".(strlen($path)+1)."), '/', 1) AS `seg`
                     FROM `{$pfx}CubeCart_filemanager`
                     WHERE `type` = 1
                       AND `filepath` IS NOT NULL
                       AND `filepath` <> ''
-                      AND `filepath` LIKE '".$safe."%'
+                      AND `filepath` LIKE '".$like."%' ESCAPE '\\\\'
                       AND `filepath` <> '".$safe."'
                     ORDER BY `seg` ASC";
         if (($rows = $GLOBALS['db']->misc($sub_sql, false)) !== false) {
             foreach ($rows as $r) {
-                if (!empty($r['seg'])) {
+                if (!empty($r['seg']) && !isset($seen[$r['seg']])) {
+                    $seen[$r['seg']] = true;
                     $folders[] = (string)$r['seg'];
                 }
             }
+        }
+        $fs_dir = CC_ROOT_DIR.'/images/source/'.$path;
+        if (is_dir($fs_dir) && ($scan = @scandir($fs_dir)) !== false) {
+            foreach ($scan as $entry) {
+                if ($entry === '.' || $entry === '..') continue;
+                if (isset($seen[$entry])) continue;
+                if (is_dir($fs_dir.$entry)) {
+                    $seen[$entry] = true;
+                    $folders[] = $entry;
+                }
+            }
+            sort($folders, SORT_NATURAL | SORT_FLAG_CASE);
         }
         // Images at exactly this path (NULL filepath counts as root).
         $images = array();
@@ -476,6 +498,45 @@ class Ajax
             'folders' => $folders,
             'images'  => $images,
         ));
+    }
+
+    /**
+     * Create a subfolder under images/source/<path>/<name> for the admin image
+     * picker. Returns { success, error?, path? } as JSON.
+     */
+    public static function fmCreateFolder() {
+        if (!CC_IN_ADMIN) {
+            return json_encode(array('success' => false, 'error' => 'forbidden'));
+        }
+        $path = isset($_POST['path']) ? (string)$_POST['path'] : '';
+        $name = isset($_POST['name']) ? (string)$_POST['name'] : '';
+
+        // Normalise parent path: no leading slash, no traversal, single trailing slash.
+        $path = str_replace('\\', '/', $path);
+        $path = ltrim($path, '/');
+        $path = preg_replace('#/{2,}#', '/', $path);
+        if (strpos($path, '..') !== false) $path = '';
+        if ($path !== '' && substr($path, -1) !== '/') $path .= '/';
+
+        // Sanitise the new folder name: single segment, no slashes, no dots-only.
+        $name = trim($name);
+        $name = preg_replace('#[\\\\/]+#', '', $name);
+        $name = preg_replace('#[^\p{L}\p{N}\w\.\-\_\@ ]#iu', '_', $name);
+        if ($name === '' || $name === '.' || $name === '..') {
+            return json_encode(array('success' => false, 'error' => 'invalid_name'));
+        }
+
+        $abs = CC_ROOT_DIR.'/images/source/'.$path.$name;
+        if (file_exists($abs)) {
+            return json_encode(array('success' => false, 'error' => 'exists'));
+        }
+        if (!@mkdir($abs)) {
+            return json_encode(array('success' => false, 'error' => 'mkdir_failed'));
+        }
+        if (function_exists('chmod_writable')) {
+            @chmod($abs, chmod_writable());
+        }
+        return json_encode(array('success' => true, 'path' => $path.$name.'/'));
     }
 
     /**

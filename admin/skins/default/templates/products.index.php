@@ -667,9 +667,8 @@
       <div class="img-picker">
          <div class="img-picker__top">
             <div class="img-picker__selected">
-               <h4>{$LANG.catalogue.title_products} &mdash; {$LANG.settings.title_images}</h4>
                <ol id="img_picker_selected" class="img-picker__sel-grid"></ol>
-               <p id="img_picker_empty" class="img-picker__empty">{$LANG.common.none}</p>
+               <div id="img_picker_empty" class="img-picker__empty"><img src="{$IMG_PICKER_PLACEHOLDER}" alt=""></div>
             </div>
             <div class="dropzone img-picker__upload">
                <div class="dz-default dz-message"><span>{$LANG.filemanager.file_upload_note}</span></div>
@@ -677,7 +676,13 @@
          </div>
 
          <div class="img-picker__browser">
-            <nav id="img_picker_breadcrumb" class="img-picker__breadcrumb"></nav>
+            <div class="img-picker__bar">
+               <nav id="img_picker_breadcrumb" class="img-picker__breadcrumb fm-breadcrumb"></nav>
+               <div class="img-picker__newdir">
+                  <input type="text" id="img_picker_newdir_name" class="textbox" placeholder="{$LANG.filemanager.folder_create}" autocomplete="off">
+                  <button type="button" id="img_picker_newdir_btn" class="button tiny"><i class="fa fa-plus"></i></button>
+               </div>
+            </div>
             <div class="img-picker__panel">
                <div id="img_picker_grid" class="img-picker__grid" aria-busy="false"></div>
                <div id="img_picker_loading" class="img-picker__loading" hidden><i class="fa fa-spinner fa-spin"></i></div>
@@ -689,7 +694,7 @@
       <div id="dropzone_url" style="display: none;">?_g=filemanager&amp;product_id={$PRODUCT.product_id}</div>
       <div id="val_product_id" style="display: none;">{$PRODUCT.product_id}</div>
    </div>
-   <script>window.CC_IMAGE_PICKER_INITIAL = {$IMAGE_PICKER_JSON nofilter};</script>
+   <script>window.CC_IMAGE_PICKER_INITIAL = {$IMAGE_PICKER_JSON nofilter}; window.CC_LANG_NONE = "{$LANG.common.none|escape:'javascript'}";</script>
    <script>
    {literal}
    (function(){
@@ -750,6 +755,59 @@
             var $tile = $grid.find('.img-picker__tile[data-fid="'+fid+'"]');
             if ($tile.length) $tile.removeClass('is-selected');
          });
+
+         /* Wire create-folder via native listeners. Bypasses any jQuery
+            event-layer quirks; uses capture phase so nothing can pre-empt it. */
+         var newdirIn  = document.getElementById('img_picker_newdir_name');
+         var newdirBtn = document.getElementById('img_picker_newdir_btn');
+         var createNewdir = function(){
+            if (!newdirIn) return;
+            var name = (newdirIn.value || '').trim();
+            if (!name) return;
+            if (newdirBtn) newdirBtn.disabled = true;
+            // Always fetch a FRESH session token from the server right before
+            // the POST. The form input can go stale (or be missing) and the
+            // CSRF check in Sanitize::checkToken() will then wipe $_POST and
+            // we'd get the dashboard HTML back instead of JSON.
+            var af = adminFile();
+            jQuery.ajax({ url: './' + af + '?response=token', dataType: 'text', cache: false }).done(function(token){
+               token = (token || '').trim();
+               var url = './' + af + '?_g=xml&function=fmCreateFolder';
+               jQuery.post(url, { path: currentPath, name: name, token: token }, function(res){
+                  if (newdirBtn) newdirBtn.disabled = false;
+                  if (res && res.success) {
+                     newdirIn.value = '';
+                     loadFolder(currentPath);
+                  } else {
+                     alert('Could not create folder' + (res && res.error ? ': ' + res.error : ''));
+                  }
+               }, 'json').fail(function(jq, status){
+                  console.error('[img-picker] AJAX fail', status, jq && jq.responseText && jq.responseText.slice(0, 200));
+                  if (newdirBtn) newdirBtn.disabled = false;
+                  alert('Folder creation failed: ' + status);
+               });
+            }).fail(function(jq, status, err){
+               console.error('[img-picker] token fetch failed', status, err, 'http=', jq && jq.status);
+               if (newdirBtn) newdirBtn.disabled = false;
+               alert('Could not fetch session token (status: ' + (jq && jq.status) + ').');
+            });
+         };
+         if (newdirBtn) {
+            newdirBtn.addEventListener('click', function(e){
+               e.preventDefault();
+               e.stopPropagation();
+               createNewdir();
+            }, true); // capture phase
+         }
+         if (newdirIn) {
+            newdirIn.addEventListener('keydown', function(e){
+               if (e.key === 'Enter' || e.keyCode === 13) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  createNewdir();
+               }
+            }, true);
+         }
 
          $bread.on('click', 'a', function(e){
             e.preventDefault();
@@ -843,14 +901,14 @@
       }
 
       function renderBreadcrumb(path){
-         var html = '<a href="#" data-path=""><img src="' + folderIcon + '" class="img-picker__breadcrumb-icon" alt=""> /</a>';
+         var html = '<a href="#" data-path="" class="fm_location"><i class="fa fa-folder-open" aria-hidden="true"></i></a>';
          if (path) {
             var parts = path.replace(/\/+$/, '').split('/');
             var acc = '';
             parts.forEach(function(seg){
                if (!seg) return;
                acc += seg + '/';
-               html += ' <span class="img-picker__sep">&rsaquo;</span> <a href="#" data-path="' + escAttr(acc) + '">' + escHtml(seg) + '</a>';
+               html += '<span class="fm-breadcrumb__sep">&rsaquo;</span><a href="#" data-path="' + escAttr(acc) + '">' + escHtml(seg) + '</a>';
             });
          }
          $bread.html(html);
@@ -874,24 +932,25 @@
                  +     ' data-filepath="' + escAttr(img.filepath) + '"'
                  +     ' data-thumb="' + escAttr(img.thumb) + '"'
                  +     ' title="' + escAttr(img.filename) + '">'
-                 +     '<img src="' + escAttr(img.thumb) + '" alt="">'
+                 +     '<img src="' + escAttr(img.thumb) + '" alt="" loading="lazy" decoding="async">'
                  +     '<span class="img-picker__tile-name">' + escHtml(img.filename) + '</span>'
                  +     '<span class="img-picker__tile-check"><i class="fa fa-check"></i></span>'
                  +  '</div>';
          });
          if (!html) {
-            html = '<p class="img-picker__none">' + escHtml(jQuery('#val_lang_show_assigned').text() || '') + '&mdash;</p>';
+            html = '<p class="img-picker__none">&mdash; ' + escHtml(window.CC_LANG_NONE || 'None') + ' &mdash;</p>';
          }
          $grid.html(html);
       }
 
       function renderSelected(){
          if (!selected.length) {
-            $sel.empty();
+            $sel.empty().hide();
             $empty.show();
             return;
          }
          $empty.hide();
+         $sel.show();
          var html = '';
          selected.forEach(function(p, i){
             var pos = i + 1;
@@ -899,7 +958,7 @@
                  +     '<input type="hidden" name="imageset[' + p.file_id + ']" value="' + pos + '">'
                  +     (pos === 1 ? '<span class="img-picker__main-badge"><i class="fa fa-star"></i></span>' : '')
                  +     '<span class="img-picker__sel-pos">' + pos + '</span>'
-                 +     '<img src="' + escAttr(p.thumb) + '" alt="">'
+                 +     '<img src="' + escAttr(p.thumb) + '" alt="" loading="lazy" decoding="async">'
                  +     '<span class="img-picker__sel-name">' + escHtml(p.filename) + '</span>'
                  +     '<a href="#" class="img-picker__sel-remove" title="Remove"><i class="fa fa-times"></i></a>'
                  +  '</li>';

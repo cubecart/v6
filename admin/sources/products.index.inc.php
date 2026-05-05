@@ -1203,6 +1203,8 @@ if (isset($_GET['action'])) {
         } else {
             $GLOBALS['smarty']->assign('IMAGE_PICKER_JSON', '[]');
         }
+        // Placeholder URL used by the picker when no images are assigned yet.
+        $GLOBALS['smarty']->assign('IMG_PICKER_PLACEHOLDER', $GLOBALS['catalogue']->imagePath(false, 'small', 'url'));
 
         // Update global stock level when matrix stock level in use
         if ($GLOBALS['config']->get('config', 'update_main_stock')) {

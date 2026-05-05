@@ -285,10 +285,10 @@ class FileManager
     /**
      * Persist a product's image gallery from the picker.
      *
-     * Accepts the new ordered POST shape:
-     *   $image_ids[file_id] = position   // 1 = main, 2+ = secondary order
-     * with `position = 0` meaning "remove". The legacy 0|1|2 status form is
-     * still understood (2 = main) for any remaining call sites.
+     * POST shape: `$image_ids[file_id] = position`, where 1 = main, 2..N = drag
+     * order, and a missing key means "removed". The new picker is the only
+     * caller; positions are validated and compacted to 1..N preserving the
+     * caller's chosen main image at slot 1.
      */
     public function assignProductImages($image_ids, $product_id)
     {
@@ -303,48 +303,14 @@ class FileManager
             $hash_before = md5(serialize($before));
         }
 
-        // Decide whether the input uses the new ordered form (positions 1..N) or
-        // the legacy 0|1|2 status form (2 = main, 1 = include, 0 = remove).
-        $is_ordered = false;
-        foreach ($image_ids as $v) {
-            if ((int)$v > 2) { $is_ordered = true; break; }
-        }
-
         $ordered = array(); // file_id => position (>=1)
         $main    = 0;
-        if ($is_ordered) {
-            foreach ($image_ids as $fid => $pos) {
-                $fid = (int)$fid;
-                $pos = (int)$pos;
-                if ($fid <= 0 || $pos <= 0) continue;
-                $ordered[$fid] = $pos;
-                if ($pos === 1) $main = $fid;
-            }
-        } else {
-            // Legacy mapping: status 2 -> main (position 1); status 1 -> kept (positions 2..N)
-            // in input order; status 0 -> dropped.
-            $idx = 2;
-            foreach ($image_ids as $fid => $status) {
-                $fid = (int)$fid;
-                $status = (int)$status;
-                if ($fid <= 0 || $status <= 0) continue;
-                if ($status === 2) {
-                    $ordered[$fid] = 1;
-                    $main = $fid;
-                } else {
-                    $ordered[$fid] = $idx++;
-                }
-            }
-            // No main chosen -> promote the lowest-position kept image.
-            if (!$main && $ordered) {
-                $first = min($ordered);
-                foreach ($ordered as $fid => $pos) {
-                    if ($pos === $first) { $ordered[$fid] = 1; $main = $fid; break; }
-                }
-                if (count($ordered) > 1) {
-                    $GLOBALS['main']->errorMessage($GLOBALS['language']->catalogue['error_image_defaulted']);
-                }
-            }
+        foreach ($image_ids as $fid => $pos) {
+            $fid = (int)$fid;
+            $pos = (int)$pos;
+            if ($fid <= 0 || $pos <= 0) continue;
+            $ordered[$fid] = $pos;
+            if ($pos === 1) $main = $fid;
         }
 
         // Compact positions to 1..N preserving the chosen main at 1.
@@ -352,7 +318,6 @@ class FileManager
             asort($ordered, SORT_NUMERIC);
             $rank = 1;
             $compact = array();
-            // Main first (if still in the kept set).
             if ($main && isset($ordered[$main])) {
                 $compact[$main] = $rank++;
             }
@@ -363,31 +328,38 @@ class FileManager
             }
             $ordered = $compact;
             if (!$main) {
-                // Pick the first as main if none specified.
+                // No explicit main — promote the first (lowest-position) image.
                 $main = key($ordered);
             }
         }
 
-        $GLOBALS['db']->delete('CubeCart_image_index', array('product_id' => $product_id));
+        // Verify file_ids exist BEFORE deleting, so a corrupt POST doesn't wipe
+        // the gallery. If nothing valid was sent, leave the existing rows alone.
+        $valid = array();
         if ($ordered) {
-            // Verify file_ids exist in one round-trip.
-            $valid = array();
-            $ids   = implode(',', array_map('intval', array_keys($ordered)));
-            $pfx   = $GLOBALS['config']->get('config', 'dbprefix');
+            $ids = implode(',', array_map('intval', array_keys($ordered)));
+            $pfx = $GLOBALS['config']->get('config', 'dbprefix');
             if (($rows = $GLOBALS['db']->misc("SELECT `file_id` FROM `{$pfx}CubeCart_filemanager` WHERE `file_id` IN ($ids)", false)) !== false) {
                 foreach ($rows as $r) {
                     $valid[(int)$r['file_id']] = true;
                 }
             }
-            foreach ($ordered as $fid => $pos) {
-                if (!isset($valid[$fid])) continue;
-                $GLOBALS['db']->insert('CubeCart_image_index', array(
-                    'file_id'    => $fid,
-                    'product_id' => $product_id,
-                    'main_img'   => ($fid === $main) ? '1' : '0',
-                    'position'   => $pos,
-                ));
-            }
+        }
+
+        if ($ordered && empty($valid)) {
+            // Defensive: don't wipe the gallery on a corrupt save attempt.
+            return false;
+        }
+
+        $GLOBALS['db']->delete('CubeCart_image_index', array('product_id' => $product_id));
+        foreach ($ordered as $fid => $pos) {
+            if (!isset($valid[$fid])) continue;
+            $GLOBALS['db']->insert('CubeCart_image_index', array(
+                'file_id'    => $fid,
+                'product_id' => $product_id,
+                'main_img'   => ($fid === $main) ? '1' : '0',
+                'position'   => $pos,
+            ));
         }
 
         $hash_after = '';
@@ -1593,14 +1565,48 @@ class FileManager
                         'md5hash' => $this->md5file($file['tmp_name'], $file['size'], true),
                     );
 
-                    $existing = $GLOBALS['db']->select('CubeCart_filemanager', 'file_id', array('filepath' => $filepath_record, 'filename' => $newfilename, 'type' => (int)$this->_mode));
-                    if ($existing!==false && (int)$existing[0]['file_id']>0) {
-                        $GLOBALS['db']->update('CubeCart_filemanager', $record, array('file_id' => $existing[0]['file_id']));
-                        $fid = $existing[0]['file_id'];
+                    // 1) Same content already in DB (md5 collision)? `md5hash` is
+                    //    a UNIQUE column, so a naive INSERT would fail silently and
+                    //    the upload would lose its DB pointer. Re-point the existing
+                    //    record to the new location and clean up the old disk file.
+                    // 2) Same path+filename+type? Treat as in-place overwrite.
+                    // 3) Otherwise INSERT.
+                    $fid = false;
+                    $by_md5 = $GLOBALS['db']->select('CubeCart_filemanager', array('file_id', 'filepath', 'filename'), array('md5hash' => $record['md5hash']));
+                    if ($by_md5 !== false && !empty($by_md5[0]['file_id'])) {
+                        $fid = (int)$by_md5[0]['file_id'];
+                        $old_filepath = (string)$by_md5[0]['filepath'];
+                        $old_filename = (string)$by_md5[0]['filename'];
+                        $GLOBALS['db']->update('CubeCart_filemanager', $record, array('file_id' => $fid));
+                        // Remove the old physical file if it was at a different location.
+                        if ($old_filepath !== $filepath_record || $old_filename !== $newfilename) {
+                            $old_abs = $this->_manage_root.'/'.(($old_filepath === 'NULL' || $old_filepath === '') ? '' : $old_filepath).$old_filename;
+                            if (is_file($old_abs)) {
+                                $old_real = @realpath($old_abs);
+                                $new_real = @realpath($target);
+                                if ($old_real === false || $new_real === false || $old_real !== $new_real) {
+                                    @unlink($old_abs);
+                                    if (method_exists($this, 'deleteCachedImages')) {
+                                        $this->deleteCachedImages($old_abs);
+                                    }
+                                }
+                            }
+                        }
                     } else {
-                        $fid = $GLOBALS['db']->insert('CubeCart_filemanager', $record);
+                        $existing = $GLOBALS['db']->select('CubeCart_filemanager', 'file_id', array('filepath' => $filepath_record, 'filename' => $newfilename, 'type' => (int)$this->_mode));
+                        if ($existing !== false && (int)$existing[0]['file_id'] > 0) {
+                            $fid = (int)$existing[0]['file_id'];
+                            $GLOBALS['db']->update('CubeCart_filemanager', $record, array('file_id' => $fid));
+                        } else {
+                            $fid = $GLOBALS['db']->insert('CubeCart_filemanager', $record);
+                        }
                     }
-                    
+                    if (!$fid) {
+                        // INSERT failed — skip the rest so we never call
+                        // _assignProduct(0) which produces stale rows.
+                        continue;
+                    }
+
                     $file_id[] = $fid;
                     $this->_recently_uploaded[$fid] = '1';
                     
