@@ -24,35 +24,74 @@ $GLOBALS['main']->addTabControl($lang['settings']['title_tariffs'], 'tariff', nu
 
 $updated  = false;
 $redirect  = false;
-$anchor  = false;
+// Default the post-save redirect anchor to whichever tab was active when
+// the form was submitted. Per-action overrides below only fire when that
+// action actually changed something.
+$anchor  = isset($_POST['previous-tab']) ? ltrim((string)$_POST['previous-tab'], '#') : false;
 
 if(isset($_POST['edittariff']) && is_array($_POST['edittariff'])) {
+    $tariff_edited = false;
     foreach($_POST['edittariff'] as $id => $data) {
-        if($GLOBALS['db']->update('CubeCart_tariff', $data, array('id' => (int)$id))) {
-            $updated = true;
+        if (!is_array($data)) continue;
+        $clean = array();
+        if (isset($data['percent']) && is_numeric($data['percent'])) {
+            $pct = (float)$data['percent'];
+            if ($pct >= 0 && $pct <= 999.99) $clean['percent'] = $pct;
+        }
+        if (isset($data['display'])) {
+            $clean['display'] = substr((string)$data['display'], 0, 255);
+        }
+        if (empty($clean)) continue;
+        $GLOBALS['db']->update('CubeCart_tariff', $clean, array('id' => (int)$id));
+        if ($GLOBALS['db']->affected() > 0) {
+            $tariff_edited = true;
         }
     }
-    $anchor = 'tariff';
     $redirect = true;
-    $GLOBALS['main']->successMessage($lang['settings']['notify_tax_tariff_edited']);
+    if ($tariff_edited) {
+        $updated = true;
+        $anchor = 'tariff';
+        $GLOBALS['main']->successMessage($lang['settings']['notify_tax_tariff_edited']);
+    }
 }
 
-if (isset($_GET['delete_tariff']) && $_GET['delete_tariff']>0) {
+if (isset($_GET['delete_tariff']) && $_GET['delete_tariff']>0
+    && isset($_GET['token']) && $_GET['token'] === SESSION_TOKEN) {
     $GLOBALS['db']->delete('CubeCart_tariff', array('id' => (int)$_GET['delete_tariff']));
     $GLOBALS['main']->successMessage($lang['settings']['tariff_deleted']);
     $anchor = 'tariff';
 }
-if (isset($_POST['addtariff']) && $_POST['addtariff']['percent']>0) {
-    $exists = $GLOBALS['db']->select('CubeCart_tariff', false, array('source' => $_POST['addtariff']['source'], 'destination' => $_POST['addtariff']['destination'], 'tariff' => $_POST['addtariff']['tariff']));
-    if (!$exists && $GLOBALS['db']->insert('CubeCart_tariff', $_POST['addtariff'])) {
-        $GLOBALS['main']->successMessage($lang['settings']['notify_tax_tariff_add']);
+if (isset($_POST['addtariff']) && is_array($_POST['addtariff'])
+    && isset($_POST['addtariff']['percent']) && is_numeric($_POST['addtariff']['percent'])
+    && (float)$_POST['addtariff']['percent'] > 0) {
+    // Only treat as an add attempt if a real percent was entered. The empty
+    // add-row is POSTed alongside every save (the country dropdowns always
+    // have a default value), so without this guard every save tried to add
+    // a duplicate and produced "exists" errors.
+    $a = $_POST['addtariff'];
+    $src = strtoupper((string)($a['source'] ?? ''));
+    $dst = strtoupper((string)($a['destination'] ?? ''));
+    $trf = (string)($a['tariff'] ?? '');
+    $pct = (float)$a['percent'];
+    $disp = substr((string)($a['display'] ?? ''), 0, 255);
+    $valid = preg_match('/^[A-Z]{2}$/', $src) && preg_match('/^[A-Z]{2}$/', $dst)
+          && in_array($trf, array('D', 'M'), true)
+          && $pct <= 999.99;
+    if ($valid) {
+        $exists = $GLOBALS['db']->select('CubeCart_tariff', false, array('source' => $src, 'destination' => $dst, 'tariff' => $trf));
+        if (!$exists && $GLOBALS['db']->insert('CubeCart_tariff', array('source' => $src, 'destination' => $dst, 'tariff' => $trf, 'percent' => $pct, 'display' => $disp))) {
+            $GLOBALS['main']->successMessage($lang['settings']['notify_tax_tariff_add']);
+        } else {
+            $GLOBALS['main']->errorMessage($lang['settings']['error_tax_tariff_add']);
+        }
     } else {
         $GLOBALS['main']->errorMessage($lang['settings']['error_tax_tariff_add']);
     }
     $anchor = 'tariff';
 }
 
-if (isset($_GET['assign_class']) && $_GET['assign_class']>0) {
+if (isset($_GET['assign_class']) && $_GET['assign_class']>0
+    && isset($_GET['token']) && $_GET['token'] === SESSION_TOKEN) {
     if ($GLOBALS['db']->update('CubeCart_inventory', array('tax_type' => (int)$_GET['assign_class']))) {
         $no_assigned = $GLOBALS['db']->affected();
         $GLOBALS['db']->update('CubeCart_pricing_group', array('tax_type' => (int)$_GET['assign_class']));
@@ -66,12 +105,16 @@ if (isset($_GET['assign_class']) && $_GET['assign_class']>0) {
 #######################
 ## Update Tax Classes
 if (isset($_POST['class']) && is_array($_POST['class']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
+    $class_changed = false;
     foreach ($_POST['class'] as $key => $data) {
-        if ($GLOBALS['db']->update('CubeCart_tax_class', $data, array('id' => $key), true)) {
+        $GLOBALS['db']->update('CubeCart_tax_class', $data, array('id' => $key), true);
+        if ($GLOBALS['db']->affected() > 0) {
             $updated = true;
+            $class_changed = true;
         }
     }
     $redirect = true;
+    if ($class_changed) $anchor = 'taxclasses';
 }
 ## Add Tax Class
 if (isset($_POST['addclass']) && is_array($_POST['addclass']) && !empty($_POST['addclass']['tax_name']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
@@ -98,12 +141,16 @@ if (isset($_GET['delete_class']) && !empty($_GET['delete_class']) && Admin::getI
 #######################
 ## Update Tax Details
 if (isset($_POST['detail']) && is_array($_POST['detail']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
+    $detail_changed = false;
     foreach ($_POST['detail'] as $key => $data) {
-        if ($GLOBALS['db']->update('CubeCart_tax_details', $data, array('id' => $key), true)) {
+        $GLOBALS['db']->update('CubeCart_tax_details', $data, array('id' => $key), true);
+        if ($GLOBALS['db']->affected() > 0) {
             $updated = true;
+            $detail_changed = true;
         }
     }
     $redirect = true;
+    if ($detail_changed) $anchor = 'taxdetails';
 }
 ## Add Tax Detail
 if (isset($_POST['adddetail']) && is_array($_POST['adddetail']) && !empty($_POST['adddetail']['name']) && !empty($_POST['adddetail']['display']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
@@ -130,12 +177,16 @@ if (isset($_GET['delete_detail']) && !empty($_GET['delete_detail']) && Admin::ge
 #######################
 ## Update Tax Rules
 if (isset($_POST['rule']) && is_array($_POST['rule']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
+    $rule_changed = false;
     foreach ($_POST['rule'] as $key => $data) {
-        if ($GLOBALS['db']->update('CubeCart_tax_rates', $data, array('id' => $key), true)) {
+        $GLOBALS['db']->update('CubeCart_tax_rates', $data, array('id' => $key), true);
+        if ($GLOBALS['db']->affected() > 0) {
             $updated = true;
+            $rule_changed = true;
         }
     }
     $redirect = true;
+    if ($rule_changed) $anchor = 'taxrules';
 }
 ## Add Tax Rule
 if (isset($_POST['addrule']) && is_array($_POST['addrule']) && is_numeric($_POST['addrule']['tax_percent']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {

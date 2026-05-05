@@ -879,7 +879,10 @@ $(document).ready(function() {
         if(t.startsWith("#")) {
             e = $(t).height();
         }
-        if($("#clear_cache_master").length) {
+        // Only mirror the in-page tab anchor into the clear-cache link — external
+        // tabs (Clear log etc.) carry full URLs which would otherwise corrupt
+        // the clear-cache href.
+        if (t && t.charAt(0) === '#' && $("#clear_cache_master").length) {
             var cc = $('#clear_cache_master a').attr('href');
             var ccp = cc.split("#");
             $('#clear_cache_master a').attr('href', ccp[0] + t);

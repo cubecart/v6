@@ -12,15 +12,28 @@
 <form id="form-settings" action="{$PHP_SELF}" method="post" enctype="multipart/form-data">
    <div id="taxclasses" class="tab_content">
       <h3>{$LANG.settings.title_tax_class}</h3>
-      <fieldset>
-         <legend>{$LANG.settings.title_tax_class_current}</legend>
-         {foreach from=$TAX_CLASSES item=class}
-         <div><a href="{$VAL_SELF}&delete_class={$class.id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.settings.tax_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>     
-            <input type="text" name="class[{$class.id}][tax_name]" value="{$class.tax_name}" class="textbox">
-            <a href="?_g=settings&node=tax&assign_class={$class.id}#taxclasses" class="delete"  title="{$LANG.notification.confirm_update}">{$LANG.settings.assign_all_products}</a>
-         </div>
-         {/foreach}
-      </fieldset>
+      <table>
+         <thead>
+            <tr>
+               <td>{$LANG.common.name}</td>
+               <td width="200">{$LANG.form.action}</td>
+               <td width="20">&nbsp;</td>
+            </tr>
+         </thead>
+         <tbody>
+            {foreach from=$TAX_CLASSES item=class}
+            <tr>
+               <td><input type="text" name="class[{$class.id}][tax_name]" value="{$class.tax_name}" class="textbox"></td>
+               <td><a href="?_g=settings&node=tax&assign_class={$class.id}&token={$SESSION_TOKEN}#taxclasses" class="delete" title="{$LANG.notification.confirm_update}">{$LANG.settings.assign_all_products}</a></td>
+               <td style="text-align:center"><a href="{$VAL_SELF}&delete_class={$class.id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.settings.tax_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+            </tr>
+            {foreachelse}
+            <tr>
+               <td colspan="3" style="text-align:center">&mdash; {$LANG.common.none} &mdash;</td>
+            </tr>
+            {/foreach}
+         </tbody>
+      </table>
       <fieldset>
          <legend>{$LANG.settings.title_tax_class_add}</legend>
          <div><label for="addclass">{$LANG.settings.tax_class_name}</label><span><input name="addclass[tax_name]" id="addclass" type="text" class="textbox" value=""></span></div>
@@ -75,7 +88,7 @@
                   <td width="150">{$LANG.address.country}</td>
                   <td width="150">{$LANG.address.state}</td>
                   <td width="50">{$LANG.basket.total_sub}</td>
-                  <td width="50">{$LANG.basket.shipping}</tc>
+                  <td width="50">{$LANG.basket.shipping}</td>
                   <td width="125">{$LANG.settings.tax_rate}</td>
                   <td width="20">&nbsp;</td>
                </tr>
@@ -95,7 +108,7 @@
                </tr>
                {foreachelse}
                <tr>
-                  <td style="text-align:center" colspan="9">{$LANG.form.none}</td>
+                  <td style="text-align:center" colspan="9">&mdash; {$LANG.common.none} &mdash;</td>
                </tr>
                {/foreach}
             </tbody>
@@ -177,11 +190,11 @@
                   <td>{$tariff.tariff}</td>
                   <td><input type="number" value="{$tariff.percent}" name="edittariff[{$tariff.id}][percent]" class="textbox number text-right no-arrows" step="0.01" min="0" max="999.99" /> &#37;</td>
                   <td><input type="text" value="{$tariff.display}" name="edittariff[{$tariff.id}][display]" class="textbox" /></td>
-                  <td><a href="?_g=settings&node=tax&delete_tariff={$tariff.id}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+                  <td><a href="?_g=settings&node=tax&delete_tariff={$tariff.id}&token={$SESSION_TOKEN}#tariff" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                {foreachelse}
                <tr>
-                  <td colspan="4" class="text-center">- {$LANG.common.none} -</td>
+                  <td colspan="6" class="text-center">&mdash; {$LANG.common.none} &mdash;</td>
                </tr>
                {/foreach}
                <tr>
@@ -207,7 +220,7 @@
                   </td>
                   <td><input type="number" value="" name="addtariff[percent]" class="textbox number text-right no-arrows" step="0.01" min="0" max="999.99" /> &#37;</td>
                   <td><input type="text" value="" name="addtariff[display]" class="textbox" placeholder="{$LANG.settings.tariff_display_eg}" /> *</td>
-                  <td>&nbsp;</td>
+                  <td><button type="submit" class="button tiny">{$LANG.common.add}</button></td>
                </tr>
             </tbody>
          </table>
@@ -224,7 +237,6 @@
    <div class="form_control">
       <input type="submit" id="submit" class="button" value="{$LANG.common.save}">
       <input type="hidden" name="previous-tab" id="previous-tab" value="">
-      
    </div>
 </form>
 <script type="text/javascript">
