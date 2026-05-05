@@ -22,10 +22,20 @@ if (Admin::getInstance()->is()) {
 $seo  = SEO::getInstance();
 $catalogue = Catalogue::getInstance();
 
-$per_page = (isset($_GET['per_page'])) ? $_GET['per_page'] : 500;
-$page = (isset($_GET['page'])) ? $_GET['page'] : 1;
-//$no_rows = $GLOBALS['db']->numrows('SELECT `product_id` FROM '.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory');
-$no_rows = $GLOBALS['db']->numrows(sprintf('SELECT I.product_id FROM %1$sCubeCart_inventory AS I LEFT JOIN %1$sCubeCart_category AS C ON I.cat_id = C.cat_id WHERE I.status = 1', $GLOBALS['config']->get('config', 'dbprefix')));
+// Validate input - both flow into SQL LIMIT/OFFSET and the download filename.
+$per_page = max(1, (int)($_GET['per_page'] ?? 500));
+$page     = max(1, (int)($_GET['page']     ?? 1));
+// Allowed export formats - populated by hooks below; this is the initial
+// whitelist used for input validation.
+$allowed_formats = array('cubecart' => 'CubeCart');
+foreach ($GLOBALS['hooks']->load('admin.product.import.list') as $hook) {
+    include $hook;
+}
+if (isset($formats) && is_array($formats)) {
+    $allowed_formats = array_merge($allowed_formats, $formats);
+}
+// Match the actual export query's join shape so the page count is accurate.
+$no_rows = $GLOBALS['db']->numrows(sprintf('SELECT I.product_id FROM %1$sCubeCart_inventory AS I INNER JOIN %1$sCubeCart_category_index AS R ON I.product_id = R.product_id LEFT JOIN %1$sCubeCart_category AS C ON R.cat_id = C.cat_id WHERE R.primary = 1 AND I.status = 1 AND C.status = 1', $GLOBALS['config']->get('config', 'dbprefix')));
 
 function download_parts($format = 'cubecart', $no_rows = '', $per_page = '')
 {
@@ -43,7 +53,9 @@ foreach ($GLOBALS['hooks']->load('admin.product.export') as $hook) {
     include $hook;
 }
 
-if (isset($_GET['format']) && !empty($_GET['format'])) {
+// Reject unknown formats early so the generic-query fallback can't be
+// triggered with attacker-controlled input.
+if (isset($_GET['format']) && !empty($_GET['format']) && isset($allowed_formats[$_GET['format']])) {
     if ($_GET['format'] == 'cubecart') {
         $query = sprintf('SELECT I.* FROM %1$sCubeCart_inventory AS I INNER JOIN %1$sCubeCart_category_index AS R ON I.product_id = R.product_id LEFT JOIN %1$sCubeCart_category AS C ON R.cat_id = C.cat_id WHERE R.primary = 1 AND I.status = 1 AND C.status =1', $GLOBALS['config']->get('config', 'dbprefix'));
     } else {
@@ -128,7 +140,7 @@ if (isset($_GET['format']) && !empty($_GET['format'])) {
         $oos_purchase = $GLOBALS['config']->get('config', 'basket_out_of_stock_purchase');
         $tax  = Tax::getInstance();
 
-        foreach ($results as $i => $result) {
+        foreach ((array)$results as $i => $result) {
             # strip tags is plain text file CSV should be good to keep but lose two double quotes
             // The result row already has stock_level from CubeCart_inventory; no need
             // to re-query via getProductStock for the simple availability flag.
@@ -198,42 +210,63 @@ if (isset($_GET['format']) && !empty($_GET['format'])) {
             $result['currency'] = $GLOBALS['config']->get('config', 'default_currency');
             //CSV must have double quotes around strings. This is the standard and most spreasheets will behave best this way
             foreach ($fields as $field) {
-                // format specialist fields e.g. 'price currency' to '9.99 USD'
+                // Format multi-part fields like 'price currency' -> '9.99 USD'.
                 if (stristr($field, " ")) {
-                    $exploded_fields = explode(' ', $field);
-                    foreach ($exploded_fields as $part_field) {
-                        $formatted_field[] = $result[$part_field];
+                    $formatted_field = array();
+                    foreach (explode(' ', $field) as $part_field) {
+                        $formatted_field[] = isset($result[$part_field]) ? $result[$part_field] : '';
                     }
                     $result[$field] = implode(' ', $formatted_field);
                 }
-                unset($formatted_field, $exploded_fields);
-
-                $data_fields[] = (in_array($field, $field_keys_to_wrap) && isset($result[$field])) ? $field_wrapper.$result[$field].$field_wrapper : $result[$field];
+                $cell = isset($result[$field]) ? $result[$field] : '';
+                $data_fields[] = in_array($field, $field_keys_to_wrap) ? $field_wrapper.$cell.$field_wrapper : $cell;
             }
 
-            if (isset($header_fields)) {
-                $output[] = implode($delimiter, $header_fields);
+            if (!isset($export_started)) {
+                // First row of output - send headers (or open write target),
+                // emit the column header row, then start streaming data.
+                $export_started = true;
+                // Sanitise filename inputs so they can't escape Content-Disposition
+                // or path-traverse on disk.
+                $safe_format = preg_replace('/[^a-z0-9_-]+/i', '', (string)$_GET['format']);
+                $safe_page   = (string)$page;
+                $filename    = $safe_format.'_'.date('Ymd').'_'.$safe_page.'.'.$extension;
+                $GLOBALS['debug']->supress();
+                $export_handle  = null;
+                $export_to_file = false;
+                if (!isset($_GET['access'])) {
+                    if (@ob_get_length()) { @ob_end_clean(); }
+                    if (function_exists('apache_setenv')) { @apache_setenv('no-gzip', 1); }
+                    @ini_set('zlib.output_compression', 0);
+                    header('Pragma: public');
+                    header('Cache-Control: no-store, no-cache, must-revalidate');
+                    header('Content-Type: application/octet-stream');
+                    header('Content-Disposition: attachment; filename="'.str_replace(' ', '_', $filename).'"');
+                } else {
+                    $method = $path = '';
+                    foreach ($GLOBALS['hooks']->load('admin.product.export.method') as $hook) include $hook;
+                    if ($method == 'write' && !empty($path)) {
+                        $export_handle  = fopen($path, 'w');
+                        $export_to_file = true;
+                    }
+                }
+                if ($export_to_file) {
+                    fwrite($export_handle, implode($delimiter, $header_fields).$glue);
+                } else {
+                    echo implode($delimiter, $header_fields).$glue;
+                }
                 unset($header_fields);
             }
-            $output[] = implode($delimiter, $data_fields);
+            if (!empty($export_to_file)) {
+                fwrite($export_handle, implode($delimiter, $data_fields).$glue);
+            } else {
+                echo implode($delimiter, $data_fields).$glue;
+            }
             unset($data_fields);
         }
-        if (isset($output) && !empty($output)) {
-            $filename = $_GET['format'].'_'.date('Ymd').'_'.$_GET['page'].'.'.$extension;
-            $output  = (is_array($output)) ? implode($glue, $output) : $output;
-            $GLOBALS['debug']->supress();
-            if (!isset($_GET['access'])) {
-                deliverFile(false, false, $output, $filename);
-            } else {
-                $method = $path = '';
-				foreach ($GLOBALS['hooks']->load('admin.product.export.method') as $hook) include $hook;
-				if($method == 'write' && !empty($path)) {
-					$fp = fopen($path, 'w');
-					fwrite($fp, $output);
-					fclose($fp);	
-				} else {
-					echo $output;
-				}
+        if (!empty($export_started)) {
+            if (!empty($export_to_file) && is_resource($export_handle)) {
+                fclose($export_handle);
             }
             exit;
         }
@@ -244,11 +277,8 @@ if (isset($_GET['format']) && !empty($_GET['format'])) {
 
 $GLOBALS['main']->addTabControl($lang['common']['export'], 'export');
 
-$formats = array('cubecart'  => 'CubeCart');
-
-foreach ($GLOBALS['hooks']->load('admin.product.import.list') as $hook) {
-    include $hook;
-}
+// Format list - already built earlier as $allowed_formats for input validation.
+$formats = $allowed_formats;
 
 $page_limits = array(
     50, 100, 250, 500, 1000, 5000, 10000, 25000
