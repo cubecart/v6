@@ -707,12 +707,26 @@ class ACP
         if (Admin::getInstance()->is() && !empty($this->_tabs) && is_array($this->_tabs)) {
             ksort($this->_tabs);
             $tabs = [];
+            $external = [];
             foreach ($this->_tabs as $tab) {
                 $tab['name'] = ucfirst($tab['name']);
                 $tab['tab_id'] = empty($tab['target']) ? '' : 'tab_'.str_replace(' ', '_', $tab['target']);
                 $tab['target'] = (!empty($tab['target'])) ? '#'.$tab['target'] : '';
-                $tabs[] = $tab;
+                // External-link tabs (those with a non-empty url) point to a
+                // different page rather than switching the in-page tab content.
+                // Group them at the end and flag for distinct styling.
+                $tab['is_external'] = !empty($tab['url']);
+                if ($tab['is_external']) {
+                    $external[] = $tab;
+                } else {
+                    $tabs[] = $tab;
+                }
             }
+            // Mark the first external tab so CSS can right-align the group with margin-left:auto.
+            if (!empty($external)) {
+                $external[0]['is_external_first'] = true;
+            }
+            $tabs = array_merge($tabs, $external);
             foreach ($GLOBALS['hooks']->load('admin.tabs') as $hook) {
                 include $hook;
             }

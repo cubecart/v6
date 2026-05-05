@@ -649,7 +649,7 @@ hr {
     min-height: 100%
 }
 #tab_control {
-    min-height: 28px;
+    min-height: 29px;
     margin: 10px 0 -1px 0;
     padding: 0;
     display: flex;
@@ -962,7 +962,7 @@ optgroup>option {
 }
 div.tab {
     position: relative;
-    height: 28px;
+    height: 29px;
     padding: 0 8px;
     line-height: 26px;
     box-sizing: border-box;
@@ -3222,7 +3222,7 @@ textarea#query {
     border-bottom: 1px solid var(--border) !important;
   }
   #tab_control {
-    min-height: 28px;
+    min-height: 29px;
     margin: 10px 0 -1px 0;
     padding: 0;
   }
@@ -3845,3 +3845,15 @@ body.chromeless #content_body { border-left: 0; }
 .customer-groups-table th { text-align:left; }
 .customer-groups-table .editable { display:inline-block; min-width:120px; }
 .customer-groups-table__desc:empty::before { content:'\2014'; color:var(--text-muted); }
+
+/* External-link tabs (tabs whose URL points to another admin page rather than
+   switching in-page content). Grouped at the end and visually detached from
+   the panel below so they don't suggest "this is the current page". */
+#tab_control .tab.tab--external { background:var(--panel); border:1px solid var(--primary-accent); border-radius:4px; font-size:13px; transform:translateY(-5px); box-shadow:0 1px 2px rgba(0,0,0,0.08); transition:background 0.15s, color 0.15s; }
+/* First external tab pushes itself + the rest of the external group to the
+   right edge of the flex container. Class set by ACP::showTabs(). */
+#tab_control .tab.tab--external-first { margin-left:auto; }
+#tab_control .tab.tab--external:last-child { margin-right:3px; }
+#tab_control .tab.tab--external:hover { background:var(--primary-accent); border-color:var(--primary-accent); }
+#tab_control .tab.tab--external > a { padding:4px 10px; color:var(--primary-accent); text-transform:capitalize; font-weight:600; }
+#tab_control .tab.tab--external:hover > a { color:var(--text-invert); }
