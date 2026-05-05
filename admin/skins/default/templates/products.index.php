@@ -291,9 +291,9 @@
       <div id="spec-container">
          {foreach from=$PRODUCT.spec_array key="k" item="spec"}
          <div class="spec-row">
-            <input type="text" name="specs[{$k}][name]" class="textbox" placeholder="{$LANG.common.name}" value="{$spec.0}">
-            <textarea name="specs[{$k}][value]" class="textbox" placeholder="{$LANG.common.value}">{$spec.1}</textarea>
-            <button class="remove">-</button>
+            <input type="text" name="specs[{$k}][name]" class="textbox spec-row__name" placeholder="{$LANG.common.name}" value="{$spec.0}">
+            <input type="text" name="specs[{$k}][value]" class="textbox spec-row__value" placeholder="{$LANG.common.value}" value="{$spec.1}">
+            <button type="button" class="remove spec-row__btn" title="{$LANG.common.remove}"><i class="fa fa-times"></i></button>
          </div>
          {/foreach}
          {if isset($k)}
@@ -302,9 +302,9 @@
             {assign var="k" value="0"}
          {/if}
          <div class="spec-row">
-            <input type="text" name="specs[{$k}][name]" class="textbox" placeholder="{$LANG.common.name}">
-            <textarea name="specs[{$k}][value]" class="textbox" placeholder="{$LANG.common.value}"></textarea>
-            <button class="add">+</button>
+            <input type="text" name="specs[{$k}][name]" class="textbox spec-row__name" placeholder="{$LANG.common.name}">
+            <input type="text" name="specs[{$k}][value]" class="textbox spec-row__value" placeholder="{$LANG.common.value}">
+            <button type="button" class="add spec-row__btn" title="{$LANG.common.add}"><i class="fa fa-plus"></i></button>
          </div>
       </div>
       <div id="lang_name" class="inline-source">{$LANG.common.name}</div>

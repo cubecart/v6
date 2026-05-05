@@ -3951,6 +3951,16 @@ body.chromeless #content_body { border-left: 0; }
 .img-picker__folder span { font-size:12px; line-height:1.2; word-break:break-all; text-align:center; max-height:2.4em; overflow:hidden; color:var(--text); }
 .img-picker__tile-name { color:var(--text); }
 
+/* Specification name/value rows — flex layout: narrow Name | wider Value | action btn. */
+#spec-container { max-width:900px; margin:10px 0; }
+.spec-row { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+.spec-row__name  { flex:0 0 200px; }
+.spec-row__value { flex:1 1 auto; }
+.spec-row__btn   { flex:0 0 auto; padding:5px 8px; }
+.spec-row__btn .fa { font-size:12px; }
+.spec-row__btn.add    { color:#2c8a40; }
+.spec-row__btn.remove { color:#b03030; }
+
 /* Filemanager edit screen — preview tile + metadata form side-by-side instead
    of the legacy stretched single-column layout. Replace-file gets its own
    bordered fieldset since it's a destructive action. */

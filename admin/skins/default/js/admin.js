@@ -26,38 +26,43 @@ $(document).ready(function() {
         let counter = $('#spec-container .spec-row').length-1;
         let lang_value = $('#lang_name').text() || 'Value';
         let lang_name = $('#lang_name').text() || 'Name';
+        function rebuildSpecArray() {
+            const specs = [];
+            $('#spec-container .spec-row').each(function () {
+                const name  = $(this).find('input[name*="[name]"]').val().trim();
+                const value = $(this).find('input[name*="[value]"]').val().trim();
+                if (name !== '' && value !== '') {
+                    specs.push([name, value]);
+                }
+            });
+            $('#spec_array').val(btoa(JSON.stringify(specs)));
+        }
+
         $('#spec-container').on('click', '.add', function(e) {
             e.preventDefault();
             counter++;
-            $(this).text('-').removeClass('add').addClass('remove');
+            $(this).removeClass('add').addClass('remove').attr('title', 'Remove').html('<i class="fa fa-times"></i>');
             const newRow = `
             <div class="spec-row">
-                <input type="text" name="specs[${counter}][name]" class="textbox" placeholder="${lang_name}">
-                <textarea name="specs[${counter}][value]" class="textbox" placeholder="${lang_value}"></textarea>
-                <button class="add">+</button>
+                <input type="text" name="specs[${counter}][name]" class="textbox spec-row__name" placeholder="${lang_name}">
+                <input type="text" name="specs[${counter}][value]" class="textbox spec-row__value" placeholder="${lang_value}">
+                <button type="button" class="add spec-row__btn" title="Add"><i class="fa fa-plus"></i></button>
             </div>`;
             $('#spec-container').append(newRow);
+            rebuildSpecArray();
         });
 
         $('#spec-container').on('click', '.remove', function(e) {
             e.preventDefault();
             $(this).closest('.spec-row').remove();
+            rebuildSpecArray();
         });
-    });
-    $('.spec-row input, .spec-row textarea').on('focusout', function (e) {
-        e.preventDefault();
-        const specs = [];
-        $('#spec-container .spec-row').each(function (i) {
-            const name = $(this).find('input[name*="[name]"]').val().trim();
-            const value = $(this).find('textarea[name*="[value]"]').val().trim();
 
-            if (name !== '' && value !== '') {
-                specs.push([name, value]);
-            }
-        });
-        const jsonData = JSON.stringify(specs);
-        const base64Data = btoa(jsonData);
-        $('#spec_array').val(base64Data);
+        $(document).on('focusout', '#spec-container .spec-row input', rebuildSpecArray);
+
+        // Belt-and-braces: also rebuild right before any form submit so the
+        // hidden field can never lag behind the visible rows.
+        $(document).on('submit', 'form', rebuildSpecArray);
     });
     $('.copy_text').on("click", function() {
         var $el = $(this);
