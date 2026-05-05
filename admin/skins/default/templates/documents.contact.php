@@ -29,21 +29,21 @@
 	</fieldset>
 
 	<fieldset><legend>{$LANG.contact.title_departments}</legend>
-	  <div id="departments">
+	  <div id="departments" class="dept-list">
 	  {if isset($DEPARTMENTS)}
 	  {foreach from=$DEPARTMENTS item=department}
-		<div>
-		  {$LANG.common.name}: <input type="text" name="department[name][]" id="" value="{$department.name}" class="textbox">
-		  {$LANG.common.email}: <input type="text" name="department[email][]" id="" value="{$department.email}" class="textbox">
-		  <a href="#" class="remove" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+		<div class="dept-row">
+		  <input type="text" name="department[name][]" value="{$department.name}" class="textbox dept-row__name" placeholder="{$LANG.common.name}">
+		  <input type="text" name="department[email][]" value="{$department.email}" class="textbox dept-row__email" placeholder="{$LANG.common.email}">
+		  <button type="button" class="remove dept-row__btn" title="{$LANG.common.remove}"><i class="fa fa-times"></i></button>
 		</div>
 	  {/foreach}
 	  {/if}
-
-	  </div>
-	  <div class="list-footer">
-			{$LANG.common.name}: <input type="text" name="department[name][]" id="" class="textbox">
-			{$LANG.common.email}: <input type="text" name="department[email][]" id="" class="textbox"> {$LANG.common.optional}
+		<div class="dept-row">
+		  <input type="text" name="department[name][]" class="textbox dept-row__name" placeholder="{$LANG.common.name}">
+		  <input type="text" name="department[email][]" class="textbox dept-row__email" placeholder="{$LANG.common.email} {$LANG.common.optional}">
+		  <button type="button" class="add dept-row__btn" title="{$LANG.common.add}"><i class="fa fa-plus"></i></button>
+		</div>
 	  </div>
 	</fieldset>
   </div>

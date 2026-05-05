@@ -3961,6 +3961,18 @@ body.chromeless #content_body { border-left: 0; }
 .spec-row__btn.add    { color:#2c8a40; }
 .spec-row__btn.remove { color:#b03030; }
 
+/* Contact-form departments — same flex pattern as spec rows. */
+.dept-list { margin:0 0 10px; }
+.dept-row { display:flex; align-items:center; gap:8px; padding:6px; width:100%; box-sizing:border-box; }
+.dept-list > .dept-row:nth-child(odd)  { background:var(--bg); }
+.dept-list > .dept-row:nth-child(even) { background:var(--highlight); }
+.dept-row__name  { flex:0 0 240px; }
+.dept-row__email { flex:1 1 auto; }
+.dept-row__btn   { flex:0 0 auto; padding:5px 8px; }
+.dept-row__btn .fa { font-size:12px; }
+.dept-row__btn.add    { color:#2c8a40; }
+.dept-row__btn.remove { color:#b03030; }
+
 /* Filemanager edit screen — preview tile + metadata form side-by-side instead
    of the legacy stretched single-column layout. Replace-file gets its own
    bordered fieldset since it's a destructive action. */

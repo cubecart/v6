@@ -1008,7 +1008,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_configuration" introduced="5.0.0"><![CDATA[Configuration]]></string>
     <string name="title_contact" introduced="5.0.0"><![CDATA[Contact Form Settings]]></string>
     <string name="title_content" introduced="5.0.0"><![CDATA['Contact Us' Page Content]]></string>
-    <string name="title_departments" introduced="5.0.0"><![CDATA[Departments (optional)]]></string>
+    <string name="title_departments" introduced="5.0.0"><![CDATA[Departments (Optional)]]></string>
   </group>
   <group name="country">
     <string name="assign_to_rest" introduced="6.4.8"><![CDATA[Assign to Rest of World]]></string>

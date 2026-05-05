@@ -63,6 +63,27 @@ $(document).ready(function() {
         // Belt-and-braces: also rebuild right before any form submit so the
         // hidden field can never lag behind the visible rows.
         $(document).on('submit', 'form', rebuildSpecArray);
+
+        // Contact-form departments: same +/- pattern as spec rows. Clicking
+        // the trailing `+` row turns its button into `×` and appends a fresh
+        // `+` row underneath. Clicking `×` removes that row.
+        $('.dept-list').on('click', '.add', function(e) {
+            e.preventDefault();
+            $(this).removeClass('add').addClass('remove').attr('title', 'Remove').html('<i class="fa fa-times"></i>');
+            var $list = $(this).closest('.dept-list');
+            $list.append(
+                '<div class="dept-row">'
+              + '<input type="text" name="department[name][]" class="textbox dept-row__name" placeholder="Name">'
+              + '<input type="text" name="department[email][]" class="textbox dept-row__email" placeholder="Email">'
+              + '<button type="button" class="add dept-row__btn" title="Add"><i class="fa fa-plus"></i></button>'
+              + '</div>'
+            );
+        });
+        $('.dept-list').on('click', '.dept-row .remove', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $(this).closest('.dept-row').remove();
+        });
     });
     $('.copy_text').on("click", function() {
         var $el = $(this);
