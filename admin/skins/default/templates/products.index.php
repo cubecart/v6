@@ -767,6 +767,15 @@
             $loading.attr('hidden', 'hidden');
             loadFolder(currentPath);
             refreshAssigned();
+            // Reset the dropzone back to its original "drop here" message by
+            // clearing the preview thumbnails Dropzone inserts during upload.
+            try {
+               var dzEl = document.querySelector('div.dropzone');
+               if (dzEl && typeof Dropzone !== 'undefined') {
+                  var dz = Dropzone.forElement(dzEl);
+                  if (dz) dz.removeAllFiles(true);
+               }
+            } catch (e) {}
          };
 
          $grid.on('click', '.img-picker__tile', function(e){

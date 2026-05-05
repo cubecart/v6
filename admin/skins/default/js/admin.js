@@ -533,11 +533,20 @@ $(document).ready(function() {
             var targetExt = formatMap[imageUploadFormat].ext;
             var targetQuality = formatMap[imageUploadFormat].quality;
 
+            // Pass-through for anything that isn't a real image (Thumbs.db,
+            // .DS_Store, dragged folder placeholders, etc). Without this guard
+            // the canvas path tries to decode them and can throw OOM.
+            var isResizableImage = function(file) {
+                return file && typeof file.type === 'string' && /^image\/(jpeg|png|webp|gif|bmp)$/i.test(file.type);
+            };
             dropzoneConfig.transformFile = function(file, done) {
+                if (!isResizableImage(file)) { done(file); return; }
                 var maxWidth = 2000;
                 var reader = new FileReader();
+                reader.onerror = function() { done(file); };
                 reader.onload = function(event) {
                     var img = new Image();
+                    img.onerror = function() { done(file); };
                     img.onload = function() {
                         var canvas = document.createElement('canvas');
                         var ctx = canvas.getContext('2d');
@@ -549,7 +558,13 @@ $(document).ready(function() {
                         }
                         canvas.width = width;
                         canvas.height = height;
-                        ctx.drawImage(img, 0, 0, width, height);
+                        try {
+                            ctx.drawImage(img, 0, 0, width, height);
+                        } catch (e) {
+                            console.warn("drawImage failed, uploading original file.", e);
+                            done(file);
+                            return;
+                        }
                         canvas.toBlob(function(blob) {
                             if (!blob || blob.size === 0) {
                                 console.warn("Resize failed, uploading original file.");
@@ -564,6 +579,8 @@ $(document).ready(function() {
                 reader.readAsDataURL(file);
             };
             dropzoneConfig.renameFile = function(file) {
+                // Only rename real images we'd actually transcode; pass others through.
+                if (!isResizableImage(file)) return file.name;
                 var name = file.name.substr(0, file.name.lastIndexOf("."));
                 return name + targetExt;
             };
