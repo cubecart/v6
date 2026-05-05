@@ -283,82 +283,118 @@ class FileManager
     }
 
     /**
-     * Assign products to an image
+     * Persist a product's image gallery from the picker.
      *
-     * @param array $image_ids
-     * @param int $product_id
-     * @return bool
+     * Accepts the new ordered POST shape:
+     *   $image_ids[file_id] = position   // 1 = main, 2+ = secondary order
+     * with `position = 0` meaning "remove". The legacy 0|1|2 status form is
+     * still understood (2 = main) for any remaining call sites.
      */
     public function assignProductImages($image_ids, $product_id)
     {
-        $old_images = array();
-        $img_add = array();
-        $removed_images = array();
-        // md5 compare of before / after so we know if changes have been made or not
-        if (($before = $GLOBALS['db']->select('CubeCart_image_index', array('product_id', 'file_id', 'main_img'), array('product_id' => (int)$product_id))) !== false) {
+        if (!is_array($image_ids)) {
+            return false;
+        }
+        $product_id = (int)$product_id;
+
+        // Snapshot current rows for change detection.
+        $hash_before = '';
+        if (($before = $GLOBALS['db']->select('CubeCart_image_index', array('product_id', 'file_id', 'main_img', 'position'), array('product_id' => $product_id))) !== false) {
             $hash_before = md5(serialize($before));
-            foreach ($before as $old_img) {
-                $old_images[] = $old_img['file_id'];
-                if ($old_img['main_img'] == 1) {
-                    $old_default = $old_img['file_id'];
+        }
+
+        // Decide whether the input uses the new ordered form (positions 1..N) or
+        // the legacy 0|1|2 status form (2 = main, 1 = include, 0 = remove).
+        $is_ordered = false;
+        foreach ($image_ids as $v) {
+            if ((int)$v > 2) { $is_ordered = true; break; }
+        }
+
+        $ordered = array(); // file_id => position (>=1)
+        $main    = 0;
+        if ($is_ordered) {
+            foreach ($image_ids as $fid => $pos) {
+                $fid = (int)$fid;
+                $pos = (int)$pos;
+                if ($fid <= 0 || $pos <= 0) continue;
+                $ordered[$fid] = $pos;
+                if ($pos === 1) $main = $fid;
+            }
+        } else {
+            // Legacy mapping: status 2 -> main (position 1); status 1 -> kept (positions 2..N)
+            // in input order; status 0 -> dropped.
+            $idx = 2;
+            foreach ($image_ids as $fid => $status) {
+                $fid = (int)$fid;
+                $status = (int)$status;
+                if ($fid <= 0 || $status <= 0) continue;
+                if ($status === 2) {
+                    $ordered[$fid] = 1;
+                    $main = $fid;
+                } else {
+                    $ordered[$fid] = $idx++;
+                }
+            }
+            // No main chosen -> promote the lowest-position kept image.
+            if (!$main && $ordered) {
+                $first = min($ordered);
+                foreach ($ordered as $fid => $pos) {
+                    if ($pos === $first) { $ordered[$fid] = 1; $main = $fid; break; }
+                }
+                if (count($ordered) > 1) {
+                    $GLOBALS['main']->errorMessage($GLOBALS['language']->catalogue['error_image_defaulted']);
                 }
             }
         }
 
-        foreach ($image_ids as $image_id => $status) {
-            if ($status == 0) {
-                $removed_images[] = $image_id;
-                continue;
+        // Compact positions to 1..N preserving the chosen main at 1.
+        if ($ordered) {
+            asort($ordered, SORT_NUMERIC);
+            $rank = 1;
+            $compact = array();
+            // Main first (if still in the kept set).
+            if ($main && isset($ordered[$main])) {
+                $compact[$main] = $rank++;
             }
-
-            if ($status == 2) {
-                $default = $image_id;
-            }
-
-            $img_add[] = $image_id;
-        }
-
-        foreach ($old_images as $image_id) {
-            if (!in_array($image_id, $removed_images) && !in_array($image_id, $img_add)) {
-                $img_add[] = $image_id;
-                if (isset($old_default) && $image_id == $old_default && !isset($default)) {
-                    $default = $old_default;
+            foreach ($ordered as $fid => $pos) {
+                if (!isset($compact[$fid])) {
+                    $compact[$fid] = $rank++;
                 }
             }
-        }
-
-        // If no default image was chosen pick last one and let staff member know
-        if (!isset($default) && sizeof($img_add) > 0) {
-            $default = (int)$img_add[0];
-            // Display warning message if more than one image was chosen
-            if (sizeof($img_add) > 1) {
-                $GLOBALS['main']->errorMessage($GLOBALS['language']->catalogue['error_image_defaulted']);
+            $ordered = $compact;
+            if (!$main) {
+                // Pick the first as main if none specified.
+                $main = key($ordered);
             }
         }
 
-        $GLOBALS['db']->delete('CubeCart_image_index', array('product_id' => (int)$product_id));
-
-        if (isset($img_add) && is_array($img_add)) {
-            foreach ($img_add as $image_id) {
-                if (($image = $GLOBALS['db']->select('CubeCart_filemanager', false, array('file_id' => (int)$image_id))) !== false) {
-                    $record = array(
-                        'file_id'  => (int)$image_id,
-                        'product_id' => (int)$product_id,
-                        'main_img'  => ($default == (int)$image_id) ? '1' : '0'
-                    );
-                    $GLOBALS['db']->insert('CubeCart_image_index', $record);
+        $GLOBALS['db']->delete('CubeCart_image_index', array('product_id' => $product_id));
+        if ($ordered) {
+            // Verify file_ids exist in one round-trip.
+            $valid = array();
+            $ids   = implode(',', array_map('intval', array_keys($ordered)));
+            $pfx   = $GLOBALS['config']->get('config', 'dbprefix');
+            if (($rows = $GLOBALS['db']->misc("SELECT `file_id` FROM `{$pfx}CubeCart_filemanager` WHERE `file_id` IN ($ids)", false)) !== false) {
+                foreach ($rows as $r) {
+                    $valid[(int)$r['file_id']] = true;
                 }
             }
+            foreach ($ordered as $fid => $pos) {
+                if (!isset($valid[$fid])) continue;
+                $GLOBALS['db']->insert('CubeCart_image_index', array(
+                    'file_id'    => $fid,
+                    'product_id' => $product_id,
+                    'main_img'   => ($fid === $main) ? '1' : '0',
+                    'position'   => $pos,
+                ));
+            }
         }
 
-        // md5 compare of before / after so we know if changes have been made or not
-        if (($after = $GLOBALS['db']->select('CubeCart_image_index', array('product_id', 'file_id', 'main_img'), array('product_id' => (int)$product_id))) !== false) {
+        $hash_after = '';
+        if (($after = $GLOBALS['db']->select('CubeCart_image_index', array('product_id', 'file_id', 'main_img', 'position'), array('product_id' => $product_id))) !== false) {
             $hash_after = md5(serialize($after));
         }
-        if (isset($hash_before, $hash_after) && $hash_before !== $hash_after) {
-            return true;
-        }
-        return false;
+        return $hash_before !== $hash_after;
     }
 
     /**

@@ -70,3 +70,6 @@ ALTER TABLE `CubeCart_request_log` ADD COLUMN `request_hash` CHAR(40) NOT NULL D
 ALTER TABLE `CubeCart_request_log` ADD COLUMN `first_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `time`; #EOQ
 ALTER TABLE `CubeCart_request_log` ADD COLUMN `occurrences` INT UNSIGNED NOT NULL DEFAULT 1 AFTER `first_time`; #EOQ
 ALTER TABLE `CubeCart_request_log` ADD UNIQUE KEY `request_hash` (`request_hash`); #EOQ
+ALTER TABLE `CubeCart_image_index` ADD COLUMN `position` INT UNSIGNED NOT NULL DEFAULT 0 AFTER `main_img`; #EOQ
+UPDATE `CubeCart_image_index` SET `position` = `id` WHERE `position` = 0; #EOQ
+ALTER TABLE `CubeCart_image_index` ADD INDEX `product_position` (`product_id`, `position`); #EOQ

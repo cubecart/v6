@@ -2605,8 +2605,9 @@ class Catalogue
                 }
             }
 
-            // Look for images
-            if (($gallery = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_image_index` AS `i` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_filemanager` AS `f` ON i.file_id = f.file_id', false, 'i.product_id = '.$product_id, 'ORDER BY i.main_img DESC')) !== false) {
+            // Look for images. Order by main first, then the staff-set drag order
+            // (`position`); fall back to id for legacy rows where position = 0.
+            if (($gallery = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_image_index` AS `i` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_filemanager` AS `f` ON i.file_id = f.file_id', false, 'i.product_id = '.$product_id, 'ORDER BY i.main_img DESC, IF(i.position = 0, 999999, i.position) ASC, i.id ASC')) !== false) {
                 $duplicates = array();
                 $return = [];
                 $json = [];

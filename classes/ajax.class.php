@@ -51,6 +51,9 @@ class Ajax
             case 'fmSearch':
                 $return_data = self::fmSearch();
             break;
+            case 'fmFolder':
+                $return_data = self::fmFolder();
+            break;
             case 'doneToggle':
                 $return_data = self::doneToggle();
             break;
@@ -396,6 +399,80 @@ class Ajax
             }
             return "<div class=\"mail_modal\"><h3>".sprintf($GLOBALS['language']->filemanager['search_result'], htmlspecialchars($_POST['term'], ENT_QUOTES, 'UTF-8'))."</h3>$output</div>";
         }
+    }
+
+    /**
+     * List subfolders + image files at a given path (admin image picker).
+     * Path is the relative directory under images/source/ (empty = root).
+     * Returns: { path, parent, folders: [name,...], images: [{file_id,filename,filepath,thumb}] }
+     */
+    public static function fmFolder() {
+        if (!CC_IN_ADMIN) {
+            return json_encode(array('error' => 'forbidden'));
+        }
+        $raw = isset($_GET['path']) ? (string)$_GET['path'] : '';
+        // Normalise: strip leading slash, ensure single trailing slash, no traversal.
+        $raw = str_replace('\\', '/', $raw);
+        $raw = ltrim($raw, '/');
+        $raw = preg_replace('#/{2,}#', '/', $raw);
+        if (strpos($raw, '..') !== false) {
+            $raw = '';
+        }
+        if ($raw !== '' && substr($raw, -1) !== '/') {
+            $raw .= '/';
+        }
+        $path = $raw;
+        $pfx  = $GLOBALS['config']->get('config', 'dbprefix');
+        $safe = $GLOBALS['db']->sqlSafe($path);
+        $depth = ($path === '') ? 0 : substr_count($path, '/'); // e.g. 'A/B/' = 2
+        // Subfolders: pick DISTINCT next-level segment from filepaths under $path.
+        $folders = array();
+        $sub_sql = "SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING(`filepath`, ".(strlen($path)+1)."), '/', 1) AS `seg`
+                    FROM `{$pfx}CubeCart_filemanager`
+                    WHERE `type` = 1
+                      AND `filepath` IS NOT NULL
+                      AND `filepath` <> ''
+                      AND `filepath` LIKE '".$safe."%'
+                      AND `filepath` <> '".$safe."'
+                    ORDER BY `seg` ASC";
+        if (($rows = $GLOBALS['db']->misc($sub_sql, false)) !== false) {
+            foreach ($rows as $r) {
+                if (!empty($r['seg'])) {
+                    $folders[] = (string)$r['seg'];
+                }
+            }
+        }
+        // Images at exactly this path (NULL filepath counts as root).
+        $images = array();
+        $where  = ($path === '')
+            ? "(`filepath` IS NULL OR `filepath` = '') AND `type` = 1 AND `disabled` = 0"
+            : "`filepath` = '".$safe."' AND `type` = 1 AND `disabled` = 0";
+        $img_sql = "SELECT `file_id`, `filename`, `filepath` FROM `{$pfx}CubeCart_filemanager` WHERE $where ORDER BY `filename` ASC";
+        if (($rows = $GLOBALS['db']->misc($img_sql, false)) !== false) {
+            foreach ($rows as $r) {
+                $thumb = $GLOBALS['catalogue']->imagePath((int)$r['file_id'], 'small', 'url');
+                $images[] = array(
+                    'file_id'  => (int)$r['file_id'],
+                    'filename' => (string)$r['filename'],
+                    'filepath' => (string)$r['filepath'],
+                    'thumb'    => (string)$thumb,
+                );
+            }
+        }
+        // Parent path: drop trailing segment.
+        $parent = '';
+        if ($path !== '') {
+            $trim = rtrim($path, '/');
+            $slash = strrpos($trim, '/');
+            $parent = ($slash === false) ? '' : substr($trim, 0, $slash + 1);
+        }
+        return json_encode(array(
+            'path'    => $path,
+            'parent'  => $parent,
+            'depth'   => $depth,
+            'folders' => $folders,
+            'images'  => $images,
+        ));
     }
 
     /**

@@ -488,9 +488,11 @@ CREATE TABLE IF NOT EXISTS `CubeCart_image_index` (
 	`product_id` INT UNSIGNED NOT NULL,
 	`file_id` INT UNSIGNED NOT NULL,
 	`main_img` ENUM('0','1') NOT NULL DEFAULT '0',
+	`position` INT UNSIGNED NOT NULL DEFAULT 0,
 	PRIMARY KEY `id` (`id`),
 	KEY `file_id` (`file_id`),
-	KEY `product_id` (`product_id`)
+	KEY `product_id` (`product_id`),
+	KEY `product_position` (`product_id`, `position`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_inventory` (

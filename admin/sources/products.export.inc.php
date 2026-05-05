@@ -95,7 +95,7 @@ if (isset($_GET['format']) && !empty($_GET['format'])) {
             }
             // Image file_ids per product, main_img first.
             $all_file_ids = array();
-            if (($rows = $GLOBALS['db']->misc("SELECT `product_id`, `file_id` FROM `{$prefix}CubeCart_image_index` WHERE `product_id` IN ($pid_in) ORDER BY `main_img` DESC")) !== false && is_array($rows)) {
+            if (($rows = $GLOBALS['db']->misc("SELECT `product_id`, `file_id` FROM `{$prefix}CubeCart_image_index` WHERE `product_id` IN ($pid_in) ORDER BY `main_img` DESC, IF(`position` = 0, 999999, `position`) ASC, `id` ASC")) !== false && is_array($rows)) {
                 foreach ($rows as $row) {
                     $image_files_by_pid[(int)$row['product_id']][] = (int)$row['file_id'];
                     $all_file_ids[(int)$row['file_id']] = true;

@@ -662,56 +662,205 @@
    </div>
    <div id="image" class="tab_content">
       <h3>{$LANG.settings.title_images}</h3>
-      <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/star_fmcheckbox.png" alt="{$LANG.catalogue.image_main}"> - {$LANG.catalogue.image_main}
-      <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/1_fmcheckbox.png" alt="{$LANG.catalogue.image_included}"> - {$LANG.catalogue.image_included}
-      <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/0_fmcheckbox.png" alt="{$LANG.catalogue.image_excluded}"> - {$LANG.catalogue.image_excluded}
-      <p><input type="text" name="fm-search-term" id="fm-search-term" placeholder="{$LANG.filemanager.search_location}..."><button type="button" class="button tiny" id="fm-search-button" data-mode="images" data-action="location">{$LANG.common.go}</button></p>
-      <div class="fm-container">
-         <div class="loading">{$LANG.common.loading} <i class="fa fa-spinner fa-spin fa-fw"></i></div>
-         <div id="imageset" rel="1" class="fm-filelist"></div>
-         <div class="master_image">
-            <span>{$LANG.catalogue.image_main}</span><br><br>
-            <div id="master_image_block">
-               <img src="{$PRODUCT.master_image}" id="master_image_preview" {foreach $GALLERY_ARRAY as $gallery_image}{if $gallery_image.main_img eq "1"}title="{$gallery_image.filepath}{$gallery_image.filename}"{break}{/if}{/foreach}>
-               <div id="preview_image" style="display: none"><img src="{$PRODUCT.master_image}"></div>
-            </div>
-            {if !empty($GALLERY_ARRAY) && count($GALLERY_ARRAY)>1}
-            <div id="gallery_json">
-               <p>{$LANG.catalogue.other_inc_images}</p>
-               <ul>{foreach $GALLERY_ARRAY as $gallery_image}
-                  {if $gallery_image@index > 0}
-                  <li id="gallery_imageset_{$gallery_image.file_id}">
-                     <img src="images/source/{$gallery_image.filepath}{$gallery_image.filename}" title="{$gallery_image.filepath}{$gallery_image.filename}" />
-                  </li>
-                  {/if}
-                  {/foreach}
-                  {if $gallery_image@index == 0}{$LANG.common.none}{/if}
-               </ul>
-               </div>
-            {/if}
+      <p class="img-picker-hint">{$LANG.catalogue.image_main} = position 1. Click an image to add. Drag to reorder.</p>
+
+      <div class="img-picker">
+         <div class="img-picker__selected">
+            <h4>{$LANG.catalogue.title_products} &mdash; {$LANG.settings.title_images}</h4>
+            <ol id="img_picker_selected" class="img-picker__sel-grid"></ol>
+            <p id="img_picker_empty" class="img-picker__empty">{$LANG.common.none}</p>
          </div>
-         
+
+         <div class="img-picker__browser">
+            <nav id="img_picker_breadcrumb" class="img-picker__breadcrumb"></nav>
+            <div class="img-picker__panel">
+               <div id="img_picker_grid" class="img-picker__grid" aria-busy="false"></div>
+               <div id="img_picker_loading" class="img-picker__loading" hidden><i class="fa fa-spinner fa-spin"></i></div>
+            </div>
+         </div>
       </div>
+
       <div class="dropzone">
          <div class="dz-default dz-message"><span>{$LANG.filemanager.file_upload_note}</span></div>
       </div>
       <div id="dropzone_url" style="display: none;">?_g=filemanager&amp;product_id={$PRODUCT.product_id}</div>
       <div id="val_product_id" style="display: none;">{$PRODUCT.product_id}</div>
-
-      <div id="val_lang_go" style="display: none;">{$LANG.common.go}</div>
-      <div id="val_lang_preview" style="display: none;">{$LANG.common.preview}</div>
-      <div id="val_lang_main_image" style="display: none;">{$LANG.catalogue.image_main}</div>
-      <div id="val_lang_show_assigned" style="display: none;">{$LANG.filemanager.show_assigned}</div>
-      <div id="val_lang_show_all" style="display: none;">{$LANG.filemanager.show_all}</div>
-      <div id="val_lang_folder_create" style="display: none;">{$LANG.filemanager.folder_create}:</div>
-      <div id="val_lang_refresh_files" style="display: none;">{$LANG.filemanager.refresh_files}</div>
-      <div id="val_lang_upload_destination" style="display: none;">{$LANG.filemanager.upload_destination}:</div>
-      <div id="val_lang_enable" style="display: none;">{$LANG.common.enable}</div>
-      <div id="val_lang_disable" style="display: none;">{$LANG.common.disable}</div>
-      <div id="val_lang_enabled" style="display: none;">{$LANG.common.enabled}</div>
-      <div id="val_lang_disabled" style="display: none;">{$LANG.common.disabled}</div>
-        
    </div>
+   <script>window.CC_IMAGE_PICKER_INITIAL = {$IMAGE_PICKER_JSON nofilter};</script>
+   <script>
+   {literal}
+   (function(){
+      /* Lightweight folder-browsing image picker. Replaces the legacy filetree
+         widget. State lives in a single JS array (`selected`); each render
+         rewrites the hidden inputs as `imageset[file_id] = position`, so the
+         existing POST handler in products.index.inc.php gets ordered data
+         (1 = main, 2..N = drag order) without any other server-side change. */
+      var INITIAL = window.CC_IMAGE_PICKER_INITIAL || [];
+      var selected = INITIAL.slice(); // [{file_id, filename, filepath, thumb}]
+      var currentPath = '';
+      var $sel, $bread, $grid, $empty, $loading;
+
+      function init(){
+         if (typeof jQuery === 'undefined') { setTimeout(init, 50); return; }
+         $sel     = jQuery('#img_picker_selected');
+         $bread   = jQuery('#img_picker_breadcrumb');
+         $grid    = jQuery('#img_picker_grid');
+         $empty   = jQuery('#img_picker_empty');
+         $loading = jQuery('#img_picker_loading');
+         if (!$sel.length) return;
+
+         renderSelected();
+         loadFolder('');
+
+         /* jQuery UI sortable powers reordering. On drop we re-derive
+            positions (and the main image) from DOM order, so there's no
+            separate "make main" button - the first slot is always main. */
+         if (jQuery.fn.sortable) {
+            $sel.sortable({
+               items: '> li',
+               placeholder: 'img-picker__sel-placeholder',
+               tolerance: 'pointer',
+               stop: function(){
+                  var ids = $sel.children('li').map(function(){ return parseInt(this.getAttribute('data-fid'), 10); }).get();
+                  selected.sort(function(a, b){ return ids.indexOf(a.file_id) - ids.indexOf(b.file_id); });
+                  renderSelected();
+               }
+            }).disableSelection();
+         }
+
+         $sel.on('click', '.img-picker__sel-remove', function(e){
+            e.preventDefault();
+            var fid = parseInt(jQuery(this).closest('li').attr('data-fid'), 10);
+            selected = selected.filter(function(p){ return p.file_id !== fid; });
+            renderSelected();
+            // If the removed image was visible in the grid, refresh its tile state.
+            var $tile = $grid.find('.img-picker__tile[data-fid="'+fid+'"]');
+            if ($tile.length) $tile.removeClass('is-selected');
+         });
+
+         $bread.on('click', 'a', function(e){
+            e.preventDefault();
+            loadFolder(jQuery(this).attr('data-path') || '');
+         });
+
+         $grid.on('click', '.img-picker__folder', function(e){
+            e.preventDefault();
+            loadFolder(jQuery(this).attr('data-path'));
+         });
+
+         $grid.on('click', '.img-picker__tile', function(e){
+            e.preventDefault();
+            var $tile = jQuery(this);
+            var fid = parseInt($tile.attr('data-fid'), 10);
+            if (!fid) return;
+            var idx = selected.findIndex(function(p){ return p.file_id === fid; });
+            if (idx >= 0) {
+               selected.splice(idx, 1);
+               $tile.removeClass('is-selected');
+            } else {
+               selected.push({
+                  file_id:  fid,
+                  filename: $tile.attr('data-filename') || '',
+                  filepath: $tile.attr('data-filepath') || '',
+                  thumb:    $tile.attr('data-thumb') || ''
+               });
+               $tile.addClass('is-selected');
+            }
+            renderSelected();
+         });
+      }
+
+      function loadFolder(path){
+         currentPath = path || '';
+         $loading.removeAttr('hidden');
+         $grid.attr('aria-busy', 'true').empty();
+         var adminFile = (typeof ADMIN_FILE !== 'undefined' && ADMIN_FILE) ? ADMIN_FILE : (jQuery('#val_admin_file').text() || 'admin.php');
+         jQuery.getJSON('./' + adminFile, {_g: 'xml', 'function': 'fmFolder', path: currentPath}, function(data){
+            if (!data) data = {folders: [], images: []};
+            renderBreadcrumb(currentPath);
+            renderGrid(data);
+         }).always(function(){
+            $loading.attr('hidden', 'hidden');
+            $grid.attr('aria-busy', 'false');
+         });
+      }
+
+      function renderBreadcrumb(path){
+         var html = '<a href="#" data-path=""><i class="fa fa-folder-open"></i> /</a>';
+         if (path) {
+            var parts = path.replace(/\/+$/, '').split('/');
+            var acc = '';
+            parts.forEach(function(seg){
+               if (!seg) return;
+               acc += seg + '/';
+               html += ' <span class="img-picker__sep">&rsaquo;</span> <a href="#" data-path="' + escAttr(acc) + '">' + escHtml(seg) + '</a>';
+            });
+         }
+         $bread.html(html);
+      }
+
+      function renderGrid(data){
+         var sel_ids = {};
+         selected.forEach(function(p){ sel_ids[p.file_id] = true; });
+         var html = '';
+         (data.folders || []).forEach(function(name){
+            html += '<div class="img-picker__folder" data-path="' + escAttr(currentPath + name + '/') + '" title="' + escAttr(name) + '">'
+                 +     '<i class="fa fa-folder"></i>'
+                 +     '<span>' + escHtml(name) + '</span>'
+                 +  '</div>';
+         });
+         (data.images || []).forEach(function(img){
+            var cls = sel_ids[img.file_id] ? ' is-selected' : '';
+            html += '<div class="img-picker__tile' + cls + '"'
+                 +     ' data-fid="' + img.file_id + '"'
+                 +     ' data-filename="' + escAttr(img.filename) + '"'
+                 +     ' data-filepath="' + escAttr(img.filepath) + '"'
+                 +     ' data-thumb="' + escAttr(img.thumb) + '"'
+                 +     ' title="' + escAttr(img.filename) + '">'
+                 +     '<img src="' + escAttr(img.thumb) + '" alt="">'
+                 +     '<span class="img-picker__tile-name">' + escHtml(img.filename) + '</span>'
+                 +     '<span class="img-picker__tile-check"><i class="fa fa-check"></i></span>'
+                 +  '</div>';
+         });
+         if (!html) {
+            html = '<p class="img-picker__none">' + escHtml(jQuery('#val_lang_show_assigned').text() || '') + '&mdash;</p>';
+         }
+         $grid.html(html);
+      }
+
+      function renderSelected(){
+         if (!selected.length) {
+            $sel.empty();
+            $empty.show();
+            return;
+         }
+         $empty.hide();
+         var html = '';
+         selected.forEach(function(p, i){
+            var pos = i + 1;
+            html += '<li class="img-picker__sel" data-fid="' + p.file_id + '">'
+                 +     '<input type="hidden" name="imageset[' + p.file_id + ']" value="' + pos + '">'
+                 +     (pos === 1 ? '<span class="img-picker__main-badge"><i class="fa fa-star"></i></span>' : '')
+                 +     '<span class="img-picker__sel-pos">' + pos + '</span>'
+                 +     '<img src="' + escAttr(p.thumb) + '" alt="">'
+                 +     '<span class="img-picker__sel-name">' + escHtml(p.filename) + '</span>'
+                 +     '<a href="#" class="img-picker__sel-remove" title="Remove"><i class="fa fa-times"></i></a>'
+                 +  '</li>';
+         });
+         $sel.html(html);
+      }
+
+      function escHtml(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
+      function escAttr(s){ return escHtml(s); }
+
+      if (document.readyState === 'loading') {
+         document.addEventListener('DOMContentLoaded', init);
+      } else {
+         init();
+      }
+   })();
+   {/literal}
+   </script>
    <div id="digital" class="tab_content">
       <h3>{$LANG.catalogue.title_digital_options}</h3>
       <p>{$LANG.catalogue.title_digital_explain}</p>

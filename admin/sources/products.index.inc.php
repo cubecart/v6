@@ -1185,13 +1185,23 @@ if (isset($_GET['action'])) {
         $master_image = isset($_GET['product_id']) ? $GLOBALS['gui']->getProductImage((int)$_GET['product_id']) : '';
         $result[0]['master_image'] =  !empty($master_image) ? $master_image : 'images/general/px.gif';
         
-        if (($gallery = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_image_index` AS `i` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_filemanager` AS `f` ON i.file_id = f.file_id', false, 'i.product_id = '.$product_id, 'ORDER BY i.main_img DESC'))) {
+        if (($gallery = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_image_index` AS `i` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_filemanager` AS `f` ON i.file_id = f.file_id', false, 'i.product_id = '.$product_id, 'ORDER BY i.main_img DESC, IF(i.position = 0, 999999, i.position) ASC, i.id ASC'))) {
             $g_images = array();
+            $picker_payload = array(); // Slim, JSON-ready list for the image picker JS.
             foreach ($gallery as $key => $image) {
                 $g_images['image_'.$image['id']] = $image;
+                $picker_payload[] = array(
+                    'file_id'  => (int)$image['file_id'],
+                    'filename' => (string)$image['filename'],
+                    'filepath' => (string)$image['filepath'],
+                    'thumb'    => $GLOBALS['catalogue']->imagePath((int)$image['file_id'], 'small', 'url'),
+                );
             }
             $GLOBALS['smarty']->assign('GALLERY_JSON', json_encode($g_images));
             $GLOBALS['smarty']->assign('GALLERY_ARRAY', $g_images);
+            $GLOBALS['smarty']->assign('IMAGE_PICKER_JSON', json_encode($picker_payload, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT));
+        } else {
+            $GLOBALS['smarty']->assign('IMAGE_PICKER_JSON', '[]');
         }
 
         // Update global stock level when matrix stock level in use

@@ -130,8 +130,8 @@ class ApiResource_Products extends ApiResource
             }
         }
 
-        // Include images
-        $images = $this->_db->select('CubeCart_image_index', false, array('product_id' => (int)$id), array('main_img' => 'DESC'));
+        // Include images — main first, then drag-order from the admin picker.
+        $images = $this->_db->select('CubeCart_image_index', false, array('product_id' => (int)$id), array('main_img' => 'DESC', 'position' => 'ASC', 'id' => 'ASC'));
         $product['images'] = array();
         if ($images) {
             foreach ($images as $img) {
@@ -419,7 +419,7 @@ class ApiResource_Products extends ApiResource
      */
     private function _listImages($productId)
     {
-        $images = $this->_db->select('CubeCart_image_index', false, array('product_id' => $productId), array('main_img' => 'DESC'));
+        $images = $this->_db->select('CubeCart_image_index', false, array('product_id' => $productId), array('main_img' => 'DESC', 'position' => 'ASC', 'id' => 'ASC'));
         $data = array();
         if ($images) {
             foreach ($images as $img) {
