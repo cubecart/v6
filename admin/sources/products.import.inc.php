@@ -66,11 +66,9 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
         }
         $delimiter	= $GLOBALS['session']->get('delimiter', 'import');
         $has_header	= $GLOBALS['session']->get('headers', 'import');
-        if (!isset($_GET['cycle'])) {
-            $cycle = 1;
-        } else {
-            $cycle = $_GET['cycle'];
-        }
+        // Cast to int (was a path-traversal: $cycle is interpolated into
+        // a tmp file path that's later fopen()'d and unlink()'d).
+        $cycle = isset($_GET['cycle']) ? max(1, (int)$_GET['cycle']) : 1;
     }
     $this_import = sprintf($import_source, $cycle);
     if (isset($map) && file_exists($this_import)) {
@@ -92,12 +90,16 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
             $import_cat_cache = array();   // parent_id|name => cat_id
             while (($data = fgetcsv($fp, false, str_replace('tab', "\t", $delimiter))) !== false) {
                 $row++;
+                // Reset row-scoped accumulators so values from the previous
+                // row never leak into a row that doesn't supply them.
+                $images = array();
+                $primary_category = 0;
                 if ($cycle == 1 && $has_header && $row == 1) {
                     $headers	= $data;
                     continue;
                 }
                 foreach ($data as $offset => $value) {
-                    $field_name	= ($polymorph) ? $map[$headers[$offset]] : $map[$offset];
+                    $field_name	= isset($map[$offset]) ? $map[$offset] : '';
                     
                     if (in_array($field_name, array('price','sale_price','cost_price'))) {
                         $value = preg_replace("/[^0-9\.]/", "", $value);
@@ -136,22 +138,32 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 
                             if (!$image) {
                                 $root_image_path = CC_ROOT_DIR.'/images/source/'.$image_path.$image_name;
-                                if (file_exists($root_image_path)) {
-                                    $finfo = (extension_loaded('fileinfo')) ? new finfo(FILEINFO_SYMLINK | FILEINFO_MIME) : false;
-                                    if ($finfo && $finfo instanceof finfo) {
-                                        preg_match('#([\w\-\.]+)/([\w\-\.]+)$#iU', $finfo->file($root_image_path), $match);
-                                        $mime	= $match[0];
-                                    } elseif (function_exists('mime_content_type')) {
-                                        $mime	= mime_content_type($root_image_path);
-                                    } else {
-                                        $img_info	= getimagesize($root_image_path);
-                                        $mime	= $img_info['mime'];
-                                    }
-                                    $filesize = filesize($root_image_path);
-                                    $filesize = ($filesize > 0)? $filesize : 0;
+                                if (!file_exists($root_image_path)) {
+                                    // Source image missing on disk -- skip silently rather than
+                                    // inserting a row with undefined mimetype/filesize.
+                                    continue;
                                 }
-
-                                if ($image_id = $GLOBALS['db']->insert('CubeCart_filemanager', array('type' => 1, 'filepath' => empty($image_path) ? 'NULL' : $image_path, 'filename' => $image_name, 'filesize' => $filesize, 'mimetype' => $mime, 'md5hash' => md5($root_image_path)))) {
+                                $finfo = (extension_loaded('fileinfo')) ? new finfo(FILEINFO_SYMLINK | FILEINFO_MIME) : false;
+                                if ($finfo && $finfo instanceof finfo) {
+                                    preg_match('#([\w\-\.]+)/([\w\-\.]+)$#iU', $finfo->file($root_image_path), $match);
+                                    $mime	= $match[0];
+                                } elseif (function_exists('mime_content_type')) {
+                                    $mime	= mime_content_type($root_image_path);
+                                } else {
+                                    $img_info	= getimagesize($root_image_path);
+                                    $mime	= isset($img_info['mime']) ? $img_info['mime'] : 'application/octet-stream';
+                                }
+                                $filesize = (int)@filesize($root_image_path);
+                                // Hash the FILE CONTENT (was md5($path) which only hashed the
+                                // string and caused spurious unique collisions on the md5hash
+                                // index). On collision (same content already in DB) reuse that
+                                // existing file_id rather than letting INSERT fail silently.
+                                $hash = @md5_file($root_image_path);
+                                $existing_by_hash = $hash ? $GLOBALS['db']->select('CubeCart_filemanager', array('file_id'), array('md5hash' => $hash), false, 1) : false;
+                                if ($existing_by_hash && !empty($existing_by_hash[0]['file_id'])) {
+                                    $images[] = (int)$existing_by_hash[0]['file_id'];
+                                    $import_image_cache[$img_cache_key] = (int)$existing_by_hash[0]['file_id'];
+                                } elseif ($image_id = $GLOBALS['db']->insert('CubeCart_filemanager', array('type' => 1, 'filepath' => empty($image_path) ? 'NULL' : $image_path, 'filename' => $image_name, 'filesize' => $filesize, 'mimetype' => $mime, 'md5hash' => $hash))) {
                                     $images[] = $image_id;
                                     $import_image_cache[$img_cache_key] = $image_id;
                                 }
@@ -161,11 +173,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
                             }
                         }
                     }
-                    if ($polymorph) {
-                        if (isset($map[$headers[$offset]])) {
-                            $product_record[$map[$headers[$offset]]] = $value;
-                        }
-                    } else {
+                    if (isset($map[$offset]) && $map[$offset] !== '') {
                         $product_record[$map[$offset]] = $value;
                     }
                 }
@@ -221,41 +229,65 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 							}
 
 							if(is_numeric($cat) && $cat>0) {
-								$category_record = array (
-									'product_id' => $product_id,
-									'cat_id'  => $cat,
-									'primary'  => $primary
-								);
-								if($primary==1) { 
-									$primary_category = $cat;
+								if ($primary == 1) {
+									$primary_category = (int)$cat;
 								}
+								$batch_cat_index[] = array(
+									'product_id' => (int)$product_id,
+									'cat_id'     => (int)$cat,
+									'primary'    => (int)$primary,
+								);
 								$primary = 0;
-								$GLOBALS['db']->insert('CubeCart_category_index', $category_record);
 							}
 						}
                         $product_record['cat_id'] = $primary_category;
                     }
-                    if (is_array($images)) {
+                    if (!empty($images)) {
                         $primary = 1;
                         foreach ($images as $file_id) {
-                            $image_record = array(
-                                'product_id'	=> $product_id,
-                                'file_id'		=> $file_id,
-                                'main_img'		=> $primary
+                            $batch_image_index[] = array(
+                                'product_id' => (int)$product_id,
+                                'file_id'    => (int)$file_id,
+                                'main_img'   => $primary,
                             );
-                            $GLOBALS['db']->insert('CubeCart_image_index', $image_record);
                             $primary = 0;
                         }
                     }
-                    // Insert SEO custom URL
+                    // Buffer the SEO row for the batched flush below.
                     if (empty($product_record['seo_path'])) {
                         $product_record['seo_path'] = $GLOBALS['seo']->generatePath($product_id, 'prod');
                     }
-                    $GLOBALS['db']->insert('CubeCart_seo_urls', array('path'=> SEO::sanitizeSEOPath($product_record['seo_path']), 'item_id' => $product_id, 'type' => 'prod'));
+                    $batch_seo_urls[] = array(
+                        'path'    => SEO::sanitizeSEOPath($product_record['seo_path']),
+                        'item_id' => (int)$product_id,
+                        'type'    => 'prod',
+                    );
                 }
-                unset($product_record, $category_record, $image_record, $image, $images);
+                unset($product_record, $image, $images);
             }
             fclose($fp);
+            // Flush the buffered indexes / SEO rows as multi-row INSERTs --
+            // turns ~3*N round-trips per chunk into 3 round-trips total.
+            if (!function_exists('cc_import_flush_batch')) {
+                function cc_import_flush_batch($table, array $rows) {
+                    if (empty($rows)) return;
+                    $pfx  = $GLOBALS['config']->get('config', 'dbprefix');
+                    $cols = array_keys(reset($rows));
+                    $col_list = '`'.implode('`,`', $cols).'`';
+                    $values = array();
+                    foreach ($rows as $r) {
+                        $vals = array();
+                        foreach ($cols as $c) {
+                            $vals[] = "'".$GLOBALS['db']->sqlSafe((string)$r[$c])."'";
+                        }
+                        $values[] = '('.implode(',', $vals).')';
+                    }
+                    $GLOBALS['db']->misc('INSERT INTO `'.$pfx.$table.'` ('.$col_list.') VALUES '.implode(',', $values), false);
+                }
+            }
+            cc_import_flush_batch('CubeCart_category_index', $batch_cat_index);
+            cc_import_flush_batch('CubeCart_image_index',    $batch_image_index);
+            cc_import_flush_batch('CubeCart_seo_urls',       $batch_seo_urls);
         }
         unlink($this_import);
     }
@@ -307,6 +339,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 
         $rowCount = 0;
         $fileCount = 1;
+        $out = null;
         ## Display interstitial page before actually importing, either displaying example data from source, or a means to map the CSV to the database columns
         $delimiter	= (isset($_POST['delimiter']) && !empty($_POST['delimiter'])) ? $_POST['delimiter'] : ',';
 
@@ -325,7 +358,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
         }
         $GLOBALS['session']->set('columns', $rowCount, 'import');
         fclose($in);
-        fclose($out);
+        if (is_resource($out)) fclose($out);
 
         ## No format map available, so give them a manual assignment form
             $fields	= array(	# Update for language strings
