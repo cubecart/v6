@@ -2007,9 +2007,6 @@ table.phrases td.actions {
 table td.text-center {
     text-align: center
 }
-table#order-builder .textbox {
-    width: 100px
-}
 table#order-builder #ajax_name {
     width: 250px
 }
@@ -3968,14 +3965,17 @@ body.chromeless #content_body { border-left: 0; }
 /* Contact-form departments — same flex pattern as spec rows. */
 .dept-list { margin:0 0 10px; }
 .dept-row { display:flex; align-items:center; gap:8px; padding:6px; width:100%; box-sizing:border-box; }
-.dept-list > .dept-row:nth-child(odd)  { background:var(--bg); }
-.dept-list > .dept-row:nth-child(even) { background:var(--highlight); }
+.dept-list__rows > .dept-row:nth-child(odd)  { background:var(--bg); }
+.dept-list__rows > .dept-row:nth-child(even) { background:var(--highlight); }
 .dept-row__name  { flex:0 0 240px; }
 .dept-row__email { flex:1 1 auto; }
 .dept-row__btn   { flex:0 0 auto; padding:5px 8px; }
 .dept-row__btn .fa { font-size:12px; }
 .dept-row__btn.add    { color:#2c8a40; }
 .dept-row__btn.remove { color:#b03030; }
+.dept-list__add { margin-top:8px; padding:6px 12px; background:transparent; border:1px dashed var(--border); border-radius:3px; color:#2c8a40; cursor:pointer; }
+.dept-list__add:hover { background:var(--highlight); }
+.dept-list__add .fa { margin-right:4px; }
 
 /* Filemanager edit screen — preview tile + metadata form side-by-side instead
    of the legacy stretched single-column layout. Replace-file gets its own

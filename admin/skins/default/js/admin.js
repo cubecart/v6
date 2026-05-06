@@ -63,27 +63,6 @@ $(document).ready(function() {
         // Belt-and-braces: also rebuild right before any form submit so the
         // hidden field can never lag behind the visible rows.
         $(document).on('submit', 'form', rebuildSpecArray);
-
-        // Contact-form departments: same +/- pattern as spec rows. Clicking
-        // the trailing `+` row turns its button into `×` and appends a fresh
-        // `+` row underneath. Clicking `×` removes that row.
-        $('.dept-list').on('click', '.add', function(e) {
-            e.preventDefault();
-            $(this).removeClass('add').addClass('remove').attr('title', 'Remove').html('<i class="fa fa-times"></i>');
-            var $list = $(this).closest('.dept-list');
-            $list.append(
-                '<div class="dept-row">'
-              + '<input type="text" name="department[name][]" class="textbox dept-row__name" placeholder="Name">'
-              + '<input type="text" name="department[email][]" class="textbox dept-row__email" placeholder="Email">'
-              + '<button type="button" class="add dept-row__btn" title="Add"><i class="fa fa-plus"></i></button>'
-              + '</div>'
-            );
-        });
-        $('.dept-list').on('click', '.dept-row .remove', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            $(this).closest('.dept-row').remove();
-        });
     });
     $('.copy_text').on("click", function() {
         var $el = $(this);
@@ -1217,7 +1196,7 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
             //$(this).val("")
         }), $(o).prepend(c)
     }
-    return 1 == s && e.length > 1 && 1 == $("#" + e).length ? t($(this), $("#" + e), o) : $(i).before(o), $(".update-subtotal input.number").trigger("change"), inline_add_offset++, $(".dymanic_none").hide(), !1
+    return 1 == s && e.length > 1 && 1 == $("#" + e).length ? t($(this), $("#" + e), o) : $(i).before(o), $(o).closest("[data-cc-row-list]").trigger("cc:rows-changed"), $(".update-subtotal input.number").trigger("change"), inline_add_offset++, $(".dymanic_none").hide(), !1
 }), $("a.duplicate").on("click", function() {
     var t = $(this).attr("rel"),
         e = $(this).attr("target").length >= 1 ? $(this).attr("target") : "";
@@ -1522,7 +1501,8 @@ $("a.select").on("click", function(a) {
     } else pageChanged(this);
     if ("inv_remove" == a && $(this).parents("form:first").append('<input type="hidden" name="inv_remove[]" value="' + i.substring(1) + '" />'), $(this).hasClass("tr")) var s = $(this).parents("tr:first");
     else var s = $(this).parents("tr:first,div:first:not(.tab_content)");
-    return $(s).remove(), $(".update-subtotal input.number").trigger("change"), !1
+    var $rowList = $(s).closest("[data-cc-row-list]");
+    return $(s).remove(), $rowList.trigger("cc:rows-changed"), $(".update-subtotal input.number").trigger("change"), !1
 }), $("a.refresh").on("click", function() {
     return $(".update-subtotal input.number").trigger("change"), !1
 });
@@ -1687,33 +1667,77 @@ function ajaxElasticSearch(page) {
   });
 }
 
+// Thin shim: legacy callers still trigger this; delegate to the Layer 2
+// recalculator on the enclosing [data-cc-row-list][data-cc-recalc] table.
+// The actual logic lives in window.ccRecalc.orderBuilder below.
 function updateOrderTotals(t) {
-    t.hasClass("quantity") || t.val((1 * $(this).val()).toFixed(2));
-    var e = t.parents(".update-subtotal:first"),
-        i = $(e).find("input.quantity").val(),
-        a = $(e).find("input.lineprice").val(),
-        n = $(e).find("input.subtotal:first"),
-        s = (i * a).toFixed(2);
-    $(n).val(s);
-    var r = 0;
-    $("input.subtotal").each(function() {
-        var t = 1 * $(this).val();
-        r += t
-    });
-    var o = $("#discount").val();
-    o = 1 * o;
-    var l = $("#discount_type").val();
-    "p" == l ? (o > 100 && ($("#discount").val("100"), o = 100), o = o / 100 * r, $("#discount_percent").html("%")) : $("#discount_percent").html(""), $("#subtotal").val(r.toFixed(2));
-    var c = $("#shipping").val(),
-        d = 0;
-    $(".update-subtotal input.tax").each(function() {
-        var t = $(this).val();
-        d += 1 * t
-    });
-    var cu = $("#credit_used").val();
-    var h = (1 * r - o + 1 * c + 1 * d) - cu;
-    $("#total_tax").val(d.toFixed(2)), $("#total").val(h.toFixed(2))
+    var $list = (t && t.length) ? t.closest("[data-cc-row-list][data-cc-recalc]") : $();
+    if (!$list.length) { $list = $("[data-cc-row-list][data-cc-recalc='orderBuilder']"); }
+    if ($list.length && window.ccRowList) { window.ccRowList.recalc($list); }
 }
+
+// Order-builder recalculator. Reads canonical state from data-cc-field inputs
+// and writes computed line, subtotal, total_tax, total back via the Layer 2
+// summary/rows mechanism. Replaces the old inline-mutating updateOrderTotals
+// that suffered from $(this) === window, stale totals on tax-add, and toFixed
+// precision drift.
+window.ccRecalc = window.ccRecalc || {};
+window.ccRecalc.orderBuilder = function (ctx) {
+    var rows = ctx.rows, summary = ctx.summary || {};
+    var toMoney = function (v) { v = +v; if (!isFinite(v)) v = 0; return Math.round(v * 100) / 100; };
+    var fmt = function (v) { return toMoney(v).toFixed(2); };
+
+    var rowResults = [];
+    var subtotalRaw = 0;
+    var totalTaxRaw = 0;
+
+    rows.forEach(function (row) {
+        if (row.kind === 'line') {
+            var qty = +row.qty || 0;
+            var price = +row.price || 0;
+            var line = toMoney(qty * price);
+            subtotalRaw += line;
+            // Echo only the computed line back; leave qty/price as user typed.
+            rowResults.push({ line: fmt(line) });
+        } else if (row.kind === 'tax') {
+            totalTaxRaw += +row.amount || 0;
+            rowResults.push({});
+        } else {
+            rowResults.push(null);
+        }
+    });
+
+    var subtotal = toMoney(subtotalRaw);
+    var totalTax = toMoney(totalTaxRaw);
+
+    var discountInput = +summary.discount || 0;
+    var discountValue = discountInput;
+    var summaryOut = {
+        subtotal: fmt(subtotal),
+        total_tax: fmt(totalTax)
+    };
+
+    if (summary.discount_type === 'p') {
+        if (discountInput > 100) {
+            discountInput = 100;
+            summaryOut.discount = '100';
+        }
+        discountValue = toMoney(subtotal * discountInput / 100);
+    }
+
+    var shipping = +summary.shipping || 0;
+    var credit = +summary.credit_used || 0;
+    var total = toMoney(subtotal - discountValue + shipping + totalTax - credit);
+    summaryOut.total = fmt(total);
+
+    return {
+        rows: rowResults,
+        summary: summaryOut,
+        totals: {
+            '#discount_percent': summary.discount_type === 'p' ? '%' : ''
+        }
+    };
+};
 
 function productOptionPrices(id) {
   const $price = $("#" + id + "_price");

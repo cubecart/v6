@@ -29,21 +29,26 @@
 	</fieldset>
 
 	<fieldset><legend>{$LANG.contact.title_departments}</legend>
-	  <div id="departments" class="dept-list">
-	  {if isset($DEPARTMENTS)}
-	  {foreach from=$DEPARTMENTS item=department}
-		<div class="dept-row">
-		  <input type="text" name="department[name][]" value="{$department.name}" class="textbox dept-row__name" placeholder="{$LANG.common.name}">
-		  <input type="text" name="department[email][]" value="{$department.email}" class="textbox dept-row__email" placeholder="{$LANG.common.email}">
-		  <button type="button" class="remove dept-row__btn" title="{$LANG.common.remove}"><i class="fa fa-times"></i></button>
+	  <div id="departments" class="dept-list" data-cc-row-list data-cc-row-container=".dept-list__rows">
+		<div class="dept-list__rows">
+		{if isset($DEPARTMENTS)}
+		{foreach from=$DEPARTMENTS item=department}
+		  <div class="dept-row" data-cc-row>
+			<input type="text" name="department[name][]" value="{$department.name}" class="textbox dept-row__name" placeholder="{$LANG.common.name}">
+			<input type="text" name="department[email][]" value="{$department.email}" class="textbox dept-row__email" placeholder="{$LANG.common.email}">
+			<button type="button" class="remove dept-row__btn" title="{$LANG.common.remove}"><i class="fa fa-times"></i></button>
+		  </div>
+		{/foreach}
+		{/if}
 		</div>
-	  {/foreach}
-	  {/if}
-		<div class="dept-row">
-		  <input type="text" name="department[name][]" class="textbox dept-row__name" placeholder="{$LANG.common.name}">
-		  <input type="text" name="department[email][]" class="textbox dept-row__email" placeholder="{$LANG.common.email} {$LANG.common.optional}">
-		  <button type="button" class="add dept-row__btn" title="{$LANG.common.add}"><i class="fa fa-plus"></i></button>
-		</div>
+		<button type="button" class="add dept-list__add" title="{$LANG.common.add}"><i class="fa fa-plus"></i> {$LANG.common.add}</button>
+		<template data-cc-row-template>
+		  <div class="dept-row" data-cc-row>
+			<input type="text" name="department[name][]" class="textbox dept-row__name" placeholder="{$LANG.common.name}">
+			<input type="text" name="department[email][]" class="textbox dept-row__email" placeholder="{$LANG.common.email} {$LANG.common.optional}">
+			<button type="button" class="remove dept-row__btn" title="{$LANG.common.remove}"><i class="fa fa-times"></i></button>
+		  </div>
+		</template>
 	  </div>
 	</fieldset>
   </div>

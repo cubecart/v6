@@ -441,7 +441,7 @@
             <i class="fa fa-trash" title="{$LANG.common.delete}"></i>
             </span>
          </div>
-         <table id="order-builder">
+         <table id="order-builder" data-cc-row-list data-cc-recalc="orderBuilder">
             <thead>
                <tr>
                   <th>{$LANG.common.quantity}</th>
@@ -454,10 +454,10 @@
             <tbody id="inventory-list">
                {if isset($PRODUCTS)}
                {foreach from=$PRODUCTS item=product}
-               <tr class="update-subtotal">
+               <tr class="update-subtotal" data-cc-row data-cc-row-kind="line">
                   <td>
                      <input type="hidden" name="inv[{$product.id}][id]" class="saved" value="{$product.id}">
-                     <input type="text" name="inv[{$product.id}][quantity]" class="textbox number quantity" value="{$product.quantity}">
+                     <input type="text" name="inv[{$product.id}][quantity]" class="textbox number quantity" data-cc-field="qty" data-cc-field-numeric value="{$product.quantity}">
                      {if $product.product_id>0}
                      <input type="hidden" name="inv[{$product.id}][product_id]" value="{$product.product_id}">
                      {/if}
@@ -467,9 +467,9 @@
                      {include file='templates/element.product_options.php'}
                   </td>
                   <td style="text-align:right">
-                     <input type="text" name="inv[{$product.id}][price]" id="{$product.id}_price" class="textbox number-right lineprice" original="{$product.line_price_less_options}" value="{$product.line}">
+                     <input type="text" name="inv[{$product.id}][price]" id="{$product.id}_price" class="textbox number-right lineprice" data-cc-field="price" data-cc-field-numeric original="{$product.line_price_less_options}" value="{$product.line}">
                   </td>
-                  <td style="text-align:right"><input type="text" name="inv[{$product.id}][line_price]" class="textbox number-right subtotal goods" value="{$product.price_total}"></td>
+                  <td style="text-align:right"><input type="text" name="inv[{$product.id}][line_price]" class="textbox number-right subtotal goods" data-cc-field="line" value="{$product.price_total}"></td>
                   <td style="text-align:center"><a href="#{$product.id}" class="remove" title="{$LANG.notification.confirm_delete}" name="inv_remove" rel="{$PRODUCT.id}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                {/foreach}
@@ -484,40 +484,40 @@
                   <td style="text-align:center" class="action"><a href="#" title="{$LANG.common.add}" class="add" target="inventory-list"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
                </tr>
                <!-- Source for inline adding -->
-               <tr class="update-subtotal inline-source" name="inv_add">
-                  <td><input type="text" rel="product_quantity" original="1" value="1" class="textbox number quantity"></td>
+               <tr class="update-subtotal inline-source" name="inv_add" data-cc-row data-cc-row-kind="line">
+                  <td><input type="text" rel="product_quantity" original="1" value="1" class="textbox number quantity" data-cc-field="qty" data-cc-field-numeric></td>
                   <td><input type="hidden" rel="product_id"><input type="hidden" rel="product"><span rel="product"></span> <span rel="product_options"></span></td>
                   <td>
-                     <input type="text" rel="price" original="0.00" class="textbox number-right lineprice">
+                     <input type="text" rel="price" original="0.00" class="textbox number-right lineprice" data-cc-field="price" data-cc-field-numeric>
                   </td>
-                  <td><input type="text" rel="line_price" original="0.00" class="textbox number-right subtotal goods"></td>
+                  <td><input type="text" rel="line_price" original="0.00" class="textbox number-right subtotal goods" data-cc-field="line"></td>
                   <td style="text-align:center" class="action"><a href="#" class="remove dynamic" title="{$LANG.common.decision_remove}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                <tr>
                   <th colspan="3">{$LANG.basket.total_sub}</th>
-                  <td><input type="text" id="subtotal" name="summary[subtotal]" class="textbox number-right" value="{$SUMMARY.subtotal}"></td>
+                  <td><input type="text" id="subtotal" name="summary[subtotal]" class="textbox number-right" data-cc-field="subtotal" value="{$SUMMARY.subtotal}"></td>
                   <td>&nbsp;</td>
                </tr>
                <tr class="update-subtotal">
                   <th colspan="3">
-                     <select name="summary[discount_type]" id="discount_type" class="textbox">
+                     <select name="summary[discount_type]" id="discount_type" class="textbox" data-cc-field="discount_type">
                      <option value="f" {if $SUMMARY.discount_type == "f"}selected="selected"{/if}>{$LANG.catalogue.discount_price}</option>
                      <option value="p" {if $SUMMARY.discount_type == "p"}selected="selected"{/if}>{$LANG.catalogue.discount_percent}</option>
                      </select>
                   </th>
-                  <td><input type="text" id="discount" name="summary[discount]" class="textbox number-right lineprice" value="{$SUMMARY.discount_form}"></td>
+                  <td><input type="text" id="discount" name="summary[discount]" class="textbox number-right lineprice" data-cc-field="discount" data-cc-field-numeric value="{$SUMMARY.discount_form}"></td>
                   <td><span id="discount_percent">{if $SUMMARY.discount_type == "p"}%{/if}</span></td>
                </tr>
                <tr class="update-subtotal">
                   <th colspan="3">{$LANG.basket.shipping}</th>
-                  <td><input type="text" id="shipping" name="summary[shipping]" class="textbox number-right lineprice shipping" value="{$SUMMARY.shipping}"></td>
+                  <td><input type="text" id="shipping" name="summary[shipping]" class="textbox number-right lineprice shipping" data-cc-field="shipping" data-cc-field-numeric value="{$SUMMARY.shipping}"></td>
                   <td>&nbsp;</td>
                </tr>
                {if isset($LIST_TAXES)}
                {foreach from=$LIST_TAXES item=tax}
-               <tr class="update-subtotal">
+               <tr class="update-subtotal" data-cc-row data-cc-row-kind="tax">
                   <th colspan="3">{$tax.type_name}: {$tax.display}</th>
-                  <td><input type="text" name="tax[{$tax.id}]" class="textbox number-right tax" value="{$tax.amount}"></td>
+                  <td><input type="text" name="tax[{$tax.id}]" class="textbox number-right tax" data-cc-field="amount" data-cc-field-numeric value="{$tax.amount}"></td>
                   <td><a href="#" class="remove" name="tax_remove" rel="{$tax.id}" title=""><i class="fa fa-trash" title="{$LANG.common.remove}"></i></a></td>
                </tr>
                {/foreach}
@@ -546,25 +546,25 @@
                   <td style="text-align:center"><a href="#" class="add" target="tax-list"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
                </tr>
                <!-- Source for inline adding -->
-               <tr class="update-subtotal inline-source" name="tax_add">
+               <tr class="update-subtotal inline-source" name="tax_add" data-cc-row data-cc-row-kind="tax">
                   <th colspan="3"><input type="hidden" rel="tax_id"><span rel="tax_id"></span></th>
-                  <td><input type="text" rel="amount" class="textbox number-right tax"></td>
+                  <td><input type="text" rel="amount" class="textbox number-right tax" data-cc-field="amount" data-cc-field-numeric></td>
                   <td style="text-align:center"><a href="#" class="remove dynamic" title=""><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                <tr>
                   <th colspan="3">{$LANG.basket.total_tax}</th>
-                  <td><input type="text" id="total_tax" name="summary[total_tax]" class="textbox number-right" value="{$SUMMARY.total_tax}"></td>
+                  <td><input type="text" id="total_tax" name="summary[total_tax]" class="textbox number-right" data-cc-field="total_tax" value="{$SUMMARY.total_tax}"></td>
                   <td>&nbsp;</td>
                </tr>
                <tr>
                   <th colspan="3">{$LANG.common.credit}</th>
-                  <td><input type="text" id="credit_used" name="summary[credit_used]" class="textbox number-right" value="{$SUMMARY.credit_used}"></td>
+                  <td><input type="text" id="credit_used" name="summary[credit_used]" class="textbox number-right" data-cc-field="credit_used" data-cc-field-numeric value="{$SUMMARY.credit_used}"></td>
                   <td>&nbsp;</td>
                </tr>
                <!-- Add total tax: read only -->
                <tr>
                   <th colspan="3">{$LANG.basket.total}</th>
-                  <td><input type="text" id="total" name="summary[total]" class="textbox number-right" value="{$SUMMARY.total}"></td>
+                  <td><input type="text" id="total" name="summary[total]" class="textbox number-right" data-cc-field="total" value="{$SUMMARY.total}"></td>
                   <td style="text-align:center"><a href="#" class="refresh"><i class="fa fa-refresh" title="{$LANG.common.refresh}"></i></a></td>
                </tr>
             </tfoot>
