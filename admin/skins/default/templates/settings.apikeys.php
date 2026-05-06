@@ -158,7 +158,6 @@
       </fieldset>
     </form>
     {if isset($API_LOG)}
-    <div class="right"><a href="?_g=maintenance&clearApiLog=true&redir=apikeys" class="button delete" title="{$LANG.notification.confirm_continue}">{$LANG.maintain.clear_log}</a></div>
     <table>
       <thead>
         <tr>

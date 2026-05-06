@@ -264,6 +264,15 @@ if ($action === 'edit' && isset($_GET['key_id']) && is_numeric($_GET['key_id']))
     $GLOBALS['smarty']->assign('PAGINATION_API_LOG', $db->pagination(false, $log_per_page, $log_page, 5, $log_page_var, $log_anchor));
     $GLOBALS['main']->addTabControl('API Log', $log_anchor);
 
+    // Clear-log action sits on the tab row, only visible when the API Log tab
+    // is the active anchor.
+    if ($log_total > 0) {
+        $GLOBALS['main']->addTabAction(
+            $GLOBALS['language']->maintain['clear_log'],
+            array('#'.$log_anchor => '?_g=maintenance&clearApiLog=true&redir=apikeys')
+        );
+    }
+
     // Key filter dropdown for log
     $GLOBALS['smarty']->assign('LOG_KEY_FILTER', isset($_GET['log_key_id']) ? (int)$_GET['log_key_id'] : '');
 }
