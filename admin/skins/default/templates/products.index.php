@@ -498,10 +498,10 @@
                   <td><span class="editable number-right" name="option_update[{$option.assign_id}][option_price]" title="{$LANG.common.click_edit}">{$option.option_price}</span></td>
                   <td style="text-align:center"><input type="checkbox" name="option_update[{$option.assign_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if} value="1"></td>
                   <td><span class="editable number" name="option_update[{$option.assign_id}][option_weight]" title="{$LANG.common.click_edit}">{$option.option_weight}</span></td>
-                  <td class="option_image">
-                     <i class="fa fa-picture-o choose_option_img"  id="selector_image_id_{$option.assign_id}" aria-hidden="true" title="{$LANG.filemanager.click_to_select}" rel="{$option.assign_id}"{if !empty($option.image_id)} style="display:none"{/if}></i>
-                     <img src="{$option.image}" id="option_image_preview_{$option.assign_id}" title="{$LANG.filemanager.click_to_select}" rel="{$option.assign_id}" data-filepath="{$option.filepath}" class="choose_option_img" style="max-width: 100px; max-height: 100px;" />
-                     <div{if empty($option.image_id)} style="display: none;" {/if} id="remove_image_id_{$option.assign_id}" title="{$LANG.common.remove}" class="remove_option_img"  rel="{$option.assign_id}">{$LANG.common.remove}</div>
+                  <td class="option_image" style="text-align:center">
+                     <i class="fa fa-picture-o choose_option_img" id="selector_image_id_{$option.assign_id}" aria-hidden="true" title="{$LANG.filemanager.click_to_select}" rel="{$option.assign_id}" style="cursor:pointer;font-size:24px;color:#888;{if !empty($option.image_id)}display:none;{/if}"></i>
+                     <img src="{$option.image}" id="option_image_preview_{$option.assign_id}" title="{$LANG.filemanager.click_to_select}" rel="{$option.assign_id}" data-filepath="{$option.filepath}" class="choose_option_img" style="max-width:60px;max-height:60px;cursor:pointer;{if empty($option.image_id)}display:none;{/if}" />
+                     <div{if empty($option.image_id)} style="display: none;"{/if} id="remove_image_id_{$option.assign_id}" title="{$LANG.common.remove}" class="remove_option_img" rel="{$option.assign_id}">{$LANG.common.remove}</div>
                      <input type="hidden" name="option_update[{$option.assign_id}][image_id]" id="option_image_id_{$option.assign_id}" value="{$option.image_id}">
                   </td>
                   <td style="text-align:center">
@@ -558,7 +558,11 @@
                   <td><input type="text" id="opt_price" rel="price" class="textbox number data"></td>
                   <td style="text-align:center"><input type="checkbox" id="opt_absolute_price" rel="absolute_price" class="checkbox data"></td>
                   <td><input type="text" id="opt_weight" rel="weight" class="textbox number data"></td>
-                  <td></td>
+                  <td class="option_image" style="text-align:center">
+                     <input type="hidden" id="opt_image_id" rel="image_id" class="data" value="">
+                     <i class="fa fa-picture-o choose_option_img_new" id="opt_image_chooser" title="{$LANG.filemanager.click_to_select}" style="cursor:pointer;font-size:24px;color:#888;"></i>
+                     <img id="opt_image_preview" src="" alt="" style="display:none;max-width:60px;max-height:60px;cursor:pointer;" title="{$LANG.filemanager.click_to_select}">
+                  </td>
                   <td style="text-align:center"><a href="#" onclick="optionAdd('option_template', 'options_added'); return false;"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
                </tr>
                <tr class="inline-source">

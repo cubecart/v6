@@ -1387,6 +1387,7 @@ $(document).on('click', '.choose_option_img', function() {
     var assign_id = $sel.attr('rel');
     if (!assign_id) return;
     ccOpenImagePickerDialog({
+        title: 'Choose option image',
         storageKey: 'option_dialog',
         onPick: function(d) {
             $('#option_image_id_'  + assign_id).val(d.file_id || 0);
@@ -1396,6 +1397,31 @@ $(document).on('click', '.choose_option_img', function() {
             $.colorbox.close();
         }
     });
+});
+
+/* Same picker for the "add new option" entry row. Stores the chosen file_id
+   in #opt_image_id (carried into the cloned row by optionAdd's data-loop) and
+   shows a thumb preview on the placeholder icon's spot. */
+$(document).on('click', '.choose_option_img_new, #opt_image_preview', function() {
+    ccOpenImagePickerDialog({
+        title: 'Choose option image',
+        storageKey: 'option_dialog',
+        onPick: function(d) {
+            $('#opt_image_id').val(d.file_id || 0);
+            $('#opt_image_preview').attr('src', d.thumb || '').show();
+            $('#opt_image_chooser').hide();
+            $.colorbox.close();
+        }
+    });
+});
+/* When optionAdd finishes appending a row, reset the chooser back to its
+   placeholder so the next option starts blank. */
+$(document).on('click', 'a[onclick^="optionAdd("]', function() {
+    setTimeout(function() {
+        $('#opt_image_id').val('');
+        $('#opt_image_preview').attr('src', '').hide();
+        $('#opt_image_chooser').show();
+    }, 0);
 });
 
 /* CKEditor "Browse Server" override: replace the popup-window file browser
@@ -1585,7 +1611,7 @@ function optionAdd(t, e) {
             var c = $(l[i]).attr("rel"),
                 d = "" == $(l[i]).val() ? "0" : $(l[i]).val(),
                 h = $(o).find("." + c).find("input").first();
-            "matrix_include" == c ? h.attr("name", "option_add[" + c + "][" + options_added + "]") : "set_enabled" == c ? (h.prop('disabled', false), h.prop("checked", true), h.parent().addClass("selected"), h.val(1), 1 == d && (h.parent().addClass("selected"), h.prop("checked", true)), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : "default" == c || "negative" == c || "absolute_price" == c ? (h.prop('disabled', false), $(l[i]).is(":checked") && (h.parent().addClass("selected"), h.prop("checked", true), $(l[i]).prop('checked', false).parent().removeClass("selected")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : (d = parseFloat(d, 10).toFixed(2), $(o).find("." + c).append(d).find("input").first().val(parseFloat(d)).prop('disabled', false)), $(l[i]).val("")
+            "matrix_include" == c ? h.attr("name", "option_add[" + c + "][" + options_added + "]") : "set_enabled" == c ? (h.prop('disabled', false), h.prop("checked", true), h.parent().addClass("selected"), h.val(1), 1 == d && (h.parent().addClass("selected"), h.prop("checked", true)), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : "default" == c || "negative" == c || "absolute_price" == c ? (h.prop('disabled', false), $(l[i]).is(":checked") && (h.parent().addClass("selected"), h.prop("checked", true), $(l[i]).prop('checked', false).parent().removeClass("selected")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : "image_id" == c ? (h.val(d).prop('disabled', false).attr("name", "option_add[" + c + "][" + options_added + "]"), parseInt(d, 10) > 0 && $(o).find("." + c).append('<img src="' + ($("#opt_image_preview").attr("src") || "") + '" style="max-width:60px;max-height:60px;">')) : (d = parseFloat(d, 10).toFixed(2), $(o).find("." + c).append(d).find("input").first().val(parseFloat(d)).prop('disabled', false)), $(l[i]).val("")
         }
         $(document).on("click", "a.remove", function (e) {
             e.preventDefault();
