@@ -276,9 +276,12 @@ if (!isset($_SESSION['setup']['permissions'])) {
             $admin_id = $GLOBALS['db']->insertid();
             Config::getInstance($glob)->set('release_notes', CC_VERSION.'_'.$admin_id, '1');
 
-            // Set the current exchange rates
+            // Set the current exchange rates. Pass echo=false so the JSON
+            // payload is returned instead of printed to the response body —
+            // any output here would prevent the httpredir() at the end of the
+            // install handler from sending its Location header.
             $cron = new Cron();
-            $cron->updateExchangeRates($_SESSION['setup']['config']['default_currency']);
+            $cron->updateExchangeRates($_SESSION['setup']['config']['default_currency'], false);
 
             $default_docs = array(
                 0 => array('doc_name' => str_replace('CubeCart', $_SESSION['setup']['config']['store_name'], $strings['setup']['default_doc_title_welcome']), 'doc_content' => $strings['setup']['default_doc_content_welcome'], 'doc_order' => 1, 'doc_lang' => $config['default_language'], 'doc_home' => 1, 'doc_terms' => 0, 'doc_privacy' => 0),
