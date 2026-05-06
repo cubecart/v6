@@ -1335,6 +1335,7 @@ function ccOpenImagePickerDialog(opts) {
                })
              + '</div>';
     $.colorbox({
+        title: opts.title || 'Select image',
         html: html,
         width: '90%',
         height: '85%',

@@ -731,10 +731,11 @@ class Debug
         // change after a move) hashes to the same row.
         if (defined('CC_ROOT_DIR') && CC_ROOT_DIR !== '' && CC_ROOT_DIR !== '/') {
             // Render as document-root-relative ("/classes/foo.php") — strip the
-            // absolute prefix and leave the leading slash. CC_ROOT_DIR ends with
-            // its own trailing slash so we substitute it with '/'.
-            $message   = str_replace(CC_ROOT_DIR, '/', (string)$message);
-            $backtrace = str_replace(CC_ROOT_DIR, '/', (string)$backtrace);
+            // absolute prefix entirely. CC_ROOT_DIR has no trailing slash, so
+            // replace it with empty string and let the path's own leading
+            // slash provide the document-relative form.
+            $message   = str_replace(CC_ROOT_DIR, '', (string)$message);
+            $backtrace = str_replace(CC_ROOT_DIR, '', (string)$backtrace);
         }
         $now  = time();
         $hash = sha1((string)$message);

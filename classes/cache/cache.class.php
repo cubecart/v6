@@ -277,9 +277,14 @@ class Cache_Controler
         
         if (is_array($files)) {
             foreach ($files as $file) {
-                @unlink($file);
+                // Skip directories (e.g. cache/skin/) that the wildcard globs
+                // pick up alongside files — unlink() on a directory triggers
+                // "Operation not permitted" warnings.
+                if (is_file($file)) {
+                    @unlink($file);
+                }
             }
-        }   
+        }
     }
 
     /**
