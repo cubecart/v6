@@ -219,6 +219,9 @@ if (!isset($_SESSION['setup']['permissions'])) {
         if (isset($cc_email) && !empty($cc_email)) {
             $GLOBALS['smarty']->assign('PRESET_EMAIL', $cc_email);
         }
+        if (isset($cc_name) && !empty($cc_name)) {
+            $GLOBALS['smarty']->assign('PRESET_NAME', $cc_name);
+        }
     } else {
         ## Stage 5: Actual installation
         ## Write config file
