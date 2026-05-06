@@ -1486,6 +1486,20 @@ $("a.select").on("click", function(a) {
     $(".update-subtotal input.number").trigger("change")
 }), $(".update-subtotal input.number").on("change", function() {
     updateOrderTotals($(this))
+}), $(document).on("change", ".tax-chooser", function() {
+    // Pre-fill the amount input with goods*subtotal*percent + shipping*percent
+    // when a tax/tariff is picked. Approximate (no per-line exclusions); user
+    // can edit before clicking + or accept and add.
+    var $opt = $(this).find("option:selected");
+    var pct = parseFloat($opt.attr("data-percent"));
+    if (!isFinite(pct) || pct <= 0) return;
+    var goodsFlag = parseInt($opt.attr("data-goods"), 10) === 1 ? 1 : 0;
+    var shipFlag  = parseInt($opt.attr("data-shipping"), 10) === 1 ? 1 : 0;
+    var subtotal = parseFloat($("#subtotal").val()) || 0;
+    var shipping = parseFloat($("#shipping").val()) || 0;
+    var base = subtotal * goodsFlag + shipping * shipFlag;
+    var amount = Math.round(base * pct) / 100;
+    $(this).closest("tr").find("input[rel='amount']").val(amount.toFixed(2));
 }), $("body").on("click", "a.remove", function() {
     var t = $(this).attr("title"),
         e = $(this).attr("rel"),
@@ -1699,6 +1713,13 @@ window.ccRecalc.orderBuilder = function (ctx) {
             subtotalRaw += line;
             // Echo only the computed line back; leave qty/price as user typed.
             rowResults.push({ line: fmt(line) });
+        } else if (row.kind === 'staging') {
+            // Inline-add row: compute its own qty * price preview but don't
+            // contribute to the order subtotal — staging values are only
+            // committed when the user clicks +.
+            var sQty = +row.qty || 0;
+            var sPrice = +row.price || 0;
+            rowResults.push({ line: fmt(toMoney(sQty * sPrice)) });
         } else if (row.kind === 'tax') {
             totalTaxRaw += +row.amount || 0;
             rowResults.push({});

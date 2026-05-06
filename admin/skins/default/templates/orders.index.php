@@ -476,11 +476,11 @@
                {/if}
             </tbody>
             <tfoot>
-               <tr class="update-subtotal inline-add">
-                  <td><input type="text" class="textbox number quantity" rel="product_quantity" original="1" value="1"></td>
+               <tr class="update-subtotal inline-add" data-cc-row data-cc-row-kind="staging">
+                  <td><input type="text" class="textbox number quantity" rel="product_quantity" original="1" value="1" data-cc-field="qty" data-cc-field-numeric></td>
                   <td><input type="hidden" id="ajax_product_id" rel="product_id"><input type="text" id="ajax_name" placeholder="{$LANG.common.type_to_search}" class="textbox ajax not-empty" rel="product"></td>
-                  <td><input type="text" id="ajax_price" class="textbox number-right lineprice" rel="price" original="0.00" value="0.00"></td>
-                  <td  align="right"><input type="text" rel="line_price" class="textbox number-right subtotal goods" original="0.00" value="0.00"></td>
+                  <td><input type="text" id="ajax_price" class="textbox number-right lineprice" rel="price" original="0.00" value="0.00" data-cc-field="price" data-cc-field-numeric></td>
+                  <td  align="right"><input type="text" rel="line_price" class="textbox number-right subtotal goods" original="0.00" value="0.00" data-cc-field="line"></td>
                   <td style="text-align:center" class="action"><a href="#" title="{$LANG.common.add}" class="add" target="inventory-list"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
                </tr>
                <!-- Source for inline adding -->
@@ -501,6 +501,7 @@
                <tr class="update-subtotal">
                   <th colspan="3">
                      <select name="summary[discount_type]" id="discount_type" class="textbox" data-cc-field="discount_type">
+                     <option value="">{$LANG.form.please_select}</option>
                      <option value="f" {if $SUMMARY.discount_type == "f"}selected="selected"{/if}>{$LANG.catalogue.discount_price}</option>
                      <option value="p" {if $SUMMARY.discount_type == "p"}selected="selected"{/if}>{$LANG.catalogue.discount_percent}</option>
                      </select>
@@ -535,7 +536,7 @@
                         {foreach from=$SELECT_TAX item=country key=taxes}
                         <optgroup label="{$taxes}">
                            {foreach from=$country item=tax}
-                           <option value="{$tax.id}" data-percent="{$tax.tax_percent}" data-shipping="{$tax.shipping}" data-goods="{$tax.goods}">{$tax.type_name}: {$tax.display}{if $GROUPED_TARIFFS && isset($tax.source)} ({$tax.source}-{$tax.destination} @ {$tax.tax_percent}){/if}</option>
+                           <option value="{$tax.id}" data-percent="{$tax.tax_percent}" data-shipping="{$tax.shipping}" data-goods="{$tax.goods}">{$tax.type_name}: {$tax.display}{if $GROUPED_TARIFFS && isset($tax.source)} ({$tax.source}-{$tax.destination}){elseif !isset($tax.source) && isset($tax.tax_percent) && $tax.tax_percent !== null} ({$tax.tax_percent|string_format:"%.2f"|regex_replace:'/\.?0+$/':''}%){/if}</option>
                            {/foreach}
                         </optgroup>
                         {/foreach}
