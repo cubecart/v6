@@ -227,7 +227,7 @@
 	  <div id="toolbar">
 		{if isset($CONTROLLER.continue) && !isset($MODE_LANGUAGE)}<span class="continue"><input type="submit" name="proceed" value="{$LANG.common.continue} &rarr;" /></span>{/if}
 		{if isset($CONTROLLER.retry)}<span class="continue"><input type="submit" name="retry" value="{$LANG.setup.button_retry}" /></span>{/if}
-		{if isset($CONTROLLER.restart)}<span class="cancel"><input type="submit" name="cancel" value="{$LANG.setup.button_restart}" class="cancel" /></span>{/if}
+		{if isset($CONTROLLER.restart) && !isset($MODE_COMPLETE_INSTALL)}<span class="cancel"><input type="submit" name="cancel" value="{$LANG.setup.button_restart}" class="cancel" /></span>{/if}
 	  </div>
 	</div>
   </form>
