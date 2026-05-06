@@ -56,4 +56,4 @@ $features = array(
     '4005' => 'PHP deprecation warnings cleared',
 );
 $security = array();
-$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 7, $notes, $security);
+$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 33, $notes, $security);
