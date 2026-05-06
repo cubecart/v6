@@ -3152,6 +3152,10 @@ textarea#query {
   div.tab-selected {
     background: var(--panel) !important;
     border-color: var(--border) !important;
+    /* Match the light-mode treatment: hide the active tab's bottom border so
+       it merges with the content panel below (which is also var(--panel) in
+       dark mode). Without this the tab shows a visible bar at the join. */
+    border-bottom-color: var(--panel) !important;
   }
   div.tab a,
   div.tab-selected a {
