@@ -29,11 +29,11 @@
       <input type="submit" value="{$LANG.common.unavailable}" class="button small postfix disabled expand marg-top" disabled>
    </div>
    {else}
-   <div class="medium-2 columns show-for-medium-up">
+   <div class="medium-3 columns show-for-medium-up">
    <input type="number" name="quantity" aria-label="{$LANG.common.quantity}" value="{$PRODUCT.minimum_quantity|default:'1'}" min="{$PRODUCT.minimum_quantity}"{if $PRODUCT.maximum_quantity gte $PRODUCT.minimum_quantity} max="{$PRODUCT.maximum_quantity}"{/if} maxlength="3" class="quantity required text-center">
       <input type="hidden" name="add" value="{$PRODUCT.product_id}">
    </div>
-   <div  class="small-12 medium-10 columns">
+   <div  class="small-12 medium-9 columns">
       <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button postfix">{$LANG.catalogue.add_to_basket}</button>
    </div>
    {if $PRODUCT.minimum_quantity>1}<div><small>{sprintf($LANG.catalogue.min_purchase_quantity,$PRODUCT.minimum_quantity)}</small></div>{/if}
