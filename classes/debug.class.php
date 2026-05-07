@@ -726,6 +726,12 @@ class Debug
         if (!isset($GLOBALS['db']) || !$GLOBALS['db']->connected) {
             return;
         }
+        // During setup $GLOBALS['config'] is still the raw bootstrap array,
+        // not the Config singleton, so calling ->get() on it would fatal.
+        // Skip DB logging until the singleton is in place.
+        if (!is_object($GLOBALS['config']) || !method_exists($GLOBALS['config'], 'get')) {
+            return;
+        }
         // Strip CC_ROOT_DIR from message and backtrace so logged paths are
         // document-relative — same error from different installs (or a path
         // change after a move) hashes to the same row.
