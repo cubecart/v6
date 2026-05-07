@@ -104,10 +104,6 @@
   background: white;
 }
 .dropzone .dz-preview.dz-image-preview .dz-details {
-  -webkit-transition: opacity 0.2s linear;
-  -moz-transition: opacity 0.2s linear;
-  -ms-transition: opacity 0.2s linear;
-  -o-transition: opacity 0.2s linear;
   transition: opacity 0.2s linear;
 }
 .dropzone .dz-preview .dz-remove {
@@ -119,9 +115,6 @@
 }
 .dropzone .dz-preview .dz-remove:hover {
   text-decoration: underline;
-}
-.dropzone .dz-preview:hover .dz-details {
-  opacity: 1;
 }
 .dropzone .dz-preview .dz-details {
   z-index: 20;
@@ -161,12 +154,7 @@
   border-radius: 3px;
 }
 .dropzone .dz-preview:hover .dz-image img {
-  -webkit-transform: scale(1.05, 1.05);
-  -moz-transform: scale(1.05, 1.05);
-  -ms-transform: scale(1.05, 1.05);
-  -o-transform: scale(1.05, 1.05);
   transform: scale(1.05, 1.05);
-  -webkit-filter: blur(8px);
   filter: blur(8px);
 }
 .dropzone .dz-preview .dz-image {
@@ -182,18 +170,10 @@
   display: block;
 }
 .dropzone .dz-preview.dz-success .dz-success-mark {
-  -webkit-animation: passing-through 3s cubic-bezier(0.77, 0, 0.175, 1);
-  -moz-animation: passing-through 3s cubic-bezier(0.77, 0, 0.175, 1);
-  -ms-animation: passing-through 3s cubic-bezier(0.77, 0, 0.175, 1);
-  -o-animation: passing-through 3s cubic-bezier(0.77, 0, 0.175, 1);
   animation: passing-through 3s cubic-bezier(0.77, 0, 0.175, 1);
 }
 .dropzone .dz-preview.dz-error .dz-error-mark {
   opacity: 1;
-  -webkit-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
-  -moz-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
-  -ms-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
-  -o-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
   animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
 }
 .dropzone .dz-preview .dz-success-mark, .dropzone .dz-preview .dz-error-mark {
@@ -214,25 +194,13 @@
 }
 .dropzone .dz-preview.dz-processing .dz-progress {
   opacity: 1;
-  -webkit-transition: all 0.2s linear;
-  -moz-transition: all 0.2s linear;
-  -ms-transition: all 0.2s linear;
-  -o-transition: all 0.2s linear;
   transition: all 0.2s linear;
 }
 .dropzone .dz-preview.dz-complete .dz-progress {
   opacity: 0;
-  -webkit-transition: opacity 0.4s ease-in;
-  -moz-transition: opacity 0.4s ease-in;
-  -ms-transition: opacity 0.4s ease-in;
-  -o-transition: opacity 0.4s ease-in;
   transition: opacity 0.4s ease-in;
 }
 .dropzone .dz-preview:not(.dz-processing) .dz-progress {
-  -webkit-animation: pulse 6s ease infinite;
-  -moz-animation: pulse 6s ease infinite;
-  -ms-animation: pulse 6s ease infinite;
-  -o-animation: pulse 6s ease infinite;
   animation: pulse 6s ease infinite;
 }
 .dropzone .dz-preview .dz-progress {
@@ -247,7 +215,6 @@
   width: 80px;
   margin-left: -40px;
   background: rgba(255, 255, 255, 0.9);
-  -webkit-transform: scale(1);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -259,10 +226,6 @@
   left: 0;
   bottom: 0;
   width: 0;
-  -webkit-transition: width 300ms ease-in-out;
-  -moz-transition: width 300ms ease-in-out;
-  -ms-transition: width 300ms ease-in-out;
-  -o-transition: width 300ms ease-in-out;
   transition: width 300ms ease-in-out;
 }
 .dropzone .dz-preview.dz-error .dz-error-message {
@@ -279,10 +242,6 @@
   display: block;
   display: none;
   opacity: 0;
-  -webkit-transition: opacity 0.3s ease;
-  -moz-transition: opacity 0.3s ease;
-  -ms-transition: opacity 0.3s ease;
-  -o-transition: opacity 0.3s ease;
   transition: opacity 0.3s ease;
   border-radius: 8px;
   font-size: 13px;
@@ -318,17 +277,10 @@ input[type=submit] {
     font-family: 'Open Sans', sans-serif;
     padding: 8px 12px;
     border-radius: 3px;
-    -moz-border-radius: 3px;
     box-shadow: inset 0 0 2px #fff;
-    -o-box-shadow: inset 0 0 2px #fff;
-    -webkit-box-shadow: inset 0 0 2px #fff;
-    -moz-box-shadow: inset 0 0 2px #fff;
     color: var(--text);
     border: 1px solid var(--border);
-    background-image: -moz-linear-gradient(#ededed, #e1e1e1);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#e1e1e1), to(#ededed));
-    background-image: -webkit-linear-gradient(#ededed, #e1e1e1);
-    background-image: -o-linear-gradient(#ededed, #e1e1e1);
+    background-image: linear-gradient(#ededed, #e1e1e1);
     text-shadow: 1px 1px 1px #fff;
     background-color: #e1e1e1;
 }
@@ -336,10 +288,7 @@ a.button:hover, div.button:hover, span.button:hover,
 input[type=button]:hover,
 input[type=submit]:hover {
     border: 1px solid #b0b0b0;
-    background-image: -moz-linear-gradient(#e1e1e1, #ededed);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ededed), to(#e1e1e1));
-    background-image: -webkit-linear-gradient(#e1e1e1, #ededed);
-    background-image: -o-linear-gradient(#e1e1e1, #ededed);
+    background-image: linear-gradient(#e1e1e1, #ededed);
     background-color: #ededed
 }
 a.button.delete, div.button.delete, span.button.delete, button.button.delete,
@@ -405,10 +354,6 @@ input[type=checkbox] {
     cursor: pointer;
     outline: 0;
     opacity: 0;
-    -ms-filter: "alpha(opacity=0)";
-    filter: alpha(opacity=0);
-    -khtml-opacity: 0;
-    -moz-opacity: 0;
     width: 16px;
     height: 16px
 }
@@ -439,9 +384,6 @@ fieldset .custom-checkbox {
 }
 .remove_option_img {
     background-color: var(--panel-muted);
-    -webkit-transition: background-color 0.25s ease-out;
-    -moz-transition: background-color 0.25s ease-out;
-    -o-transition: background-color 0.25s ease-out;
     transition: background-color 0.25s ease-out;
     font-size: 10px;
     line-height: 14px;
@@ -1615,9 +1557,6 @@ div.pagination div.current {
 div.pagination a {
     background-color: var(--panel-muted);
     color: var(--text-muted);
-    -webkit-transition: background-color 0.25s ease-out;
-    -moz-transition: background-color 0.25s ease-out;
-    -o-transition: background-color 0.25s ease-out;
     transition: background-color 0.25s ease-out;
 }
 div.pagination a:hover {
@@ -1663,8 +1602,6 @@ form.note p {
     background-color: var(--note-bg);
     border: 1px solid var(--note-border);
     border-radius: 6px;
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
     font-size: 12px;
     z-index: 50;
     margin-top: 20px;
@@ -1746,8 +1683,6 @@ input.save-changes {
     position: fixed;
     z-index: 10;
     width: 300px;
-    -webkit-box-shadow: 0 0 20px 3px rgba(0, 0, 0, 1);
-    -moz-box-shadow: 0 0 20px 3px rgba(0, 0, 0, 1);
     box-shadow: 0 0 20px 3px rgba(0, 0, 0, 1)
 }
 #sidebar_content {
@@ -1870,12 +1805,6 @@ input.search {
 }
 a.handle {
     cursor: move
-}
-.capitalize {
-    text-transform: capitalize
-}
-.uppercase {
-    text-transform: uppercase
 }
 .light-category {
     color: #4c4c4c;
@@ -2759,7 +2688,6 @@ ul.char_filter li {
     flex: 0 1 auto; 
     list-style-type: none;
 }
-ul.char_filter li.selected {}
 .cke_dialog_ui_checkbox_input {
     opacity: 1!important;
 }
