@@ -442,7 +442,7 @@
                   <td><a href="{$term.search_url}" target="_blank" rel="noopener">{$term.searchstr}</a></td>
                   <td class="text-center">{$term.hits}</td>
                   <td class="text-center">{$term.percent}</td>
-                  <td class="text-center"><a href="{$term.search_url}" target="_blank" rel="noopener" title="View results"><i class="fa fa-external-link"></i></a></td>
+                  <td class="text-center"><a href="{$term.search_url}" target="_blank" rel="noopener" title="{$LANG.statistics.view_results}"><i class="fa fa-external-link"></i></a></td>
                </tr>
                {/foreach}
             </tbody>
@@ -565,7 +565,7 @@
                   </td>
                   <td>
                      {$user.location_label}
-                     {if !empty($user.location) && strpos($user.location, "404") === false} <a href="{$STORE_URL}/{$user.location}" target="_blank" rel="noopener" title="Open page"><i class="fa fa-external-link"></i></a>{/if}
+                     {if !empty($user.location) && strpos($user.location, "404") === false} <a href="{$STORE_URL}/{$user.location}" target="_blank" rel="noopener" title="{$LANG.common.open_page}"><i class="fa fa-external-link"></i></a>{/if}
                   </td>
                   <td class="text-right" nowrap="nowrap">{if $user.cart_value}<strong>{$user.cart_value}</strong>{else}&mdash;{/if}</td>
                   <td class="text-center" nowrap="nowrap">{$user.active_for}</td>

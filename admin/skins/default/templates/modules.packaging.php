@@ -22,9 +22,9 @@
 		  </a>
 		</span>
 		<input type="text" name="packaging_boxes[{$i}][name]" value="{$box.name|escape:'html'}" class="textbox" placeholder="{$LANG.settings.packaging_name}" style="width:150px">
-		<input type="text" name="packaging_boxes[{$i}][l]" value="{$box.l}" class="textbox" size="5" placeholder="L"> &#215;
-		<input type="text" name="packaging_boxes[{$i}][w]" value="{$box.w}" class="textbox" size="5" placeholder="W"> &#215;
-		<input type="text" name="packaging_boxes[{$i}][h]" value="{$box.h}" class="textbox" size="5" placeholder="H">
+		<input type="text" name="packaging_boxes[{$i}][l]" value="{$box.l}" class="textbox" size="5" placeholder="{$LANG.common.length_short}"> &#215;
+		<input type="text" name="packaging_boxes[{$i}][w]" value="{$box.w}" class="textbox" size="5" placeholder="{$LANG.common.width_short}"> &#215;
+		<input type="text" name="packaging_boxes[{$i}][h]" value="{$box.h}" class="textbox" size="5" placeholder="{$LANG.common.height_short}">
 		{$PACKAGING_DIM_UNIT}
 	  </div>
 	  {/foreach}
@@ -34,9 +34,9 @@
 	  <legend>{$LANG.settings.packaging_add}</legend>
 	  <div class="nostripe">
 		<input type="text" id="pkg_name" class="textbox" placeholder="{$LANG.settings.packaging_name}" style="width:150px">
-		<input type="text" id="pkg_l" class="textbox" size="5" placeholder="L"> &#215;
-		<input type="text" id="pkg_w" class="textbox" size="5" placeholder="W"> &#215;
-		<input type="text" id="pkg_h" class="textbox" size="5" placeholder="H">
+		<input type="text" id="pkg_l" class="textbox" size="5" placeholder="{$LANG.common.length_short}"> &#215;
+		<input type="text" id="pkg_w" class="textbox" size="5" placeholder="{$LANG.common.width_short}"> &#215;
+		<input type="text" id="pkg_h" class="textbox" size="5" placeholder="{$LANG.common.height_short}">
 		<span id="packaging-dim-unit">{$PACKAGING_DIM_UNIT}</span>
 		<a href="#" id="pkg-add-btn"><i class="fa fa-plus-circle"></i> {$LANG.common.add}</a>
 	  </div>

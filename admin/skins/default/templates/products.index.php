@@ -209,8 +209,8 @@
             <label for="dimension_unit">{$LANG.catalogue.dimension_unit}</label>
             <span>
                 <select name="dimension_unit" id="dimension_unit" class="textbox">
-                    <option{if (!isset($PRODUCT.dimension_unit) && $CONFIG.product_size_unit == 'cm') || $PRODUCT.dimension_unit=='cm'} selected='selected'{/if} value="cm">Centimeters (cm)</option>
-                    <option{if  (!isset($PRODUCT.dimension_unit) && $CONFIG.product_size_unit == 'in') || $PRODUCT.dimension_unit=='in'} selected='selected'{/if} value="in">Inches (in)</option>
+                    <option{if (!isset($PRODUCT.dimension_unit) && $CONFIG.product_size_unit == 'cm') || $PRODUCT.dimension_unit=='cm'} selected='selected'{/if} value="cm">{$LANG.catalogue.unit_cm}</option>
+                    <option{if  (!isset($PRODUCT.dimension_unit) && $CONFIG.product_size_unit == 'in') || $PRODUCT.dimension_unit=='in'} selected='selected'{/if} value="in">{$LANG.catalogue.unit_inches}</option>
                 </select>
             </span>
         </div>
@@ -361,7 +361,7 @@
                   {foreach from=$QUANTITY_DISCOUNTS item=discount}
                   <tr>
                      <td width="150">
-                        <label><span class="editable number-right" name="discount[{$discount.discount_id}][quantity]" title="Click to edit">{$discount.quantity}</span></label>
+                        <label><span class="editable number-right" name="discount[{$discount.discount_id}][quantity]" title="{$LANG.common.click_to_edit}">{$discount.quantity}</span></label>
                      </td>
                      <td width="150">
                         <input type="text" name="discount[{$discount.discount_id}][price]" class="textbox number" value="{$discount.price}">
@@ -418,7 +418,7 @@
                   {foreach from=$group.quantities item=quantity}
                   <div>
                      <span class="actions"><a href="#" rel="{$quantity.discount_id}" class="remove" name="discount_delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></span>
-                     <label><span class="editable number-right" name="discount[{$quantity.discount_id}][quantity]" title="Click to edit">{$quantity.quantity}</span></label><input type="text" name="discount[{$quantity.discount_id}][price]" class="textbox number-right" value="{$quantity.price}">
+                     <label><span class="editable number-right" name="discount[{$quantity.discount_id}][quantity]" title="{$LANG.common.click_to_edit}">{$quantity.quantity}</span></label><input type="text" name="discount[{$quantity.discount_id}][price]" class="textbox number-right" value="{$quantity.price}">
                   </div>
                   {/foreach}
                </div>

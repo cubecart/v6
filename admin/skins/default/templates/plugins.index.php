@@ -84,7 +84,7 @@
             {/if}
             {if $ext.php_versions && !$ext.php_compatible && !$ext.is_installed}
             <button type="button" class="ext-btn ext-btn-disabled" disabled title="Requires PHP {$ext.php_versions|replace:',':', '} — your server runs PHP {$SERVER_PHP}">
-               <i class="fa fa-ban"></i> Incompatible
+               <i class="fa fa-ban"></i> {$LANG.module.incompatible}
             </button>
             {elseif $ext.third_party && !$ext.download_url}
             {* 3rd party local-only: configure and delete only *}
@@ -107,7 +107,7 @@
                <a href="{$ext.edit_url}" class="ext-btn ext-btn-configure ext-btn-icon" title="{$LANG.common.configure}"><i class="fa fa-cog"></i></a>
                {/if}
                {if $ext.is_active_skin}
-               <button type="button" class="ext-btn ext-btn-disabled ext-btn-icon" disabled title="This skin is currently in use and cannot be deleted">
+               <button type="button" class="ext-btn ext-btn-disabled ext-btn-icon" disabled title="{$LANG.module.skin_in_use}">
                   <i class="fa fa-trash"></i>
                </button>
                {else}

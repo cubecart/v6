@@ -641,6 +641,8 @@
     <string name="your_email" introduced="5.0.0"><![CDATA[Your Email]]></string>
     <string name="your_name" introduced="5.0.0"><![CDATA[Your Name]]></string>
     <string name="customer_group_pricing" introduced="6.6.0"><![CDATA[Customer Group Pricing]]></string>
+    <string name="unit_cm" introduced="6.7.0"><![CDATA[Centimeters (cm)]]></string>
+    <string name="unit_inches" introduced="6.7.0"><![CDATA[Inches (in)]]></string>
   </group>
   <group name="category">
     <string name="edit_category" introduced="6.5.9"><![CDATA[Edit Category]]></string>
@@ -979,6 +981,11 @@
     <string name="attachment_types" introduced="6.6.0"><![CDATA[Image, Zip, PDF]]></string>
 
     <string name="community" introduced="6.6.0"><![CDATA[CubeCart Community]]></string>
+    <string name="click_to_edit" introduced="6.7.0"><![CDATA[Click to edit]]></string>
+    <string name="open_page" introduced="6.7.0"><![CDATA[Open page]]></string>
+    <string name="length_short" introduced="6.7.0"><![CDATA[L]]></string>
+    <string name="width_short" introduced="6.7.0"><![CDATA[W]]></string>
+    <string name="height_short" introduced="6.7.0"><![CDATA[H]]></string>
   </group>
   <group name="confirm">
     <string name="confirm_page" introduced="5.0.0"><![CDATA[Confirmation Page]]></string>
@@ -1835,6 +1842,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="shipping_name_eg" introduced="5.0.0"><![CDATA[e.g. Next Day Delivery, Free Shipping etc&hellip;]]></string>
     <string name="scope" introduced="5.1.5"><![CDATA[Scope]]></string>
     <string name="position" introduced="5.2.0"><![CDATA[Priority]]></string>
+    <string name="incompatible" introduced="6.7.0"><![CDATA[Incompatible]]></string>
+    <string name="skin_in_use" introduced="6.7.0"><![CDATA[This skin is currently in use and cannot be deleted]]></string>
   </group>
   <group name="navigation">
     <string name="acp_home" introduced="6.5.9"><![CDATA[ACP Home]]></string>
@@ -2816,6 +2825,7 @@ This email was sent automatically by the CubeCart setup tool.]]></string>
     <string name="top_variants" introduced="6.7.0"><![CDATA[Top Variants]]></string>
     <string name="vs_prior_period" introduced="6.7.0"><![CDATA[vs. prior period]]></string>
     <string name="profit" introduced="6.7.0"><![CDATA[Profit]]></string>
+    <string name="view_results" introduced="6.7.0"><![CDATA[View results]]></string>
   </group>
   <group name="translate">
     <string name="no_phrases_found" introduced="6.4.3"><![CDATA[No phrases found containing &quot;%1$s&quot;.]]></string>
