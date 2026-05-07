@@ -78,6 +78,7 @@ Thumbs.db
 !/images/logos/index.php
 /images/source/*
 !/images/source/.gitignore
+!/images/source/index.php
 
 # ==========================
 # Tests
