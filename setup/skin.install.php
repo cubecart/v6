@@ -216,10 +216,10 @@
   	<p class="url_change">{$LANG.setup.urls_changed}</p>
   	{/if}
   	{if isset($SHOW_LINKS)}
-	  <div>
+	  <div class="url-links">
 		<h4>{$LANG.setup.link_admin_panel}</h4>
 		<a href="{$ADMIN_URL}" target="_blank">{$ADMIN_URL}</a><br>
-		{$LANG.setup.link_admin_panel_note}
+		<small>{$LANG.setup.link_admin_panel_note}</small>
 		<h4>{$LANG.setup.link_store_front}</h4>
 		<a href="{$STORE_URL}" target="_blank">{$STORE_URL}</a>
 	  </div>

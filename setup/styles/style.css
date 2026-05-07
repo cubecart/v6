@@ -447,3 +447,6 @@ details.install-advanced > div {
     margin-right: 6px;
     vertical-align: middle;
 }
+.url-links {
+    font-size: 1.4em;
+}
