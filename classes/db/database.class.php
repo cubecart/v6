@@ -771,11 +771,20 @@ class Database_Contoller
         if ($order) {
             if (is_array($order)) {
                 foreach ($order as $field => $sort) {
+                    // Direction allowlist regardless of context.
+                    $dir = (is_string($sort) && strtoupper(trim($sort)) === 'DESC') ? 'DESC' : 'ASC';
+                    // Field validation: when an $allowed list is set (single-
+                    // table queries get one auto-populated from getFields),
+                    // require the field to be in it. For JOIN queries no
+                    // allowlist is built — fall back to a strict identifier
+                    // regex so attacker-supplied keys can't smuggle SQL.
+                    // Permit `Alias`.`col`, Alias.col or bare col.
                     if (isset($allowed) && is_array($allowed)) {
                         if (in_array($field, $allowed)) {
-                            $dir = (is_string($sort) && strtoupper(trim($sort)) === 'DESC') ? 'DESC' : 'ASC';
                             $orderArray[] = "`$field` ".$dir;
                         }
+                    } elseif (is_string($field) && preg_match('/^(?:`?[a-zA-Z0-9_]+`?\.)?`?[a-zA-Z0-9_]+`?$/', $field)) {
+                        $orderArray[] = "$field ".$dir;
                     }
                 }
                 if (isset($orderArray) && is_array($orderArray)) {

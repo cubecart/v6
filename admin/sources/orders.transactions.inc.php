@@ -80,8 +80,18 @@ if (isset($_GET['order_id'])) {
     }
 
     $GLOBALS['smarty']->assign('THEAD', $thead_sort);
+    // Allowlist sortable columns and direction. Without this, $key and $value
+    // both flow into the ORDER BY string unsanitised — see GHSA-rm2f-rpcq-6w9f.
+    $allowed_sort_keys = array('order_id', 'time', 'amount', 'gateway', 'trans_id');
+    if (in_array($oid_col, array('cart_order_id', 'custom_oid'), true)) {
+        $allowed_sort_keys[] = $oid_col;
+    }
+    $sort = '`T`.`time` DESC';
     foreach ($_GET['sort'] as $key => $value) {
-        $sort = "`T`.`$key` $value";
+        if (in_array($key, $allowed_sort_keys, true)) {
+            $dir = (is_string($value) && strtoupper(trim($value)) === 'ASC') ? 'ASC' : 'DESC';
+            $sort = "`T`.`$key` $dir";
+        }
         break;
     }
 

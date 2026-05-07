@@ -35,6 +35,7 @@ $features = array(
     'GHSA-wpjx-g695-qc5j' => 'Blocked SSTI/RCE via dangerous PHP functions in Smarty templates',
     'GHSA-gvcp-wpvp-c6f7' => 'Reflected XSS in the storefront search bar',
     'GHSA-652f-8c88-25cx' => 'Authenticated arbitrary-file-upload to RCE via REST <code>POST /api/v1/files</code> &mdash; filename validation, filepath traversal containment and a defence-in-depth <code>.htaccess</code> in <code>images/source/</code>',
+    'GHSA-rm2f-rpcq-6w9f' => 'Authenticated SQL injection via <code>sort[]</code> on the admin orders transactions listing &mdash; allowlist of sortable columns and direction, plus regex-validated identifier path in <code>Database::select()</code> for JOIN queries',
     // Major features
     '4065' => 'Sales reports suite &mdash; Sales Stats with drill-down, Best Selling Products, Search Terms, Users Online, Conversion, Abandoned Carts and Sales by Country',
     '4066' => 'New Excel class powering .xlsx exports of sales reports, with show/hide column controls',
@@ -105,5 +106,5 @@ $features = array(
     // Translations
     '4082' => 'French and Italian translations completed; categories module fully translated',
 );
-$security = array('GHSA-wpjx-g695-qc5j', 'GHSA-gvcp-wpvp-c6f7', 'GHSA-652f-8c88-25cx');
+$security = array('GHSA-wpjx-g695-qc5j', 'GHSA-gvcp-wpvp-c6f7', 'GHSA-652f-8c88-25cx', 'GHSA-rm2f-rpcq-6w9f');
 $page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 61, $notes, $security);
