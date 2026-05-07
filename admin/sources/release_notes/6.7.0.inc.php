@@ -27,13 +27,14 @@ $notes = <<<END
         <li><strong>Setup Overhaul</strong> &mdash; new install/upgrade flow with vanilla JS and tighter gating</li>
         <li><strong>Smarty 4.5.6 &amp; CKEditor 4.22.1</strong> &mdash; core dependencies upgraded</li>
     </ul>
-    <p>Security findings in this release responsibly disclosed by <a href="https://github.com/Th3-SAx11" target="_blank" rel="noopener">Th3-SAx11</a> &mdash; thank you.</p>
+    <p>Security findings in this release responsibly disclosed by <a href="https://github.com/Th3-SAx11" target="_blank" rel="noopener">Th3-SAx11</a> and <a href="https://github.com/tuannm-1876" target="_blank" rel="noopener">Nguy Minh Tuan</a> (Sun* Cyber Security Research Team) &mdash; thank you.</p>
 END;
 
 $features = array(
     // Security
     'GHSA-wpjx-g695-qc5j' => 'Blocked SSTI/RCE via dangerous PHP functions in Smarty templates',
     'GHSA-gvcp-wpvp-c6f7' => 'Reflected XSS in the storefront search bar',
+    'GHSA-652f-8c88-25cx' => 'Authenticated arbitrary-file-upload to RCE via REST <code>POST /api/v1/files</code> &mdash; filename validation, filepath traversal containment and a defence-in-depth <code>.htaccess</code> in <code>images/source/</code>',
     // Major features
     '4065' => 'Sales reports suite &mdash; Sales Stats with drill-down, Best Selling Products, Search Terms, Users Online, Conversion, Abandoned Carts and Sales by Country',
     '4066' => 'New Excel class powering .xlsx exports of sales reports, with show/hide column controls',
@@ -104,5 +105,5 @@ $features = array(
     // Translations
     '4082' => 'French and Italian translations completed; categories module fully translated',
 );
-$security = array('GHSA-wpjx-g695-qc5j', 'GHSA-gvcp-wpvp-c6f7');
+$security = array('GHSA-wpjx-g695-qc5j', 'GHSA-gvcp-wpvp-c6f7', 'GHSA-652f-8c88-25cx');
 $page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 61, $notes, $security);

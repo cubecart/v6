@@ -1,0 +1,27 @@
+# Defence in depth: even if a script-like file lands in this directory,
+# refuse to execute it. Legitimate content (jpg/png/webp/etc.) is unaffected.
+Options -Indexes
+
+<FilesMatch "(?i)\.(php|phar|phtml|php[3-6]|shtml|cgi|pl|py|rb|sh)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php8.c>
+    php_flag engine off
+</IfModule>
+
+RemoveHandler .php .phar .phtml .php3 .php4 .php5 .php6 .shtml .cgi .pl .py .rb .sh
+RemoveType .php .phar .phtml .php3 .php4 .php5 .php6 .shtml .cgi .pl .py .rb .sh
+AddType text/plain .php .phar .phtml .php3 .php4 .php5 .php6 .shtml .cgi .pl .py .rb .sh

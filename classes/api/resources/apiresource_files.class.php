@@ -157,13 +157,20 @@ class ApiResource_Files extends ApiResource
             ApiResponse::error($msg, 'UPLOAD_ERROR', 400);
         }
 
-        $subdir = isset($_POST['filepath']) ? trim($_POST['filepath'], '/') . '/' : '';
-        $destDir = CC_ROOT_DIR . '/images/source/' . $subdir;
-        if (!is_dir($destDir)) {
-            mkdir($destDir, 0755, true);
+        $filename = $this->_sanitiseFilename($file['name']);
+        if ($filename === false) {
+            ApiResponse::error('Disallowed file type', 'BAD_REQUEST', 400);
         }
 
-        $filename = preg_replace('/[^a-zA-Z0-9._-]/', '_', $file['name']);
+        $subdir = $this->_sanitiseSubdir(isset($_POST['filepath']) ? $_POST['filepath'] : '');
+        if ($subdir === false) {
+            ApiResponse::error('Invalid filepath', 'BAD_REQUEST', 400);
+        }
+
+        $destDir = $this->_resolveDestDir($subdir);
+        if ($destDir === false) {
+            ApiResponse::error('Invalid filepath', 'BAD_REQUEST', 400);
+        }
         $dest = $destDir . $filename;
 
         if (!move_uploaded_file($file['tmp_name'], $dest)) {
@@ -191,14 +198,22 @@ class ApiResource_Files extends ApiResource
             ApiResponse::error('Invalid base64 content', 'BAD_REQUEST', 400);
         }
 
-        $filename = preg_replace('/[^a-zA-Z0-9._-]/', '_', $data['filename']);
-        $subdir   = isset($data['filepath']) ? trim($data['filepath'], '/') . '/' : '';
-        $destDir  = CC_ROOT_DIR . '/images/source/' . $subdir;
-        if (!is_dir($destDir)) {
-            mkdir($destDir, 0755, true);
+        $filename = $this->_sanitiseFilename($data['filename']);
+        if ($filename === false) {
+            ApiResponse::error('Disallowed file type', 'BAD_REQUEST', 400);
         }
 
+        $subdir = $this->_sanitiseSubdir(isset($data['filepath']) ? $data['filepath'] : '');
+        if ($subdir === false) {
+            ApiResponse::error('Invalid filepath', 'BAD_REQUEST', 400);
+        }
+
+        $destDir = $this->_resolveDestDir($subdir);
+        if ($destDir === false) {
+            ApiResponse::error('Invalid filepath', 'BAD_REQUEST', 400);
+        }
         $dest = $destDir . $filename;
+
         if (file_put_contents($dest, $content) === false) {
             ApiResponse::error('Failed to write file', 'INTERNAL_ERROR', 500);
         }
@@ -217,6 +232,84 @@ class ApiResource_Files extends ApiResource
 
         $result = $this->_db->select('CubeCart_filemanager', false, array('file_id' => $fileId));
         ApiResponse::created($this->_formatFile($result[0]));
+    }
+
+    /**
+     * Sanitise an uploaded filename. Returns the cleaned name, or false if
+     * the file type is disallowed (executable extensions) — see
+     * FileManager::filenameIsIllegal() for the canonical denylist.
+     */
+    private function _sanitiseFilename($raw)
+    {
+        $name = preg_replace('/[^a-zA-Z0-9._-]/', '_', (string)$raw);
+        if ($name === '' || $name === null) {
+            return false;
+        }
+        // Block executable / handler extensions and the .php.something pattern.
+        if (preg_match('/(\.sh\.inc\.ini|\.htaccess|\.php|\.phar|\.phtml|\.php[3-6]|\.shtml|\.svg|\.cgi|\.pl|\.py|\.rb)$/i', $name)) {
+            return false;
+        }
+        if (preg_match('/\.php\./i', $name)) {
+            return false;
+        }
+        return $name;
+    }
+
+    /**
+     * Sanitise the requested sub-directory under images/source/. Strips
+     * embedded "..", absolute paths, drive letters and control chars, and
+     * restricts segments to a safe charset. Returns the trailing-slashed
+     * relative path, "" for root, or false for any traversal attempt.
+     */
+    private function _sanitiseSubdir($raw)
+    {
+        if ($raw === '' || $raw === null) {
+            return '';
+        }
+        $path = str_replace('\\', '/', (string)$raw);
+        if (preg_match('#(^|/)\.\.(/|$)#', $path)) {
+            return false;
+        }
+        if ($path[0] === '/' || strpos($path, ':') !== false) {
+            return false;
+        }
+        if (preg_match('/[\x00-\x1f]/', $path)) {
+            return false;
+        }
+        $path = trim($path, '/');
+        if ($path === '') {
+            return '';
+        }
+        if (!preg_match('#^[a-zA-Z0-9._/-]+$#', $path)) {
+            return false;
+        }
+        return $path . '/';
+    }
+
+    /**
+     * Create (if needed) and resolve the destination directory under
+     * images/source/. Returns the absolute filesystem path with trailing
+     * slash, or false if the resolved path escapes the allowed root.
+     */
+    private function _resolveDestDir($subdir)
+    {
+        $base = CC_ROOT_DIR . '/images/source/';
+        $destDir = $base . $subdir;
+        if (!is_dir($destDir)) {
+            if (!@mkdir($destDir, 0755, true) && !is_dir($destDir)) {
+                return false;
+            }
+        }
+        $realBase = realpath($base);
+        $realDest = realpath($destDir);
+        if ($realBase === false || $realDest === false) {
+            return false;
+        }
+        // Ensure $realDest is $realBase or a descendant of it.
+        if (strpos($realDest . DIRECTORY_SEPARATOR, $realBase . DIRECTORY_SEPARATOR) !== 0) {
+            return false;
+        }
+        return rtrim($realDest, DIRECTORY_SEPARATOR) . '/';
     }
 
     private function _listDirectories()
