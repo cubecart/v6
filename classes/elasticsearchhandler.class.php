@@ -30,22 +30,47 @@ class ElasticsearchHandler
     private $_index_body = array();
     private $_index = '';
     private $_config = array();
-    private $_config_file = './includes/extra/es.json';
     private $_index_exists_cache = null;
 
-    public function __construct($config = array(), $write = false)
+    /** Keys persisted in global.inc.php as $glob[<key>]. */
+    private static $_config_keys = array(
+        'es_h',  // hostname(s)
+        'es_u',  // basic-auth username
+        'es_p',  // basic-auth password
+        'es_a',  // API key
+        'es_t',  // auth type: 0 basic / 1 api / 2 none
+        'es_i',  // index name
+        'es_v',  // validate SSL (1/0)
+        'es_c',  // CA bundle path
+        'es_is', // include out-of-stock (1/0)
+    );
+
+    public function __construct($config = array())
     {
-        if($write) {
-            $this->_writeConfig($config);
-        }
         $this->_getConfig($config);
         $this->connect();
         $this->_index = trim($this->_config['es_i']);
+    }
+
+    /**
+     * True once connect() has built a usable client. Public methods that
+     * touch $this->_client guard with this so that a half-configured
+     * instance (e.g. empty index name) returns false instead of fataling
+     * with "Call to a member function ... on null".
+     */
+    private function _isReady()
+    {
+        if (!is_object($this->_client)) {
+            $this->_logError('Elasticsearch client not initialised — check configuration.');
+            return false;
+        }
+        return true;
     }
     /**
      * Add product to index
      */
     public function add($id, $body = array()) {
+        if (!$this->_isReady()) return false;
         if(!empty($body)) {
             $this->_index_body = $body;
         } else {
@@ -144,6 +169,7 @@ class ElasticsearchHandler
      * Create index
      */
     public function createIndex() {
+        if (!$this->_isReady()) return false;
         $params = [
             'index' => $this->_index,
             'body' => [
@@ -203,6 +229,7 @@ class ElasticsearchHandler
      * Delete index
      */
     public function deleteIndex() {
+        if (!$this->_isReady()) return false;
         try {
             $response =  $this->_client->indices()->delete(['index' => $this->_index]);
             $ok = ($response->getStatusCode() == 200);
@@ -218,6 +245,7 @@ class ElasticsearchHandler
      * Delete product from index
      */
     public function delete($id) {
+        if (!$this->_isReady()) return false;
         try {
             $response =  $this->_client->delete(['index' => $this->_index, 'id' => $id]);
             return $response->getStatusCode() == 200 ? true : false;
@@ -231,6 +259,7 @@ class ElasticsearchHandler
      * Check product exists in index
      */
     public function exists($id = '') {
+        if (!$this->_isReady()) return false;
         try {
             $response = $this->_client->exists(['index' => $this->_index, 'id' => $id]);
             return $response->getStatusCode() == 200 ? true : false;
@@ -244,6 +273,7 @@ class ElasticsearchHandler
      * Get stats about index
      */
     public function getStats() {
+        if (!$this->_isReady()) return array('size' => '0b', 'count' => '0');
         try {
             $params = ['index' => $this->_index];
             $params['metric'] = '_all';
@@ -273,6 +303,7 @@ class ElasticsearchHandler
         if ($this->_index_exists_cache !== null) {
             return $this->_index_exists_cache;
         }
+        if (!$this->_isReady()) return false;
         try {
             $response = $this->_client->indices()->exists(['index' => $this->_index]);
             $this->_index_exists_cache = ($response->getStatusCode() == 200);
@@ -456,6 +487,7 @@ class ElasticsearchHandler
      * Execute search query
      */
     public function search($from, $size) {
+        if (!$this->_isReady()) return false;
         $from = ($from-1)*$size;
         $params = [
             'index' => $this->_index,
@@ -474,6 +506,7 @@ class ElasticsearchHandler
      * Rebuild index
      */
     public function rebuild($cycle, $limit = 500) {
+        if (!$this->_isReady()) return false;
         ini_set('ignore_user_abort', true);
         if($cycle == 1) {
             if($this->indexExists()) {
@@ -539,6 +572,7 @@ class ElasticsearchHandler
      * Update product in index
      */
     public function update($id, $field = '') {
+        if (!$this->_isReady()) return false;
         switch($field) {
             case 'stock_level':
                 $this->_index_body = array('stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($id));
@@ -567,63 +601,34 @@ class ElasticsearchHandler
     }
 
     /**
-     * Write config to json file
+     * Populate $this->_config from the canonical source.
+     *
+     * Read every key from $GLOBALS['config'], which has already merged
+     * $glob from global.inc.php into its 'config' namespace. The optional
+     * $config argument is kept for the admin "test connection" path so
+     * the form values can be exercised in-memory without first being
+     * persisted (config is hand-edited in global.inc.php — there is no
+     * application-side write path).
      */
-    private function _writeConfig($config) {
-        $es_config = array(
-            'es_h' => $config['es_h'],
-            'es_u' => $config['es_u'],
-            'es_p' => $config['es_p'],
-        	'es_a' => $config['es_a'],
-        	'es_t' => $config['es_t'],
-            'es_i' => $config['es_i'],
-            'es_v' => $config['es_v'],
-            'es_c' => $config['es_c'],
-            'es_is' => $config['es_is']
-        );
-        $fh = fopen($this->_config_file,"w");
-        fwrite($fh,json_encode($es_config));
-        fclose($fh);
-    }
-
-    /**
-     * Get config
-     */
-    private function _getConfig($config) {
-        /*
-        #############################
-        # Config Variable Reference
-        #############################
-        es_h = Hostname
-        es_u = Username
-        es_p = Password
-        es_a = API Key
-        es_t = Authentication Type (0 = Basic, 1 = API)
-        es_i = Index name
-        es_v = Validate SSL (bool)
-        es_c = Certificate path
-        es_is = Include out of stock
-        */
-
-        // Get config from master config which also merges global.inc.php file
-        if(isset($GLOBALS['config']) && $GLOBALS['config']->has('config', 'es_h')) {
-            $this->_config = array(
-                'es_h' => $GLOBALS['config']->get('config', 'es_h'),
-                'es_u' => $GLOBALS['config']->get('config', 'es_u'),
-                'es_p' => $GLOBALS['config']->get('config', 'es_p'),
-            	'es_a' => $GLOBALS['config']->get('config', 'es_a'),
-            	'es_t' => $GLOBALS['config']->get('config', 'es_t'),
-                'es_i' => $GLOBALS['config']->get('config', 'es_i'),
-                'es_v' => $GLOBALS['config']->get('config', 'es_v'),
-                'es_c' => $GLOBALS['config']->get('config', 'es_c'),
-                'es_is' => $GLOBALS['config']->get('config', 'es_is')
-            );
-        } else {
-            if(!empty($config)) { // Get config from $_POST of admin settings page
-                $this->_config = $config;
-            } else { // Get config from cached settings in json file
-                $this->_config = json_decode(file_get_contents($this->_config_file),true);
+    private function _getConfig($config = array()) {
+        $this->_config = array();
+        if (!empty($config)) {
+            foreach (self::$_config_keys as $k) {
+                $this->_config[$k] = isset($config[$k]) ? $config[$k] : '';
             }
+            return;
+        }
+        if (!isset($GLOBALS['config']) || !is_object($GLOBALS['config'])) {
+            // Bootstrap not ready yet — leave $this->_config keys empty
+            // strings so subsequent guards (empty es_i etc.) bail cleanly.
+            foreach (self::$_config_keys as $k) {
+                $this->_config[$k] = '';
+            }
+            return;
+        }
+        foreach (self::$_config_keys as $k) {
+            $val = $GLOBALS['config']->get('config', $k);
+            $this->_config[$k] = ($val === false) ? '' : $val;
         }
     }
 

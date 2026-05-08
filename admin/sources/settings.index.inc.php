@@ -126,7 +126,10 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
         $_POST['config']['csrf'] = '0';
     }
     if(isset($_POST['config']['elasticsearch']) && $_POST['config']['elasticsearch']==1) {
-        $es_test = new ElasticsearchHandler($_POST['config'], true);
+        // Connection details live in includes/global.inc.php and are hand-
+        // edited; the toggle here only switches indexing on/off. Validate
+        // the configured connection before allowing the toggle to flip on.
+        $es_test = new ElasticsearchHandler();
         if(!$es_test->connect(true)) {
             $_POST['config']['elasticsearch'] = '0';
             $error = !empty($es_test->last_error) ? $es_test->last_error : $lang['settings']['no_elasticsearch'];
@@ -536,6 +539,26 @@ if ($active_coupons) {
 $smarty_data['config'] = $GLOBALS['config']->get('config');
 $GLOBALS['smarty']->assign('FIXED_CONFIG', $glob);
 $GLOBALS['smarty']->assign('CONFIG', $smarty_data['config']);
+
+// Display-safe summary of the Elasticsearch connection (read from
+// includes/global.inc.php, never from POST). Passwords/API keys are
+// replaced with bullets so the values aren't echoed back into the page.
+$es_auth_labels = array('0' => $lang['account']['basic'], '1' => $lang['account']['api'], '2' => $lang['common']['none']);
+$es_t = isset($smarty_data['config']['es_t']) ? (string)$smarty_data['config']['es_t'] : '0';
+$mask = '••••••••';
+$GLOBALS['smarty']->assign('ES_SUMMARY', array(
+    'es_h'  => isset($smarty_data['config']['es_h']) ? $smarty_data['config']['es_h'] : '',
+    'es_t'  => isset($es_auth_labels[$es_t]) ? $es_auth_labels[$es_t] : $es_t,
+    'es_u'  => isset($smarty_data['config']['es_u']) ? $smarty_data['config']['es_u'] : '',
+    'es_p'  => empty($smarty_data['config']['es_p']) ? '' : $mask,
+    'es_a'  => empty($smarty_data['config']['es_a']) ? '' : $mask,
+    'es_i'  => isset($smarty_data['config']['es_i']) ? $smarty_data['config']['es_i'] : '',
+    'es_v'  => (isset($smarty_data['config']['es_v']) && $smarty_data['config']['es_v'] == '1') ? $lang['common']['yes'] : $lang['common']['no'],
+    'es_c'  => isset($smarty_data['config']['es_c']) ? $smarty_data['config']['es_c'] : '',
+    'es_is' => (isset($smarty_data['config']['es_is']) && $smarty_data['config']['es_is'] == '1') ? $lang['common']['yes'] : $lang['common']['no'],
+    'is_basic' => ($es_t === '0'),
+    'is_api'   => ($es_t === '1'),
+));
 
 // Allow plugins to add email delivery methods
 $email_methods = array();

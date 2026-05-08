@@ -82,12 +82,18 @@ $glob['es_h'] 		= '';
 $glob['es_u'] 		= '';
 // Password
 $glob['es_p'] 		= '';
-// Index name
+// API key (used when es_t = 1)
+$glob['es_a'] 		= '';
+// Authentication type: 0 = Basic, 1 = API key, 2 = None
+$glob['es_t'] 		= '0';
+// Index name (must be unique per store)
 $glob['es_i'] 		= '';
 // Certificate validation (1 or 0)
 $glob['es_v'] 		= '';
 // Certificate path
 $glob['es_c'] 		= '';
+// Include out-of-stock products in the index (1 or 0)
+$glob['es_is'] 		= '0';
 
 // Bot detection
 // UA signatures for session blocking (layer 2 - catches bots that spoof browser UAs)

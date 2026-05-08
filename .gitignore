@@ -16,7 +16,6 @@ Thumbs.db
 !/includes/global.inc.php-dist
 /includes/extra/snippet_*
 /includes/extra/importdata.tmp
-/includes/extra/es.json
 
 # ==========================
 # Modules (installed via ACP)
