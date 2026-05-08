@@ -988,11 +988,16 @@ if (isset($database_result) && $database_result) {
         // alone (ignoring position) gives false positives for composites like
         // KEY (a, b) + KEY (b) — the second can't use the composite's leftmost prefix.
         // UNIQUE/PRIMARY/FULLTEXT are skipped because shorter != redundant for them.
+        // Indexes declared in structure.sql are treated as intentional and skipped,
+        // so a canonical KEY (a) + KEY (a, b) pair won't be flagged.
+        $schema_table_key = strtolower(str_replace($GLOBALS['config']->get('config', 'dbprefix'), '', $table['Name']));
+        $schema_indexes = isset($full_indexes[$schema_table_key]) ? $full_indexes[$schema_table_key] : array();
         $names = array_keys($actual_full_indexes);
         sort($names);
         foreach ($names as $a_name) {
             $a = $actual_full_indexes[$a_name];
             if ($a['type'] !== 'KEY') continue;
+            if (isset($schema_indexes[$a_name])) continue;
             ksort($a['columns']);
             $a_cols = array_values($a['columns']);
             foreach ($names as $b_name) {
