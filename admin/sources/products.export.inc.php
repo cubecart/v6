@@ -193,13 +193,26 @@ if (isset($_GET['format']) && !empty($_GET['format']) && isset($allowed_formats[
             $result['url'] = $seo->fullURL($url, true);
 
             ## Generate Image URL — resolve via the pre-fetched filemanager map.
+            // Replicates imagePath()'s source-mode path switch inline so format
+            // hooks (e.g. Google Base sets $image_path='url') still get honoured
+            // without reintroducing the per-row CubeCart_filemanager round-trip.
             if (!empty($image_files_by_pid[$pid])) {
                 $image_array = array();
                 foreach ($image_files_by_pid[$pid] as $file_id) {
                     if (isset($filemanager_by_id[$file_id])) {
-                        // mode='source', path='filename' just yields the bare filename;
-                        // we replicate that without a CubeCart_filemanager round-trip.
-                        $image_array[] = basename($filemanager_by_id[$file_id]);
+                        $rel = $filemanager_by_id[$file_id];
+                        switch ($image_path) {
+                            case 'url':
+                                $image_array[] = $store_url.'/images/source/'.$rel;
+                                break;
+                            case 'rel':
+                            case 'relative':
+                                $image_array[] = $GLOBALS['rootRel'].'images/source/'.$rel;
+                                break;
+                            case 'filename':
+                            default:
+                                $image_array[] = basename($rel);
+                        }
                     }
                 }
                 $result['image'] = implode(',', $image_array);
