@@ -369,20 +369,35 @@ class Database_Contoller
         $fieldlist = array();
         $sql = "SHOW INDEX FROM `{$this->_prefix}$table`;";
         $result = $this->query($sql);
+        $search_cols = null;
         if($GLOBALS['config']->has('config', 'search_columns')) {
-            $search_cols = $GLOBALS['config']->get('config', 'search_columns');
+            $cfg = $GLOBALS['config']->get('config', 'search_columns');
+            if (is_array($cfg) && !empty($cfg)) {
+                $search_cols = $cfg;
+            }
         }
         if ($result) {
+            $cols = array();
             foreach ($result as $index) {
                 if ($index['Index_type'] == 'FULLTEXT' && $index['Key_name'] == 'fulltext') {
-                    if(!empty($search_cols) && !in_array($index['Column_name'], $search_cols)) {
-                       continue;
+                    $cols[] = $index['Column_name'];
+                }
+            }
+            // MySQL requires MATCH() columns to exactly match a FULLTEXT index's
+            // column set, so only return the index when search_columns (if set)
+            // covers every column. Otherwise log the mismatch and return empty
+            // so the caller falls back to LIKE/RLIKE, which can respect arbitrary subsets.
+            if (!empty($cols)) {
+                $missing = ($search_cols === null) ? array() : array_diff($cols, $search_cols);
+                if (empty($missing)) {
+                    foreach ($cols as $c) {
+                        $fieldlist[] = $prefix ? $prefix.'.'.$c : $c;
                     }
-                    if ($prefix) {
-                        $fieldlist[] = $prefix.'.'.$index['Column_name'];
-                    } else {
-                        $fieldlist[] = $index['Column_name'];
-                    }
+                } elseif (class_exists('Debug')) {
+                    Debug::writeSystemErrorLog(sprintf(
+                        'search_columns config [%s] does not cover the FULLTEXT index on `%s%s` [%s] (missing: [%s]); MATCH() requires the full column set, falling back to LIKE/RLIKE. Add the missing columns to search_columns or rebuild the FULLTEXT index to match.',
+                        implode(', ', (array)$search_cols), $this->_prefix, $table, implode(', ', $cols), implode(', ', $missing)
+                    ));
                 }
             }
         }
