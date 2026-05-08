@@ -82,6 +82,6 @@
 	</tbody>
   </table>
 	{else}
-	<p>-- {$LANG.common.none} --</p>
+	<p>&mdash; {$LANG.common.none} &mdash;</p>
 	{/if}
 </div>

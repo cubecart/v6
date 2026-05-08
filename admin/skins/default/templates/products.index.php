@@ -221,7 +221,7 @@
             <label for="product_manufacture_country">{$LANG.catalogue.manufacture_country}</label>
             <span>
                <select name="manufacture_country" id="product_manufacture_country" class="textbox">
-                  <option value="">-- {$LANG.common.na} --</option>
+                  <option value="">&mdash; {$LANG.common.na} &mdash;</option>
                   {foreach from=$COUNTRIES item=country}<option value="{$country.iso}" {if $country.iso == $PRODUCT.manufacture_country}selected="selected"{/if}>{$country.name}</option>{/foreach}
                </select>
             </span>
