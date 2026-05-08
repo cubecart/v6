@@ -2394,7 +2394,7 @@ class Catalogue
                         }
                         $q2 = sprintf($query_string, $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string);
                         $count = $GLOBALS['db']->query($q2);
-                        $this->_category_count  = (int)count($count);
+                        $this->_category_count  = is_array($count) ? count($count) : 0;
                         $this->_category_products = $search;
                         $this->_sort_by_relevance = true;
                         if ($page == 1 && count($this->_category_products)==1 && ctype_digit($this->_category_products[0]['product_id']) && (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH']!=='XMLHttpRequest')) {
@@ -2487,7 +2487,7 @@ class Catalogue
                     $search = $GLOBALS['db']->query($query);
                     if (is_array($search) && count($search)>0) {
                         $count = $GLOBALS['db']->query($q2);
-                        $this->_category_count  = (int)count($count);
+                        $this->_category_count  = is_array($count) ? count($count) : 0;
                         $this->_category_products = $search;
                         if ($page == 1 && count($this->_category_products)==1 && ctype_digit($this->_category_products[0]['product_id']) && (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH']!=='XMLHttpRequest')) {
                             $GLOBALS['gui']->setNotify(sprintf($GLOBALS['language']->catalogue['notify_product_search_one'], htmlspecialchars((string)$_REQUEST['search']['keywords'], ENT_QUOTES, 'UTF-8')));
