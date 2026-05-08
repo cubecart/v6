@@ -104,7 +104,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
      */
     public function loadContent($content_type, $language = '', $data = false, $default = false, $panic = false)
     {
-        $language = preg_match(Language::LANG_REGEX, $language) ? $language : $GLOBALS['language']->current();
+        $language = preg_match(Language::LANG_REGEX, (string)$language) ? $language : $GLOBALS['language']->current();
         $language = ($language == 'en') ? 'en-GB' : $language;
 
         if (!empty($content_type)) {
