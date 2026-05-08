@@ -29,8 +29,8 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_domain}</legend>
-         <div><label for="standard_url">{$LANG.settings.standard_url}</label><span><input name="config[standard_url]" id="standard_url" type="text" class="textbox" value="{$CONFIG.standard_url}"> {$LANG.common.eg} https://www.example.com/store</span></div>
-         <div><label for="cookie_domain">{$LANG.settings.cookie_domain}</label><span><input name="config[cookie_domain]" id="cookie_domain" type="text" class="textbox" value="{$CONFIG.cookie_domain}"> {$LANG.common.eg} .example.com</span></div>
+         <div><label for="standard_url">{$LANG.settings.standard_url}</label><span><input id="standard_url" type="text" class="textbox" value="{$CONFIG.standard_url}" readonly disabled> <em>{$LANG.settings.edit_in_global_file|default:'Edit in includes/global.inc.php'}</em></span></div>
+         <div><label for="cookie_domain">{$LANG.settings.cookie_domain}</label><span><input id="cookie_domain" type="text" class="textbox" value="{$CONFIG.cookie_domain}" readonly disabled> <em>{$LANG.settings.edit_in_global_file|default:'Edit in includes/global.inc.php'}</em></span></div>
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_tax_lang}</legend>
