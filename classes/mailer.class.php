@@ -272,9 +272,8 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                 }
             }
 
-            $this->Body            = $this->_html;
-            $this->AltBody         = $this->_text;
-            $this->AltBodyEncoding = 'quoted-printable';
+            $this->Body    = $this->_html;
+            $this->AltBody = $this->_text;
 
             if (isset($contents['email'])) {
                 $this->addReplyTo($contents['email'], (isset($contents['from'])) ? $contents['from'] : '');
