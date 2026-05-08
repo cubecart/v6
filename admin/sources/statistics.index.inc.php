@@ -524,8 +524,11 @@ case 'stats_country':
     $GLOBALS['smarty']->assign('CN_YEAR_OPTIONS', $cn_year_options);
     $GLOBALS['smarty']->assign('CN_YEAR',         $cn_year);
 
+    // LEFT JOIN with `G.numcode <> 0` so orders with empty/invalid country
+    // do not collide with Kosovo (seeded with numcode 000); collapse all
+    // unmatched orders into a single "Unknown / not set" bucket.
     $rows_q = $GLOBALS['db']->query(sprintf(
-        "SELECT G.iso, G.name, COUNT(*) AS orders, SUM(O.total) AS revenue FROM `%1\$sCubeCart_order_summary` AS O INNER JOIN `%1\$sCubeCart_geo_country` AS G ON G.numcode = O.country WHERE O.status IN (2,3)".$where_date." GROUP BY O.country ORDER BY revenue DESC",
+        "SELECT G.iso, G.name, COUNT(*) AS orders, SUM(O.total) AS revenue FROM `%1\$sCubeCart_order_summary` AS O LEFT JOIN `%1\$sCubeCart_geo_country` AS G ON G.numcode = O.country AND G.numcode <> 0 WHERE O.status IN (2,3)".$where_date." GROUP BY G.id ORDER BY revenue DESC",
         $glob['dbprefix']
     ));
 
@@ -546,6 +549,7 @@ case 'stats_country':
         return mb_chr($base + ord($iso[0]) - $a) . mb_chr($base + ord($iso[1]) - $a);
     };
 
+    $unknown_label = $lang['common']['unknown'];
     $g_graph_data[11]['data'] = "['Country','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
     $tmp = array();
     if ($rows_q) {
@@ -553,15 +557,18 @@ case 'stats_country':
         foreach ($rows_q as $row) {
             $rank++;
             $rev   = (float)$row['revenue'];
-            $flag  = $flag_for($row['iso']);
+            $is_unknown = ($row['name'] === null || $row['name'] === '');
+            $name  = $is_unknown ? $unknown_label : $row['name'];
+            $iso   = ($row['iso'] !== null) ? $row['iso'] : '';
+            $flag  = $is_unknown ? mb_chr(0x1F310) : $flag_for($iso);
             if ($rank <= 10) {
-                $tmp[] = "['".addslashes(($flag ? $flag.' ' : '').$row['name'])."',".$rev."]";
+                $tmp[] = "['".addslashes(($flag ? $flag.' ' : '').$name)."',".$rev."]";
             }
             $countries[] = array(
                 'rank'    => $rank,
                 'flag'    => $flag,
-                'iso'     => $row['iso'],
-                'name'    => $row['name'],
+                'iso'     => $iso,
+                'name'    => $name,
                 'orders'  => number_format((int)$row['orders']),
                 'revenue' => $tax_inst->priceFormat($rev),
                 'percent' => $total_revenue > 0 ? number_format($rev / $total_revenue * 100, 1) : 0,
