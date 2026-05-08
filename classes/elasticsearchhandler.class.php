@@ -31,6 +31,7 @@ class ElasticsearchHandler
     private $_index = '';
     private $_config = array();
     private $_index_exists_cache = null;
+    private $marker = array();
 
     /** Keys persisted in global.inc.php as $glob[<key>]. */
     private static $_config_keys = array(
@@ -544,8 +545,8 @@ class ElasticsearchHandler
             if ($total > $sent_to) {
                 $percent = ($sent_to/$total)*100;
 
-                if($percent % 10 == 0 && !isset($this->marker[$percent])) {
-                    $this->marker[$percent] = true;
+                if((int)$percent % 10 == 0 && !isset($this->marker[(int)$percent])) {
+                    $this->marker[(int)$percent] = true;
                     $stats = $this->getStats();
                 } else {
                     $stats = array('count' => false, 'size' => false);

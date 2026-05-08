@@ -113,6 +113,9 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
     // Update Products
     if (isset($_POST['inv']) && is_array($_POST['inv'])) {
         foreach ($_POST['inv'] as $data) {
+            if (!isset($data['productOptions']) || !is_array($data['productOptions'])) {
+                $data['productOptions'] = array();
+            }
             $data['options_identifier'] = $GLOBALS['catalogue']->defineOptionsIdentifier($data['productOptions']);
             // Check for matrix entry that may affect product data
             $matrix = $GLOBALS['db']->select('CubeCart_option_matrix', false, array('product_id' => (int)$data['product_id'], 'options_identifier' => $data['options_identifier']));
@@ -121,7 +124,7 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
             }
             $data['options_array'] 		= serialize($data['productOptions']);
             $data['product_options'] 	= $GLOBALS['order']->serializeOptions($data['productOptions'], $data['product_id']);
-            if (is_array($data['custom'])) {
+            if (isset($data['custom']) && is_array($data['custom'])) {
                 if(isset($data['custom']['method']) && $data['custom']['method']==$GLOBALS['language']->common['email']) {
                     $data['custom']['method'] = 'e'; 
                 } else if(isset($data['custom']['method']) && $data['custom']['method']==$GLOBALS['language']->common['postal']) {
@@ -389,7 +392,7 @@ if (isset($_GET['action'])) {
                     $product['line_formatted'] = Tax::getInstance()->priceFormat($product['price']);
                     $product['price_total_formatted'] = Tax::getInstance()->priceFormat($price_total);
 
-                    $product['options'] = Catalogue::getInstance()->displayProductOptions($product['product_id'], unserialize($product['options_array']));
+                    $product['options'] = Catalogue::getInstance()->displayProductOptions($product['product_id'], unserialize((string)$product['options_array']));
 
                     $options_array = $order->unSerializeOptions($product['product_options']);
                     $product['options_array'] = $options_array;

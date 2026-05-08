@@ -54,7 +54,7 @@ if (isset($_POST['save']) && (isset($_POST['string']) || isset($_POST['delete'])
                     'type'  => $type,
                     'name'  => $name
                 );
-                $basic = htmlspecialchars($base_strings[$type][$name], ENT_COMPAT, 'UTF-8', false);
+                $basic = htmlspecialchars(isset($base_strings[$type][$name]) ? (string)$base_strings[$type][$name] : '', ENT_COMPAT, 'UTF-8', false);
                 $existing = $GLOBALS['db']->select('CubeCart_lang_strings',false, $record);
                 
                 if ($existing && $basic == $value) {
