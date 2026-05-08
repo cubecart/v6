@@ -604,9 +604,13 @@ class ElasticsearchHandler
      * Populate $this->_config from the canonical source.
      *
      * Read every key from $GLOBALS['config'], which has already merged
-     * $glob from global.inc.php into its 'config' namespace. The optional
-     * $config argument is kept for the admin "test connection" path so
-     * the form values can be exercised in-memory without first being
+     * $glob from global.inc.php into its 'config' namespace. If the Config
+     * singleton hasn't been built yet — true for ?_e=es, which runs before
+     * controller.index.inc.php instantiates Config — fall back to loading
+     * $glob directly from global.inc.php. Either path is read-only.
+     *
+     * The optional $config argument is kept for the admin "test connection"
+     * path so form values can be exercised in-memory without first being
      * persisted (config is hand-edited in global.inc.php — there is no
      * application-side write path).
      */
@@ -618,17 +622,23 @@ class ElasticsearchHandler
             }
             return;
         }
-        if (!isset($GLOBALS['config']) || !is_object($GLOBALS['config'])) {
-            // Bootstrap not ready yet — leave $this->_config keys empty
-            // strings so subsequent guards (empty es_i etc.) bail cleanly.
+        if (isset($GLOBALS['config']) && is_object($GLOBALS['config'])) {
             foreach (self::$_config_keys as $k) {
-                $this->_config[$k] = '';
+                $val = $GLOBALS['config']->get('config', $k);
+                $this->_config[$k] = ($val === false) ? '' : $val;
             }
             return;
         }
+        // Config singleton not ready (e.g. ?_e=es runs before
+        // controller.index.inc.php). Read $glob directly from
+        // global.inc.php — no DB, no Config object required.
+        $glob = array();
+        $globalFile = (defined('CC_INCLUDES_DIR') ? CC_INCLUDES_DIR : dirname(__DIR__).'/includes/').'global.inc.php';
+        if (file_exists($globalFile)) {
+            require $globalFile;
+        }
         foreach (self::$_config_keys as $k) {
-            $val = $GLOBALS['config']->get('config', $k);
-            $this->_config[$k] = ($val === false) ? '' : $val;
+            $this->_config[$k] = isset($glob[$k]) ? $glob[$k] : '';
         }
     }
 
