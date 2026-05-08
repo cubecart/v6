@@ -31,6 +31,14 @@ $glob['dbpassword'] 	= '';
 // Set to 1 if store is installed. Prevents setup redirect.
 $glob['installed'] 		= '0';
 
+// Store URL — canonical https URL of your storefront. Used in transactional
+// emails, password-reset links and redirects. Pinned here so a forged Host
+// header cannot poison email links (GHSA-7pvc-gxc4-chmc).
+$glob['standard_url']  = '';
+// Cookie domain — leading-dot host like ".example.com" for multi-subdomain
+// installs, or empty string for single-host installs.
+$glob['cookie_domain'] = '';
+
 // Admin
 // Change these if you have renamed the admin folder or file
 $glob['adminFolder'] 	= 'admin';

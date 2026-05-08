@@ -17,13 +17,6 @@ if (!defined('CC_INI_SET')) {
 Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
 
 
-$cookie_domain 	= $GLOBALS['config']->get('config', 'cookie_domain');
-if (empty($cookie_domain)) {
-    $domain = parse_url(CC_STORE_URL);
-    $cookie_domain =  strpos($domain['host'], '.') ? '.'.str_replace('www.', '', $domain['host']) : '';
-    $GLOBALS['config']->set('config', 'cookie_domain', $cookie_domain);
-}
-
 if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_PERM_FULL)) {
     $config_old = $GLOBALS['config']->get('config');
     if ($_POST['config']['oid_mode']=='i') {
@@ -201,10 +194,9 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
     $config_new['store_copyright'] = $GLOBALS['RAW']['POST']['config']['store_copyright'];
     $config_new['email_smtp_password'] = $GLOBALS['RAW']['POST']['config']['email_smtp_password'];
 
-    $config_new['standard_url'] = preg_replace('#^http://#', 'https://', $config_new['standard_url']);
-    if (!filter_var($config_new['standard_url'], FILTER_VALIDATE_URL)) {
-        $config_new['standard_url'] = CC_STORE_URL;
-    }
+    // standard_url and cookie_domain are pinned in includes/global.inc.php (GHSA-7pvc-gxc4-chmc).
+    unset($config_new['standard_url'], $config_new['cookie_domain']);
+
     if (empty($config_new['time_format'])) {
         $config_new['time_format'] = 'Y-m-d H:i';
     }

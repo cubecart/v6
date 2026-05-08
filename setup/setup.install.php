@@ -140,11 +140,19 @@ if (!isset($_SESSION['setup']['permissions'])) {
                 $_SESSION['setup']['progress'] = true;
                 $_SESSION['setup']['droptable'] = (isset($_POST['drop'])) ? true : false;
 
+                $store_url     = preg_replace('#^http://#i', 'https://', CC_STORE_URL);
+                $store_url     = rtrim(preg_replace('#/setup$#', '', $store_url), '/');
+                $store_host    = parse_url($store_url, PHP_URL_HOST);
+                $cookie_domain = ($store_host && strpos($store_host, '.') !== false)
+                    ? '.'.preg_replace('#^www\.#i', '', $store_host)
+                    : '';
                 $global = array(
-                    'installed'  => true,
-                    'adminFolder' => 'admin',
-                    'adminFile'  => 'admin.php',
-                    'cache'  => 'file'
+                    'installed'     => true,
+                    'adminFolder'   => 'admin',
+                    'adminFile'     => 'admin.php',
+                    'cache'         => 'file',
+                    'standard_url'  => $store_url,
+                    'cookie_domain' => $cookie_domain,
                 );
                 $_SESSION['setup']['global'] = array_merge($_POST['global'], $global);
                 $_SESSION['setup']['config'] = $_POST['config'];

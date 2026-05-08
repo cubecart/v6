@@ -111,7 +111,6 @@ $installed = false;
 $restart   = true;
 
 $domain        = parse_url(CC_STORE_URL);
-$cookie_domain = strpos($domain['host'], '.') ? '.'.str_replace('www.', '', $domain['host']) : '';
 
 $default_config_settings = array(
   'csrf' => '1',
@@ -194,8 +193,6 @@ $default_config_settings = array(
   'store_address' => '',
   'store_copyright' => '<p>&copy;'.date('Y').' '.$domain['host'].' -  All rights reserved.</p>',
   'store_postcode' => '',
-  'standard_url' => preg_replace(array('#^https#i','#/setup$#'), array('http',''), CC_STORE_URL),
-  'cookie_domain' => $cookie_domain,
   'show_basket_weight' => '1',
   'stock_change_time' => '1',
   'stock_level' => '0',

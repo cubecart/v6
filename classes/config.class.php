@@ -236,6 +236,20 @@ class Config
      */
     public function set($config_name, $element, $data, $force_write = false)
     {
+        // standard_url and cookie_domain are pinned in includes/global.inc.php
+        // and must never be written via the Config API (GHSA-7pvc-gxc4-chmc).
+        if ($config_name === 'config') {
+            if ($element === 'standard_url' || $element === 'cookie_domain') {
+                trigger_error(sprintf(
+                    "Config::set('config','%s',...) ignored — pinned in includes/global.inc.php (GHSA-7pvc-gxc4-chmc).",
+                    $element
+                ), E_USER_NOTICE);
+                return false;
+            }
+            if (empty($element) && is_array($data)) {
+                unset($data['standard_url'], $data['cookie_domain']);
+            }
+        }
         //Clean up the config array
         if (is_array($data)) {
             array_walk_recursive($data, function (&$s, $k) {

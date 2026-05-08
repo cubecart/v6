@@ -2501,6 +2501,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="smtp_port" introduced="5.0.0"><![CDATA[Outgoing SMTP Port (Default 25)]]></string>
     <string name="smtp_user" introduced="5.0.0"><![CDATA[SMTP Username]]></string>
     <string name="cookie_domain" introduced="6.0.0"><![CDATA[Cookie Domain]]></string>
+    <string name="edit_in_global_file" introduced="6.7.2"><![CDATA[Edit in includes/global.inc.php]]></string>
     <string name="standard_url" introduced="5.0.0"><![CDATA[Store URL]]></string>
     <string name="stock_allow_oos" introduced="5.0.0"><![CDATA[Allow out-of-stock purchases]]></string>
     <string name="stock_reduce" introduced="5.0.0"><![CDATA[Reduce stock levels]]></string>

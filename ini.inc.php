@@ -45,7 +45,7 @@ if (stristr(PHP_OS, 'WIN') && stristr($_SERVER['SERVER_SOFTWARE'], 'IIS')) {
 }
 
 /************* CUBECART SPECIFIC SETTINGS *************/
-define('CC_VERSION', '6.7.1');     // Version Number
+define('CC_VERSION', '6.7.2');     // Version Number
 define('CC_INI_SET', true);      // Stop includes and the like from being executed on their own
 define('CC_DS', DIRECTORY_SEPARATOR);   // Deprecated but kept for backward compatibility
 define('CC_PS', PATH_SEPARATOR);
@@ -126,6 +126,11 @@ if (!strstr($_SERVER['SCRIPT_NAME'], '/setup/')) {
         if (!$glob['installed'] || !isset($glob['dbdatabase'])) {
             header('Location: setup/index.php');
             exit;
+        }
+        // Pin store URL to file config so a forged Host header cannot poison
+        // transactional email links (GHSA-7pvc-gxc4-chmc).
+        if (!empty($glob['standard_url'])) {
+            $url = rtrim($glob['standard_url'], '/');
         }
     } else {
         ## If global.inc.php doesn't exists, then we should probably run the installer
