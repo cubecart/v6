@@ -111,6 +111,7 @@
 		   placeholder=$IMG_PICKER_PLACEHOLDER
 		   hint="Click an image to select it as the category image."
 		   cat_id_value=$CATEGORY.cat_id}
+	</div>
 	<div id="seo" class="tab_content">
   <h3>{$LANG.settings.title_seo}</h3>
     <fieldset>
