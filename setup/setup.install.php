@@ -67,6 +67,10 @@ if (!isset($_SESSION['setup']['permissions'])) {
     $step = 5;
     if (!isset($_SESSION['setup']['global']) || !isset($_SESSION['setup']['progress'])) {
         if (isset($_POST['global']) && isset($_POST['admin'])) {
+            // Empty dbhost defaults to localhost (matches the form placeholder).
+            if (!isset($_POST['global']['dbhost']) || trim($_POST['global']['dbhost']) === '') {
+                $_POST['global']['dbhost'] = 'localhost';
+            }
             $GLOBALS['smarty']->assign('FORM', $_POST);
             // Validation
             $validated = true;

@@ -295,6 +295,9 @@ if (isset($_SESSION['setup']['method'])) {
 if (isset($_POST['test_connection']) && $_POST['test_connection'] === '1') {
     header('Content-Type: application/json');
     $host   = isset($_POST['global']['dbhost'])     ? trim($_POST['global']['dbhost'])     : '';
+    if ($host === '') {
+        $host = 'localhost';
+    }
     $name   = isset($_POST['global']['dbdatabase']) ? trim($_POST['global']['dbdatabase']) : '';
     $user   = isset($_POST['global']['dbusername']) ? trim($_POST['global']['dbusername']) : '';
     $pass   = isset($_POST['global']['dbpassword']) ? $_POST['global']['dbpassword']       : '';
