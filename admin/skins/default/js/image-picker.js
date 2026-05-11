@@ -190,14 +190,19 @@
 
         // Drop-zone refresh hook: admin.js calls window.ccImagePickerOnUploadComplete()
         // when a Dropzone queue empties. We chain into our own handler so the picker
-        // refreshes the current folder + clears Dropzone previews.
+        // refreshes the current folder + clears Dropzone previews. Newly-uploaded
+        // file_ids are stashed on the picker root by admin.js's Dropzone success
+        // handler; we drain them here and pass to loadFolder so the matching tiles
+        // get auto-added to the selected strip.
         var prev = window.ccImagePickerOnUploadComplete;
         window.ccImagePickerOnUploadComplete = function(){
             if (typeof prev === 'function' && prev !== window.ccImagePickerOnUploadComplete) {
                 try { prev(); } catch (e) {}
             }
             self.$loading.attr('hidden', 'hidden');
-            self.loadFolder(self.currentPath);
+            var pendingIds = (self.root.__ccPendingUploadIds || []).slice();
+            self.root.__ccPendingUploadIds = [];
+            self.loadFolder(self.currentPath, pendingIds);
             try {
                 var dzEl = document.querySelector('div.dropzone');
                 if (dzEl && typeof Dropzone !== 'undefined') {
@@ -243,7 +248,7 @@
         });
     };
 
-    Picker.prototype.loadFolder = function(path){
+    Picker.prototype.loadFolder = function(path, autoSelectIds){
         var self = this;
         self.currentPath = path || '';
         // Sync the upload target dir for Dropzone. admin.js's `processing`
@@ -258,10 +263,43 @@
             if (!data) data = { folders: [], images: [] };
             self.renderBreadcrumb(self.currentPath);
             self.renderGrid(data);
+            if (autoSelectIds && autoSelectIds.length) {
+                self.autoSelect(data.images || [], autoSelectIds);
+            }
         }).always(function(){
             self.$loading.attr('hidden', 'hidden');
             self.$grid.attr('aria-busy', 'false');
         });
+    };
+
+    // Append the rows for `ids` from the just-rendered folder `images` to the
+    // selected strip. Single-select mode replaces with the last id; multi-select
+    // appends each unique id in order.
+    Picker.prototype.autoSelect = function(images, ids){
+        var self = this;
+        var byId = {};
+        images.forEach(function(img){ byId[img.file_id] = img; });
+        var changed = false;
+        ids.forEach(function(fid){
+            fid = parseInt(fid, 10);
+            if (!fid || !byId[fid]) return;
+            if (self.selected.findIndex(function(p){ return p.file_id === fid; }) >= 0) return;
+            var item = {
+                file_id:  fid,
+                filename: byId[fid].filename || '',
+                filepath: byId[fid].filepath || '',
+                thumb:    byId[fid].thumb || ''
+            };
+            if (self.single) {
+                self.selected = [item];
+                self.$grid.find('.img-picker__tile').removeClass('is-selected');
+            } else {
+                self.selected.push(item);
+            }
+            self.$grid.find('.img-picker__tile[data-fid="' + fid + '"]').addClass('is-selected');
+            changed = true;
+        });
+        if (changed) self.renderSelected();
     };
 
     Picker.prototype.renderBreadcrumb = function(path){

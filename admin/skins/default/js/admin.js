@@ -499,6 +499,18 @@ $(document).ready(function() {
                     console.error("Dropzone Error:", message);
                 });
 
+                // Stash the server-returned file_ids on the parent picker so it
+                // can auto-select the just-uploaded files once the queue empties.
+                this.on("success", function (file, response) {
+                    try {
+                        var data = (typeof response === 'string') ? JSON.parse(response) : response;
+                        if (!data || !Array.isArray(data.file_ids) || !data.file_ids.length) return;
+                        var pickerEl = (this.element && this.element.closest) ? this.element.closest('.img-picker') : null;
+                        if (!pickerEl) return;
+                        pickerEl.__ccPendingUploadIds = (pickerEl.__ccPendingUploadIds || []).concat(data.file_ids);
+                    } catch (e) {}
+                });
+
                 this.on("complete", function (file) {
                     if ($("div#imageset.fm-filelist").length) {
                         if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {

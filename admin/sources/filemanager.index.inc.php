@@ -86,7 +86,28 @@ if (isset($_FILES['replacement']) && !empty($_POST['file_id']) && is_numeric($_P
 }
 
 if ((!empty($_FILES)) && Admin::getInstance()->permissions('filemanager', CC_PERM_EDIT)) {
-    if ($fm->upload()) {
+    $upload_result = $fm->upload();
+    // XHR uploads (Dropzone on the product image-picker tab) need the new
+    // file_ids back so the picker can auto-select them. The flash-message +
+    // redirect path is still used for non-AJAX form posts.
+    $is_ajax = !empty($_SERVER['HTTP_X_REQUESTED_WITH'])
+        && strcasecmp($_SERVER['HTTP_X_REQUESTED_WITH'], 'XMLHttpRequest') === 0;
+    if ($is_ajax) {
+        header('Content-Type: application/json; charset=utf-8');
+        if ($upload_result) {
+            echo json_encode(array(
+                'success'  => true,
+                'file_ids' => is_array($upload_result)
+                    ? array_values(array_map('intval', $upload_result))
+                    : array(),
+            ));
+        } else {
+            http_response_code(400);
+            echo json_encode(array('success' => false));
+        }
+        exit;
+    }
+    if ($upload_result) {
         if (count($_FILES)>1) {
             $GLOBALS['main']->successMessage($lang['filemanager']['notify_files_upload']);
         } elseif ( (isset($_FILES['file0']) && $_FILES['file0']['size']>0) || (isset($_FILES['file']) && $_FILES['file']['size']>0) ) {
