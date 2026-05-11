@@ -798,7 +798,10 @@ class SEO
                 $base_path = $this->_getBaseUrl($absolute);
                 $out = $base_path . $this->generatePath($id_val, $type, $id_key);
                 if (!empty($remaining)) {
-                    $out .= '?' . http_build_query($remaining);
+                    // generatePath()'s default branch returns "index.php?_a=…&key=…" for
+                    // unrewritable types, so the separator depends on what we got back.
+                    $sep = (strpos($out, '?') === false) ? '?' : '&';
+                    $out .= $sep . http_build_query($remaining);
                 }
                 if (!empty($parts['fragment'])) {
                     $out .= '#' . $parts['fragment'];
