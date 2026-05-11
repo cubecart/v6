@@ -203,7 +203,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
      * @param int $template_id
      * @return bool
      */
-    public function sendEmail($email = false, $contents = array(), $template_id = false)
+    public function sendEmail($email = false, $contents = array(), $template_id = false, $pre_parsed = false)
     {
         foreach ($GLOBALS['hooks']->load('class.mailer.send') as $hook) {
             include $hook;
@@ -226,7 +226,9 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
         } else {
             return false;
         }
-        $contents = $this->_parseContents($contents);
+        if (!$pre_parsed) {
+            $contents = $this->_parseContents($contents);
+        }
         if (is_array($contents)) {
             // Load template from specified id or default if not set
             $where = (!$template_id) ? array('template_default' => 1) : array('template_id' => (int)$template_id);
@@ -345,12 +347,18 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
      */
     public function sendEmailAsync($email = false, $contents = array(), $template_id = false)
     {
+        // Parse Smarty macros now, while order DATA/BILLING/etc. are still assigned.
+        // If we defer to shutdown, normal page rendering will have reassigned $DATA
+        // (cubecart.class.php assigns it for addresses, POST data, etc.) and the
+        // queued email's {$DATA.*} tags would resolve to whatever was last set.
+        $contents = $this->_parseContents($contents);
         $this->_async_queue[] = array(
             'email'       => $email,
             'contents'    => $contents,
             'template_id' => $template_id,
             'from'        => $this->From,
             'from_name'   => $this->FromName,
+            'pre_parsed'  => true,
         );
         if (!$this->_shutdown_registered) {
             $this->_shutdown_registered = true;
@@ -399,7 +407,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                 if (!empty($entry['from_name'])) {
                     $this->FromName = $entry['from_name'];
                 }
-                $this->sendEmail($entry['email'], $entry['contents'], $entry['template_id']);
+                $this->sendEmail($entry['email'], $entry['contents'], $entry['template_id'], !empty($entry['pre_parsed']));
             } catch (\Throwable $e) {
                 // The user has already received their response - swallow and rely on
                 // CubeCart_email_log for the failure record. Trigger a notice so the
