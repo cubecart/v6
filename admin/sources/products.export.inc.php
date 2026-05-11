@@ -72,6 +72,7 @@ if (isset($_GET['format']) && !empty($_GET['format']) && isset($allowed_formats[
         $field_keys_to_wrap = $fields;
         $image_path = 'filename';
         $image_mode = 'source';
+        $single_image = false;
 
         foreach ($GLOBALS['hooks']->load('admin.product.import.format') as $hook) {
             include $hook;
@@ -198,7 +199,8 @@ if (isset($_GET['format']) && !empty($_GET['format']) && isset($allowed_formats[
             // without reintroducing the per-row CubeCart_filemanager round-trip.
             if (!empty($image_files_by_pid[$pid])) {
                 $image_array = array();
-                foreach ($image_files_by_pid[$pid] as $file_id) {
+                $file_ids = $single_image ? array_slice($image_files_by_pid[$pid], 0, 1) : $image_files_by_pid[$pid];
+                foreach ($file_ids as $file_id) {
                     if (isset($filemanager_by_id[$file_id])) {
                         $rel = $filemanager_by_id[$file_id];
                         switch ($image_path) {
