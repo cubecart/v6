@@ -8,9 +8,19 @@
 # to verify the store. They contain zero 
 
 deny from all
-<Files print.*.php>
+<Files print.*.html>
   allow from all
 </Files>
 <Files hash.*.php>
   allow from all
 </Files>
+
+# Defence-in-depth (GHSA-747j-4mmc-cj63): even if a write primitive ever lands
+# a .php file in here again, refuse to execute it. Apache will serve the bytes
+# as text/plain instead of handing them to the PHP interpreter.
+<FilesMatch "\.(php|php3|php4|php5|php7|php8|phtml|phar|pht)$">
+  SetHandler none
+  ForceType text/plain
+  RemoveHandler .php .php3 .php4 .php5 .php7 .php8 .phtml .phar .pht
+  RemoveType .php .php3 .php4 .php5 .php7 .php8 .phtml .phar .pht
+</FilesMatch>

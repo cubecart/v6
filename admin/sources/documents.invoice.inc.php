@@ -35,19 +35,26 @@ if (isset($_GET['restore']) && $_GET['restore']==1) {
     }
     $updated = true;
 } elseif (isset($GLOBALS['RAW']['POST']['content']) && !empty($GLOBALS['RAW']['POST']['content'])) {
+    // Invoice template is Smarty + HTML; raw PHP open tags have no legitimate
+    // use here and were the storage vector for GHSA-747j-4mmc-cj63. Strip them
+    // before the syntax probe and before persistence so a documents-edit role
+    // cannot plant an execution primitive even if the artefact filter on the
+    // render side ever regresses.
+    $posted_content = preg_replace('/<\?(?:php\b|=|\s|[^a-zA-Z?])[\s\S]*?(?:\?>|\z)/i', '', $GLOBALS['RAW']['POST']['content']);
+
     $syntax_error = false;
     try {
-        $GLOBALS['smarty']->fetch('string:'.$GLOBALS['RAW']['POST']['content']);
+        $GLOBALS['smarty']->fetch('string:'.$posted_content);
     } catch (Exception $e) {
         $GLOBALS['main']->errorMessage(str_replace('string:', '', htmlentities($e->getMessage(), ENT_QUOTES)));
         $syntax_error = true;
     }
 
     if (!$syntax_error) {
-        $hash = md5($GLOBALS['RAW']['POST']['content']);
+        $hash = md5($posted_content);
         if (!$current || $current[0]['hash']!==$hash) {
-            $GLOBALS['db']->insert('CubeCart_invoice_template', array('content' => $GLOBALS['RAW']['POST']['content'], 'hash' => $hash));
-            $current[0]['content'] = $GLOBALS['RAW']['POST']['content'];
+            $GLOBALS['db']->insert('CubeCart_invoice_template', array('content' => $posted_content, 'hash' => $hash));
+            $current[0]['content'] = $posted_content;
         }
         $GLOBALS['main']->successMessage($lang['settings']['notify_invoice_updated']);
         $updated = true;

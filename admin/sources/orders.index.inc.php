@@ -740,6 +740,13 @@ if (isset($_GET['action'])) {
         $template = $GLOBALS['smarty']->fetch($fetch_source);
 
         $template = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $template);
+        // Belt-and-braces: scrub raw PHP open tags from the rendered template
+        // before it lands on disk (GHSA-747j-4mmc-cj63). The artefact extension
+        // is .html below so Apache won't execute PHP anyway; this guarantees
+        // the bytes are inert if a future bug lets the file be renamed or
+        // served by a misconfigured handler. Covers <?php, <?=, short <? and
+        // unterminated tags.
+        $template = preg_replace('/<\?(?:php\b|=|\s|[^a-zA-Z?])[\s\S]*?(?:\?>|\z)/i', '', $template);
 
         $print_script = "<script>setTimeout(function(){window.print()},2000)</script>";
 
@@ -750,13 +757,31 @@ if (isset($_GET['action'])) {
 
         $print_hash = md5($template);
 
-$cleanup = <<<'CODE'
-<?php $d='.';$p='/^print\.[A-Za-z0-9]{32}\.php$/';$e=3600;$n=time();$x=[];if($h=opendir($d)){while(false!==($f=readdir($h))){if(preg_match($p,$f)){$a=$d.'/'.$f;$g=$n-filemtime($a);if($g>$e){if(@unlink($a))$x[]=$f;}}}closedir($h);}
-CODE;
-        
-        $filename = 'print.'.$print_hash.'.php';
+        // Inline prune of stale print artefacts. Previously the cleanup was
+        // appended as a <?php block at the end of each print file and ran when
+        // Apache executed it — that's exactly what made the .php extension
+        // (and the .htaccess carve-out) load-bearing. Doing it here lets us
+        // ship the artefact as .html, killing the RCE primitive entirely.
+        $retention = 3600;
+        $now = time();
+        foreach ((array)glob(CC_FILES_DIR.'print.*.html') as $stale) {
+            if (preg_match('/^print\.[A-Za-z0-9]{32}\.html$/', basename($stale))
+                && ($now - @filemtime($stale)) > $retention) {
+                @unlink($stale);
+            }
+        }
+        // One-shot sweep of any legacy print.<hash>.php files left behind by
+        // pre-fix installs. These can no longer be created, but we want them
+        // gone from disk irrespective of mtime.
+        foreach ((array)glob(CC_FILES_DIR.'print.*.php') as $legacy) {
+            if (preg_match('/^print\.[A-Za-z0-9]{32}\.php$/', basename($legacy))) {
+                @unlink($legacy);
+            }
+        }
 
-        if (file_put_contents(CC_FILES_DIR.$filename, $template.$cleanup)) {
+        $filename = 'print.'.$print_hash.'.html';
+
+        if (file_put_contents(CC_FILES_DIR.$filename, $template)) {
             httpredir($GLOBALS['storeURL'].'/'.basename(CC_FILES_DIR).'/'.$filename);
         } else {
             $GLOBALS['main']->errorMessage($lang['orders']['error_print_generate']);
