@@ -388,7 +388,13 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
             @session_write_close();
         }
         while (ob_get_level() > 0) {
-            @ob_end_flush();
+            // ob_end_flush() returns false on un-flushable handlers (e.g. zlib.output_compression
+            // when the response has already been sent). Without this guard the loop spins
+            // until max_execution_time and SIGKILL — drops queued mail silently. Reported on
+            // LiteSpeed/LSPHP where the placeOrder request has the gzip buffer active.
+            if (@ob_end_flush() === false) {
+                break;
+            }
         }
         @flush();
         if (function_exists('fastcgi_finish_request')) {
