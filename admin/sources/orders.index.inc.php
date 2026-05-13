@@ -291,6 +291,9 @@ if (isset($_GET['action'])) {
                 $detail[(int)$tax_detail['id']] = $tax_detail;
             }
             foreach ($tax_rates as $tax_rate) {
+                if (!isset($types[$tax_rate['type_id']]) || !isset($detail[$tax_rate['details_id']])) {
+                    continue;
+                }
                 $data = array_merge($types[$tax_rate['type_id']], $detail[$tax_rate['details_id']], $tax_rate);
                 $rates[$tax_rate['id']] = $data;
                 $tax_by_country[$tax_rate['country_id']][] = $data;
