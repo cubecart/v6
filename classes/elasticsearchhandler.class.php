@@ -277,7 +277,10 @@ class ElasticsearchHandler
         if (!$this->_isReady()) return array('size' => '0b', 'count' => '0');
         try {
             $params = ['index' => $this->_index];
-            $params['metric'] = '_all';
+            // Searchly (ES 7 fork) rejects the wildcard/_all metric — omit it there.
+            if (!\Elastic\Elasticsearch\Client::$isSearchly) {
+                $params['metric'] = '_all';
+            }
             $response = $this->_client->indices()->stats($params);
             $response = json_decode($response, true);
             return array('size' => formatBytes($response['_all']['primaries']['store']['size_in_bytes'], true), 'count' => $response['_all']['primaries']['docs']['count']);
