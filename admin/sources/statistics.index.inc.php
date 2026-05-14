@@ -41,8 +41,20 @@ $select['status'] = (isset($_GET['status']) && in_array($_GET['status'], range(1
 
 // Online users filter applies to both the badge count and the full table.
 $timeLimit = time() - 1800; // 30 minutes
+
+// Bot identification reuses Session::botSignatures() so per-row labels and
+// SQL-side bucket counts stay in sync with the runtime _isBot() blacklist.
+// The previous heuristic (session_last == session_start) flagged any bounce
+// visit as a bot, which mislabelled real customers who only viewed one page.
+$bot_sigs = Session::botSignatures();
+$bot_match_parts = array();
+foreach ($bot_sigs as $sig) {
+    $bot_match_parts[] = "LOWER(useragent) LIKE '%" . $GLOBALS['db']->sqlSafe($sig) . "%'";
+}
+$bot_sql_match = !empty($bot_match_parts) ? '(' . implode(' OR ', $bot_match_parts) . ')' : '0';
+
 if (isset($_GET['bots']) && $_GET['bots'] == 'false') {
-    $online_filter = '(S.session_last > S.session_start) AND ';
+    $online_filter = "NOT $bot_sql_match AND ";
     $GLOBALS['smarty']->assign('BOTS', false);
 } else {
     $online_filter = '';
@@ -967,21 +979,30 @@ case 'stats_best_customers':
 case 'stats_online':
     $tax_inst = Tax::getInstance();
 
-    // Counts split by type (always — used in the card footer regardless of bot filter).
+    // Counts split by type for the card footer. Bots are excluded entirely —
+    // Session::_isBot() rejects them before a sessions row is created, so the
+    // bucket would be ~0 anyway and was just adding visual noise.
     $split_q = $GLOBALS['db']->query(sprintf(
-        "SELECT SUM(CASE WHEN customer_id > 0 THEN 1 ELSE 0 END) AS signed_in, SUM(CASE WHEN customer_id = 0 AND session_last > session_start THEN 1 ELSE 0 END) AS guests, SUM(CASE WHEN session_last = session_start THEN 1 ELSE 0 END) AS bots FROM `%sCubeCart_sessions` WHERE acp = 0 AND session_last > %d",
-        $glob['dbprefix'], $timeLimit
+        "SELECT SUM(CASE WHEN customer_id > 0 THEN 1 ELSE 0 END) AS signed_in, SUM(CASE WHEN customer_id = 0 AND NOT %3\$s THEN 1 ELSE 0 END) AS guests FROM `%1\$sCubeCart_sessions` WHERE acp = 0 AND session_last > %2\$d",
+        $glob['dbprefix'], $timeLimit, $bot_sql_match
     ));
-    $split = array('signed_in' => 0, 'guests' => 0, 'bots' => 0);
+    $split = array('signed_in' => 0, 'guests' => 0);
     if ($split_q && !empty($split_q[0])) {
         $split['signed_in'] = (int)$split_q[0]['signed_in'];
         $split['guests']    = (int)$split_q[0]['guests'];
-        $split['bots']      = (int)$split_q[0]['bots'];
     }
-    $split['total'] = $split['signed_in'] + $split['guests'] + $split['bots'];
+    $split['total'] = $split['signed_in'] + $split['guests'];
     $GLOBALS['smarty']->assign('USERS_SPLIT', $split);
 
     // Helpers: friendly location label, bot identification, geo guess.
+    $is_bot_ua = function ($ua) use ($bot_sigs) {
+        $ua = strtolower($ua ?? '');
+        if ($ua === '') return false;
+        foreach ($bot_sigs as $sig) {
+            if (strpos($ua, $sig) !== false) return true;
+        }
+        return false;
+    };
     $bot_name_for = function ($ua) {
         $ua = strtolower($ua ?? '');
         if (strpos($ua, 'googlebot') !== false)            return 'Googlebot';
@@ -1044,7 +1065,7 @@ case 'stats_online':
         $smarty_data['users_online'] = array();
         foreach ($results as $user) {
             $user['is_admin']    = ((int)$user['admin_id'] > 0) ? 1 : 0;
-            $user['is_bot']      = ((int)$user['session_last'] === (int)$user['session_start']);
+            $user['is_bot']      = $is_bot_ua($user['useragent']);
             $user['bot_name']    = $user['is_bot'] ? $bot_name_for($user['useragent']) : '';
             $user['name']        = ((int)$user['customer_id'] != 0) ? sprintf('%s %s', $user['first_name'], $user['last_name']) : $lang['common']['guest'];
             $user['session_length_min'] = (int)round(($user['session_last'] - $user['session_start']) / 60);

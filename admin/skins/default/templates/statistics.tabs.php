@@ -580,7 +580,7 @@
          </table>
       </div>
       <div class="stat-chart-footer">
-         {$LANG.statistics.online_total_summary|sprintf:$USERS_SPLIT.total:$USERS_SPLIT.signed_in:$USERS_SPLIT.guests:$USERS_SPLIT.bots}
+         {$LANG.statistics.online_total_summary|sprintf:$USERS_SPLIT.total:$USERS_SPLIT.signed_in:$USERS_SPLIT.guests}
       </div>
    </div>
 {/if}

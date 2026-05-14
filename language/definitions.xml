@@ -2795,7 +2795,7 @@ This email was sent automatically by the CubeCart setup tool.]]></string>
     <string name="country_total" introduced="6.7.0"><![CDATA[%1$s &middot; %2$s countries]]></string>
     <string name="online_active_for" introduced="6.7.0"><![CDATA[Active for]]></string>
     <string name="online_last_seen" introduced="6.7.0"><![CDATA[Last seen]]></string>
-    <string name="online_total_summary" introduced="6.7.0"><![CDATA[%1$s online &middot; %2$s signed-in &middot; %3$s guests &middot; %4$s bots]]></string>
+    <string name="online_total_summary" introduced="6.7.0"><![CDATA[%1$s online &middot; %2$s signed-in &middot; %3$s guests]]></string>
     <string name="loc_home" introduced="6.7.0"><![CDATA[Home]]></string>
     <string name="loc_cart" introduced="6.7.0"><![CDATA[Cart]]></string>
     <string name="loc_checkout" introduced="6.7.0"><![CDATA[Checkout]]></string>

@@ -92,6 +92,21 @@ class Session
             'style'    => 'cc_style',
         ),
     );
+    /**
+     * Default bot UA substrings used by Layer 2 of _isBot().
+     * Override at runtime via $glob['bot_sigs'] in includes/global.inc.php.
+     *
+     * @var string[]
+     */
+    private static $_bot_sigs_default = array(
+        'bot', 'crawl', 'spider', 'slurp',           // generic patterns
+        'headless', 'phantom', 'puppeteer',          // headless browsers
+        'lighthouse', 'pagespeed', 'gtmetrix',       // performance testing
+        'pingdom', 'uptimerobot', 'statuscake',      // uptime monitors
+        'semrush', 'ahrefs', 'majestic', 'dotbot',   // SEO tools
+        'facebookexternal',                          // social media
+        'perplexity-user', 'claude-web', 'cohere-ai',// AI on-demand fetchers without bot/crawl tokens
+    );
 
     const BLOCKER_FRONTEND	= 'F';
     const BLOCKER_BACKEND	= 'B';
@@ -745,25 +760,31 @@ class Session
         }
 
         // Layer 2: Block known bots that spoof full browser UAs
-        // Override via $glob['bot_sigs'] in includes/global.inc.php
-        if (!empty($GLOBALS['glob']['bot_sigs']) && is_array($GLOBALS['glob']['bot_sigs'])) {
-            $sigs = $GLOBALS['glob']['bot_sigs'];
-        } else {
-            $sigs = array(
-                'bot', 'crawl', 'spider', 'slurp',         // generic patterns
-                'headless', 'phantom', 'puppeteer',         // headless browsers
-                'lighthouse', 'pagespeed', 'gtmetrix',      // performance testing
-                'pingdom', 'uptimerobot', 'statuscake',     // uptime monitors
-                'semrush', 'ahrefs', 'majestic', 'dotbot',  // SEO tools
-                'facebookexternal',                          // social media
-            );
-        }
-        foreach ($sigs as $sig) {
+        foreach (self::botSignatures() as $sig) {
             if (strpos($agent, $sig) !== false) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Bot UA substrings used by Layer 2 detection.
+     * Returns the $glob['bot_sigs'] override when set, otherwise the
+     * built-in default in self::$_bot_sigs_default. Shared with the admin
+     * Users Online report so per-row labels and SQL-side bucket counts
+     * stay in sync.
+     *
+     * @return string[]
+     */
+    public static function botSignatures()
+    {
+        if (!empty($GLOBALS['glob']['bot_sigs']) && is_array($GLOBALS['glob']['bot_sigs'])) {
+            return array_values(array_filter(array_map(function ($s) {
+                return strtolower(trim((string)$s));
+            }, $GLOBALS['glob']['bot_sigs']), 'strlen'));
+        }
+        return self::$_bot_sigs_default;
     }
 
     /**
