@@ -854,11 +854,14 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
         $attributes .= ';HttpOnly';
         header('Set-Cookie: cc_delete_setup=1'.$attributes);
 
-        //Attempt admin file and folder rename
-        if (!isset($_SESSION['setup']['admin_rename']) && (file_exists('../admin') || file_exists('../admin.php'))) {
+        //Attempt admin file and folder rename. Fires on install, or on upgrade only when the migration just added
+        //adminFolder/adminFile to global.inc.php (pre-v5 stores). Upgrades on stores that already had the keys are
+        //left untouched so merchant-set values — including deliberate defaults — survive.
+        $update_config = false;
+        $allow_admin_rename = ($_SESSION['setup']['method'] === 'install') || !empty($_SESSION['setup']['admin_keys_added']);
+        if ($allow_admin_rename && !isset($_SESSION['setup']['admin_rename']) && (file_exists('../admin') || file_exists('../admin.php'))) {
             $adminFolder = 'admin_'.randomString(6);
             $adminFile   = 'admin_'.randomString(6).'.php';
-            $update_config = false;
 
             rename('../'.$glob['adminFolder'], '../'.$adminFolder);
             rename('../'.$glob['adminFile'], '../'.$adminFile);
