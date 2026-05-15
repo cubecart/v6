@@ -30,26 +30,17 @@ do {
     }
 
     foreach ($rows as $row) {
+        $oid = $db->sqlSafe($row['cart_order_id'], true);
         $basket = @unserialize($row['basket'], array('allowed_classes' => false));
         if (!is_array($basket)) {
             $total_failed++;
             // Mark the row so the next iteration's WHERE skips it (else we'd loop forever).
-            // We can't write a sentinel to the basket column itself without obscuring the
-            // original data, so set it to NULL to drop it from the candidate set. The row
-            // remains otherwise intact and the helper treats NULL as "empty basket".
-            $db->update(
-                'CubeCart_order_summary',
-                array('basket' => null),
-                array('cart_order_id' => $row['cart_order_id'])
-            );
+            $db->misc("UPDATE `".$glob['dbprefix']."CubeCart_order_summary` SET `basket` = NULL WHERE `cart_order_id` = {$oid}");
             continue;
         }
-
-        $db->update(
-            'CubeCart_order_summary',
-            array('basket' => gzcompress(serialize($basket), 6)),
-            array('cart_order_id' => $row['cart_order_id'])
-        );
+        // Write via UNHEX() to avoid Database::sqlSafe() stripslashes() corruption of binary data.
+        $hex = bin2hex(gzcompress(serialize($basket), 6));
+        $db->misc("UPDATE `".$glob['dbprefix']."CubeCart_order_summary` SET `basket` = UNHEX('{$hex}') WHERE `cart_order_id` = {$oid}");
         $total_processed++;
     }
 } while (count($rows) === $batch_size);

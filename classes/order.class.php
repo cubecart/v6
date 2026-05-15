@@ -645,17 +645,18 @@ class Order
 
             // Update the status level
             $data['status'] = (int)$status_id;
+            $this->updateSummary($order_id, $data);
             // When leaving Pending, compress the basket blob if it's still raw.
+            // Written via the binary-safe path (see saveBasketBlob).
             if ((int)$currentStatus[0]['status'] === self::ORDER_PENDING && (int)$status_id > self::ORDER_PENDING) {
                 $row = $GLOBALS['db']->select('CubeCart_order_summary', array('basket'), array('cart_order_id' => $order_id), false, false, false, false);
                 if ($row && !empty($row[0]['basket']) && $row[0]['basket'][0] !== "\x78") {
                     $basket = self::basketRead($row[0]['basket']);
                     if (is_array($basket)) {
-                        $data['basket'] = self::basketWrite($basket, (int)$status_id);
+                        self::saveBasketBlob($order_id, self::basketWrite($basket, (int)$status_id));
                     }
                 }
             }
-            $this->updateSummary($order_id, $data);
 
             // Update Stock Levels
             $this->_manageStock($status_id, $order_id);
@@ -1100,6 +1101,24 @@ class Order
             $data = gzcompress($data, 6);
         }
         return $data;
+    }
+
+    /**
+     * Persist a basket blob to CubeCart_order_summary via a direct UNHEX() UPDATE.
+     *
+     * Bypasses the standard insert/update path because Database::sqlSafe() calls
+     * stripslashes() on the value (legacy magic_quotes handling), which corrupts
+     * arbitrary binary content such as gzcompress() output.
+     */
+    public static function saveBasketBlob($order_id, $blob)
+    {
+        if ($order_id === null || $order_id === '' || $blob === null || $blob === '') {
+            return false;
+        }
+        $pfx = $GLOBALS['config']->get('config', 'dbprefix');
+        $hex = bin2hex($blob);
+        $oid = $GLOBALS['db']->sqlSafe($order_id, true);
+        return (bool)$GLOBALS['db']->misc("UPDATE `{$pfx}CubeCart_order_summary` SET `basket` = UNHEX('{$hex}') WHERE `cart_order_id` = {$oid}");
     }
 
     //=====[ Private ]=======================================
@@ -1624,7 +1643,8 @@ class Order
             'postcode_d' => $this->_basket['delivery_address']['postcode'],
             'country_d'  => $this->_basket['delivery_address']['country_id'],
             'w3w_d'  => $this->_basket['delivery_address']['w3w'],
-            'basket'  => self::basketWrite($this->_basket, (int)$this->_basket['order_status']),
+            // basket written separately via saveBasketBlob() — Database::sqlSafe()
+            // calls stripslashes() which corrupts binary (gzcompress) content
             'lang'   => $GLOBALS['language']->current(),
             'ip_address' => get_ip_address(),
             'currency' => empty($currency) ? $GLOBALS['config']->get('config', 'default_currency') : $currency,
@@ -1661,6 +1681,8 @@ class Order
                 $GLOBALS['user']->addOrder($customer_id);
             }
         }
+        // Write basket blob via binary-safe path (see saveBasketBlob).
+        self::saveBasketBlob($this->_basket['cart_order_id'], self::basketWrite($this->_basket, (int)$this->_basket['order_status']));
         // Add notes if credit has been used
         if($record['credit_used']>0) {
             $this->addNote($this->_basket['cart_order_id'], sprintf($GLOBALS['language']->orders['credit_note_usage'], Tax::getInstance()->priceFormat($record['credit_used'])));
