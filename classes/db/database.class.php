@@ -843,13 +843,13 @@ class Database_Contoller
                 $this->_found_rows = 1;
             } else if ($calc_rows) {
                 $count_query = "SELECT $distinct COUNT(*) AS `Count` FROM $wrapper{$prefix}$table$wrapper ".$this->where($table_where, $where)." $group;";
-                if ($count = $this->_getCached($count_query)) {
-                    $this->_found_rows = $count;
-                } else {
+                if (!($count = $this->_getCached($count_query))) {
                     $count = $this->misc($count_query);
-                    $this->_found_rows = (count($count)>1) ? count($count) : $count[0]['Count'];
                     $this->_writeCache($count, $count_query);
                 }
+                // Extract the integer the same way for both cache miss and cache hit —
+                // _writeCache stores the raw array, so _getCached returns the same shape.
+                $this->_found_rows = (count($count)>1) ? count($count) : $count[0]['Count'];
             }
             // Strip excluded columns from results
             if ($output && $exclude_columns) {
