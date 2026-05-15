@@ -1,0 +1,1 @@
+ALTER TABLE `CubeCart_order_summary` MODIFY `basket` MEDIUMBLOB NULL DEFAULT NULL; #EOQ

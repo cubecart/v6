@@ -645,6 +645,16 @@ class Order
 
             // Update the status level
             $data['status'] = (int)$status_id;
+            // When leaving Pending, compress the basket blob if it's still raw.
+            if ((int)$currentStatus[0]['status'] === self::ORDER_PENDING && (int)$status_id > self::ORDER_PENDING) {
+                $row = $GLOBALS['db']->select('CubeCart_order_summary', array('basket'), array('cart_order_id' => $order_id), false, false, false, false);
+                if ($row && !empty($row[0]['basket']) && $row[0]['basket'][0] !== "\x78") {
+                    $basket = self::basketRead($row[0]['basket']);
+                    if (is_array($basket)) {
+                        $data['basket'] = self::basketWrite($basket, (int)$status_id);
+                    }
+                }
+            }
             $this->updateSummary($order_id, $data);
 
             // Update Stock Levels
@@ -1046,6 +1056,50 @@ class Order
             return true;
         }
         return false;
+    }
+
+    /**
+     * Decode a CubeCart_order_summary.basket blob.
+     *
+     * Transparently handles both legacy uncompressed (raw serialize) and
+     * compressed (zlib) rows. zlib streams always begin with 0x78; PHP
+     * serialize() output starts with a type letter, so the sniff is unambiguous.
+     *
+     * @param  string|null $blob Raw column value
+     * @return array|false       Unserialized basket, or false if empty/corrupt
+     */
+    public static function basketRead($blob)
+    {
+        if ($blob === null || $blob === '') {
+            return false;
+        }
+        if ($blob[0] === "\x78") {
+            $blob = @gzuncompress($blob);
+            if ($blob === false) {
+                return false;
+            }
+        }
+        return unserialize($blob, array('allowed_classes' => false));
+    }
+
+    /**
+     * Encode a basket for CubeCart_order_summary.basket.
+     *
+     * Compresses with zlib once the order has left Pending status (status > 1),
+     * leaving live/pending baskets uncompressed because they are re-written
+     * frequently during checkout/payment retries.
+     *
+     * @param  array $basket
+     * @param  int   $status Order status the row will hold after this write
+     * @return string
+     */
+    public static function basketWrite(array $basket, $status)
+    {
+        $data = serialize($basket);
+        if ((int)$status > self::ORDER_PENDING) {
+            $data = gzcompress($data, 6);
+        }
+        return $data;
     }
 
     //=====[ Private ]=======================================
@@ -1570,7 +1624,7 @@ class Order
             'postcode_d' => $this->_basket['delivery_address']['postcode'],
             'country_d'  => $this->_basket['delivery_address']['country_id'],
             'w3w_d'  => $this->_basket['delivery_address']['w3w'],
-            'basket'  => serialize($this->_basket),
+            'basket'  => self::basketWrite($this->_basket, (int)$this->_basket['order_status']),
             'lang'   => $GLOBALS['language']->current(),
             'ip_address' => get_ip_address(),
             'currency' => empty($currency) ? $GLOBALS['config']->get('config', 'default_currency') : $currency,
@@ -1628,7 +1682,7 @@ class Order
         if (!empty($order_id)) {
             // Fetch summary
             if (($summary = $GLOBALS['db']->select('CubeCart_order_summary', 'basket', array('cart_order_id' => (string)$order_id), false, false, false, false)) !== false) {
-                if ($this->_basket = unserialize($summary[0]['basket'], ['allowed_classes' => false])) {
+                if ($this->_basket = self::basketRead($summary[0]['basket'])) {
                     $GLOBALS['cart']->save();
                     return true;
                 }

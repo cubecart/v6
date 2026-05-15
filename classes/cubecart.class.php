@@ -1451,7 +1451,7 @@ class Cubecart
                 foreach ($GLOBALS['hooks']->load('class.cubecart.order_summary') as $hook) {
                     include $hook;
                 }
-                $order['basket'] = unserialize($order['basket'], ['allowed_classes' => false]);
+                $order['basket'] = Order::basketRead($order['basket']);
 
                 $GLOBALS['smarty']->assign('SUM', $order);
 
@@ -2843,7 +2843,7 @@ class Cubecart
                     foreach ($GLOBALS['hooks']->load('class.cubecart.order_summary') as $hook) {
                         include $hook;
                     }
-                    $order['basket'] = unserialize($order['basket'], ['allowed_classes' => false]);
+                    $order['basket'] = Order::basketRead($order['basket']);
                     $GLOBALS['smarty']->assign('SUM', $order);
                     $GLOBALS['smarty']->assign('ORDER', $order);
                     $GLOBALS['session']->delete('ghost_customer_id');
@@ -2906,7 +2906,7 @@ class Cubecart
                     httpredir(currentPage(array('cancel')));
                 } elseif (isset($_GET['reorder']) && Order::validOrderId(trim($_GET['reorder']))) {
                     $basket = $GLOBALS['db']->select('CubeCart_order_summary', array('basket'), array('cart_order_id'=>$_GET['reorder'], 'customer_id' => $GLOBALS['user']->get('customer_id')));
-                    $past_data = unserialize($basket[0]['basket'], ['allowed_classes' => false]);
+                    $past_data = Order::basketRead($basket[0]['basket']);
                     $GLOBALS['cart']->basket['contents'] = $past_data['contents'];
                     $GLOBALS['cart']->save();
                     httpredir('?_a=basket');
@@ -2999,7 +2999,7 @@ class Cubecart
                     foreach ($GLOBALS['hooks']->load('class.cubecart.order_summary') as $hook) {
                         include $hook;
                     }
-                    $order['basket'] = unserialize($order['basket'], ['allowed_classes' => false]);
+                    $order['basket'] = Order::basketRead($order['basket']);
                     $GLOBALS['smarty']->assign('SUM', $order);
                     $GLOBALS['smarty']->assign('ORDER', $order);
                 } else {

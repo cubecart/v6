@@ -348,7 +348,7 @@ if (isset($_GET['action'])) {
         
             // Seek weight from basket data for orders placed before 6.0.9
             if ((float)$summary[0]['weight'] == 0) {
-                $basket_array = unserialize($summary[0]['basket']);
+                $basket_array = Order::basketRead($summary[0]['basket']);
                 if(!is_array($basket_array)) {
                     $basket_array = array();
                 }
