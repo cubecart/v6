@@ -21,19 +21,13 @@ Sanitize::checkToken();
 // Shared view-layer bootstrap (Smarty, Language, HookLoader, SSL, SEO, GUI, Tax).
 // GUI receives the admin flag automatically because CC_IN_ADMIN is true here.
 require CC_INCLUDES_DIR.'bootstrap.view.inc.php';
-//Setup language template
 $GLOBALS['language']->setTemplate();
-//Initialize Catalogue
 $GLOBALS['catalogue'] = Catalogue::getInstance();
-//Initialize ACP
-$GLOBALS['main'] = ACP::getInstance();
+$GLOBALS['main']      = ACP::getInstance();
 $lang = $GLOBALS['language']->getLanguageStrings();
-//Initialize Cart
-$GLOBALS['cart'] = Cart::getInstance();
+$GLOBALS['cart']      = Cart::getInstance();
 
-
-$global_template_file['session_true']  = 'main.php';
-$global_template_file['session_false']  = 'login.php';
+$global_template_file = array('session_true' => 'main.php', 'session_false' => 'login.php');
 
 // hook_tab_content is a place where hooks can specify template includes that
 // define their admin tab content.

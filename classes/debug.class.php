@@ -142,10 +142,6 @@ class Debug
 
         $this->_debug_timer = $this->_getTime();
 
-        // Check register_globals
-        if (ini_get('register_globals')) {
-            trigger_error('register_globals are enabled. It is highly recommended that you disable this in your PHP configuration, as it is a large security hole, and may wreak havoc.', E_USER_WARNING);
-        }
         Sanitize::cleanGlobals();
     }
 

@@ -38,8 +38,6 @@ header('Content-Type: application/json; charset=utf-8');
 ini_set('display_errors', false);
 ini_set('html_errors', false);
 
-global $config_default;
-
 // Include core functions
 require CC_INCLUDES_DIR . 'functions.inc.php';
 
