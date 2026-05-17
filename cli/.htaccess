@@ -1,0 +1,14 @@
+# Block all web access to cli/ — these scripts are intended for command-line
+# invocation only (e.g. cron tasks). PHP scripts here already refuse non-CLI
+# SAPI requests, but blocking at the web server layer means a malicious probe
+# never reaches PHP-FPM in the first place.
+
+<IfModule mod_authz_core.c>
+    # Apache 2.4+
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    # Apache 2.2
+    Order Deny,Allow
+    Deny from all
+</IfModule>
