@@ -590,6 +590,34 @@ $GLOBALS['smarty']->assign('HOOK_TAB_CONTENT', $GLOBALS['hook_tab_content']);
 Cron::ensureDefaults();
 $cron_tasks = $GLOBALS['db']->select('CubeCart_cron_tasks', false, false, false, false, false, false);
 $GLOBALS['smarty']->assign('CRON_TASKS', $cron_tasks ? $cron_tasks : array());
+$GLOBALS['smarty']->assign('CRON_CLI_PATH', CC_ROOT_DIR.'/cli/cron.php');
+// Detect the CLI PHP binary. Tricky because:
+// - PHP_BINARY points to PHP-FPM (not CLI) when running under web.
+// - open_basedir may block is_executable() from checking paths outside the web root.
+// - On macOS, /usr/bin/php is the legacy system PHP, not the real one.
+// Shell `command -v php` is the most reliable when exec() is available.
+$php_cli = null;
+$exec_disabled = in_array('exec', array_map('trim', explode(',', (string)ini_get('disable_functions'))));
+if (function_exists('exec') && !$exec_disabled) {
+    $output = array();
+    @exec('command -v php 2>/dev/null', $output);
+    if (!empty($output[0])) {
+        $candidate = trim($output[0]);
+        if (@is_executable($candidate) || strpos($candidate, '/') === 0) {
+            $php_cli = $candidate;
+        }
+    }
+}
+if (!$php_cli) {
+    // Fallback list — Homebrew before /usr/bin (which is macOS legacy when on Mac).
+    foreach (array('/opt/homebrew/bin/php', '/usr/local/bin/php', PHP_BINDIR.'/php', '/usr/bin/php') as $path) {
+        if (@is_executable($path)) {
+            $php_cli = $path;
+            break;
+        }
+    }
+}
+$GLOBALS['smarty']->assign('PHP_BINARY', $php_cli ?: '/usr/bin/php');
 $GLOBALS['smarty']->assign('CRON_FREQUENCIES', array(
     300    => '5 Minutes',
     900    => '15 Minutes',

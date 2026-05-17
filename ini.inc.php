@@ -24,7 +24,7 @@ ini_set('arg_separator.output', '&'); // Set argument separator to & HTML validi
 ini_set('default_charset', 'UTF-8');  // Set default charset as 'UTF-8'
 ini_set('default_mimetype', 'text/html'); // Set default mimetype as 'text/html'
 
-if (!ini_get('output_buffering')) {   // Enable Zlib Compression, but only if output buffering is disabled
+if (!ini_get('output_buffering') && !defined('CC_CLI')) {   // Enable Zlib Compression, but only if output buffering is disabled (web only — breaks CLI output)
     ini_set('zlib.output_compression', true);
     ini_set('zlib.output_compression_level', 7);
 }

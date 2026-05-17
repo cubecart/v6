@@ -611,6 +611,7 @@
       <fieldset>
          <legend>{$LANG.settings.cron_examples}</legend>
          <p>{$LANG.settings.cron_examples_desc}</p>
+         <div><label>PHP CLI</label><span><code>*/5 * * * * {$PHP_BINARY} {$CRON_CLI_PATH} > /dev/null 2>&1</code></span></div>
          <div><label>Cron</label><span><code>*/5 * * * * /usr/bin/curl -s "{$STORE_URL}/index.php?_g=cron&_m=run" > /dev/null 2>&1</code></span></div>
          <div><label>Wget</label><span><code>*/5 * * * * /usr/bin/wget -qO /dev/null "{$STORE_URL}/index.php?_g=cron&_m=run"</code></span></div>
       </fieldset>
