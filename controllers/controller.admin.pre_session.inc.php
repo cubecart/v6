@@ -18,29 +18,9 @@ define('ADMIN_CP', true);
 require CC_INCLUDES_DIR.'bootstrap.data.inc.php';
 //Check security token
 Sanitize::checkToken();
-// Initialize Smarty
-$GLOBALS['smarty'] = new Smarty();
-$GLOBALS['smarty']->muteUndefinedOrNullWarnings();
-$GLOBALS['smarty']->error_reporting = E_ALL & ~E_NOTICE & ~E_WARNING;
-$GLOBALS['smarty']->compile_dir  = CC_SKIN_CACHE_DIR;
-$GLOBALS['smarty']->config_dir  = CC_SKIN_CACHE_DIR;
-$GLOBALS['smarty']->cache_dir  = CC_SKIN_CACHE_DIR;
-// In production (debug off + cache on), skip the per-render filemtime check.
-// Compiled-template cache is invalidated by the "Clear Cache" admin action.
-if (!(bool)$GLOBALS['config']->get('config', 'debug') && (bool)$GLOBALS['config']->get('config', 'cache')) {
-    $GLOBALS['smarty']->setCompileCheck(false);
-}
-$GLOBALS['smarty']->enableSecurity(new CubeCart_Smarty_Security($GLOBALS['smarty']));
-//Initialize language
-$GLOBALS['language'] = Language::getInstance();
-//Initialize hooks
-$GLOBALS['hooks'] = HookLoader::getInstance();
-//Initialize GUI
-$GLOBALS['gui'] = GUI::getInstance(true);
-//Initialize SSL
-$GLOBALS['ssl'] = SSL::getInstance();
-//Initialize SEO
-$GLOBALS['seo'] = SEO::getInstance();
+// Shared view-layer bootstrap (Smarty, Language, HookLoader, SSL, SEO, GUI, Tax).
+// GUI receives the admin flag automatically because CC_IN_ADMIN is true here.
+require CC_INCLUDES_DIR.'bootstrap.view.inc.php';
 //Setup language template
 $GLOBALS['language']->setTemplate();
 //Initialize Catalogue

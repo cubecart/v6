@@ -25,43 +25,19 @@ $GLOBALS['config']->merge('config', '', $config_default);
 if ($GLOBALS['config']->get('config', 'csrf')=='1') {
     Sanitize::checkToken();
 }
-//Initialize Smarty
-$GLOBALS['smarty'] = new Smarty();
-$GLOBALS['smarty']->muteUndefinedOrNullWarnings();
-$GLOBALS['smarty']->error_reporting = E_ALL & ~E_NOTICE & ~E_WARNING;
-$GLOBALS['smarty']->compile_dir  = CC_SKIN_CACHE_DIR;
-$GLOBALS['smarty']->config_dir   = CC_SKIN_CACHE_DIR;
-$GLOBALS['smarty']->cache_dir    = CC_SKIN_CACHE_DIR;
-$GLOBALS['smarty']->debugging = false;
-$GLOBALS['smarty']->enableSecurity(new CubeCart_Smarty_Security($GLOBALS['smarty']));
+// Shared view-layer bootstrap (Smarty, Language, HookLoader, SSL, SEO, GUI, Tax)
+require CC_INCLUDES_DIR.'bootstrap.view.inc.php';
+// Front-end-only: HTML minification filter
 if (!(bool)$GLOBALS['config']->get('config', 'debug')) {
     define('HTML_MINIFY_URL_ENABLED', false);
     include(CC_INCLUDES_DIR.'smarty/filters/HTMLMinify.smarty.php');
     $GLOBALS['smarty']->registerFilter("output", "minify_html");
-    // In production (debug off + cache on), skip the per-render filemtime
-    // check on each compiled template — the compiled cache is invalidated by
-    // the existing "Clear Cache" admin action. Saves ~1ms per render across
-    // dozens of partials per request.
-    if ((bool)$GLOBALS['config']->get('config', 'cache')) {
-        $GLOBALS['smarty']->setCompileCheck(false);
-    }
 }
-//Initialize language
-$GLOBALS['language'] = Language::getInstance();
-//Initialize hooks
-$GLOBALS['hooks'] = HookLoader::getInstance();
-//Initialize SSL
-$GLOBALS['ssl'] = SSL::getInstance();
-//Initialize SEO
-$GLOBALS['seo'] = SEO::getInstance();
+// Front-end-only: resolve seo_path immediately so the dispatcher can route to the right item
 if (isset($_GET['seo_path']) && !empty($_GET['seo_path'])) {
     $_GET['seo_path'] = preg_replace('/(\/\~[a-z0-9]{1,}\/)/', '', $_GET['seo_path']); // Remove /~username/ from seo_path
     $GLOBALS['seo']->getItem($_GET['seo_path']);
 }
-//Initialize GUI
-$GLOBALS['gui'] = GUI::getInstance();
-//Initialize Taxes
-$GLOBALS['tax'] = Tax::getInstance();
 //Initialize catalogue
 $GLOBALS['catalogue'] = Catalogue::getInstance();
 //Initialize cubecart

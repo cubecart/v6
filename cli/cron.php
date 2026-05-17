@@ -51,26 +51,10 @@ require CC_INCLUDES_DIR . 'functions.inc.php';
 require CC_INCLUDES_DIR . 'bootstrap.data.inc.php';
 unset($glob);
 $GLOBALS['config']->merge('config', '', $config_default);
-
-// View-layer singletons. Smarty must exist before Language (Language::__construct
-// assigns to it). Mailer parses email templates via Smarty. SEO is needed by
-// Cron::rebuildSitemap. GUI is touched by Mailer and SEO. Skipped vs the web
-// bootstrap: User, Cart, Catalogue, Cubecart — not used by any cron task.
-$GLOBALS['smarty'] = new Smarty();
-$GLOBALS['smarty']->muteUndefinedOrNullWarnings();
-$GLOBALS['smarty']->error_reporting = E_ALL & ~E_NOTICE & ~E_WARNING;
-$GLOBALS['smarty']->compile_dir = CC_SKIN_CACHE_DIR;
-$GLOBALS['smarty']->config_dir  = CC_SKIN_CACHE_DIR;
-$GLOBALS['smarty']->cache_dir   = CC_SKIN_CACHE_DIR;
-$GLOBALS['smarty']->debugging   = false;
-$GLOBALS['smarty']->enableSecurity(new CubeCart_Smarty_Security($GLOBALS['smarty']));
-
-$GLOBALS['language'] = Language::getInstance();
-$GLOBALS['hooks']    = HookLoader::getInstance();
-$GLOBALS['ssl']      = SSL::getInstance();
-$GLOBALS['seo']      = SEO::getInstance();
-$GLOBALS['gui']      = GUI::getInstance();
-$GLOBALS['tax']      = Tax::getInstance();
+// Shared view-layer bootstrap (Smarty, Language, HookLoader, SSL, SEO, GUI, Tax).
+// Skipped vs the web bootstrap: User, Cart, Catalogue, Cubecart — not used by
+// any cron task, so we save their init cost on every tick.
+require CC_INCLUDES_DIR . 'bootstrap.view.inc.php';
 
 // Dispatch
 $method = $argv[1] ?? 'run';
