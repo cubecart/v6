@@ -46,26 +46,16 @@ $_SERVER['HTTP_USER_AGENT'] = 'CubeCart-CLI/1.0';
 
 require $store_root . '/ini.inc.php';
 require CC_INCLUDES_DIR . 'functions.inc.php';
-
-// Bootstrap the singletons Cron + its callees need. Skips Smarty/GUI/SEO/
-// User/Cart/Session/etc. that are only relevant to web requests.
-$GLOBALS['cache']  = Cache::getInstance();
-$GLOBALS['db']     = Database::getInstance($glob);
-$GLOBALS['config'] = Config::getInstance($glob);
+// Shared data-layer bootstrap (Cache, Database, Config, timezone, Debug, Session).
+// Debug is auto-suppressed when CC_CLI is defined.
+require CC_INCLUDES_DIR . 'bootstrap.data.inc.php';
 unset($glob);
 $GLOBALS['config']->merge('config', '', $config_default);
 
-$tz = $GLOBALS['config']->get('config', 'time_zone');
-if (!empty($tz)) {
-    $GLOBALS['db']->misc("SET @@time_zone = '" . $tz . "'", false, false);
-    date_default_timezone_set($tz);
-}
-
-$GLOBALS['debug']    = Debug::getInstance();
-$GLOBALS['debug']->supress();
-
-// Smarty must exist before Language (Language::__construct assigns to it).
-// Mailer also uses it to parse email templates.
+// View-layer singletons. Smarty must exist before Language (Language::__construct
+// assigns to it). Mailer parses email templates via Smarty. SEO is needed by
+// Cron::rebuildSitemap. GUI is touched by Mailer and SEO. Skipped vs the web
+// bootstrap: User, Cart, Catalogue, Cubecart — not used by any cron task.
 $GLOBALS['smarty'] = new Smarty();
 $GLOBALS['smarty']->muteUndefinedOrNullWarnings();
 $GLOBALS['smarty']->error_reporting = E_ALL & ~E_NOTICE & ~E_WARNING;
@@ -75,13 +65,8 @@ $GLOBALS['smarty']->cache_dir   = CC_SKIN_CACHE_DIR;
 $GLOBALS['smarty']->debugging   = false;
 $GLOBALS['smarty']->enableSecurity(new CubeCart_Smarty_Security($GLOBALS['smarty']));
 
-// Session is touched by Tax and a few other singletons. Init it before
-// any class that may reach for $GLOBALS['session'].
-$GLOBALS['session']  = Session::getInstance();
 $GLOBALS['language'] = Language::getInstance();
 $GLOBALS['hooks']    = HookLoader::getInstance();
-// SEO needed by Cron::rebuildSitemap. GUI is touched by Mailer (email templates)
-// and SEO. Skipped: User, Cart, Cubecart, SSL — not used by any cron task.
 $GLOBALS['ssl']      = SSL::getInstance();
 $GLOBALS['seo']      = SEO::getInstance();
 $GLOBALS['gui']      = GUI::getInstance();

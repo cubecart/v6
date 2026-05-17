@@ -14,22 +14,8 @@ if (!defined('CC_INI_SET')) {
     die('Access Denied');
 }
 define('ADMIN_CP', true);
-// Initialize Cache
-$GLOBALS['cache'] = Cache::getInstance();
-// Initialize Database class, and fetch default configuration
-$GLOBALS['db'] = Database::getInstance($glob);
-// Initialize Config class
-$GLOBALS['config'] = Config::getInstance($glob);
-$time_zone = $GLOBALS['config']->get('config', 'time_zone');
-if(!empty($time_zone)) {
-    $debug = (bool)$GLOBALS['config']->get('config', 'debug');
-    $GLOBALS['db']->misc("SET @@time_zone = '".$time_zone."'", false, $debug);
-    date_default_timezone_set($time_zone);
-}
-// Initialize debug
-$GLOBALS['debug'] = Debug::getInstance();
-// Initialize sessions
-$GLOBALS['session'] = Session::getInstance();
+// Shared data-layer bootstrap (Cache, Database, Config, timezone, Debug, Session)
+require CC_INCLUDES_DIR.'bootstrap.data.inc.php';
 //Check security token
 Sanitize::checkToken();
 // Initialize Smarty

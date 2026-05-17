@@ -16,25 +16,11 @@ if (!defined('CC_INI_SET')) {
 define('ADMIN_CP', false);
 // Include core functions
 require CC_INCLUDES_DIR.'functions.inc.php';
-// Initialize Cache
-$GLOBALS['cache'] = Cache::getInstance();
-// Initialise Database class, and fetch default configuration
-$GLOBALS['db'] = Database::getInstance($glob);
-// Initialise Config class
-$GLOBALS['config'] = Config::getInstance($glob);
-$time_zone = $GLOBALS['config']->get('config', 'time_zone');
-if(!empty($time_zone)) {
-    $debug = (bool)$GLOBALS['config']->get('config', 'debug');
-    $GLOBALS['db']->misc("SET @@time_zone = '".$time_zone."'", false, $debug);
-    date_default_timezone_set($time_zone);
-}
-//We will not need this anymore
+// Shared data-layer bootstrap (Cache, Database, Config, timezone, Debug, Session)
+require CC_INCLUDES_DIR.'bootstrap.data.inc.php';
+// We will not need this anymore
 unset($glob);
 $GLOBALS['config']->merge('config', '', $config_default);
-// Initialize debug
-$GLOBALS['debug'] = Debug::getInstance();
-//Initialize sessions
-$GLOBALS['session'] = Session::getInstance();
 //Check security token
 if ($GLOBALS['config']->get('config', 'csrf')=='1') {
     Sanitize::checkToken();
