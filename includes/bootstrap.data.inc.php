@@ -31,8 +31,8 @@ if (!empty($time_zone)) {
 }
 
 $GLOBALS['debug'] = Debug::getInstance();
-// CLI entry points have no web debug overlay to display.
-if (defined('CC_CLI') && CC_CLI) {
+// Headless entry points (CLI, API) have no web debug overlay to display.
+if ((defined('CC_CLI') && CC_CLI) || (defined('CC_API_REQUEST') && CC_API_REQUEST)) {
     $GLOBALS['debug']->supress();
 }
 

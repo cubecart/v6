@@ -18,16 +18,15 @@
  * Skips GUI, SEO, CSRF, and frontend rendering.
  */
 
-// Bootstrap core
-require dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ini.inc.php';
+// Constants must be defined BEFORE ini.inc.php so the bootstrap can detect API context
+// (skips zlib output compression; bootstrap.data auto-suppresses Debug).
 define('CC_IN_ADMIN', true);
 define('ADMIN_CP', true);
 define('CC_API_REQUEST', true);
 
-// Disable zlib compression that ini.inc.php may have enabled - we handle our own output
-ini_set('zlib.output_compression', false);
+require dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ini.inc.php';
 
-// Clean any output buffers left by ini.inc.php
+// Clean any output buffers PHP's default output_buffering may have started
 while (ob_get_level()) {
     ob_end_clean();
 }
@@ -56,27 +55,16 @@ if (!CC_SSL) {
     ApiResponse::error('HTTPS required', 'SSL_REQUIRED', 403);
 }
 
-// Initialize essential subsystems (lean bootstrap)
+// Initialize subsystems
 try {
-    $GLOBALS['cache']    = Cache::getInstance();
-    $GLOBALS['db']       = Database::getInstance($glob);
-    $GLOBALS['config']   = Config::getInstance($glob);
-
-    $time_zone = $GLOBALS['config']->get('config', 'time_zone');
-    if (!empty($time_zone)) {
-        $GLOBALS['db']->misc("SET @@time_zone = '" . $time_zone . "'", false, false);
-        date_default_timezone_set($time_zone);
-    }
-
+    // Shared data-layer bootstrap (Cache, Database, Config, timezone, Debug, Session).
+    // Debug is auto-suppressed because CC_API_REQUEST is set.
+    require CC_INCLUDES_DIR . 'bootstrap.data.inc.php';
     unset($glob);
     $GLOBALS['config']->merge('config', '', $config_default);
 
-    $GLOBALS['debug']     = Debug::getInstance();
-    $GLOBALS['debug']->supress();
-    $GLOBALS['session']   = Session::getInstance();
-
-    // Smarty stub - Language and other classes call $GLOBALS['smarty']->assign()
-    // We don't render templates but need the object to exist
+    // API-specific view layer: Smarty stub (no security, no full setup — we don't render
+    // templates, but Language and other classes call $GLOBALS['smarty']->assign()).
     $GLOBALS['smarty'] = new Smarty();
     $GLOBALS['smarty']->muteUndefinedOrNullWarnings();
     $GLOBALS['smarty']->compile_dir = CC_SKIN_CACHE_DIR;
@@ -87,10 +75,6 @@ try {
     $GLOBALS['hooks']     = HookLoader::getInstance();
     $GLOBALS['tax']       = Tax::getInstance();
     $GLOBALS['catalogue'] = Catalogue::getInstance();
-
-    // Set store timezone
-    date_default_timezone_set($GLOBALS['config']->get('config', 'time_zone') ?: 'UTC');
-
 } catch (Exception $e) {
     ApiResponse::error('Internal server error during bootstrap', 'INTERNAL_ERROR', 500);
 }
