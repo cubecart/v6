@@ -48,9 +48,7 @@ $GLOBALS['user'] = User::getInstance();
 $GLOBALS['cart'] = Cart::getInstance();
 $GLOBALS['cart']->init();
 
-// Set store timezone - default to UTC
-date_default_timezone_set(($GLOBALS['config']->get('config', 'time_zone')) ? $GLOBALS['config']->get('config', 'time_zone') : 'UTC');
-$_REQUEST['_a'] = (isset($_REQUEST['_a'])) ? $_REQUEST['_a'] : null;
+$_REQUEST['_a'] = $_REQUEST['_a'] ?? null;
 
 foreach ($GLOBALS['hooks']->load('controller.index') as $hook) {
     include $hook;
