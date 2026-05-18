@@ -600,9 +600,14 @@ case 'stats_country':
     break;
 
 case 'stats_prod_sales':
-    // Filter: year (or 'all'). Default all-time.
-    $ps_year_raw = isset($_GET['ps_year']) ? $_GET['ps_year'] : 'all';
-    $ps_year     = ($ps_year_raw === 'all' || !is_numeric($ps_year_raw)) ? 'all' : (int)$ps_year_raw;
+    // Filter: year (or 'all') with optional month narrowing. Default all-time.
+    $ps_year_raw  = isset($_GET['ps_year'])  ? $_GET['ps_year']  : 'all';
+    $ps_year      = ($ps_year_raw === 'all' || !is_numeric($ps_year_raw)) ? 'all' : (int)$ps_year_raw;
+    $ps_month_raw = isset($_GET['ps_month']) ? $_GET['ps_month'] : '';
+    // Month only applies when a specific year is chosen.
+    $ps_month     = ($ps_year !== 'all' && is_numeric($ps_month_raw) && in_array((int)$ps_month_raw, range(1, 12)))
+                  ? str_pad((int)$ps_month_raw, 2, '0', STR_PAD_LEFT)
+                  : '';
 
     $per_page = 15;
     $page     = (isset($_GET['page_sales']) && is_numeric($_GET['page_sales'])) ? (int)$_GET['page_sales'] : 1;
@@ -613,15 +618,25 @@ case 'stats_prod_sales':
     $prior_start = null;
     $prior_end   = null;
     if ($ps_year !== 'all') {
-        $year_start = mktime(0, 0, 0, 1, 1, $ps_year);
-        if ($ps_year === $now_year) {
-            $year_end  = time();
-            $prior_end = strtotime('-1 year', $year_end);
+        if ($ps_month !== '') {
+            // Month window: compare against the same month a year earlier.
+            $mo         = (int)$ps_month;
+            $year_start = mktime(0, 0, 0, $mo, 1, $ps_year);
+            $year_end   = mktime(0, 0, 0, $mo + 1, 1, $ps_year);
+            $prior_start = mktime(0, 0, 0, $mo, 1, $ps_year - 1);
+            $prior_end   = mktime(0, 0, 0, $mo + 1, 1, $ps_year - 1);
         } else {
-            $year_end  = mktime(0, 0, 0, 1, 1, $ps_year + 1);
-            $prior_end = $year_start;
+            // Whole-year window: compare against the prior year.
+            $year_start = mktime(0, 0, 0, 1, 1, $ps_year);
+            if ($ps_year === $now_year) {
+                $year_end  = time();
+                $prior_end = strtotime('-1 year', $year_end);
+            } else {
+                $year_end  = mktime(0, 0, 0, 1, 1, $ps_year + 1);
+                $prior_end = $year_start;
+            }
+            $prior_start = mktime(0, 0, 0, 1, 1, $ps_year - 1);
         }
-        $prior_start = mktime(0, 0, 0, 1, 1, $ps_year - 1);
         $where_date  = " AND `S`.`order_date` >= ".$year_start." AND `S`.`order_date` < ".$year_end;
     }
 
@@ -639,6 +654,24 @@ case 'stats_prod_sales':
             'value'    => $yr,
             'label'    => $yr,
             'selected' => ($ps_year === $yr) ? ' selected="selected"' : '',
+        );
+    }
+
+    // Month options: "all months" plus 01-12. Future months are disabled when
+    // the selected year is the current year. Disabled entirely when year=all
+    // (no point narrowing months across the full history).
+    $now_month = (int)date('m');
+    $month_cap = ($ps_year === $now_year) ? $now_month : 12;
+    $ps_month_options = array(
+        array('value' => '', 'title' => $lang['statistics']['all_months'], 'selected' => $ps_month === '' ? ' selected="selected"' : '', 'disabled' => ''),
+    );
+    for ($i = 1; $i <= 12; ++$i) {
+        $padded = str_pad($i, 2, '0', STR_PAD_LEFT);
+        $ps_month_options[] = array(
+            'value'    => $padded,
+            'title'    => date('F', mktime(0, 0, 0, $i, 1)),
+            'selected' => ($ps_month === $padded) ? ' selected="selected"' : '',
+            'disabled' => ($ps_year !== 'all' && $i > $month_cap) ? ' disabled="disabled"' : '',
         );
     }
 
@@ -667,9 +700,11 @@ case 'stats_prod_sales':
     }
     $ps_chart_color = $hsl_to_hex((int)round(fmod(210 + $idx_for_color * 137.5, 360)), 0.65, 0.45);
 
-    $GLOBALS['smarty']->assign('PS_YEAR_OPTIONS', $ps_year_options);
-    $GLOBALS['smarty']->assign('PS_YEAR',         $ps_year);
-    $GLOBALS['smarty']->assign('PS_HAS_TREND',    $prior_start !== null);
+    $GLOBALS['smarty']->assign('PS_YEAR_OPTIONS',  $ps_year_options);
+    $GLOBALS['smarty']->assign('PS_MONTH_OPTIONS', $ps_month_options);
+    $GLOBALS['smarty']->assign('PS_YEAR',          $ps_year);
+    $GLOBALS['smarty']->assign('PS_MONTH',         $ps_month);
+    $GLOBALS['smarty']->assign('PS_HAS_TREND',     $prior_start !== null);
 
     $query = "SELECT `t`.`quan`, `t`.`revenue`, `t`.`product_id`, `I`.`name`, `I`.`stock_level`, `I`.`use_stock_level` "
            . "FROM (SELECT SUM(`O`.`quantity`) AS `quan`, SUM(`O`.`price` * `O`.`quantity`) AS `revenue`, `O`.`product_id` "

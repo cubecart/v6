@@ -2761,6 +2761,7 @@ This email was sent automatically by the CubeCart setup tool.]]></string>
     <string name="title_abandoned" introduced="6.7.0"><![CDATA[Abandoned Carts]]></string>
     <string name="title_country" introduced="6.7.0"><![CDATA[Sales by Country]]></string>
     <string name="all_time" introduced="6.7.0"><![CDATA[All time]]></string>
+    <string name="all_months" introduced="6.7.4"><![CDATA[All months]]></string>
     <string name="order_status_label" introduced="6.7.0"><![CDATA[Order status:]]></string>
     <string name="trend" introduced="6.7.0"><![CDATA[Trend]]></string>
     <string name="trend_new" introduced="6.7.0"><![CDATA[NEW]]></string>

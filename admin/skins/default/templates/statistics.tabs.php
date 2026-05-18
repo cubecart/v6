@@ -304,6 +304,9 @@
             <select name="ps_year" class="textbox">
             {foreach from=$PS_YEAR_OPTIONS item=opt}<option value="{$opt.value}"{$opt.selected}>{$opt.label}</option>{/foreach}
             </select>
+            <select name="ps_month" class="textbox">
+            {foreach from=$PS_MONTH_OPTIONS item=opt}<option value="{$opt.value}"{$opt.selected}{$opt.disabled}>{$opt.title}</option>{/foreach}
+            </select>
             <input type="submit" class="tiny" value="{$LANG.common.go}">
             <input type="hidden" name="_g" value="statistics">
             <input type="hidden" name="tab" value="stats_prod_sales">
