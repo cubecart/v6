@@ -32,6 +32,25 @@ window.whenChartsReady = function(fn) {
 window.drawChart = function(id, chart_data) {
     var container = document.getElementById('chart' + id);
     if (container == null) return false;
+    // gstatic loader's setOnLoadCallback can fire before admin.js shows the
+    // active tab (it removes display:none on doc-ready). If we draw while the
+    // container has no layout, Google Charts measures 0 width and falls back
+    // to its ~400px default — locked in until a window resize. Defer the draw
+    // until the container actually gets a box.
+    if (!container.clientWidth) {
+        if (typeof ResizeObserver === 'function') {
+            var ro = new ResizeObserver(function() {
+                if (container.clientWidth) {
+                    ro.disconnect();
+                    window.drawChart(id, chart_data);
+                }
+            });
+            ro.observe(container);
+        } else {
+            setTimeout(function() { window.drawChart(id, chart_data); }, 100);
+        }
+        return false;
+    }
     var chart_title = document.getElementById('chart' + id + '-title');
     var chart_hAxis = document.getElementById('chart' + id + '-hAxis');
     var chart_vAxis = document.getElementById('chart' + id + '-vAxis');
