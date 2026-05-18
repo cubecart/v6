@@ -127,10 +127,14 @@ window.statsHandleDrill = function(drill, rowIdx, colIdx) {
         updates.m_year = drill.years[rowIdx];
         scrollTo = 'chart2';
     } else if (drill.type === 'month') {
-        // YoY chart: col 1 = current year, col 2 = prior year.
-        var year = (colIdx === 1) ? drill.year : drill.year - 1;
-        updates.d_year  = year;
-        updates.d_month = pad(rowIdx + 1);
+        // YoY chart: col 1 = current FY, col 2 = prior FY. rowIdx is a fiscal slot.
+        // Convert (FY, slot) → (calendar year, calendar month) for Chart 3's drill.
+        var startMonth = drill.start_month || 1;
+        var fy         = (colIdx === 1) ? drill.year : drill.year - 1;
+        var calMonth   = ((startMonth - 1 + rowIdx) % 12) + 1;
+        var calYear    = (calMonth >= startMonth) ? fy : fy + 1;
+        updates.d_year  = calYear;
+        updates.d_month = pad(calMonth);
         scrollTo = 'chart3';
     } else if (drill.type === 'day') {
         updates.h_year  = drill.year;

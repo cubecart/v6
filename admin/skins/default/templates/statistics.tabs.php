@@ -54,7 +54,7 @@
          <span class="stat-chart-title">{$GRAPH_DATA.2.title}</span>
          <form action="{$VAL_SELF}" class="ignore-dirty stats-filter" method="get">
             <select name="m_year" class="textbox">
-            {foreach from=$M_YEARS item=year}<option value="{$year.value}" {$year.selected}>{$year.value}</option>{/foreach}
+            {foreach from=$M_YEARS item=year}<option value="{$year.value}" {$year.selected}>{$year.label}</option>{/foreach}
             </select>
             <select name="m_month" class="textbox">
             {foreach from=$M_MONTHS item=month}<option value="{$month.value}"{$month.selected}{$month.disabled}>{$month.title}</option>{/foreach}
@@ -84,7 +84,7 @@
          <span class="stat-chart-title">{$GRAPH_DATA.3.title}</span>
          <form action="{$VAL_SELF}" class="ignore-dirty stats-filter" method="get">
             <select name="d_year" class="textbox">
-            {foreach from=$D_YEARS item=year}<option value="{$year.value}" {$year.selected}>{$year.value}</option>{/foreach}
+            {foreach from=$D_YEARS item=year}<option value="{$year.value}" {$year.selected}>{$year.label}</option>{/foreach}
             </select>
             <select name="d_month" class="textbox">
             {foreach from=$D_MONTHS item=month}<option value="{$month.value}"{$month.selected}{$month.disabled}>{$month.title}</option>{/foreach}
@@ -114,7 +114,7 @@
          <span class="stat-chart-title">{$GRAPH_DATA.4.title}</span>
          <form action="{$VAL_SELF}" class="ignore-dirty stats-filter" method="get">
             <select name="h_year" class="textbox">
-            {foreach from=$H_YEARS item=year}<option value="{$year.value}" {$year.selected}>{$year.value}</option>{/foreach}
+            {foreach from=$H_YEARS item=year}<option value="{$year.value}" {$year.selected}>{$year.label}</option>{/foreach}
             </select>
             <select name="h_month" class="textbox">
             {foreach from=$H_MONTHS item=month}<option value="{$month.value}"{$month.selected}{$month.disabled}>{$month.title}</option>{/foreach}

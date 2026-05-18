@@ -117,17 +117,23 @@ case 'stats_sales':
     $totals = array(1 => array(0,0), 2 => array(0,0), 3 => array(0,0), 4 => array(0,0));
 
     if (!empty($earliest_order[0]['MIN_order_date'])) {
+        $fy_start_month = fiscalYearStartMonth();
+        $fy_start_day   = fiscalYearStartDay();
         $earliest = array(
             'year'  => (int)date('Y', $earliest_order[0]['MIN_order_date']),
             'month' => date('m', $earliest_order[0]['MIN_order_date']),
             'day'   => date('d', $earliest_order[0]['MIN_order_date']),
         );
-        $now_year = (int)date('Y');
+        $now_year    = (int)date('Y');
+        $earliest_fy = fiscalYear((int)$earliest_order[0]['MIN_order_date'], $fy_start_month, $fy_start_day);
+        $current_fy  = fiscalYear(time(), $fy_start_month, $fy_start_day);
 
         // Per-chart filter selectors. Each chart owns its own URL params so
         // changing one chart's filter doesn't bleed into the others.
+        // m_year is a fiscal-year starting year (Chart 2 is FY-aware). d_year
+        // and h_year stay calendar — Charts 3 and 4 are within-period drills.
         $sf = array(
-            'm_year'  => (isset($_GET['m_year'])  && is_numeric($_GET['m_year']))                          ? (int)$_GET['m_year']                                  : $now_year,
+            'm_year'  => (isset($_GET['m_year'])  && is_numeric($_GET['m_year']))                          ? (int)$_GET['m_year']                                  : $current_fy,
             'm_month' => (isset($_GET['m_month']) && in_array((int)$_GET['m_month'], range(1,12)))         ? str_pad((int)$_GET['m_month'], 2, '0', STR_PAD_LEFT)  : date('m'),
             'd_year'  => (isset($_GET['d_year'])  && is_numeric($_GET['d_year']))                          ? (int)$_GET['d_year']                                  : $now_year,
             'd_month' => (isset($_GET['d_month']) && in_array((int)$_GET['d_month'], range(1,12)))         ? str_pad((int)$_GET['d_month'], 2, '0', STR_PAD_LEFT)  : date('m'),
@@ -137,43 +143,52 @@ case 'stats_sales':
         );
 
         // Date-range bounds per chart.
-        $month_year_start = mktime(0, 0, 0, 1, 1, (int)$sf['m_year']);
-        $month_year_end   = mktime(0, 0, 0, 1, 1, (int)$sf['m_year'] + 1);
-        $prior_year_start = mktime(0, 0, 0, 1, 1, (int)$sf['m_year'] - 1);
+        $month_year_start = fiscalYearStart((int)$sf['m_year'],     $fy_start_month, $fy_start_day);
+        $month_year_end   = fiscalYearStart((int)$sf['m_year'] + 1, $fy_start_month, $fy_start_day);
+        $prior_year_start = fiscalYearStart((int)$sf['m_year'] - 1, $fy_start_month, $fy_start_day);
         $day_month_start  = mktime(0, 0, 0, (int)$sf['d_month'], 1, (int)$sf['d_year']);
         $day_month_end    = mktime(0, 0, 0, (int)$sf['d_month'] + 1, 1, (int)$sf['d_year']);
         $hour_day_start   = mktime(0, 0, 0, (int)$sf['h_month'], (int)$sf['h_day'], (int)$sf['h_year']);
         $hour_day_end     = mktime(0, 0, 0, (int)$sf['h_month'], (int)$sf['h_day'] + 1, (int)$sf['h_year']);
 
-        // Yearly + chart 1 totals.
+        // Chart 1 totals — day-level so we can bucket by fiscal year in PHP.
         $yearly_rows = $GLOBALS['db']->query(sprintf(
-            "SELECT FROM_UNIXTIME(`order_date`, '%%Y') AS bucket, SUM(`total`) AS s, COUNT(*) AS c FROM `%sCubeCart_order_summary` WHERE `status` IN %s GROUP BY bucket",
+            "SELECT FROM_UNIXTIME(`order_date`, '%%Y-%%m-%%d') AS d, SUM(`total`) AS s, COUNT(*) AS c FROM `%sCubeCart_order_summary` WHERE `status` IN %s GROUP BY d",
             $glob['dbprefix'], $status_in
         ));
         if ($yearly_rows) {
             foreach ($yearly_rows as $row) {
-                $yearly[$row['bucket']] = (float)$row['s'];
+                $parts = explode('-', $row['d']);
+                if (count($parts) !== 3) continue;
+                $ts = mktime(12, 0, 0, (int)$parts[1], (int)$parts[2], (int)$parts[0]);
+                $fy = fiscalYear($ts, $fy_start_month, $fy_start_day);
+                $yearly[$fy] = ($yearly[$fy] ?? 0) + (float)$row['s'];
                 $totals[1][0] += (float)$row['s'];
                 $totals[1][1] += (int)$row['c'];
             }
         }
 
-        // Monthly query covers BOTH selected year and the prior year for YoY overlay.
+        // Chart 2: monthly query covers BOTH selected FY and prior FY for YoY overlay.
+        // Day-level so fiscal-month slots can split a calendar month between FYs.
         $monthly_rows = $GLOBALS['db']->query(sprintf(
-            "SELECT FROM_UNIXTIME(`order_date`, '%%Y') AS y, FROM_UNIXTIME(`order_date`, '%%m') AS m, SUM(`total`) AS s, COUNT(*) AS c FROM `%sCubeCart_order_summary` WHERE `status` IN %s AND `order_date` >= %d AND `order_date` < %d GROUP BY y, m",
+            "SELECT FROM_UNIXTIME(`order_date`, '%%Y-%%m-%%d') AS d, SUM(`total`) AS s, COUNT(*) AS c FROM `%sCubeCart_order_summary` WHERE `status` IN %s AND `order_date` >= %d AND `order_date` < %d GROUP BY d",
             $glob['dbprefix'], $status_in, $prior_year_start, $month_year_end
         ));
         if ($monthly_rows) {
             $sf_my   = (int)$sf['m_year'];
             $sf_my_p = $sf_my - 1;
             foreach ($monthly_rows as $row) {
-                $yr = (int)$row['y'];
-                if ($yr === $sf_my) {
-                    $monthly_curr[$row['m']] = (float)$row['s'];
+                $parts = explode('-', $row['d']);
+                if (count($parts) !== 3) continue;
+                $ts   = mktime(12, 0, 0, (int)$parts[1], (int)$parts[2], (int)$parts[0]);
+                $fy   = fiscalYear($ts, $fy_start_month, $fy_start_day);
+                $slot = fiscalSlot($ts, $fy_start_month, $fy_start_day);
+                if ($fy === $sf_my) {
+                    $monthly_curr[$slot] = ($monthly_curr[$slot] ?? 0) + (float)$row['s'];
                     $totals[2][0] += (float)$row['s'];
                     $totals[2][1] += (int)$row['c'];
-                } elseif ($yr === $sf_my_p) {
-                    $monthly_prior[$row['m']] = (float)$row['s'];
+                } elseif ($fy === $sf_my_p) {
+                    $monthly_prior[$slot] = ($monthly_prior[$slot] ?? 0) + (float)$row['s'];
                 }
             }
         }
@@ -217,24 +232,49 @@ case 'stats_sales':
             };
             return sprintf('#%02x%02x%02x', (int)round($hue($h + 1/3) * 255), (int)round($hue($h) * 255), (int)round($hue($h - 1/3) * 255));
         };
+        // Per-year colours keyed by fiscal-year starting year. Charts 1 & 2 are
+        // FY-driven; Charts 3 & 4 receive calendar years from drill-down but
+        // their colours come from the FY containing that calendar period.
         $year_color = array();
         $idx = 0;
-        for ($i = $earliest['year']; $i <= $now_year; ++$i) {
+        for ($i = $earliest_fy; $i <= $current_fy; ++$i) {
             $year_color[$i] = $hsl_to_hex((int)round(fmod(210 + $idx * 137.5, 360)), 0.65, 0.45);
             $idx++;
         }
-        $color_for = function ($yr) use ($year_color) {
-            return $year_color[(int)$yr] ?? reset($year_color);
+        $color_for_fy = function ($fy) use ($year_color) {
+            return $year_color[(int)$fy] ?? reset($year_color);
+        };
+        // For Charts 3/4: map a calendar (year, month) to its fiscal-year colour.
+        $color_for_ym = function ($yr, $mo = 1) use ($color_for_fy, $fy_start_month, $fy_start_day) {
+            $ts = mktime(12, 0, 0, (int)$mo, 1, (int)$yr);
+            return $color_for_fy(fiscalYear($ts, $fy_start_month, $fy_start_day));
         };
 
         // Build per-chart year/month/day option lists. Future periods (relative
         // to today) are flagged as `disabled` so impossible selections are greyed.
         $now_month = (int)date('m');
         $now_day   = (int)date('d');
+        // Calendar year options — used by Chart 3 (d_year) and Chart 4 (h_year).
         $year_options = function ($selected_year) use ($earliest, $now_year) {
             $out = array();
             for ($i = $earliest['year']; $i <= $now_year; ++$i) {
-                $out[] = array('value' => $i, 'selected' => ($selected_year == $i) ? ' selected="selected"' : '');
+                $out[] = array(
+                    'value'    => $i,
+                    'label'    => (string)$i,
+                    'selected' => ($selected_year == $i) ? ' selected="selected"' : '',
+                );
+            }
+            return $out;
+        };
+        // Fiscal-year options — used by Chart 2 (m_year).
+        $fy_year_options = function ($selected_fy) use ($earliest_fy, $current_fy, $fy_start_month) {
+            $out = array();
+            for ($i = $earliest_fy; $i <= $current_fy; ++$i) {
+                $out[] = array(
+                    'value'    => $i,
+                    'label'    => fiscalYearLabel($i, $fy_start_month),
+                    'selected' => ($selected_fy == $i) ? ' selected="selected"' : '',
+                );
             }
             return $out;
         };
@@ -265,7 +305,7 @@ case 'stats_sales':
             }
             return $out;
         };
-        $GLOBALS['smarty']->assign('M_YEARS',  $year_options($sf['m_year']));
+        $GLOBALS['smarty']->assign('M_YEARS',  $fy_year_options($sf['m_year']));
         $GLOBALS['smarty']->assign('M_MONTHS', $month_options($sf['m_month'], $sf['m_year']));
         $GLOBALS['smarty']->assign('D_YEARS',  $year_options($sf['d_year']));
         $GLOBALS['smarty']->assign('D_MONTHS', $month_options($sf['d_month'], $sf['d_year']));
@@ -283,55 +323,72 @@ case 'stats_sales':
         $y_axis_format = ($_sym ? $_sym : '') . '#,###';
         $tax = Tax::getInstance();
 
-        // Chart 1: Yearly. Each bar gets its own year colour.
+        // Chart 1: Fiscal-yearly bars. Each bar gets its own FY colour.
         if (count($yearly) >= 1) {
             $g_graph_data[1]['data'] = "['Year','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."',{role:'style'}],";
             $tmp = array();
-            for ($i = $earliest['year']; $i <= $now_year; ++$i) {
-                $value = isset($yearly[$i]) ? $yearly[$i] : 0;
-                $tmp[] = "['".$i."',".$value.",'color: ".$year_color[$i]."']";
+            for ($fy = $earliest_fy; $fy <= $current_fy; ++$fy) {
+                $value = $yearly[$fy] ?? 0;
+                $label = fiscalYearLabel($fy, $fy_start_month);
+                $tmp[] = "['".$label."',".$value.",'color: ".$year_color[$fy]."']";
             }
             $g_graph_data[1]['data']    .= implode(',', $tmp);
-            $g_graph_data[1]['title']    = ($earliest['year'] == $now_year) ? sprintf($lang['statistics']['sales_in'], $now_year) : sprintf($lang['statistics']['sales_from_to'], $earliest['year'], $now_year);
+            $earliest_label = fiscalYearLabel($earliest_fy, $fy_start_month);
+            $current_label  = fiscalYearLabel($current_fy,  $fy_start_month);
+            $g_graph_data[1]['title']    = ($earliest_fy == $current_fy)
+                ? sprintf($lang['statistics']['sales_in'], $current_label)
+                : sprintf($lang['statistics']['sales_from_to'], $earliest_label, $current_label);
             $g_graph_data[1]['hAxis']    = '';
             $g_graph_data[1]['vAxis']    = '';
             $g_graph_data[1]['legend']   = 'none';
             $g_graph_data[1]['y_format'] = $y_axis_format;
-            $g_graph_data[1]['drill']    = array('type' => 'year', 'years' => range($earliest['year'], $now_year));
+            $g_graph_data[1]['drill']    = array(
+                'type'        => 'year',
+                'years'       => range($earliest_fy, $current_fy),
+                'start_month' => $fy_start_month,
+            );
         }
         $g_graph_data[1]['total_sum']    = $tax->priceFormat((float)$totals[1][0]);
         $g_graph_data[1]['total_count']  = number_format((int)$totals[1][1]);
 
-        // Chart 2: Monthly current vs prior year (YoY overlay).
-        // Drop the prior-year series when it's before the store's earliest order;
+        // Chart 2: Fiscal-monthly bars for $sf['m_year'] vs prior FY (YoY overlay).
+        // Bars are in fiscal-slot order; the leftmost slot is the FY start month.
+        // Drop the prior-year series when it's before the store's earliest FY;
         // there's no data and the colour-fallback makes the two legends collide.
-        $sf_my_p     = (int)$sf['m_year'] - 1;
-        $show_prior  = $sf_my_p >= $earliest['year'];
+        $sf_my_p      = (int)$sf['m_year'] - 1;
+        $show_prior   = $sf_my_p >= $earliest_fy;
+        $cur_label    = fiscalYearLabel((int)$sf['m_year'], $fy_start_month);
+        $prior_label  = fiscalYearLabel($sf_my_p,           $fy_start_month);
         if ($show_prior) {
-            $g_graph_data[2]['data'] = "['Month','".$sf['m_year']."','".$sf_my_p."'],";
+            $g_graph_data[2]['data'] = "['Month','".$cur_label."','".$prior_label."'],";
         } else {
-            $g_graph_data[2]['data'] = "['Month','".$sf['m_year']."'],";
+            $g_graph_data[2]['data'] = "['Month','".$cur_label."'],";
         }
         $tmp = array();
-        for ($i = 1; $i <= 12; ++$i) {
-            $padded = str_pad($i, 2, '0', STR_PAD_LEFT);
-            $cv = $monthly_curr[$padded] ?? 0;
-            $row = "['".date('M', mktime(0, 0, 0, $i, 1))."',".$cv;
+        for ($slot = 0; $slot < 12; ++$slot) {
+            $month   = ((($fy_start_month - 1) + $slot) % 12) + 1;
+            $m_label = date('M', mktime(0, 0, 0, $month, 1));
+            $cv      = $monthly_curr[$slot] ?? 0;
+            $row     = "['".$m_label."',".$cv;
             if ($show_prior) {
-                $pv = $monthly_prior[$padded] ?? 0;
+                $pv  = $monthly_prior[$slot] ?? 0;
                 $row .= ",".$pv;
             }
-            $tmp[] = $row . "]";
+            $tmp[]   = $row . "]";
         }
         $g_graph_data[2]['data']      .= implode(',', $tmp);
-        $g_graph_data[2]['title']      = sprintf($lang['statistics']['sales_in_year'], $sf['m_year']);
+        $g_graph_data[2]['title']      = sprintf($lang['statistics']['sales_in_year'], $cur_label);
         $g_graph_data[2]['hAxis']      = '';
         $g_graph_data[2]['vAxis']      = '';
         $g_graph_data[2]['colors']     = $show_prior
-            ? "['".$color_for($sf['m_year'])."','".$color_for($sf_my_p)."']"
-            : "['".$color_for($sf['m_year'])."']";
+            ? "['".$color_for_fy($sf['m_year'])."','".$color_for_fy($sf_my_p)."']"
+            : "['".$color_for_fy($sf['m_year'])."']";
         $g_graph_data[2]['y_format']   = $y_axis_format;
-        $g_graph_data[2]['drill']      = array('type' => 'month', 'year' => (int)$sf['m_year']);
+        $g_graph_data[2]['drill']      = array(
+            'type'        => 'month',
+            'year'        => (int)$sf['m_year'],
+            'start_month' => $fy_start_month,
+        );
         $g_graph_data[2]['total_sum']  = $tax->priceFormat((float)$totals[2][0]);
         $g_graph_data[2]['total_count']= number_format((int)$totals[2][1]);
 
@@ -348,7 +405,7 @@ case 'stats_sales':
         $g_graph_data[3]['title']      = sprintf($lang['statistics']['sales_in_month_year'], date('F', mktime(0, 0, 0, (int)$sf['d_month'], 1)), $sf['d_year']);
         $g_graph_data[3]['hAxis']      = '';
         $g_graph_data[3]['vAxis']      = '';
-        $g_graph_data[3]['colors']     = "['".$color_for($sf['d_year'])."']";
+        $g_graph_data[3]['colors']     = "['".$color_for_ym($sf['d_year'], (int)$sf['d_month'])."']";
         $g_graph_data[3]['y_format']   = $y_axis_format;
         $g_graph_data[3]['drill']      = array('type' => 'day', 'year' => (int)$sf['d_year'], 'month' => $sf['d_month']);
         $g_graph_data[3]['total_sum']  = $tax->priceFormat((float)$totals[3][0]);
@@ -366,7 +423,7 @@ case 'stats_sales':
         $g_graph_data[4]['title']      = sprintf($lang['statistics']['sales_on_dmy'], (int)$sf['h_day'], date('F', mktime(0, 0, 0, (int)$sf['h_month'], 1)), $sf['h_year']);
         $g_graph_data[4]['hAxis']      = '';
         $g_graph_data[4]['vAxis']      = '';
-        $g_graph_data[4]['colors']     = "['".$color_for($sf['h_year'])."']";
+        $g_graph_data[4]['colors']     = "['".$color_for_ym($sf['h_year'], (int)$sf['h_month'])."']";
         $g_graph_data[4]['y_format']   = $y_axis_format;
         $g_graph_data[4]['total_sum']  = $tax->priceFormat((float)$totals[4][0]);
         $g_graph_data[4]['total_count']= number_format((int)$totals[4][1]);
@@ -490,25 +547,35 @@ case 'stats_abandoned':
     break;
 
 case 'stats_country':
-    // Year filter ('all' or numeric).
+    // Fiscal-year filter ('all' or FY starting year).
+    $fy_start_month = fiscalYearStartMonth();
+    $fy_start_day   = fiscalYearStartDay();
     $cn_year_raw = isset($_GET['cn_year']) ? $_GET['cn_year'] : 'all';
     $cn_year     = ($cn_year_raw === 'all' || !is_numeric($cn_year_raw)) ? 'all' : (int)$cn_year_raw;
 
     $now_year   = (int)date('Y');
+    $current_fy = fiscalYear(time(), $fy_start_month, $fy_start_day);
     $where_date = '';
     if ($cn_year !== 'all') {
-        $year_start = mktime(0, 0, 0, 1, 1, $cn_year);
-        $year_end   = ($cn_year === $now_year) ? time() : mktime(0, 0, 0, 1, 1, $cn_year + 1);
+        $year_start = fiscalYearStart($cn_year,     $fy_start_month, $fy_start_day);
+        $next_start = fiscalYearStart($cn_year + 1, $fy_start_month, $fy_start_day);
+        $year_end   = ($cn_year === $current_fy) ? time() : $next_start;
         $where_date = " AND `O`.`order_date` >= ".$year_start." AND `O`.`order_date` < ".$year_end;
     }
 
     $earliest_q    = $GLOBALS['db']->query("SELECT MIN(`order_date`) AS `m` FROM `".$glob['dbprefix']."CubeCart_order_summary` WHERE `status` IN (2,3)");
-    $earliest_year = ($earliest_q && !empty($earliest_q[0]['m'])) ? (int)date('Y', $earliest_q[0]['m']) : $now_year;
+    $earliest_fy   = ($earliest_q && !empty($earliest_q[0]['m']))
+        ? fiscalYear((int)$earliest_q[0]['m'], $fy_start_month, $fy_start_day)
+        : $current_fy;
     $cn_year_options = array(
         array('value' => 'all', 'label' => $lang['statistics']['all_time'], 'selected' => $cn_year === 'all' ? ' selected="selected"' : ''),
     );
-    for ($yr = $now_year; $yr >= $earliest_year; $yr--) {
-        $cn_year_options[] = array('value' => $yr, 'label' => $yr, 'selected' => ($cn_year === $yr) ? ' selected="selected"' : '');
+    for ($yr = $current_fy; $yr >= $earliest_fy; $yr--) {
+        $cn_year_options[] = array(
+            'value'    => $yr,
+            'label'    => fiscalYearLabel($yr, $fy_start_month),
+            'selected' => ($cn_year === $yr) ? ' selected="selected"' : '',
+        );
     }
 
     // Year-colour palette, same rules as Best Customers / Best Selling.
@@ -527,9 +594,9 @@ case 'stats_country':
         return sprintf('#%02x%02x%02x', (int)round($hue($h + 1/3) * 255), (int)round($hue($h) * 255), (int)round($hue($h - 1/3) * 255));
     };
     if ($cn_year === 'all') {
-        $idx = ($now_year - $earliest_year) + 1;
+        $idx = ($current_fy - $earliest_fy) + 1;
     } else {
-        $idx = max(0, $cn_year - $earliest_year);
+        $idx = max(0, $cn_year - $earliest_fy);
     }
     $cn_color = $hsl_to_hex((int)round(fmod(210 + $idx * 137.5, 360)), 0.65, 0.45);
 
@@ -600,7 +667,10 @@ case 'stats_country':
     break;
 
 case 'stats_prod_sales':
-    // Filter: year (or 'all') with optional month narrowing. Default all-time.
+    // Filter: fiscal year (or 'all') with optional fiscal-month narrowing. Default all-time.
+    // ps_month is a 1-12 fiscal slot (= slot+1), where 1 is the FY start month.
+    $fy_start_month = fiscalYearStartMonth();
+    $fy_start_day   = fiscalYearStartDay();
     $ps_year_raw  = isset($_GET['ps_year'])  ? $_GET['ps_year']  : 'all';
     $ps_year      = ($ps_year_raw === 'all' || !is_numeric($ps_year_raw)) ? 'all' : (int)$ps_year_raw;
     $ps_month_raw = isset($_GET['ps_month']) ? $_GET['ps_month'] : '';
@@ -613,29 +683,34 @@ case 'stats_prod_sales':
     $page     = (isset($_GET['page_sales']) && is_numeric($_GET['page_sales'])) ? (int)$_GET['page_sales'] : 1;
     $offset   = ($page - 1) * $per_page;
 
-    $now_year = (int)date('Y');
+    $now_year   = (int)date('Y');
+    $current_fy = fiscalYear(time(), $fy_start_month, $fy_start_day);
     $where_date  = '';
     $prior_start = null;
     $prior_end   = null;
     if ($ps_year !== 'all') {
         if ($ps_month !== '') {
-            // Month window: compare against the same month a year earlier.
-            $mo         = (int)$ps_month;
-            $year_start = mktime(0, 0, 0, $mo, 1, $ps_year);
-            $year_end   = mktime(0, 0, 0, $mo + 1, 1, $ps_year);
-            $prior_start = mktime(0, 0, 0, $mo, 1, $ps_year - 1);
-            $prior_end   = mktime(0, 0, 0, $mo + 1, 1, $ps_year - 1);
+            // Fiscal-slot window: a single FY "month" (start_day to next start_day).
+            // Compare against the same slot in the prior FY.
+            $slot       = (int)$ps_month - 1;
+            $cal_month  = (($fy_start_month - 1 + $slot) % 12) + 1;
+            $cal_year   = ($cal_month >= $fy_start_month) ? $ps_year : $ps_year + 1;
+            $year_start  = mktime(0, 0, 0, $cal_month,     $fy_start_day, $cal_year);
+            $year_end    = mktime(0, 0, 0, $cal_month + 1, $fy_start_day, $cal_year);
+            $prior_start = mktime(0, 0, 0, $cal_month,     $fy_start_day, $cal_year - 1);
+            $prior_end   = mktime(0, 0, 0, $cal_month + 1, $fy_start_day, $cal_year - 1);
         } else {
-            // Whole-year window: compare against the prior year.
-            $year_start = mktime(0, 0, 0, 1, 1, $ps_year);
-            if ($ps_year === $now_year) {
+            // Whole-FY window: compare against the prior FY.
+            $year_start  = fiscalYearStart($ps_year, $fy_start_month, $fy_start_day);
+            $next_start  = fiscalYearStart($ps_year + 1, $fy_start_month, $fy_start_day);
+            $prior_start = fiscalYearStart($ps_year - 1, $fy_start_month, $fy_start_day);
+            if ($ps_year === $current_fy) {
                 $year_end  = time();
                 $prior_end = strtotime('-1 year', $year_end);
             } else {
-                $year_end  = mktime(0, 0, 0, 1, 1, $ps_year + 1);
+                $year_end  = $next_start;
                 $prior_end = $year_start;
             }
-            $prior_start = mktime(0, 0, 0, 1, 1, $ps_year - 1);
         }
         $where_date  = " AND `S`.`order_date` >= ".$year_start." AND `S`.`order_date` < ".$year_end;
     }
@@ -644,34 +719,36 @@ case 'stats_prod_sales':
 
     // Year filter options always built so the filter form keeps showing
     // even when the active year has no results (otherwise the user has no way back).
-    $earliest_q = $GLOBALS['db']->query("SELECT MIN(`order_date`) AS `m` FROM `".$glob['dbprefix']."CubeCart_order_summary` WHERE `status` IN (2,3)");
-    $earliest_year = ($earliest_q && !empty($earliest_q[0]['m'])) ? (int)date('Y', $earliest_q[0]['m']) : $now_year;
+    $earliest_q  = $GLOBALS['db']->query("SELECT MIN(`order_date`) AS `m` FROM `".$glob['dbprefix']."CubeCart_order_summary` WHERE `status` IN (2,3)");
+    $earliest_fy = ($earliest_q && !empty($earliest_q[0]['m']))
+        ? fiscalYear((int)$earliest_q[0]['m'], $fy_start_month, $fy_start_day)
+        : $current_fy;
     $ps_year_options = array(
         array('value' => 'all', 'label' => $lang['statistics']['all_time'], 'selected' => $ps_year === 'all' ? ' selected="selected"' : ''),
     );
-    for ($yr = $now_year; $yr >= $earliest_year; $yr--) {
+    for ($yr = $current_fy; $yr >= $earliest_fy; $yr--) {
         $ps_year_options[] = array(
             'value'    => $yr,
-            'label'    => $yr,
+            'label'    => fiscalYearLabel($yr, $fy_start_month),
             'selected' => ($ps_year === $yr) ? ' selected="selected"' : '',
         );
     }
 
-    // Month options: "all months" plus 01-12. Future months are disabled when
-    // the selected year is the current year. Disabled entirely when year=all
-    // (no point narrowing months across the full history).
-    $now_month = (int)date('m');
-    $month_cap = ($ps_year === $now_year) ? $now_month : 12;
+    // Fiscal-slot month options: "all months" plus the 12 slots of the selected FY.
+    // Slots are labelled with their calendar month name. Future slots of the
+    // current FY are disabled so impossible selections grey out.
+    $current_slot = fiscalSlot(time(), $fy_start_month, $fy_start_day);
     $ps_month_options = array(
         array('value' => '', 'title' => $lang['statistics']['all_months'], 'selected' => $ps_month === '' ? ' selected="selected"' : '', 'disabled' => ''),
     );
-    for ($i = 1; $i <= 12; ++$i) {
-        $padded = str_pad($i, 2, '0', STR_PAD_LEFT);
+    for ($slot = 0; $slot < 12; ++$slot) {
+        $cal_month = ((($fy_start_month - 1) + $slot) % 12) + 1;
+        $padded    = str_pad($slot + 1, 2, '0', STR_PAD_LEFT);
         $ps_month_options[] = array(
             'value'    => $padded,
-            'title'    => date('F', mktime(0, 0, 0, $i, 1)),
+            'title'    => date('F', mktime(0, 0, 0, $cal_month, 1)),
             'selected' => ($ps_month === $padded) ? ' selected="selected"' : '',
-            'disabled' => ($ps_year !== 'all' && $i > $month_cap) ? ' disabled="disabled"' : '',
+            'disabled' => ($ps_year === $current_fy && $slot > $current_slot) ? ' disabled="disabled"' : '',
         );
     }
 
@@ -694,9 +771,9 @@ case 'stats_prod_sales':
     if ($ps_year === 'all') {
         // All-time gets the next slot in the hue rotation so it stays distinct
         // from any per-year bar.
-        $idx_for_color = ($now_year - $earliest_year) + 1;
+        $idx_for_color = ($current_fy - $earliest_fy) + 1;
     } else {
-        $idx_for_color = max(0, $ps_year - $earliest_year);
+        $idx_for_color = max(0, $ps_year - $earliest_fy);
     }
     $ps_chart_color = $hsl_to_hex((int)round(fmod(210 + $idx_for_color * 137.5, 360)), 0.65, 0.45);
 
@@ -916,7 +993,9 @@ case 'stats_search':
     break;
 
 case 'stats_best_customers':
-    // Year filter (or 'all').
+    // Fiscal-year filter (or 'all').
+    $fy_start_month = fiscalYearStartMonth();
+    $fy_start_day   = fiscalYearStartDay();
     $bc_year_raw = isset($_GET['bc_year']) ? $_GET['bc_year'] : 'all';
     $bc_year     = ($bc_year_raw === 'all' || !is_numeric($bc_year_raw)) ? 'all' : (int)$bc_year_raw;
 
@@ -925,23 +1004,27 @@ case 'stats_best_customers':
     $offset   = ($page - 1) * $per_page;
 
     $now_year   = (int)date('Y');
+    $current_fy = fiscalYear(time(), $fy_start_month, $fy_start_day);
     $where_date = '';
     if ($bc_year !== 'all') {
-        $year_start = mktime(0, 0, 0, 1, 1, $bc_year);
-        $year_end   = ($bc_year === $now_year) ? time() : mktime(0, 0, 0, 1, 1, $bc_year + 1);
+        $year_start = fiscalYearStart($bc_year,     $fy_start_month, $fy_start_day);
+        $next_start = fiscalYearStart($bc_year + 1, $fy_start_month, $fy_start_day);
+        $year_end   = ($bc_year === $current_fy) ? time() : $next_start;
         $where_date = " AND `O`.`order_date` >= ".$year_start." AND `O`.`order_date` < ".$year_end;
     }
 
     // Year filter options (always built so the form survives empty results).
-    $earliest_q    = $GLOBALS['db']->query("SELECT MIN(`order_date`) AS `m` FROM `".$glob['dbprefix']."CubeCart_order_summary` WHERE `status` IN (2,3)");
-    $earliest_year = ($earliest_q && !empty($earliest_q[0]['m'])) ? (int)date('Y', $earliest_q[0]['m']) : $now_year;
+    $earliest_q  = $GLOBALS['db']->query("SELECT MIN(`order_date`) AS `m` FROM `".$glob['dbprefix']."CubeCart_order_summary` WHERE `status` IN (2,3)");
+    $earliest_fy = ($earliest_q && !empty($earliest_q[0]['m']))
+        ? fiscalYear((int)$earliest_q[0]['m'], $fy_start_month, $fy_start_day)
+        : $current_fy;
     $bc_year_options = array(
         array('value' => 'all', 'label' => $lang['statistics']['all_time'], 'selected' => $bc_year === 'all' ? ' selected="selected"' : ''),
     );
-    for ($yr = $now_year; $yr >= $earliest_year; $yr--) {
+    for ($yr = $current_fy; $yr >= $earliest_fy; $yr--) {
         $bc_year_options[] = array(
             'value'    => $yr,
-            'label'    => $yr,
+            'label'    => fiscalYearLabel($yr, $fy_start_month),
             'selected' => ($bc_year === $yr) ? ' selected="selected"' : '',
         );
     }
@@ -962,9 +1045,9 @@ case 'stats_best_customers':
         return sprintf('#%02x%02x%02x', (int)round($hue($h + 1/3) * 255), (int)round($hue($h) * 255), (int)round($hue($h - 1/3) * 255));
     };
     if ($bc_year === 'all') {
-        $idx = ($now_year - $earliest_year) + 1;
+        $idx = ($current_fy - $earliest_fy) + 1;
     } else {
-        $idx = max(0, $bc_year - $earliest_year);
+        $idx = max(0, $bc_year - $earliest_fy);
     }
     $bc_color = $hsl_to_hex((int)round(fmod(210 + $idx * 137.5, 360)), 0.65, 0.45);
 

@@ -520,6 +520,14 @@
             </select></span>
          </div>
          {/if}
+         <div><label for="accounting_year_start_month">{$LANG.settings.accounting_year_start}</label><span>
+            <select name="config[accounting_year_start_month]" id="accounting_year_start_month" class="textbox">
+            {foreach from=$OPT_ACCOUNTING_YEAR_START_MONTH item=opt}<option value="{$opt.value}"{$opt.selected}>{$opt.title}</option>{/foreach}
+            </select>
+            <select name="config[accounting_year_start_day]" id="accounting_year_start_day" class="textbox" style="width:60px">
+            {foreach from=$OPT_ACCOUNTING_YEAR_START_DAY item=opt}<option value="{$opt.value}"{$opt.selected}>{$opt.title}</option>{/foreach}
+            </select>
+            <small>{$LANG.settings.accounting_year_start_desc}</small></span></div>
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.log_retention} ({$LANG.settings.log_retention_desc})</legend>

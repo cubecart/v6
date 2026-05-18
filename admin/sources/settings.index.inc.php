@@ -446,6 +446,19 @@ $select_options = array(
     'shipping_defaults' => array('0' => $lang['common']['cheapest'], '1' => $lang['settings']['cheapest_not_free'], '2' => $lang['settings']['most_expensive'], '3' => $lang['settings']['force_choice']),
     'newsletter_status' => array('1' => $lang['common']['enabled'], '0' => $lang['common']['disabled'])
 );
+// Accounting year start: month 0 = calendar year (default), 1-12 = start month.
+// Day defaults to 1; only meaningful when a non-January start month is chosen.
+$_acc_month_opts = array('0' => $lang['settings']['accounting_year_calendar']);
+for ($_m = 1; $_m <= 12; $_m++) {
+    $_acc_month_opts[(string)$_m] = date('F', mktime(0, 0, 0, $_m, 1));
+}
+$select_options['accounting_year_start_month'] = $_acc_month_opts;
+$_acc_day_opts = array();
+for ($_d = 1; $_d <= 31; $_d++) {
+    $_acc_day_opts[(string)$_d] = (string)$_d;
+}
+$select_options['accounting_year_start_day'] = $_acc_day_opts;
+unset($_acc_month_opts, $_acc_day_opts, $_m, $_d);
 $current_skin_path = CC_ROOT_DIR.'/skins/'.$GLOBALS['config']->get('config', 'skin_folder').'/templates/';
 $unavailable_captchas = array();
 

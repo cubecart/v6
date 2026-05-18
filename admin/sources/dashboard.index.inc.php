@@ -281,25 +281,37 @@ if (Admin::getInstance()->permissions('statistics', CC_PERM_READ, false, false))
 
         $GLOBALS['smarty']->assign('QUICK_STATS', $quick_stats);
 
-        ## Chart + annual totals — one combined monthly query feeds both.
+        ## Chart + annual totals — one combined day-level query feeds both.
+        ## Bucketing is by fiscal year + fiscal-month slot (configurable via
+        ## settings.accounting_year_start_month / _day; defaults to calendar year).
+        ## Day-level aggregation lets mid-month FY starts (e.g. 6 April) split a
+        ## calendar month between two FYs precisely.
+        $fy_start_month = fiscalYearStartMonth();
+        $fy_start_day   = fiscalYearStartDay();
         $dbp = $GLOBALS['config']->get('config', 'dbprefix');
-        $month_rows = $GLOBALS['db']->query(
+        $day_rows = $GLOBALS['db']->query(
             'SELECT YEAR(FROM_UNIXTIME(`order_date`)) AS `y`, '.
                    'MONTH(FROM_UNIXTIME(`order_date`)) AS `m`, '.
+                   'DAY(FROM_UNIXTIME(`order_date`)) AS `d`, '.
                    'SUM(`total`) AS `total` '.
             'FROM `'.$dbp.'CubeCart_order_summary` '.
             'WHERE `status` IN (2,3) AND `total` > 0 AND `order_date` > 0 '.
-            'GROUP BY `y`, `m` ORDER BY `y`, `m`'
+            'GROUP BY `y`, `m`, `d` ORDER BY `y`, `m`, `d`'
         );
-        $monthly = array();
+        // $monthly[$fy][$slot] = revenue total for fiscal-month slot N (0-11) of fiscal year $fy.
+        $monthly       = array();
         $annual_totals = array();
-        if ($month_rows) {
-            foreach ($month_rows as $row) {
+        if ($day_rows) {
+            foreach ($day_rows as $row) {
                 $yr = (int)$row['y'];
                 $mo = (int)$row['m'];
-                if ($yr < 1970 || $mo < 1 || $mo > 12) continue;
-                $monthly[$yr][$mo] = (float)$row['total'];
-                $annual_totals[$yr] = ($annual_totals[$yr] ?? 0) + (float)$row['total'];
+                $dy = (int)$row['d'];
+                if ($yr < 1970 || $mo < 1 || $mo > 12 || $dy < 1 || $dy > 31) continue;
+                $ts   = mktime(12, 0, 0, $mo, $dy, $yr);
+                $fy   = fiscalYear($ts, $fy_start_month, $fy_start_day);
+                $slot = fiscalSlot($ts, $fy_start_month, $fy_start_day);
+                $monthly[$fy][$slot] = ($monthly[$fy][$slot] ?? 0) + (float)$row['total'];
+                $annual_totals[$fy]  = ($annual_totals[$fy] ?? 0) + (float)$row['total'];
             }
         }
 
@@ -321,9 +333,10 @@ if (Admin::getInstance()->permissions('statistics', CC_PERM_READ, false, false))
 
         $annual_display = array();
         $chart_data = array('data' => "['Month']", 'title' => '', 'colors' => '[]');
-        // Always show the last 5 years, even when there are no sales for some (or any) of them.
-        $earliest = $this_year - 4;
-        for ($y = $earliest; $y <= $this_year; $y++) {
+        // "Current" fiscal year and the rolling 5 we show.
+        $current_fy = fiscalYear(time(), $fy_start_month);
+        $earliest   = $current_fy - 4;
+        for ($y = $earliest; $y <= $current_fy; $y++) {
             if (!isset($annual_totals[$y])) $annual_totals[$y] = 0.0;
         }
         ksort($annual_totals);
@@ -349,7 +362,7 @@ if (Admin::getInstance()->permissions('statistics', CC_PERM_READ, false, false))
                     $chart_col = count($chart_years); // 1-indexed position after the 'Month' column
                 }
                 $annual_display[] = array(
-                    'year'      => $yr,
+                    'year'      => fiscalYearLabel($yr, $fy_start_month),
                     'total'     => Tax::getInstance()->priceFormat($annual_totals[$yr]),
                     'percent'   => ($annual_max > 0) ? round(($annual_totals[$yr] / $annual_max) * 100) : 0,
                     'hue'       => $hue,
@@ -360,20 +373,25 @@ if (Admin::getInstance()->permissions('statistics', CC_PERM_READ, false, false))
 
             if (!empty($chart_years)) {
                 $header = "['Month'";
-                foreach ($chart_years as $yr) $header .= ", '".$yr."'";
+                foreach ($chart_years as $yr) $header .= ", '".fiscalYearLabel($yr, $fy_start_month)."'";
                 $header .= "],";
                 $chart_data['data'] = $header;
 
-                $now_ym = (int)date('Ym');
-                for ($month = 1; $month <= 12; $month++) {
+                // Future slots of the current FY get null so the chart doesn't show empty bars
+                // for months that haven't started yet.
+                $current_slot = fiscalSlot(time(), $fy_start_month, $fy_start_day);
+                // Emit 12 columns in fiscal-month order. Slot 0's label is the start
+                // month; subsequent slots roll forward by one calendar month. For a
+                // January start this is Jan..Dec (= calendar-year behaviour).
+                for ($slot = 0; $slot < 12; $slot++) {
+                    $month = ((($fy_start_month - 1) + $slot) % 12) + 1;
                     $m_label = date('M', mktime(0, 0, 0, $month, 10));
                     $line = "['".$m_label."'";
-                    foreach ($chart_years as $yr) {
-                        $key_ym = (int)($yr.sprintf('%02d', $month));
-                        if ($yr == $this_year && $key_ym > $now_ym) {
-                            $line .= ", null"; // future months of current year left blank
+                    foreach ($chart_years as $fy) {
+                        if ($fy === $current_fy && $slot > $current_slot) {
+                            $line .= ", null"; // future slot in the current FY
                         } else {
-                            $line .= ", ".number_format($monthly[$yr][$month] ?? 0, 2, '.', '');
+                            $line .= ", ".number_format($monthly[$fy][$slot] ?? 0, 2, '.', '');
                         }
                     }
                     $line .= "],";
@@ -381,7 +399,7 @@ if (Admin::getInstance()->permissions('statistics', CC_PERM_READ, false, false))
                 }
 
                 $chart_data['colors'] = '['.implode(',', $chart_colors).']';
-                $chart_data['title']  = $lang['dashboard']['title_sales_stats'].': '.reset($chart_years).' - '.end($chart_years);
+                $chart_data['title']  = $lang['dashboard']['title_sales_stats'].': '.fiscalYearLabel(reset($chart_years), $fy_start_month).' - '.fiscalYearLabel(end($chart_years), $fy_start_month);
             }
         }
         $GLOBALS['smarty']->assign('ANNUAL_SALES', $annual_display);

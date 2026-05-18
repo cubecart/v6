@@ -553,6 +553,81 @@ function formatDispatchDate($date, $format = 'M d Y')
 }
 
 /**
+ * Configured fiscal-year start month (1-12). 1 == calendar year (default when unset).
+ */
+function fiscalYearStartMonth()
+{
+    static $cached;
+    if ($cached !== null) return $cached;
+    $m = (int)$GLOBALS['config']->get('config', 'accounting_year_start_month');
+    return $cached = ($m >= 1 && $m <= 12) ? $m : 1;
+}
+
+/**
+ * Configured fiscal-year start day-of-month (1-31). Defaults to 1.
+ * Days 29-31 may not exist in some months — callers should treat the value
+ * as the *anniversary* day; comparison is just "day >= start_day" within the start month.
+ */
+function fiscalYearStartDay()
+{
+    static $cached;
+    if ($cached !== null) return $cached;
+    $d = (int)$GLOBALS['config']->get('config', 'accounting_year_start_day');
+    return $cached = ($d >= 1 && $d <= 31) ? $d : 1;
+}
+
+/**
+ * Starting calendar year of the fiscal year containing $timestamp.
+ * For e.g. 6 April start, 2024-04-05 → 2023, 2024-04-06 → 2024.
+ */
+function fiscalYear($timestamp, $start_month = null, $start_day = null)
+{
+    if ($start_month === null) $start_month = fiscalYearStartMonth();
+    if ($start_day   === null) $start_day   = fiscalYearStartDay();
+    $mo  = (int)date('n', $timestamp);
+    $day = (int)date('j', $timestamp);
+    $yr  = (int)date('Y', $timestamp);
+    if ($mo > (int)$start_month) return $yr;
+    if ($mo < (int)$start_month) return $yr - 1;
+    return ($day >= (int)$start_day) ? $yr : $yr - 1;
+}
+
+/**
+ * Display label for a fiscal year. "2024" for calendar-year FY, "2024/2025" otherwise.
+ */
+function fiscalYearLabel($start_year, $start_month = null)
+{
+    if ($start_month === null) $start_month = fiscalYearStartMonth();
+    return ((int)$start_month === 1) ? (string)$start_year : $start_year.'/'.($start_year + 1);
+}
+
+/**
+ * Unix timestamp of when fiscal year $start_year begins (midnight local).
+ */
+function fiscalYearStart($start_year, $start_month = null, $start_day = null)
+{
+    if ($start_month === null) $start_month = fiscalYearStartMonth();
+    if ($start_day   === null) $start_day   = fiscalYearStartDay();
+    return mktime(0, 0, 0, (int)$start_month, (int)$start_day, (int)$start_year);
+}
+
+/**
+ * Slot index (0-11) within a fiscal year. Slot 0 is the FY start month; the
+ * slot rolls over on the start day-of-month each subsequent month. For a
+ * January 1 FY (calendar year) this is just $month - 1.
+ */
+function fiscalSlot($timestamp, $start_month = null, $start_day = null)
+{
+    if ($start_month === null) $start_month = fiscalYearStartMonth();
+    if ($start_day   === null) $start_day   = fiscalYearStartDay();
+    $mo  = (int)date('n', $timestamp);
+    $day = (int)date('j', $timestamp);
+    $slot = ($mo - (int)$start_month + 12) % 12;
+    if ($day < (int)$start_day) $slot = ($slot - 1 + 12) % 12;
+    return $slot;
+}
+
+/**
  * Format time
  *
  * @param string $timestamp

@@ -2548,6 +2548,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="fuzzy_time_format" introduced="6.0.0"><![CDATA[Fuzzy Time Format]]></string>
     <string name="time_utc_offset" introduced="5.0.0"><![CDATA[UTC Offset]]></string>
     <string name="time_zone" introduced="5.0.0"><![CDATA[Timezone]]></string>
+    <string name="accounting_year_start" introduced="6.7.4"><![CDATA[Accounting year start]]></string>
+    <string name="accounting_year_start_desc" introduced="6.7.4"><![CDATA[Used to group dashboard and statistics charts by your fiscal year. Day defaults to 1. e.g. set "March 1" for a Companies House ARD of 28 February, or "April 6" for the UK personal-tax year. Leave as calendar year if you don't keep separate accounts.]]></string>
+    <string name="accounting_year_calendar" introduced="6.7.4"><![CDATA[Calendar year (January)]]></string>
     <string name="title_advanced" introduced="5.0.0"><![CDATA[Advanced Settings]]></string>
     <string name="title_archives" introduced="5.0.0"><![CDATA[Archives]]></string>
     <string name="title_archives_create" introduced="5.0.0"><![CDATA[Create Archive]]></string>
