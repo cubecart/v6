@@ -31,8 +31,28 @@
             var tags = {$SUPPORT_TAGS_JSON};
             try { zE('webWidget', 'identify', { name: name, email: email }); } catch (e) {}
             try { zE('webWidget', 'prefill', { name: { value: name }, email: { value: email } }); } catch (e) {}
-            try { zE('webWidget', 'updateSettings', { webWidget: { chat: { tags: tags } } }); } catch (e) {}
+            try { zE('webWidget', 'updateSettings', {
+               webWidget: {
+                  chat: {
+                     title: { '*': 'CubeCart Support' },
+                     tags: tags
+                  },
+                  contactForm: {
+                     title: { '*': 'CubeCart Support' }
+                  }
+               }
+            }); } catch (e) {}
             try { zE('messenger:set', 'conversationTags', tags); } catch (e) {}
+            function applyOnlineVisibility(status) {
+               try {
+                  if (status === 'offline') { zE('webWidget', 'hide'); }
+                  else { zE('webWidget', 'show'); }
+               } catch (e) {}
+            }
+            try { zE('webWidget:on', 'chat:connected', function () {
+               try { applyOnlineVisibility(zE('webWidget:get', 'chat:status')); } catch (e) {}
+            }); } catch (e) {}
+            try { zE('webWidget:on', 'chat:status', applyOnlineVisibility); } catch (e) {}
          });
       </script>
       {/if}
