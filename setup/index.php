@@ -217,7 +217,6 @@ $default_config_settings = array(
   'abandoned_cart_enabled' => '0',
   'abandoned_cart_delay' => '86400',
   'abandoned_cart_notify_cooldown' => '604800',
-  'abandoned_cart_order_window' => '259200',
   'abandoned_cart_coupon' => '0',
   'allow_telemetry' => '1'
 );

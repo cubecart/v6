@@ -497,7 +497,7 @@ $select_options['abandoned_cart_delay'] = array(
     14400  => '4 Hours',
     21600  => '6 Hours',
     43200  => '12 Hours',
-    86400  => '1 Day',
+    86400  => '1 Day ('.$lang['common']['recommended'].')',
     172800 => '2 Days',
     259200 => '3 Days',
 );
@@ -511,21 +511,8 @@ $select_options['abandoned_cart_notify_cooldown'] = array(
     172800 => '2 Days',
     259200 => '3 Days',
     432000 => '5 Days',
-    604800 => '7 Days',
+    604800 => '7 Days ('.$lang['common']['recommended'].')',
 );
-$select_options['abandoned_cart_order_window'] = array(
-    3600   => '1 Hour',
-    7200   => '2 Hours',
-    14400  => '4 Hours',
-    21600  => '6 Hours',
-    43200  => '12 Hours',
-    86400  => '1 Day',
-    172800 => '2 Days',
-    259200 => '3 Days',
-    432000 => '5 Days',
-    604800 => '7 Days',
-);
-
 // Cart recovery discount code - active, non-archived coupons (fixed or percentage)
 $select_options['abandoned_cart_coupon'] = array(0 => $lang['common']['none']);
 $active_coupons = $GLOBALS['db']->select('CubeCart_coupons', array('coupon_id', 'code', 'discount_percent', 'discount_price', 'expires'), "`status` = 1 AND (`cart_order_id` IS NULL OR `cart_order_id` = '') AND (`expires` = '0000-00-00' OR `expires` >= CURDATE()) AND (`discount_percent` > 0 OR `discount_price` > 0)", false, false, false, false);

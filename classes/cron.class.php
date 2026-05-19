@@ -93,12 +93,7 @@ class Cron
         if ($notify_cooldown < 3600) {
             $notify_cooldown = 604800;
         }
-        $order_window = (int)$GLOBALS['config']->get('config', 'abandoned_cart_order_window');
-        if ($order_window < 3600) {
-            $order_window = 259200;
-        }
         $notify_cutoff = time() - $notify_cooldown;
-        $order_cutoff = time() - $order_window;
         $max_age_cutoff = time() - 604800; // 7 days - ignore carts with no session activity beyond this
 
         // Find customers with saved carts who have abandoned
@@ -118,8 +113,12 @@ class Cron
               )
               AND NOT EXISTS (
                 SELECT 1 FROM `{$pfx}CubeCart_order_summary` os
-                WHERE os.customer_id = sc.customer_id AND os.order_date > ".(int)$order_cutoff."
-                  AND os.status IN (2, 3)
+                WHERE os.customer_id = sc.customer_id
+                  AND os.status <> 1
+                  AND os.order_date = (
+                    SELECT MAX(os2.order_date) FROM `{$pfx}CubeCart_order_summary` os2
+                    WHERE os2.customer_id = sc.customer_id
+                  )
               )
               AND EXISTS (
                 SELECT 1 FROM `{$pfx}CubeCart_sessions` s2
