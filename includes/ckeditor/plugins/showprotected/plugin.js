@@ -16,19 +16,32 @@ CKEDITOR.plugins.add( 'showprotected', {
 	requires: 'dialog,fakeobjects',
 	onLoad: function() {
 		// Add the CSS styles for protected source placeholders.
-		var iconPath = CKEDITOR.getUrl( this.path + 'images' + '/code.gif' ),
-			baseStyle = 'background:url(' + iconPath + ') no-repeat %1 center;border:1px dotted #00f;background-size:16px;';
+		var pluginPath = this.path;
+		var iconPath = CKEDITOR.getUrl( pluginPath + 'images/smarty_unknown.svg' );
+		var typedIcons = {
+			loop_open:  CKEDITOR.getUrl( pluginPath + 'images/smarty_loop_open.svg' ),
+			loop_close: CKEDITOR.getUrl( pluginPath + 'images/smarty_loop_close.svg' ),
+			if_open:    CKEDITOR.getUrl( pluginPath + 'images/smarty_if_open.svg' ),
+			if_else:    CKEDITOR.getUrl( pluginPath + 'images/smarty_if_else.svg' ),
+			if_close:   CKEDITOR.getUrl( pluginPath + 'images/smarty_if_close.svg' ),
+			'var':      CKEDITOR.getUrl( pluginPath + 'images/smarty_var.svg' )
+		};
+		var baseStyle = 'background:url(' + iconPath + ') no-repeat %1 center;background-size:18px 18px;border:0;';
 
 		var template = '.%2 img.cke_protected' +
 			'{' +
 				baseStyle +
-				'width:16px;' +
-				'min-height:15px;' +
-				// The default line-height on IE.
-				'height:1.15em;' +
+				'width:18px;' +
+				'height:18px;' +
+				'min-height:18px;' +
 				// Opera works better with "middle" (even if not perfect)
 				'vertical-align:' + ( CKEDITOR.env.opera ? 'middle' : 'text-bottom' ) + ';' +
 			'}';
+		for ( var key in typedIcons ) {
+			template +=
+				'.%2 img.cke_protected.cke_smarty_' + key +
+				'{background-image:url(' + typedIcons[key] + ');}';
+		}
 
 		// Styles with contents direction awareness.
 		function cssWithDir( dir ) {
@@ -60,15 +73,30 @@ CKEDITOR.plugins.add( 'showprotected', {
 			dataFilter.addRules( {
 				comment: function( commentText, commentElement ) {
 					if(commentText.indexOf(CKEDITOR.plugins.showprotected.protectedSourceMarker) == 0) {
+						// Foster-parenting trap: if this protected comment is a DIRECT child of
+						// table/tbody/thead/tfoot/tr, converting it to a fake <img> would yank
+						// it out of the table, corrupting {foreach}/{if} blocks that wrap <tr>
+						// rows. Inside <td>/<th> cells the <img> is fine, so only skip when the
+						// immediate parent triggers foster-parenting.
+						var parentName = commentElement.parent && commentElement.parent.name;
+						if ( parentName && /^(table|tbody|thead|tfoot|tr)$/i.test( parentName ) ) {
+							return null;
+						}
+
 						commentElement.attributes = [];
 						var fakeElement = editor.createFakeParserElement( commentElement, 'cke_protected', 'protected' );
-						
+
 						var cleanedCommentText = CKEDITOR.plugins.showprotected.decodeProtectedSource( commentText );
 						fakeElement.attributes.title = fakeElement.attributes.alt = cleanedCommentText;
-						
+
+						var typeClass = CKEDITOR.plugins.showprotected.classifySmartyTag( cleanedCommentText );
+						if ( typeClass ) {
+							fakeElement.attributes[ 'class' ] = ( fakeElement.attributes[ 'class' ] || 'cke_protected' ) + ' ' + typeClass;
+						}
+
 						return fakeElement;
 					}
-					
+
 					return null;
 				}
 			} );
@@ -100,6 +128,20 @@ CKEDITOR.plugins.showprotected = {
 		return '<!--' + CKEDITOR.plugins.showprotected.protectedSourceMarker +
         	encodeURIComponent( protectedSource ).replace( /--/g, '%2D%2D' ) +
         	'-->';
+	},
+
+	// Map a decoded Smarty tag to a CSS class so showprotected can pick the right icon.
+	// Returns null for unrecognized tags (falls back to code.gif).
+	classifySmartyTag: function( source ) {
+		var s = String( source ).replace( /^\s+|\s+$/g, '' );
+		if ( /^\{(foreach|section|for|while)\b/i.test( s ) )       return 'cke_smarty_loop_open';
+		if ( /^\{\/(foreach|section|for|while)\b/i.test( s ) )     return 'cke_smarty_loop_close';
+		if ( /^\{(foreachelse|sectionelse)\b/i.test( s ) )         return 'cke_smarty_if_else';
+		if ( /^\{if\b/i.test( s ) )                                return 'cke_smarty_if_open';
+		if ( /^\{(else|elseif)\b/i.test( s ) )                     return 'cke_smarty_if_else';
+		if ( /^\{\/if\b/i.test( s ) )                              return 'cke_smarty_if_close';
+		if ( /^\{\$/.test( s ) )                                   return 'cke_smarty_var';
+		return null;
 	}
-	
+
 };

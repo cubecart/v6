@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#90a4ae"/>
+      <stop offset="55%" stop-color="#607d8b"/>
+      <stop offset="100%" stop-color="#37474f"/>
+    </linearGradient>
+    <linearGradient id="hl" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.40"/>
+      <stop offset="55%" stop-color="#fff" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="ds" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1.1" flood-color="#263238" flood-opacity="0.45"/>
+    </filter>
+    <filter id="ts" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0.6" stdDeviation="0.4" flood-color="#263238" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+  <rect x="2" y="3" width="28" height="28" rx="7" fill="#263238" opacity="0.45"/>
+  <rect x="2" y="2" width="28" height="28" rx="7" fill="url(#bg)" filter="url(#ds)"/>
+  <rect x="3" y="3" width="26" height="13" rx="5" fill="url(#hl)"/>
+  <text x="16" y="16" text-anchor="middle" dominant-baseline="central" font-family="'Palatino','Georgia','Times New Roman',serif" font-size="26" font-weight="bold" fill="#fff" filter="url(#ts)">{x}</text>
+</svg>
