@@ -1128,6 +1128,17 @@ function rootHomePath()
 }
 
 /**
+ * Whether this install is hosted on CubeCart's own infrastructure
+ * (matched by node hostname).
+ *
+ * @return bool
+ */
+function isCubeCartHosting()
+{
+    return (bool)preg_match('/(?:^|\.)cubecart\.com$/i', (string)php_uname('n'));
+}
+
+/**
  * Sanitize SEO allowed path (Deprecated since 6.0.7)
  * Use static function SEO::sanitizeSEOPath instead
  *

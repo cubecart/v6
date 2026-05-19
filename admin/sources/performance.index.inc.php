@@ -18,7 +18,7 @@ Admin::getInstance()->permissions('maintenance', CC_PERM_READ, true);
 global $lang, $glob;
 
 // Already on CubeCart's own hosting — this page doesn't apply
-if (stripos((string)php_uname('n'), 'cubecart.com') !== false) {
+if (isCubeCartHosting()) {
     httpredir('?');
 }
 
