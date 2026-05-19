@@ -203,6 +203,16 @@ class Session
     }
 
     /**
+     * Backward-compatibility stub. Cookie-blocked detection was removed; always returns false.
+     *
+     * @return bool
+     */
+    public function cookiesBlocked()
+    {
+        return false;
+    }
+
+    /**
      * Block a user
      *
      * @param string $user
