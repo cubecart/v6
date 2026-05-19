@@ -36,6 +36,9 @@ class SupportWidget
     /** Hard upper bound on the outbound call so it never blocks page render. */
     const REQUEST_TIMEOUT = 4;
 
+    /** Fixed UA the proxy uses to identify legitimate CubeCart traffic. */
+    const USER_AGENT = 'CubeCart-SupportWidget/1.0';
+
     private $_status = null;
 
     public static function getInstance()
@@ -99,6 +102,7 @@ class SupportWidget
             if ($scheme === 'https') {
                 $request->setSSL();
             }
+            $request->setUserAgent(self::USER_AGENT);
             $request->setMethod('post');
             $request->setData(array(
                 'emails'    => $emails,
