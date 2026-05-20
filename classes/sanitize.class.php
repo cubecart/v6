@@ -25,7 +25,7 @@ class Sanitize
         // Check defined CSRF on speficfied GET
         if (ADMIN_CP) {
             global $glob;
-            $csrf_path = CC_ROOT_DIR.'/'.$glob['adminFolder'].'/skins/'.$GLOBALS['config']->get('config', 'admin_skin').'/csrf.inc.php';
+            $csrf_path = CC_ROOT_DIR.'/'.$glob['adminFolder'].'/skins/default/csrf.inc.php';
             if (file_exists($csrf_path)) {
                 require_once($csrf_path);
                 if (isset($csrf_maps) && is_array($csrf_maps)) {

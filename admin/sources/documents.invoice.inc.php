@@ -23,7 +23,7 @@ foreach ($GLOBALS['hooks']->load('admin.documents.invoice.macros') as $hook) {
 }
 
 $current = $GLOBALS['db']->select('CubeCart_invoice_template', array('hash', 'content'), false, 'id DESC', 1);
-$filename = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/skins/'.$GLOBALS['config']->get('config', 'admin_skin').'/templates/orders.print.php';
+$filename = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/skins/default/templates/orders.print.php';
 $handle = fopen($filename, "rb");
 $default = fread($handle, filesize($filename));
 

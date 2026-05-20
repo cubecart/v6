@@ -1424,7 +1424,7 @@ if (isset($_GET['action'])) {
             }
             $result['link_edit'] = currentPage(null, array('action' => 'edit', 'product_id' => $result['product_id']));
             $result['link_delete'] = currentPage(null, array('delete' => $result['product_id'], 'token' => SESSION_TOKEN));
-            $result['type_icon'] = $GLOBALS['config']->get('config', 'adminFolder')."/skins/".$GLOBALS['config']->get('config', 'admin_skin')."/images/prod_type_".(int)(bool)$result['digital'].".png";
+            $result['type_icon'] = $GLOBALS['config']->get('config', 'adminFolder')."/skins/default/images/prod_type_".(int)(bool)$result['digital'].".png";
             $result['type_alt']  = $result['digital'] ? $lang['catalogue']['product_type_digital'] : $lang['catalogue']['product_type_tangible'];
             // Get master category path
             if (($category = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('primary' => 1, 'product_id' => $result['product_id']))) !== false) {

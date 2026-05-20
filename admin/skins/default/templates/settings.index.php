@@ -297,12 +297,6 @@
             <select name="config[skin_style]" id="skin_style" class="textbox select-style"></select>
             </span>
          </div>
-         <div><label for="admin_skin">{$LANG.settings.skins_default_admin}</label><span>
-            <select name="config[admin_skin]" id="admin_skin" class="textbox">
-            {foreach from=$SKINS_ADMIN item=skin}<option value="{$skin.name}" {$skin.selected}>{$skin.name}</option>{/foreach}
-            </select>
-            </span>
-         </div>
          <div><label for="skin_change">{$LANG.settings.skins_allow_change}</label><span><select name="config[skin_change]" id="skin_change" class="textbox">
             {foreach from=$OPT_SKIN_CHANGE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span>

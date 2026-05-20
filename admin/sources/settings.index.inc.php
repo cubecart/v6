@@ -340,16 +340,6 @@ if (($skins = $GLOBALS['gui']->listSkins()) !== false) {
     }
 }
 
-## Get admin skins
-$path = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/'.'skins'.'/';
-foreach (glob($path.'*', GLOB_MARK) as $folder) {
-    if (is_dir($folder) && file_exists($folder.'images') && file_exists($folder.'styles') && file_exists($folder.'templates')) {
-        $data['name']  = basename($folder);
-        $data['selected']  = ($GLOBALS['config']->get('config', 'admin_skin') == $data['name']) ? 'selected="selected"' : '';
-        $smarty_data['skins_admin'][] = $data;
-    }
-    $GLOBALS['smarty']->assign('SKINS_ADMIN', $smarty_data['skins_admin']);
-}
 ## Get cache method
 $GLOBALS['smarty']->assign('CACHE_METHOD', $GLOBALS['cache']->getCacheSystem());
 

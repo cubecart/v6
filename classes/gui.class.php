@@ -218,18 +218,14 @@ class GUI
             $GLOBALS['smarty']->assign('COPYRIGHT', $copyright);
 
         } else {
-            $skin_folder = (!$GLOBALS['config']->isEmpty('config', 'admin_skin')) ? $GLOBALS['config']->get('config', 'admin_skin') : 'default';
+            $skin_folder = 'default';
             $admin_folder  = (!$GLOBALS['config']->isEmpty('config', 'adminFolder')) ? $GLOBALS['config']->get('config', 'adminFolder') : 'admin';
             $admin_file  = (!$GLOBALS['config']->isEmpty('config', 'adminFile')) ? $GLOBALS['config']->get('config', 'adminFile') : 'admin.php';
             $skin_root  = $admin_folder.'/'.'skins';
             if (strstr($skin_root, CC_ROOT_DIR)) {
                 $skindir = $skin_root;
             } else {
-                if (!$GLOBALS['config']->isEmpty('config', 'admin_skin') && file_exists($skin_root.'/'.$skin_folder) && is_dir($skin_root.'/'.$skin_folder)) {
-                    $skindir = CC_ROOT_DIR.'/'.$skin_root.'/'.$skin_folder;
-                } else {
-                    $skindir = CC_ROOT_DIR.'/'.$skin_root.'/'.'default'.'/';
-                }
+                $skindir = CC_ROOT_DIR.'/'.$skin_root.'/'.$skin_folder.'/';
             }
 
             if (substr($skindir, -1) != '/' && substr($skindir, -1) != '\\') {

@@ -15,28 +15,28 @@ $GLOBALS['gui']->addBreadcrumb($lang['settings']['release_notes'], currentPage(a
 
 $list_view = <<<END
     <div>List view aded to filemanager.</div>
-    <div><img src="./{$GLOBALS['config']->get('config', 'adminFolder')}/skins/{$GLOBALS['config']->get('config', 'admin_skin')}/media/issue.3543.png" style="width: 60%" alt="List view" /></div>
+    <div><img src="./{$GLOBALS['config']->get('config', 'adminFolder')}/skins/default/media/issue.3543.png" style="width: 60%" alt="List view" /></div>
 END;
 $er_buffer = <<<END
 <div>Exchange rate &quot;buffer&quot; with percentage adjustment.</div>
-<div><img src="./{$GLOBALS['config']->get('config', 'adminFolder')}/skins/{$GLOBALS['config']->get('config', 'admin_skin')}/media/issue.3424.png" style="width: 60%" alt="Exchange rate buffer" /></div>
+<div><img src="./{$GLOBALS['config']->get('config', 'adminFolder')}/skins/default/media/issue.3424.png" style="width: 60%" alt="Exchange rate buffer" /></div>
 END;
 
 $product_dates = <<<END
 <div>Adjust product sales report by date.</div>
-    <div><img src="./{$GLOBALS['config']->get('config', 'adminFolder')}/skins/{$GLOBALS['config']->get('config', 'admin_skin')}/media/issue.3392.png" style="width: 60%" alt="Date filter" /></div>
+    <div><img src="./{$GLOBALS['config']->get('config', 'adminFolder')}/skins/default/media/issue.3392.png" style="width: 60%" alt="Date filter" /></div>
 
 END;
 
 $product_dates = <<<END
 <div>Adjust product sales report by date.</div>
-    <div><img src="./{$GLOBALS['config']->get('config', 'adminFolder')}/skins/{$GLOBALS['config']->get('config', 'admin_skin')}/media/issue.3392.png" style="width: 60%" alt="Date filter" /></div>
+    <div><img src="./{$GLOBALS['config']->get('config', 'adminFolder')}/skins/default/media/issue.3392.png" style="width: 60%" alt="Date filter" /></div>
 
 END;
 
 $emoji = <<<END
 <div>Rich Text Editor - Emoji Picker Plugin</div>
-    <div><img src="./{$GLOBALS['config']->get('config', 'adminFolder')}/skins/{$GLOBALS['config']->get('config', 'admin_skin')}/media/issue.3420.png" style="width: 60%" alt="Emoji selector" /></div>
+    <div><img src="./{$GLOBALS['config']->get('config', 'adminFolder')}/skins/default/media/issue.3420.png" style="width: 60%" alt="Emoji selector" /></div>
 
 END;
 

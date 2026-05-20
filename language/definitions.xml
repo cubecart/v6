@@ -2490,7 +2490,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="ship_per_order" introduced="5.0.0"><![CDATA[Per Shipment]]></string>
     <string name="ship_per_order_intl" introduced="5.0.0"><![CDATA[Per Shipment (International)]]></string>
     <string name="skins_allow_change" introduced="5.0.0"><![CDATA[Allow users to change front-end skin?]]></string>
-    <string name="skins_default_admin" introduced="5.0.0"><![CDATA[Default Admin skin]]></string>
     <string name="skins_default_front" introduced="5.0.0"><![CDATA[Default front-end skin]]></string>
     <string name="skins_mobile_default_front" introduced="5.1.0"><![CDATA[Default front-end mobile skin]]></string>
     <string name="show_basket_weight" introduced="5.0.0"><![CDATA[Display basket weight on checkout]]></string>

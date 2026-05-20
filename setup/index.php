@@ -140,7 +140,6 @@ $default_config_settings = array(
   'admin_notify_status' => '2',
   'catalogue_mode' => '0',
   'debug' => '0',
-  'admin_skin' => 'default',
   'skin_folder' => 'foundation',
   'skin_style' => 'default',
   'skin_change' => '0',
@@ -811,7 +810,6 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
             $new_config = array_merge($main_config, $new_config, $reset);
             ## Set some defaults
             $defaults   = array(
-        'admin_skin' => 'default',
         'cache' => '1',
         'enable_reviews' => true,
         'show_basket_weight' => true
