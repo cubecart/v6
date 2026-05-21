@@ -134,7 +134,7 @@ class CubeCart_Smarty_Security extends Smarty_Security
      */
     private $safe_modifiers = array(
         'json_encode', 'json_decode',
-        'html_entity_decode', 'htmlspecialchars', 'htmlspecialchars_decode',
+        'html_entity_decode', 'htmlentities', 'htmlspecialchars', 'htmlspecialchars_decode',
         'strtolower', 'strtoupper', 'ucfirst', 'ucwords',
         'sprintf', 'printf',
         'print_r', 'var_export',
@@ -157,6 +157,8 @@ class CubeCart_Smarty_Security extends Smarty_Security
         'nl2br', 'wordwrap',
         'filter_var', 'is_numeric', 'is_array', 'is_string', 'is_null',
         'number_format', 'http_build_query', 'strip_tags', 'strlen',
+        // CubeCart helpers used as {fn(...)} in admin/storefront templates
+        'formatTime', 'formatBytes',
     );
 
     /**

@@ -248,8 +248,8 @@
 	  <div><label for="state-list">{$LANG.address.state}</label><span><input type="text" name="address[state]" id="state-list" value="{$ADDRESS.state}" class="textbox"></span></div>
 	  <div><label for="address_postcode">{$LANG.address.postcode}</label><span><input type="text" name="address[postcode]" id="address_postcode" value="{$ADDRESS.postcode}" class="textbox uppercase"></span></div>
 	  {if !empty($CONFIG.w3w)}<div><label for="address_w3w">what3words</label><span><input type="text" name="address[w3w]" id="address_w3w" value="{$ADDRESS.w3w}" class="textbox"></span></div>{/if}
-	  <div><label for="billing">{$LANG.address.billing_address}</label><span><input type="hidden" name="address[billing]" id="billing" value="{$ADDRESS.billing}" class="toggle"></div>
-	  <div><label for="default">{$LANG.address.default_delivery_address}</label><span><input type="hidden" name="address[default]" id="default" value="{$ADDRESS.default}" class="toggle"></div>
+	  <div><label for="billing">{$LANG.address.billing_address}</label><span><input type="hidden" name="address[billing]" id="billing" value="{$ADDRESS.billing}" class="toggle"></span></div>
+	  <div><label for="default">{$LANG.address.default_delivery_address}</label><span><input type="hidden" name="address[default]" id="default" value="{$ADDRESS.default}" class="toggle"></span></div>
 	  <input type="hidden" name="address[address_id]" value="{$ADDRESS.address_id}">
 	  </fieldset>
 	  {/if}
