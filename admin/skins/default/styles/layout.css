@@ -936,7 +936,12 @@ div.tab:hover {
     background-color: var(--bg)
 }
 .form_control {
-    padding: 5px 0
+    padding: 5px 0;
+    position: sticky;
+    bottom: 0;
+    background-color: var(--bg);
+    border-top: 1px solid var(--border);
+    z-index: 30;
 }
 div.tab_content {
     margin-bottom: 10px;
