@@ -17,7 +17,8 @@ Admin::getInstance()->permissions('documents', CC_PERM_EDIT, true);
 $contact = $GLOBALS['config']->get('Contact_Form');
 if (isset($_POST['contact']) && is_array($_POST['contact'])) {
     $data = $_POST['contact'];
-    if (isset($_POST['department']) && is_array($_POST['department'])) {
+    $data['department'] = array();
+    if (isset($_POST['department']['name']) && is_array($_POST['department']['name'])) {
         $i=0;
         foreach ($_POST['department']['name'] as $key => $value) {
             if (empty($value)) {
@@ -26,7 +27,7 @@ if (isset($_POST['contact']) && is_array($_POST['contact'])) {
             ++$i;
             $data['department'][$i] = array(
                 'name' => $value,
-                'email' => $_POST['department']['email'][$key],
+                'email' => $_POST['department']['email'][$key] ?? '',
             );
         }
     }
