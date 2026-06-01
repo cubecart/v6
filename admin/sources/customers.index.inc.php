@@ -381,7 +381,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
 
 ######################################
 $per_page = $GLOBALS['main']->itemsPerPage('customers', $_GET['items'] ?? 0, 25);
-$GLOBALS['smarty']->assign('PAGE_BREAKS', array(25, 50, 100, 250, 500));
+$GLOBALS['smarty']->assign('PAGE_BREAKS', array(25, 50, 100));
 $GLOBALS['smarty']->assign('PAGE_BREAK', $per_page);
 
 if ((!empty($_GET['action'] ??= "") || isset($_POST['multi-action'])) && Admin::getInstance()->permissions('customers', CC_PERM_EDIT)) {

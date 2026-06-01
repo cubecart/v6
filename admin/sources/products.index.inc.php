@@ -1287,7 +1287,7 @@ if (isset($_GET['action'])) {
     $page  = (isset($_GET['page'])) ? $_GET['page'] : 1;
     $per_page = $GLOBALS['main']->itemsPerPage('products', $_GET['items'] ?? 0, 25);
     $page_break_url = currentPage(array('items'));
-    $GLOBALS['smarty']->assign('PAGE_BREAKS', array(25, 50, 100, 250, 500));
+    $GLOBALS['smarty']->assign('PAGE_BREAKS', array(25, 50, 100));
     $GLOBALS['smarty']->assign('PAGE_BREAK', $per_page);
     $GLOBALS['smarty']->assign('PAGE_BREAK_URL', $page_break_url);
     if (isset($_GET['char']) && !empty($_GET['char'])) {

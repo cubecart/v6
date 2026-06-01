@@ -573,7 +573,7 @@ $order_by = (empty($order_by) ? '`dashboard` DESC, `'.$key.'` '.$sort : $order_b
 
 $per_page = $GLOBALS['main']->itemsPerPage('dashboard_pending', $_GET['items'] ?? 0, 25);
 $page_break_url = currentPage(array('items'));
-$GLOBALS['smarty']->assign('PAGE_BREAKS', array(25, 50, 100, 250, 500));
+$GLOBALS['smarty']->assign('PAGE_BREAKS', array(25, 50, 100));
 $GLOBALS['smarty']->assign('PAGE_BREAK', $per_page);
 $GLOBALS['smarty']->assign('PAGE_BREAK_URL', $page_break_url);
 $unsettled_orders = $GLOBALS['db']->select('CubeCart_order_summary', false, '`status` IN (1,2) OR `dashboard` = 1', $order_by, $per_page, $page);
@@ -669,7 +669,7 @@ $page  = (isset($_GET['stock'])) ? $_GET['stock'] : 1;
 
 $per_page = $GLOBALS['main']->itemsPerPage('dashboard_stock', $_GET['items_stock'] ?? 0, 25);
 $page_break_url = currentPage(array('items_stock'));
-$GLOBALS['smarty']->assign('PAGE_BREAKS_STOCK', array(25, 50, 100, 250, 500));
+$GLOBALS['smarty']->assign('PAGE_BREAKS_STOCK', array(25, 50, 100));
 $GLOBALS['smarty']->assign('PAGE_BREAK_STOCK', $per_page);
 $GLOBALS['smarty']->assign('PAGE_BREAK_URL_STOCK', $page_break_url);
 

@@ -966,7 +966,7 @@ if (isset($_GET['action'])) {
 
     $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
     $per_page = $GLOBALS['main']->itemsPerPage('orders', $_GET['items'] ?? 0, 25);
-    $GLOBALS['smarty']->assign('PAGE_BREAKS', array(25, 50, 100, 250, 500));
+    $GLOBALS['smarty']->assign('PAGE_BREAKS', array(25, 50, 100));
     $GLOBALS['smarty']->assign('PAGE_BREAK', $per_page);
 
     if ((!isset($_GET['sort']) || !is_array($_GET['sort'])) && !isset($_GET['action'])) {
