@@ -795,6 +795,33 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_history` (
   KEY `status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
+CREATE TABLE IF NOT EXISTS `CubeCart_withdrawal_requests` (
+	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+	`cart_order_id` varchar(18) DEFAULT NULL,
+	`customer_id` int(10) unsigned DEFAULT NULL,
+	`name` varchar(255) NOT NULL,
+	`address` text NOT NULL,
+	`email` varchar(255) NOT NULL,
+	`statement` text NOT NULL,
+	`reason` text DEFAULT NULL,
+	`reported_delivery` date DEFAULT NULL,
+	`submitted_at` int(10) unsigned NOT NULL DEFAULT '0',
+	`acknowledged_at` int(10) unsigned DEFAULT NULL,
+	`status` enum('new','accepted','rejected','refunded') NOT NULL DEFAULT 'new',
+	`decision_at` int(10) unsigned DEFAULT NULL,
+	`decision_by` int(10) unsigned DEFAULT NULL,
+	`decision_note` text DEFAULT NULL,
+	`refunded_at` int(10) unsigned DEFAULT NULL,
+	`ip` varchar(45) DEFAULT NULL,
+	`lang` varchar(5) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `cart_order_id` (`cart_order_id`),
+  KEY `customer_id` (`customer_id`),
+  KEY `email` (`email`),
+  KEY `submitted_at` (`submitted_at`),
+  KEY `status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
+
 CREATE TABLE IF NOT EXISTS `CubeCart_order_inventory` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`product_id` INT UNSIGNED NOT NULL DEFAULT '0',

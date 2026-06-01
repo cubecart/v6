@@ -48,3 +48,19 @@ do {
 if (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) {
     $GLOBALS['cache']->clear();
 }
+
+// #4152 — Import the three new email templates for the EU withdrawal feature
+// across every shipped language. importEmail() is safe to re-run: it only
+// inserts rows that don't already exist, so merchant-edited copies survive.
+$new_withdrawal_emails = array(
+    'cart.withdrawal_acknowledgment',
+    'cart.withdrawal_decision',
+    'admin.withdrawal_received',
+);
+if (is_array($languages)) {
+    foreach ($languages as $code => $lang) {
+        foreach ($new_withdrawal_emails as $tpl) {
+            $language->importEmail('email_'.$code.'.xml', CC_LANGUAGE_DIR, $tpl);
+        }
+    }
+}

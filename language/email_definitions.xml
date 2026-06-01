@@ -312,4 +312,57 @@ If you need any further help, please contact us.</p>]]></content>
 <p style="text-align:center;margin:20px 0"><a href="{$DATA.recovery_link}" style="background-color:#4CAF50;color:#fff;padding:12px 30px;text-decoration:none;border-radius:4px;font-weight:bold;display:inline-block">Complete Your Order</a></p>
 <p style="font-size:12px;color:#999">Don't want these reminders? <a href="{$DATA.optout_link}">Unsubscribe from cart reminders</a></p>]]></content>
   </email>
+  <email name="cart.withdrawal_acknowledgment">
+    <subject><![CDATA[Withdrawal request received — {$DATA.reference}]]></subject>
+    <content type="html"><![CDATA[<p>Hi {$DATA.name},</p>
+<p>We have received your withdrawal request{if !empty($DATA.cart_order_id)} for order <strong>{$DATA.cart_order_id}</strong>{/if}. Confirmation details:</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Reference:</td><td>{$DATA.reference}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Submitted at:</td><td>{$DATA.submitted_at}</td></tr>
+{if !empty($DATA.cart_order_id)}<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Order:</td><td>{$DATA.cart_order_id}</td></tr>{/if}
+{if !empty($DATA.reported_delivery)}<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Reported delivery date:</td><td>{$DATA.reported_delivery}</td></tr>{/if}
+</table>
+<p><strong>Your statement:</strong></p>
+<blockquote style="margin:8px 0;padding:8px 12px;border-left:3px solid #ccc;color:#555;white-space:pre-wrap">{$DATA.statement|escape}</blockquote>
+{if !empty($DATA.reason)}<p><strong>Reason:</strong></p>
+<blockquote style="margin:8px 0;padding:8px 12px;border-left:3px solid #ccc;color:#555;white-space:pre-wrap">{$DATA.reason|escape}</blockquote>{/if}
+<p>This email confirms receipt only. We will assess your request and contact you with our decision. If you need to add information, reply to this email quoting reference <strong>{$DATA.reference}</strong>.</p>
+<p>Regards,<br>{$DATA.store_name}</p>]]></content>
+  </email>
+  <email name="cart.withdrawal_decision">
+    <subject><![CDATA[Withdrawal request {if $DATA.status == 'accepted'}accepted{elseif $DATA.status == 'rejected'}rejected{else}update{/if} — {$DATA.reference}]]></subject>
+    <content type="html"><![CDATA[<p>Hi {$DATA.name},</p>
+{if $DATA.status == 'accepted'}
+<p>Your withdrawal request <strong>{$DATA.reference}</strong>{if !empty($DATA.cart_order_id)} for order <strong>{$DATA.cart_order_id}</strong>{/if} has been <strong>accepted</strong>.</p>
+{elseif $DATA.status == 'refunded'}
+<p>Your withdrawal request <strong>{$DATA.reference}</strong>{if !empty($DATA.cart_order_id)} for order <strong>{$DATA.cart_order_id}</strong>{/if} has been processed and a refund has been issued.</p>
+{else}
+<p>We have reviewed your withdrawal request <strong>{$DATA.reference}</strong>{if !empty($DATA.cart_order_id)} for order <strong>{$DATA.cart_order_id}</strong>{/if} and unfortunately we are unable to accept it.</p>
+{/if}
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Reference:</td><td>{$DATA.reference}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Decision at:</td><td>{$DATA.decision_at}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Status:</td><td>{$DATA.status|capitalize}</td></tr>
+</table>
+{if !empty($DATA.note)}<p><strong>Notes from the store:</strong></p>
+<blockquote style="margin:8px 0;padding:8px 12px;border-left:3px solid #ccc;color:#555;white-space:pre-wrap">{$DATA.note|escape}</blockquote>{/if}
+<p>If you have questions about this decision, reply to this email quoting reference <strong>{$DATA.reference}</strong>.</p>
+<p>Regards,<br>{$DATA.store_name}</p>]]></content>
+  </email>
+  <email name="admin.withdrawal_received">
+    <subject><![CDATA[New withdrawal request — {$DATA.reference}]]></subject>
+    <content type="html"><![CDATA[<p>A new withdrawal request has been submitted.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Reference:</td><td>{$DATA.reference}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Submitted at:</td><td>{$DATA.submitted_at}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">From:</td><td>{$DATA.name|escape} &lt;{$DATA.email|escape}&gt;</td></tr>
+{if !empty($DATA.cart_order_id)}<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Order:</td><td>{$DATA.cart_order_id}</td></tr>{/if}
+{if !empty($DATA.reported_delivery)}<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Reported delivery date:</td><td>{$DATA.reported_delivery}</td></tr>{/if}
+</table>
+<p><strong>Statement:</strong></p>
+<blockquote style="margin:8px 0;padding:8px 12px;border-left:3px solid #ccc;color:#555;white-space:pre-wrap">{$DATA.statement|escape}</blockquote>
+{if !empty($DATA.reason)}<p><strong>Reason:</strong></p>
+<blockquote style="margin:8px 0;padding:8px 12px;border-left:3px solid #ccc;color:#555;white-space:pre-wrap">{$DATA.reason|escape}</blockquote>{/if}
+<p><a href="{$DATA.admin_link}">Open in back office &rarr;</a></p>]]></content>
+  </email>
 </emails>

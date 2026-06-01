@@ -446,6 +446,11 @@ class Cubecart
                     $this->_orders();
                 break;
 
+                case 'withdraw':
+                    $GLOBALS['smarty']->assign('SECTION_NAME', 'withdraw');
+                    $this->_withdraw();
+                break;
+
                 default:
                     $method = '_'.strtolower($_GET['_a']);
                     // CubeCart will auto load any class in the classes folder. Please use the method below to
@@ -2787,6 +2792,231 @@ class Cubecart
     }
 
     /**
+     * EU withdrawal-from-contract form (Directive (EU) 2023/2673 Art. 11a).
+     *
+     * Guest-friendly: anyone can submit, identifying themselves and the order.
+     * The trader assesses timing on their own proof of delivery — we don't
+     * try to enforce the 14-day window in code (CubeCart has no delivery
+     * confirmation; the clock starts at delivery, not order placement).
+     */
+    private function _withdraw()
+    {
+        $mode = $GLOBALS['config']->get('config', 'withdrawal_mode');
+        if (empty($mode) || $mode === '0') {
+            $this->_404();
+            return;
+        }
+
+        $GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->withdrawal['page_title'], currentPage());
+        $GLOBALS['smarty']->assign('PAGE_TITLE', $GLOBALS['language']->withdrawal['page_title']);
+
+        // Pre-fill defaults: from logged-in user + ?cart_order_id query if present
+        $defaults = array(
+            'name'              => '',
+            'address'           => '',
+            'email'             => '',
+            'cart_order_id'     => isset($_GET['cart_order_id']) ? trim($_GET['cart_order_id']) : '',
+            'reported_delivery' => '',
+            'statement'         => $GLOBALS['language']->withdrawal['field_statement_default'],
+            'reason'            => '',
+        );
+        $user_orders = array();
+        if ($GLOBALS['user']->is()) {
+            $cid = (int)$GLOBALS['user']->get('customer_id');
+            $defaults['email'] = (string)$GLOBALS['user']->get('email');
+            $defaults['name']  = trim((string)$GLOBALS['user']->get('first_name').' '.(string)$GLOBALS['user']->get('last_name'));
+            if ($cid > 0) {
+                if (($addr = $GLOBALS['db']->select('CubeCart_addressbook', false, array('customer_id' => $cid, 'billing' => '1'), false, 1)) !== false) {
+                    $a = $addr[0];
+                    $bits = array_filter(array($a['line1'], $a['line2'], $a['town'], $a['postcode']));
+                    $defaults['address'] = implode("\n", $bits);
+                }
+                if (($orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id', 'order_date', 'status'), array('customer_id' => $cid), array('order_date' => 'DESC'), 50)) !== false) {
+                    foreach ($orders as $o) {
+                        $user_orders[] = array(
+                            'cart_order_id' => $o['cart_order_id'],
+                            'order_date'    => formatTime($o['order_date'], false, true),
+                        );
+                    }
+                }
+            }
+        }
+
+        $errors = array();
+
+        if (!empty($_POST['withdraw_submit'])) {
+            // Rate-limit per IP (5 / hour) via session
+            $rl_key = 'withdrawal_rl_'.md5(get_ip_address());
+            $rl = (array)$GLOBALS['session']->get($rl_key, 'rate_limit') ?: array();
+            $rl = array_values(array_filter($rl, function($t) { return $t > time() - 3600; }));
+            if (count($rl) >= 5) {
+                $errors[] = $GLOBALS['language']->withdrawal['validation_rate_limit'];
+            }
+
+            $in = array(
+                'name'              => trim((string)($_POST['name'] ?? '')),
+                'address'           => trim((string)($_POST['address'] ?? '')),
+                'email'             => trim((string)($_POST['email'] ?? '')),
+                'cart_order_id'     => trim((string)($_POST['cart_order_id'] ?? '')),
+                'reported_delivery' => trim((string)($_POST['reported_delivery'] ?? '')),
+                'statement'         => trim((string)($_POST['statement'] ?? '')),
+                'reason'            => trim((string)($_POST['reason'] ?? '')),
+            );
+
+            // Honeypot — if filled, drop silently (return success-shaped to deny signal to bots)
+            if (!empty($_POST['website'])) {
+                httpredir(currentPage(array('done')).'&done=1');
+                return;
+            }
+
+            if (!$errors) {
+                if ($in['name'] === '' || $in['address'] === '' || $in['email'] === '' || $in['statement'] === '') {
+                    $errors[] = $GLOBALS['language']->withdrawal['validation_required'];
+                }
+                if (!filter_var($in['email'], FILTER_VALIDATE_EMAIL)) {
+                    $errors[] = $GLOBALS['language']->withdrawal['validation_email'];
+                }
+            }
+
+            if (!$errors) {
+                $cust_id = $GLOBALS['user']->is() ? (int)$GLOBALS['user']->get('customer_id') : 0;
+                $row = array(
+                    'cart_order_id'     => $in['cart_order_id'] !== '' ? $in['cart_order_id'] : null,
+                    'customer_id'       => $cust_id > 0 ? $cust_id : null,
+                    'name'              => $in['name'],
+                    'address'           => $in['address'],
+                    'email'             => $in['email'],
+                    'statement'         => $in['statement'],
+                    'reason'            => $in['reason'] !== '' ? $in['reason'] : null,
+                    'reported_delivery' => preg_match('/^\d{4}-\d{2}-\d{2}$/', $in['reported_delivery']) ? $in['reported_delivery'] : null,
+                    'submitted_at'      => time(),
+                    'status'            => 'new',
+                    'ip'                => get_ip_address(),
+                    'lang'              => $GLOBALS['language']->current(),
+                );
+
+                if (($wid = $GLOBALS['db']->insert('CubeCart_withdrawal_requests', $row))) {
+                    $reference = 'W-'.str_pad((string)$wid, 5, '0', STR_PAD_LEFT);
+
+                    // Rate-limit bump after success only
+                    $rl[] = time();
+                    $GLOBALS['session']->set($rl_key, $rl, 'rate_limit');
+
+                    $submitted_at_human = formatTime(time());
+                    $mailer = new Mailer();
+
+                    // Consumer acknowledgment (Art. 11a durable-medium receipt)
+                    if (($content = $mailer->loadContent('cart.withdrawal_acknowledgment', $row['lang'])) !== false) {
+                        $GLOBALS['smarty']->assign('DATA', array(
+                            'name'              => $row['name'],
+                            'email'             => $row['email'],
+                            'reference'         => $reference,
+                            'submitted_at'      => $submitted_at_human,
+                            'cart_order_id'     => $row['cart_order_id'],
+                            'reported_delivery' => $row['reported_delivery'],
+                            'statement'         => $row['statement'],
+                            'reason'            => $row['reason'],
+                            'store_name'        => $GLOBALS['config']->get('config', 'store_name'),
+                        ));
+                        if ($mailer->sendEmailAsync($row['email'], $content)) {
+                            $GLOBALS['db']->update('CubeCart_withdrawal_requests', array('acknowledged_at' => time()), array('id' => $wid));
+                        }
+                    }
+
+                    // Admin notification
+                    if (($admins = $GLOBALS['db']->select('CubeCart_admin_users', array('email'), array('status' => 1, 'order_notify' => 1))) !== false) {
+                        $admin_recipients = array_column($admins, 'email');
+                        if ($admin_recipients && ($content = $mailer->loadContent('admin.withdrawal_received')) !== false) {
+                            $admin_link = $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFolder').'/index.php?_g=customers&node=withdrawals&id='.(int)$wid;
+                            $GLOBALS['smarty']->assign('DATA', array(
+                                'reference'         => $reference,
+                                'submitted_at'      => $submitted_at_human,
+                                'name'              => $row['name'],
+                                'email'             => $row['email'],
+                                'cart_order_id'     => $row['cart_order_id'],
+                                'reported_delivery' => $row['reported_delivery'],
+                                'statement'         => $row['statement'],
+                                'reason'            => $row['reason'],
+                                'admin_link'        => $admin_link,
+                            ));
+                            $mailer->sendEmailAsync($admin_recipients, $content);
+                        }
+                    }
+
+                    $GLOBALS['session']->set('withdrawal_reference', $reference, 'withdrawal');
+                    $GLOBALS['session']->set('withdrawal_email', $row['email'], 'withdrawal');
+                    httpredir(currentPage(array('done')).'&done=1');
+                    return;
+                }
+                $errors[] = 'Could not save your request. Please try again.';
+            }
+
+            // Re-populate form from POST on error
+            $defaults = array_merge($defaults, $in);
+        }
+
+        if (!empty($_GET['done'])) {
+            $reference = (string)$GLOBALS['session']->get('withdrawal_reference', 'withdrawal');
+            $email = (string)$GLOBALS['session']->get('withdrawal_email', 'withdrawal');
+            $GLOBALS['session']->delete('withdrawal_reference', 'withdrawal');
+            $GLOBALS['session']->delete('withdrawal_email', 'withdrawal');
+            $GLOBALS['smarty']->assign('WITHDRAWAL_REFERENCE', $reference);
+            $GLOBALS['smarty']->assign('WITHDRAWAL_EMAIL', $email);
+            $GLOBALS['smarty']->assign('WITHDRAWAL_CONFIRMATION', sprintf(
+                $GLOBALS['language']->withdrawal['confirmation_body'],
+                htmlspecialchars($reference, ENT_QUOTES, 'UTF-8'),
+                htmlspecialchars($email, ENT_QUOTES, 'UTF-8')
+            ));
+            $content = $GLOBALS['smarty']->fetch('templates/content.withdraw.done.php');
+            $GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
+            return;
+        }
+
+        $GLOBALS['smarty']->assign('WITHDRAW', $defaults);
+        $GLOBALS['smarty']->assign('WITHDRAW_USER_ORDERS', $user_orders);
+        $GLOBALS['smarty']->assign('WITHDRAW_ERRORS', $errors);
+        $content = $GLOBALS['smarty']->fetch('templates/content.withdraw.php');
+        $GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
+    }
+
+    /**
+     * Decide whether to surface the Art. 11a withdrawal button on an order.
+     * Status must be one of {Pending, Processing, Complete}; the cosmetic
+     * outer bound (default 90 days from order_date) keeps ancient orders
+     * unburdened. The legal 14-day window runs from delivery and is the
+     * merchant's call on review — we don't try to enforce it here.
+     *
+     * @param int    $status_int    CubeCart_order_summary.status
+     * @param mixed  $country_num   CubeCart_order_summary.country (numcode)
+     * @param int    $order_date    unix ts of CubeCart_order_summary.order_date
+     * @return bool
+     */
+    private function _withdrawalEligible($status_int, $country_num, $order_date)
+    {
+        $mode = (string)$GLOBALS['config']->get('config', 'withdrawal_mode');
+        if ($mode === '' || $mode === '0') {
+            return false;
+        }
+        $allowed_status = array(Order::ORDER_PENDING, Order::ORDER_PROCESS, Order::ORDER_COMPLETE);
+        if (!in_array((int)$status_int, $allowed_status, true)) {
+            return false;
+        }
+        $max_age = (int)$GLOBALS['config']->get('config', 'withdrawal_max_age_days');
+        if ($max_age <= 0) $max_age = 90;
+        if (time() > ((int)$order_date + ($max_age * 86400))) {
+            return false;
+        }
+        if ($mode === 'eu') {
+            // CubeCart_geo_country.eu is the source of truth (enum '0'/'1');
+            // getCountryFormat returns it directly when the lookup field is 'eu'.
+            if ((string)getCountryFormat($country_num, 'numcode', 'eu') !== '1') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Orders
      */
     private function _orders()
@@ -2823,6 +3053,8 @@ class Cubecart
                         $vars['taxes'][] = array('name' => $GLOBALS['language']->basket['total_tax'], 'value' => $GLOBALS['tax']->priceFormat($order['total_tax']));
                     }
                     $GLOBALS['smarty']->assign('TAXES', $vars['taxes']);
+                    $order['withdrawal_eligible'] = $this->_withdrawalEligible($order['status'], $order['country'], $order['order_date']);
+                    $order['withdrawal_url'] = $order['withdrawal_eligible'] ? $GLOBALS['storeURL'].'/index.php?_a=withdraw&cart_order_id='.$order['cart_order_id'] : '';
                     $order['state']  = getStateFormat($order['state']);
                     $order['country'] = getCountryFormat($order['country']);
                     $order['state_d'] = is_numeric($order['state_d']) ? getStateFormat($order['state_d']) : $order['state_d'];
@@ -2914,10 +3146,12 @@ class Cubecart
                 $per_page = 15;
                 $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
 
-                if (($paginated_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('custom_oid', 'id', 'cart_order_id', 'ship_tracking', 'order_date', 'status', 'total', 'basket'), array('customer_id' => $GLOBALS['user']->get('customer_id')), array('cart_order_id' => 'DESC'), $per_page, $page, false)) !== false) {
+                if (($paginated_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('custom_oid', 'id', 'cart_order_id', 'ship_tracking', 'order_date', 'status', 'total', 'basket', 'country'), array('customer_id' => $GLOBALS['user']->get('customer_id')), array('cart_order_id' => 'DESC'), $per_page, $page, false)) !== false) {
                     $order_count = $GLOBALS['db']->getFoundRows();
                     foreach ($paginated_orders as $i => $order) {
                         $order['time'] = formatTime($order['order_date']);
+                        $order['withdrawal_eligible'] = $this->_withdrawalEligible($order['status'], $order['country'], $order['order_date']);
+                        $order['withdrawal_url'] = $order['withdrawal_eligible'] ? $GLOBALS['storeURL'].'/index.php?_a=withdraw&cart_order_id='.$order['cart_order_id'] : '';
                         $status = $order['status'];
 
                         switch ((int)$order['status']) {
@@ -2985,6 +3219,8 @@ class Cubecart
                         $vars['taxes'][] = array('name' => $GLOBALS['language']->basket['total_tax'], 'value' => $GLOBALS['tax']->priceFormat($order['total_tax']));
                     }
                     $GLOBALS['smarty']->assign('TAXES', $vars['taxes']);
+                    $order['withdrawal_eligible'] = $this->_withdrawalEligible($order['status'], $order['country'], $order['order_date']);
+                    $order['withdrawal_url'] = $order['withdrawal_eligible'] ? $GLOBALS['storeURL'].'/index.php?_a=withdraw&cart_order_id='.$order['cart_order_id'] : '';
                     $order['country'] = getCountryFormat($order['country']);
                     $order['country_d'] = getCountryFormat($order['country_d']);
                     $order['state'] = is_numeric($order['state']) ? getStateFormat($order['state']) : $order['state'];

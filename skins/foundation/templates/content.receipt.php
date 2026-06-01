@@ -12,6 +12,9 @@
 <h2>{$LANG.orders.order_number}: {$SUM.{$CONFIG.oid_col}|default:$SUM.cart_order_id}</h2>
 <div class="order_status marg-top">{$LANG.orders.title_order_status}: <span class="order_status_{$SUM.status}">{$SUM.order_status}</span></div>
 <div><strong>{$LANG.basket.order_date}:</strong> {$SUM.order_date_formatted}</div>
+{if $SUM.withdrawal_eligible}
+<div class="thinmarg-top"><a href="{$SUM.withdrawal_url}" class="button tiny secondary nomarg" title="{$LANG.withdrawal.button}">{$LANG.withdrawal.button}</a></div>
+{/if}
 <hr>
 <h3>{$LANG.basket.customer_info}</h3>
 <div class="row">

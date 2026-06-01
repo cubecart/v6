@@ -2925,6 +2925,46 @@ This email was sent automatically by the CubeCart setup tool.]]></string>
   <group name="ui">
     <string name="drag_reorder" introduced="5.0.0"><![CDATA[Drag to reorder]]></string>
   </group>
+  <group name="withdrawal">
+    <string name="button" introduced="6.7.4"><![CDATA[Withdrawal from contract]]></string>
+    <string name="page_title" introduced="6.7.4"><![CDATA[Withdraw from contract]]></string>
+    <string name="page_intro" introduced="6.7.4"><![CDATA[Use this form to exercise your right of withdrawal under the EU Consumer Rights Directive. We will confirm receipt by email; the merchant will then assess and reply with the outcome.]]></string>
+    <string name="field_name" introduced="6.7.4"><![CDATA[Your name]]></string>
+    <string name="field_address" introduced="6.7.4"><![CDATA[Your address]]></string>
+    <string name="field_email" introduced="6.7.4"><![CDATA[Email address]]></string>
+    <string name="field_order" introduced="6.7.4"><![CDATA[Order reference]]></string>
+    <string name="field_order_help" introduced="6.7.4"><![CDATA[The order number on your confirmation email, if you have one.]]></string>
+    <string name="field_reported_delivery" introduced="6.7.4"><![CDATA[Reported delivery date]]></string>
+    <string name="field_reported_delivery_help" introduced="6.7.4"><![CDATA[The date the goods arrived, if known. Optional.]]></string>
+    <string name="field_statement" introduced="6.7.4"><![CDATA[Withdrawal statement]]></string>
+    <string name="field_statement_default" introduced="6.7.4"><![CDATA[I hereby give notice that I withdraw from my contract of sale of the following goods.]]></string>
+    <string name="field_reason" introduced="6.7.4"><![CDATA[Reason for withdrawal]]></string>
+    <string name="field_reason_help" introduced="6.7.4"><![CDATA[Optional. You are not required to give a reason.]]></string>
+    <string name="submit" introduced="6.7.4"><![CDATA[Submit withdrawal request]]></string>
+    <string name="confirmation_title" introduced="6.7.4"><![CDATA[Request received]]></string>
+    <string name="confirmation_body" introduced="6.7.4"><![CDATA[Thank you — your withdrawal request has been received. Your reference is <strong>%1$s</strong>. We have sent a confirmation to <strong>%2$s</strong> and will email you again when the merchant has reviewed your request.]]></string>
+    <string name="validation_required" introduced="6.7.4"><![CDATA[Please fill in all required fields.]]></string>
+    <string name="validation_email" introduced="6.7.4"><![CDATA[Please enter a valid email address.]]></string>
+    <string name="validation_rate_limit" introduced="6.7.4"><![CDATA[Too many submissions from this address. Please try again later.]]></string>
+    <string name="status_new" introduced="6.7.4"><![CDATA[New]]></string>
+    <string name="status_accepted" introduced="6.7.4"><![CDATA[Accepted]]></string>
+    <string name="status_rejected" introduced="6.7.4"><![CDATA[Rejected]]></string>
+    <string name="status_refunded" introduced="6.7.4"><![CDATA[Refunded]]></string>
+    <string name="admin_section_title" introduced="6.7.4"><![CDATA[Withdrawal Requests]]></string>
+    <string name="admin_no_records" introduced="6.7.4"><![CDATA[No withdrawal requests have been received.]]></string>
+    <string name="admin_action_accept" introduced="6.7.4"><![CDATA[Accept]]></string>
+    <string name="admin_action_reject" introduced="6.7.4"><![CDATA[Reject]]></string>
+    <string name="admin_action_mark_refunded" introduced="6.7.4"><![CDATA[Mark refunded]]></string>
+    <string name="admin_decision_note" introduced="6.7.4"><![CDATA[Decision note (sent to consumer)]]></string>
+    <string name="admin_resend_ack" introduced="6.7.4"><![CDATA[Resend acknowledgment]]></string>
+    <string name="setting_mode" introduced="6.7.4"><![CDATA[EU Withdrawal Function]]></string>
+    <string name="setting_mode_help" introduced="6.7.4"><![CDATA[Directive (EU) 2023/2673 Art. 11a. When enabled, customers see a withdrawal request button on eligible orders and may submit a request that is recorded for your review. You assess the timing (14 days from delivery) and decide whether to accept.]]></string>
+    <string name="setting_mode_disabled" introduced="6.7.4"><![CDATA[Disabled]]></string>
+    <string name="setting_mode_all" introduced="6.7.4"><![CDATA[Enabled — All orders]]></string>
+    <string name="setting_mode_eu" introduced="6.7.4"><![CDATA[Enabled — EU billing addresses only]]></string>
+    <string name="setting_max_age" introduced="6.7.4"><![CDATA[Hide button after N days from order date]]></string>
+    <string name="setting_max_age_help" introduced="6.7.4"><![CDATA[Cosmetic outer bound, not the legal window. The 14-day right runs from delivery, which the merchant assesses on review.]]></string>
+  </group>
   <group name="user">
     <string name="email" introduced="5.0.0"><![CDATA[Email]]></string>
     <string name="email_address" introduced="5.0.0"><![CDATA[Email Address]]></string>

@@ -28,8 +28,15 @@ $nav_items['customers']  = array(
     $lang['navigation']['nav_orders']   => '?_g=orders',
     $lang['navigation']['nav_transaction_logs'] => '?_g=orders&node=transactions',
     $lang['navigation']['nav_newsletters']  => '?_g=customers&node=email',
-    $lang['navigation']['nav_subscribers']  => '?_g=customers&node=subscribers'
+    $lang['navigation']['nav_subscribers']  => '?_g=customers&node=subscribers',
 );
+
+// Surface the withdrawal-request inbox only when the feature is enabled,
+// otherwise the nav entry leads to a section that won't accept submissions.
+$_withdrawal_mode = (string)$GLOBALS['config']->get('config', 'withdrawal_mode');
+if ($_withdrawal_mode !== '' && $_withdrawal_mode !== '0') {
+    $nav_items['customers'][$lang['withdrawal']['admin_section_title']] = '?_g=customers&node=withdrawals';
+}
 
 $nav_items['inventory']  = array(
     $lang['navigation']['nav_categories']  => array('address' => '?_g=categories', 'id' => 'nav_categories'),

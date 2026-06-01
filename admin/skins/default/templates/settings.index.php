@@ -225,6 +225,13 @@
             <option value="original"{if $CONFIG.image_upload_format=='original'} selected="selected"{/if}>{$LANG.settings.image_upload_format_original}</option>
             </select></span>
          </div>
+         <div><label for="withdrawal_mode">{$LANG.withdrawal.setting_mode}</label><span><select name="config[withdrawal_mode]" id="withdrawal_mode" class="textbox">
+            <option value="0"{if $CONFIG.withdrawal_mode=='0' || !$CONFIG.withdrawal_mode} selected="selected"{/if}>{$LANG.withdrawal.setting_mode_disabled}</option>
+            <option value="all"{if $CONFIG.withdrawal_mode=='all'} selected="selected"{/if}>{$LANG.withdrawal.setting_mode_all}</option>
+            <option value="eu"{if $CONFIG.withdrawal_mode=='eu'} selected="selected"{/if}>{$LANG.withdrawal.setting_mode_eu}</option>
+            </select></span>&nbsp;<small>{$LANG.withdrawal.setting_mode_help}</small>
+         </div>
+         <div><label for="withdrawal_max_age_days">{$LANG.withdrawal.setting_max_age}</label><span><input name="config[withdrawal_max_age_days]" id="withdrawal_max_age_days" type="number" min="1" max="365" class="textbox" value="{if $CONFIG.withdrawal_max_age_days}{$CONFIG.withdrawal_max_age_days}{else}90{/if}"></span>&nbsp;<small>{$LANG.withdrawal.setting_max_age_help}</small></div>
       </fieldset>
    </div>
    <div id="Layout" class="tab_content">

@@ -40,6 +40,9 @@
             {if $order.cancel}
             <a href="{$STORE_URL}/index.php?_a=vieworder&cancel={$order.cart_order_id}" class="button tiny alert expand nomarg" title="{$LANG.basket.cancel_order}">{$LANG.basket.cancel_order}</a>
             {/if}
+            {if $order.withdrawal_eligible}
+            <a href="{$order.withdrawal_url}" class="button tiny secondary expand thinmarg-bottom" title="{$LANG.withdrawal.button}">{$LANG.withdrawal.button}</a>
+            {/if}
 
          </td>
       </tr>
