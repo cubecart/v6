@@ -42,10 +42,13 @@ function download_parts($format = 'cubecart', $no_rows = '', $per_page = '')
     $no_pages = ceil($no_rows / $per_page);
     ## If there are no pages (less that per page) we need page 1 for an export
     $no_pages = ($no_pages) ? $no_pages : 1;
-    $html_out = null;
+    // Wrap in .pagination so the part links pick up the same pill styling
+    // used by the standard paginator (element.paginate.php).
+    $html_out = '<div class="pagination pagination-cell">';
     for ($i = 1; $i <= $no_pages; ++$i) {
-        $html_out .= '<a href="?_g=products&node=export&page='.$i.'&per_page='.$per_page.'&format='.$format.'">'.$i.'</a> ';
+        $html_out .= '<a href="?_g=products&node=export&page='.$i.'&per_page='.$per_page.'&format='.$format.'">'.$i.'</a>';
     }
+    $html_out .= '</div>';
     return $html_out;
 }
 

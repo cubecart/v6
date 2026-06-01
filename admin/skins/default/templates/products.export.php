@@ -28,7 +28,7 @@
 	  </thead>
 	  <tbody>
 	  {foreach from=$FORMATS item=format}
-	    <tr><td>{$format.name}</td><td style="text-align:center">{$format.parts}</td><td style="text-align:center"><a href="{$format.link}" target="_blank"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/link.png" alt=""></a></td></tr>
+	    <tr style="vertical-align:top"><td style="padding-top:6px">{$format.name}</td><td>{$format.parts}</td><td style="text-align:center;padding-top:6px"><a href="{$format.link}" target="_blank" class="button tiny" title="{$LANG.catalogue.export_url}"><i class="fa fa-link"></i></a></td></tr>
 	  {/foreach}
 	  </tbody> 
 	</table>
