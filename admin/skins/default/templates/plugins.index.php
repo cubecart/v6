@@ -77,6 +77,11 @@
                <i class="fa fa-picture-o"></i>
             </button>
             {/if}
+            {if $ext.folder_name}
+            <button type="button" class="ext-btn ext-btn-notes btn-ext-notes ext-btn-icon" title="{$LANG.settings.release_notes}" data-category="{$ext.category}" data-folder="{$ext.folder_name}" data-name="{$ext.name}">
+               <i class="fa fa-file-text-o"></i>
+            </button>
+            {/if}
             {if $ext.purchase_url}
             <a href="{$ext.purchase_url}" target="_blank" class="ext-btn ext-btn-buy{if $ext.is_installed} ext-btn-icon{/if}" title="{$LANG.module.ext_more_info|default:'More Info'}">
                <i class="fa fa-external-link"></i>{if !$ext.is_installed} {$LANG.module.ext_more_info|default:'More Info'}{/if}
@@ -107,7 +112,7 @@
                <a href="{$ext.edit_url}" class="ext-btn ext-btn-configure ext-btn-icon" title="{$LANG.common.configure}"><i class="fa fa-cog"></i></a>
                {/if}
                {if $ext.is_active_skin}
-               <button type="button" class="ext-btn ext-btn-disabled ext-btn-icon" disabled title="{$LANG.module.skin_in_use}">
+               <button type="button" class="ext-btn ext-btn-delete ext-btn-icon" disabled title="{$LANG.module.skin_in_use}">
                   <i class="fa fa-trash"></i>
                </button>
                {else}
@@ -144,6 +149,16 @@
          <span id="ext-gallery-counter"></span>
          <div id="ext-gallery-thumbs" class="ext-gallery-thumbs"></div>
       </div>
+   </div>
+</div>
+
+<div id="ext-notes-modal" class="ext-gallery-overlay">
+   <div class="ext-gallery-modal ext-notes-modal">
+      <div class="ext-gallery-header">
+         <h4 id="ext-notes-title"></h4>
+         <button type="button" class="ext-gallery-close" id="ext-notes-close"><i class="fa fa-times"></i></button>
+      </div>
+      <div class="ext-gallery-body ext-notes-body" id="ext-notes-body"></div>
    </div>
 </div>
 
@@ -431,6 +446,61 @@ document.addEventListener('DOMContentLoaded', function() {
       galleryIndex = $(this).data('index');
       updateGalleryImage();
       updateActiveThumbnail();
+   });
+
+   // Release notes modal
+   function escapeHtml(s) {
+      return String(s == null ? '' : s)
+         .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+         .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+   }
+   function closeNotes() { $('#ext-notes-modal').removeClass('show'); }
+   function renderNotes(name, payload) {
+      var $body = $('#ext-notes-body').empty();
+      $('#ext-notes-title').text(name);
+      var notes = (payload && payload.release_notes) || [];
+      if (!notes.length) {
+         $body.append('<p class="ext-notes-empty">' + escapeHtml(payload && payload.message ? payload.message : 'None') + '</p>');
+      } else {
+         var html = '';
+         for (var i = 0; i < notes.length; i++) {
+            var n = notes[i];
+            html += '<div class="ext-notes-entry">'
+                 +   '<div class="ext-notes-entry-head">'
+                 +     '<strong>' + escapeHtml(n.version) + '</strong>'
+                 +     '<span class="ext-notes-date">' + escapeHtml((n.updated_at || n.created_at || '').substring(0,10)) + '</span>'
+                 +   '</div>'
+                 +   '<div class="ext-notes-entry-body">' + escapeHtml(n.notes).replace(/\n/g, '<br>') + '</div>'
+                 + '</div>';
+         }
+         $body.html(html);
+      }
+      $('#ext-notes-modal').addClass('show');
+   }
+   $(document).on('click', '.btn-ext-notes', function() {
+      var $btn = $(this);
+      var name = $btn.data('name');
+      $('#ext-notes-title').text(name);
+      $('#ext-notes-body').html('<p class="ext-notes-empty"><i class="fa fa-spinner fa-spin"></i></p>');
+      $('#ext-notes-modal').addClass('show');
+      $.ajax({
+         url: ajaxUrl,
+         type: 'POST',
+         dataType: 'json',
+         headers: { 'X-Requested-With': 'XMLHttpRequest' },
+         data: {
+            token: csrfToken,
+            ajax_action: 'release_notes',
+            category: $btn.data('category'),
+            folder: $btn.data('folder')
+         },
+         success: function(resp) { renderNotes(name, resp); },
+         error: function() { renderNotes(name, { release_notes: [], message: 'Could not load release notes.' }); }
+      });
+   });
+   $('#ext-notes-close').on('click', closeNotes);
+   $('#ext-notes-modal').on('click', function(e) {
+      if ($(e.target).is('#ext-notes-modal')) closeNotes();
    });
 
    // Enable/disable toggle

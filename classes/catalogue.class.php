@@ -1957,8 +1957,18 @@ class Catalogue
      */
     public function productCount($cat_id, $inc_children = true)
     {
-        $products = $GLOBALS['db']->select('CubeCart_category_index', array('id'), array('cat_id' => $cat_id));
-        $count  = ($products) ? count($products) : 0;
+        // Match the storefront category listing: only active products, and when
+        // the store hides OOS only items with stock (or untracked stock).
+        $prefix = $GLOBALS['config']->get('config', 'dbprefix');
+        $sql = "SELECT COUNT(*) AS c"
+             . " FROM `".$prefix."CubeCart_category_index` AS ci"
+             . " INNER JOIN `".$prefix."CubeCart_inventory` AS i ON i.product_id = ci.product_id"
+             . " WHERE ci.cat_id = ".(int)$cat_id." AND i.status = 1";
+        if ($GLOBALS['config']->get('config', 'hide_out_of_stock') && !Admin::getInstance()->is()) {
+            $sql .= " AND ((i.stock_level > 0 AND i.use_stock_level = 1) OR i.use_stock_level = 0)";
+        }
+        $row = $GLOBALS['db']->query($sql);
+        $count = ($row && isset($row[0]['c'])) ? (int)$row[0]['c'] : 0;
         if ($inc_children) {
             $children = $GLOBALS['db']->select('CubeCart_category', array('cat_id'), array('cat_parent_id' => (int)$cat_id));
             if ($children) {

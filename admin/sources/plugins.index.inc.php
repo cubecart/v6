@@ -248,6 +248,32 @@ if ($is_ajax && $_POST['ajax_action'] === 'toggle_module') {
     _ajax_respond(array('success' => true, 'enabled' => $enabled));
 }
 
+## AJAX: Fetch release notes for an extension from the marketplace API
+if ($is_ajax && $_POST['ajax_action'] === 'release_notes') {
+    $category = isset($_POST['category']) ? trim($_POST['category']) : '';
+    $folder = isset($_POST['folder']) ? trim($_POST['folder']) : '';
+    if (!preg_match('/^[a-z0-9_\-]+$/i', $category) || !preg_match('/^[a-z0-9_\-]+$/i', $folder)) {
+        _ajax_respond(array('success' => false, 'message' => 'Invalid extension reference.'));
+    }
+    $path = '/api/extension/release_notes/'.$category.'/'.$folder;
+    $request = new Request($extensions_url, $path, 443, false, true, 15);
+    $request->setMethod('get');
+    $request->setSSL();
+    $request->skiplog(true);
+    $json = $request->send();
+    if (!$json) {
+        $json = file_get_contents('https://'.$extensions_url.$path);
+    }
+    if (!$json) {
+        _ajax_respond(array('success' => false, 'message' => 'Could not reach '.$extensions_url.'.'));
+    }
+    $data = json_decode($json, true);
+    if (!is_array($data)) {
+        _ajax_respond(array('success' => false, 'message' => 'Unexpected response from '.$extensions_url.'.'));
+    }
+    _ajax_respond($data);
+}
+
 ## Non-AJAX legacy POST handlers
 
 // Delete via GET (legacy)
@@ -497,6 +523,9 @@ foreach ($api_extensions as $ext) {
         'description' => $display_desc,
         'latest_version' => $latest['version'],
         'download_url' => $latest['download'],
+        // Folder name as used by the release-notes API path; derived from the
+        // download URL: /files/{category}/{folder_name}/{folder_name}-{ver}.zip
+        'folder_name' => !empty($latest['download']) ? basename(dirname($latest['download'])) : '',
         'versions' => array_reverse($ext['versions']),
         'images' => !empty($ext['images']) ? $ext['images'] : array(),
         'recommended' => !empty($ext['recommended']),
@@ -541,6 +570,7 @@ foreach ($installed as $key => $inst) {
         'description' => !empty($inst['description']) ? $inst['description'] : '',
         'latest_version' => $inst['version'],
         'download_url' => '',
+        'folder_name' => '',
         'versions' => array(),
         'images' => array(),
         'recommended' => false,

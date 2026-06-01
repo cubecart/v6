@@ -46,6 +46,8 @@
 .ext-btn-install { background:#5cb85c; color:#fff; }
 .ext-btn-upgrade { background:#f0ad4e; color:#fff; }
 .ext-btn-delete { background:#d9534f; color:#fff; }
+.ext-btn-delete:disabled { opacity:0.55; cursor:not-allowed; }
+.ext-btn-delete:disabled:hover { opacity:0.55; }
 .ext-btn-downgrade { background:#e67e22; color:#fff; }
 .ext-btn-configure { background:#0072bc; color:#fff; }
 .ext-btn-disabled { background:#ccc; color:#666; cursor:not-allowed; }
@@ -65,6 +67,8 @@
 .ext-empty { text-align:center; padding:40px; color:#999; font-size:14px; }
 .ext-count { color:#888; font-size:13px; }
 .ext-btn-gallery { background:#6c5ce7; color:#fff; }
+.ext-btn-notes { background:#f7d046; color:#e8731c; }
+.ext-btn-notes:hover { background:#f4c41a; }
 .ext-recommended { color:#e8a317 !important; font-size:13px; cursor:default; }
 
 /* Gallery modal */
@@ -88,6 +92,16 @@
 .ext-gallery-thumb { width:48px; height:48px; object-fit:cover; border-radius:4px; cursor:pointer; border:2px solid transparent; opacity:0.6; transition:opacity .2s, border-color .2s; }
 .ext-gallery-thumb:hover { opacity:0.9; }
 .ext-gallery-thumb.active { border-color:#0072bc; opacity:1; }
+
+.ext-notes-modal { max-width:680px; }
+.ext-notes-body { display:block; align-items:stretch; padding:16px 20px; overflow:auto; min-height:120px; max-height:70vh; }
+.ext-notes-empty { text-align:center; color:#888; padding:24px 0; margin:0; }
+.ext-notes-entry { padding:12px 0; border-bottom:1px solid #eee; }
+.ext-notes-entry:last-child { border-bottom:none; }
+.ext-notes-entry-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
+.ext-notes-entry-head strong { font-size:14px; color:#0072bc; }
+.ext-notes-date { font-size:12px; color:#888; }
+.ext-notes-entry-body { font-size:13px; line-height:1.5; color:#333; white-space:pre-wrap; }
 
 @media (prefers-color-scheme: dark) {
    .ext-search { background:var(--input-bg); border-color:var(--input-border); color:var(--text); }
@@ -134,6 +148,8 @@
    .ext-toast-success { background:#2d7a2d; }
    .ext-toast-error { background:#a83232; }
    .ext-btn-gallery { background:#5a4bd1; }
+   .ext-btn-notes { background:#e8b800; color:#ff7a18; }
+   .ext-btn-notes:hover { background:#cf9f00; }
    .ext-gallery-modal { background:var(--panel); }
    .ext-gallery-header { border-color:var(--border); }
    .ext-gallery-header h4 { color:var(--text); }
@@ -142,5 +158,10 @@
    .ext-gallery-footer { border-color:var(--border); }
    .ext-gallery-footer span { color:var(--text-muted); }
    .ext-gallery-thumb.active { border-color:var(--primary-accent); }
+   .ext-notes-empty { color:var(--text-muted); }
+   .ext-notes-entry { border-color:var(--border); }
+   .ext-notes-entry-head strong { color:var(--primary-accent); }
+   .ext-notes-date { color:var(--text-muted); }
+   .ext-notes-entry-body { color:var(--text); }
 
 }
