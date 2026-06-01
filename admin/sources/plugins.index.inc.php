@@ -159,20 +159,29 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
     $GLOBALS['session']->delete('version_check');
     $GLOBALS['session']->delete('extension_update_check');
 
-    // Build configure URL from the installed extension's config.xml
+    // Build configure URL from the installed extension's config.xml. We also
+    // capture the folder name here so a downgrade can flip autoupdate off —
+    // otherwise the next dashboard cycle would re-upgrade and undo the rollback.
     $configure_url = '';
+    $installed_folder = '';
     if (!empty($install_dir)) {
+        $installed_folder = basename($install_dir);
         $config_xml_path = CC_ROOT_DIR.$install_dir.'/config.xml';
         if (file_exists($config_xml_path)) {
             try {
                 $inst_xml = new SimpleXMLElement(file_get_contents($config_xml_path));
                 $inst_type = (string)$inst_xml->info->type;
                 if ($inst_type !== 'skin') {
-                    $inst_folder = basename($install_dir);
-                    $configure_url = '?_g=plugins&type='.$inst_type.'&module='.$inst_folder;
+                    $configure_url = '?_g=plugins&type='.$inst_type.'&module='.$installed_folder;
                 }
             } catch (Exception $e) {}
         }
+    }
+
+    // Downgrade → opt this extension out of auto-update so the dashboard's
+    // next pass doesn't immediately roll it forward again.
+    if (!empty($_POST['is_downgrade']) && !empty($installed_folder)) {
+        $GLOBALS['config']->set($installed_folder, 'autoupdate_disabled', '1', true);
     }
 
     cc_track_event($ext_is_upgrade ? 'cubecart_extension_upgrade' : 'cubecart_extension_install', array(
@@ -246,6 +255,22 @@ if ($is_ajax && $_POST['ajax_action'] === 'toggle_module') {
     $GLOBALS['config']->set($ext_module, 'status', $enabled, true);
 
     _ajax_respond(array('success' => true, 'enabled' => $enabled));
+}
+
+## AJAX: Opt an extension in/out of dashboard auto-update
+if ($is_ajax && $_POST['ajax_action'] === 'toggle_autoupdate') {
+    $ext_module = isset($_POST['ext_module']) ? basename($_POST['ext_module']) : '';
+    $disabled = !empty($_POST['disabled']) ? 1 : 0;
+    if (empty($ext_module) || !preg_match('/^[A-Za-z0-9_\-]+$/', $ext_module)) {
+        _ajax_respond(array('success' => false, 'message' => 'Invalid module.'));
+    }
+    if ($disabled) {
+        $GLOBALS['config']->set($ext_module, 'autoupdate_disabled', '1', true);
+    } else {
+        // Clear the flag; persist as empty so existing rows are updated rather than left stale
+        $GLOBALS['config']->set($ext_module, 'autoupdate_disabled', '', true);
+    }
+    _ajax_respond(array('success' => true, 'disabled' => $disabled));
 }
 
 ## AJAX: Fetch release notes for an extension from the marketplace API
@@ -466,6 +491,7 @@ foreach ($api_extensions as $ext) {
     $is_enabled = false;
     $edit_url = '';
 
+    $autoupdate_disabled = false;
     foreach ($installed as $key => $inst) {
         $inst_name_lower = strtolower($inst['name']);
         if ($inst_name_lower === $ext_name_lower || $key === strtolower(str_replace(array(' ', '-'), '_', $ext['name']))) {
@@ -476,6 +502,9 @@ foreach ($api_extensions as $ext) {
             $configured = !empty($inst['configured']);
             $is_enabled = !empty($inst['config']['status']) || ($inst['dir_type'] === 'skins' && in_array($inst['basename'], $active_skins));
             $edit_url = !empty($inst['edit_url']) ? $inst['edit_url'] : '';
+            // Read from CubeCart_config — $inst['config'] only carries the
+            // CubeCart_modules columns (status/position), not the full config blob.
+            $autoupdate_disabled = (string)$GLOBALS['config']->get($installed_basename, 'autoupdate_disabled') === '1';
             if (version_compare($latest['version'], $installed_version, '>')) {
                 $has_upgrade = true;
             }
@@ -527,6 +556,14 @@ foreach ($api_extensions as $ext) {
         // download URL: /files/{category}/{folder_name}/{folder_name}-{ver}.zip
         'folder_name' => !empty($latest['download']) ? basename(dirname($latest['download'])) : '',
         'versions' => array_reverse($ext['versions']),
+        // Pre-computed so the template doesn't have to scan $versions itself
+        'current_version' => $is_installed ? $installed_version : $latest['version'],
+        'current_url' => $is_installed ? (function() use ($ext, $installed_version) {
+            foreach ($ext['versions'] as $v) {
+                if ($v['version'] === $installed_version) return $v['download'];
+            }
+            return '';
+        })() : $latest['download'],
         'images' => !empty($ext['images']) ? $ext['images'] : array(),
         'recommended' => !empty($ext['recommended']),
         'is_installed' => $is_installed,
@@ -536,6 +573,7 @@ foreach ($api_extensions as $ext) {
         'has_upgrade' => $has_upgrade,
         'configured' => $configured,
         'is_enabled' => $is_enabled,
+        'autoupdate_disabled' => $autoupdate_disabled,
         'edit_url' => $edit_url,
         'purchase_url' => !empty($ext['purchase_url']) ? $ext['purchase_url'] : '',
         'price' => !empty($ext['price']) ? $ext['price'] : '',
@@ -581,6 +619,9 @@ foreach ($installed as $key => $inst) {
         'has_upgrade' => false,
         'configured' => !empty($inst['configured']),
         'is_enabled' => !empty($inst['config']['status']) || ($inst['dir_type'] === 'skins' && in_array($inst['basename'], $active_skins)),
+        'autoupdate_disabled' => ((string)$GLOBALS['config']->get($inst['basename'], 'autoupdate_disabled') === '1'),
+        'current_version' => $inst['version'],
+        'current_url' => '',
         'edit_url' => !empty($inst['edit_url']) ? $inst['edit_url'] : '',
         'purchase_url' => '',
         'price' => '',

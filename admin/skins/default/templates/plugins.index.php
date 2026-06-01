@@ -34,12 +34,28 @@
       <div class="ext-card{if $ext.has_upgrade} ext-card-has-upgrade{elseif $ext.is_enabled} ext-card-installed ext-card-enabled{elseif $ext.is_installed} ext-card-installed ext-card-disabled{/if}" data-category="{$ext.category}" data-name="{$ext.name|lower}" data-type="{$ext.type}" data-installed="{if $ext.is_installed}1{else}0{/if}" data-installed-version="{$ext.installed_version}" data-installed-basename="{$ext.installed_basename}">
          <div class="ext-card-header">
             <h4 class="ext-card-name">{if $ext.recommended}<i class="fa fa-star ext-recommended" title="{$LANG.common.recommended|default:'Recommended'}"></i> {/if}{$ext.name}</h4>
-            {if count($ext.versions) > 1}
-            <select class="ext-version-select" data-card-version>
-               {foreach from=$ext.versions item=ver}
-               <option value="{$ver.download}"{if $ext.is_installed && $ver.version == $ext.installed_version} selected{elseif !$ext.is_installed && $ver.version == $ext.latest_version} selected{/if}>{$ver.version}</option>
-               {/foreach}
-            </select>
+            {if count($ext.versions) > 1 || $ext.is_installed}
+            <div class="ext-version-dropdown" data-card-version data-value="{$ext.current_url}">
+               <button type="button" class="ext-version-trigger">
+                  <span class="ext-version-trigger-label">{if $ext.current_version && $ext.current_version != 'n/a'}v{$ext.current_version}{else}n/a{/if}</span>
+                  <i class="fa fa-caret-down"></i>
+               </button>
+               <div class="ext-version-panel">
+                  {if count($ext.versions) > 1}
+                  <div class="ext-version-options">
+                     {foreach from=$ext.versions item=ver}
+                     <button type="button" class="ext-version-option{if $ver.version == $ext.current_version} selected{/if}" data-value="{$ver.download}" data-version="{$ver.version}">v{$ver.version}</button>
+                     {/foreach}
+                  </div>
+                  {/if}
+                  {if $ext.is_installed}
+                  <label class="ext-version-autoupdate">
+                     <input type="checkbox" class="btn-ext-autoupdate" data-module="{$ext.installed_basename}"{if !$ext.autoupdate_disabled} checked{/if}>
+                     <span>{$LANG.module.auto_update}</span>
+                  </label>
+                  {/if}
+               </div>
+            </div>
             {else}
             <span class="ext-card-version">{if $ext.latest_version && $ext.latest_version != 'n/a'}v{$ext.latest_version}{else}n/a{/if}</span>
             {/if}
@@ -274,23 +290,48 @@ document.addEventListener('DOMContentLoaded', function() {
    // Restore state on load
    restoreFilterState();
 
+   // Custom version dropdown: open / close
+   $(document).on('click', '.ext-version-trigger', function(e) {
+      e.stopPropagation();
+      var $dd = $(this).closest('.ext-version-dropdown');
+      $('.ext-version-dropdown').not($dd).removeClass('open');
+      $dd.toggleClass('open');
+   });
+   $(document).on('click', '.ext-version-panel', function(e) { e.stopPropagation(); });
+   $(document).on('click', function() { $('.ext-version-dropdown.open').removeClass('open'); });
+
+   // Custom version dropdown: option click → update state + fire change event
+   $(document).on('click', '.ext-version-option', function(e) {
+      e.stopPropagation();
+      var $opt = $(this);
+      var $dd = $opt.closest('.ext-version-dropdown');
+      var ver = String($opt.data('version'));
+      var url = String($opt.data('value'));
+      $dd.attr('data-value', url);
+      $dd.find('.ext-version-trigger-label').text('v' + ver);
+      $dd.find('.ext-version-option').removeClass('selected');
+      $opt.addClass('selected');
+      $dd.removeClass('open');
+      $dd.trigger('card-version:change');
+   });
+
    // Version selector change — update action button dynamically
-   $(document).on('change', '[data-card-version]', function() {
+   $(document).on('card-version:change', '[data-card-version]', function() {
       var $select = $(this);
       var $card = $select.closest('.ext-card');
       var $btn = $card.find('.btn-ext-action');
       if (!$btn.length) return;
 
-      var selectedVersion = $select.find('option:selected').text().trim();
+      var selectedVersion = ($select.find('.ext-version-trigger-label').text() || '').replace(/^v/, '').trim();
       var installedVersion = String($card.attr('data-installed-version') || '');
       var isInstalled = $card.attr('data-installed') == '1';
 
       if (!isInstalled) return;
 
-      // Find the latest available version (first option, since versions are newest-first)
-      var $firstOpt = $select.find('option:first');
-      var latestVersion = $firstOpt.text().trim();
-      var latestUrl = $firstOpt.val();
+      // Latest = first option (versions are newest-first)
+      var $firstOpt = $select.find('.ext-version-option').first();
+      var latestVersion = String($firstOpt.data('version') || '');
+      var latestUrl = String($firstOpt.data('value') || '');
 
       $btn.prop('disabled', false).removeData('latest-url');
       if (selectedVersion === installedVersion) {
@@ -336,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function() {
       var $card = $btn.closest('.ext-card');
       var $versionSelect = $card.find('[data-card-version]');
       var latestUrl = $btn.data('latest-url');
-      var url = latestUrl ? latestUrl : ($versionSelect.length ? $versionSelect.val() : $btn.data('url'));
+      var url = latestUrl ? latestUrl : ($versionSelect.length ? $versionSelect.attr('data-value') : $btn.data('url'));
       var name = $btn.data('name');
       var type = $btn.data('type');
 
@@ -357,7 +398,8 @@ document.addEventListener('DOMContentLoaded', function() {
             ajax_action: 'install_extension',
             download_url: url,
             ext_name: name,
-            ext_type: type
+            ext_type: type,
+            is_downgrade: isDowngrade ? 1 : 0
          },
          success: function(resp) {
             if (resp.success) {
@@ -507,6 +549,37 @@ document.addEventListener('DOMContentLoaded', function() {
    $('#ext-notes-close').on('click', closeNotes);
    $('#ext-notes-modal').on('click', function(e) {
       if ($(e.target).is('#ext-notes-modal')) closeNotes();
+   });
+
+   // Auto-update opt-out toggle (inside the version dropdown)
+   $(document).on('change', '.btn-ext-autoupdate', function() {
+      var $cb = $(this);
+      var module = $cb.data('module');
+      var disabled = $cb.is(':checked') ? 0 : 1;
+      $cb.prop('disabled', true);
+      $.ajax({
+         url: ajaxUrl,
+         type: 'POST',
+         dataType: 'json',
+         headers: { 'X-Requested-With': 'XMLHttpRequest' },
+         data: {
+            token: csrfToken,
+            ajax_action: 'toggle_autoupdate',
+            ext_module: module,
+            disabled: disabled
+         },
+         success: function(resp) {
+            if (!resp.success) {
+               showToast(resp.message || 'Update failed.', 'error');
+               $cb.prop('checked', !$cb.is(':checked'));
+            }
+         },
+         error: function() {
+            showToast('Network error.', 'error');
+            $cb.prop('checked', !$cb.is(':checked'));
+         },
+         complete: function() { $cb.prop('disabled', false); }
+      });
    });
 
    // Enable/disable toggle

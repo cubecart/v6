@@ -1844,6 +1844,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="position" introduced="5.2.0"><![CDATA[Priority]]></string>
     <string name="incompatible" introduced="6.7.0"><![CDATA[Incompatible]]></string>
     <string name="skin_in_use" introduced="6.7.0"><![CDATA[This skin is currently in use and cannot be deleted]]></string>
+    <string name="auto_update" introduced="6.7.4"><![CDATA[Auto-update]]></string>
+    <string name="extensions_updated_desc" introduced="6.7.4"><![CDATA[The following extensions were updated:]]></string>
   </group>
   <group name="navigation">
     <string name="acp_home" introduced="6.5.9"><![CDATA[ACP Home]]></string>

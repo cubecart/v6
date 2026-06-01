@@ -141,7 +141,52 @@ if (!$GLOBALS['session']->has('version_check') && $request = new Request('versio
     $GLOBALS['session']->set('version_check', true);
 }
 
-## Check for extension updates
+## Check for extension updates — auto-install unless the admin has opted that extension out
+if (!function_exists('cc_dashboard_auto_install_extension')) {
+    /**
+     * Download an extension zip from extensions.cubecart.com and extract it in place.
+     * Mirrors the install_extension AJAX handler in plugins.index.inc.php but tuned
+     * for non-interactive use: returns true/false instead of emitting JSON. Skin
+     * auto-updates aren't reachable here (the dashboard only enumerates modules/*).
+     */
+    function cc_dashboard_auto_install_extension($download_url, $ext_type) {
+        if (empty($download_url) || !filter_var($download_url, FILTER_VALIDATE_URL)) return false;
+        $parsed = parse_url($download_url);
+        if (!isset($parsed['host']) || $parsed['host'] !== 'extensions.cubecart.com') return false;
+        if ($ext_type === 'skin') {
+            $destination = CC_ROOT_DIR;
+        } elseif (!empty($ext_type) && preg_match('/^[a-z0-9_]+$/i', $ext_type)) {
+            $destination = CC_ROOT_DIR.'/modules/'.$ext_type;
+        } else {
+            $destination = CC_ROOT_DIR.'/modules/plugins';
+        }
+        if (!is_dir($destination) || !is_writable($destination)) return false;
+        $tmp_path = CC_BACKUP_DIR.basename($download_url);
+        $req = new Request('extensions.cubecart.com', $parsed['path'], 443, false, true, 30);
+        $req->setMethod('get'); $req->setSSL(); $req->skiplog(true);
+        $data = $req->send();
+        if (!$data) $data = @file_get_contents($download_url);
+        if (!$data) return false;
+        $fp = @fopen($tmp_path, 'w');
+        if (!$fp) return false;
+        fwrite($fp, $data); fclose($fp);
+        $zip = new ZipArchive();
+        if ($zip->open($tmp_path) !== true) { @unlink($tmp_path); return false; }
+        // Reject the zip if it would overwrite a write-protected file (matches install_extension)
+        for ($i = 0; $i < $zip->numFiles; $i++) {
+            $file = $zip->statIndex($i);
+            $root_path = $destination.'/'.$file['name'];
+            if (file_exists($root_path) && !is_writable($root_path)) {
+                $zip->close(); @unlink($tmp_path); return false;
+            }
+        }
+        $ok = $zip->extractTo($destination);
+        $zip->close();
+        @unlink($tmp_path);
+        return (bool)$ok;
+    }
+}
+
 if (!$GLOBALS['session']->has('extension_update_check')) {
     $ext_request = new Request('extensions.cubecart.com', '/api/extensions', 443, false, true, 15);
     $ext_request->setMethod('get');
@@ -165,35 +210,59 @@ if (!$GLOBALS['session']->has('extension_update_check')) {
                     }
                     if (is_object($ext_xml)) {
                         $ext_bn = basename(dirname($ext_mp));
+                        $ext_type_dir = basename(dirname(dirname($ext_mp))); // modules/<type>/<bn>/config.xml
                         $ext_installed[$ext_bn] = array(
                             'name' => str_replace('_', ' ', (string)$ext_xml->info->name),
                             'version' => (string)$ext_xml->info->version,
+                            'basename' => $ext_bn,
+                            'type' => $ext_type_dir,
                         );
                         unset($ext_xml);
                     }
                 }
             }
 
-            // Compare installed versions against API
-            $ext_updates = array();
+            // Compare installed versions against API; auto-install when not opted out
+            $ext_auto_installed = array();   // successfully auto-updated
+            $ext_auto_failed   = array();    // tried but failed
+            $ext_skipped       = array();    // opted out; needs manual update
             foreach ($ext_data['extensions'] as $ext_api) {
                 $ext_latest = end($ext_api['versions']);
                 $ext_api_name_lower = strtolower($ext_api['name']);
                 foreach ($ext_installed as $ext_key => $ext_inst) {
                     $ext_inst_name_lower = strtolower($ext_inst['name']);
                     if ($ext_inst_name_lower === $ext_api_name_lower || $ext_key === strtolower(str_replace(array(' ', '-'), '_', $ext_api['name']))) {
-                        if (version_compare($ext_latest['version'], $ext_inst['version'], '>')) {
-                            $ext_updates[] = $ext_inst['name'].' ('.$ext_inst['version'].' &rarr; '.$ext_latest['version'].')';
+                        if (!version_compare($ext_latest['version'], $ext_inst['version'], '>')) break;
+
+                        $label = $ext_inst['name'].' ('.$ext_inst['version'].' &rarr; '.$ext_latest['version'].')';
+                        $opt_out = (string)$GLOBALS['config']->get($ext_inst['basename'], 'autoupdate_disabled') === '1';
+                        if ($opt_out) {
+                            $ext_skipped[] = $label;
+                            break;
+                        }
+                        if (cc_dashboard_auto_install_extension($ext_latest['download'], $ext_api['type'])) {
+                            $ext_auto_installed[] = $label;
+                        } else {
+                            $ext_auto_failed[] = $label;
                         }
                         break;
                     }
                 }
             }
 
-            if (!empty($ext_updates)) {
-                $ext_msg = $lang['module']['extensions_available_desc'].' ';
-                $ext_msg .= implode(', ', $ext_updates).'. ';
-                $ext_msg .= '<a href="?_g=plugins">'.$lang['dashboard']['title_extension_updates'].'</a>';
+            if ($ext_auto_installed) {
+                $GLOBALS['session']->delete('version_check');
+                $GLOBALS['main']->successMessage($lang['module']['extensions_updated_desc'].' '.implode(', ', $ext_auto_installed).'.');
+            }
+            $tail_msgs = array();
+            if ($ext_auto_failed) {
+                $tail_msgs[] = implode(', ', $ext_auto_failed);
+            }
+            if ($ext_skipped) {
+                $tail_msgs[] = implode(', ', $ext_skipped);
+            }
+            if ($tail_msgs) {
+                $ext_msg = $lang['module']['extensions_available_desc'].' '.implode('; ', $tail_msgs).'. <a href="?_g=plugins">'.$lang['dashboard']['title_extension_updates'].'</a>';
                 $GLOBALS['main']->errorMessage($ext_msg);
             }
         }

@@ -13,7 +13,6 @@
 .ext-card-header { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:8px; }
 .ext-card-name { font-size:14px; font-weight:700; color:#333; margin:0; line-height:1.3; flex:1 1 auto; min-width:0; }
 .ext-card-version { font-size:11px; color:#888; white-space:nowrap; }
-.ext-version-select { font-size:11px; padding:2px 4px; border:1px solid #ccc; border-radius:3px; background:#fff; color:#333; max-width:160px; }
 .ext-card-desc { font-size:12px; color:#666; margin:0 0 8px; line-height:1.4; }
 .ext-card-meta { display:flex; gap:8px; margin-bottom:0; padding-top:10px; flex-wrap:wrap; margin-top:auto; }
 .ext-badge { display:inline-block; padding:2px 8px; border-radius:3px; font-size:11px; font-weight:600; text-transform:uppercase; }
@@ -69,6 +68,20 @@
 .ext-btn-gallery { background:#6c5ce7; color:#fff; }
 .ext-btn-notes { background:#f7d046; color:#e8731c; }
 .ext-btn-notes:hover { background:#f4c41a; }
+.ext-version-dropdown { position:relative; display:inline-block; }
+.ext-version-trigger { font-size:11px; padding:2px 6px; border:1px solid #ccc; border-radius:3px; background:#fff; color:#333; max-width:160px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; font-family:inherit; }
+.ext-version-trigger:hover { border-color:#999; }
+.ext-version-trigger .fa { font-size:10px; color:#888; }
+.ext-version-panel { display:none; position:absolute; top:calc(100% + 4px); right:0; background:#fff; border:1px solid #ddd; border-radius:4px; box-shadow:0 2px 8px rgba(0,0,0,0.15); padding:4px 0; min-width:160px; z-index:10; }
+.ext-version-dropdown.open .ext-version-panel { display:block; }
+.ext-version-options { display:flex; flex-direction:column; max-height:200px; overflow-y:auto; }
+.ext-version-option { background:none; border:none; text-align:left; padding:5px 12px; font-size:12px; color:#333; cursor:pointer; font-family:inherit; }
+.ext-version-option:hover { background:#f5f5f5; }
+.ext-version-option.selected { background:#e8f4ff; color:#0072bc; font-weight:600; }
+.ext-version-autoupdate { display:flex; align-items:center; gap:8px; padding:6px 12px; cursor:pointer; font-size:12px; color:#333; border-top:1px solid #eee; margin-top:2px; }
+.ext-version-autoupdate:hover { background:#f5f5f5; }
+.ext-version-autoupdate input[type="checkbox"] { margin:0; cursor:pointer; }
+.ext-version-options + .ext-version-autoupdate { /* divider already supplied by border-top */ }
 .ext-recommended { color:#e8a317 !important; font-size:13px; cursor:default; }
 
 /* Gallery modal */
@@ -117,7 +130,6 @@
    .ext-card-has-upgrade { background:rgba(240,193,78,0.1); border-color:rgba(240,193,78,0.3); }
    .ext-card-name { color:var(--text); }
    .ext-card-version { color:var(--text-muted); }
-   .ext-version-select { background:var(--input-bg); border-color:var(--input-border); color:var(--text); }
    .ext-card-desc { color:var(--text-muted); }
    .ext-badge-type { background:rgba(107,186,208,0.15); color:var(--primary-accent); }
    .ext-badge-cat { background:var(--panel-muted); color:var(--text-muted); }
@@ -150,6 +162,14 @@
    .ext-btn-gallery { background:#5a4bd1; }
    .ext-btn-notes { background:#e8b800; color:#ff7a18; }
    .ext-btn-notes:hover { background:#cf9f00; }
+   .ext-version-trigger { background:var(--input-bg); border-color:var(--input-border); color:var(--text); }
+   .ext-version-trigger .fa { color:var(--text-muted); }
+   .ext-version-panel { background:var(--panel); border-color:var(--border); }
+   .ext-version-option { color:var(--text); }
+   .ext-version-option:hover { background:var(--hover-bg, rgba(255,255,255,0.05)); }
+   .ext-version-option.selected { background:rgba(0,114,188,0.18); color:var(--primary-accent); }
+   .ext-version-autoupdate { color:var(--text); border-color:var(--border); }
+   .ext-version-autoupdate:hover { background:var(--hover-bg, rgba(255,255,255,0.05)); }
    .ext-gallery-modal { background:var(--panel); }
    .ext-gallery-header { border-color:var(--border); }
    .ext-gallery-header h4 { color:var(--text); }
