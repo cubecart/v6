@@ -155,10 +155,10 @@
 <div id="ext-notes-modal" class="ext-gallery-overlay">
    <div class="ext-gallery-modal ext-notes-modal">
       <div class="ext-gallery-header">
-         <h4 id="ext-notes-title"></h4>
+         <h4 id="ext-notes-title" data-prefix="{$LANG.settings.release_notes}"></h4>
          <button type="button" class="ext-gallery-close" id="ext-notes-close"><i class="fa fa-times"></i></button>
       </div>
-      <div class="ext-gallery-body ext-notes-body" id="ext-notes-body"></div>
+      <div class="ext-gallery-body ext-notes-body" id="ext-notes-body" data-empty-label="{$LANG.form.none}"></div>
    </div>
 </div>
 
@@ -455,12 +455,18 @@ document.addEventListener('DOMContentLoaded', function() {
          .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
    }
    function closeNotes() { $('#ext-notes-modal').removeClass('show'); }
+   function setNotesTitle(name) {
+      var $t = $('#ext-notes-title');
+      var prefix = $t.data('prefix') || 'Release Notes';
+      $t.text(prefix + ' - ' + name);
+   }
    function renderNotes(name, payload) {
       var $body = $('#ext-notes-body').empty();
-      $('#ext-notes-title').text(name);
+      setNotesTitle(name);
       var notes = (payload && payload.release_notes) || [];
       if (!notes.length) {
-         $body.append('<p class="ext-notes-empty">' + escapeHtml(payload && payload.message ? payload.message : 'None') + '</p>');
+         var emptyLabel = (payload && payload.message) ? payload.message : ($body.data('empty-label') || 'None');
+         $body.append('<p class="ext-notes-empty">' + escapeHtml(emptyLabel) + '</p>');
       } else {
          var html = '';
          for (var i = 0; i < notes.length; i++) {
@@ -480,7 +486,7 @@ document.addEventListener('DOMContentLoaded', function() {
    $(document).on('click', '.btn-ext-notes', function() {
       var $btn = $(this);
       var name = $btn.data('name');
-      $('#ext-notes-title').text(name);
+      setNotesTitle(name);
       $('#ext-notes-body').html('<p class="ext-notes-empty"><i class="fa fa-spinner fa-spin"></i></p>');
       $('#ext-notes-modal').addClass('show');
       $.ajax({
