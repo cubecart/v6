@@ -344,8 +344,10 @@ class Tax
                     );
                 }
             }
-            // Get tariffs
-            if($tariffs = $GLOBALS['db']->select('CubeCart_tariff', false, array('destination' => $GLOBALS['cart']->basket['delivery_address']['country_iso']))) {
+            // Get tariffs — skip when delivery address isn't yet populated (early
+            // basket reads can hit this before checkout has resolved an address).
+            $delivery_iso = $GLOBALS['cart']->basket['delivery_address']['country_iso'] ?? null;
+            if(!empty($delivery_iso) && $tariffs = $GLOBALS['db']->select('CubeCart_tariff', false, array('destination' => $delivery_iso))) {
                 foreach($tariffs as $tariff) {
                     $this->_tariff_table[$tariff['id']] = array(
                         'goods'  => 1,
@@ -531,7 +533,7 @@ class Tax
             }
         }
         if (is_array($this->_tax_table) && !empty($this->_tax_table)) {
-            $tax_id = $amount = $percent = 0;
+            $tax_id = $amount = $amount_raw = $percent = 0;
             $tax_name = '';
             foreach ($this->_tax_table as $tax_id => $tax) {
                 if ($tax[$type] && $tax['type'] == $tax_type && in_array($tax['county_id'], array($state, 0))) {

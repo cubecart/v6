@@ -210,6 +210,10 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
         }
         $this->ClearAddresses();
         $send_grid_to = array();
+        // Callers may hand us an array of recipients; fold it into the comma path below.
+        if (is_array($email)) {
+            $email = implode(',', $email);
+        }
         if (strstr($email, ',')) {
             $emails = explode(',', $email);
             foreach ($emails as $mail) {

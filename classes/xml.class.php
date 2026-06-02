@@ -62,6 +62,7 @@ class XML extends XMLWriter
      * End element
      * @param bool $full_end
      */
+    #[\ReturnTypeWillChange]
     public function endElement($full_end = true)
     {
         if ($full_end) {
@@ -119,6 +120,7 @@ class XML extends XMLWriter
      * @param string $name
      * @param string $attributes
      */
+    #[\ReturnTypeWillChange]
     public function startElement($name, $attributes = false)
     {
         parent::startElement($name);

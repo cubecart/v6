@@ -648,7 +648,10 @@ class Cubecart
         $GLOBALS['cart']->verifyBasket();
         $this->_basket =& $GLOBALS['cart']->basket;
         
-        if ($_GET['_a'] == 'basket' && $this->_basket['billing_address']['user_defined'] ?? false) {
+        // Precedence note: && binds tighter than ??, so the original `… ?? false`
+        // only fired if the whole && chain was null. Parenthesise so the null
+        // coalesce actually guards the array read.
+        if ($_GET['_a'] == 'basket' && ($this->_basket['billing_address']['user_defined'] ?? false)) {
             httpredir('index.php?_a=confirm');
         }
 
@@ -2247,8 +2250,11 @@ class Cubecart
                     $countries = (!empty($module['countries'])) ? unserialize($module['countries'], ['allowed_classes' => false]) : false;
                     $disabled_countries = (!empty($module['disabled_countries'])) ? unserialize($module['disabled_countries'], ['allowed_classes' => false]) : false;
 
-                    // Check module isn't set for mobile / main only!
-                    if (isset($module['scope']) && !empty($module['scope']) && ($module['scope']=='main' && $GLOBALS['gui']->mobile) || ($module['scope']=='mobile' && !$GLOBALS['gui']->mobile)) {
+                    // Check module isn't set for mobile / main only! Parenthesise
+                    // the OR branches so the second clause doesn't read $module['scope']
+                    // without the isset guard above.
+                    $scope = $module['scope'] ?? '';
+                    if (!empty($scope) && (($scope=='main' && $GLOBALS['gui']->mobile) || ($scope=='mobile' && !$GLOBALS['gui']->mobile))) {
                         continue;
                     }
 
@@ -2256,10 +2262,11 @@ class Cubecart
                         continue;
                     }
 
-                    if (preg_match('#\.(gif|jpg|png|jpeg|webp)$#i', strtolower($module['desc']))) {
-                        $gateway['description'] = sprintf('<img src="%s" border="0" title="" alt="" />', $module['desc']);
-                    } elseif (!empty($module['desc'])) {
-                        $gateway['description'] = $module['desc'];
+                    $desc = $module['desc'] ?? '';
+                    if (!empty($desc) && preg_match('#\.(gif|jpg|png|jpeg|webp)$#i', strtolower($desc))) {
+                        $gateway['description'] = sprintf('<img src="%s" border="0" title="" alt="" />', $desc);
+                    } elseif (!empty($desc)) {
+                        $gateway['description'] = $desc;
                     } else {
                         // Folder names are snake_case (Print_Order_Form); humanise for display
                         $gateway['description'] = str_replace('_', ' ', $gateway['folder']);
@@ -2549,8 +2556,11 @@ class Cubecart
                 $countries = (!empty($module['countries'])) ? unserialize($module['countries'], ['allowed_classes' => false]) : false;
                 $disabled_countries = (!empty($module['disabled_countries'])) ? unserialize($module['disabled_countries'], ['allowed_classes' => false]) : false;
 
-                // Check module isn't set for mobile / main only!
-                if (isset($module['scope']) && !empty($module['scope']) && ($module['scope']=='main' && $GLOBALS['gui']->mobile) || ($module['scope']=='mobile' && !$GLOBALS['gui']->mobile)) {
+                // Check module isn't set for mobile / main only! Parenthesise
+                // the OR branches so the second clause doesn't read $module['scope']
+                // without the isset guard above.
+                $scope = $module['scope'] ?? '';
+                if (!empty($scope) && (($scope=='main' && $GLOBALS['gui']->mobile) || ($scope=='mobile' && !$GLOBALS['gui']->mobile))) {
                     continue;
                 }
 
@@ -2558,10 +2568,11 @@ class Cubecart
                     continue;
                 }
 
-                if (preg_match('#\.(gif|jpg|png|jpeg|webp)$#i', strtolower($module['desc']))) {
-                    $gateway['description'] = sprintf('<img src="%s" border="0" title="" alt="" />', $module['desc']);
-                } elseif (!empty($module['desc'])) {
-                    $gateway['description'] = $module['desc'];
+                $desc = $module['desc'] ?? '';
+                if (!empty($desc) && preg_match('#\.(gif|jpg|png|jpeg|webp)$#i', strtolower($desc))) {
+                    $gateway['description'] = sprintf('<img src="%s" border="0" title="" alt="" />', $desc);
+                } elseif (!empty($desc)) {
+                    $gateway['description'] = $desc;
                 } else {
                     // Folder names are snake_case (Print_Order_Form); humanise for display
                     $gateway['description'] = str_replace('_', ' ', $gateway['folder']);

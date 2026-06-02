@@ -201,9 +201,11 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
         $config_new['time_format'] = 'Y-m-d H:i';
     }
 
-    // Trim
+    // Trim — only when the field was POSTed (admin form may omit unused networks).
     foreach(array('facebook','flickr','instagram','linkedin','pinterest','twitter','vimeo','wordpress','youtube','reddit','tumblr') as $t) {
-        $config_new[$t] = trim($config_new[$t]);
+        if (isset($config_new[$t])) {
+            $config_new[$t] = trim((string)$config_new[$t]);
+        }
     }
 
     // Preserve current default_currency (now managed in Settings > Currencies)

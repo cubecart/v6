@@ -840,6 +840,10 @@ class SEO
      */
     public function SEOable($path)
     {
+        // Nothing to rewrite for an empty/null path; preg_replace() warns on null in PHP 8.1.
+        if ($path === null || $path === '') {
+            return $path;
+        }
         $path = preg_replace('@index.php$@', '', $path); // remove index.php if last chars in URL
         $seo_ext = $GLOBALS['config']->get('config', 'seo_ext'); 
         if (strpos($path, 'index.php?_a=category&search') !== false) {

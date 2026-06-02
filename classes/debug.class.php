@@ -260,7 +260,7 @@ class Debug
     {
         
         // Cheeky hack for the w3c validator - we don't want it seeing the debug output
-        if (strstr($_SERVER['HTTP_USER_AGENT'], 'W3C_Validator')) {
+        if (strstr($_SERVER['HTTP_USER_AGENT'] ?? '', 'W3C_Validator')) {
             $this->_enabled = false;
         }
 
@@ -283,7 +283,7 @@ class Debug
             if (isset($GLOBALS['session']) && ($session_data = $GLOBALS['session']->getAllData()) && ($ret = $this->_makeExportString('SESSION', $session_data)) !== false) {
                 $output[] = $ret;
             }
-            if (($ret = $this->_makeExportString('COOKIE', merge_array(array('Received:' => $_COOKIE), array('Sent:' => $GLOBALS['SENT_COOKIES'])))) !== false) {
+            if (($ret = $this->_makeExportString('COOKIE', merge_array(array('Received:' => $_COOKIE), array('Sent:' => $GLOBALS['SENT_COOKIES'] ?? array())))) !== false) {
                 $output[] = $ret;
             }
             if (($ret = $this->_makeExportString('FILES', $_FILES)) !== false) {
