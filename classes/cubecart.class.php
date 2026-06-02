@@ -2261,7 +2261,8 @@ class Cubecart
                     } elseif (!empty($module['desc'])) {
                         $gateway['description'] = $module['desc'];
                     } else {
-                        $gateway['description'] = $gateway['folder'];
+                        // Folder names are snake_case (Print_Order_Form); humanise for display
+                        $gateway['description'] = str_replace('_', ' ', $gateway['folder']);
                     }
                     $gateway['checked'] = (isset($gateway['default']) && $gateway['default']) ? 'checked="checked"' : '';
                     $gateway_list[] = $gateway;
@@ -2562,7 +2563,8 @@ class Cubecart
                 } elseif (!empty($module['desc'])) {
                     $gateway['description'] = $module['desc'];
                 } else {
-                    $gateway['description'] = $gateway['folder'];
+                    // Folder names are snake_case (Print_Order_Form); humanise for display
+                    $gateway['description'] = str_replace('_', ' ', $gateway['folder']);
                 }
                 $gateway['checked'] = ((isset($gateway['default']) && $gateway['default'] && $selected_gateway=='') || ($selected_gateway == $gateway['folder']) || count($gateways)==1) ? 'checked="checked"' : '';
                 $gateway_list[] = $gateway;

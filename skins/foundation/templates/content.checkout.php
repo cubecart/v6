@@ -46,25 +46,31 @@
    </div>
    
    {if $INCLUDE_CHECKOUT && !$DISABLE_GATEWAYS}
-   <div id="payment_method">
-      <a href="?" class="right">{$LANG.basket.continue_shopping}</a><h3>{$LANG.gateway.select}</h3>
-      <hr>
-      <div class="row">
-         <div class="small-12 columns">
-            <ul class="no-bullet center" id="gateway_error">
-               {foreach from=$GATEWAYS item=gateway}
-               <li>
-                  <input name="gateway" type="radio" class="nosubmit" value="{$gateway.folder}" id="{$gateway.folder}" required {$gateway.checked} rel="gateway_error"><label for="{$gateway.folder}">{$gateway.description}</label>
-                  {if !empty($gateway.help)}
-                  <a href="{$gateway.help}" class="info" title="{$LANG.common.information}"><svg class="icon"><use xlink:href="#icon-info-circle"></use></svg></a>
-                  {/if}
-               </li>
-               {/foreach}
-            </ul>
-            <div class="hide" id="validate_gateway_required">{$LANG.gateway.choose_payment}</div>
+      {if $GATEWAYS|@count > 1}
+      <div id="payment_method">
+         <a href="?" class="right">{$LANG.basket.continue_shopping}</a><h3>{$LANG.gateway.select}</h3>
+         <hr>
+         <div class="row">
+            <div class="small-12 columns">
+               <ul class="no-bullet center" id="gateway_error">
+                  {foreach from=$GATEWAYS item=gateway}
+                  <li>
+                     <input name="gateway" type="radio" class="nosubmit" value="{$gateway.folder}" id="{$gateway.folder}" required {$gateway.checked} rel="gateway_error"><label for="{$gateway.folder}">{$gateway.description}</label>
+                     {if !empty($gateway.help)}
+                     <a href="{$gateway.help}" class="info" title="{$LANG.common.information}"><svg class="icon"><use xlink:href="#icon-info-circle"></use></svg></a>
+                     {/if}
+                  </li>
+                  {/foreach}
+               </ul>
+               <div class="hide" id="validate_gateway_required">{$LANG.gateway.choose_payment}</div>
+            </div>
          </div>
       </div>
-   </div>
+      {else}
+         {foreach from=$GATEWAYS item=gateway}
+         <input type="hidden" name="gateway" value="{$gateway.folder}">
+         {/foreach}
+      {/if}
    {/if}
    {if $TERMS_CONDITIONS && isset($ALTERNATE_TERMS) && $ALTERNATE_TERMS=='0'}
    <p class="text-right"><label for="reg_terms">{sprintf($LANG.account.register_terms_agree_link,$TERMS_CONDITIONS)} <input type="checkbox" id="reg_terms" name="terms_agree" value="1" rel="error_terms_agree"></label></p>
