@@ -313,11 +313,14 @@ function smarty_function_html_select_date($params, Smarty_Internal_Template $tem
             $_html_months .= '<option value="">' . (isset($month_empty) ? $month_empty : $all_empty) . '</option>' .
                              $option_separator;
         }
+        if (!is_callable('smarty_strftime_format_to_date')) {
+            include_once SMARTY_PLUGINS_DIR . 'shared.strftime_format.php';
+        }
         for ($i = 1; $i <= 12; $i++) {
             $_val = sprintf('%02d', $i);
             $_text = isset($month_names) ? smarty_function_escape_special_chars($month_names[ $i ]) :
-                ($month_format === '%m' ? $_val : @strftime($month_format, $_month_timestamps[ $i ]));
-            $_value = $month_value_format === '%m' ? $_val : @strftime($month_value_format, $_month_timestamps[ $i ]);
+                ($month_format === '%m' ? $_val : date(smarty_strftime_format_to_date($month_format), $_month_timestamps[ $i ]));
+            $_value = $month_value_format === '%m' ? $_val : date(smarty_strftime_format_to_date($month_value_format), $_month_timestamps[ $i ]);
             $_html_months .= '<option value="' . $_value . '"' . ($_val == $_month ? ' selected="selected"' : '') .
                              '>' . $_text . '</option>' . $option_separator;
         }
