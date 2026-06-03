@@ -407,6 +407,45 @@ $email_types = array(
             '{$product.image}' => $lang['email']['macro_product_image'],
         ),
     ),
+    'cart.withdrawal_acknowledgment' => array(
+        'description' => $lang['email']['title_macro_cart_withdrawal_acknowledgment'],
+        'macros' => array(
+            '{$DATA.name}' => $lang['email']['macro_wd_name'],
+            '{$DATA.reference}' => $lang['email']['macro_wd_reference'],
+            '{$DATA.cart_order_id}' => $lang['email']['macro_wd_cart_order_id'],
+            '{$DATA.submitted_at}' => $lang['email']['macro_wd_submitted_at'],
+            '{$DATA.reported_delivery}' => $lang['email']['macro_wd_reported_delivery'],
+            '{$DATA.statement}' => $lang['email']['macro_wd_statement'],
+            '{$DATA.reason}' => $lang['email']['macro_wd_reason'],
+            '{$DATA.store_name}' => $lang['email']['macro_store_name'],
+        ),
+    ),
+    'cart.withdrawal_decision' => array(
+        'description' => $lang['email']['title_macro_cart_withdrawal_decision'],
+        'macros' => array(
+            '{$DATA.name}' => $lang['email']['macro_wd_name'],
+            '{$DATA.reference}' => $lang['email']['macro_wd_reference'],
+            '{$DATA.cart_order_id}' => $lang['email']['macro_wd_cart_order_id'],
+            '{$DATA.status}' => $lang['email']['macro_wd_status'],
+            '{$DATA.decision_at}' => $lang['email']['macro_wd_decision_at'],
+            '{$DATA.note}' => $lang['email']['macro_wd_note'],
+            '{$DATA.store_name}' => $lang['email']['macro_store_name'],
+        ),
+    ),
+    'admin.withdrawal_received' => array(
+        'description' => $lang['email']['title_macro_admin_withdrawal_received'],
+        'macros' => array(
+            '{$DATA.reference}' => $lang['email']['macro_wd_reference'],
+            '{$DATA.submitted_at}' => $lang['email']['macro_wd_submitted_at'],
+            '{$DATA.name}' => $lang['email']['macro_wd_name'],
+            '{$DATA.email}' => $lang['email']['macro_wd_email'],
+            '{$DATA.cart_order_id}' => $lang['email']['macro_wd_cart_order_id'],
+            '{$DATA.reported_delivery}' => $lang['email']['macro_wd_reported_delivery'],
+            '{$DATA.statement}' => $lang['email']['macro_wd_statement'],
+            '{$DATA.reason}' => $lang['email']['macro_wd_reason'],
+            '{$DATA.admin_link}' => $lang['email']['macro_wd_admin_link'],
+        ),
+    ),
     'catalogue.tell_friend' => array(
         'description' => $lang['email']['title_macro_tell_friend'],
         'macros'  => array(

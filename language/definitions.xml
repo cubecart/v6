@@ -1316,6 +1316,18 @@ This email is sent from the store's master email address but it is possible to r
     <string name="macro_recovery_link" introduced="6.6.0"><![CDATA[Link to recover the abandoned cart.]]></string>
     <string name="macro_optout_link" introduced="6.6.0"><![CDATA[Link to unsubscribe from cart reminders.]]></string>
     <string name="macro_store_name" introduced="6.6.0"><![CDATA[The store name.]]></string>
+    <string name="macro_wd_name" introduced="6.7.4"><![CDATA[Name of the customer who made the withdrawal request.]]></string>
+    <string name="macro_wd_email" introduced="6.7.4"><![CDATA[Email address of the customer who made the withdrawal request.]]></string>
+    <string name="macro_wd_reference" introduced="6.7.4"><![CDATA[Unique withdrawal request reference.]]></string>
+    <string name="macro_wd_cart_order_id" introduced="6.7.4"><![CDATA[Associated order number, if the request relates to an order.]]></string>
+    <string name="macro_wd_submitted_at" introduced="6.7.4"><![CDATA[Date and time the request was submitted.]]></string>
+    <string name="macro_wd_reported_delivery" introduced="6.7.4"><![CDATA[Delivery date reported by the customer.]]></string>
+    <string name="macro_wd_statement" introduced="6.7.4"><![CDATA[The customer's withdrawal statement.]]></string>
+    <string name="macro_wd_reason" introduced="6.7.4"><![CDATA[The customer's reason for withdrawal.]]></string>
+    <string name="macro_wd_status" introduced="6.7.4"><![CDATA[Decision status (accepted, rejected or refunded).]]></string>
+    <string name="macro_wd_decision_at" introduced="6.7.4"><![CDATA[Date and time the decision was made.]]></string>
+    <string name="macro_wd_note" introduced="6.7.4"><![CDATA[Decision note from the store to the customer.]]></string>
+    <string name="macro_wd_admin_link" introduced="6.7.4"><![CDATA[Link to open the request in the back office.]]></string>
     <string name="macro_twofa_code" introduced="6.6.0"><![CDATA[The verification code.]]></string>
     <string name="macro_new_ip" introduced="6.6.0"><![CDATA[The new IP address.]]></string>
     <string name="macro_previous_ip" introduced="6.6.0"><![CDATA[The previous IP address.]]></string>
@@ -1406,9 +1418,12 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_macro_admin_review" introduced="5.0.0"><![CDATA[Admin: Review Added]]></string>
     <string name="title_macro_admin_two_factor_code" introduced="6.6.0"><![CDATA[Admin: Two-Factor Code]]></string>
     <string name="title_macro_admin_new_device_login" introduced="6.6.0"><![CDATA[Admin: New Device Login]]></string>
+    <string name="title_macro_admin_withdrawal_received" introduced="6.7.4"><![CDATA[Admin: Withdrawal Request Received]]></string>
     <string name="title_macro_cart_abandoned" introduced="6.6.0"><![CDATA[Cart: Abandoned Cart]]></string>
     <string name="title_macro_cart_certificate" introduced="5.0.0"><![CDATA[Cart: Gift Card]]></string>
     <string name="title_macro_cart_digital" introduced="5.0.0"><![CDATA[Cart: File Download]]></string>
+    <string name="title_macro_cart_withdrawal_acknowledgment" introduced="6.7.4"><![CDATA[Cart: Withdrawal Acknowledgement]]></string>
+    <string name="title_macro_cart_withdrawal_decision" introduced="6.7.4"><![CDATA[Cart: Withdrawal Decision]]></string>
     <string name="title_macro_order_cancelled" introduced="5.0.0"><![CDATA[Cart: Order Cancelled]]></string>
     <string name="title_macro_order_confirmed" introduced="5.0.0"><![CDATA[Cart: Order Confirmed]]></string>
     <string name="title_macro_order_dispatched" introduced="5.0.0"><![CDATA[Cart: Order Complete]]></string>
