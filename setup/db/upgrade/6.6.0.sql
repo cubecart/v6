@@ -450,7 +450,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_cron_tasks` (
   `last_result` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `method` (`method`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('sendAbandonmentEmails', 'Send Cart Abandonment Emails', 0, 3600); #EOQ
 INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('rebuildSitemap', 'Rebuild Sitemap', 1, 86400); #EOQ
