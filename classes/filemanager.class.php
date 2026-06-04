@@ -1565,10 +1565,11 @@ class FileManager
                         'md5hash' => $this->md5file($file['tmp_name'], $file['size'], true),
                     );
 
-                    // 1) Same content already in DB (md5 collision)? `md5hash` is
-                    //    a UNIQUE column, so a naive INSERT would fail silently and
-                    //    the upload would lose its DB pointer. Re-point the existing
-                    //    record to the new location and clean up the old disk file.
+                    // 1) Same content already in DB (matching `md5hash`)? Re-point the
+                    //    existing record to the new location and clean up the old disk
+                    //    file, so re-uploading identical content doesn't orphan rows.
+                    //    (`md5hash` is a non-unique index — large files over the hash
+                    //    size limit store an empty hash, so this dedup is best-effort.)
                     // 2) Same path+filename+type? Treat as in-place overwrite.
                     // 3) Otherwise INSERT.
                     $fid = false;
