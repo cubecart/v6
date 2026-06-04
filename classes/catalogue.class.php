@@ -1571,7 +1571,7 @@ class Catalogue
                 // Ok so we need to get quantity for other items with same product ID for quantity discounts.
                 // e.g. 1 x Blue Widget + 2 x Red Widget
                 $original_quantity = $quantity;
-                if (is_array($GLOBALS['cart']->basket) && is_array($GLOBALS['cart']->basket['contents'])) {
+                if (is_array($GLOBALS['cart']->basket) && isset($GLOBALS['cart']->basket['contents']) && is_array($GLOBALS['cart']->basket['contents'])) {
                     $quantity = 0;
                     foreach ($GLOBALS['cart']->basket['contents'] as $hash => $item) {
                         if ($item['id']==$product_id) {

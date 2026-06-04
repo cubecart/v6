@@ -1036,6 +1036,7 @@ class Cubecart
                     'billing' => 'billing_address',
                     'delivery' => 'delivery_address',
                 );
+                $missing_field = false;
                 foreach ($_POST as $index => $data) {
                     if (!in_array($index, $handle_post)) {
                         continue;
@@ -1082,7 +1083,7 @@ class Cubecart
                     'country_id'  => $_POST['billing']['country'],
                     'country_iso'  => getCountryFormat($_POST['billing']['country'], 'numcode', 'iso'),
                     'country_name' => getCountryFormat($_POST['billing']['country'], 'numcode', 'name'),
-                    'w3w' => $_POST['billing']['w3w']
+                    'w3w' => $_POST['billing']['w3w'] ?? ''
                 );
                 $required_billing_fields = $GLOBALS['user']->getRequiredAddressFields($_POST['billing']['country']);
                 foreach ($this->_basket['billing_address'] as $key => $value) {
@@ -1121,7 +1122,7 @@ class Cubecart
                         'country_id'  => $_POST['delivery']['country'],
                         'country_iso'  => getCountryFormat($_POST['delivery']['country'], 'numcode', 'iso'),
                         'country_name' => getCountryFormat($_POST['delivery']['country'], 'numcode', 'name'),
-                        'w3w' => $_POST['delivery']['w3w']
+                        'w3w' => $_POST['delivery']['w3w'] ?? ''
                     );
                 } else {
                     $this->_basket['delivery_address'] = $this->_basket['billing_address'];
@@ -1133,7 +1134,7 @@ class Cubecart
 
                 if ($new_addresses!==$old_addresses) {
                     // Set notice to prevent proceed to payment screen
-                    $message = $GLOBALS['cart']->basket['digital_only'] ? $GLOBALS['language']->checkout['confirm_billing'] : $GLOBALS['language']->account["notify_address_updated"];
+                    $message = ($GLOBALS['cart']->basket['digital_only'] ?? false) ? $GLOBALS['language']->checkout['confirm_billing'] : $GLOBALS['language']->account["notify_address_updated"];
                     $GLOBALS['gui']->setNotify($message);
                 }
 
