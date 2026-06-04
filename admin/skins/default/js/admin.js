@@ -484,7 +484,6 @@ $(document).ready(function() {
     if ($("div.dropzone").length) {
         Dropzone.autoDiscover = false;
         var globalDropzoneUrl = $("div#dropzone_url").text();
-        var imageUploadFormat = ($("#val_image_upload_format").text() || 'webp').trim();
         // Digital file manager allows any file type; images mode restricts to image MIME types.
         var isDigitalMode = /[?&]mode=digital(&|$)/.test(window.location.search);
 
@@ -552,15 +551,22 @@ $(document).ready(function() {
             }
         };
 
-        if (!isDigitalMode && (imageUploadFormat === 'webp' || imageUploadFormat === 'jpeg' || imageUploadFormat === 'png')) {
-            var formatMap = {
-                'webp': { mime: 'image/webp', ext: '.webp', quality: 0.8 },
-                'jpeg': { mime: 'image/jpeg', ext: '.jpg', quality: 0.85 },
-                'png':  { mime: 'image/png',  ext: '.png',  quality: undefined }
-            };
-            var targetMime = formatMap[imageUploadFormat].mime;
-            var targetExt = formatMap[imageUploadFormat].ext;
-            var targetQuality = formatMap[imageUploadFormat].quality;
+        if (!isDigitalMode) {
+            // Cap oversized image uploads to a maximum dimension BEFORE they reach the
+            // server. This is purely an out-of-memory guard: GD allocates roughly
+            // width*height*4 bytes when it decodes an image, so a huge-dimension image
+            // (even a small file) can exhaust PHP's memory and crash thumbnail
+            // generation. We downscale in the browser — on the user's machine — so the
+            // server only ever receives bounded images. This runs for ALL image uploads.
+            //
+            // We deliberately do NOT transcode to a target format here: CubeCart
+            // generates the display images server-side (classes/gd.class.php). Client
+            // canvas transcoding is redundant and harmful — it re-compresses
+            // already-optimised files (a 32kB JPEG can come back at 100kB+) and, for
+            // WebP, silently falls back to a huge lossless PNG in browsers that can't
+            // encode WebP. So within the cap we upload the original untouched, and when
+            // we must downscale we keep the image's ORIGINAL format.
+            var maxDim = 2000;
 
             // Pass-through for anything that isn't a real image (Thumbs.db,
             // .DS_Store, dragged folder placeholders, etc). Without this guard
@@ -570,48 +576,45 @@ $(document).ready(function() {
             };
             dropzoneConfig.transformFile = function(file, done) {
                 if (!isResizableImage(file)) { done(file); return; }
-                var maxWidth = 2000;
                 var reader = new FileReader();
                 reader.onerror = function() { done(file); };
                 reader.onload = function(event) {
                     var img = new Image();
                     img.onerror = function() { done(file); };
                     img.onload = function() {
+                        // Within the cap (longest side <= maxDim): upload original untouched.
+                        if (img.width <= maxDim && img.height <= maxDim) { done(file); return; }
+                        // Downscale by the longest side so very tall/wide images are both covered.
+                        var scale = maxDim / Math.max(img.width, img.height);
+                        var width = Math.max(1, Math.round(img.width * scale));
+                        var height = Math.max(1, Math.round(img.height * scale));
                         var canvas = document.createElement('canvas');
-                        var ctx = canvas.getContext('2d');
-                        var width = img.width;
-                        var height = img.height;
-                        if (width > maxWidth) {
-                            height *= maxWidth / width;
-                            width = maxWidth;
-                        }
                         canvas.width = width;
                         canvas.height = height;
                         try {
-                            ctx.drawImage(img, 0, 0, width, height);
+                            canvas.getContext('2d').drawImage(img, 0, 0, width, height);
                         } catch (e) {
                             console.warn("drawImage failed, uploading original file.", e);
                             done(file);
                             return;
                         }
+                        // Re-encode the downscaled image in its ORIGINAL format.
+                        var srcMime = (file.type === 'image/jpg') ? 'image/jpeg' : file.type;
+                        var srcQuality = (srcMime === 'image/png') ? undefined : 0.8;
                         canvas.toBlob(function(blob) {
-                            if (!blob || blob.size === 0) {
-                                console.warn("Resize failed, uploading original file.");
+                            // Bail to the original if encoding failed, produced nothing,
+                            // or the browser fell back to a different format (e.g. WebP/GIF
+                            // unsupported -> PNG) — which would ship a bloated/mislabeled file.
+                            if (!blob || blob.size === 0 || (blob.type && blob.type !== srcMime)) {
                                 done(file);
-                            } else {
-                                done(blob);
+                                return;
                             }
-                        }, targetMime, targetQuality);
+                            done(blob);
+                        }, srcMime, srcQuality);
                     };
                     img.src = event.target.result;
                 };
                 reader.readAsDataURL(file);
-            };
-            dropzoneConfig.renameFile = function(file) {
-                // Only rename real images we'd actually transcode; pass others through.
-                if (!isResizableImage(file)) return file.name;
-                var name = file.name.substr(0, file.name.lastIndexOf("."));
-                return name + targetExt;
             };
         }
 

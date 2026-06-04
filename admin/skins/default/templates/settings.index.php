@@ -218,13 +218,6 @@
          <div><label for="hide_out_of_stock">{$LANG.settings.title_hide_out_of_stock}</label><span><input name="config[hide_out_of_stock]" id="hide_out_of_stock" type="hidden" class="toggle" value="{$CONFIG.hide_out_of_stock}"></span>&nbsp;{$LANG.settings.no_admin_affect}</div>
          <div><label for="update_main_stock">{$LANG.settings.update_main_stock}</label><span><input name="config[update_main_stock]" id="update_main_stock" type="hidden" class="toggle" value="{$CONFIG.update_main_stock}"></span>&nbsp;{$LANG.settings.matrix_in_use}</div>
          <div><label for="image_delete">{$LANG.settings.image_delete}</label><span><input name="config[image_delete]" id="image_delete" type="hidden" class="toggle" value="{$CONFIG.image_delete}"></span></div>
-         <div><label for="image_upload_format">{$LANG.settings.image_upload_format}</label><span><select name="config[image_upload_format]" id="image_upload_format" class="textbox">
-            <option value="webp"{if $CONFIG.image_upload_format=='webp'} selected="selected"{/if}>{$LANG.settings.image_upload_format_webp}</option>
-            <option value="jpeg"{if $CONFIG.image_upload_format=='jpeg'} selected="selected"{/if}>{$LANG.settings.image_upload_format_jpeg}</option>
-            <option value="png"{if $CONFIG.image_upload_format=='png'} selected="selected"{/if}>{$LANG.settings.image_upload_format_png}</option>
-            <option value="original"{if $CONFIG.image_upload_format=='original'} selected="selected"{/if}>{$LANG.settings.image_upload_format_original}</option>
-            </select></span>
-         </div>
          <div><label for="withdrawal_mode">{$LANG.withdrawal.setting_mode}</label><span><select name="config[withdrawal_mode]" id="withdrawal_mode" class="textbox">
             <option value="0"{if $CONFIG.withdrawal_mode=='0' || !$CONFIG.withdrawal_mode} selected="selected"{/if}>{$LANG.withdrawal.setting_mode_disabled}</option>
             <option value="all"{if $CONFIG.withdrawal_mode=='all'} selected="selected"{/if}>{$LANG.withdrawal.setting_mode_all}</option>
