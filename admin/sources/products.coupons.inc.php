@@ -56,6 +56,7 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
         'manufacturer_id' => serialize($_POST['coupon']['manufacturer']),
         'category_id' => serialize($_POST['coupon']['category']),
         'shipping_id' => serialize(isset($_POST['coupon']['shipping_id']) ? $_POST['coupon']['shipping_id'] : array()),
+        'country_id' => serialize(isset($_POST['coupon']['country']) ? $_POST['coupon']['country'] : array()),
         'starts'  => $_POST['coupon']['starts'],
         'expires'  => $_POST['coupon']['expires'],
         'allowed_uses' => (int)$_POST['coupon']['allowed_uses'],
@@ -243,7 +244,24 @@ if (isset($_GET['action'])) {
         $shipping_data = array();
     }
     $GLOBALS['smarty']->assign('SHIPPING', $shipping_data);
-    
+
+    // List countries (restrict coupon to delivery country)
+    $country_assigned = array();
+    if (isset($coupon[0]['country_id']) && is_array(unserialize($coupon[0]['country_id']))) {
+        $country_assigned = array_flip(unserialize($coupon[0]['country_id']));
+    }
+    $smarty_data['countries'] = array();
+    if ($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name'), 'status > 0', array('name' => 'ASC'))) {
+        foreach ($countries as $country) {
+            $smarty_data['countries'][] = array(
+                'id'  => $country['numcode'],
+                'name'  => $country['name'],
+                'selected' => isset($country_assigned[$country['numcode']])
+            );
+        }
+    }
+    $GLOBALS['smarty']->assign('COUNTRIES', $smarty_data['countries']);
+
     $GLOBALS['smarty']->assign('DISPLAY_FORM', true);
 } else {
     $GLOBALS['main']->addTabControl($lang['catalogue']['title_coupons'], 'coupons', null, 'C');

@@ -613,6 +613,23 @@ class Cart
                     }
                 }
 
+                // Check the delivery country is allowed. Like the shipping check, defer
+                // until a delivery country is known so applying the coupon on the basket
+                // page (before an address is chosen) doesn't reject it prematurely.
+                if (!empty($coupon['country_id'])) {
+                    $qualifying_countries = unserialize($coupon['country_id']);
+                    if (is_array($qualifying_countries) && count($qualifying_countries) > 0) {
+                        $d_country_id = isset($this->basket['delivery_address']['country_id']) ? $this->basket['delivery_address']['country_id'] : null;
+                        $d_country    = isset($this->basket['delivery_address']['country']) ? $this->basket['delivery_address']['country'] : null;
+                        if (!empty($d_country_id) || !empty($d_country)) {
+                            if (!in_array($d_country_id, $qualifying_countries) && !in_array($d_country, $qualifying_countries)) {
+                                $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_country']);
+                                return false;
+                            }
+                        }
+                    }
+                }
+
                 // Check manufacturer is allowed
                 if (!empty($coupon['manufacturer_id'])) {
                     $qualifying_manufacturers = unserialize($coupon['manufacturer_id']);

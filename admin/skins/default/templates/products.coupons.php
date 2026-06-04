@@ -150,6 +150,16 @@
 		</select>
 		</span>
 	  </div>
+	  <div>
+		<label for="form-country">{$LANG.catalogue.country_limit}</label>
+		<span>
+		<select name="coupon[country][]" id="form-country" data-placeholder="{$LANG.catalogue.choose_countries}" multiple class="chzn-select textbox">
+			{foreach from=$COUNTRIES item=country}
+			<option value="{$country.id}"{if $country.selected} selected="selected"{/if}>{$country.name}</option>
+            {/foreach}
+		</select>
+		</span>
+	  </div>
 	  <input type="hidden" name="coupon[coupon_id]" value="{$COUPON.coupon_id}">
 	</fieldset>
 	<fieldset><legend>{$LANG.catalogue.title_coupon_convert}</legend>

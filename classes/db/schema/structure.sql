@@ -250,6 +250,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_coupons` (
 	`manufacturer_id` TEXT NOT NULL,
 	`category_id` TEXT NOT NULL,
 	`shipping_id` TEXT NOT NULL,
+	`country_id` TEXT NOT NULL,
 	`discount_percent` DECIMAL(5,2) NOT NULL DEFAULT '0.00',
 	`discount_price` DECIMAL(16,2) NOT NULL DEFAULT '0.00',
 	`starts` DATE NOT NULL DEFAULT '0000-00-00',
