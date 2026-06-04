@@ -828,334 +828,191 @@ if (isset($database_result) && $database_result) {
     $GLOBALS['smarty']->assign('TABLES_AFTER', $database_result);
 } elseif (($tables = $GLOBALS['db']->getRows()) !== false) {
 
-    ## Parse structure.sql to build index map and column map (single source of truth)
-    $index_map = array();
-    $full_indexes = array();
-    $column_map = array();
-    $structure_file = CC_ROOT_DIR.'/classes/db/schema/structure.sql';
-    if (file_exists($structure_file)) {
-        $sql = file_get_contents($structure_file);
-        $statements = preg_split('/;\s*#EOQ/i', $sql);
-        ## Track all index types per column (a column can be in multiple indexes)
-        foreach ($statements as $stmt) {
-            ## Parse CREATE TABLE statements
-            if (preg_match('/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`?(\w+)`?/i', $stmt, $tbl_match)) {
-                $table_name = strtolower($tbl_match[1]);
-                if (!isset($index_map[$table_name])) {
-                    $index_map[$table_name] = array();
+    ## Build a reference schema by replaying structure.sql into throwaway scratch tables,
+    ## then compare each live table against it via SHOW COLUMNS / SHOW INDEX. Letting MySQL
+    ## parse the schema (instead of regex) keeps column types and single vs composite
+    ## keys canonical, so the diff is correct by construction. Real (non-TEMPORARY) tables
+    ## are used because FULLTEXT indexes cannot be created on TEMPORARY InnoDB tables; they
+    ## live in a distinct _ccref_ namespace and are dropped before and after the check.
+    $all_fix_sql  = array();
+    $found_tables = array();
+    $prefix       = $GLOBALS['config']->get('config', 'dbprefix');
+    $ref_prefix   = '_ccref_';   // scratch namespace for reference tables (never collides with live CubeCart_ tables)
+
+    $ref_cols   = array();  // canonical => array(col_lower => array('name','def'))
+    $ref_idx    = array();  // canonical => array(index_name => array('type','sig','cols','parts'))
+    $ref_temp   = array();  // canonical => temp table name
+    $ref_create = array();  // canonical => SHOW CREATE TABLE sql (for missing-table fix)
+
+    // group SHOW INDEX rows into name => {type, ordered cols, signature}
+    $build_indexes = function($rows) {
+        $by = array();
+        if (is_array($rows)) {
+            foreach ($rows as $r) {
+                $n = $r['Key_name'];
+                if (!isset($by[$n])) {
+                    if ($n === 'PRIMARY')                    $t = 'PRIMARY';
+                    elseif ($r['Index_type'] === 'FULLTEXT') $t = 'FULLTEXT';
+                    elseif ($r['Non_unique'] == '0')         $t = 'UNIQUE';
+                    else                                     $t = 'KEY';
+                    $by[$n] = array('type' => $t, 'cols' => array(), 'parts' => array());
                 }
-                ## Match index definitions including bare UNIQUE(...) and FULLTEXT(...) without KEY
-                if (preg_match_all('/^\s*(PRIMARY\s+KEY|UNIQUE\s+KEY|FULLTEXT\s+KEY|UNIQUE|FULLTEXT|KEY)\s*(?:`?(\w+)`?\s*)?\(((?:[^()]+|\([^)]*\))+)\)/im', $stmt, $idx_matches, PREG_SET_ORDER)) {
-                    foreach ($idx_matches as $idx) {
-                        $raw_type = strtoupper(trim($idx[1]));
-                        if (strpos($raw_type, 'PRIMARY') !== false) {
-                            $key_type = 'PRIMARY';
-                        } elseif (strpos($raw_type, 'UNIQUE') !== false) {
-                            $key_type = 'UNIQUE KEY';
-                        } elseif (strpos($raw_type, 'FULLTEXT') !== false) {
-                            $key_type = 'FULLTEXT';
-                        } else {
-                            $key_type = 'KEY';
-                        }
-                        ## Extract column names, strip prefix lengths e.g. (150) and backticks
-                        $columns = explode(',', $idx[3]);
-                        foreach ($columns as $col) {
-                            $col = trim(str_replace('`', '', $col));
-                            $col = trim(preg_replace('/\(\d+\)/', '', $col));
-                            if (!empty($col)) {
-                                if (!isset($index_map[$table_name][$col])) {
-                                    $index_map[$table_name][$col] = array();
-                                }
-                                if (!in_array($key_type, $index_map[$table_name][$col])) {
-                                    $index_map[$table_name][$col][] = $key_type;
-                                }
-                            }
-                        }
-                        ## Store full index definition for fix SQL generation
-                        $idx_key_name = ($key_type === 'PRIMARY') ? 'PRIMARY' : (!empty($idx[2]) ? $idx[2] : null);
-                        if ($idx_key_name !== null) {
-                            $full_indexes[$table_name][$idx_key_name] = array('type' => $key_type, 'columns' => $idx[3]);
-                        }
-                    }
-                }
-                ## Parse column definitions
-                $column_map[$table_name] = array();
-                $stmt_lines = preg_split('/\r?\n/', $stmt);
-                foreach ($stmt_lines as $line) {
-                    $line = trim($line);
-                    if (preg_match('/^`(\w+)`\s+(.+)$/', $line, $col_match)) {
-                        $col_name = $col_match[1];
-                        $col_def = rtrim(rtrim($col_match[2]), ',');
-                        $column_map[$table_name][$col_name] = $col_def;
-                    }
-                }
-            }
-            ## Parse ALTER TABLE ... ADD INDEX/KEY/PRIMARY KEY/UNIQUE statements
-            if (preg_match('/ALTER\s+TABLE\s+`?(\w+)`?\s+ADD\s+(PRIMARY\s+KEY|UNIQUE\s+KEY|UNIQUE|FULLTEXT|INDEX|KEY)\s*(?:`?(\w+)`?\s*)?\(((?:[^()]+|\([^)]*\))+)\)/i', $stmt, $alt_match)) {
-                $table_name = strtolower($alt_match[1]);
-                if (!isset($index_map[$table_name])) {
-                    $index_map[$table_name] = array();
-                }
-                $raw_type = strtoupper(trim($alt_match[2]));
-                if (strpos($raw_type, 'PRIMARY') !== false) {
-                    $key_type = 'PRIMARY';
-                } elseif (strpos($raw_type, 'UNIQUE') !== false) {
-                    $key_type = 'UNIQUE KEY';
-                } elseif (strpos($raw_type, 'FULLTEXT') !== false) {
-                    $key_type = 'FULLTEXT';
-                } else {
-                    $key_type = 'KEY';
-                }
-                $columns = explode(',', $alt_match[4]);
-                foreach ($columns as $col) {
-                    $col = trim(str_replace('`', '', $col));
-                    $col = trim(preg_replace('/\(\d+\)/', '', $col));
-                    if (!empty($col)) {
-                        if (!isset($index_map[$table_name][$col])) {
-                            $index_map[$table_name][$col] = array();
-                        }
-                        if (!in_array($key_type, $index_map[$table_name][$col])) {
-                            $index_map[$table_name][$col][] = $key_type;
-                        }
-                    }
-                }
-                ## Store full index definition for fix SQL generation
-                $alt_key_name = ($key_type === 'PRIMARY') ? 'PRIMARY' : (!empty($alt_match[3]) ? $alt_match[3] : null);
-                if ($alt_key_name !== null) {
-                    $full_indexes[$table_name][$alt_key_name] = array('type' => $key_type, 'columns' => $alt_match[4]);
-                }
+                $seq = (int)$r['Seq_in_index'];
+                $by[$n]['cols'][$seq]  = strtolower($r['Column_name']);
+                $by[$n]['parts'][$seq] = '`'.$r['Column_name'].'`'.((!empty($r['Sub_part'])) ? '('.$r['Sub_part'].')' : '');
             }
         }
-    } else {
+        foreach ($by as &$ix) {
+            ksort($ix['cols']); ksort($ix['parts']);
+            $ix['cols']  = array_values($ix['cols']);
+            $ix['parts'] = array_values($ix['parts']);
+            $ix['sig']   = $ix['type'].':'.implode(',', $ix['cols']);
+        }
+        return $by;
+    };
+    $type_label = function($t) {
+        return ($t === 'UNIQUE') ? 'UNIQUE KEY' : (($t === 'FULLTEXT') ? 'FULLTEXT' : (($t === 'PRIMARY') ? 'PRIMARY' : 'KEY'));
+    };
+    $add_clause = function($name, $ix) {
+        $cols = implode(',', $ix['parts']);
+        if ($ix['type'] === 'PRIMARY')  return 'ADD PRIMARY KEY ('.$cols.')';
+        if ($ix['type'] === 'UNIQUE')   return 'ADD UNIQUE KEY `'.$name.'` ('.$cols.')';
+        if ($ix['type'] === 'FULLTEXT') return 'ADD FULLTEXT KEY `'.$name.'` ('.$cols.')';
+        return 'ADD KEY `'.$name.'` ('.$cols.')';
+    };
+    $drop_clause = function($name) {
+        return ($name === 'PRIMARY') ? 'DROP PRIMARY KEY' : 'DROP INDEX `'.$name.'`';
+    };
+
+    ## Build reference tables from structure.sql as TEMPORARY tables
+    $structure_file = CC_ROOT_DIR.'/classes/db/schema/structure.sql';
+    if (!file_exists($structure_file)) {
         $GLOBALS['main']->errorMessage('Unable to read classes/db/schema/structure.sql.');
+    } else {
+        $sql = file_get_contents($structure_file);
+        $rp  = preg_quote($ref_prefix, '/');
+        ## Clean up any scratch tables left behind by an interrupted previous run
+        $like = str_replace('_', '\\_', $ref_prefix.'CubeCart_').'%';
+        foreach ((array)$GLOBALS['db']->misc("SHOW TABLES LIKE '".$like."'") as $row) {
+            $GLOBALS['db']->query('DROP TABLE IF EXISTS `'.reset($row).'`');
+        }
+        foreach (preg_split('/;\s*#EOQ/i', $sql) as $stmt) {
+            $stmt = trim($stmt);
+            if ($stmt === '') continue;
+            $stmt = str_replace(array('CubeCart_', '{%DEFAULT_EN-XX%}'), array($ref_prefix.'CubeCart_', 'en-GB'), $stmt);
+            if (preg_match('/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`?('.$rp.'CubeCart_\w+)`?/i', $stmt, $m)) {
+                $temp = $m[1];
+                $GLOBALS['db']->query('DROP TABLE IF EXISTS `'.$temp.'`');
+                $GLOBALS['db']->query($stmt); // scratch reference table (real table: FULLTEXT-capable)
+                $ref_temp[strtolower(str_replace($ref_prefix, '', $temp))] = $temp;
+            } elseif (preg_match('/ALTER\s+TABLE\s+`?'.$rp.'CubeCart_\w+`?/i', $stmt) && preg_match('/\bADD\b/i', $stmt)) {
+                $GLOBALS['db']->query($stmt); // replay index/column alters onto the reference table
+            }
+            // non-DDL statements (seed data etc.) are irrelevant to structure and skipped
+        }
+        foreach ($ref_temp as $canonical => $temp) {
+            $cr = $GLOBALS['db']->misc('SHOW CREATE TABLE `'.$temp.'`');
+            if (!is_array($cr) || empty($cr[0])) { unset($ref_temp[$canonical]); continue; }
+            $create_sql = isset($cr[0]['Create Table']) ? $cr[0]['Create Table'] : end($cr[0]);
+            $ref_create[$canonical] = $create_sql;
+            $cols = array();
+            foreach (preg_split('/\r?\n/', $create_sql) as $line) {
+                if (preg_match('/^`([^`]+)`\s+(.+?),?$/', trim($line), $cm)) {
+                    $cols[strtolower($cm[1])] = array('name' => $cm[1], 'def' => rtrim($cm[2], ','));
+                }
+            }
+            $ref_cols[$canonical] = $cols;
+            $ref_idx[$canonical]  = $build_indexes($GLOBALS['db']->misc('SHOW INDEX FROM `'.$temp.'`'));
+        }
     }
 
-    $actual_map = array();
-    $all_fix_sql = array();
-    $found_tables = array();
-
+    ## Compare each live table against the reference
     foreach ($tables as $table) {
-        if (!preg_match('/^'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_/i', $table['Name'])) {
-            continue;
-        }
-        $found_tables[] = strtolower(str_replace($GLOBALS['config']->get('config', 'dbprefix'), '', $table['Name']));
+        if (!preg_match('/^'.$prefix.'CubeCart_/i', $table['Name'])) continue;
+        $canonical = strtolower(str_replace($prefix, '', $table['Name']));
+        $found_tables[] = $canonical;
+        $errors = array();
 
-        // Get index and map them
-        $indexes = $GLOBALS['db']->misc("SHOW INDEX FROM `".$table['Name']."`");
-        $index_errors = array();
-        $actual_full_indexes = array();
+        if (isset($ref_cols[$canonical])) {
+            // columns (existence check, matching prior behaviour)
+            $live_cols = array();
+            foreach ((array)$GLOBALS['db']->misc('SHOW COLUMNS FROM `'.$table['Name'].'`') as $c) {
+                $live_cols[strtolower($c['Field'])] = true;
+            }
+            foreach ($ref_cols[$canonical] as $cl => $ci) {
+                if (!isset($live_cols[$cl])) {
+                    $errors[] = sprintf($lang['maintain']['missing_column'], $table['Name'], $ci['name']);
+                    $all_fix_sql[] = 'ALTER TABLE `'.$table['Name'].'` ADD `'.$ci['name'].'` '.$ci['def'].'; #EOQ';
+                }
+            }
 
-        foreach ($indexes as $index) {
-            if ($index['Key_name']=='PRIMARY') {
-                $key_type = 'PRIMARY';
-            } elseif ($index['Index_type'] == 'FULLTEXT') {
-                $key_type = 'FULLTEXT';
-            } elseif ($index['Non_unique'] == '0') {
-                $key_type = 'UNIQUE KEY';
-            } else {
-                $key_type = 'KEY';
-            }
-            $table_name = $GLOBALS['config']->get('config', 'dbprefix').str_replace('cubecart', 'CubeCart', $index['Table']);
-            if (!isset($actual_map[$index['Table']][$index['Column_name']])) {
-                $actual_map[$index['Table']][$index['Column_name']] = array();
-            }
-            if (!in_array($key_type, $actual_map[$index['Table']][$index['Column_name']])) {
-                $actual_map[$index['Table']][$index['Column_name']][] = $key_type;
-            }
-            // Build full index definitions grouped by key name
-            if (!isset($actual_full_indexes[$index['Key_name']])) {
-                $actual_full_indexes[$index['Key_name']] = array('type' => $key_type, 'columns' => array());
-            }
-            $actual_full_indexes[$index['Key_name']]['columns'][(int)$index['Seq_in_index']] = '`'.$index['Column_name'].'`';
-        }
-
-        if (!empty($index_map) && isset($index_map[strtolower($index['Table'])])) {
-            foreach ($index_map[strtolower($index['Table'])] as $column => $expected_types) {
-                $table_name = $GLOBALS['config']->get('config', 'dbprefix').str_replace('cubecart', 'CubeCart', $index['Table']);
-                if (!isset($actual_map[$index['Table']][$column])) {
-                    $index_errors[] = sprintf($lang['maintain']['missing_index'], $table_name.'.'.$column, implode(', ', $expected_types));
+            // indexes
+            $rfx = $ref_idx[$canonical];
+            $lfx = $build_indexes($GLOBALS['db']->misc('SHOW INDEX FROM `'.$table['Name'].'`'));
+            $consumed = array();
+            foreach ($rfx as $n => $ix) {
+                if (isset($lfx[$n]) && $lfx[$n]['sig'] === $ix['sig']) continue; // already correct
+                if (isset($lfx[$n])) { // present but wrong columns/type -> recreate
+                    $errors[] = sprintf($lang['maintain']['missing_index'], $table['Name'].'.'.implode(', ', $ix['cols']), $type_label($ix['type']));
+                    $all_fix_sql[] = 'ALTER TABLE `'.$table['Name'].'` '.$drop_clause($n).', '.$add_clause($n, $ix).'; #EOQ';
+                    continue;
+                }
+                // missing by name: maybe the same index exists under a different name
+                $alt = null;
+                foreach ($lfx as $ln => $lx) {
+                    if (!isset($rfx[$ln]) && !in_array($ln, $consumed) && $lx['sig'] === $ix['sig']) { $alt = $ln; break; }
+                }
+                if ($alt !== null) {
+                    $consumed[] = $alt;
+                    $errors[] = sprintf($lang['maintain']['wrong_index_name'], $table['Name'], $alt, $n);
+                    $all_fix_sql[] = 'ALTER TABLE `'.$table['Name'].'` '.$drop_clause($alt).', '.$add_clause($n, $ix).'; #EOQ';
                 } else {
-                    $missing_types = array_diff($expected_types, $actual_map[$index['Table']][$column]);
-                    foreach ($missing_types as $missing_type) {
-                        $index_errors[] = sprintf($lang['maintain']['missing_index'], $table_name.'.'.$column, $missing_type);
-                    }
+                    $errors[] = sprintf($lang['maintain']['missing_index'], $table['Name'].'.'.implode(', ', $ix['cols']), $type_label($ix['type']));
+                    $all_fix_sql[] = 'ALTER TABLE `'.$table['Name'].'` '.$add_clause($n, $ix).'; #EOQ';
+                }
+            }
+            // redundant live indexes: an EXACT duplicate (same signature) of an expected index
+            // or of another live index. Leftmost-prefix indexes are intentionally NOT flagged.
+            foreach ($lfx as $ln => $lx) {
+                if ($ln === 'PRIMARY' || isset($rfx[$ln]) || in_array($ln, $consumed)) continue;
+                $dup = false;
+                foreach ($rfx as $rx) { if ($rx['sig'] === $lx['sig']) { $dup = true; break; } }
+                if (!$dup) { foreach ($lfx as $ln2 => $lx2) { if ($ln2 !== $ln && $lx2['sig'] === $lx['sig']) { $dup = true; break; } } }
+                if ($dup) {
+                    $loc = $table['Name'].'.'.(isset($lx['cols'][0]) ? $lx['cols'][0] : $ln);
+                    $errors[] = sprintf($lang['maintain']['duplicate_index'], $loc, $type_label($lx['type']));
+                    $all_fix_sql[] = 'ALTER TABLE `'.$table['Name'].'` DROP INDEX `'.$ln.'`; #EOQ';
                 }
             }
         }
 
-        // Redundant indexes: a non-unique index is redundant only when its columns
-        // are a leftmost prefix of another non-unique index. Comparing column names
-        // alone (ignoring position) gives false positives for composites like
-        // KEY (a, b) + KEY (b) — the second can't use the composite's leftmost prefix.
-        // UNIQUE/PRIMARY/FULLTEXT are skipped because shorter != redundant for them.
-        // Indexes declared in structure.sql are treated as intentional and skipped,
-        // so a canonical KEY (a) + KEY (a, b) pair won't be flagged.
-        $schema_table_key = strtolower(str_replace($GLOBALS['config']->get('config', 'dbprefix'), '', $table['Name']));
-        $schema_indexes = isset($full_indexes[$schema_table_key]) ? $full_indexes[$schema_table_key] : array();
-        $names = array_keys($actual_full_indexes);
-        sort($names);
-        foreach ($names as $a_name) {
-            $a = $actual_full_indexes[$a_name];
-            if ($a['type'] !== 'KEY') continue;
-            if (isset($schema_indexes[$a_name])) continue;
-            ksort($a['columns']);
-            $a_cols = array_values($a['columns']);
-            foreach ($names as $b_name) {
-                if ($a_name === $b_name) continue;
-                $b = $actual_full_indexes[$b_name];
-                if ($b['type'] !== 'KEY') continue;
-                ksort($b['columns']);
-                $b_cols = array_values($b['columns']);
-                if (count($a_cols) > count($b_cols)) continue;
-                if (array_slice($b_cols, 0, count($a_cols)) !== $a_cols) continue;
-                if (count($a_cols) === count($b_cols) && $a_name < $b_name) continue;
-                $index_errors[] = sprintf($lang['maintain']['duplicate_index'], $table_name.'.'.trim($a_cols[0], '`'), $a['type']);
-                break;
-            }
-        }
-
-        // Check for missing columns
-        $table_key = strtolower(str_replace($GLOBALS['config']->get('config', 'dbprefix'), '', $table['Name']));
-        if (isset($column_map[$table_key])) {
-            $actual_columns = $GLOBALS['db']->misc("SHOW COLUMNS FROM `".$table['Name']."`");
-            $actual_col_names = array();
-            if ($actual_columns) {
-                foreach ($actual_columns as $col) {
-                    $actual_col_names[] = strtolower($col['Field']);
-                }
-            }
-            foreach ($column_map[$table_key] as $col_name => $col_def) {
-                if (!in_array(strtolower($col_name), $actual_col_names)) {
-                    $index_errors[] = sprintf($lang['maintain']['missing_column'], $table['Name'], $col_name);
-                    $all_fix_sql[] = 'ALTER TABLE `'.$table['Name'].'` ADD `'.$col_name.'` '.$col_def.'; #EOQ';
-                }
-            }
-        }
-
-        // Generate fix SQL by comparing full index definitions
-        $table_lower = strtolower($index['Table']);
-        if (!empty($full_indexes[$table_lower])) {
-            $renamed_indexes = array();
-            foreach ($full_indexes[$table_lower] as $key_name => $expected_idx) {
-                $fix_table = '`'.$table['Name'].'`';
-                if (!isset($actual_full_indexes[$key_name])) {
-                    // Index name missing - check if same type+columns exist under a different name
-                    $expected_cols_norm = array_map(function($c) {
-                        return strtolower(trim(preg_replace('/\(\d+\)/', '', str_replace('`', '', trim($c)))));
-                    }, explode(',', $expected_idx['columns']));
-                    $old_name = null;
-                    foreach ($actual_full_indexes as $act_name => $act_idx) {
-                        if ($act_idx['type'] === $expected_idx['type']) {
-                            ksort($act_idx['columns']);
-                            $act_cols_norm = array_map(function($c) {
-                                return strtolower(trim(str_replace('`', '', $c)));
-                            }, array_values($act_idx['columns']));
-                            if ($expected_cols_norm === $act_cols_norm) {
-                                $old_name = $act_name;
-                                break;
-                            }
-                        }
-                    }
-                    if ($key_name === 'PRIMARY') {
-                        $all_fix_sql[] = 'ALTER TABLE '.$fix_table.' ADD PRIMARY KEY ('.$expected_idx['columns']; #EOQ');
-                    } elseif ($old_name !== null) {
-                        // Same index exists under wrong name - drop old, add with correct name
-                        $renamed_indexes[] = $old_name;
-                        $table_name = $GLOBALS['config']->get('config', 'dbprefix').str_replace('cubecart', 'CubeCart', $index['Table']);
-                        $index_errors[] = sprintf($lang['maintain']['wrong_index_name'], $table_name, $old_name, $key_name);
-                        $type_kw = ($expected_idx['type'] === 'FULLTEXT') ? 'FULLTEXT KEY' : $expected_idx['type'];
-                        $all_fix_sql[] = 'ALTER TABLE '.$fix_table.' DROP INDEX `'.$old_name.'`, ADD '.$type_kw.' `'.$key_name.'` ('.$expected_idx['columns'].'); #EOQ';
-                    } else {
-                        $type_kw = ($expected_idx['type'] === 'FULLTEXT') ? 'FULLTEXT KEY' : $expected_idx['type'];
-                        $all_fix_sql[] = 'ALTER TABLE '.$fix_table.' ADD '.$type_kw.' `'.$key_name.'` ('.$expected_idx['columns'].'); #EOQ';
-                    }
-                } elseif ($actual_full_indexes[$key_name]['type'] !== $expected_idx['type']) {
-                    // Index exists but wrong type
-                    if ($key_name === 'PRIMARY') {
-                        $all_fix_sql[] = 'ALTER TABLE '.$fix_table.' DROP PRIMARY KEY, ADD PRIMARY KEY ('.$expected_idx['columns'].'); #EOQ';
-                    } else {
-                        $type_kw = ($expected_idx['type'] === 'FULLTEXT') ? 'FULLTEXT KEY' : $expected_idx['type'];
-                        $all_fix_sql[] = 'ALTER TABLE '.$fix_table.' DROP INDEX `'.$key_name.'`, ADD '.$type_kw.' `'.$key_name.'` ('.$expected_idx['columns'].'); #EOQ';
-                    }
-                } else {
-                    // Index exists with correct type - check columns match
-                    $expected_cols = array_map(function($c) {
-                        return strtolower(trim(preg_replace('/\(\d+\)/', '', str_replace('`', '', trim($c)))));
-                    }, explode(',', $expected_idx['columns']));
-                    ksort($actual_full_indexes[$key_name]['columns']);
-                    $actual_cols = array_map(function($c) {
-                        return strtolower(trim(str_replace('`', '', $c)));
-                    }, array_values($actual_full_indexes[$key_name]['columns']));
-                    if ($expected_cols !== $actual_cols) {
-                        // Index has wrong columns - drop and recreate
-                        if ($key_name === 'PRIMARY') {
-                            $all_fix_sql[] = 'ALTER TABLE '.$fix_table.' DROP PRIMARY KEY, ADD PRIMARY KEY ('.$expected_idx['columns'].'); #EOQ';
-                        } else {
-                            $type_kw = ($expected_idx['type'] === 'FULLTEXT') ? 'FULLTEXT KEY' : $expected_idx['type'];
-                            $all_fix_sql[] = 'ALTER TABLE '.$fix_table.' DROP INDEX `'.$key_name.'`, ADD '.$type_kw.' `'.$key_name.'` ('.$expected_idx['columns'].'); #EOQ';
-                        }
-                    }
-                }
-            }
-            // Check for duplicate actual indexes that should be dropped
-            foreach ($actual_full_indexes as $act_name => $act_idx) {
-                if ($act_name === 'PRIMARY' || isset($full_indexes[$table_lower][$act_name]) || in_array($act_name, $renamed_indexes)) {
-                    continue; // Skip expected indexes, PRIMARY, and already-renamed indexes
-                }
-                ksort($act_idx['columns']);
-                $act_cols_norm = array_map(function($c) {
-                    return strtolower(trim(str_replace('`', '', $c)));
-                }, array_values($act_idx['columns']));
-                foreach ($full_indexes[$table_lower] as $exp_name => $exp_idx) {
-                    if ($act_idx['type'] !== $exp_idx['type']) {
-                        continue;
-                    }
-                    $exp_cols_norm = array_map(function($c) {
-                        return strtolower(trim(preg_replace('/\(\d+\)/', '', str_replace('`', '', trim($c)))));
-                    }, explode(',', $exp_idx['columns']));
-                    if ($act_cols_norm === $exp_cols_norm) {
-                        $all_fix_sql[] = 'ALTER TABLE '.$fix_table.' DROP INDEX `'.$act_name.'`; #EOQ';
-                        break;
-                    }
-                }
-            }
-        }
-
-        $table['Data_free'] = ($table['Data_free'] > 0) ? formatBytes($table['Data_free'], true) : '-';
-        $table_size   = $table['Data_length']+$table['Index_length'];
-        $data_length  = formatBytes($table_size);
-        $table['Data_length'] = ($table_size>0) ? $data_length['size'].' '.$data_length['suffix'] : '-';
+        $table['Data_free']    = ($table['Data_free'] > 0) ? formatBytes($table['Data_free'], true) : '-';
+        $table_size            = $table['Data_length'] + $table['Index_length'];
+        $data_length           = formatBytes($table_size);
+        $table['Data_length']  = ($table_size > 0) ? $data_length['size'].' '.$data_length['suffix'] : '-';
         $table['Name_Display'] = $GLOBALS['config']->get('config', 'dbdatabase').'.'.$table['Name'];
-        $table['errors'] = count($index_errors)>0 ? implode('<br>', $index_errors) : false;
+        $table['errors']       = count($errors) > 0 ? implode('<br>', $errors) : false;
         $smarty_data['tables'][] = $table;
     }
-    // Check for missing tables
+
+    ## Missing tables
     $missing_tables = array();
-    $prefix = $GLOBALS['config']->get('config', 'dbprefix');
-    foreach ($column_map as $expected_table => $cols) {
-        if (!in_array($expected_table, $found_tables)) {
-            $display_name = $prefix.str_replace('cubecart_', 'CubeCart_', $expected_table);
-            $missing_tables[] = sprintf($lang['maintain']['missing_table'], $display_name);
-            // Generate CREATE TABLE fix from structure.sql
-            foreach ($statements as $fix_stmt) {
-                if (preg_match('/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`?(\w+)`?/i', $fix_stmt, $fix_match)) {
-                    if (strtolower($fix_match[1]) === $expected_table) {
-                        $create_sql = trim($fix_stmt);
-                        if ($prefix) {
-                            $create_sql = str_replace('`'.$fix_match[1].'`', '`'.$display_name.'`', $create_sql);
-                        }
-                        $all_fix_sql[] = $create_sql.'; #EOQ';
-                        break;
-                    }
-                }
-            }
-        }
+    foreach ($ref_create as $canonical => $create_sql) {
+        if (in_array($canonical, $found_tables)) continue;
+        $live_name = $prefix.str_replace('cubecart_', 'CubeCart_', $canonical);
+        $missing_tables[] = sprintf($lang['maintain']['missing_table'], $live_name);
+        $fix = preg_replace('/^CREATE\s+(?:TEMPORARY\s+)?TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`?[^`\s(]+`?/i', 'CREATE TABLE IF NOT EXISTS `'.$live_name.'`', $create_sql, 1);
+        $fix = preg_replace('/\s+AUTO_INCREMENT=\d+/i', '', $fix);
+        $all_fix_sql[] = $fix.'; #EOQ';
     }
     if (!empty($missing_tables)) {
         $GLOBALS['smarty']->assign('MISSING_TABLES', $missing_tables);
     }
 
-    $GLOBALS['smarty']->assign('TABLES', $smarty_data['tables']);
+    ## Drop the scratch reference tables
+    foreach ($ref_temp as $temp) { $GLOBALS['db']->query('DROP TABLE IF EXISTS `'.$temp.'`'); }
+
+    $GLOBALS['smarty']->assign('TABLES', isset($smarty_data['tables']) ? $smarty_data['tables'] : array());
     if (!empty($all_fix_sql)) {
         $GLOBALS['smarty']->assign('INDEX_FIX_SQL', implode("\n", $all_fix_sql));
     }
