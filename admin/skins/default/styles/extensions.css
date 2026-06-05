@@ -3,6 +3,13 @@
 .ext-filter-btn { display:inline-block; padding:5px 12px; border:1px solid #ccc; border-radius:3px; background:#f5f5f5; color:#333; cursor:pointer; font-size:12px; text-decoration:none; }
 .ext-filter-btn:hover, .ext-filter-btn.active { background:#0072bc; color:#fff; border-color:#0072bc; }
 .ext-filter-btn .badge { display:inline-block; background:rgba(0,0,0,0.15); color:inherit; padding:1px 6px; border-radius:10px; font-size:11px; margin-left:4px; }
+.ext-toolbar-spacer { flex:1; }
+.ext-tabs { display:flex; gap:4px; margin:15px 0 0; border-bottom:2px solid #ddd; }
+.ext-tab { padding:8px 18px; border:none; background:none; color:#333; cursor:pointer; font-size:14px; border-bottom:2px solid transparent; margin-bottom:-2px; }
+.ext-tab:hover { color:#0072bc; }
+.ext-tab.active { color:#0072bc; border-bottom-color:#0072bc; font-weight:bold; }
+/* Two-class specificity so it beats the .ext-grid display:grid rule below. */
+.ext-tab-panel:not(.active) { display:none; }
 .ext-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:15px; margin-top:15px; }
 .ext-card { border:1px solid #ddd; border-radius:6px; padding:16px; background:#fff; position:relative; transition:box-shadow .2s; display:flex; flex-direction:column; }
 .ext-card:hover { box-shadow:0 2px 8px rgba(0,0,0,0.12); }
@@ -122,6 +129,10 @@
    .ext-search::placeholder { color:var(--text-muted); }
    .ext-filter-btn { background:var(--btn-bg); color:var(--btn-text); border-color:var(--btn-border); }
    .ext-filter-btn:hover, .ext-filter-btn.active { background:var(--primary); color:#fff; border-color:var(--primary-accent); }
+   .ext-tabs { border-bottom-color:var(--border); }
+   .ext-tab { color:var(--text); }
+   .ext-tab:hover, .ext-tab.active { color:var(--primary); }
+   .ext-tab.active { border-bottom-color:var(--primary); }
    .ext-card { background:var(--panel); border-color:var(--border); }
    .ext-card:hover { box-shadow:0 2px 12px rgba(0,0,0,0.35); }
    .ext-card-installed { background:rgba(92,184,92,0.08); border-color:rgba(92,184,92,0.08); }
