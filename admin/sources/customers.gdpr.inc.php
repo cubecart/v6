@@ -17,7 +17,7 @@ Admin::getInstance()->permissions('customers', CC_PERM_READ, true);
 $del_cid = array();
 
 ## Delete customers with order older than x months
-if (isset($_POST['customer_purge']) && ctype_digit($_POST['customer_purge'])) {
+if (isset($_POST['customer_purge']) && ctype_digit($_POST['customer_purge']) && Admin::getInstance()->permissions('customers', CC_PERM_DELETE)) {
     if ($purge_customers = $GLOBALS['db']->select('CubeCart_order_summary', "DISTINCT `customer_id`", "`order_date` < ".strtotime("-".(string)$_POST['customer_purge']." month"))) {
         foreach ($purge_customers as $purge_customer) {
             $del_cid[] = $purge_customer['customer_id'];
@@ -31,7 +31,7 @@ if (isset($_POST['customer_purge']) && ctype_digit($_POST['customer_purge'])) {
 }
 
 ## Delete customers with no orders
-if (isset($_POST['no_order_purge'])) {
+if (isset($_POST['no_order_purge']) && Admin::getInstance()->permissions('customers', CC_PERM_DELETE)) {
     if ($purge_customers = $GLOBALS['db']->misc('SELECT DISTINCT `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_customer`.`customer_id` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_customer` LEFT JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` ON `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary`.`customer_id` = `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_customer`.`customer_id` WHERE `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary`.`customer_id` IS NULL')) {
         foreach ($purge_customers as $purge_customer) {
             $del_cid[] = $purge_customer['customer_id'];
@@ -45,7 +45,7 @@ if (isset($_POST['no_order_purge'])) {
 }
 
 ## Delete guest accounts
-if (isset($_POST['delete_guests'])) {
+if (isset($_POST['delete_guests']) && Admin::getInstance()->permissions('customers', CC_PERM_DELETE)) {
     if ($purge_customers = $GLOBALS['db']->select('CubeCart_customer', 'customer_id', array('type' => 2))) {
         foreach ($purge_customers as $purge_customer) {
             $del_cid[] = $purge_customer['customer_id'];
