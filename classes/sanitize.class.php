@@ -81,6 +81,96 @@ class Sanitize
     }
 
     /**
+     * Sanitise rich (CKEditor) HTML against an allowlist of tags/attributes,
+     * removing script-bearing tags, event handlers and unsafe URI schemes while
+     * keeping safe formatting markup (GHSA-43f6-gfcf-wj9c).
+     * @param string $html
+     * @return string
+     */
+    public static function htmlClean($html)
+    {
+        if ($html === null || $html === '' || strpos($html, '<') === false) {
+            return (string)$html;
+        }
+        $allowed_tags = array(
+            'a','abbr','address','b','blockquote','br','caption','cite','code','col','colgroup',
+            'dd','del','div','dl','dt','em','figcaption','figure','h1','h2','h3','h4','h5','h6',
+            'hr','i','img','ins','li','mark','ol','p','pre','q','s','small','span','strike',
+            'strong','sub','sup','table','tbody','td','tfoot','th','thead','tr','u','ul'
+        );
+        $uri_attrs    = array('href','src','longdesc','cite','background','action','formaction','xlink:href','data','srcset');
+        $safe_schemes = array('http','https','mailto','tel');
+        // Disallowed tags whose contents are code/markup, not display text: drop the
+        // whole subtree. Any other disallowed tag is unwrapped (text kept).
+        $strip_with_content = array('script','style','title','textarea','noscript','iframe',
+            'object','embed','applet','template','head','link','meta','base','form','svg','math','xml');
+
+        $dom  = new DOMDocument();
+        $prev = libxml_use_internal_errors(true);
+        $dom->loadHTML(
+            '<?xml encoding="UTF-8"><div id="cc-sanitize-root">'.$html.'</div>',
+            LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR | LIBXML_NOWARNING
+        );
+        libxml_clear_errors();
+        libxml_use_internal_errors($prev);
+
+        $xpath = new DOMXPath($dom);
+        foreach (iterator_to_array($xpath->query('//*')) as $node) {
+            // Node may already have been detached as part of a removed ancestor subtree.
+            if ($node->parentNode === null) {
+                continue;
+            }
+            $tag = strtolower($node->nodeName);
+            if ($tag === 'div' && $node->getAttribute('id') === 'cc-sanitize-root') {
+                continue;
+            }
+            if (!in_array($tag, $allowed_tags, true)) {
+                if (in_array($tag, $strip_with_content, true)) {
+                    $node->parentNode->removeChild($node);
+                } else {
+                    while ($node->firstChild) {
+                        $node->parentNode->insertBefore($node->firstChild, $node);
+                    }
+                    $node->parentNode->removeChild($node);
+                }
+                continue;
+            }
+            if ($node->hasAttributes()) {
+                foreach (iterator_to_array($node->attributes) as $attr) {
+                    $name  = strtolower($attr->nodeName);
+                    $value = $attr->nodeValue;
+                    if (strpos($name, 'on') === 0 || $name === 'srcdoc') {
+                        $node->removeAttribute($attr->nodeName);
+                        continue;
+                    }
+                    if ($name === 'style') {
+                        if (preg_match('#(expression|javascript|vbscript|behaviou?r|@import|url\s*\()#i', (string)$value)) {
+                            $node->removeAttribute($attr->nodeName);
+                        }
+                        continue;
+                    }
+                    if (in_array($name, $uri_attrs, true)) {
+                        $test = preg_replace('/[\x00-\x20]+/', '', html_entity_decode((string)$value, ENT_QUOTES));
+                        if (preg_match('#^[a-z][a-z0-9+.\-]*:#i', $test, $sm)
+                            && !in_array(strtolower(rtrim($sm[0], ':')), $safe_schemes, true)) {
+                            $node->removeAttribute($attr->nodeName);
+                        }
+                    }
+                }
+            }
+        }
+
+        $root = $xpath->query('//*[@id="cc-sanitize-root"]')->item(0);
+        $out  = '';
+        if ($root) {
+            foreach ($root->childNodes as $child) {
+                $out .= $dom->saveHTML($child);
+            }
+        }
+        return $out;
+    }
+
+    /**
      * Clean all the global varaibles
      */
     public static function cleanGlobals()
