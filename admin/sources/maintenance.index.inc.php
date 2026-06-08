@@ -547,10 +547,19 @@ if (isset($_REQUEST['clearApiLog'])) {
 ########## Database ##########
 if (!empty($_POST['database'])) {
     if (is_array($_POST['tablename'])) {
-        foreach ($_POST['tablename'] as $value) {
-            $tableList[] = sprintf('`%s`', $value);
+        $valid_tables = array();
+        foreach ((array)$GLOBALS['db']->misc("SHOW TABLES") as $row) {
+            $valid_tables[] = reset($row);
         }
-        if(in_array($_POST['action'], array('REBUILD','CHECK','ANALYZE'))) {
+        $tableList = array();
+        foreach ($_POST['tablename'] as $value) {
+            // Only operate on tables that actually exist, and escape any backticks in
+            // the identifier so it cannot break out of the quoting (GHSA-qcx6-cg43-ffmx).
+            if (in_array($value, $valid_tables, true)) {
+                $tableList[] = sprintf('`%s`', str_replace('`', '``', $value));
+            }
+        }
+        if(!empty($tableList) && in_array($_POST['action'], array('REBUILD','CHECK','ANALYZE'))) {
         if ($_POST['action'] === 'REBUILD') {
             foreach ($tableList as $table) {
                 $GLOBALS['db']->query(sprintf("ALTER TABLE %s ENGINE=InnoDB;", $table));
