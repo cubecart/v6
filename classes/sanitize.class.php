@@ -98,7 +98,8 @@ class Sanitize
             'hr','i','img','ins','li','mark','ol','p','pre','q','s','small','span','strike',
             'strong','sub','sup','table','tbody','td','tfoot','th','thead','tr','u','ul'
         );
-        $uri_attrs    = array('href','src','longdesc','cite','background','action','formaction','xlink:href','data','srcset');
+        $uri_attrs    = array('href','src','longdesc','cite','background','action','formaction','xlink:href','data','srcset',
+            'dynsrc','lowsrc','ping','poster','usemap','classid','codebase','profile');
         $safe_schemes = array('http','https','mailto','tel');
         // Disallowed tags whose contents are code/markup, not display text: drop the
         // whole subtree. Any other disallowed tag is unwrapped (text kept).
