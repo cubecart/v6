@@ -1437,7 +1437,7 @@ class Cubecart
                     $vars['taxes'][] = array('name' => $GLOBALS['language']->basket['total_tax'], 'value' => $GLOBALS['tax']->priceFormat($order['total_tax']));
                 }
 
-                $GLOBALS['smarty']->assign('TAXES', $vars['taxes']);
+                $GLOBALS['smarty']->assign('TAXES', $vars['taxes'] ?? array());
                 $order['state'] = getStateFormat($order['state']);
                 $order['state_d'] = getStateFormat($order['state_d']);
                 $order['country'] = getCountryFormat($order['country']);
@@ -3066,7 +3066,7 @@ class Cubecart
                     } else {
                         $vars['taxes'][] = array('name' => $GLOBALS['language']->basket['total_tax'], 'value' => $GLOBALS['tax']->priceFormat($order['total_tax']));
                     }
-                    $GLOBALS['smarty']->assign('TAXES', $vars['taxes']);
+                    $GLOBALS['smarty']->assign('TAXES', $vars['taxes'] ?? array());
                     $order['withdrawal_eligible'] = $this->_withdrawalEligible($order['status'], $order['country'], $order['order_date']);
                     $order['withdrawal_url'] = $order['withdrawal_eligible'] ? $GLOBALS['storeURL'].'/index.php?_a=withdraw&cart_order_id='.$order['cart_order_id'] : '';
                     $order['state']  = getStateFormat($order['state']);
@@ -3232,7 +3232,7 @@ class Cubecart
                     } else {
                         $vars['taxes'][] = array('name' => $GLOBALS['language']->basket['total_tax'], 'value' => $GLOBALS['tax']->priceFormat($order['total_tax']));
                     }
-                    $GLOBALS['smarty']->assign('TAXES', $vars['taxes']);
+                    $GLOBALS['smarty']->assign('TAXES', $vars['taxes'] ?? array());
                     $order['withdrawal_eligible'] = $this->_withdrawalEligible($order['status'], $order['country'], $order['order_date']);
                     $order['withdrawal_url'] = $order['withdrawal_eligible'] ? $GLOBALS['storeURL'].'/index.php?_a=withdraw&cart_order_id='.$order['cart_order_id'] : '';
                     $order['country'] = getCountryFormat($order['country']);

@@ -167,6 +167,7 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
     }
 
     ## Update Permissions
+    if (!empty($admin_id)) {
     $GLOBALS['db']->delete('CubeCart_permissions', array('admin_id' => $admin_id));
     if (isset($_POST['permission']) && is_array($_POST['permission']) && Admin::getInstance()->permissions('users', CC_PERM_FULL)) {
         foreach ($_POST['permission'] as $section => $mask) {
@@ -182,6 +183,7 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
             $GLOBALS['db']->insert('CubeCart_permissions', $record);
         }
         $updated = true;
+    }
     }
 
     if($logout) {

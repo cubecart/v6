@@ -1514,7 +1514,7 @@ class Order
                     'hash'   => $hash
                 );
             } else {
-                $product = $GLOBALS['catalogue']->getProductData($item['id'], 1, false, 10, 1, false, $item['options_identifier']);
+                $product = $GLOBALS['catalogue']->getProductData($item['id'], 1, false, 10, 1, false, $item['options_identifier'] ?? '');
             }
 
             $record = array(
@@ -1531,9 +1531,9 @@ class Order
                 'custom'   => (isset($product['custom'])) ? $product['custom'] : null,
                 'coupon_id'   => (isset($product['coupon_id'])) ? $product['coupon_id'] : 0,
                 'hash'    => $hash,
-                'options_identifier' => $item['options_identifier'],
-                'options_array' => serialize($item['options']),
-                'product_options' => $this->serializeOptions($item['options'], $item['id'])
+                'options_identifier' => $item['options_identifier'] ?? '',
+                'options_array' => serialize($item['options'] ?? array()),
+                'product_options' => $this->serializeOptions($item['options'] ?? array(), $item['id'])
             );
 
 
@@ -1612,12 +1612,12 @@ class Order
             'total_tax'  => $this->_basket['total_tax'],
             'total'   => $this->_basket['total'],
             ## Shipping
-            'ship_method' => $this->_basket['shipping']['name'],
+            'ship_method' => $this->_basket['shipping']['name'] ?? '',
             'weight' => $this->_basket['weight'],
-            'ship_product' => $this->_basket['shipping']['product'],
-            'shipping'  => ($this->_basket['shipping']['value']>0) ? $this->_basket['shipping']['value'] : '0.00',
-            'shipping_tax'  => $this->_basket['shipping']['tax']['amount'],
-            'shipping_tax_rate'  => $this->_basket['shipping']['tax']['tax_percent'],
+            'ship_product' => $this->_basket['shipping']['product'] ?? 0,
+            'shipping'  => (($this->_basket['shipping']['value'] ?? 0)>0) ? $this->_basket['shipping']['value'] : '0.00',
+            'shipping_tax'  => $this->_basket['shipping']['tax']['amount'] ?? 0,
+            'shipping_tax_rate'  => $this->_basket['shipping']['tax']['tax_percent'] ?? 0,
             # Misc
             'phone'   => $phone,
             'mobile'   => $mobile,

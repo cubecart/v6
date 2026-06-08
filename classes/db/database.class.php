@@ -439,7 +439,9 @@ class Database_Contoller
             sort($tableName);
             $this->_query = "SHOW TABLE STATUS LIKE '".$tableName[0]."'";
             $this->_execute(false);
-            $tables[] = $this->_result[0];
+            if (isset($this->_result[0])) {
+                $tables[] = $this->_result[0];
+            }
         }
 
         return ($tables) ? $tables : false;

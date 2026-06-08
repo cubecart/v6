@@ -32,7 +32,7 @@ if (isset($_POST['month_purge']) && ctype_digit($_POST['month_purge'])) {
     }
 }
 
-if (isset($_POST['search']) && !is_array($_POST['multi-order'])) {
+if (isset($_POST['search']) && !is_array($_POST['multi-order'] ?? null)) {
     httpredir('?_g=orders&'.http_build_query($_POST));
 }
 

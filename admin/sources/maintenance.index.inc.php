@@ -937,6 +937,7 @@ if (isset($database_result) && $database_result) {
 
     ## Compare each live table against the reference
     foreach ($tables as $table) {
+        if (!is_array($table) || !isset($table['Name'])) continue;
         if (!preg_match('/^'.$prefix.'CubeCart_/i', $table['Name'])) continue;
         $canonical = strtolower(str_replace($prefix, '', $table['Name']));
         $found_tables[] = $canonical;
