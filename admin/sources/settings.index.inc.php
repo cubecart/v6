@@ -28,7 +28,10 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
         } else {
             $_POST['config'] = array_merge($_POST['config'], $oid_data);
             $fields_find = array('cart_order_id');
-            $field_replace = $_POST['config']['oid_col'];
+            // setOrderFormat() only ever returns 'id' or 'custom_oid', but constrain to the
+            // known order-id columns so no arbitrary identifier can reach the REPLACE below,
+            // even if this value ever became user-influenced again (GHSA-rp87-r6wj-99jc).
+            $field_replace = in_array($_POST['config']['oid_col'], array('id', 'custom_oid', 'cart_order_id'), true) ? $_POST['config']['oid_col'] : 'cart_order_id';
         }
     } else {
         $_POST['config'] = array_merge(
