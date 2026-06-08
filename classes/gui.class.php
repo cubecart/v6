@@ -1796,13 +1796,37 @@ class GUI
         if (!empty($message)) {
             if (is_array($message)) {
                 foreach ($message as $text) {
-                    $gui_message[$type][md5($text)] = strip_tags($text, '<a>');
+                    $gui_message[$type][md5($text)] = $this->_sanitizeAnchors(strip_tags($text, '<a>'));
                 }
             } else {
-                $gui_message[$type][md5($message)] = strip_tags($message, '<a>');
+                $gui_message[$type][md5($message)] = $this->_sanitizeAnchors(strip_tags($message, '<a>'));
             }
             $GLOBALS['session']->set('GUI_MESSAGE', $gui_message);
         }
+    }
+
+    /**
+     * Rebuild anchor tags keeping only a scheme-validated href, dropping every
+     * other attribute (event handlers etc.) so allowing <a> in messages cannot
+     * be abused for XSS (GHSA-v55x-fh73-29vq).
+     * @param string $html
+     * @return string
+     */
+    private function _sanitizeAnchors($html)
+    {
+        return preg_replace_callback('/<a\b[^>]*>/i', function ($m) {
+            if (preg_match('/\bhref\s*=\s*(?:"([^"]*)"|\'([^\']*)\')/i', $m[0], $h)) {
+                $href = trim(html_entity_decode((isset($h[1]) && $h[1] !== '') ? $h[1] : ($h[2] ?? ''), ENT_QUOTES));
+                $test = preg_replace('/[\x00-\x20]+/', '', $href);
+                // If the href declares a scheme, only permit safe ones; relative links pass through.
+                if (!preg_match('#^[a-z][a-z0-9+.\-]*:#i', $test, $sm) || in_array(strtolower(rtrim($sm[0], ':')), array('http', 'https', 'mailto'), true)) {
+                    if ($href !== '') {
+                        return '<a href="'.htmlspecialchars($href, ENT_QUOTES).'">';
+                    }
+                }
+            }
+            return '<a>';
+        }, $html);
     }
 
     /**
