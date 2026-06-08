@@ -37,8 +37,7 @@ $features = array(
     '4164' => 'Core fixes',
     '4165' => 'Image upload handling improved; the redundant <code>image_upload_format</code> setting is removed',
     '4166' => 'Free / paid handling',
-    '4152' => 'Withdrawal-request email macros and related tweaks',
-    'misc'  => 'Misc error fixes across admin and storefront',
+    '4152' => 'Withdrawal-request email macros and related tweaks'
 );
 $security = array('GHSA-qcx6-cg43-ffmx', 'GHSA-hvmw-v8gc-4c29', 'GHSA-43f6-gfcf-wj9c', 'GHSA-v55x-fh73-29vq', 'GHSA-r376-2wr5-g9qx', 'GHSA-8mmq-8hpq-2h23', 'GHSA-cq6g-rf5m-42xg');
-$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 16, $notes, $security);
+$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 8, $notes, $security);
