@@ -243,7 +243,7 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
     }
 }
 
-if (isset($_GET['delete-note']) && isset($_GET['order_id'])) {
+if (isset($_GET['delete-note']) && isset($_GET['order_id']) && Admin::getInstance()->permissions('orders', CC_PERM_DELETE)) {
     $GLOBALS['db']->delete('CubeCart_order_notes', array('cart_order_id' => $_GET['order_id'], 'note_id' => $_GET['delete-note']));
     httpredir(currentPage(array('delete-note', 'print_hash')), 'notes');
 }
