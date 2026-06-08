@@ -562,7 +562,7 @@ if (isset($_GET['action'])) {
                 }
                 $GLOBALS['smarty']->assign('CARD_DATA', $smarty_data['card_data']);
 
-                $GLOBALS['smarty']->assign('CARD_DELETE', '?_g=orders&action=edit&order_id='.$summary[0]['cart_order_id']."&delete_card=1#credit_card");
+                $GLOBALS['smarty']->assign('CARD_DELETE', '?_g=orders&action=edit&order_id='.$summary[0]['cart_order_id']."&delete_card=1&token=".SESSION_TOKEN."#credit_card");
                 $GLOBALS['smarty']->assign('DISPLAY_CARD', true);
             }
             // Load addresses

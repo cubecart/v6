@@ -253,7 +253,7 @@
                      {/if}
                      {if $product.accesskey}
                      <div class="download_info"><i class="fa fa-download"></i>{$STORE_URL}/index.php?_a=download&amp;s={$product.stream}&amp;accesskey={$product.accesskey}<br>
-                     <a href="{$VAL_SELF}&reset_id={$product.id}"><i class="fa fa-recycle"></i>{$LANG.orders.reset_download_link}</a> <span class="{if $product.expired}link_expired{else}link_active{/if}">({$LANG.common.downloads}: {$product.downloads}/{$CONFIG.download_count} {$LANG.account.download_expires}: {$product.expire})</span></div>
+                     <a href="{$VAL_SELF}&reset_id={$product.id}&token={$SESSION_TOKEN}"><i class="fa fa-recycle"></i>{$LANG.orders.reset_download_link}</a> <span class="{if $product.expired}link_expired{else}link_active{/if}">({$LANG.common.downloads}: {$product.downloads}/{$CONFIG.download_count} {$LANG.account.download_expires}: {$product.expire})</span></div>
                      {/if}
                      </td>
                      <td>{$product.product_code}</td>

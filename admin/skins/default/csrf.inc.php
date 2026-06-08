@@ -9,7 +9,9 @@ $csrf_maps = array(
     array('_g'=>'customers','action'=>'delete','customer_id'=>false), // Delete customer
     array('_g'=>'customers','action'=>'edit','customer_id'=>false, 'delete_addr'=>false), // Delete address
     array('_g'=>'orders','delete'=>false), // Delete order
-    array('_g'=>'orders','action'=>'edit','order_id'=>false, 'delete-note'=>false), // Delete order note
+    array('_g'=>'orders','order_id'=>false, 'delete-note'=>false), // Delete order note
+    array('_g'=>'orders','reset_id'=>false), // Reset download counter
+    array('_g'=>'orders','delete_card'=>false), // Delete stored payment card
     array('_g'=>'customers','node'=>'email','action'=>'delete','newsletter_id'=>false), // Delete newsletter
     array('_g'=>'customers','node'=>'subscribers','delete'=>false), // Delete subscriber
     array('_g'=>'categories','delete'=>false), // Delete category
