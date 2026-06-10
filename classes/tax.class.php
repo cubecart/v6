@@ -112,20 +112,23 @@ class Tax
                 }
             }
             
-            if (isset($taxes['inherited'])) {
-                if ($taxes['inherited']['value']>0) {
-                    foreach ($taxes as $tax_name => $tax) {
-                        if ($tax_name!=='inherited') {
-                            $inherited_split = ($tax['value']/$total_standard_taxes) * $taxes['inherited']['value'];
-                            $tax_value = $tax['value']+$inherited_split;
-                            if (round($tax_value, 2) == 0) continue;
-                            $display_taxes[] = array('name' => $tax_name, 'value' => $this->priceFormat($tax_value), 'included' => $taxes_included);
-                            $basket_taxes[] = array('tax_id' => $tax['tax_id'], 'amount' => $tax_value);
-                        }
+            if (isset($taxes['inherited']) && $taxes['inherited']['value'] > 0 && $total_standard_taxes > 0) {
+                // Distribute the inherited tax proportionally across the standard taxes.
+                foreach ($taxes as $tax_name => $tax) {
+                    if ($tax_name!=='inherited') {
+                        $inherited_split = ($tax['value']/$total_standard_taxes) * $taxes['inherited']['value'];
+                        $tax_value = $tax['value']+$inherited_split;
+                        if (round($tax_value, 2) == 0) continue;
+                        $display_taxes[] = array('name' => $tax_name, 'value' => $this->priceFormat($tax_value), 'included' => $taxes_included);
+                        $basket_taxes[] = array('tax_id' => $tax['tax_id'], 'amount' => $tax_value);
                     }
                 }
             } else {
+                // No (positive) inherited tax to distribute — display each tax as-is.
+                // A zero-value 'inherited' entry is skipped by the round() guard below,
+                // so a tariff (or any standard tax) sitting alongside it still shows.
                 foreach ($taxes as $tax_name => $tax) {
+                    if ($tax_name==='inherited') continue;
                     if (round($tax['value'], 2) == 0) continue;
                     $display_taxes[] = array('name' => $tax_name, 'value' => $this->priceFormat($tax['value']), 'included' => $taxes_included);
                     $basket_taxes[] = array('tax_id' => $tax['tax_id'], 'amount' => $tax['value']);
