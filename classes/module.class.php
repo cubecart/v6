@@ -336,10 +336,17 @@ class Module
 
 		$GLOBALS['smarty']->assign('CONFIG', $GLOBALS['config']->get('config'));
 
-		// Zone selector + packaging tabs (gateway and shipping only)
-		if ($zones && isset($_GET['type']) && in_array($_GET['type'], array('gateway', 'shipping'))) {
+		// Zone selector + packaging tabs. Country zones apply to gateway and
+		// shipping modules, plus plugin-based gateways (a plugin that ships a
+		// gateway.class.php) — those are the only modules whose countries /
+		// disabled_countries settings are actually enforced at checkout
+		// (see Cubecart::_gateways() and Cart::loadShippingModules()). Packaging
+		// remains shipping-only.
+		$type = $_GET['type'] ?? '';
+		$is_gateway_plugin = ($type === 'plugins' && file_exists($this->_path.'/gateway.class.php'));
+		if ($zones && (in_array($type, array('gateway', 'shipping')) || $is_gateway_plugin)) {
 			$this->_loadZones();
-			if ($_GET['type'] === 'shipping') {
+			if ($type === 'shipping') {
 				$this->_loadPackaging();
 			}
 			$GLOBALS['gui']->changeTemplateDir($this->_path.'/skin');
