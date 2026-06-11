@@ -139,7 +139,7 @@ if (!strstr($_SERVER['SCRIPT_NAME'], '/setup/')) {
             $req_host = strtolower($_SERVER['HTTP_HOST'] ?? '');
             $base = preg_replace('/^www\./', '', $std_host);
             if ($req_host !== '' && ($req_host === $std_host || $req_host === $base || ($base !== '' && str_ends_with($req_host, '.'.$base)))) {
-                $url = ((parse_url($url, PHP_URL_SCHEME) ?: 'https').'://'.$req_host);
+                $url = ((parse_url($url, PHP_URL_SCHEME) ?: 'https').'://'.$req_host.(string)parse_url($url, PHP_URL_PATH));
             }
         }
     } else {
