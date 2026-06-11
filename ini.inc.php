@@ -131,6 +131,16 @@ if (!strstr($_SERVER['SCRIPT_NAME'], '/setup/')) {
         // transactional email links (GHSA-7pvc-gxc4-chmc).
         if (!empty($glob['standard_url'])) {
             $url = rtrim($glob['standard_url'], '/');
+            // Multi-domain / per-language subdomain stores: allow the store URL
+            // to follow the request host, but ONLY when that host is the configured
+            // host or a subdomain of the same registrable domain. Any other (forged)
+            // Host stays pinned to standard_url so it cannot poison email links.
+            $std_host = (string)parse_url($url, PHP_URL_HOST);
+            $req_host = strtolower($_SERVER['HTTP_HOST'] ?? '');
+            $base = preg_replace('/^www\./', '', $std_host);
+            if ($req_host !== '' && ($req_host === $std_host || $req_host === $base || ($base !== '' && str_ends_with($req_host, '.'.$base)))) {
+                $url = ((parse_url($url, PHP_URL_SCHEME) ?: 'https').'://'.$req_host);
+            }
         }
     } else {
         ## If global.inc.php doesn't exists, then we should probably run the installer
