@@ -100,10 +100,16 @@ class Language
             }
             
         }
-        $url = parse_url(CC_STORE_URL);
+        // Domain-based language selection keys off the actual request host, not
+        // CC_STORE_URL — the latter is pinned to standard_url for email-link
+        // security (GHSA-7pvc-gxc4-chmc) and so no longer reflects language
+        // subdomains. The host is only ever matched against the CubeCart_domains
+        // whitelist, so a forged Host header cannot do anything beyond (at worst)
+        // selecting an already-configured language.
+        $req_host = !empty($_SERVER['HTTP_HOST']) ? strtolower($_SERVER['HTTP_HOST']) : parse_url(CC_STORE_URL, PHP_URL_HOST);
 
-        if(defined('ADMIN_CP') && ADMIN_CP == false && !empty($d) && isset($d[$url['host']]) && !empty($d[$url['host']])) {
-            $this->_language = $d[$url['host']];
+        if(defined('ADMIN_CP') && ADMIN_CP == false && !empty($d) && isset($d[$req_host]) && !empty($d[$req_host])) {
+            $this->_language = $d[$req_host];
         } else if (isset($GLOBALS['session'])) {
             //If the language is trying to be changed try to change it
             if (((isset($_POST['set_language']) && ($switch = $_POST['set_language']) || isset($_GET['set_language']) && ($switch = $_GET['set_language']))) && $this->_valid($switch)) {
