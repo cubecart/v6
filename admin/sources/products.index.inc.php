@@ -330,7 +330,9 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
             }
             $where = array('group_id' => (int)$group_id, 'product_id' => (int)$product_id);
             
-            if (empty($group['price'])) {
+            // A blank price means "no group price" — skip it so the row (which
+            // was deleted above) is not recreated. A deliberate 0.00 is allowed.
+            if (trim((string)$group['price']) === '') {
                 continue;
             }
             $GLOBALS['db']->insert('CubeCart_pricing_group', array_merge($where, $record));
@@ -990,8 +992,11 @@ if (isset($_GET['action'])) {
                         $group['price']   = $price[0]['price'];
                         $group['sale_price'] = $price[0]['sale_price'];
                     } else {
-                        $group['price']   = $result[0]['price'] ?? 0.00;
-                        $group['sale_price'] = $result[0]['sale_price'] ?? 0.00;
+                        // No group price set for this product: leave the fields
+                        // blank so an empty submission is skipped on save rather
+                        // than inserting a 0.00 price row.
+                        $group['price']   = '';
+                        $group['sale_price'] = '';
                         $tax_inclusive = $result[0]['tax_inclusive'] ?? 0;
                     }
                 }
