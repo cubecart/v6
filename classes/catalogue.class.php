@@ -1474,7 +1474,7 @@ class Catalogue
             $group_id = 0;
 
             // Check for group pricing
-            if ($retail_only === false) {
+            if ($retail_only === false && empty($product_data['ctrl_priced'])) {
                 if (isset($GLOBALS['user']) && $GLOBALS['user']->is() && ($memberships = $GLOBALS['user']->getMemberships()) !== false) {
                     $group_id = array();
                     foreach ($memberships as $membership) {
@@ -1523,6 +1523,9 @@ class Catalogue
                     }
                     unset($prices, $price);
                 }
+                // Mark priced so a second pricing pass cannot re-apply
+                // (and compound) the percentage group/category discount.
+                $product_data['ctrl_priced'] = true;
             }
 
             foreach ($GLOBALS['hooks']->load('class.cubecart.product_postgroup_price') as $hook) {
