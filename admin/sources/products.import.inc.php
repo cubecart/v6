@@ -88,6 +88,9 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
             $import_manuf_cache = array(); // name(lower) => id
             $import_image_cache = array(); // path|name => file_id
             $import_cat_cache = array();   // parent_id|name => cat_id
+            // Initialise the batched-insert buffers so the flush below always
+            // receives an array, even for a chunk with no images/categories/SEO rows.
+            $batch_cat_index = $batch_image_index = $batch_seo_urls = array();
             while (($data = fgetcsv($fp, false, str_replace('tab', "\t", $delimiter))) !== false) {
                 $row++;
                 // Reset row-scoped accumulators so values from the previous
@@ -342,6 +345,9 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
         $out = null;
         ## Display interstitial page before actually importing, either displaying example data from source, or a means to map the CSV to the database columns
         $delimiter	= (isset($_POST['delimiter']) && !empty($_POST['delimiter'])) ? $_POST['delimiter'] : ',';
+        // Normalise the 'tab' keyword to an actual tab so fgetcsv()/fputcsv()
+        // below receive a single-character separator (PHP 8 type requirement).
+        $delimiter	= str_replace('tab', "\t", $delimiter);
 
         while (!feof($in)) {
             if (($rowCount % $splitSize) == 0) {
