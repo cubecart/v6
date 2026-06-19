@@ -1612,7 +1612,7 @@ class Cart
      */
     public static function updateProductDataWithOption(array &$product, array &$option)
     {
-        if ($option['option_price'] > 0) {
+        if (($option['option_price'] ?? 0) > 0) {
             $option['price_display'] = '';
             $display_option_tax = $option['option_price'];
             if (!empty($product['remove_options_tax'])) {
@@ -1637,7 +1637,7 @@ class Cart
             $option['price_display'] .= $GLOBALS['tax']->priceFormat(abs($display_option_tax), true);
         }
         $product['product_weight'] += (isset($option['option_weight'])) ? $option['option_weight'] : 0;
-        if ($option['option_weight']>0) {
+        if (($option['option_weight'] ?? 0)>0) {
             $product['digital'] = false;
         }
     }

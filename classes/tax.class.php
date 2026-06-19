@@ -95,6 +95,9 @@ class Tax
         $GLOBALS['cart']->set('order_taxes', false);
         $taxes = array();
         $taxes_included = !empty($GLOBALS['cart']->basket['has_inclusive_tax']);
+        // Always defined so the set()/assign() below are safe even when every
+        // applied tax rounds to zero and the loops below add nothing.
+        $display_taxes = $basket_taxes = array();
         if (!empty($this->_tax_table_applied)) {
             foreach ($this->_tax_table_applied as $tax_id => $tax_name) {
                 if(isset($taxes[$tax_name])) {
@@ -647,10 +650,10 @@ class Tax
     {
         $subtotal = $tax_total = 0;
         foreach ($GLOBALS['cart']->basket['contents'] as $hash => $item) {
-            if ($item['total_price_each']>0) {
+            if (!empty($item['total_price_each']) && $item['total_price_each']>0) {
                 $subtotal += ($item['total_price_each'] * $item['quantity']);
             }
-            if ($item['tax_each']['amount']>0) {
+            if (!empty($item['tax_each']['amount']) && $item['tax_each']['amount']>0) {
                 $tax_total += $item['tax_each']['amount'];
             }
         }
@@ -667,7 +670,7 @@ class Tax
     {
         //Just in case we have a currency symbol, keeps negative sign, hoping not to have scientific notation
         if ($price && is_string($price)) {
-            $price = (double)filter_var($price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $price = (float)filter_var($price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         }
         return $price;
     }

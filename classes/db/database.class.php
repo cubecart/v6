@@ -436,6 +436,7 @@ class Database_Contoller
         $tableNames = $this->_result;
         $tables = array();
         foreach ($tableNames as $tableName) {
+            if (!is_array($tableName) || empty($tableName)) continue;
             sort($tableName);
             $this->_query = "SHOW TABLE STATUS LIKE '".$tableName[0]."'";
             $this->_execute(false);
