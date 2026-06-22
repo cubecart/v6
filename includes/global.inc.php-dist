@@ -63,6 +63,10 @@ $glob['redis_db'] 		= 0;
 $glob['session_save_path'] = '';
 // Set your own session save handler e.g. memcached
 $glob['session_save_handler'] = '';
+// Back office idle timeout in seconds. An admin session is ended after this
+// much inactivity. Defaults to 900 (15 minutes) when unset. Increase for longer
+// sessions, e.g. 14400 for 4 hours. Kept short by default for security.
+//$glob['admin_idle_timeout'] = 900;
 
 // Safety and maintenance
 // Set to true to disable hooks and code snippets, 'hooks' to disable code hooks, 'snippets' to disable code snippets

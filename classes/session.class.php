@@ -863,8 +863,12 @@ class Session
             $current = false;
         }
 
-        // Back office idle timeout: 1 hour
-        if ($current !== false && CC_IN_ADMIN && !empty($current[0]['admin_id']) && (time() - (int)$current[0]['session_last']) > 3600) {
+        // Back office idle timeout. Defaults to 15 minutes; override with
+        // $glob['admin_idle_timeout'] (seconds) in includes/global.inc.php.
+        $admin_idle_timeout = (isset($GLOBALS['glob']['admin_idle_timeout']) && (int)$GLOBALS['glob']['admin_idle_timeout'] > 0)
+            ? (int)$GLOBALS['glob']['admin_idle_timeout']
+            : 900;
+        if ($current !== false && CC_IN_ADMIN && !empty($current[0]['admin_id']) && (time() - (int)$current[0]['session_last']) > $admin_idle_timeout) {
             $GLOBALS['db']->update('CubeCart_admin_users', array('session_id' => ''), array('admin_id' => (int)$current[0]['admin_id']));
             $GLOBALS['db']->delete('CubeCart_sessions', array('session_id' => $cookie_id), false);
             $current = false;
