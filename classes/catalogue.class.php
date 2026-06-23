@@ -1778,6 +1778,14 @@ class Catalogue
 
                     if(!$GLOBALS['config']->get('config', 'block_thumbs')) {
                         if (!file_exists($image)) {
+                            ## Only attempt a thumbnail for genuine, decodable images.
+                            ## Non-image files dropped into images/source (e.g. an
+                            ## index.php) would otherwise fail in GD and surface a
+                            ## "not enough memory"/corrupt error - serve the source
+                            ## (or placeholder) instead without the scary message.
+                            if (@getimagesize($source) === false) {
+                                return $this->imagePath($input, 'source', $path, $return_placeholder);
+                            }
                             ## Check if the target folder exists - if not, create it!
                             if (!file_exists(dirname($image))) {
                                 mkdir(dirname($image), chmod_writable(), true);
