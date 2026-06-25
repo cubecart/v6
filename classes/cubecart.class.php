@@ -1804,7 +1804,16 @@ class Cubecart
             $inclusive_ratio = 1.0;
             if (!empty($GLOBALS['cart']->basket['has_inclusive_tax']) && $GLOBALS['cart']->getSubTotal() > 0) {
                 $shipping_tax = (float)($GLOBALS['cart']->basket['shipping']['tax']['amount'] ?? 0);
-                $pre_discount_product_tax = $GLOBALS['tax']->_total_tax_add - $shipping_tax;
+                // Import tariffs are genuinely additive (charged on top), not embedded in the
+                // inclusive price, so they must not gross up the displayed subtotal. Exclude the
+                // 'i'-prefixed tariff keys from the ratio. See GH issue: inclusive export display.
+                $tariff_tax = 0;
+                foreach ($GLOBALS['tax']->_tax_table_add as $tid => $amt) {
+                    if (is_string($tid) && isset($tid[0]) && $tid[0] === 'i') {
+                        $tariff_tax += $amt;
+                    }
+                }
+                $pre_discount_product_tax = $GLOBALS['tax']->_total_tax_add - $shipping_tax - $tariff_tax;
                 $inclusive_ratio = ($GLOBALS['cart']->getSubTotal() + $pre_discount_product_tax) / $GLOBALS['cart']->getSubTotal();
             }
 

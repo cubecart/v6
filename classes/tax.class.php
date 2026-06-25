@@ -122,7 +122,7 @@ class Tax
                         $inherited_split = ($tax['value']/$total_standard_taxes) * $taxes['inherited']['value'];
                         $tax_value = $tax['value']+$inherited_split;
                         if (round($tax_value, 2) == 0) continue;
-                        $display_taxes[] = array('name' => $tax_name, 'value' => $this->priceFormat($tax_value), 'included' => $taxes_included);
+                        $display_taxes[] = array('name' => $tax_name, 'value' => $this->priceFormat($tax_value), 'included' => ($taxes_included && strpos((string)$tax['tax_id'], 'i') !== 0));
                         $basket_taxes[] = array('tax_id' => $tax['tax_id'], 'amount' => $tax_value);
                     }
                 }
@@ -133,7 +133,7 @@ class Tax
                 foreach ($taxes as $tax_name => $tax) {
                     if ($tax_name==='inherited') continue;
                     if (round($tax['value'], 2) == 0) continue;
-                    $display_taxes[] = array('name' => $tax_name, 'value' => $this->priceFormat($tax['value']), 'included' => $taxes_included);
+                    $display_taxes[] = array('name' => $tax_name, 'value' => $this->priceFormat($tax['value']), 'included' => ($taxes_included && strpos((string)$tax['tax_id'], 'i') !== 0));
                     $basket_taxes[] = array('tax_id' => $tax['tax_id'], 'amount' => $tax['value']);
                 }
             }
