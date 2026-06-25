@@ -106,18 +106,23 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
             $record['digital'] = 1;
             $record['digital_path'] = $_POST['digital_path'];
         } else {
-            if (!isset($_POST['download'])) {
+            if (!isset($_POST['download']) && !isset($_POST['digital_submitted'])) {
+                // Digital picker not part of this submission — preserve existing assignment
                 if ($old_product_data[0]['digital'] > 1) { // Danger, as the FileManager file_id may be 1!
                     $record['digital'] = $old_product_data[0]['digital'];
                 } else {
                     $record['digital'] = 0;
                 }
             } else {
+                // Digital picker was submitted: an absent/empty download list means the
+                // file was removed, so clear it rather than restoring the old file id.
                 $record['digital'] = 0;
-                foreach ($_POST['download'] as $key => $enabled) {
-                    if ($enabled) {
-                        $record['digital'] = $key;
-                        break;
+                if (isset($_POST['download'])) {
+                    foreach ($_POST['download'] as $key => $enabled) {
+                        if ($enabled) {
+                            $record['digital'] = $key;
+                            break;
+                        }
                     }
                 }
             }

@@ -686,6 +686,7 @@
          initial_json=$DIGITAL_PICKER_JSON
          placeholder=""
          hint="Pick the download file customers will receive after purchase."}
+      <input type="hidden" name="digital_submitted" value="1">
       <fieldset>
          <legend>{$LANG.catalogue.title_file_path_custom}</legend>
          <div id="digital_freetype"><label for="digital_path">{$LANG.catalogue.file_path}</label><span> <input name="digital_path" id="digital_path" class="textbox" type="text" value="{$PRODUCT.digital_path}" {$VAL_DIGITALDIR_EMPTY}></span></div>
