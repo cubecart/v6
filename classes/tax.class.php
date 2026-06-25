@@ -473,8 +473,8 @@ class Tax
             $manufacture_country = '';
         }
 
-        if($is_digital == '1') {
-            $check_tariff = false; // No tariffs on digital goods
+        if(!empty($is_digital)) {
+            $check_tariff = false; // No tariffs on digital goods (field is 0=no, 1=yes-no-file, >1=download file id)
         }
 
         // Allows a hook to trigger a RETURN of this function by setting a variable
