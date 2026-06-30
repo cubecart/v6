@@ -279,12 +279,6 @@ class Order
         $order_summary['raw_discount'] = $order_summary['discount'];
         $order_summary['raw_shipping'] = $order_summary['shipping'];
         $order_summary['raw_order_date'] = $order_summary['order_date'];
-        $inclusive_order = orderIsInclusive($order_id);
-        if (!empty($inclusive_order)) {
-            $ship_inc = (float)$order_summary['shipping'] + (float)($order_summary['shipping_tax'] ?? 0);
-            $order_summary['shipping'] = $ship_inc;
-            $order_summary['subtotal'] = (float)$order_summary['total'] - $ship_inc + (float)$order_summary['discount'] + (float)$order_summary['credit_used'];
-        }
 
         // Format prices etc for order emails...
         $order_summary['subtotal']  = Tax::getInstance()->priceFormat($order_summary['subtotal'], true);
@@ -313,9 +307,8 @@ class Order
                 $product    = is_array($existing_data) ? array_merge($existing_data, $item) : $item;
                 $product['raw_price'] = $product['price'];
                 $product['raw_line_total'] = $product['price'] * $product['quantity'];
-                $unit_p = (!empty($inclusive_order)) ? inclusiveLineUnitPrice($product['price'], $item['tax'] ?? 0, $product['quantity']) : $product['price'];
-                $product['item_price'] = Tax::getInstance()->priceFormat($unit_p);
-                $product['price']   = Tax::getInstance()->priceFormat($unit_p*$product['quantity']);
+                $product['item_price'] = Tax::getInstance()->priceFormat($product['price']);
+                $product['price']   = Tax::getInstance()->priceFormat($product['price']*$product['quantity']);
                 
                 $images = array();
                 if (($gallery = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_image_index` AS `i` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_filemanager` AS `f` ON i.file_id = f.file_id', false, 'i.product_id = '.$item['product_id'], 'ORDER BY i.main_img DESC, IF(i.position = 0, 999999, i.position) ASC, i.id ASC'))) {
@@ -346,8 +339,7 @@ class Order
         if ($order_taxes) {
             foreach ($order_taxes as $order_tax) {
                 $tax_data = Tax::getInstance()->fetchTaxDetails($order_tax['tax_id']);
-                $tax['tax_name']  = (!empty($inclusive_order)) ? inclusiveTaxLabel($tax_data['name']) : $tax_data['name'];
-                $tax['included']   = !empty($inclusive_order);
+                $tax['tax_name']  = $tax_data['name'];
                 //$tax['tax_percent'] = sprintf('%.3F',$tax_data['tax_percent']);
                 $tax['tax_percent'] = floatval($tax_data['tax_percent']); // get rid of zeroes
                 $tax['tax_amount']  = Tax::getInstance()->priceFormat($order_tax['amount']);
