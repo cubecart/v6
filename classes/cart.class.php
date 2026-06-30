@@ -1041,11 +1041,13 @@ class Cart
                     $line_shipping->lineCalc($product, $category);
                 }
             }
-            // Resolve deferred inclusive-items subtotal using round-of-sum tax to
-            // keep it consistent with basket['total_tax'] (which also rounds the raw
-            // _total_tax_add once). Prevents sum-of-rounds drift across lines.
+            // Resolve deferred inclusive-items subtotal keeping the ex-tax value RAW
+            // (unrounded). Rounding the stripped tax here lost a penny on tax-inclusive
+            // baskets (e.g. $325 inc @10% -> subtotal $324.99): the rounded ex-subtotal
+            // was grossed back up for display and re-summed into the total. Rounding now
+            // happens once at display and once in the grand total (round-of-sum) below.
             if ($this->_inc_line_sum_raw > 0) {
-                $this->_subtotal += $this->_inc_line_sum_raw - round($this->_inc_tax_sum_raw, 2);
+                $this->_subtotal += $this->_inc_line_sum_raw - $this->_inc_tax_sum_raw;
             }
             // Put By_Cat shipping prices into basket for calc class
             if (isset($product['product_id']) && !empty($product['product_id']) && isset($ship_by_cat['status']) && (bool)$ship_by_cat['status']) {
@@ -1073,7 +1075,11 @@ class Cart
             }
             $this->basket['total_tax'] = sprintf('%.2F', $taxes['applied']);
 
-            $this->_total = (($this->_subtotal + $this->_shipping) + $this->basket['total_tax']);
+            // Tax-inclusive baskets: add the RAW tax so the grand total rounds once
+            // (round-of-sum), fixing the penny loss on e.g. $325 inc + $10 inc. Exclusive
+            // baskets keep the rounded basket['total_tax'] so their totals are unchanged.
+            $tax_for_total = !empty($this->basket['has_inclusive_tax']) ? $taxes['applied'] : (float)$this->basket['total_tax'];
+            $this->_total = (($this->_subtotal + $this->_shipping) + $tax_for_total);
             if(isset($this->basket['use_credit']) && $this->basket['use_credit']==1) {
                 $total_balance = $this->_total - $available_credit;
                 if($total_balance < 0) {

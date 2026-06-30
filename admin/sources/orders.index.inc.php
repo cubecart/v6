@@ -464,6 +464,7 @@ if (isset($_GET['action'])) {
             $overview_summary['name']  = (isset($summary[0]['name']) && !empty($summary[0]['name'])) ? $summary[0]['name'] : $summary[0]['first_name'].' '.$summary[0]['last_name'];
             $overview_summary['name_d']  = (isset($summary[0]['name_d']) && !empty($summary[0]['name_d'])) ? $summary[0]['name_d'] : $summary[0]['first_name_d'].' '.$summary[0]['last_name_d'];
             $overview_summary['ship_date']  = $overview_summary['ship_date'] ? formatDispatchDate($overview_summary['ship_date']) : "";
+            $inc_a = orderIsInclusive($overview_summary['cart_order_id']); if (!empty($inc_a)) { inclusiveOrderSummary($overview_summary); }
             $overview_summary['discount']  = $GLOBALS['tax']->priceFormat($overview_summary['discount']);
             $overview_summary['subtotal']  = $GLOBALS['tax']->priceFormat($overview_summary['subtotal']);
             $overview_summary['shipping']  = $GLOBALS['tax']->priceFormat($overview_summary['shipping']);

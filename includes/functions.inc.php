@@ -1336,3 +1336,48 @@ function shortHash($input, $length = 8, $exception = array())
 	$hash_urlsafe = rtrim($hash_urlsafe, '=');
 	return substr($hash_urlsafe, 0, $length);
 }
+
+/**
+ * ===== Tax-inclusive order DISPLAY helpers =====
+ * Orders store EX-tax figures (line prices, subtotal, shipping); only the grand total is
+ * gross. For a tax-inclusive store the receipt/emails/admin should mirror the basket and show
+ * tax-INCLUDED figures that foot: subtotal_inc + shipping_inc - discount - credit = total,
+ * with tax shown as an 'included' memo. These helpers do that from the stored (rounded) values
+ * using the correct stored TOTAL as the anchor, so no penny is reintroduced.
+ */
+function orderIsInclusive($cart_order_id) {
+    if (empty($cart_order_id)) return false;
+    $pre = $GLOBALS['config']->get('config', 'dbprefix');
+    $oid = preg_replace('/[^0-9A-Za-z_-]/', '', (string)$cart_order_id);
+    $row = $GLOBALS['db']->query("SELECT 1 FROM `".$pre."CubeCart_order_inventory` `oi` JOIN `".$pre."CubeCart_inventory` `i` ON `oi`.`product_id` = `i`.`product_id` WHERE `oi`.`cart_order_id` = '".$oid."' AND `i`.`tax_inclusive` = 1 LIMIT 1");
+    return !empty($row);
+}
+
+function inclusiveLineUnitPrice($ex_unit_price, $line_tax, $quantity) {
+    $quantity = max(1, (int)$quantity);
+    return (float)$ex_unit_price + ((float)$line_tax / $quantity);
+}
+
+function inclusiveOrderSummary(&$order) {
+    $ship_inc = (float)($order['shipping'] ?? 0) + (float)($order['shipping_tax'] ?? 0);
+    $sub_inc  = (float)($order['total'] ?? 0) - $ship_inc + (float)($order['discount'] ?? 0) + (float)($order['credit_used'] ?? 0);
+    $order['shipping'] = $ship_inc;
+    $order['subtotal'] = $sub_inc;
+    $order['tax_inclusive_display'] = true;
+}
+
+function inclusiveTaxLabel($name) {
+    $tpl = (isset($GLOBALS['language']->basket['includes_tax']) && $GLOBALS['language']->basket['includes_tax']) ? $GLOBALS['language']->basket['includes_tax'] : 'Includes %s';
+    return sprintf($tpl, $name);
+}
+
+function labelInclusiveTaxes(&$taxes) {
+    if (!is_array($taxes)) return;
+    $tpl = (isset($GLOBALS['language']->basket['includes_tax']) && $GLOBALS['language']->basket['includes_tax']) ? $GLOBALS['language']->basket['includes_tax'] : 'Includes %s';
+    foreach ($taxes as &$t) {
+        if (isset($t['name'])) $t['name'] = sprintf($tpl, $t['name']);
+        $t['included'] = true;
+    }
+    unset($t);
+}
+

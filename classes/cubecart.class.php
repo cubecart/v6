@@ -1402,10 +1402,12 @@ class Cubecart
                 $order = $orders[0];
                 $GLOBALS['user']->setGhostId($order['customer_id']);
                 if (($items = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $this->_basket['cart_order_id']))) !== false) {
+                    $inclusive = orderIsInclusive($this->_basket['cart_order_id']);
                     $GLOBALS['smarty']->assign('GA_ITEMS', $items);
                     $prod_ids = array();
                     foreach ($items as $item) {
                         array_push($prod_ids, $item['product_id']);
+                        if (!empty($inclusive)) { $item['price'] = inclusiveLineUnitPrice($item['price'], $item['tax'] ?? 0, $item['quantity']); }
                         foreach ($item as $key => $value) {
                             if (!in_array($key, $formatting)) {
                                 continue;
@@ -1449,6 +1451,7 @@ class Cubecart
                     $GLOBALS['smarty']->assign('DISCOUNT', true);
                 }
                 $order['show_credit'] = $order['credit_used']>0 ? true : false;
+                if (!empty($inclusive)) { inclusiveOrderSummary($order); labelInclusiveTaxes($vars['taxes']); $GLOBALS['smarty']->assign('TAXES', $vars['taxes']); }
                 foreach ($order as $key => $value) {
                     if (!in_array($key, $formatting)) {
                         continue;
@@ -3057,7 +3060,7 @@ class Cubecart
                     if (($items = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $order['cart_order_id']))) !== false) {
                         foreach ($items as $item) {
                             // Do price formatting
-                            $item['price_total'] = $GLOBALS['tax']->priceFormat(($item['price'] * $item['quantity']), true);
+                            if (orderIsInclusive($order['cart_order_id'])) { $item['price'] = inclusiveLineUnitPrice($item['price'], $item['tax'] ?? 0, $item['quantity']); } $item['price_total'] = $GLOBALS['tax']->priceFormat(($item['price'] * $item['quantity']), true);
                             $item['price'] = $GLOBALS['tax']->priceFormat($item['price']);
                             $options = Order::getInstance()->unSerializeOptions($item['product_options']);
                             $item['options'] = implode(' ', $options);
@@ -3089,6 +3092,7 @@ class Cubecart
 
                     // Loop through price values, and do the formatting
                     $order['show_credit'] = ($order['credit_used']>0) ? true : false;
+                    $inc_h = orderIsInclusive($order['cart_order_id']); if (!empty($inc_h)) { inclusiveOrderSummary($order); labelInclusiveTaxes($vars['taxes']); $GLOBALS['smarty']->assign('TAXES', $vars['taxes']); }
                     foreach (array('discount', 'shipping', 'subtotal', 'total', 'total_tax', 'credit_used') as $key) {
                         $order[$key] = $GLOBALS['tax']->priceFormat($order[$key], true);
                     }
@@ -3225,7 +3229,7 @@ class Cubecart
                     if (($items = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $order['cart_order_id']))) !== false) {
                         foreach ($items as $item) {
                             // Do price formatting
-                            $item['price_total'] = $GLOBALS['tax']->priceFormat(($item['price'] * $item['quantity']), true);
+                            if (orderIsInclusive($order['cart_order_id'])) { $item['price'] = inclusiveLineUnitPrice($item['price'], $item['tax'] ?? 0, $item['quantity']); } $item['price_total'] = $GLOBALS['tax']->priceFormat(($item['price'] * $item['quantity']), true);
                             $item['price'] = $GLOBALS['tax']->priceFormat($item['price']);
                             $item['options'] = Order::getInstance()->unSerializeOptions($item['product_options']);
                             $vars['items'][] = $item;
@@ -3249,6 +3253,7 @@ class Cubecart
                     $order['state'] = is_numeric($order['state']) ? getStateFormat($order['state']) : $order['state'];
                     $order['state_d'] = is_numeric($order['state_d']) ? getStateFormat($order['state_d']) : $order['state_d'];
                     // Loop through price values, and do the formatting
+                    $inc_h = orderIsInclusive($order['cart_order_id']); if (!empty($inc_h)) { inclusiveOrderSummary($order); labelInclusiveTaxes($vars['taxes']); $GLOBALS['smarty']->assign('TAXES', $vars['taxes']); }
                     foreach (array('discount', 'shipping', 'subtotal', 'total', 'total_tax') as $key) {
                         $order[$key] = $GLOBALS['tax']->priceFormat($order[$key], true);
                     }
