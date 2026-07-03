@@ -35,6 +35,12 @@ $glob['installed'] 		= '0';
 // emails, password-reset links and redirects. Pinned here so a forged Host
 // header cannot poison email links (GHSA-7pvc-gxc4-chmc).
 $glob['standard_url']  = '';
+// Rich-text iframe embeds — additional hosts allowed inside CKEditor content
+// (product descriptions etc.). YouTube, YouTube-nocookie, Vimeo and this store's
+// own standard_url domain are always allowed; add any extra video/embed hosts
+// here. HTTPS is required; all other iframe attributes are stripped. Leave unset
+// to permit only the built-in providers plus your own domain.
+//$glob['iframe_whitelist'] = array('www.youtube.com', 'player.vimeo.com');
 // Cookie domain — leading-dot host like ".example.com" for multi-subdomain
 // installs, or empty string for single-host installs.
 $glob['cookie_domain'] = '';

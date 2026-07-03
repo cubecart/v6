@@ -106,6 +106,25 @@ class Sanitize
         $strip_with_content = array('script','style','title','textarea','noscript','iframe',
             'object','embed','applet','template','head','link','meta','base','form','svg','math','xml');
 
+        // Video embeds: iframes are permitted only from these hosts. Base list plus
+        // any hosts in $glob['iframe_whitelist'] and the store's own standard_url domain.
+        $allowed_iframe_hosts = array(
+            'www.youtube.com', 'youtube.com',
+            'www.youtube-nocookie.com', 'youtube-nocookie.com',
+            'player.vimeo.com'
+        );
+        if (!empty($GLOBALS['glob']['iframe_whitelist']) && is_array($GLOBALS['glob']['iframe_whitelist'])) {
+            $allowed_iframe_hosts = array_merge($allowed_iframe_hosts, $GLOBALS['glob']['iframe_whitelist']);
+        }
+        if (!empty($GLOBALS['glob']['standard_url'])) {
+            $own_host = strtolower((string)parse_url($GLOBALS['glob']['standard_url'], PHP_URL_HOST));
+            if ($own_host !== '') {
+                $allowed_iframe_hosts[] = $own_host;
+            }
+        }
+        $allowed_iframe_hosts = array_map('strtolower', $allowed_iframe_hosts);
+
+
         $dom  = new DOMDocument();
         $prev = libxml_use_internal_errors(true);
         $dom->loadHTML(
@@ -125,6 +144,22 @@ class Sanitize
             if ($tag === 'div' && $node->getAttribute('id') === 'cc-sanitize-root') {
                 continue;
             }
+            if ($tag === 'iframe') {
+                $src  = (string)$node->getAttribute('src');
+                $host = strtolower((string)parse_url($src, PHP_URL_HOST));
+                if (stripos($src, 'https://') !== 0 || !in_array($host, $allowed_iframe_hosts, true)) {
+                    $node->parentNode->removeChild($node);
+                    continue;
+                }
+                $iframe_keep = array('src','width','height','allow','allowfullscreen','frameborder','title','loading','referrerpolicy');
+                foreach (iterator_to_array($node->attributes) as $attr) {
+                    if (!in_array(strtolower($attr->nodeName), $iframe_keep, true)) {
+                        $node->removeAttribute($attr->nodeName);
+                    }
+                }
+                continue;
+            }
+
             if (!in_array($tag, $allowed_tags, true)) {
                 if (in_array($tag, $strip_with_content, true)) {
                     $node->parentNode->removeChild($node);
