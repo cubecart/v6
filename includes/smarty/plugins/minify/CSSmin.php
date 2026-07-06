@@ -304,7 +304,10 @@ class CSSmin
         // Remove the spaces before the things that should not have spaces before them.
         // But, be careful not to turn "p :link {...}" into "p:link{...}"
         // Swap out any pseudo-class colons with the token, and then swap back.
-        $css = preg_replace_callback('/(?:^|\})(?:(?:[^\{\:])+\:)+(?:[^\{]*\{)/', array($this, 'replace_colon'), $css);
+        // NOTE: the leading run is `*` (not `+`) so selectors that *begin* with a
+        // pseudo (e.g. ":is(.a,.b) :where(.c)") are matched too and their colons
+        // get protected; otherwise the descendant space before ":where" is stripped.
+        $css = preg_replace_callback('/(?:^|\})(?:(?:[^\{\:])*\:)+(?:[^\{]*\{)/', array($this, 'replace_colon'), $css);
         
         // Remove spaces before the things that should not have spaces before them.
         $css = preg_replace('/\s+([\!\{\}\;\:\>\+\(\)\]\~\=,])/', '$1', $css);
@@ -337,6 +340,11 @@ class CSSmin
         // Put the space back in some cases, to support stuff like
         // @media screen and (-webkit-min-device-pixel-ratio:0){
         $css = preg_replace('/\band\(/i', 'and (', $css);
+
+        // Put the space back between a container query name and its condition, so
+        // "@container card (min-width:400px)" isn't mangled into "@container card(...)"
+        // where "card(" would be parsed as a function token and break the query.
+        $css = preg_replace('/(@container\s+[a-z0-9_-]+)\(/iS', '$1 (', $css);
 
         // Remove the spaces after the things that should not have spaces after them.
         $css = preg_replace('/([\!\{\}\:;\>\+\(\[\~\=,])\s+/S', '$1', $css);
