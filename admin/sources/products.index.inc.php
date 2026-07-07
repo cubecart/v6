@@ -1199,7 +1199,10 @@ if (isset($_GET['action'])) {
         $result[0]['master_image'] =  !empty($master_image) ? $master_image : 'images/general/px.gif';
         
         $gallery_file_ids = array();
-        if (($gallery = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_image_index` AS `i` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_filemanager` AS `f` ON i.file_id = f.file_id', false, 'i.product_id = '.$product_id, 'ORDER BY i.main_img DESC, IF(i.position = 0, 999999, i.position) ASC, i.id ASC'))) {
+        // Only build the gallery for an existing product. On "add" $product_id is 0,
+        // and querying product_id = 0 would surface any orphaned image_index rows
+        // (which should never exist, but do on some stores) against every new product.
+        if ((int)$product_id > 0 && ($gallery = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_image_index` AS `i` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_filemanager` AS `f` ON i.file_id = f.file_id', false, 'i.product_id = '.$product_id, 'ORDER BY i.main_img DESC, IF(i.position = 0, 999999, i.position) ASC, i.id ASC'))) {
             $g_images = array();
             foreach ($gallery as $key => $image) {
                 $g_images['image_'.$image['id']] = $image;
