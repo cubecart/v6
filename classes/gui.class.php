@@ -1403,7 +1403,21 @@ class GUI
         foreach ($GLOBALS['hooks']->load('class.gui.display_random_product_pre') as $hook) {
             include $hook;
         }
-        $featured_products  = $GLOBALS['db']->select('CubeCart_inventory', array('product_id'), $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1', 'featured' => '1')), 'RAND()', 15, false, false);
+        // Featured-product box: pick a random featured product. This previously used
+        // ORDER BY RAND(), which forces a temporary table + filesort of every matching row on
+        // each page load - and because `featured` defaults to 1 that is frequently the whole
+        // catalogue. Instead take a window of featured products from a random primary-key pivot:
+        // InnoDB's `featured` secondary index is ordered by product_id, so no filesort is needed
+        // and the scan stops at the LIMIT. The candidate set is randomised in PHP below as before.
+        $featured_where = $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1', 'featured' => '1'));
+        $max_row = $GLOBALS['db']->misc('SELECT MAX(`product_id`) AS `max_id` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory`', false);
+        $max_id = (is_array($max_row) && !empty($max_row[0]['max_id'])) ? (int)$max_row[0]['max_id'] : 0;
+        $pivot = ($max_id > 0) ? mt_rand(0, $max_id) : 0;
+        $featured_products = $GLOBALS['db']->select('CubeCart_inventory', array('product_id'), $featured_where.' AND CubeCart_inventory.product_id >= '.$pivot, array('product_id' => 'ASC'), 15, false, false);
+        // If the pivot landed near the highest id and returned too few, top up from the start.
+        if (!$featured_products || count($featured_products) < 15) {
+            $featured_products = $GLOBALS['db']->select('CubeCart_inventory', array('product_id'), $featured_where, array('product_id' => 'ASC'), 15, false, false);
+        }
         $n = ($featured_products ? count($featured_products) : 0);
         if ($n > 0) {
             $tries = 0;
