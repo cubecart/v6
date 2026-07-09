@@ -883,10 +883,15 @@ class Cubecart
                         }
                         $GLOBALS['session']->set($term, '1', 'search');
 
-                        if (($select = $GLOBALS['db']->select('CubeCart_search', array('id', 'hits'), array('searchstr' => strtoupper($term)), false, 1, false, false)) !== false) {
-                            $GLOBALS['db']->update('CubeCart_search', array('hits' => $select[0]['hits'] + 1), array('id' => $select[0]['id']), false);
+                        // Look up by the (now indexed) `searchstr`, then bump the
+                        // counter with an atomic `hits = hits + 1` by primary key.
+                        // The old read-then-write-back (`hits => value + 1`) lost
+                        // increments when the same term was searched concurrently.
+                        $upper = strtoupper($term);
+                        if (($select = $GLOBALS['db']->select('CubeCart_search', array('id'), array('searchstr' => $upper), false, 1, false, false)) !== false) {
+                            $GLOBALS['db']->update('CubeCart_search', array('hits' => '+1'), array('id' => $select[0]['id']), false);
                         } else {
-                            $GLOBALS['db']->insert('CubeCart_search', array('searchstr' => strtoupper($term)));
+                            $GLOBALS['db']->insert('CubeCart_search', array('searchstr' => $upper));
                         }
                     }
                 }
