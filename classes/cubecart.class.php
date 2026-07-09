@@ -2329,17 +2329,24 @@ class Cubecart
             $admin_file   = $GLOBALS['config']->isEmpty('config', 'adminFile')   ? 'admin.php' : $GLOBALS['config']->get('config', 'adminFile');
             $admin_pattern = '#^/?(?:'.preg_quote($admin_folder, '#').'(?:/|$)|'.preg_quote($admin_file, '#').'(?:/|\?|$))#';
             $is_admin = (bool)preg_match($admin_pattern, $uri);
-            // Skip "undefined" — browser side-effect of a JS `el.src = undefined`
-            // (or template literal) reaching the browser as a literal URL.
-            $is_undefined = (bool)preg_match('#(^|/)undefined($|/)#i', $uri);
+            // Skip "undefined"/"null" — browser side-effect of a JS
+            // `el.src = undefined` / `el.src = null` (or a template literal
+            // interpolating a nullish value) reaching the browser as a literal URL.
+            $is_js_sentinel = (bool)preg_match('#(^|/)(undefined|null)($|/)#i', $uri);
 
-            if(!empty($uri) && !$is_asset && !$is_hidden && !$is_admin && !$is_undefined) {
-                if($existing = $GLOBALS['db']->select('CubeCart_404_log', false, array('uri' => $uri), false, 1, false, false)) {
-                    $warn = ($existing[0]['done'] == 1) ? 1 : 0;
-                    $GLOBALS['db']->update('CubeCart_404_log', array('hits' => '+1', 'warn' => $warn), array('uri' => $uri));
-                } else {
-                    $GLOBALS['db']->insert('CubeCart_404_log', array('uri' => $uri));
-                }
+            if(!empty($uri) && !$is_asset && !$is_hidden && !$is_admin && !$is_js_sentinel) {
+                // Atomic upsert. A select-then-insert races under concurrent
+                // hits on the same new URI — both pass the select, both insert,
+                // and the second throws "Duplicate entry" on the UNIQUE `uri`.
+                // ON DUPLICATE KEY UPDATE does it in one statement. `warn`
+                // preserves the old behaviour: flag when a URI previously marked
+                // done (a "fixed" 404) is hit again.
+                $pfx = $GLOBALS['config']->get('config', 'dbprefix');
+                $GLOBALS['db']->misc(sprintf(
+                    'INSERT INTO `%sCubeCart_404_log` (`uri`) VALUES (%s) '.
+                    'ON DUPLICATE KEY UPDATE `hits` = `hits` + 1, `warn` = IF(`done` = 1, 1, 0)',
+                    $pfx, $GLOBALS['db']->sqlSafe($uri, true)
+                ), false);
             }
         }
 
