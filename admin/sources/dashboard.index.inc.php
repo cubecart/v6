@@ -750,7 +750,7 @@ if (is_array($recent_raw) && !empty($recent_raw)) {
     // Per-admin "last seen" timestamp. Baseline of 2026-04-20 00:00:00 local
     // means existing marketplace extensions aren't counted as "new" for a
     // fresh install — only versions released after that point surface here.
-    $recent_baseline = mktime(0, 0, 0, 4, 20, 2026);
+    $recent_baseline = gmmktime(0, 0, 0, 4, 20, 2026);
     $recent_admin_row = $GLOBALS['db']->select('CubeCart_admin_users', array('extensions_last_seen'), array('admin_id' => (int)Admin::getInstance()->getId()));
     $recent_last_seen = (!empty($recent_admin_row[0]['extensions_last_seen'])) ? (int)$recent_admin_row[0]['extensions_last_seen'] : 0;
     $recent_threshold = max($recent_last_seen, $recent_baseline);
@@ -761,7 +761,11 @@ if (is_array($recent_raw) && !empty($recent_raw)) {
             continue;
         }
         $recent_latest = end($recent_ext['versions']);
-        $recent_ts = !empty($recent_ext['created_at']) ? (int)strtotime($recent_ext['created_at']) : 0;
+        // API returns created_at as a bare 'Y-m-d H:i:s' UTC string with no
+        // timezone. Force UTC so the epoch matches extensions_last_seen (set via
+        // time()); otherwise, on servers west of UTC, a just-released extension
+        // parses to a future epoch and the item never clears when marked seen.
+        $recent_ts = !empty($recent_ext['created_at']) ? (int)strtotime($recent_ext['created_at'].' UTC') : 0;
         if ($recent_ts <= 0 || $recent_ts <= $recent_threshold) {
             continue;
         }
