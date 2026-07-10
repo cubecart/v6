@@ -1175,8 +1175,8 @@ case 'stats_online':
     };
 
     $query = sprintf(
-        "SELECT S.*, C.first_name, C.last_name FROM %1\$sCubeCart_sessions AS S LEFT JOIN %1\$sCubeCart_customer AS C ON S.customer_id = C.customer_id WHERE S.acp = 0 AND ".$online_filter."S.session_last > %2\$d ORDER BY S.session_last DESC",
-        $glob['dbprefix'], $timeLimit
+        "SELECT S.*, C.first_name, C.last_name FROM %1\$sCubeCart_sessions AS S LEFT JOIN %1\$sCubeCart_customer AS C ON S.customer_id = C.customer_id WHERE S.acp = 0 AND %2\$sS.session_last > %3\$d ORDER BY S.session_last DESC",
+        $glob['dbprefix'], $online_filter, $timeLimit
     );
     if (($results = $GLOBALS['db']->query($query)) !== false) {
         $now_t = time();
