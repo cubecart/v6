@@ -480,8 +480,17 @@ class CSSmin
             $sb[] = $this->str_slice($css, $append_index, $index);
 
             if ($found_terminator) {
-                $token = $this->str_slice($css, $start_index, $end_index);
-                $token = preg_replace('/\s+/', '', $token);
+                $token = trim($this->str_slice($css, $start_index, $end_index));
+
+                // Whitespace is only insignificant inside base64 payloads (where it is
+                // just source line-wrapping) and inside unquoted urls (where spaces are
+                // illegal anyway). A quoted plain-text data url such as
+                // url("data:image/svg+xml,%3Csvg viewBox='0 0 8 8'%3E") carries meaningful
+                // spaces, and stripping them corrupts the SVG.
+                if ($terminator === ')' || stripos($token, 'base64,') !== false) {
+                    $token = preg_replace('/\s+/', '', $token);
+                }
+
                 $this->preserved_tokens[] = $token;
 
                 $preserver = 'url(' . self::TOKEN . (count($this->preserved_tokens) - 1) . '___)';
