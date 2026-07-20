@@ -50,6 +50,10 @@ class Request
 
     public $server_response_code = null;
 
+    ## Raw response body, retained even when the response code is not a success
+    ## so callers can read API error detail returned with a 4xx/5xx.
+    public $response_body = '';
+
     ##############################################
 
     public function __construct($url, $path = '/', $port = 80, $return_headers = false, $return_transfer = true, $timeout = 15, $cache = false)
@@ -401,7 +405,8 @@ class Request
             $this->server_response_code = curl_getinfo($this->_curl, CURLINFO_RESPONSE_CODE);
             $headerSize = curl_getinfo($this->_curl, CURLINFO_HEADER_SIZE);
             $this->_response_headers = substr($return, 0, $headerSize);
-            
+            $this->response_body = (string)$return;
+
             // A server doesn't always return a response body or the response may be empty or false like
             if (in_array($this->server_response_code, $this->_success_responses)) { 
                 if ($this->_request_cache) {
