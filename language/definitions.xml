@@ -1185,7 +1185,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_top_searches" introduced="6.6.3"><![CDATA[Top Searches]]></string>
     <string name="title_abandoned_carts" introduced="6.6.3"><![CDATA[Abandoned Carts]]></string>
     <string name="title_alerts" introduced="6.6.3"><![CDATA[Alerts]]></string>
-    <string name="vs_last_month" introduced="6.6.3"><![CDATA[vs last month]]></string>
+    <string name="vs_last_month" introduced="6.6.3"><![CDATA[vs same period last month]]></string>
   </group>
   <group name="documents">
     <string name="edit_homepage" introduced="6.5.9"><![CDATA[Edit Homepage]]></string>

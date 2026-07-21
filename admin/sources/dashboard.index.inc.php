@@ -337,8 +337,15 @@ if (Admin::getInstance()->permissions('statistics', CC_PERM_READ, false, false))
         $quick_stats['this_month'] = Tax::getInstance()->priceFormat((float)$this_month_sales[0]['this_month']);
 
         // Month-over-month delta for the "this month" tile. Cap giant swings at 100% to avoid comical badges.
+        // Compare like-for-like: month-to-date against the SAME elapsed period of last
+        // month. Measuring a partial month against a full one left the badge in the red
+        // for most of the month regardless of trade. Clamped to the end of last month so
+        // a shorter previous month (e.g. 31 Mar vs Feb) can never overshoot into this one.
+        $last_month_cutoff = min($last_month_start + (time() - $this_month_start), $this_month_start);
+        $last_month_todate = $GLOBALS['db']->query('SELECT SUM(`total`) as `last_month_todate` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` WHERE `status` in(2,3) AND `order_date` > '.$last_month_start.' AND `order_date` < '.$last_month_cutoff.';');
+
         $this_month_val = (float)$this_month_sales[0]['this_month'];
-        $last_month_val = (float)$last_month_sales[0]['last_month'];
+        $last_month_val = isset($last_month_todate[0]['last_month_todate']) ? (float)$last_month_todate[0]['last_month_todate'] : 0;
         if ($last_month_val > 0) {
             $delta_pct = (($this_month_val - $last_month_val) / $last_month_val) * 100;
             $abs = abs($delta_pct);
