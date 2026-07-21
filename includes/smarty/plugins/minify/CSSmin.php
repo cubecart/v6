@@ -358,7 +358,14 @@ class CSSmin
         $css = preg_replace('/(\*[a-z0-9\-]+\s*\:[^;\}]+)(\})/', '$1;$2', $css);
 
         // Replace 0 length units 0(px,em,%) with 0.
-        $css = preg_replace('/(^|[^0-9])(?:0?\.)?0(?:em|ex|ch|rem|vw|vh|vm|vmin|cm|mm|in|px|pt|pc|%|deg|g?rad|m?s|k?hz)/iS', '${1}0', $css);
+        $css = preg_replace('/(^|[^0-9])(?:0?\.)?0(?:em|ex|ch|rem|vw|vh|vm|vmin|cm|mm|in|px|pt|pc|deg|g?rad|m?s|k?hz)/iS', '${1}0', $css);
+
+        // `%` is handled separately because `0%` is a valid @keyframes stop and must keep
+        // its unit there — `0 {` is invalid CSS and silently breaks the animation from that
+        // stop to the next. The lookahead identifies selector position by finding a `{`
+        // before any `;` or `}`, so `0%{` and `0%,50%{` are preserved while a property
+        // value such as `margin:0%;` is still shortened.
+        $css = preg_replace('/(^|[^0-9])(?:0?\.)?0%(?![^;{}]*\{)/iS', '${1}0', $css);
 
         // Replace 0 0; or 0 0 0; or 0 0 0 0; with 0.
         $css = preg_replace('/\:0(?: 0){1,3}(;|\}| \!)/', ':0$1', $css);
