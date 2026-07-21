@@ -1714,13 +1714,6 @@ class GUI
                 'icon'	=> 'facebook-square'
             );
         }
-        if (!empty($config['flickr'])) {
-            $vars[] = array(
-                'url' => (filter_var($config['flickr'], FILTER_VALIDATE_URL)) ? $config['flickr'] : 'https://www.flickr.com/photos/'.$config['flickr'],
-                'name' => 'Flickr',
-                'icon'	=> 'flickr'
-            );
-        }
         if (!empty($config['bsky'])) {
             $vars[] = array(
                 'url' => (filter_var($config['bsky'], FILTER_VALIDATE_URL)) ? $config['bsky'] : 'https://bsky.app/profile/'.$config['bsky'],
@@ -1756,20 +1749,6 @@ class GUI
                 'icon'	=> 'twitter-square'
             );
         }
-        if (!empty($config['vimeo'])) {
-            $vars[] = array(
-                'url' => (filter_var($config['vimeo'], FILTER_VALIDATE_URL)) ? $config['vimeo'] : 'https://vimeo.com/'.$config['vimeo'],
-                'name' => 'Vimeo',
-                'icon'	=> 'vimeo-square'
-            );
-        }
-        if (!empty($config['wordpress'])) {
-            $vars[] = array(
-                'url' => (filter_var($config['wordpress'], FILTER_VALIDATE_URL)) ? $config['wordpress'] : 'https://'.$config['wordpress'].'.wordpress.com',
-                'name' => 'WordPress',
-                'icon'	=> 'wordpress'
-            );
-        }
         if (!empty($config['youtube'])) {
             $vars[] = array(
                 'url' => (filter_var($config['youtube'], FILTER_VALIDATE_URL)) ? $config['youtube'] : 'https://www.youtube.com/user/'.$config['youtube'],
@@ -1782,13 +1761,6 @@ class GUI
                 'url' => (filter_var($config['reddit'], FILTER_VALIDATE_URL)) ? $config['reddit'] : 'https://www.reddit.com/r/'.$config['reddit'],
                 'name' => 'Reddit',
                 'icon'	=> 'reddit-square'
-            );
-        }
-        if (!empty($config['tumblr'])) {
-            $vars[] = array(
-                'url' => (filter_var($config['tumblr'], FILTER_VALIDATE_URL)) ? $config['tumblr'] : 'https://www.tumblr.com/'.$config['tumblr'],
-                'name' => 'Tumblr',
-                'icon'	=> 'tumblr-square'
             );
         }
         foreach ($GLOBALS['hooks']->load('class.gui.display_social') as $hook) {

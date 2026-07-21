@@ -205,7 +205,7 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
     }
 
     // Trim — only when the field was POSTed (admin form may omit unused networks).
-    foreach(array('facebook','flickr','instagram','linkedin','pinterest','twitter','vimeo','wordpress','youtube','reddit','tumblr') as $t) {
+    foreach(array('bsky','facebook','instagram','linkedin','pinterest','reddit','twitter','youtube') as $t) {
         if (isset($config_new[$t])) {
             $config_new[$t] = trim((string)$config_new[$t]);
         }
