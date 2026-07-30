@@ -1503,7 +1503,11 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
         $url = str_replace(' ', '-', html_entity_decode($url, ENT_QUOTES));
         $url = preg_replace('#[^\w\-._/]#iuU', '-', str_replace('/', '/', $url));
         $url = preg_replace(array('#/{2,}#iu', '#-{2,}#'), array('/', '-'), $url);
-        return trim($url, '-');
+        // Trim leading/trailing slashes as well as dashes. A slug that arrives with a
+        // leading slash (e.g. an empty/malformed seo_path) would otherwise survive here
+        // and produce a double slash when concatenated as base.'/'.slug in the sitemap,
+        // canonical tags and internal links.
+        return trim($url, '-/');
     }
 
     /**
