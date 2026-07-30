@@ -1022,7 +1022,10 @@ class Cart
                     // Defer: accumulate raw inc-line and raw tax; resolve once
                     // after the loop via round-of-sum to avoid per-line drift.
                     $this->_inc_line_sum_raw += $inc_line;
-                    $this->_inc_tax_sum_raw  += (float)$product_tax['amount_raw'];
+                    // Strip at the STORE rate the price was entered inclusive of (gross - net),
+                    // NOT the destination tax rate - otherwise cross-border orders where the
+                    // customer's VAT rate differs over/under-strip the ex-tax subtotal (#127021).
+                    $this->_inc_tax_sum_raw  += ($inc_line - $product['price']);
                 } else {
                     $this->_subtotal_inc_gross += $product['price'];
                     $this->_subtotal  += $product['price'];
