@@ -1564,11 +1564,21 @@ class Catalogue
             }
 
 
-            $search = array('product_id' => $product_id, 'group_id' => $group_id);
+            // Retail tiers (group 0) apply to everyone. Without them a logged-in customer
+            // who belongs to any group searches `group_id IN (n)`, which matches nothing,
+            // and the quantity discount silently disappears.
+            $search = array(
+                'product_id' => $product_id,
+                'group_id'   => is_array($group_id) ? array_merge(array(0), $group_id) : $group_id,
+            );
 
             if (($pricing = $GLOBALS['db']->select('CubeCart_pricing_quantity', array('quantity', 'price'), $search, array('quantity' => 'ASC', 'price' => 'ASC'))) !== false) {
                 foreach ($pricing as $price) {
-                    $prices[$price['quantity']] = ($GLOBALS['config']->get('config', 'catalogue_sale_mode')==2) ? ($price['price'] - ($price['price'] / 100) * $GLOBALS['config']->get('config', 'catalogue_sale_percentage')) : $price['price'];
+                    $tier = ($GLOBALS['config']->get('config', 'catalogue_sale_mode')==2) ? ($price['price'] - ($price['price'] / 100) * $GLOBALS['config']->get('config', 'catalogue_sale_percentage')) : $price['price'];
+                    // Retail and group tiers can both match the same quantity - keep the cheaper.
+                    if (!isset($prices[$price['quantity']]) || $tier < $prices[$price['quantity']]) {
+                        $prices[$price['quantity']] = $tier;
+                    }
                 }
                 krsort($prices);
                 // Ok so we need to get quantity for other items with same product ID for quantity discounts.
@@ -1937,18 +1947,27 @@ class Catalogue
         }
 
         if ($product_view) {
-            // Price by quantity
+            // Price by quantity. Retail tiers (group 0) are shown to everyone; a customer's
+            // own group tiers are added on top. Must match getProductPrice() or the table
+            // advertises a discount the basket won't charge.
+            $group_id = array(0);
             if (($memberships = $GLOBALS['user']->getMemberships()) !== false) {
                 foreach ($memberships as $membership) {
                     $group_id[] = $membership['group_id'];
                 }
-            } else {
-                $group_id = 0;
             }
             // Limit by membership
             if (($prices = $GLOBALS['db']->select('CubeCart_pricing_quantity', false, array('product_id' => $product['product_id'], 'group_id' => $group_id), array('quantity' => 'ASC'))) !== false) {
+                $tiers = array();
                 foreach ($prices as $price) {
                     $price['price'] = ($GLOBALS['config']->get('config', 'catalogue_sale_mode')==2) ? ($price['price'] - ($price['price'] / 100) * $GLOBALS['config']->get('config', 'catalogue_sale_percentage')) : $price['price'];
+                    // Retail and group tiers can both match the same quantity - show the cheaper.
+                    if (!isset($tiers[$price['quantity']]) || $price['price'] < $tiers[$price['quantity']]['price']) {
+                        $tiers[$price['quantity']] = $price;
+                    }
+                }
+                ksort($tiers);
+                foreach ($tiers as $price) {
                     $price['price'] = $GLOBALS['tax']->priceFormat($price['price'], true);
                     $product['discounts'][] = $price;
                 }
