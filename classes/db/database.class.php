@@ -809,7 +809,7 @@ class Database_Contoller
                     $orderString = 'ORDER BY '.implode(', ', $orderArray);
                 }
             } else {
-                $orderString = 'ORDER BY '.str_ireplace('ORDER BY', '', $this->sqlSafe($order));
+                $orderString = $this->safeOrderBy($order);
             }
         }
 
@@ -1008,6 +1008,88 @@ class Database_Contoller
      * @param string $label optional table alias used to disambiguate fields
      * @return string
      */
+    /**
+     * Structurally validate a string-typed ORDER BY expression.
+     *
+     * sqlSafe()/real_escape_string is worthless here: ORDER BY injection needs
+     * no quote, backslash or NUL, so escaping leaves the clause wide open (see
+     * GHSA-fcv7-88v5-vv5f, and GHSA-rm2f-rpcq-6w9f before it — that fix only
+     * hardened the array branch and the one page that was reported).
+     *
+     * Terms are split on top-level commas only, so function expressions with
+     * their own argument lists survive. Each term must then be an identifier or
+     * an allowlisted function call, with an optional ASC/DESC. Anything else is
+     * dropped rather than escaped, because there is no legitimate reason for a
+     * caller to put arbitrary SQL here.
+     *
+     * @param string $order
+     * @return string|null  'ORDER BY ...' or null when nothing survives
+     */
+    public function safeOrderBy($order)
+    {
+        $order = trim(preg_replace('/^\s*ORDER\s+BY\s+/i', '', (string)$order));
+        if ($order === '') {
+            return null;
+        }
+
+        // Split on commas at paren depth 0 so IF(a, b, c) stays in one piece.
+        $terms = array();
+        $buffer = '';
+        $depth  = 0;
+        $length = strlen($order);
+        for ($i = 0; $i < $length; $i++) {
+            $char = $order[$i];
+            if ($char === '(') {
+                $depth++;
+            } elseif ($char === ')') {
+                $depth--;
+            }
+            if ($char === ',' && $depth === 0) {
+                $terms[] = $buffer;
+                $buffer  = '';
+                continue;
+            }
+            $buffer .= $char;
+        }
+        $terms[] = $buffer;
+        if ($depth !== 0) {
+            trigger_error('Unbalanced parentheses in ORDER BY: '.$order, E_USER_WARNING);
+            return null;
+        }
+
+        // Bare column, optionally backticked and/or table/alias qualified.
+        $identifier = '(?:`?[a-zA-Z0-9_]+`?\.)?`?[a-zA-Z0-9_]+`?';
+        // Deliberately short: these are the only functions core sorts by. A
+        // caller needing another one should add it here, not bypass the check.
+        $functions  = 'IF|IFNULL|COALESCE|FIELD|ISNULL|LENGTH|ABS|LOWER|UPPER|CONCAT|RAND';
+        // Function arguments: identifiers, numbers, quoted literals, comparison
+        // and arithmetic operators, and nested calls. No statement keywords, so
+        // a smuggled subquery cannot match.
+        $arguments  = '[a-zA-Z0-9_`\'\"\.\s,=<>!+\-*\/\(\)]*';
+
+        $safe = array();
+        foreach ($terms as $term) {
+            $term = trim($term);
+            if ($term === '') {
+                continue;
+            }
+            if (!preg_match('/^('.$identifier.'|(?:'.$functions.')\s*\('.$arguments.'\))\s*(ASC|DESC)?$/i', $term, $match)) {
+                trigger_error('Rejected unsafe ORDER BY term: '.$term, E_USER_WARNING);
+                continue;
+            }
+            // A nested SELECT/UNION can only appear inside a function argument
+            // list; the argument charset excludes nothing alphabetic, so check.
+            if (preg_match('/\b(SELECT|UNION|SLEEP|BENCHMARK|INFORMATION_SCHEMA|LOAD_FILE|EXTRACTVALUE|UPDATEXML)\b/i', $term)) {
+                trigger_error('Rejected unsafe ORDER BY term: '.$term, E_USER_WARNING);
+                continue;
+            }
+            $direction = (isset($match[2]) && strtoupper($match[2]) === 'DESC') ? ' DESC' : ' ASC';
+            $safe[] = $match[1].$direction;
+        }
+
+        return $safe ? 'ORDER BY '.implode(', ', $safe) : null;
+    }
+
     public function where($table, $whereArray = null, $label = false)
     {
         if (!empty($whereArray)) {
