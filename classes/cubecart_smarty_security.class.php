@@ -23,10 +23,26 @@ class CubeCart_Smarty_Security extends Smarty_Security
         'call_user_func_array', 'preg_replace_callback', 'usort', 'uasort',
         'uksort', 'array_map', 'array_filter', 'array_walk',
         'forward_static_call', 'forward_static_call_array', 'iterator_apply',
+        // Callback-taking siblings of the above. array_walk_recursive is the
+        // bypass reported in GHSA-5mr8-hgcv-3pcj; the rest are the same sink
+        // reached by a different name.
+        'array_walk_recursive', 'array_reduce',
+        'preg_replace_callback_array', 'mb_ereg_replace_callback',
+        'array_udiff', 'array_udiff_assoc', 'array_udiff_uassoc',
+        'array_uintersect', 'array_uintersect_assoc', 'array_uintersect_uassoc',
+        'array_diff_ukey', 'array_diff_uassoc',
+        'array_intersect_ukey', 'array_intersect_uassoc',
+        // Handler registration — deferred callbacks, and the two register_*
+        // functions instantiate an attacker-named class.
+        'set_error_handler', 'set_exception_handler', 'spl_autoload_register',
+        'session_set_save_handler', 'header_register_callback',
+        'libxml_set_external_entity_loader',
+        'stream_wrapper_register', 'stream_filter_register',
         // File system writes / destructive
         'file_put_contents', 'fwrite', 'fputs', 'fopen', 'tmpfile',
         'mkdir', 'rmdir', 'rename', 'unlink', 'copy', 'move_uploaded_file',
         'chmod', 'chown', 'chgrp', 'symlink', 'link', 'tempnam',
+        'touch', 'ftruncate', 'umask',
         // error_log writes to a file when message_type=3 — this is the
         // RCE vector reported in GHSA-wpjx-g695-qc5j.
         'error_log',
@@ -49,13 +65,21 @@ class CubeCart_Smarty_Security extends Smarty_Security
         'include', 'include_once', 'require', 'require_once',
         // Network
         'curl_init', 'curl_exec', 'fsockopen', 'pfsockopen',
+        // curl_init/curl_exec alone leave the multi-handle API as a way round.
+        'curl_setopt', 'curl_setopt_array',
+        'curl_multi_init', 'curl_multi_exec', 'curl_multi_add_handle',
         'stream_socket_client', 'stream_socket_server',
         'mail', 'header', 'setcookie',
+        'mb_send_mail', // same as mail()
+        'ftp_connect', 'ftp_get', 'ftp_put', 'ftp_raw',
         'gethostbyname', 'gethostbyaddr', 'gethostbynamel', 'gethostname',
         'dns_get_record', 'dns_check_record', 'checkdnsrr', 'getmxrr',
         // Process control
         'pclose', 'pcntl_fork', 'pcntl_signal', 'pcntl_wait', 'pcntl_waitpid',
         'posix_kill', 'posix_setuid', 'posix_setgid', 'posix_setsid',
+        'proc_close', 'proc_terminate', 'proc_nice', 'proc_get_status',
+        // Apache — virtual() executes a subrequest
+        'virtual', 'apache_setenv', 'apache_note', 'apache_child_terminate',
         // Info disclosure
         'phpinfo', 'php_uname', 'getenv', 'putenv',
         'get_defined_vars', 'get_defined_functions', 'get_defined_constants',
@@ -178,6 +202,37 @@ class CubeCart_Smarty_Security extends Smarty_Security
         parent::__construct($smarty);
         $this->secure_dir = array(CC_ROOT_DIR . '/js/', CC_ROOT_DIR . '/modules/');
 
+        // Normalise once: the trusted-function checks compare lowercased names.
+        $this->dangerous_php = array_map('strtolower', $this->dangerous_php);
+
+        // Per-install exceptions. A third-party extension may legitimately need
+        // something on the list, and there is no way to enumerate in advance
+        // what every extension's templates call — so allow it to be un-banned
+        // rather than force a fork of this file. Set in includes/global.inc.php;
+        // see global.inc.php-dist for the documented example.
+        //
+        // $never_allow can't be overridden. Nothing legitimate in a template
+        // needs to run a shell or eval a string, so those stay banned no matter
+        // what ends up in the config — which also means a compromised or
+        // careless extension can't disarm the policy meant to contain it.
+        if (isset($GLOBALS['glob']['smarty_allowed_php']) && is_array($GLOBALS['glob']['smarty_allowed_php'])) {
+            $never_allow = array(
+                'exec', 'system', 'passthru', 'shell_exec', 'proc_open', 'popen',
+                'pcntl_exec', 'eval', 'assert', 'create_function',
+            );
+            foreach ($GLOBALS['glob']['smarty_allowed_php'] as $allow) {
+                $allow = strtolower(trim((string)$allow));
+                if ($allow === '' || in_array($allow, $never_allow, true)) {
+                    continue;
+                }
+                $key = array_search($allow, $this->dangerous_php, true);
+                if ($key !== false) {
+                    unset($this->dangerous_php[$key]);
+                }
+            }
+            $this->dangerous_php = array_values($this->dangerous_php);
+        }
+
         $dangerous = $this->dangerous_php;
 
         // Pre-register safe PHP functions as modifiers. Registering at
@@ -222,7 +277,10 @@ class CubeCart_Smarty_Security extends Smarty_Security
      */
     public function isTrustedPhpFunction($function_name, $compiler)
     {
-        if (in_array($function_name, $this->dangerous_php)) {
+        // strtolower: PHP function names are case-insensitive, so a
+        // case-sensitive in_array() let {EXEC(...)} or {Array_Walk(...)} past
+        // the entire list regardless of what was on it.
+        if (in_array(strtolower((string)$function_name), $this->dangerous_php, true)) {
             $compiler->trigger_template_error("PHP function '{$function_name}' not allowed by security setting");
             return false;
         }
@@ -234,7 +292,7 @@ class CubeCart_Smarty_Security extends Smarty_Security
      */
     public function isTrustedPhpModifier($modifier_name, $compiler)
     {
-        if (in_array($modifier_name, $this->dangerous_php)) {
+        if (in_array(strtolower((string)$modifier_name), $this->dangerous_php, true)) {
             $compiler->trigger_template_error("modifier '{$modifier_name}' not allowed by security setting");
             return false;
         }

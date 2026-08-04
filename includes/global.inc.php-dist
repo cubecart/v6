@@ -117,3 +117,13 @@ $glob['es_is'] 		= '0';
 // UA signatures for session blocking (layer 2 - catches bots that spoof browser UAs)
 // Simple bots (curl, python etc.) are already blocked by the mozilla/ whitelist check
 $glob['bot_sigs']	= array('bot', 'crawl', 'spider', 'slurp', 'headless', 'phantom', 'puppeteer', 'lighthouse', 'pagespeed', 'gtmetrix', 'pingdom', 'uptimerobot', 'statuscake', 'semrush', 'ahrefs', 'majestic', 'dotbot', 'facebookexternal');
+
+// Smarty template function exceptions
+// Email, document and invoice templates are compiled as Smarty. A denylist of
+// dangerous PHP functions is enforced in classes/cubecart_smarty_security.class.php.
+// If a third-party extension's template legitimately needs a function that is on
+// that list, un-ban it here rather than editing the class. Names are
+// case-insensitive. Shell and eval functions (exec, system, passthru, shell_exec,
+// proc_open, popen, pcntl_exec, eval, assert, create_function) cannot be un-banned.
+// Leave this commented out unless you actually need it.
+// $glob['smarty_allowed_php'] = array('array_map', 'array_filter');
