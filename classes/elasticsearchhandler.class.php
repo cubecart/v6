@@ -74,15 +74,17 @@ class ElasticsearchHandler
         if (!$this->_isReady()) return false;
         if(!empty($body)) {
             $this->_index_body = $body;
-        } else {
-            $this->_indexBody($id);
+        } else if (!$this->_indexBody($id)) {
+            // Not indexable (disabled, or only in disabled categories). Remove
+            // any existing document instead of writing an empty one.
+            return $this->indexExists() ? $this->delete($id) : false;
         }
         $params = [
             'index'     => $this->_index,
             'id'        => $id,
             'body'      => $this->_index_body
         ];
-        $out_of_stock_excluded = ($this->_config['es_is']=='1' && isset($this->_index_body['stock_level']) && $this->_index_body['stock_level']<=0);
+        $out_of_stock_excluded = $this->_isOutOfStock();
         try {
             if(!$this->indexExists()) {
                 if($out_of_stock_excluded) {
@@ -492,7 +494,10 @@ class ElasticsearchHandler
      */
     public function search($from, $size) {
         if (!$this->_isReady()) return false;
-        $from = ($from-1)*$size;
+        // $from arrives straight from the page parameter and can be the string
+        // 'all' (the "view all results" option). ('all' - 1) is a fatal
+        // TypeError on PHP 8, and this sits outside the try below.
+        $from = (is_numeric($from) && (int)$from > 0) ? ((int)$from - 1) * (int)$size : 0;
         $params = [
             'index' => $this->_index,
             'body'  => array_merge(['from' => $from, 'size' => $size], $this->_search_body)
@@ -528,10 +533,13 @@ class ElasticsearchHandler
             // Build a single _bulk payload for the whole batch instead of
             // one index request per product.
             $bulk_body = array();
-            $exclude_stock_outs = ($this->_config['es_is']=='1');
             foreach ($products as $product) {
-                $this->_indexBody($product['product_id']);
-                if($exclude_stock_outs && isset($this->_index_body['stock_level']) && $this->_index_body['stock_level']<=0) {
+                // Skip anything not publicly reachable rather than bulk-indexing
+                // an empty body for it.
+                if (!$this->_indexBody($product['product_id'])) {
+                    continue;
+                }
+                if($this->_isOutOfStock()) {
                     continue;
                 }
                 $bulk_body[] = array('index' => array('_index' => $this->_index, '_id' => $product['product_id']));
@@ -579,10 +587,22 @@ class ElasticsearchHandler
         if (!$this->_isReady()) return false;
         switch($field) {
             case 'stock_level':
-                $this->_index_body = array('stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($id));
+                // Carry the two flags the out-of-stock rule depends on, otherwise
+                // the check below cannot tell a product that has genuinely run out
+                // from one that simply does not track stock.
+                $flags = $GLOBALS['db']->select('CubeCart_inventory', array('use_stock_level', 'digital'), array('product_id' => (int)$id));
+                $this->_index_body = array(
+                    'stock_level'     => (int)$GLOBALS['catalogue']->getProductStock($id),
+                    'use_stock_level' => isset($flags[0]) ? (int)$flags[0]['use_stock_level'] : 0,
+                    'digital'         => isset($flags[0]) ? (int)$flags[0]['digital'] : 0
+                );
             break;
             default:
-                $this->_indexBody($id);
+                if (!$this->_indexBody($id)) {
+                    // No longer publicly reachable - drop it rather than leaving
+                    // a stale document behind.
+                    return $this->delete($id);
+                }
         }
         $params = array(
             'index' => $this->_index,
@@ -594,7 +614,7 @@ class ElasticsearchHandler
                 $this->createIndex();
                 return $this->add($id);
             }
-            if($field === 'stock_level' && $this->_config['es_is']=='1' && isset($this->_index_body['stock_level']) && $this->_index_body['stock_level']<=0) {
+            if($field === 'stock_level' && $this->_isOutOfStock()) {
                 return $this->delete($id);
             }
             return $this->_client->update($params);
@@ -657,8 +677,17 @@ class ElasticsearchHandler
      * Create body for product to be indexed
      */
     private function _indexBody($product_id) {
+        // Reset first. Without this an early return below leaves the PREVIOUS
+        // product's body in place, and rebuild()'s loop then indexes it under
+        // this product's id.
+        $this->_index_body = array();
+
         $product = $GLOBALS['catalogue']->getProductData($product_id);
-        if (empty($product)) return;
+        // getProductData() returns false for anything not publicly reachable -
+        // disabled, or only present in disabled categories. Those must not be
+        // indexed at all. Returning false lets callers skip the product and
+        // remove any stale document, rather than writing an empty one.
+        if (empty($product)) return false;
         $cats = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => $product['product_id']));
         $seo = SEO::getInstance();
         $category_paths = array();
@@ -676,7 +705,8 @@ class ElasticsearchHandler
             'price_to_pay'  => (float)round($product['price_to_pay'],2), ## Sorter
             'manufacturer_id' => (int)$product['manufacturer'],
             'featured'      => (int)$product['featured'],
-            'digital'       => (int)$product['digital']
+            'digital'       => (int)$product['digital'],
+            'use_stock_level' => (int)$product['use_stock_level'] ## Needed to match core's out-of-stock rule
         );
 
         // Optional fields — only include when populated so empty strings
@@ -699,5 +729,22 @@ class ElasticsearchHandler
                 $this->_index_body[$k] = $v;
             }
         }
+        return true;
+    }
+
+    /**
+     * Is the product currently held in $this->_index_body out of stock?
+     *
+     * Mirrors Catalogue::outOfStockWhere(): a product is only out of stock when
+     * it actually tracks stock AND has none left. Products with
+     * use_stock_level = 0 never run out, and digital products are always
+     * available - which is already how the search query builder treats them,
+     * so index-time and search-time now agree.
+     */
+    private function _isOutOfStock() {
+        if ($this->_config['es_is'] != '1') return false;
+        if (!empty($this->_index_body['digital'])) return false;
+        if (empty($this->_index_body['use_stock_level'])) return false;
+        return isset($this->_index_body['stock_level']) && $this->_index_body['stock_level'] <= 0;
     }
 }
