@@ -1346,6 +1346,49 @@ class Cart
     }
 
     /**
+     * Stock already reserved by this basket's own pending order.
+     *
+     * When stock is reduced at Pending, placing the order decrements inventory
+     * immediately. If the customer then returns to complete payment (Complete
+     * Payment reloads the basket from the pending order), the revalidation below
+     * would see that reduced level and drop the item as out of stock — the
+     * customer cannot pay for the item their own order is holding (#4223).
+     *
+     * This returns what the pending order already took out, keyed the same two
+     * ways stock is checked: by options_identifier for matrix stock, and by
+     * product_id for traditional stock. The caller credits it back before the
+     * availability test, so the order is measured against stock as it stood
+     * before this order reserved it.
+     *
+     * @return array  ['oid' => [id => qty], 'pid' => [product_id => qty]]
+     */
+    private function _reservedByOwnPendingOrder()
+    {
+        $reserved = array('oid' => array(), 'pid' => array());
+        if (empty($this->basket['cart_order_id'])) {
+            return $reserved;
+        }
+        // Only a still-pending order holds an un-cancelled reservation; a paid or
+        // cancelled order must not credit stock back into the availability test.
+        if (!$GLOBALS['db']->select('CubeCart_order_summary', array('id'), array('cart_order_id' => $this->basket['cart_order_id'], 'status' => 1), false, 1, false, false)) {
+            return $reserved;
+        }
+        $rows = $GLOBALS['db']->select('CubeCart_order_inventory', array('product_id', 'quantity', 'options_identifier'), array('cart_order_id' => $this->basket['cart_order_id'], 'stock_updated' => 1), false, false, false, false);
+        if ($rows) {
+            foreach ($rows as $row) {
+                $pid = (int)$row['product_id'];
+                $qty = (int)$row['quantity'];
+                $reserved['pid'][$pid] = ($reserved['pid'][$pid] ?? 0) + $qty;
+                if (!empty($row['options_identifier'])) {
+                    $oid = $row['options_identifier'];
+                    $reserved['oid'][$oid] = ($reserved['oid'][$oid] ?? 0) + $qty;
+                }
+            }
+        }
+        return $reserved;
+    }
+
+    /**
      * Update basket
      */
     public function update($verify = array())
@@ -1354,6 +1397,7 @@ class Cart
         $quantities = isset($_POST['quan']) && is_array($_POST['quan']) ? $_POST['quan'] : $verify;
         if (count($quantities) > 0) {
             $this->_subtotal = 0;
+            $reserved = $this->_reservedByOwnPendingOrder();
             foreach ($quantities as $hash => $quantity) {
 
                 // We can't update an item that doesn't exist or set imcomplete data
@@ -1368,6 +1412,16 @@ class Cart
                     $this->checkMinimumProductQuantity($product['product_id'], $quantity, false);
 
                     $stock_level = $GLOBALS['catalogue']->getProductStock($product['product_id'], $this->basket['contents'][$hash]['options_identifier'] ?? null);
+                    // Add back what this basket's own pending order already
+                    // reserved, so the item isn't judged out of stock against a
+                    // level it itself reduced (#4223). Matrix stock is keyed on
+                    // options_identifier, traditional stock on product_id.
+                    $item_oid = $this->basket['contents'][$hash]['options_identifier'] ?? null;
+                    if (!empty($item_oid) && isset($reserved['oid'][$item_oid])) {
+                        $stock_level += $reserved['oid'][$item_oid];
+                    } elseif (empty($item_oid) && isset($reserved['pid'][(int)$product['product_id']])) {
+                        $stock_level += $reserved['pid'][(int)$product['product_id']];
+                    }
                     if ($product['use_stock_level'] && !$GLOBALS['config']->get('config', 'basket_out_of_stock_purchase')) {
                         if ($stock_level <= 0) {
                             $max_stock = 0;
