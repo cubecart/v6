@@ -715,7 +715,12 @@ case 'stats_prod_sales':
         $where_date  = " AND `S`.`order_date` >= ".$year_start." AND `S`.`order_date` < ".$year_end;
     }
 
-    $order_by = '`t`.`quan` DESC';
+    // Ties are common here - on a typical store most products have sold exactly
+    // once - and an untied sort combined with LIMIT/OFFSET lets tied rows swap
+    // places between page loads, so a product can appear on two pages or on
+    // none. Name is the useful tiebreak; product_id guarantees determinism if
+    // two products share a name. (#4218)
+    $order_by = '`t`.`quan` DESC, `I`.`name` ASC, `t`.`product_id` ASC';
 
     // Year filter options always built so the filter form keeps showing
     // even when the active year has no results (otherwise the user has no way back).
@@ -871,7 +876,7 @@ case 'stats_prod_views':
     $page     = (isset($_GET['page_views']) && is_numeric($_GET['page_views'])) ? (int)$_GET['page_views'] : 1;
     $offset   = ($page - 1) * $per_page;
 
-    $query   = "SELECT `product_id`, `popularity`, `name`, `stock_level`, `use_stock_level` FROM `".$glob['dbprefix']."CubeCart_inventory` WHERE `popularity` > 0 ORDER BY `popularity` DESC LIMIT ".(int)$per_page." OFFSET ".(int)$offset;
+    $query   = "SELECT `product_id`, `popularity`, `name`, `stock_level`, `use_stock_level` FROM `".$glob['dbprefix']."CubeCart_inventory` WHERE `popularity` > 0 ORDER BY `popularity` DESC, `name` ASC, `product_id` ASC LIMIT ".(int)$per_page." OFFSET ".(int)$offset;
     $results = $GLOBALS['db']->query($query);
     if ($results !== false && !empty($results)) {
         $numrows_q = $GLOBALS['db']->query("SELECT COUNT(*) AS `c` FROM `".$glob['dbprefix']."CubeCart_inventory` WHERE `popularity` > 0");
@@ -1054,7 +1059,7 @@ case 'stats_best_customers':
     $GLOBALS['smarty']->assign('BC_YEAR_OPTIONS', $bc_year_options);
     $GLOBALS['smarty']->assign('BC_YEAR',         $bc_year);
 
-    $query = "SELECT SUM(`O`.`total`) AS `customer_expenditure`, COUNT(*) AS `order_count`, `C`.`first_name`, `C`.`last_name`, `C`.`customer_id` FROM `".$glob['dbprefix']."CubeCart_order_summary` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_customer` AS `C` ON `O`.`customer_id` = `C`.`customer_id` WHERE `O`.`status` IN (2,3)".$where_date." GROUP BY `O`.`customer_id` ORDER BY `customer_expenditure` DESC LIMIT ".(int)$per_page." OFFSET ".(int)$offset;
+    $query = "SELECT SUM(`O`.`total`) AS `customer_expenditure`, COUNT(*) AS `order_count`, `C`.`first_name`, `C`.`last_name`, `C`.`customer_id` FROM `".$glob['dbprefix']."CubeCart_order_summary` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_customer` AS `C` ON `O`.`customer_id` = `C`.`customer_id` WHERE `O`.`status` IN (2,3)".$where_date." GROUP BY `O`.`customer_id` ORDER BY `customer_expenditure` DESC, `C`.`last_name` ASC, `C`.`customer_id` ASC LIMIT ".(int)$per_page." OFFSET ".(int)$offset;
 
     if (($results = $GLOBALS['db']->query($query)) !== false && !empty($results)) {
         $numrows_q = $GLOBALS['db']->query("SELECT COUNT(DISTINCT `O`.`customer_id`) AS `c` FROM `".$glob['dbprefix']."CubeCart_order_summary` AS `O` WHERE `O`.`status` IN (2,3)".$where_date);
