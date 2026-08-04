@@ -439,7 +439,12 @@
    </div>
    <div id="category" class="tab_content">
       <h3>{$LANG.settings.title_categories}</h3>
-      <table>
+      <div class="cat-filter">
+         <input type="search" id="cat_filter_input" class="textbox cat-filter__input" placeholder="{$LANG.common.type_to_search}" autocomplete="off" aria-controls="cat_table">
+         <label class="cat-filter__toggle" for="cat_filter_selected"><input type="checkbox" id="cat_filter_selected"> {$LANG.catalogue.category_selected_only}</label>
+         <span id="cat_filter_count" class="cat-filter__count" data-lang="{$LANG.catalogue.category_selected_count}"></span>
+      </div>
+      <table id="cat_table">
          <thead>
             <tr>
                <th>{$LANG.catalogue.category_primary}</th>
@@ -449,17 +454,18 @@
          </thead>
          <tbody>
             {foreach from=$CATEGORIES item=category}
-            <tr>
+            <tr class="cat-row">
                <td style="text-align:center"><input type="radio" name="primary_cat" class="check-primary" value="{$category.id}" rel="cat_{$category.id}"{$category.primary}></td>
                <td style="text-align:center"><input type="checkbox" id="cat_{$category.id}" name="categories[{$category.id}]" value="{$category.id}" class="check_cat" {$category.selected}></td>
-               <td>{$category.name}</td>
+               <td class="cat-name">{$category.name}</td>
             </tr>
             {/foreach}
+            <tr id="cat_no_match" class="is-hidden"><td colspan="3">{$LANG.common.error_no_results}</td></tr>
          </tbody>
          <tfoot>
             <tr>
                <td>&nbsp;</td>
-               <td style="text-align:center"><input type="checkbox" class="check-all" rel="check_cat"></td>
+               <td style="text-align:center"><input type="checkbox" id="cat_check_all"></td>
                <td><strong>{$LANG.form.check_uncheck}</strong></td>
             </tr>
          </tfoot>

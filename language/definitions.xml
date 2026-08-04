@@ -355,6 +355,8 @@
     <string name="category_add" introduced="5.0.0"><![CDATA[Add Category]]></string>
     <string name="category_additional" introduced="5.0.0"><![CDATA[Additional]]></string>
     <string name="category_primary" introduced="5.0.0"><![CDATA[Primary]]></string>
+    <string name="category_selected_count" introduced="6.7.6"><![CDATA[%1$s selected]]></string>
+    <string name="category_selected_only" introduced="6.7.6"><![CDATA[Selected only]]></string>
     <string name="checkout_latest_products" introduced="5.0.0"><![CDATA[Check out these great products...]]></string>
     <string name="click_enlarge" introduced="5.0.0"><![CDATA[Click to enlarge]]></string>
     <string name="condition" introduced="5.0.0"><![CDATA[Condition]]></string>

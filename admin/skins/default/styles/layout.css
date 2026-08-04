@@ -2798,6 +2798,9 @@ textarea#query {
   --rowOdd: transparent;
   --rowEven: transparent;
   --rowHover: var(--highlight);
+  /* Ticked row in a picker list. Must stay distinct from both --bg and
+     --highlight, since --highlight is already the zebra stripe. */
+  --rowSelected: #d7e9f0;
 }
 
 /* ===== DARK THEME OVERRIDES ===== */
@@ -2832,6 +2835,7 @@ textarea#query {
     --rowOdd: #161a1f;
     --rowEven: #13171b;
     --rowHover: #20262c;
+    --rowSelected: #1d3a44;
 
     --btn-bg: #2a3036;
     --btn-bg-hover: #343a40;
@@ -3962,3 +3966,18 @@ body.chromeless #content_body { border-left: 0; }
 
 /* Withdrawal detail tables — label column bold, left-aligned */
 .wd-detail-table td.wd-label { font-weight:700; vertical-align:top; white-space:nowrap; }
+
+/* Product > Categories tab (cubecart/v6#4209). Stores with many categories get
+   an unscannable list, and because input[type=checkbox] is opacity:0 (the tick
+   is the .custom-checkbox sprite) an already-assigned category is easy to miss
+   — worse in dark mode. Filter box + whole-row highlight fixes both. */
+.cat-filter { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin:0 0 8px; }
+.cat-filter__input { flex:1 1 240px; max-width:420px; }
+.cat-filter__toggle { display:flex; align-items:center; gap:6px; white-space:nowrap; cursor:pointer; }
+.cat-filter__count { color:var(--text-light); font-size:11px; }
+
+/* !important: the dark-theme block sets tbody td backgrounds with !important. */
+#cat_table tbody tr.cat-row.is-checked > td { background-color:var(--rowSelected) !important; }
+#cat_table tbody tr.cat-row.is-checked > td:first-child { box-shadow:inset 3px 0 0 var(--primary-accent); }
+#cat_table tbody tr.cat-row.is-primary > td.cat-name { font-weight:700; }
+#cat_table tbody tr.is-hidden { display:none; }
