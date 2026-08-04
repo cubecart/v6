@@ -1901,3 +1901,79 @@ function ccRepositionActiveTab() {
 $(document).ready(ccRepositionActiveTab);
 $(window).on('load resize', ccRepositionActiveTab);
 $(document).on('click', '#tab_control .tab', function() { setTimeout(ccRepositionActiveTab, 0); });
+
+
+/* Product > Categories tab: client-side filter and selected-row highlighting.
+   See cubecart/v6#4209 — the list is one row per category (hundreds on some
+   stores), and because input[type=checkbox] is opacity:0 the tick is easy to
+   miss, so make selections obvious and let the list be narrowed by name.
+   Rows are hidden, never removed, so the checkboxes of filtered-out categories
+   still submit and no assignment is lost on save. */
+function ccCategoryPickerInit() {
+    var $table = $('#cat_table');
+    if (!$table.length) return;
+
+    var $rows = $table.find('tbody tr.cat-row'),
+        $input = $('#cat_filter_input'),
+        $selectedOnly = $('#cat_filter_selected'),
+        $noMatch = $('#cat_no_match'),
+        $count = $('#cat_filter_count'),
+        countLang = $count.data('lang') || '%1$s';
+
+    // Cache the lowercased path once — filtering runs on every keystroke.
+    $rows.each(function() {
+        this.ccCatName = $(this).find('.cat-name').text().toLowerCase();
+    });
+
+    // Highlight and count. Deliberately does not touch visibility: unticking a
+    // row while "selected only" is on must not make it vanish under the cursor.
+    function refreshState() {
+        var checked = 0;
+        $rows.each(function() {
+            var $row = $(this),
+                on = $row.find('input.check_cat').prop('checked');
+            if (on) checked++;
+            $row.toggleClass('is-checked', !!on)
+                .toggleClass('is-primary', $row.find('input.check-primary').prop('checked'));
+        });
+        $count.text(countLang.replace('%1$s', checked));
+    }
+
+    // Reads is-checked, so refreshState() must have run first.
+    function refreshVisibility() {
+        var term = $.trim($input.val() || '').toLowerCase(),
+            selectedOnly = $selectedOnly.prop('checked'),
+            shown = 0;
+        $rows.each(function() {
+            var $row = $(this),
+                visible = (!selectedOnly || $row.hasClass('is-checked')) &&
+                          (!term || this.ccCatName.indexOf(term) !== -1);
+            $row.toggleClass('is-hidden', !visible);
+            if (visible) shown++;
+        });
+        $noMatch.toggleClass('is-hidden', shown !== 0);
+    }
+
+    // Check/uncheck all applies to the rows currently in view only — with a
+    // filter active, silently clearing categories the admin cannot see would be
+    // a trap. Hence its own handler rather than the generic .check-all one.
+    $('#cat_check_all').on('change', function() {
+        var on = this.checked;
+        $rows.not('.is-hidden').find('input.check_cat').prop('checked', on).each(function() {
+            $(this).parent('.custom-checkbox').toggleClass('selected', on);
+        });
+        refreshState();
+    });
+
+    $input.on('input search', refreshVisibility);
+    $selectedOnly.on('change', refreshVisibility);
+    // Deferred: the .check-primary handler ticks its own checkbox on click
+    // without firing change, so read the state after it has run.
+    $table.on('change click', 'input.check_cat, input.check-primary', function() {
+        setTimeout(refreshState, 0);
+    });
+
+    refreshState();
+    refreshVisibility();
+}
+$(document).ready(ccCategoryPickerInit);
