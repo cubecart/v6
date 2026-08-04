@@ -171,8 +171,16 @@ function fn_minify_html($input, $comment = 2, $quote = 1) {
         }
         if ($part[0] === '<' && substr($part, -1) === '>') {
             $output .= fn_minify_html_union($part, $quote);
-        } else if ($part[0] === '&' && substr($part, -1) === ';' && $part !== '<' && $part !== '>' && $part !== '&') {
-            $output .= html_entity_decode($part); // Evaluate HTML entit(y|ies)
+        } else if ($part[0] === '&' && substr($part, -1) === ';' && !in_array(strtolower($part), array('&lt;', '&gt;', '&amp;', '&quot;', '&#039;', '&#39;', '&apos;'), true)) {
+            // Evaluate HTML entit(y|ies) to save a few bytes, but never the ones
+            // that carry markup meaning. The guard used to compare the entity
+            // token against '<', '>' and '&' — the decoded characters — which can
+            // never match a token that starts with '&' and ends with ';', so every
+            // entity was decoded. That silently undid |escape in every skin: an
+            // escaped &lt;ul&gt; came back as a live <ul> and broke the layout
+            // (#4217), and any template relying on |escape for a text node was
+            // left unprotected.
+            $output .= html_entity_decode($part);
         } else {
             $output .= preg_replace('#\s+#', ' ', $part);
         }
