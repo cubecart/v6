@@ -660,6 +660,21 @@ class Order
                 }
             }
 
+            // Payment landed, so whatever is still in the customer's saved cart is
+            // purchase residue. It is otherwise only cleared by the shopper landing
+            // back on the receipt page (CubeCart::_complete), which never happens
+            // when the gateway confirms asynchronously or the tab is closed — and
+            // the abandonment cron then emails them the items they just bought.
+            // Restricted to carts untouched since the order was placed, so a shopper
+            // who started a new basket while a slow callback was in flight keeps it.
+            // Legacy rows have `updated` = 0 and are always cleared, which drains
+            // residue that pre-dates this fix.
+            if ((int)$currentStatus[0]['status'] === self::ORDER_PENDING
+                && in_array((int)$status_id, array(self::ORDER_PROCESS, self::ORDER_COMPLETE), true)
+                && !empty($this->_order_summary['customer_id'])) {
+                $GLOBALS['db']->delete('CubeCart_saved_cart', '`customer_id` = '.(int)$this->_order_summary['customer_id'].' AND `updated` <= '.(int)$this->_order_summary['order_date']);
+            }
+
             // Update Stock Levels
             $this->_manageStock($status_id, $order_id);
 
