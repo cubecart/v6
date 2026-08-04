@@ -498,16 +498,57 @@ class Cron
     const TASK_TIMEOUT = 600;
 
     /**
+     * Collect cron tasks contributed by plugins.
+     *
+     * Tasks used to have to be methods of this class, so an extension's only
+     * option was to bolt everything onto the single "Run Code Snippets" task —
+     * which gives no individual toggle, no per-task frequency and no separate
+     * last-run/last-result (#4177).
+     *
+     * A hook file adds to $tasks, keyed by the `method` value of its row in
+     * CubeCart_cron_tasks:
+     *
+     *   $tasks['myPluginSync'] = array('My_Plugin', 'runSync');
+     *
+     * Everything else — the enable toggle, frequency, concurrency lock, due
+     * check and result capture — then applies to it exactly as for a core task.
+     * Core methods win on a name clash so a plugin can't shadow them.
+     *
+     * @return array  method name => callable
+     */
+    public function registeredTasks() {
+        $tasks = array();
+        foreach ($GLOBALS['hooks']->load('class.cron.tasks') as $hook) {
+            include $hook;
+        }
+        foreach (array_keys($tasks) as $method) {
+            if (method_exists($this, $method)) {
+                unset($tasks[$method]);
+            }
+        }
+        return $tasks;
+    }
+
+    /**
      * Unified cron entry point - runs all enabled tasks that are due
      */
     public function run() {
         $tasks = $GLOBALS['db']->select('CubeCart_cron_tasks', false, array('enabled' => 1), false, false, false, false);
         $output = array();
+        $registered = $this->registeredTasks();
         if ($tasks) {
             $now = time();
             foreach ($tasks as $task) {
                 $method = $task['method'];
-                if (!method_exists($this, $method)) {
+                $callable = null;
+                if (method_exists($this, $method)) {
+                    $callable = array($this, $method);
+                } elseif (isset($registered[$method]) && is_callable($registered[$method])) {
+                    $callable = $registered[$method];
+                } else {
+                    // Previously skipped in silence, which left an unrunnable row
+                    // sitting in the admin list looking healthy forever.
+                    $output[] = $task['label'] . ': skipped (no such task)';
                     continue;
                 }
 
@@ -545,10 +586,14 @@ class Cron
                     if ($method === 'updateExchangeRates') {
                         $ret = $this->$method('', false);
                     } else {
-                        $ret = $this->$method();
+                        $ret = call_user_func($callable);
                     }
                     $result = is_string($ret) ? $ret : 'OK';
                 } catch (Exception $e) {
+                    $result = substr($e->getMessage(), 0, 255);
+                } catch (Error $e) {
+                    // A fatal in third-party task code must not take the whole
+                    // dispatcher down and strand every later task's lock.
                     $result = substr($e->getMessage(), 0, 255);
                 }
 

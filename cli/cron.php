@@ -60,13 +60,22 @@ require CC_INCLUDES_DIR . 'bootstrap.view.inc.php';
 $method = $argv[1] ?? 'run';
 
 $cron = new Cron();
-if (!method_exists($cron, $method)) {
-    fwrite(STDERR, "Unknown cron method: $method\n");
-    exit(2);
+if (method_exists($cron, $method)) {
+    $callable = array($cron, $method);
+} else {
+    // Plugin-contributed tasks are callable by name here too, so they can be
+    // tested and re-run individually just like core ones.
+    $registered = $cron->registeredTasks();
+    if (isset($registered[$method]) && is_callable($registered[$method])) {
+        $callable = $registered[$method];
+    } else {
+        fwrite(STDERR, "Unknown cron method: $method\n");
+        exit(2);
+    }
 }
 
 $start  = microtime(true);
-$result = $cron->$method();
+$result = call_user_func($callable);
 $ms     = (int)round((microtime(true) - $start) * 1000);
 
 // Match the web entry's behaviour: when an individual method is invoked
