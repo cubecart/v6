@@ -12,6 +12,7 @@
 -->
 <hooks version="1.0">
 	<hook trigger="cron" deprecated="" />
+	<hook trigger="class.cron.tasks" deprecated="" />
 	<hook trigger="controller.admin" deprecated="" />
 	<hook trigger="admin.authenticate.failed_invalid_admin" deprecated="" />
 	<hook trigger="admin.authenticate.failed_valid_admin" deprecated="" />
