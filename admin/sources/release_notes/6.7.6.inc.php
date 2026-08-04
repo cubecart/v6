@@ -26,6 +26,7 @@ $features = array(
     'GHSA-5mr8-hgcv-3pcj' => 'Hardened the Smarty security policy for editable email, document and invoice templates against three bypasses. Static class access was unrestricted (an empty allowlist meant &quot;allow all&quot;), so a template could call any <code>{Class::method()}</code> &mdash; including a callback-invoking static method on a loaded class, reaching arbitrary code past the function denylist entirely; access is now restricted to an allowlist. Several callback-taking functions such as <code>array_walk_recursive</code> were missing from the denylist, and both policy checks compared function names case-sensitively &mdash; so any change of capitalisation bypassed the list. A new <code>$glob[\'smarty_allowed_php\']</code> setting can un-ban a specific function per install where an extension needs one; shell and eval functions are exempt from that override',
 
     // Fixes and improvements
+    '4223' => 'Fixed customers being unable to complete payment for the last item in stock. With stock reduced at Pending, returning to pay reloaded the order into an empty basket with an availability error; the basket now credits back the stock the customer\'s own pending order is holding',
     '4217' => 'Fixed the HTML minifier un-escaping entities in text nodes, which silently defeated <code>|escape</code> in every skin and let broken markup in a short description leak out of its container',
     '4145' => 'Fixed abandoned-cart reminders being sent to customers who had already completed and paid for their order. Saved carts are now cleared when payment lands rather than only when the shopper returns to the receipt page, and the suppression check is anchored to the cart instead of to session activity',
     '4209' => 'Admin product Categories tab: added a search filter and a &quot;selected only&quot; toggle, and selected categories are now highlighted rather than relying on a small checkbox &mdash; particularly hard to spot in dark mode',
@@ -57,4 +58,4 @@ $features = array(
     '4168' => 'Foundation: improved SEO and social tags in <code>element.meta.php</code>'
 );
 $security = array('GHSA-fcv7-88v5-vv5f', 'GHSA-5mr8-hgcv-3pcj');
-$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 24, $notes, $security);
+$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 25, $notes, $security);
