@@ -57,4 +57,4 @@ $features = array(
     '4168' => 'Foundation: improved SEO and social tags in <code>element.meta.php</code>'
 );
 $security = array('GHSA-fcv7-88v5-vv5f', 'GHSA-5mr8-hgcv-3pcj');
-$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 8, $notes, $security);
+$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 24, $notes, $security);
