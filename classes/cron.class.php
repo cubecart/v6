@@ -108,9 +108,14 @@ class Cron
 
         // Drive off saved_cart so we catch both pre-checkout abandonment (no
         // order_summary row) and checkout abandonment (Pending order at gateway).
-        // The recent-order gate blocks customers who placed a Processing/Complete
-        // order during or just before their most recent session activity — they
-        // already bought something, don't email about leftovers.
+        // The recent-order gate compares the cart against the customer's orders:
+        // if they placed a Processing/Complete order at or after the cart last
+        // changed, what's left is residue from that purchase, not a live basket.
+        // Anchoring on the cart rather than on session activity matters — a repeat
+        // buyer's last session keeps moving forward while the order date does not,
+        // so a session-relative window reopens the moment they come back to browse
+        // and mails them the items they already bought (#4145). Legacy rows have
+        // `updated` = 0, so any completed order suppresses them: fail safe.
         $pfx = $GLOBALS['config']->get('config', 'dbprefix');
         $query = "SELECT sc.customer_id, sc.basket, c.email, c.first_name, c.last_name, c.language, c.currency, c.country
             FROM `{$pfx}CubeCart_saved_cart` sc
@@ -133,10 +138,7 @@ class Cron
                 SELECT 1 FROM `{$pfx}CubeCart_order_summary` os
                 WHERE os.customer_id = sc.customer_id
                   AND os.status IN (2, 3)
-                  AND os.order_date >= COALESCE((
-                    SELECT MAX(s3.session_last) FROM `{$pfx}CubeCart_sessions` s3
-                    WHERE s3.customer_id = sc.customer_id
-                  ), 0) - ".(int)$delay."
+                  AND os.order_date >= sc.updated
               )";
 
         $results = $GLOBALS['db']->query($query);

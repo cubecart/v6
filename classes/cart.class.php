@@ -1319,10 +1319,14 @@ class Cart
                 $basket = serialize($this->basket['contents']);
                 if (empty($old_basket) || $old_basket != $basket) {
                     $old_basket = $basket;
+                    // `updated` records when the contents last actually changed, which
+                    // is what the abandonment cron compares against the customer's
+                    // orders to tell a live cart from post-purchase residue.
+                    $now = time();
                     if (Database::getInstance()->select('CubeCart_saved_cart', array('basket'), array('customer_id' => $id), false, false, false, false) !== false) {
-                        Database::getInstance()->update('CubeCart_saved_cart', array('basket' => $basket), array('customer_id' => $id));
+                        Database::getInstance()->update('CubeCart_saved_cart', array('basket' => $basket, 'updated' => $now), array('customer_id' => $id));
                     } else {
-                        Database::getInstance()->insert('CubeCart_saved_cart', array('customer_id' => $id, 'basket' => $basket));
+                        Database::getInstance()->insert('CubeCart_saved_cart', array('customer_id' => $id, 'basket' => $basket, 'updated' => $now));
                     }
                 }
             }
