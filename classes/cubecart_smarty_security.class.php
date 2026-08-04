@@ -127,7 +127,12 @@ class CubeCart_Smarty_Security extends Smarty_Security
     public $allow_super_globals = true;
 
     /**
-     * Trusted static classes — empty means all allowed.
+     * Static classes templates may call. Smarty treats an EMPTY array as
+     * "allow all", so leaving it empty lets any {Class::method()} through —
+     * including callback-invoking static methods on whatever happens to be
+     * loaded, which is an RCE gadget past the $dangerous_php denylist (that
+     * list only governs bare function calls). Populated in the constructor
+     * from $trusted_static_classes so this is a real allowlist.
      *
      * @var array
      */
@@ -259,6 +264,13 @@ class CubeCart_Smarty_Security extends Smarty_Security
                 $smarty->registered_classes[$alias] = $class;
             }
         }
+
+        // Turn static-class access into an allowlist. Left empty (the Smarty
+        // default) it means "allow all", so any {Class::method()} compiles —
+        // see the $static_classes docblock. Restrict to exactly the classes
+        // registered above; namespaced tokens like \Vendor\Pkg\Cls are not in
+        // the list, so they are rejected rather than silently permitted.
+        $this->static_classes = array_keys($this->trusted_static_classes);
 
         // Fallback for any PHP function not in the pre-registered list.
         // Sets $callback by reference so Smarty compiles a direct function
