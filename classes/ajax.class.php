@@ -209,6 +209,9 @@ class Ajax
                 // Limited to a maximum of 15 results, in order to prevent it going mental
                 if (($results = $GLOBALS['db']->select('CubeCart_inventory', false, array('~'.$search_string => array('name', 'product_code')), false, 15, false, false)) !== false) {
                     foreach ($results as $result) {
+                        // Product names may be stored HTML encoded. The suggestion list escapes
+                        // for display itself, so entities would otherwise be shown literally.
+                        $result['name'] = html_entity_decode($result['name'], ENT_QUOTES, 'UTF-8');
                         $lower_price = Tax::getInstance()->salePrice($result['price'], $result['sale_price'], false);
                         if ($lower_price && ($lower_price < $result['price'])) {
                             $result['price'] = $lower_price;
