@@ -99,6 +99,11 @@ class Module
 	public function fetch()
 	{
 		if (!$GLOBALS['smarty']->templateExists($this->_template)) {
+			// _setupTemplate() has already pointed Smarty at the module's own skin
+			// directory. Restore it before bailing out, or whatever renders next -
+			// the admin wrapper's templates/main.php - is looked for in there and
+			// the page dies with "Unable to load template".
+			$GLOBALS['gui']->changeTemplateDir();
 			return false;
 		}
 		foreach ($this->_template_data as $key => $value) {
