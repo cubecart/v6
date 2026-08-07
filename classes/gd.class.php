@@ -87,7 +87,10 @@ class GD
             $this->_gdImageOutput = imagecreatetruecolor($w, $h);
             if ($this->_gdImageType == IMAGETYPE_GIF) {
                 $transIndex = imagecolortransparent($im);
-                if ($transIndex >= 0) {
+                // See the note in _resize(): a malformed GIF can declare a
+                // transparent index outside its own colour table, which is a
+                // fatal ValueError on PHP 8.
+                if ($transIndex >= 0 && $transIndex < imagecolorstotal($im)) {
                     $transColor = imagecolorsforindex($im, $transIndex);
                     $transNew = imagecolorallocate($this->_gdImageOutput, $transColor['red'], $transColor['green'], $transColor['blue']);
                     imagefill($this->_gdImageOutput, 0, 0, $transNew);
@@ -220,7 +223,13 @@ class GD
                 $this->_gdImageOutput = imagecreatetruecolor($out_width, $out_height);
                 if ($this->_gdImageType == IMAGETYPE_GIF) {
                     $transIndex = imagecolortransparent($im);
-                    if ($transIndex >= 0) {
+                    // A malformed GIF can declare a transparent index that sits
+                    // outside its own colour table. imagecolorsforindex() only
+                    // warned about that on PHP 7, but throws a ValueError on
+                    // PHP 8 - fatal enough to kill a whole batch job (e.g. an
+                    // Elasticsearch rebuild) over one bad image. Fall through to
+                    // resizing without transparency instead.
+                    if ($transIndex >= 0 && $transIndex < imagecolorstotal($im)) {
                         $transColor = imagecolorsforindex($im, $transIndex);
                         $transNew = imagecolorallocate($this->_gdImageOutput, $transColor['red'], $transColor['green'], $transColor['blue']);
                         imagefill($this->_gdImageOutput, 0, 0, $transNew);
