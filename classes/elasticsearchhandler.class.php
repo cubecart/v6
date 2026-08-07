@@ -592,7 +592,7 @@ class ElasticsearchHandler
                 // from one that simply does not track stock.
                 $flags = $GLOBALS['db']->select('CubeCart_inventory', array('use_stock_level', 'digital'), array('product_id' => (int)$id));
                 $this->_index_body = array(
-                    'stock_level'     => (int)$GLOBALS['catalogue']->getProductStock($id),
+                    'stock_level'     => (int)Catalogue::getInstance()->getProductStock($id),
                     'use_stock_level' => isset($flags[0]) ? (int)$flags[0]['use_stock_level'] : 0,
                     'digital'         => isset($flags[0]) ? (int)$flags[0]['digital'] : 0
                 );
@@ -682,7 +682,7 @@ class ElasticsearchHandler
         // this product's id.
         $this->_index_body = array();
 
-        $product = $GLOBALS['catalogue']->getProductData($product_id);
+        $product = Catalogue::getInstance()->getProductData($product_id);
         // getProductData() returns false for anything not publicly reachable -
         // disabled, or only present in disabled categories. Those must not be
         // indexed at all. Returning false lets callers skip the product and
@@ -701,7 +701,7 @@ class ElasticsearchHandler
         $this->_index_body = array(
             'name'          => (string)$product['name'], ## Searchable (autocomplete) and sortable via name.keyword multi-field
             'date_added'    => (string)$product['date_added'], ## Sorter
-            'stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($product['product_id']), ## Sorter
+            'stock_level'   => (int)Catalogue::getInstance()->getProductStock($product['product_id']), ## Sorter
             'price_to_pay'  => (float)round($product['price_to_pay'],2), ## Sorter
             'manufacturer_id' => (int)$product['manufacturer'],
             'featured'      => (int)$product['featured'],
@@ -722,7 +722,7 @@ class ElasticsearchHandler
             'thumbnail'     => (string)$GLOBALS['gui']->getProductImage($product['product_id'], 'thumbnail', 'relative'),
             'description'   => (string)$this->_indexToPlainText($product['description']),
             'category'      => implode(' ', $category_paths),
-            'manufacturer'  => (string)$GLOBALS['catalogue']->getManufacturer($product['manufacturer'])
+            'manufacturer'  => (string)Catalogue::getInstance()->getManufacturer($product['manufacturer'])
         );
         foreach ($optional as $k => $v) {
             if ($v !== '' && $v !== null) {
