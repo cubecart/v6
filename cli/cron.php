@@ -52,8 +52,15 @@ require CC_INCLUDES_DIR . 'bootstrap.data.inc.php';
 unset($glob);
 $GLOBALS['config']->merge('config', '', $config_default);
 // Shared view-layer bootstrap (Smarty, Language, HookLoader, SSL, SEO, GUI, Tax).
-// Skipped vs the web bootstrap: User, Cart, Catalogue, Cubecart — not used by
-// any cron task, so we save their init cost on every tick.
+// Deliberately NOT set here, unlike the web bootstrap: $GLOBALS['user'],
+// ['cart'], ['catalogue'] and ['cubecart'] - initialising them on every tick
+// costs more than cron needs, and User/Cart are session-bound anyway.
+//
+// So anything reachable from a cron task must not assume those globals exist.
+// Use the singleton accessor instead - Catalogue::getInstance() and friends
+// self-instantiate and work in both contexts. Assuming $GLOBALS['catalogue']
+// was set is what caused #4228 ("Call to a member function getProductData() on
+// null") during an Elasticsearch rebuild.
 require CC_INCLUDES_DIR . 'bootstrap.view.inc.php';
 
 // Dispatch
