@@ -164,6 +164,31 @@
   .cc-navbar .cc-nav-sale,
   .cc-navbar .cc-nav-sale:hover { color: var(--color-chrome-sale); }
 
+  /* ── Social icons (element.social.php) ──────────────────────────────────
+     The marks are inline SVG using fill="currentColor", so the colour comes
+     from this rule and nothing has to be re-exported per theme. Sized by a
+     square hit target rather than the glyph, so Bluesky's 24-grid mark and
+     LinkedIn's 16-grid mark line up optically. */
+  .cc-social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius-cc);
+    color: var(--color-ink-600);
+    transition: color 150ms, background-color 150ms;
+  }
+  .cc-social-link:hover { color: var(--color-ink-900); background-color: var(--color-ink-200); }
+  .cc-social-link:focus-visible { outline: 2px solid var(--color-brand-600); outline-offset: 2px; }
+
+  /* On the footer band the surrounding text is white, so the marks follow it. */
+  .cc-footer .cc-social-link { color: var(--color-chrome-fg); }
+  .cc-footer .cc-social-link:hover {
+    color: var(--color-chrome-fg);
+    background-color: var(--color-chrome-hover);
+  }
+
   /* ── Form validation (js/src/50-validate.js) ────────────────────────────
      The message element is created by JS, so these class names are a contract
      with that file — not just decoration. Tailwind cannot see them in any

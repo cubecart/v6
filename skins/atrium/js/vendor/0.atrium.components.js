@@ -995,9 +995,14 @@ document.addEventListener('DOMContentLoaded', function () {
             errors: {},
             busy: false,
 
-            /* Set while re-dispatching an event we already validated, so the
-               second pass is allowed straight through. */
-            _passthrough: false,
+            /* STICKY once validation has passed, and cleared only when the
+               customer edits something. It must NOT be consumed by the first
+               handler that sees it: the click and submit handlers both fire
+               for one interaction, so a consume-on-read flag made the second
+               handler re-enter and, on a .g-recaptcha submit button, loop
+               forever (click -> submit -> captcha.click() -> click -> ...).
+               That locked the renderer on the basket page. */
+            _verified: false,
 
             init: function () {
                 var form = this.$el;
@@ -1026,13 +1031,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     var type = (btn.getAttribute('type') || 'submit').toLowerCase();
                     if (type !== 'submit' && type !== 'image') return;
 
-                    if (self._passthrough) { self._passthrough = false; return; }
+                    // Secondary actions (update basket, fetch shipping rates,
+                    // apply coupon) must not require the whole form to be
+                    // valid. formnovalidate is the standard opt-out.
+                    if (btn.hasAttribute('formnovalidate')) return;
+
+                    if (self._verified) return;   // already passed; let it run
 
                     e.preventDefault();
                     e.stopPropagation();          // keep grecaptcha out until we pass
                     self.validateAll().then(function (ok) {
                         if (!ok) return;
-                        self._passthrough = true;
+                        self._verified = true;
                         btn.click();              // now grecaptcha (or the browser) proceeds
                     });
                 }, true);
@@ -1040,11 +1050,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 /* Enter-key submits dispatch a real submit event and never
                    touch the button, so they bypass the handler above. */
                 form.addEventListener('submit', function (e) {
-                    if (self._passthrough) { self._passthrough = false; return; }
+                    if (self._verified) return;
                     e.preventDefault();
                     self.validateAll().then(function (ok) {
                         if (!ok) return;
-                        self._passthrough = true;
+                        self._verified = true;
                         // If the form is reCAPTCHA-protected, go through its
                         // button so a token is still minted; submitting the
                         // form directly would post without one and be rejected.
@@ -1069,6 +1079,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 form.addEventListener('change', function (e) {
                     if (self._isField(e.target)) self.checkField(e.target);
                 });
+
+                /* Editing after a successful pass must force a re-check,
+                   otherwise the sticky flag would wave through a form the
+                   customer has since broken. */
+                ['input', 'change'].forEach(function (evt) {
+                    form.addEventListener(evt, function () { self._verified = false; }, true);
+                });
             },
 
             _isField: function (el) {
@@ -1087,14 +1104,36 @@ document.addEventListener('DOMContentLoaded', function () {
                 );
             },
 
-            /* Where a message for this field should live. Radios and checkboxes
-               are placed after their group wrapper so the message does not land
-               between an input and its label. */
+            /* Where a message for this field should live.
+
+               For a checkbox/radio the control and its <label> are usually
+               flex SIBLINGS (e.g. terms_agree lives in
+               <div class="flex items-start gap-2"><input><label></div>), so
+               inserting after the input puts the message BETWEEN the box and
+               its text, laid out inline by the flex parent. Anchor to the row
+               instead so the message sits underneath it.
+
+               Any field can opt out of the guesswork with a [data-field]
+               wrapper, which always wins. */
             _anchor: function (field) {
+                var explicit = field.closest('[data-field]');
+                if (explicit) return explicit;
+
                 if (field.type === 'radio' || field.type === 'checkbox') {
-                    return field.closest('[data-field]') || field.closest('label') || field;
+                    var wrapped = field.closest('label');
+                    if (wrapped) return wrapped;
+                    var row = field.parentElement;
+                    if (row) {
+                        // Only treat the parent as the row if it actually holds
+                        // the label too; otherwise we would skip too far up.
+                        var lbl = field.id
+                            ? row.querySelector('label[for="' + CSS.escape(field.id) + '"]')
+                            : row.querySelector('label');
+                        if (lbl) return row;
+                    }
+                    return row || field;
                 }
-                return field.closest('[data-field]') || field;
+                return field;
             },
 
             _errorId: function (field) {

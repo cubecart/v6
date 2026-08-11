@@ -157,7 +157,7 @@
                   <input type="text" name="estimate[postcode]" id="estimate_postcode" value="{$ESTIMATES.postcode}" placeholder="{$LANG.address.postcode}">
                </div>
 
-               <button type="submit" name="get-estimate" class="cc-btn cc-btn-secondary mt-4 w-full">{$LANG.basket.fetch_shipping_rates}</button>
+               <button type="submit" name="get-estimate" formnovalidate class="cc-btn cc-btn-secondary mt-4 w-full">{$LANG.basket.fetch_shipping_rates}</button>
             </div>
             {/if}
          </div>
@@ -216,7 +216,7 @@
             <label for="coupon" class="cc-label">{$LANG.basket.coupon_add}</label>
             <div class="flex gap-2">
                <input name="coupon" id="coupon" type="text" maxlength="25" class="min-w-0 flex-1">
-               <button type="submit" name="update" id="apply_coupon" value="{$LANG.common.apply}" class="cc-btn cc-btn-secondary shrink-0" @click="clearProceed()">{$LANG.common.apply}</button>
+               <button type="submit" name="update" id="apply_coupon" formnovalidate value="{$LANG.common.apply}" class="cc-btn cc-btn-secondary shrink-0" @click="clearProceed()">{$LANG.common.apply}</button>
             </div>
          </div>
       </dl>
@@ -262,7 +262,7 @@
       <a href="{$STORE_URL}/index.php?_a=basket&empty-basket=true" class="cc-btn cc-btn-ghost !text-danger-600">{$LANG.basket.basket_empty}</a>
       {* clearProceed() removes any hidden proceed=1 left by an earlier click on
          Proceed; without it an update would jump to the next checkout step. *}
-      <button type="submit" name="update" value="{$LANG.basket.basket_update}" class="cc-btn cc-btn-secondary" @click="clearProceed()">{$LANG.basket.basket_update}</button>
+      <button type="submit" name="update" value="{$LANG.basket.basket_update}" formnovalidate class="cc-btn cc-btn-secondary" @click="clearProceed()">{$LANG.basket.basket_update}</button>
       {if $DISABLE_CHECKOUT_BUTTON!==true}
       <button type="submit" name="proceed" id="checkout_proceed" class="g-recaptcha cc-btn cc-btn-primary ms-auto min-w-48" @click="proceed()">{$CHECKOUT_BUTTON}</button>
       {/if}
