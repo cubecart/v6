@@ -23,7 +23,7 @@
 <div class="mx-auto max-w-2xl">
    <h1 class="text-xl font-semibold tracking-tight text-ink-900">{$LANG.account.your_details}</h1>
 
-   <form action="{$VAL_SELF}" method="post" id="profile_form" class="mt-6">
+   <form action="{$VAL_SELF}" method="post" id="profile_form" data-cc-validate class="mt-6">
       <div class="cc-card space-y-5 p-6">
          {* update_your_details is a full sentence, not a label — hence the
             heading/paragraph split. *}
@@ -47,16 +47,16 @@
             {if $CONFIG.emailconf=='1'}
             <div>
                <label for="emailconf" class="cc-label">{$LANG.account.email_confirm}</label>
-               <input type="email" name="emailconf" id="emailconf" class="nopaste" maxlength="96" required>
+               <input type="email" name="emailconf" id="emailconf" data-match="#acc_email" data-msg-match="{$LANG.account.error_email_mismatch}" class="nopaste" maxlength="96" required>
             </div>
             {/if}
             <div>
                <label for="phone" class="cc-label">{$LANG.address.phone}</label>
-               <input type="tel" name="phone" id="phone" value="{$USER.phone}" autocomplete="tel" required>
+               <input type="tel" name="phone" id="phone" pattern="[0-9\-+().\s]+" value="{$USER.phone}" autocomplete="tel" required>
             </div>
             <div>
                <label for="mobile" class="cc-label">{$LANG.address.mobile}</label>
-               <input type="tel" name="mobile" id="mobile" value="{$USER.mobile}" autocomplete="tel">
+               <input type="tel" name="mobile" id="mobile" pattern="[0-9\-+().\s]+" data-msg-phone="{$LANG.account.error_valid_mobile_phone}" value="{$USER.mobile}" autocomplete="tel">
             </div>
          </div>
       </div>
@@ -76,11 +76,11 @@
             <div>
                {* id="passnew" is the equalTo target for passconf — keep it. *}
                <label for="passnew" class="cc-label">{$LANG.user.password_new}</label>
-               <input type="password" name="passnew" id="passnew" maxlength="64" autocomplete="new-password">
+               <input type="password" name="passnew" id="passnew" minlength="6" maxlength="64" autocomplete="new-password">
             </div>
             <div>
                <label for="passconf" class="cc-label">{$LANG.user.password_confirm}</label>
-               <input type="password" name="passconf" id="passconf" maxlength="64" autocomplete="new-password">
+               <input type="password" name="passconf" id="passconf" minlength="6" maxlength="64" data-match="#passnew" autocomplete="new-password">
             </div>
          </div>
       </div>

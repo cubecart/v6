@@ -85,7 +85,7 @@
    </h2>
 
    {* FORM 2 — add/edit. Physically separate from the delete form above. *}
-   <form action="{$VAL_SELF}" method="post" id="addressbook_form" class="mt-4">
+   <form action="{$VAL_SELF}" method="post" id="addressbook_form" data-cc-validate class="mt-4">
       <div class="cc-card space-y-4 p-6">
          <div>
             <label for="addr_description" class="cc-label">{$LANG.common.description}</label>

@@ -206,6 +206,10 @@
          Must stay server-rendered: this is what Google reads for rich results. *}
       {include file='templates/element.markup.json-ld.php'}
 
+      {* Translated validation strings for 50-validate.js. Must come BEFORE
+         element.js_foot.php: the bundle parses this blob at alpine:init. *}
+      {include file='templates/element.validation_messages.php'}
+
       {include file='templates/element.js_foot.php'}
       {$LIVE_HELP}
       {$SKIN_SELECT}

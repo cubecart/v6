@@ -73,7 +73,7 @@
 <div class="mx-auto max-w-md">
    <h1 class="text-xl font-semibold tracking-tight text-ink-900">{$LANG.account.lookup_order}</h1>
 
-   <form action="{$VAL_SELF}" method="post" id="lookup_order" class="cc-card mt-6 space-y-4 p-6">
+   <form action="{$VAL_SELF}" method="post" id="lookup_order" data-cc-validate class="cc-card mt-6 space-y-4 p-6">
       <div>
          <label for="cart_order_id" class="cc-label">{$LANG.basket.order_number}</label>
          <input type="text" name="cart_order_id" id="cart_order_id" value="{$ORDER_NUMBER}" required>

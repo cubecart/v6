@@ -33,7 +33,7 @@
       </p>
       {/if}
    {else}
-   <form action="{$VAL_SELF}" method="post" id="newsletter_form_box" class="mt-3" x-data="ccNewsletter()">
+   <form action="{$VAL_SELF}" method="post" id="newsletter_form_box" data-cc-validate class="mt-3" x-data="ccNewsletter()">
       <label for="newsletter_email" class="cc-sr-only">{$LANG.newsletter.enter_email_signup}</label>
       <div class="flex gap-2">
          <input name="subscribe" id="newsletter_email" type="email" maxlength="250"

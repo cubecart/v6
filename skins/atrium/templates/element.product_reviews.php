@@ -69,7 +69,7 @@
 
    <div id="review_write" x-show="isActive('write')" x-cloak class="mt-6">
       <h3 class="text-lg font-semibold text-ink-900">{$LANG.catalogue.write_review}</h3>
-      <form action="{$VAL_SELF}#reviews_write" id="review_form" method="post" class="cc-card mt-4 space-y-4 p-5">
+      <form action="{$VAL_SELF}#reviews_write" id="review_form" data-cc-validate method="post" class="cc-card mt-4 space-y-4 p-5">
 
          <div class="flex items-center gap-2">
             <input type="checkbox" id="rev_anon" name="review[anon]" value="1">

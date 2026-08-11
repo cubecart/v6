@@ -26,37 +26,37 @@
 <div class="mx-auto max-w-2xl">
    <h1 class="text-xl font-semibold tracking-tight text-ink-900">{$LANG.account.register}</h1>
 
-   <form action="{$VAL_SELF}" method="post" id="registration_form" class="mt-6">
+   <form action="{$VAL_SELF}" method="post" id="registration_form" class="mt-6" data-cc-validate>
       <div class="cc-card space-y-5 p-6">
 
          <h2 class="text-sm font-semibold uppercase tracking-wider text-ink-900">{$LANG.account.contact_details}</h2>
          <div class="grid gap-4 sm:grid-cols-2">
             <div>
                <label for="first_name" class="cc-label">{$LANG.user.name_first}</label>
-               <input type="text" name="first_name" id="first_name" value="{$POST.first_name}" maxlength="32" autocomplete="given-name" required>
+               <input type="text" name="first_name" id="first_name" data-msg-required="{$LANG.account.error_firstname_required}" value="{$POST.first_name}" maxlength="32" autocomplete="given-name" required>
             </div>
             <div>
                <label for="last_name" class="cc-label">{$LANG.user.name_last}</label>
-               <input type="text" name="last_name" id="last_name" value="{$POST.last_name}" maxlength="32" autocomplete="family-name" required>
+               <input type="text" name="last_name" id="last_name" data-msg-required="{$LANG.account.error_lastname_required}" value="{$POST.last_name}" maxlength="32" autocomplete="family-name" required>
             </div>
             <div>
                <label for="email" class="cc-label">{$LANG.common.email}</label>
-               <input type="email" name="email" id="email" value="{$POST.email}" maxlength="96" autocomplete="email" required>
+               <input type="email" name="email" id="email" data-remote="email" value="{$POST.email}" maxlength="96" autocomplete="email" required>
             </div>
             {if $CONFIG.emailconf=='1'}
             <div>
                <label for="emailconf" class="cc-label">{$LANG.account.email_confirm}</label>
                {* .nopaste is a contract: core JS blocks paste so it must be typed. *}
-               <input type="email" name="emailconf" id="emailconf" class="nopaste" maxlength="96" required>
+               <input type="email" name="emailconf" id="emailconf" data-match="#email" data-msg-match="{$LANG.account.error_email_mismatch}" class="nopaste" maxlength="96" required>
             </div>
             {/if}
             <div>
                <label for="phone" class="cc-label">{$LANG.address.phone}</label>
-               <input type="tel" name="phone" id="phone" value="{$POST.phone}" autocomplete="tel" required>
+               <input type="tel" name="phone" id="phone" pattern="[0-9\-+().\s]+" value="{$POST.phone}" autocomplete="tel" required>
             </div>
             <div>
                <label for="mobile" class="cc-label">{$LANG.address.mobile}</label>
-               <input type="tel" name="mobile" id="mobile" value="{$POST.mobile}" autocomplete="tel">
+               <input type="tel" name="mobile" id="mobile" pattern="[0-9\-+().\s]+" data-msg-phone="{$LANG.account.error_valid_mobile_phone}" value="{$POST.mobile}" autocomplete="tel">
             </div>
          </div>
 
@@ -64,17 +64,17 @@
          <div class="grid gap-4 sm:grid-cols-2">
             <div>
                <label for="reg_password" class="cc-label">{$LANG.account.password}</label>
-               <input type="password" name="password" id="reg_password" maxlength="64" autocomplete="new-password" required>
+               <input type="password" name="password" id="reg_password" minlength="6" maxlength="64" autocomplete="new-password" required>
             </div>
             <div>
                <label for="passconf" class="cc-label">{$LANG.user.password_confirm}</label>
-               <input type="password" name="passconf" id="passconf" maxlength="64" autocomplete="new-password" required>
+               <input type="password" name="passconf" id="passconf" minlength="6" maxlength="64" data-match="#reg_password" autocomplete="new-password" required>
             </div>
          </div>
 
          {if $TERMS_CONDITIONS}
          <div class="flex items-start gap-2">
-            <input type="checkbox" name="terms_agree" id="terms_agree" value="1" class="mt-1" required>
+            <input type="checkbox" name="terms_agree" id="terms_agree" data-msg-required="{$LANG.account.error_terms_agree}" value="1" class="mt-1" required>
             <label for="terms_agree" class="text-sm text-ink-800">{sprintf($LANG.account.register_terms_agree_link,$TERMS_CONDITIONS)}</label>
          </div>
          {/if}

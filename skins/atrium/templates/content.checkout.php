@@ -27,7 +27,7 @@
  *}
 {if isset($ITEMS)}
 <div x-data="ccCheckout()">
-<form action="{$VAL_SELF}" method="post" enctype="multipart/form-data" id="checkout_form">
+<form action="{$VAL_SELF}" method="post" enctype="multipart/form-data" id="checkout_form" data-cc-validate>
 
    {if $INCLUDE_CHECKOUT}
    {include file='templates/content.checkout.confirm.php'}

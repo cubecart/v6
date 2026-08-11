@@ -17,7 +17,7 @@
 <div class="mx-auto max-w-2xl">
    <h1 class="text-xl font-semibold tracking-tight text-ink-900">{$LANG.documents.document_contact}</h1>
 
-   <form action="{$VAL_SELF}" method="post" id="contact_form" enctype="multipart/form-data" class="mt-6">
+   <form action="{$VAL_SELF}" method="post" id="contact_form" data-cc-validate enctype="multipart/form-data" class="mt-6">
       <div class="cc-card space-y-4 p-6">
          <div class="grid gap-4 sm:grid-cols-2">
             <div>
@@ -30,7 +30,7 @@
             </div>
             <div>
                <label for="contact_phone" class="cc-label">{$LANG.address.phone}</label>
-               <input type="tel" name="contact[phone]" id="contact_phone" value="{$POST.phone}" autocomplete="tel">
+               <input type="tel" name="contact[phone]" id="contact_phone" pattern="[0-9\-+().\s]+" value="{$POST.phone}" autocomplete="tel">
             </div>
             {if $DEPARTMENTS}
             <div>

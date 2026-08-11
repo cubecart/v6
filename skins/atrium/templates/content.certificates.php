@@ -11,7 +11,7 @@
  *
  * ⚠ $ctrl_allow_purchase is LOWER CASE here, unlike $CTRL_* elsewhere.
  *}
-<form id="gc_form" action="{$VAL_SELF}" method="post" class="mx-auto max-w-2xl"
+<form id="gc_form" data-cc-validate action="{$VAL_SELF}" method="post" class="mx-auto max-w-2xl"
       x-data="ccGiftCertificate('{if in_array($GC.delivery, array(1,3))}e{else}m{/if}')">
    <h1 class="text-xl font-semibold tracking-tight text-ink-900">{$LANG.catalogue.gift_certificates}</h1>
    <p class="mt-2 text-sm text-ink-600">{$LANG_CERT_VALUES}</p>

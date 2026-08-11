@@ -9,7 +9,7 @@
  *   search[inStock] search[featured] search[manufacturer][]
  * Posts to ?_a=category — the search results ARE the category listing.
  *}
-<form method="post" action="?_a=category" id="advanced_search_form" enctype="multipart/form-data" class="mx-auto max-w-2xl">
+<form method="post" action="?_a=category" id="advanced_search_form" data-cc-validate enctype="multipart/form-data" class="mx-auto max-w-2xl">
    <h1 class="text-2xl font-semibold tracking-tight text-ink-900">{$LANG.search.advanced}</h1>
 
    <div class="cc-card mt-6 space-y-5 p-5">

@@ -32,7 +32,7 @@
    </div>
    {/if}
 
-   <form action="{$VAL_SELF}" method="post" id="withdraw_form" class="mt-6">
+   <form action="{$VAL_SELF}" method="post" id="withdraw_form" data-cc-validate class="mt-6">
       <div class="cc-card space-y-4 p-6">
 
          <div class="grid gap-4 sm:grid-cols-2">

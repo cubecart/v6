@@ -12,7 +12,7 @@
    <h1 class="text-xl font-semibold tracking-tight text-ink-900">{$LANG.account.forgotten_password}</h1>
    <p class="mt-2 text-sm text-ink-600">{$LANG.account.password_recovery_notice|default:''}</p>
 
-   <form action="{$VAL_SELF}" method="post" id="recover_password" class="cc-card mt-6 space-y-4 p-6">
+   <form action="{$VAL_SELF}" method="post" id="recover_password" data-cc-validate class="cc-card mt-6 space-y-4 p-6">
       <div>
          <label for="email" class="cc-label">{$LANG.user.email_address}</label>
          <input type="email" name="email" id="email" value="{$POST.email}" autocomplete="email" required>

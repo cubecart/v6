@@ -164,6 +164,29 @@
   .cc-navbar .cc-nav-sale,
   .cc-navbar .cc-nav-sale:hover { color: var(--color-chrome-sale); }
 
+  /* ── Form validation (js/src/50-validate.js) ────────────────────────────
+     The message element is created by JS, so these class names are a contract
+     with that file — not just decoration. Tailwind cannot see them in any
+     template, hence they live here rather than as utilities. */
+  .cc-field-error {
+    margin-top: 0.375rem;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--color-danger-700);
+  }
+  /* aria-invalid is what JS sets, so styling keys off it: the visual state and
+     the state announced to a screen reader can never drift apart. */
+  .cc-input[aria-invalid="true"],
+  .cc-select[aria-invalid="true"],
+  .cc-textarea[aria-invalid="true"] {
+    border-color: var(--color-danger-600);
+  }
+  .cc-input[aria-invalid="true"]:focus,
+  .cc-select[aria-invalid="true"]:focus,
+  .cc-textarea[aria-invalid="true"]:focus {
+    outline-color: var(--color-danger-600);
+  }
+
   /* ── Footer band ────────────────────────────────────────────────────────
      Same chrome tokens as .cc-navbar.
 

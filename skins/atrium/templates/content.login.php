@@ -16,7 +16,7 @@
 <div class="mx-auto max-w-md">
    <h1 class="text-xl font-semibold tracking-tight text-ink-900">{$LANG.account.login}</h1>
 
-   <form action="{$VAL_SELF}" method="post" id="login_form" class="cc-card mt-6 space-y-4 p-6">
+   <form action="{$VAL_SELF}" method="post" id="login_form" data-cc-validate class="cc-card mt-6 space-y-4 p-6">
       <div>
          <label for="username" class="cc-label">{$LANG.user.email_address}</label>
          <input type="text" name="username" id="username" value="{$USERNAME}" autocomplete="username" required>
