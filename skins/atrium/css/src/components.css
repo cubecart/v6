@@ -1,0 +1,280 @@
+/**
+ * Atrium skin components.
+ *
+ * Deliberately small. Anything used once lives in the template as utilities;
+ * only genuinely repeated patterns — and anything a PLUGIN might need to target
+ * or reuse — earns a class here.
+ */
+
+@layer components {
+
+  /* ── Layout shell ──────────────────────────────────────────────────────── */
+  .cc-container {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: 1rem;
+    max-width: 96rem;
+  }
+  @media (min-width: 640px)  { .cc-container { padding-inline: 1.5rem; } }
+  @media (min-width: 1024px) { .cc-container { padding-inline: 2rem; } }
+
+  /* ── Buttons ───────────────────────────────────────────────────────────
+     .cc-btn is also the target of the .button compat rule (compat.css), so
+     plugin-emitted <button class="button"> inherits sane styling. */
+  .cc-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: var(--radius-cc);
+    padding: 0.5625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background-color 120ms, color 120ms, border-color 120ms;
+  }
+  .cc-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+  .cc-btn-primary {
+    background-color: var(--color-brand-600);
+    color: #fff;
+  }
+  .cc-btn-primary:hover:not(:disabled) { background-color: var(--color-brand-700); }
+
+  .cc-btn-secondary {
+    background-color: var(--color-ink-100);
+    color: var(--color-ink-900);
+    border-color: var(--color-ink-200);
+  }
+  .cc-btn-secondary:hover:not(:disabled) { background-color: var(--color-ink-200); }
+
+  .cc-btn-ghost { background-color: transparent; color: var(--color-ink-700); }
+  .cc-btn-ghost:hover:not(:disabled) { background-color: var(--color-ink-100); }
+
+  /* ── Form controls ─────────────────────────────────────────────────────
+     Applied to bare elements too, because CubeCart core and plugins emit
+     unclassed <input>/<select> into checkout and we cannot reach them. */
+  .cc-input, .cc-select, .cc-textarea,
+  input[type="text"], input[type="email"], input[type="password"],
+  input[type="tel"], input[type="number"], input[type="search"],
+  input[type="url"], input[type="date"], select, textarea {
+    display: block;
+    width: 100%;
+    border-radius: var(--radius-cc);
+    border: 1px solid var(--color-ink-300);
+    background-color: var(--color-ink-50);
+    color: var(--color-ink-900);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9375rem;
+    line-height: 1.5rem;
+  }
+  input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus,
+  input[type="tel"]:focus, input[type="number"]:focus, input[type="search"]:focus,
+  select:focus, textarea:focus, .cc-input:focus {
+    border-color: var(--color-brand-600);
+    outline: 2px solid transparent;
+    box-shadow: 0 0 0 1px var(--color-brand-600);
+  }
+  input[type="checkbox"], input[type="radio"] {
+    accent-color: var(--color-brand-600);
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .cc-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-ink-800);
+    margin-bottom: 0.375rem;
+  }
+
+  /* ── Surfaces ──────────────────────────────────────────────────────────── */
+  .cc-card {
+    background-color: var(--color-ink-100);
+    border: 1px solid var(--color-ink-200);
+    border-radius: var(--radius-cc-lg);
+  }
+
+  /* ── Alerts. box.errors.php uses these; keep the names stable so the
+       checkout can detect an error state and auto-open the guest form. ──── */
+  .cc-alert {
+    display: flex;
+    gap: 0.75rem;
+    border-radius: var(--radius-cc);
+    border: 1px solid transparent;
+    padding: 0.875rem 1rem;
+    font-size: 0.875rem;
+  }
+  .cc-alert-error  { background-color: var(--color-danger-50);  border-color: var(--color-danger-200);  color: var(--color-danger-700); }
+  .cc-alert-notice { background-color: var(--color-success-50); border-color: var(--color-success-200); color: var(--color-success-700); }
+  .cc-alert-info   { background-color: var(--color-brand-50);   border-color: var(--color-brand-200);   color: var(--color-brand-800); }
+  .cc-alert-warn   { background-color: var(--color-warn-50);    border-color: var(--color-warn-200);    color: var(--color-warn-700); }
+  .cc-alert a { text-decoration: underline; color: inherit; }
+
+  /* ── Category navigation ───────────────────────────────────────────────
+     element.navigation_tree.php emits identical markup at every depth (PHP
+     renders children before parents, so a template cannot know its own level).
+     All depth-dependent styling therefore lives here, keyed off nesting. */
+
+  .cc-nav > ul { display: flex; flex-wrap: wrap; align-items: center; gap: 0.125rem; }
+
+  .cc-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    border-radius: var(--radius-cc);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-ink-700);
+    white-space: nowrap;
+  }
+  .cc-nav-link:hover { background-color: var(--color-ink-200); color: var(--color-ink-900); }
+
+  .cc-nav-caret { width: 1rem; height: 1rem; flex-shrink: 0; transition: transform 150ms; }
+
+  .cc-nav-item { position: relative; }
+
+  .cc-nav-menu {
+    position: absolute;
+    z-index: 40;
+    min-width: 14rem;
+    padding-block: 0.375rem;
+    border: 1px solid var(--color-ink-200);
+    border-radius: var(--radius-cc-lg);
+    background-color: var(--color-ink-100);
+    box-shadow: 0 10px 30px -12px rgb(0 0 0 / 0.25);
+  }
+
+  /* First-level menu drops BELOW its trigger... */
+  .cc-nav > ul > .cc-nav-parent > .cc-nav-menu {
+    inset-inline-start: 0;
+    top: 100%;
+  }
+  /* ...every deeper menu flies out to the SIDE, or they would stack on top
+     of each other and only the deepest would be reachable. */
+  .cc-nav-menu .cc-nav-menu {
+    inset-inline-start: 100%;
+    top: -0.375rem;
+  }
+
+  /* Items inside a menu are full-width rows, not inline pills. */
+  .cc-nav-menu .cc-nav-link {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border-radius: 0;
+    padding: 0.5rem 0.875rem;
+    white-space: normal;
+  }
+  /* Caret points sideways in a flyout. */
+  .cc-nav-menu .cc-nav-caret { transform: rotate(-90deg); }
+  .cc-nav-menu .cc-nav-caret.rotate-180 { transform: rotate(-90deg); }
+
+  /* ── The same nav markup, restyled for the mobile drawer ───────────────
+     The drawer includes box.navigation.php a second time rather than shipping
+     a duplicate tree (foundation kept box.off_canvas.left.php in sync by hand
+     and it drifted). Everything below re-lays out the identical DOM as a
+     stacked accordion. */
+
+  .cc-nav-mobile .cc-nav > ul { display: block; }
+  .cc-nav-mobile .cc-nav-item { position: static; }
+
+  .cc-nav-mobile .cc-nav-link {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.625rem 0.5rem;
+    white-space: normal;
+  }
+
+  /* Flyouts become in-flow, indented sub-lists. */
+  .cc-nav-mobile .cc-nav-menu,
+  .cc-nav-mobile .cc-nav-menu .cc-nav-menu {
+    position: static;
+    inset: auto;
+    min-width: 0;
+    margin-inline-start: 0.75rem;
+    padding-block: 0;
+    border: none;
+    border-inline-start: 1px solid var(--color-ink-200);
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+  .cc-nav-mobile .cc-nav-menu .cc-nav-link { padding-inline-start: 0.75rem; }
+  /* Caret points down at every depth here, since nothing flies out sideways. */
+  .cc-nav-mobile .cc-nav-caret { transform: none; }
+  .cc-nav-mobile .cc-nav-caret.rotate-180 { transform: rotate(180deg); }
+
+  /* ── Sidebar ────────────────────────────────────────────────────────────
+     Every sidebar box self-guards on its own data, so on a store with no
+     featured/popular/sale products the <aside> renders empty. Without this it
+     would still reserve its 18rem column and knock the main content off-centre. */
+  .cc-sidebar:empty { display: none; }
+
+  /* ── Merchant-authored HTML ────────────────────────────────────────────
+     Apply .prose-cc to ANY block containing HTML the merchant wrote: CMS
+     documents, product descriptions, category descriptions, email-ish content.
+
+     This is not a nicety. Tailwind's preflight zeroes the margins and font
+     sizes of h1-h6, p, ul and ol, so a product description pasted from Word
+     renders as one undifferentiated wall of text. Foundation had element
+     defaults and never needed this; Atrium does.
+
+     Scoped rather than global so it cannot fight the skin's own layout. */
+  .prose-cc { color: var(--color-ink-700); }
+  .prose-cc > * + * { margin-top: 1em; }
+  .prose-cc h1 { font-size: 1.875rem; line-height: 1.2; margin-top: 1.6em; }
+  .prose-cc h2 { font-size: 1.5rem;   line-height: 1.25; margin-top: 1.6em; }
+  .prose-cc h3 { font-size: 1.25rem;  line-height: 1.3; margin-top: 1.5em; }
+  .prose-cc h4 { font-size: 1.075rem; margin-top: 1.4em; }
+  .prose-cc h1:first-child,
+  .prose-cc h2:first-child,
+  .prose-cc h3:first-child { margin-top: 0; }
+  .prose-cc ul { list-style: disc;    padding-inline-start: 1.5rem; }
+  .prose-cc ol { list-style: decimal; padding-inline-start: 1.5rem; }
+  .prose-cc li + li { margin-top: 0.35em; }
+  .prose-cc a { text-decoration: underline; text-underline-offset: 2px; }
+  .prose-cc img { border-radius: var(--radius-cc); }
+  .prose-cc blockquote {
+    border-inline-start: 3px solid var(--color-ink-300);
+    padding-inline-start: 1rem;
+    color: var(--color-ink-600);
+    font-style: italic;
+  }
+  .prose-cc table { margin-block: 1em; }
+  .prose-cc th, .prose-cc td {
+    border: 1px solid var(--color-ink-200);
+    padding: 0.5rem 0.75rem;
+    text-align: start;
+  }
+  .prose-cc hr { border: none; border-top: 1px solid var(--color-ink-200); margin-block: 2em; }
+
+  /* ── Visually hidden, but readable by assistive tech ──────────────────── */
+  .cc-sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Skip link: hidden until focused. */
+  .cc-skip {
+    position: absolute;
+    left: 0.5rem; top: -3rem;
+    z-index: 100;
+    background-color: var(--color-brand-600);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-cc);
+    transition: top 120ms;
+  }
+  .cc-skip:focus { top: 0.5rem; color: #fff; }
+}

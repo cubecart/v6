@@ -1,0 +1,51 @@
+/**
+ * Atrium — Tailwind CSS v4 entry point
+ * Build:  ./build/build.sh        (compiles to ../tailwind.css)
+ * Watch:  ./build/watch.sh
+ *
+ * Merchants never run this. css/tailwind.css is committed and shipped.
+ */
+
+/* source(none) is REQUIRED, not a preference.
+ * Tailwind v4's automatic source detection honours .gitignore, and this repo
+ * ignores /skins/* (.gitignore:29). Auto-detection therefore finds ZERO
+ * templates and silently emits a stylesheet with no utilities in it.
+ * Every scan target below is declared explicitly instead. */
+@import "tailwindcss" source(none);
+
+/* Paths are relative to THIS file: skins/atrium/css/src/ */
+@source "../../templates/**/*.php";
+/* Module override templates keep the MODULE's file name, which is .tpl —
+ * Card_Capture's gateway form() fetches exactly 'form.tpl'.
+ * Without this line every utility in the override is purged and the card form
+ * ships unstyled. The modules/**\/skin/*.tpl glob below resolves against the
+ * CubeCart root, not this skin, so it does not cover us. */
+@source "../../templates/**/*.tpl";
+@source "../../js/**/*.js";
+@source "./safelist.txt";
+
+/* Payment gateways render their OWN Smarty templates straight into checkout
+ * (e.g. modules/gateway/Square/skin/form.php). Miss these and payment forms
+ * ship unstyled. ../../../../ = the CubeCart root. */
+@source "../../../../modules/**/skin/*.php";
+@source "../../../../modules/**/skin/*.tpl";
+@source "../../../../modules/**/templates/*.php";
+
+/* Defence in depth: the Tailwind Plus kit is reference-only and must never be
+ * a markup source for this skin. Explicitly excluded in case anyone moves it in. */
+@source not "../../assets/**";
+@source not "../../_design/**";
+
+/* Dark mode is skin-controlled, not OS-controlled: main.php stamps
+ * data-theme on <html> from $SKIN_CUSTOM.colour_scheme. Merchants who want to
+ * follow the OS set colour_scheme=auto in config.xml, which adds the stamp
+ * from a tiny inline script before paint. Never bare prefers-color-scheme —
+ * a storefront full of merchant-supplied product HTML cannot be trusted to
+ * invert cleanly without an explicit opt-in. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@import "./theme.css";
+@import "./base.css";
+@import "./components.css";
+@import "./compat.css";
+@import "./legacy.css";

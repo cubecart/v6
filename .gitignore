@@ -28,6 +28,13 @@ Thumbs.db
 # ==========================
 /skins/*
 !/skins/foundation/
+!/skins/atrium/
+# Only foundation and atrium are tracked. Everything else under skins/ stays
+# ignored — including any licensed design kit downloaded for reference (a
+# Tailwind Plus kit lived at skins/tailwind/ during Atrium's build and has since
+# been removed). Such kits must never be committed: their licence forbids
+# redistributing the components or derivatives of them. Atrium's markup is
+# authored independently of any of them; see skins/atrium/README.md.
 
 # ==========================
 # Language (installed via API)

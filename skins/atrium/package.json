@@ -1,0 +1,21 @@
+{
+  "name": "cubecart-skin-atrium",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Dev-only build tooling for the Atrium skin. Never shipped to merchants; excluded from the release zip.",
+  "scripts": {
+    "build": "tailwindcss -i ./css/src/input.css -o ./css/tailwind.css --minify",
+    "dev": "tailwindcss -i ./css/src/input.css -o ./css/tailwind.css --watch"
+  },
+  "devDependencies": {
+    "@alpinejs/anchor": "^3.16.0",
+    "@alpinejs/collapse": "^3.16.0",
+    "@alpinejs/focus": "^3.16.0",
+    "@alpinejs/persist": "^3.16.0",
+    "@tailwindcss/cli": "^4.0.0",
+    "alpinejs": "^3.16.0",
+    "jquery": "^3.7.1",
+    "jquery-migrate": "^3.5.2",
+    "tailwindcss": "^4.0.0"
+  }
+}

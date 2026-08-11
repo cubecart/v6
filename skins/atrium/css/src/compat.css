@@ -1,0 +1,212 @@
+/**
+ * Foundation 5 compatibility shim.
+ *
+ * WHY THIS FILE EXISTS — do not delete it as "dead CSS".
+ *
+ * Third-party plugins emit Foundation grid markup as hardcoded strings from PHP,
+ * inside hooks we cannot override from a skin. Verified in this tree:
+ *
+ *   modules/plugins/customer_rewards/hooks/class.cubecart.display_basket.php
+ *     '<div class="small-12 medium-4 columns">…'
+ *     '<div class="small-4 medium-4 columns"><button class="button postfix secondary">'
+ *
+ * Foundation classes that reach the STOREFRONT, verified in this tree
+ * (admin output deliberately excluded — an earlier version of this comment
+ * counted admin templates and was badly misleading):
+ *
+ *   row, columns, small-{1,4,5,8,12}, medium-{3,4}, large-2, end
+ *     modules/gateway/Card_Capture/skin/form.tpl:28-52,74
+ *     modules/plugins/customer_rewards/hooks/class.cubecart.display_basket.php
+ *   collapse, postfix, secondary, tiny, alert
+ *     customer_rewards/hooks/class.cubecart.display_basket.php
+ *   list
+ *     customer_rewards/hooks/class.cubecart.construct.php,111
+ *   button
+ *     the above, plus paypal_commerce/skin/card_form.tpl
+ *   text-center, right, hide   -> implemented in legacy.css, NOT here
+ *
+ * `panel` is defined below but has no storefront emitter in this tree; kept as
+ * cheap insurance since plugins reach for it.
+ *
+ * ⚠ CAVEAT: /modules/* is gitignored and installed per-store, so this checkout
+ * is ONE MERCHANT'S module set. The list above is a sample, not a closed set.
+ * When you find another plugin emitting a Foundation class, add the rule WITH
+ * its file:line.
+ *
+ * Scope is deliberately narrow — a 12-column flex grid and the handful of
+ * helpers above. This is not a Foundation port.
+ */
+
+@layer components {
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-inline: -0.5rem;
+    /* Deliberately no width:100%. Combined with the negative inline margins it
+       would compute 1rem WIDER than the parent and overflow it. Auto width plus
+       negative margins is the correct gutter pattern — the padding on .columns
+       pays the gutter back. */
+    min-width: 0;
+  }
+
+  .columns {
+    padding-inline: 0.5rem;
+    flex: 0 0 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  /* Foundation is mobile-first: small-* is the base, medium/large override up. */
+  .small-1  { flex-basis: 8.3333%;  max-width: 8.3333%; }
+  .small-2  { flex-basis: 16.6667%; max-width: 16.6667%; }
+  .small-3  { flex-basis: 25%;      max-width: 25%; }
+  .small-4  { flex-basis: 33.3333%; max-width: 33.3333%; }
+  .small-5  { flex-basis: 41.6667%; max-width: 41.6667%; }
+  .small-6  { flex-basis: 50%;      max-width: 50%; }
+  .small-7  { flex-basis: 58.3333%; max-width: 58.3333%; }
+  .small-8  { flex-basis: 66.6667%; max-width: 66.6667%; }
+  .small-9  { flex-basis: 75%;      max-width: 75%; }
+  .small-10 { flex-basis: 83.3333%; max-width: 83.3333%; }
+  .small-11 { flex-basis: 91.6667%; max-width: 91.6667%; }
+  .small-12 { flex-basis: 100%;     max-width: 100%; }
+
+  @media (min-width: 640px) {
+    .medium-1  { flex-basis: 8.3333%;  max-width: 8.3333%; }
+    .medium-2  { flex-basis: 16.6667%; max-width: 16.6667%; }
+    .medium-3  { flex-basis: 25%;      max-width: 25%; }
+    .medium-4  { flex-basis: 33.3333%; max-width: 33.3333%; }
+    .medium-5  { flex-basis: 41.6667%; max-width: 41.6667%; }
+    .medium-6  { flex-basis: 50%;      max-width: 50%; }
+    .medium-7  { flex-basis: 58.3333%; max-width: 58.3333%; }
+    .medium-8  { flex-basis: 66.6667%; max-width: 66.6667%; }
+    .medium-9  { flex-basis: 75%;      max-width: 75%; }
+    .medium-10 { flex-basis: 83.3333%; max-width: 83.3333%; }
+    .medium-11 { flex-basis: 91.6667%; max-width: 91.6667%; }
+    .medium-12 { flex-basis: 100%;     max-width: 100%; }
+  }
+
+  @media (min-width: 1024px) {
+    .large-1  { flex-basis: 8.3333%;  max-width: 8.3333%; }
+    .large-2  { flex-basis: 16.6667%; max-width: 16.6667%; }
+    .large-3  { flex-basis: 25%;      max-width: 25%; }
+    .large-4  { flex-basis: 33.3333%; max-width: 33.3333%; }
+    .large-5  { flex-basis: 41.6667%; max-width: 41.6667%; }
+    .large-6  { flex-basis: 50%;      max-width: 50%; }
+    .large-7  { flex-basis: 58.3333%; max-width: 58.3333%; }
+    .large-8  { flex-basis: 66.6667%; max-width: 66.6667%; }
+    .large-9  { flex-basis: 75%;      max-width: 75%; }
+    .large-10 { flex-basis: 83.3333%; max-width: 83.3333%; }
+    .large-11 { flex-basis: 91.6667%; max-width: 91.6667%; }
+    .large-12 { flex-basis: 100%;     max-width: 100%; }
+  }
+
+  /* Foundation's .button, mapped onto Atrium's own button so plugin buttons
+   * look native rather than merely "not broken". */
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: var(--radius-cc);
+    padding: 0.5625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    border: 1px solid transparent;
+    background-color: var(--color-brand-600);
+    color: #fff;
+    cursor: pointer;
+  }
+  .button:hover { background-color: var(--color-brand-700); color: #fff; }
+  .button.secondary {
+    background-color: var(--color-ink-100);
+    color: var(--color-ink-900);
+    border-color: var(--color-ink-200);
+  }
+  .button.secondary:hover { background-color: var(--color-ink-200); color: var(--color-ink-900); }
+  .button.tiny { padding: 0.25rem 0.625rem; font-size: 0.75rem; }
+  .button.postfix { border-start-start-radius: 0; border-end-start-radius: 0; width: 100%; }
+  .button.prefix  { border-start-end-radius: 0; border-end-end-radius: 0; width: 100%; }
+  .button.expand  { width: 100%; }
+
+  .panel {
+    background-color: var(--color-ink-100);
+    border: 1px solid var(--color-ink-200);
+    border-radius: var(--radius-cc);
+    padding: 1rem;
+  }
+
+  /* ── Foundation input group: `row collapse` ────────────────────────────
+   * ⚠ THIS ONE ACTIVELY BREAKS, and the cause is our own build.
+   * Tailwind generates `.collapse{visibility:collapse}` into @layer utilities
+   * (the token is picked up from this skin's x-collapse / border-collapse
+   * usage). Utilities beat components regardless of specificity, so a
+   * Foundation `row collapse` fragment computes to visibility:collapse and
+   * DISAPPEARS on a non-table element.
+   * Live emitter, on the storefront basket:
+   *   modules/plugins/customer_rewards/hooks/class.cubecart.display_basket.php
+   *     '<div class="row collapse" style="margin-bottom:10px;">'
+   * This is a semantic collision, not a missing rule — hence the explicit
+   * visibility reset. In Foundation, `collapse` means zero gutters. */
+  .row.collapse {
+    visibility: visible;
+    margin-inline: 0;
+  }
+  .row.collapse > .columns { padding-inline: 0; }
+
+  /* ── Destructive Foundation button ─────────────────────────────────────
+   * Live emitter, storefront basket:
+   *   customer_rewards/hooks/class.cubecart.display_basket.php
+   *     '<button class="button tiny alert" value="0">'  (clear points)
+   * Bare `.alert` otherwise matches nothing here — legacy.css only defines
+   * `.alert-box.alert` — so this destructive action renders identically to the
+   * primary Apply button beside it.
+   * NOT adding `.button.success`: the only candidate emitter
+   * (modules/gateway/Square/skin/form.php) is dead code — Square's real class
+   * has an empty form() and nothing fetches that template. */
+  .button.alert { background-color: var(--color-danger-600); color: #fff; }
+  .button.alert:hover { background-color: var(--color-danger-700); color: #fff; }
+
+  /* ── Legacy data table ─────────────────────────────────────────────────
+   * Live on ?_a=rewards for a logged-in customer:
+   *   customer_rewards/hooks/class.cubecart.construct.php,111
+   *     '<table class="list" width="100%"><caption>…'
+   * assigned to $PAGE_CONTENT. Atrium's only table rule is base.css
+   * (width + border-collapse), and border-collapse kills the legacy
+   * cellspacing these rely on, so the columns jam together. */
+  .list { width: 100%; }
+  .list caption {
+    text-align: start;
+    font-weight: 600;
+    color: var(--color-ink-900);
+    padding-block: 0.5rem;
+  }
+  .list th, .list td {
+    padding: 0.5rem 0.75rem;
+    text-align: start;
+    border-bottom: 1px solid var(--color-ink-200);
+  }
+  .list th { font-weight: 600; color: var(--color-ink-700); }
+
+  /* ── Narrow legacy input ───────────────────────────────────────────────
+   * modules/gateway/Card_Capture/skin/form.tpl (cvc2, issue). components.css
+   * gives every bare input width:100%, overriding the template's size="5", so
+   * a 3-digit CVV field spans its whole cell. Only reachable when Atrium's
+   * Card_Capture override is NOT active — which is any store where Atrium is
+   * not the default skin (GUI::getCustomModuleSkin() reads config.skin_folder). */
+  .textbox_small { width: 6rem; max-width: 100%; }
+
+  /* NOT styled, deliberately:
+   *   .end        Foundation float-clear on a last column. This grid is flex
+   *               with no floats — a genuine no-op, nothing to write.
+   *   .colorbox   BEHAVIOUR, not styling: foundation/js/2.cubecart.js:127-146
+   *               turned it into a reveal modal. Fixed properly by the
+   *               Card_Capture override template, which cannot be done in CSS.
+   *   cardinfo-*, form-container, input-wrapper, loading
+   *               self-styled inside paypal_commerce/skin/card_form.tpl's own
+   *               <style> block; that template is not skin-overridable.
+   *   a2a_*, social_wrapper
+   *               AddToAny styles its own markup from its remote script. */
+
+}

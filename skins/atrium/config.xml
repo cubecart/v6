@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<skin version="1.0">
+  <info>
+	<uid>atrium-1.0@cubecart.com</uid>
+	<type>skin</type>
+	<category>skin</category>
+	<!-- MUST be byte-identical to the directory name: this string is the key in
+	     GUI::listSkins() (gui.class.php:640), the value stored in config.skin_folder,
+	     and the path segment used for Smarty's template_dir (gui.class.php:137). -->
+	<name><![CDATA[atrium]]></name>
+	<!-- Leave as atrium if your custom skin derives from this one. -->
+	<original_name><![CDATA[atrium]]></original_name>
+	<display><![CDATA[Atrium]]></display>
+	<description><![CDATA[CubeCart's default skin. Tailwind CSS and Alpine.js, built as a clean canvas for your own design.]]></description>
+	<version>1.0.0</version>
+	<!-- 6.7.6 is a real floor, not politeness: content.withdraw.php and the
+	     single-gateway hidden-input behaviour arrive in 6.7.4, and element.meta.php
+	     changes in 6.7.6. Core reads this for display only (plugins.index.inc.php:418)
+	     and does NOT enforce it, so main.php also shows an admin-only banner. -->
+	<minVersion>6.7.6</minVersion>
+	<maxVersion>6.*.*</maxVersion>
+	<creator>CubeCart</creator>
+	<homepage>https://www.cubecart.com</homepage>
+	<layout_type>responsive</layout_type>
+	<framework>tailwind</framework>
+	<!-- Truthy force-writes config.csrf='1' store-wide (gui.class.php:130-134).
+	     GUI::display() then injects the token before every </form> (gui.class.php:340). -->
+	<csrf>true</csrf>
+	<!-- Enforces captcha for anonymous newsletter signup (newsletter.class.php:425). -->
+	<newsletter_recaptcha>true</newsletter_recaptcha>
+	<!-- TRUE skips a blocking per-review cURL HEAD to gravatar.com (catalogue.class.php:442). -->
+	<gravatar_ajax>true</gravatar_ajax>
+	<!-- Admin force-enables disable_mobile_skin on save (gui.class.php:651). -->
+	<responsive>true</responsive>
+  </info>
+  <layout>
+	<products>
+		<perpage amount="12" />
+		<perpage default="true" amount="24" />
+		<perpage amount="48" />
+		<perpage amount="96" />
+	</products>
+  </layout>
+  <styles>
+	<!-- images="false" means image paths resolve at the images/ ROOT, so
+	     images/noimage.png must exist there (not images/default/). -->
+	<style images="false" default="true">
+	  <directory>default</directory>
+	  <name><![CDATA[Default]]></name>
+	  <description><![CDATA[Default Subtheme]]></description>
+	  <default />
+	</style>
+  </styles>
+  <!-- Each reference here literally creates $PRODUCT.<reference> and
+       $product['image_tags'][<reference>] (gui.class.php:685-694,
+       catalogue.class.php:1906-1922). Removing one removes that Smarty variable. -->
+  <images>
+	<image reference="thumbnail" maximum="400" quality="82" default="noimage.png" />
+	<image reference="category" maximum="1200" quality="82" default="noimage.png" />
+	<image reference="subcategory" maximum="300" quality="82" default="noimage.png" />
+	<image reference="gallery" maximum="120" quality="82" default="noimage.png" />
+	<image reference="checkout" maximum="120" quality="82" default="noimage.png" />
+	<image reference="normal" maximum="600" quality="82" default="noimage.png" />
+	<image reference="enlarge" maximum="1600" quality="82" default="noimage.png" />
+	<image reference="tiny" maximum="64" quality="82" default="noimage.png" />
+	<image reference="small" maximum="300" quality="82" default="noimage.png" />
+	<image reference="medium" maximum="800" quality="82" default="noimage.png" />
+	<image reference="large" maximum="1200" quality="82" default="noimage.png" />
+  </images>
+  <!-- Flattened into $SKIN_CUSTOM[<name>], one level only (gui.class.php:1946-1957).
+       Cached under skin.atrium.custom — clear the cache after editing. -->
+  <custom>
+	<recaptcha_badge_position>bottomright</recaptcha_badge_position><!-- bottomright | bottomleft | inline -->
+	<colour_scheme>light</colour_scheme><!-- light | auto -->
+	<container_width>screen-2xl</container_width>
+  </custom>
+</skin>

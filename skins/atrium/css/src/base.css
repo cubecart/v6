@@ -1,0 +1,59 @@
+/**
+ * Atrium base layer — element defaults and global affordances.
+ */
+
+@layer base {
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    /* Explicit background: never inherit the host's ground. */
+    background-color: var(--color-ink-50);
+    color: var(--color-ink-800);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-ink-900);
+    font-weight: 600;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+
+  a { color: var(--color-brand-700); }
+  a:hover { color: var(--color-brand-800); }
+
+  /* Keyboard focus must always be visible. Applied globally rather than
+   * per-component so a plugin injecting a bare <button> still gets it. */
+  :focus-visible {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Alpine renders x-show/x-transition elements before it boots; x-cloak hides
+   * them until then. Without this the mobile menu flashes open on every load. */
+  [x-cloak] { display: none !important; }
+
+  /* Tables carry order lines and invoices — never let one scroll the page body. */
+  table { width: 100%; border-collapse: collapse; }
+
+  img, svg, video { max-width: 100%; height: auto; }
+
+  /* Digits that line up in columns: prices, quantities, order totals. */
+  .tabular, td.price, .price { font-variant-numeric: tabular-nums; }
+}

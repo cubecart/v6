@@ -1,0 +1,21 @@
+/**
+ * Atrium — merchant customisation file.
+ *
+ * THIS IS THE ONLY FILE IN THIS SKIN THAT IS SAFE TO EDIT.
+ * It is loaded AFTER the compiled stylesheet, so anything here wins, and it
+ * needs no build step. Skin updates overwrite everything else in place, with
+ * no backup — but this file is left alone.
+ *
+ * Retheme without rebuilding by overriding the --cc-* tokens:
+ *
+ *   :root {
+ *     --cc-brand-600: oklch(52% 0.19 25);   / * your brand colour   * /
+ *     --cc-brand-700: oklch(45% 0.17 25);   / * its hover state     * /
+ *     --cc-radius: 0.25rem;                 / * squarer corners     * /
+ *     --cc-font-sans: "Your Font", ui-sans-serif, system-ui, sans-serif;
+ *   }
+ *
+ * Self-hosting a webfont? Put the @font-face here and point --cc-font-sans at
+ * it. Do not add a third-party font CDN link: this stylesheet loads on the
+ * checkout page too.
+ */

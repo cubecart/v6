@@ -1,0 +1,11 @@
+/**
+ * Per-subtheme stylesheet for the "default" style.
+ *
+ * config.xml declares <styles><style><directory>default</directory>, which sets
+ * $SKIN_SUBSET and makes element.css.php link this file. It MUST exist or every
+ * page 404s on it.
+ *
+ * Add a new subtheme by adding a <style> block to config.xml and creating the
+ * matching css/cubecart.<directory>.css. Merchant-specific tweaks belong in
+ * css/custom.css instead — this file is overwritten by skin updates.
+ */

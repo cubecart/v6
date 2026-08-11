@@ -1,0 +1,72 @@
+/**
+ * Class names emitted directly by CubeCart CORE PHP.
+ *
+ * These never appear in a template, so Tailwind's scanner cannot find them and
+ * the skin author cannot rename them. Verified by:
+ *   grep -rhoE "class=\\?[\"'][a-zA-Z0-9_ -]+[\"']" classes/ --include='*.php'
+ *
+ * Only the storefront-relevant ones are styled here. The cc_debug_* family and
+ * the PHPUnit-coverage classes (covered-by-*-tests, not-coverable, …) are also
+ * emitted but are admin/debug-only surfaces this skin does not own.
+ */
+
+@layer components {
+
+  /* GUI::display() injects this before every </form> (GUI::display()).
+   * It is the CSRF token input and must never be visible or focusable. */
+  .cc_session_token { display: none !important; }
+
+  /* Breadcrumbs are built in PHP (classes/gui.class.php) with these exact names. */
+  .breadcrumb-item { display: inline-flex; align-items: center; }
+  .breadcrumb-item.active { color: var(--color-ink-500); }
+
+  /* Core-emitted destructive action link, e.g. basket line removal. */
+  .delete { color: var(--color-danger-600); }
+  .delete:hover { color: var(--color-danger-700); }
+
+  /* Emitted by core listing/search output. */
+  .keyword { background-color: var(--color-warn-50); font-weight: 600; }
+  .new_features { margin-block: 1rem; }
+  .tab_content { display: block; }
+
+  /* Legacy float/alignment helpers still emitted by core and older plugins. */
+  .left { float: left; }
+  .right { float: right; }
+  .clearfix::after { content: ""; display: table; clear: both; }
+  .text-center { text-align: center; }
+  .text-right { text-align: right; }
+  .hide { display: none !important; }
+
+  /* Semantic state words emitted bare by core (not prefixed). Scoped tightly so
+   * they cannot collide with a merchant's own .success/.warning in custom.css. */
+  .cc-state.success, td.success { color: var(--color-success-700); }
+  .cc-state.warning, td.warning { color: var(--color-warn-700); }
+  .cc-state.danger,  td.danger  { color: var(--color-danger-700); }
+
+  /* Pagination: Database::pagination() emits 'current' on the active page link
+   * (Database::pagination()). $TOTAL_RESULTS is assigned by the same
+   * call — it is not undefined, despite appearing so in the template. */
+  .pagination .current {
+    background-color: var(--color-brand-600);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* Foundation-era alert box, still emitted by some plugin hooks. Mapped onto
+   * Atrium's alert so it reads as native. */
+  .alert-box {
+    display: block;
+    border-radius: var(--radius-cc);
+    border: 1px solid var(--color-brand-200);
+    background-color: var(--color-brand-50);
+    color: var(--color-brand-800);
+    padding: 0.875rem 1rem;
+    font-size: 0.875rem;
+  }
+  .alert-box.alert  { border-color: var(--color-danger-200);  background-color: var(--color-danger-50);  color: var(--color-danger-700); }
+  .alert-box.success{ border-color: var(--color-success-200); background-color: var(--color-success-50); color: var(--color-success-700); }
+  .alert-box.warning{ border-color: var(--color-warn-200);    background-color: var(--color-warn-50);    color: var(--color-warn-700); }
+
+  /* Ajax::viewLog() and friends wrap output in this. */
+  .default_modal { padding: 1rem; }
+}

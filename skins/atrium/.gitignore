@@ -1,0 +1,8 @@
+# Dev-only. None of this ships to merchants.
+node_modules/
+package-lock.json
+css/src/*.map
+
+# Never commit the Tailwind Plus kit or anything derived from it.
+assets/
+_design/

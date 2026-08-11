@@ -1,0 +1,9 @@
+# Classes emitted as PHP strings that Tailwind's scanner cannot find in templates.
+# One token per line. Add to this when you find a plugin emitting a utility.
+# Scanned as a plain text source via @source "./safelist.txt" in input.css.
+sr-only
+hidden
+block
+inline-flex
+grid
+flex

@@ -1,0 +1,10 @@
+Vendored libraries — all MIT, all safe to redistribute under GPL-3.0.
+Regenerate with build/vendor.sh. Do not hand-edit.
+
+alpinejs               3.16.0
+@alpinejs/focus        3.16.0
+@alpinejs/collapse     3.16.0
+@alpinejs/anchor       3.16.0
+@alpinejs/persist      3.16.0
+jquery                 3.7.1
+jquery-migrate         3.5.2
