@@ -87,15 +87,34 @@
             </div>
          </div>
 
-         <fieldset id="review_stars">
+         {* Star chooser. PROGRESSIVE ENHANCEMENT, not a widget: the five radios
+            are still the form control and are still what core reads. They are
+            visually hidden with .cc-sr-only (which keeps them FOCUSABLE) rather
+            than display:none, so with JS off the customer gets a normal radio
+            group, and with JS on they keep native radio keyboard behaviour —
+            arrow keys move the selection and fire change, which is why no key
+            handling is written here.
+
+            Alpine only supplies the paint: `hover` previews, `value` persists.
+            Fill = i <= (hover || value), so moving the mouse away falls back to
+            the real selection instead of clearing the stars. *}
+         <fieldset id="review_stars" x-data="ccStarRating">
             <legend class="cc-label">{$LANG.documents.rating}</legend>
-            <div class="flex items-center gap-4">
+            <div class="mt-1 flex items-center gap-1" @mouseleave="hover = 0">
                {foreach from=$RATING_STARS item=star}
-               <span class="flex items-center gap-1">
-                  <input type="radio" id="rating_{$star.value}" name="rating" value="{$star.value}" class="rating" {$star.checked}>
-                  <label for="rating_{$star.value}" class="text-sm text-ink-700">{$star.value}</label>
-               </span>
+               <input type="radio" id="rating_{$star.value}" name="rating" value="{$star.value}"
+                      class="rating cc-sr-only" {$star.checked}
+                      required data-msg-required="{$LANG.catalogue.error_rating_required}"
+                      @change="value = {$star.value}">
+               <label for="rating_{$star.value}" class="cc-star" @mouseenter="hover = {$star.value}"
+                      :class="{$star.value} <= (hover || value) ? 'cc-star-on' : 'cc-star-off'">
+                  <span class="cc-sr-only">{$star.value} / 5</span>
+                  <svg class="size-7" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                     <path d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z"/>
+                  </svg>
+               </label>
                {/foreach}
+               <span class="ms-2 text-sm text-ink-500" x-text="value ? value + ' / 5' : ''"></span>
             </div>
          </fieldset>
 

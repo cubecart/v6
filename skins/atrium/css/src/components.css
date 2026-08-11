@@ -164,6 +164,30 @@
   .cc-navbar .cc-nav-sale,
   .cc-navbar .cc-nav-sale:hover { color: var(--color-chrome-sale); }
 
+  /* ── Star rating chooser (element.product_reviews.php, 22-stars.js) ─────
+     The radio is .cc-sr-only, so it is still focusable but invisible. The
+     focus ring therefore has to be drawn on the LABEL via :focus-visible on
+     the adjacent input — without this the keyboard user tabs into the group
+     and sees nothing at all. */
+  .cc-star {
+    cursor: pointer;
+    line-height: 0;
+    border-radius: var(--radius-cc);
+    transition: color 120ms, transform 120ms;
+  }
+  .cc-star-off { color: var(--color-ink-300); }
+  .cc-star-on  { color: var(--color-warn-600); }
+  .cc-star:hover { transform: scale(1.08); }
+  .rating:focus-visible + .cc-star {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 2px;
+  }
+  /* Pointer-driven scaling is decoration; honour a reduced-motion preference. */
+  @media (prefers-reduced-motion: reduce) {
+    .cc-star { transition: none; }
+    .cc-star:hover { transform: none; }
+  }
+
   /* ── Social icons (element.social.php) ──────────────────────────────────
      The marks are inline SVG using fill="currentColor", so the colour comes
      from this rule and nothing has to be re-exported per theme. Sized by a

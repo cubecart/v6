@@ -199,12 +199,25 @@
                 return el.type !== 'hidden' && el.type !== 'submit' && el.type !== 'button';
             },
 
-            /* Every validatable control in the form, in DOM order. */
+            /* Every validatable control in the form, in DOM order.
+
+               A radio GROUP is one field, not N. Every radio sharing a name
+               reports valueMissing when none is checked, so without this the
+               5-star rating group emitted five identical "No star rating was
+               specified." messages. Keep only the first of each group. */
             _fields: function () {
                 var self = this;
+                var seen = {};
                 return Array.prototype.filter.call(
                     this.$el.querySelectorAll('input, select, textarea'),
-                    function (el) { return self._isField(el); }
+                    function (el) {
+                        if (!self._isField(el)) return false;
+                        if (el.type === 'radio') {
+                            if (seen[el.name]) return false;
+                            seen[el.name] = true;
+                        }
+                        return true;
+                    }
                 );
             },
 
@@ -223,6 +236,12 @@
                 var explicit = field.closest('[data-field]');
                 if (explicit) return explicit;
 
+                if (field.type === 'radio') {
+                    // The whole group gets one message, so anchor it after the
+                    // group container rather than after any single radio.
+                    var group = field.closest('fieldset');
+                    if (group) return group;
+                }
                 if (field.type === 'radio' || field.type === 'checkbox') {
                     var wrapped = field.closest('label');
                     if (wrapped) return wrapped;
@@ -241,7 +260,10 @@
             },
 
             _errorId: function (field) {
-                return 'ccerr-' + (field.id || field.name).replace(/[^a-zA-Z0-9_-]/g, '_');
+                // Radios key off the group NAME so the whole group shares a
+                // single message element instead of one per radio.
+                var key = (field.type === 'radio') ? field.name : (field.id || field.name);
+                return 'ccerr-' + key.replace(/[^a-zA-Z0-9_-]/g, '_');
             },
 
             _errorEl: function (field) {
@@ -261,19 +283,32 @@
                     anchor.parentNode.insertBefore(el, anchor.nextSibling);
                 }
                 el.textContent = message;
-                field.setAttribute('aria-invalid', 'true');
-                field.setAttribute('aria-describedby', id);
+                this._groupMembers(field).forEach(function (m) {
+                    m.setAttribute('aria-invalid', 'true');
+                    m.setAttribute('aria-describedby', id);
+                });
                 this.errors[field.name] = message;
             },
 
             clearError: function (field) {
                 var el = this._errorEl(field);
                 if (el && el.parentNode) el.parentNode.removeChild(el);
-                field.removeAttribute('aria-invalid');
-                if (field.getAttribute('aria-describedby') === this._errorId(field)) {
-                    field.removeAttribute('aria-describedby');
-                }
+                var id = this._errorId(field);
+                this._groupMembers(field).forEach(function (m) {
+                    m.removeAttribute('aria-invalid');
+                    if (m.getAttribute('aria-describedby') === id) {
+                        m.removeAttribute('aria-describedby');
+                    }
+                });
                 delete this.errors[field.name];
+            },
+
+            /** The field itself, or every radio sharing its name. */
+            _groupMembers: function (field) {
+                if (field.type !== 'radio' || !field.name) return [field];
+                return Array.prototype.slice.call(
+                    this.$el.querySelectorAll('input[type="radio"][name="' + CSS.escape(field.name) + '"]')
+                );
             },
 
             /**
