@@ -114,6 +114,11 @@ own `--minify` makes the identical change.)*
 Everything shipped here is MIT and GPL-3.0 compatible: Tailwind CSS, Alpine.js
 and its plugins, jQuery, jQuery Migrate. See `js/vendor/VERSIONS.txt`.
 
+Country flags in `images/flags/` are from [lipis/flag-icons](https://github.com/lipis/flag-icons)
+(4x3 set), copyright (c) 2013 Panayiotis Lipiridis, MIT. MIT requires the licence
+text be retained, so it ships verbatim as `images/flags/LICENSE` — do not delete it.
+`images/flags/README.md` explains the language-code-to-country-code mapping.
+
 **No markup in this skin is derived from Tailwind Plus.** That kit's licence
 prohibits using its components to build a theme distributed to other people,
 free or paid. It may be looked at for design ideas; nothing may be copied,
