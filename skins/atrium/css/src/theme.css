@@ -42,6 +42,25 @@
   --color-ink-900: var(--cc-ink-900, oklch(20.8% 0.010 250));
   --color-ink-950: var(--cc-ink-950, oklch(14.2% 0.008 250));
 
+  /* ── Chrome: the navigation bar and footer band ──────────────────────────
+     DELIBERATELY NON-INVERTING. The ink scale flips between themes
+     (--cc-ink-950 is 14.2% in light and 98.6% in dark), so styling these
+     bands with bg-ink-950 would paint them near-white in dark mode. These
+     tokens are defined once and never overridden in [data-theme="dark"].
+
+     One definition serves both themes: against a ~98% light page the band
+     reads as black, and against the 14.2% dark page it sits 3 points lighter,
+     so the chrome stays distinguishable from the page instead of merging
+     into it. Do not "fix" this by adding a dark-mode override. */
+  --color-chrome:        var(--cc-chrome,        oklch(17.5% 0.009 250));
+  --color-chrome-hover:  var(--cc-chrome-hover,  oklch(26.0% 0.011 250));
+  --color-chrome-fg:     var(--cc-chrome-fg,     oklch(93.5% 0.004 250));
+  --color-chrome-muted:  var(--cc-chrome-muted,  oklch(72.0% 0.010 250));
+  --color-chrome-border: var(--cc-chrome-border, oklch(30.0% 0.011 250));
+  /* danger-600 is only ~53% L — too dark to sit on the chrome band, so the
+     sale link gets a lifted red that clears contrast on near-black. */
+  --color-chrome-sale:   var(--cc-chrome-sale,   oklch(72.5% 0.165 26));
+
   /* ── Semantic. Separate from brand: a store's accent must never be the
        same signal as "your payment failed". ────────────────────────────── */
   --color-danger-50:  var(--cc-danger-50,  oklch(96.8% 0.016 22));

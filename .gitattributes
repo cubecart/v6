@@ -4,3 +4,13 @@
 /images/source/.gitignore export-ignore
 /README.md export-ignore
 /CONTRIBUTING.md export-ignore
+
+# Atrium skin: developer tooling, never part of a release.
+# skins/ is inside the docroot, so anything left here is world-reachable on
+# every store. Before these rules, build/stamp.php returned HTTP 200 and WROTE
+# element.css.version.php unauthenticated. build/.htaccess and the PHP CLI
+# guards are defence in depth for anyone running from a git checkout; keeping
+# the directory out of the package is the actual fix.
+/skins/atrium/build export-ignore
+/skins/atrium/package.json export-ignore
+/skins/atrium/.gitignore export-ignore

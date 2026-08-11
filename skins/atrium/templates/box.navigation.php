@@ -20,20 +20,16 @@
 {else}
 <nav id="box-navigation" class="cc-nav" aria-label="{$LANG.navigation.title}">
    <ul>
-      <li class="cc-nav-item">
-         <a href="{$ROOT_PATH}" title="{$LANG.common.home}" class="cc-nav-link">
-            <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-               <path d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span class="cc-sr-only">{$LANG.common.home}</span>
-         </a>
-      </li>
       {$NAVIGATION_TREE}
       {if $CTRL_CERTIFICATES && !$CATALOGUE_MODE}
       <li class="cc-nav-item"><a href="{$URL.certificates}" title="{$LANG.navigation.giftcerts}" class="cc-nav-link"><span>{$LANG.navigation.giftcerts}</span></a></li>
       {/if}
       {if $CTRL_SALE}
-      <li class="cc-nav-item"><a href="{$URL.saleitems}" title="{$LANG.navigation.saleitems}" class="cc-nav-link !text-danger-600"><span>{$LANG.navigation.saleitems}</span></a></li>
+      {* "Sale", not "Sale Items": common.sale is new in 6.8.0, so a translated
+         pack that predates it has no key yet — hence the fallback to the
+         long-standing navigation.saleitems string rather than an empty label.
+         Uppercased in CSS, not with |upper, which mangles non-Latin scripts. *}
+      <li class="cc-nav-item"><a href="{$URL.saleitems}" title="{$LANG.common.sale|default:$LANG.navigation.saleitems}" class="cc-nav-link cc-nav-sale font-bold uppercase tracking-wide"><span>{$LANG.common.sale|default:$LANG.navigation.saleitems}</span></a></li>
       {/if}
    </ul>
 </nav>

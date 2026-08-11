@@ -1,4 +1,9 @@
 <?php
+if (PHP_SAPI !== 'cli') {
+    // skins/ is web-servable; this script is developer tooling only.
+    header('HTTP/1.0 403 Forbidden');
+    exit('Forbidden');
+}
 /**
  * Writes templates/element.css.version.php — a content hash of the built CSS,
  * used as the ?v= cache-buster in element.css.php.

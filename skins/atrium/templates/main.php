@@ -108,7 +108,11 @@
             tree and assigns it; this include then takes the {if $CATEGORIES}
             branch and prints it. Printing {$CATEGORIES} on its own renders
             nothing on a cache miss. *}
-         <div class="hidden border-t border-ink-200 lg:block">
+         {* .cc-navbar paints this band from the non-inverting --color-chrome
+            tokens (see theme.css). It is NOT on .cc-nav itself, because the
+            mobile drawer below includes the same box.navigation.php and must
+            stay light. *}
+         <div class="cc-navbar hidden lg:block">
             <div class="cc-container py-1">
                {include file='templates/box.navigation.php'}
             </div>
@@ -175,7 +179,10 @@
          </div>
       </div>
 
-      <footer class="mt-16 border-t border-ink-200 bg-ink-100">
+      {* Same non-inverting chrome band as the nav; cc-footer restyles the
+         descendants core and the sub-templates emit (headings, links, the
+         newsletter field) which otherwise carry light-surface colours. *}
+      <footer class="cc-footer mt-16">
          <div class="cc-container py-10">
             <div class="grid gap-10 md:grid-cols-2">
                {* $DOCUMENTS (GUI::_displayDocuments()) is a DATA array that

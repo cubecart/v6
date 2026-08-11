@@ -1,0 +1,17 @@
+# Build tooling is developer-only and MUST NOT be web-servable.
+#
+# skins/ is inside the docroot, so without this every file here is reachable at
+# https://<store>/skins/atrium/build/. Verified before this file existed:
+# stamp.php returned 200 and WROTE element.css.version.php, clear-cache.php
+# flushed the store cache, and lint-compile.php recompiled all templates — all
+# unauthenticated. Same convention as /logs, /cache and /backup.
+#
+# Apache 2.4
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+# Apache 2.2
+<IfModule !mod_authz_core.c>
+  Order allow,deny
+  Deny from all
+</IfModule>

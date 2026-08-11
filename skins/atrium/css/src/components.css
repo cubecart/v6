@@ -134,6 +134,71 @@
   }
   .cc-nav-link:hover { background-color: var(--color-ink-200); color: var(--color-ink-900); }
 
+  /* The desktop navigation band. Scoped to .cc-navbar rather than .cc-nav
+     because box.navigation.php is included TWICE with identical markup — once
+     here and once inside .cc-nav-mobile, which is a light drawer. Styling
+     .cc-nav directly would black out the mobile drawer too. */
+  /* The top border does the work in DARK mode: there the page is 14.2% L and
+     the band 17.5%, which is only ~1.05:1 — perceptible but weak. In light
+     mode the band separates on its own and the border just reads as an edge. */
+  .cc-navbar {
+    background-color: var(--color-chrome);
+    border-top: 1px solid var(--color-chrome-border);
+  }
+  .cc-navbar .cc-nav-link { color: var(--color-chrome-fg); }
+  .cc-navbar .cc-nav-link:hover {
+    background-color: var(--color-chrome-hover);
+    color: var(--color-chrome-fg);
+  }
+  /* Dropdown panels hang off the dark bar, so they carry the band's colours
+     down with them rather than reverting to the page surface. */
+  .cc-navbar .cc-nav-menu {
+    background-color: var(--color-chrome);
+    border-color: var(--color-chrome-border);
+  }
+  .cc-navbar .cc-nav-menu .cc-nav-link { color: var(--color-chrome-fg); }
+  /* The sale link keeps its red signal in both contexts. Declared here rather
+     than as a !text-danger-600 utility in the template, because !important
+     would beat the .cc-navbar override below and paint mid-red on near-black. */
+  .cc-nav-sale, .cc-nav-sale:hover { color: var(--color-danger-600); }
+  .cc-navbar .cc-nav-sale,
+  .cc-navbar .cc-nav-sale:hover { color: var(--color-chrome-sale); }
+
+  /* ── Footer band ────────────────────────────────────────────────────────
+     Same chrome tokens as .cc-navbar.
+
+     box.documents.php, box.newsletter.php and main.php's copyright row set
+     their colours with ink utilities (text-ink-900 on headings, text-ink-600
+     on links, text-ink-500 on the copyright, border-ink-200 on the divider).
+     Those read dark-on-dark here, so each is overridden by name. Two-class
+     selectors (0,2,0) beat a bare utility (0,1,0), so this wins regardless of
+     source order — it does NOT depend on where Tailwind emits the utilities.
+     If a footer sub-template starts using a different ink shade, add it here. */
+  .cc-footer {
+    background-color: var(--color-chrome);
+    color: var(--color-chrome-fg);
+    border-top: 1px solid var(--color-chrome-border);
+  }
+  /* Footer text is white throughout, including the copyright row and link
+     list — chrome-muted is reserved for the newsletter placeholder, where a
+     dimmer tone is the point. */
+  .cc-footer .text-ink-900,
+  .cc-footer .text-ink-600,
+  .cc-footer .text-ink-500 { color: var(--color-chrome-fg); }
+  .cc-footer .border-ink-200 { border-color: var(--color-chrome-border); }
+  .cc-footer a { color: var(--color-chrome-fg); }
+  .cc-footer a:hover { color: var(--color-chrome-fg); text-decoration: underline; }
+  .cc-footer .hover\:text-ink-900:hover { color: var(--color-chrome-fg); }
+
+  /* The newsletter field sits on the dark band, so it cannot keep the light
+     page surface it gets from .cc-input. */
+  .cc-footer .cc-input {
+    background-color: color-mix(in oklch, var(--color-chrome) 82%, white);
+    border-color: var(--color-chrome-border);
+    color: var(--color-chrome-fg);
+  }
+  .cc-footer .cc-input::placeholder { color: var(--color-chrome-muted); }
+
   .cc-nav-caret { width: 1rem; height: 1rem; flex-shrink: 0; transition: transform 150ms; }
 
   .cc-nav-item { position: relative; }

@@ -1,4 +1,9 @@
 <?php
+if (PHP_SAPI !== 'cli') {
+    // skins/ is web-servable; this script is developer tooling only.
+    header('HTTP/1.0 403 Forbidden');
+    exit('Forbidden');
+}
 /**
  * Compile every Atrium template through a real Smarty instance configured the
  * way CubeCart configures it — same Smarty build, same security policy.
