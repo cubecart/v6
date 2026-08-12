@@ -2656,12 +2656,12 @@ This email is sent from the store's master email address but it is possible to r
     <string name="default_doc_title_privacy" introduced="5.0.0"><![CDATA[Privacy Policy]]></string>
     <string name="default_doc_title_returns" introduced="6.2.1"><![CDATA[Returns Policy]]></string>
     <string name="default_doc_content" introduced="5.0.0"><![CDATA[This can be managed under <span class="navTitle">Documents in the admin control panel.</span>]]></string>
-    <string name="default_doc_content_welcome" introduced="5.0.0"><![CDATA[<ul class="bxslider">
-   <li><img src="skins/foundation/images/examples/slide1.jpg" title="Promotional Message One" /></li>
-   <li><img src="skins/foundation/images/examples/slide2.jpg" /></li>
-   <li><img src="skins/foundation/images/examples/slide3.jpg" title="Promotional Message Two" /></li>
-</ul>
-<p>This message and the slider above (including the images) can be edited using the <strong><span style="color: red;">Rich</span> <span style="color: blue;">Text</span> <span style="color: green;">Editor</span></strong> which can be found in the admin control panel of your store under <i>File Manager &gt; Documents</i>.</p>]]></string>
+    <string name="default_doc_content_welcome" introduced="5.0.0"><![CDATA[<div class="cc-hero">
+   <img src="images/source/website_images/hero-1.jpg" alt="New season, new arrivals">
+   <img src="images/source/website_images/hero-2.jpg" alt="Shop our best sellers">
+   <img src="images/source/website_images/hero-3.jpg" alt="Edit this banner in File Manager">
+</div>
+<p>This message and the banners above can be edited using the <strong>Rich Text Editor</strong> under <i>File Manager &gt; Documents</i> in your admin control panel. The images themselves live in <i>File Manager</i> under <i>website_images</i>, so you can replace them without editing any HTML.</p>]]></string>
     <string name="db_host" introduced="5.0.0"><![CDATA[Database Host]]></string>
     <string name="db_name" introduced="5.0.0"><![CDATA[Database Name]]></string>
     <string name="db_username" introduced="6.7.0"><![CDATA[Database Username]]></string>

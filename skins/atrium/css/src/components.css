@@ -164,6 +164,37 @@
   .cc-navbar .cc-nav-sale,
   .cc-navbar .cc-nav-sale:hover { color: var(--color-chrome-sale); }
 
+  /* ── Homepage hero banners ──────────────────────────────────────────────
+     Styles the .cc-hero block that the INSTALLER writes into the default
+     homepage document (language definitions: default_doc_content_welcome).
+
+     Deliberately a CSS scroll-snap carousel with NO JavaScript. That markup
+     ships in a language string and is rendered by whatever skin the merchant
+     runs, so it cannot depend on a slider library — the previous default
+     carried class="bxslider" and pointed at skins/foundation/images/, which
+     left the homepage broken on every other skin. With scroll-snap it degrades
+     to a swipeable strip anywhere, and needs nothing from the skin's JS. */
+  .cc-hero {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;              /* Firefox */
+    border-radius: var(--radius-cc-lg);
+  }
+  .cc-hero::-webkit-scrollbar { display: none; }
+  .cc-hero > img {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    width: 100%;
+    aspect-ratio: 8 / 3;
+    object-fit: cover;
+    border-radius: var(--radius-cc-lg);
+  }
+  /* A single banner should not look like a carriage that failed to fill. */
+  .cc-hero > img:only-child { flex-basis: 100%; }
+
   /* ── Star rating chooser (element.product_reviews.php, 22-stars.js) ─────
      The radio is .cc-sr-only, so it is still focusable but invisible. The
      focus ring therefore has to be drawn on the LABEL via :focus-visible on

@@ -308,6 +308,50 @@ if (!isset($_SESSION['setup']['permissions'])) {
             foreach ($default_docs as $default_doc) {
                 $GLOBALS['db']->insert('CubeCart_documents', $default_doc);
             }
+
+            /**
+             * Install the default homepage banners.
+             *
+             * They ship in setup/images/website_images/ and are copied into the
+             * STORE's own image library, because:
+             *   - images/source/* is gitignored, so nothing can ship from there;
+             *   - the previous defaults lived in skins/foundation/images/examples/,
+             *     which breaks the homepage of every store on another skin and
+             *     dies entirely if that skin is ever removed.
+             * Registering them in CubeCart_filemanager means the merchant can
+             * swap them in File Manager instead of editing HTML by hand.
+             *
+             * NOTE the trailing slash on filepath: Catalogue::imagePath()
+             * concatenates filepath.filename directly, so 'website_images'
+             * without it resolves to 'website_imageshero-1.jpg'.
+             */
+            $banner_src = CC_ROOT_DIR.'/setup/images/website_images/';
+            $banner_dst = CC_ROOT_DIR.'/images/source/website_images/';
+            if (is_dir($banner_src)) {
+                if (!is_dir($banner_dst)) {
+                    @mkdir($banner_dst, 0755, true);
+                }
+                foreach ((array)glob($banner_src.'*.jpg') as $banner) {
+                    $basename = basename($banner);
+                    if (!@copy($banner, $banner_dst.$basename)) {
+                        continue;
+                    }
+                    $size = filesize($banner_dst.$basename);
+                    $GLOBALS['db']->insert('CubeCart_filemanager', array(
+                        'type'        => 1,
+                        'disabled'    => 0,
+                        'filepath'    => 'website_images/',
+                        'filename'    => $basename,
+                        'filesize'    => $size,
+                        'mimetype'    => 'image/jpeg',
+                        'md5hash'     => md5_file($banner_dst.$basename),
+                        'title'       => '',
+                        'description' => '',
+                        'stream'      => 0,
+                        'alt'         => '',
+                    ));
+                }
+            }
             $contact_form_data = array('status' => 1, 'email' => $_SESSION['setup']['admin']['email'], 'description' => '');
             foreach ($contact_form_data as $cf_key => $cf_value) {
                 $GLOBALS['db']->insert('CubeCart_config', array('name' => 'Contact_Form', 'config_key' => $cf_key, 'config_value' => (string)$cf_value));
