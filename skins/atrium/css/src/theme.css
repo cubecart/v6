@@ -61,6 +61,15 @@
      sale link gets a lifted red that clears contrast on near-black. */
   --color-chrome-sale:   var(--cc-chrome-sale,   oklch(72.5% 0.165 26));
 
+  /* Rating gold. NON-INVERTING like the chrome tokens: gold that flipped to
+     navy in dark mode would stop reading as a star. Deliberately NOT
+     --color-warn-600 (#b26e00, a bronze) — a rating is not a warning, and this
+     file's own rule is that a semantic colour must carry exactly one signal.
+     ~2.4:1 on the light page, which is inherent to gold; acceptable because
+     the score is never colour-only — every star row also carries a numeric
+     readout and an aria-label. */
+  --color-star: var(--cc-star, oklch(72% 0.150 80));
+
   /* ── Semantic. Separate from brand: a store's accent must never be the
        same signal as "your payment failed". ────────────────────────────── */
   --color-danger-50:  var(--cc-danger-50,  oklch(96.8% 0.016 22));

@@ -48,13 +48,20 @@
          </thead>
          <tbody class="divide-y divide-ink-200">
             {foreach from=$ITEMS key=hash item=item}
-            <tr class="block sm:table-row" x-data="ccBasketLine('{$item.quantity}')" id="basket_item_{$hash}">
-               <td class="py-4 pe-3 align-top sm:w-24">
+            {* MOBILE (<sm): two-column card — thumbnail in column 1, every field stacked
+       in column 2 as a label/value line. Each field carries an explicit
+       col-start-2 rather than the image using row-span-full: `row-span-full` is
+       `grid-row: 1 / -1`, which resolves against the EXPLICIT grid, so with
+       implicit rows it collapses to one row and the fields wrap under the image.
+       A float was also tried and gave ragged indentation once the text passed
+       the image height. From sm up this is a real table row again. *}
+            <tr class="grid grid-cols-[5rem_1fr] items-start gap-x-3 gap-y-1 py-4 sm:table-row sm:gap-0 sm:py-0" x-data="ccBasketLine('{$item.quantity}')" id="basket_item_{$hash}">
+               <td class="col-start-1 row-span-2 row-start-1 sm:table-cell sm:w-24 sm:py-4 sm:pe-3 sm:align-top">
                   <a href="{$item.link}" title="{$item.name}" class="block w-20 overflow-hidden rounded-cc border border-ink-200 bg-ink-100">
                      <img src="{$item.image}" alt="{$item.name}" loading="lazy" class="aspect-square w-full object-cover">
                   </a>
                </td>
-               <td class="py-4 pe-3 align-top">
+               <td class="col-start-2 sm:table-cell sm:py-4 sm:pe-3 sm:align-top">
                   <a href="{$item.link}" class="font-medium text-ink-900 hover:underline">{$item.name}</a>
                   {if $item.options}
                   <ul class="item_options mt-1 space-y-0.5 text-xs text-ink-600">
@@ -64,20 +71,38 @@
                   </ul>
                   {/if}
                </td>
-               <td class="price py-4 text-start align-top tabular sm:text-end">
-                  <span class="text-ink-500 sm:hidden">{$LANG.catalogue.price_each}: </span>{$item.price_display}
+               <td class="price tabular col-start-2 flex justify-between gap-3 sm:table-cell sm:py-4 sm:text-end sm:align-top">
+                  <span class="text-ink-500 sm:hidden">{$LANG.catalogue.price_each}</span><span>{$item.price_display}</span>
                </td>
-               <td class="py-4 align-top sm:text-center">
+               <td class="col-start-2 flex items-center justify-between gap-3 sm:table-cell sm:py-4 sm:text-center sm:align-top">
                   <label class="cc-sr-only" for="quan_{$hash}">{$LANG.common.quantity}</label>
+                  {* Mirrors the sm:hidden labels on the price cells so the stacked
+                     mobile card reads as label/value. aria-hidden: the <label>
+                     above already names the field for assistive tech. *}
+                  <span class="text-ink-500 sm:hidden" aria-hidden="true">{$LANG.common.quantity}</span>
+                  <div>
                   <input name="quan[{$hash}]" id="quan_{$hash}" type="number" min="0" max="999"
                          x-model.number="qty" value="{$item.quantity}" maxlength="3"
-                         class="quantity checkout w-20 text-center" {$QUAN_READ_ONLY}>
-                  <span x-show="changed" x-cloak class="mt-1 block text-xs text-warn-700">{$LANG.basket.basket_update}</span>
+                         {* sm:mx-auto is load-bearing. The cell is sm:text-center, but this
+                           input is display:block (components.css styles bare inputs so that
+                           unclassed core/plugin fields look right), and text-align cannot
+                           centre a block box — it sat flush-left, 32px off the column. *}
+                        class="quantity checkout w-20 text-center sm:mx-auto" {$QUAN_READ_ONLY}>
+                  </div>
+                  {* Was a <span>: it said "Update Basket" next to the field you had just
+                     changed, but was inert — customers clicked it and nothing happened.
+                     It is a real submit now. Needs the same two attributes as the main
+                     Update button: formnovalidate so 50-validate.js lets it through, and
+                     clearProceed() so it does not carry the hidden `proceed` compensator
+                     and jump the customer to the next step. *}
+                  <button type="submit" name="update" value="{$LANG.basket.basket_update}" formnovalidate
+                          x-show="changed" x-cloak @click="clearProceed()"
+                          class="mt-1 block text-xs font-medium text-warn-700 underline underline-offset-2 hover:text-warn-800">{$LANG.basket.basket_update}</button>
                </td>
-               <td class="price py-4 text-start align-top font-medium tabular text-ink-900 sm:text-end">
-                  <span class="text-ink-500 sm:hidden">{$LANG.common.price}: </span>{$item.line_price_display}
+               <td class="price col-start-2 flex justify-between gap-3 font-medium tabular text-ink-900 sm:table-cell sm:py-4 sm:text-end sm:align-top">
+                  <span class="font-normal text-ink-500 sm:hidden">{$LANG.common.price}</span><span>{$item.line_price_display}</span>
                </td>
-               <td class="py-4 ps-3 align-top text-end">
+               <td class="col-start-2 text-end sm:table-cell sm:py-4 sm:ps-3 sm:align-top">
                   <a href="{$STORE_URL}/index.php?_a=basket&remove-item={$hash}"
                      class="delete inline-flex p-1" title="{$LANG.common.remove}">
                      <span class="cc-sr-only">{$LANG.common.remove}</span>
@@ -158,6 +183,16 @@
                </div>
 
                <button type="submit" name="get-estimate" formnovalidate class="cc-btn cc-btn-secondary mt-4 w-full">{$LANG.basket.fetch_shipping_rates}</button>
+
+               {* county_list drives the country -> state swap in 40-checkout.js
+                  (ccApplyCountryState). WITHOUT THIS the estimate's state field
+                  stays a free-text box for every country, because that function
+                  returns immediately when window.county_list is undefined.
+                  $STATE_JSON is assigned by Cubecart::_basket(), so it IS
+                  available on this page — it was simply never emitted here, only
+                  in content.addressbook.php and content.checkout.confirm.php.
+                  Must appear AFTER the selects so the fields exist on init. *}
+               <script>var county_list = {if !empty($STATE_JSON)}{$STATE_JSON}{else}false{/if};</script>
             </div>
             {/if}
          </div>

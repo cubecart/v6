@@ -48,8 +48,16 @@
          <template x-for="p in results" :key="p.product_id">
             <li>
                <a :href="p.url" class="flex items-center gap-3 px-3 py-2 text-sm text-ink-800 hover:bg-ink-200">
-                  <template x-if="p.thumbnail">
-                     <img :src="p.thumbnail" :alt="p.name" class="size-10 shrink-0 rounded object-cover" loading="lazy">
+                  {* The slot is reserved whenever images are enabled, even when the product
+                     has none: 308 indexed products carry no `thumbnail` field, and an x-if on
+                     p.thumbnail alone rendered NOTHING for them — those rows lost the 40px
+                     box and their text jumped left out of line with the rest. *}
+                  <template x-if="showImages">
+                     <span class="size-10 shrink-0 overflow-hidden rounded bg-ink-200">
+                        <template x-if="p.thumbnail">
+                           <img :src="p.thumbnail" :alt="p.name" class="size-10 object-cover" loading="lazy">
+                        </template>
+                     </span>
                   </template>
                   <span x-html="p.highlighted"></span>
                </a>

@@ -428,7 +428,11 @@ class Catalogue
                     if (($paginate = $GLOBALS['db']->select('CubeCart_reviews', 'SUM(`rating`) AS Score, COUNT(`id`) as Count', array('approved' => 1, 'product_id' => $product['product_id']))) !== false) {
                         $review_count = (int)$paginate[0]['Count'];
                         $review_score = $paginate[0]['Score'];
-                        $GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination($review_count, $per_page, $page));
+                        // Anchor the review pager to the reviews block, otherwise page 2
+                        // lands the customer back at the top of the product page. All
+                        // shipped skins mark it up as id="element-reviews"; an unknown
+                        // fragment is harmless, so a custom skin without it is unaffected.
+                        $GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination($review_count, $per_page, $page, 5, 'page', 'element-reviews'));
                     }
                     $skin_data = GUI::getInstance()->getSkinData();
                     foreach ($reviews as $review) {

@@ -154,11 +154,25 @@
                 /* Enter-key submits dispatch a real submit event and never
                    touch the button, so they bypass the handler above. */
                 form.addEventListener('submit', function (e) {
+                    /* Secondary actions opt out of validation AND of any
+                       rerouting. formnovalidate only tells the BROWSER to skip
+                       its own checks — it does not stop this listener, so
+                       without this test "Update basket" was swallowed here:
+                       validation passed, and the submission was then replayed
+                       through the .g-recaptcha checkout button, which posts
+                       `proceed` instead of `update`. The basket never updated. */
+                    if (e.submitter && e.submitter.hasAttribute('formnovalidate')) return;
+
                     if (self._verified) return;
                     e.preventDefault();
+                    var submitter = e.submitter;
                     self.validateAll().then(function (ok) {
                         if (!ok) return;
                         self._verified = true;
+                        /* Replay the ACTUAL button so its name/value posts —
+                           HTMLFormElement.submit() contributes neither, which is
+                           the same trap the `proceed` compensator exists for. */
+                        if (submitter) { submitter.click(); return; }
                         // If the form is reCAPTCHA-protected, go through its
                         // button so a token is still minted; submitting the
                         // form directly would post without one and be rejected.

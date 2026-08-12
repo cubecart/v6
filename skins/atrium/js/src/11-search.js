@@ -18,6 +18,12 @@ document.addEventListener('alpine:init', function () {
             results: [],
             open: false,
             searched: false,
+            /* Mirrors data-image. The template needs it so it can reserve the
+               thumbnail slot even when a product has no image — 308 of the
+               indexed products carry no `thumbnail` field at all, and without a
+               placeholder those rows lose their 40px leading box and the text
+               jumps left, breaking the column. */
+            showImages: false,
             _seq: 0,
 
             close: function () {
@@ -62,6 +68,7 @@ document.addEventListener('alpine:init', function () {
 
                 var amount = input.getAttribute('data-amount') || 15;
                 var showImages = input.getAttribute('data-image') === 'true';
+                this.showImages = showImages;
 
                 // Guard against out-of-order responses: only the newest wins.
                 var seq = ++this._seq;

@@ -176,7 +176,7 @@
     transition: color 120ms, transform 120ms;
   }
   .cc-star-off { color: var(--color-ink-300); }
-  .cc-star-on  { color: var(--color-warn-600); }
+  .cc-star-on  { color: var(--color-star); }
   .cc-star:hover { transform: scale(1.08); }
   .rating:focus-visible + .cc-star {
     outline: 2px solid var(--color-brand-600);
