@@ -2656,12 +2656,29 @@ This email is sent from the store's master email address but it is possible to r
     <string name="default_doc_title_privacy" introduced="5.0.0"><![CDATA[Privacy Policy]]></string>
     <string name="default_doc_title_returns" introduced="6.2.1"><![CDATA[Returns Policy]]></string>
     <string name="default_doc_content" introduced="5.0.0"><![CDATA[This can be managed under <span class="navTitle">Documents in the admin control panel.</span>]]></string>
-    <string name="default_doc_content_welcome" introduced="5.0.0"><![CDATA[<div class="cc-hero">
-   <img src="images/source/website_images/hero-1.jpg" alt="New season, new arrivals">
-   <img src="images/source/website_images/hero-2.jpg" alt="Shop our best sellers">
-   <img src="images/source/website_images/hero-3.jpg" alt="Edit this banner in File Manager">
-</div>
-<p>This message and the banners above can be edited using the <strong>Rich Text Editor</strong> under <i>File Manager &gt; Documents</i> in your admin control panel. The images themselves live in <i>File Manager</i> under <i>website_images</i>, so you can replace them without editing any HTML.</p>]]></string>
+    <string name="default_doc_content_welcome" introduced="5.0.0"><![CDATA[<div class="cc-hero" style="display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;">
+   <div style="position:relative;flex:0 0 100%;scroll-snap-align:center;">
+      <img src="images/source/website_images/hero-1.webp" alt="" style="display:block;width:100%;aspect-ratio:8/3;object-fit:cover;">
+      <div style="position:absolute;top:50%;left:6%;width:56%;transform:translateY(-50%);color:#ffffff;text-shadow:0 1px 3px rgba(0,0,0,0.45);">
+         <h2 style="margin:0;font-size:clamp(1.1rem,3vw,2.6rem);line-height:1.15;font-weight:700;color:#ffffff;">New season, new arrivals</h2>
+         <p style="margin:0.5em 0 0;font-size:clamp(0.75rem,1.4vw,1.1rem);line-height:1.4;color:#ffffff;opacity:0.92;">Discover the latest additions to our range</p>
+      </div>
+   </div>
+   <div style="position:relative;flex:0 0 100%;scroll-snap-align:center;">
+      <img src="images/source/website_images/hero-2.webp" alt="" style="display:block;width:100%;aspect-ratio:8/3;object-fit:cover;">
+      <div style="position:absolute;top:50%;left:6%;width:56%;transform:translateY(-50%);color:#ffffff;text-shadow:0 1px 3px rgba(0,0,0,0.45);">
+         <h2 style="margin:0;font-size:clamp(1.1rem,3vw,2.6rem);line-height:1.15;font-weight:700;color:#ffffff;">Shop our best sellers</h2>
+         <p style="margin:0.5em 0 0;font-size:clamp(0.75rem,1.4vw,1.1rem);line-height:1.4;color:#ffffff;opacity:0.92;">The products our customers come back for</p>
+      </div>
+   </div>
+   <div style="position:relative;flex:0 0 100%;scroll-snap-align:center;">
+      <img src="images/source/website_images/hero-3.webp" alt="" style="display:block;width:100%;aspect-ratio:8/3;object-fit:cover;">
+      <div style="position:absolute;top:50%;left:6%;width:56%;transform:translateY(-50%);color:#ffffff;text-shadow:0 1px 3px rgba(0,0,0,0.45);">
+         <h2 style="margin:0;font-size:clamp(1.1rem,3vw,2.6rem);line-height:1.15;font-weight:700;color:#ffffff;">Quality you can trust</h2>
+         <p style="margin:0.5em 0 0;font-size:clamp(0.75rem,1.4vw,1.1rem);line-height:1.4;color:#ffffff;opacity:0.92;">Carefully selected and fairly priced</p>
+      </div>
+   </div>
+</div>]]></string>
     <string name="db_host" introduced="5.0.0"><![CDATA[Database Host]]></string>
     <string name="db_name" introduced="5.0.0"><![CDATA[Database Name]]></string>
     <string name="db_username" introduced="6.7.0"><![CDATA[Database Username]]></string>

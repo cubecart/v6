@@ -331,19 +331,23 @@ if (!isset($_SESSION['setup']['permissions'])) {
                 if (!is_dir($banner_dst)) {
                     @mkdir($banner_dst, 0755, true);
                 }
-                foreach ((array)glob($banner_src.'*.jpg') as $banner) {
+                foreach ((array)glob($banner_src.'*.{jpg,jpeg,png,webp}', GLOB_BRACE) as $banner) {
                     $basename = basename($banner);
                     if (!@copy($banner, $banner_dst.$basename)) {
                         continue;
                     }
                     $size = filesize($banner_dst.$basename);
+                    // Derive the mime type rather than assuming: the shipped
+                    // banners are WebP, and hardcoding image/jpeg here made
+                    // File Manager mislabel them.
+                    $info = @getimagesize($banner_dst.$basename);
                     $GLOBALS['db']->insert('CubeCart_filemanager', array(
                         'type'        => 1,
                         'disabled'    => 0,
                         'filepath'    => 'website_images/',
                         'filename'    => $basename,
                         'filesize'    => $size,
-                        'mimetype'    => 'image/jpeg',
+                        'mimetype'    => (!empty($info['mime']) ? $info['mime'] : 'application/octet-stream'),
                         'md5hash'     => md5_file($banner_dst.$basename),
                         'title'       => '',
                         'description' => '',

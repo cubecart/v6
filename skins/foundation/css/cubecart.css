@@ -488,3 +488,60 @@ ul.pagination .arrow:last-child a {
 #product_spec > table > tbody > tr > td:nth-child(1) {
     width: 30%;
 }
+
+/* Homepage hero banners.
+
+   The .cc-hero block the installer writes into the default homepage document
+   carries its own flex/scroll-snap layout inline, so it renders as a carousel
+   with no skin CSS at all. What a bare .cc-hero cannot offer is a desktop
+   mouse affordance -- so 4.cubecart.hero.js wraps it and injects the arrows
+   and dots styled below, and only then is it safe to hide the scrollbar. */
+.cc-hero { scrollbar-width: none; }
+.cc-hero::-webkit-scrollbar { display: none; }
+.cc-hero-wrap { position: relative; }
+.cc-hero-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.85);
+    color: #222;
+    font-size: 1rem;
+    line-height: 2.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+.cc-hero-arrow:hover,
+.cc-hero-arrow:focus {
+    background: #fff;
+    color: #008CBA;
+}
+.cc-hero-prev { left: 0.75rem; }
+.cc-hero-next { right: 0.75rem; }
+.cc-hero-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 0.625rem 0 0;
+}
+.cc-hero-dot {
+    width: 0.625rem;
+    height: 0.625rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #ccc;
+    cursor: pointer;
+}
+.cc-hero-dot-on { background: #008CBA; }
+
+/* Touch devices already have swipe; the arrows only cover the banner. */
+@media only screen and (max-width: 40em) {
+    .cc-hero-arrow { display: none; }
+}

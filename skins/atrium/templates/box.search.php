@@ -54,8 +54,16 @@
                      box and their text jumped left out of line with the rest. *}
                   <template x-if="showImages">
                      <span class="size-10 shrink-0 overflow-hidden rounded bg-ink-200">
+                        {* The indexer stores a path into images/cache, which is a derived
+                           artefact hosts and merchants clear routinely — and live search is
+                           the one display path that never re-resolves it through imagePath(),
+                           because ?_e=es is dispatched before the bootstrap and so has no
+                           Catalogue to call. A cleared cache therefore 404s until someone
+                           rebuilds the index. Drop the src on error so that degrades to the
+                           neutral slot below rather than a broken-image icon. *}
                         <template x-if="p.thumbnail">
-                           <img :src="p.thumbnail" :alt="p.name" class="size-10 object-cover" loading="lazy">
+                           <img :src="p.thumbnail" :alt="p.name" class="size-10 object-cover" loading="lazy"
+                                @error="p.thumbnail = ''">
                         </template>
                      </span>
                   </template>
