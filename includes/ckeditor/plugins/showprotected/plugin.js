@@ -67,7 +67,8 @@ CKEDITOR.plugins.add( 'showprotected', {
 		// Register a filter to displaying placeholders after mode change.
 
 		var dataProcessor = editor.dataProcessor,
-			dataFilter = dataProcessor && dataProcessor.dataFilter;
+			dataFilter = dataProcessor && dataProcessor.dataFilter,
+			dynamicImageIcon = CKEDITOR.getUrl( this.path + 'images/smarty_image.svg' );
 
 		if ( dataFilter ) {
 			dataFilter.addRules( {
@@ -98,6 +99,28 @@ CKEDITOR.plugins.add( 'showprotected', {
 					}
 
 					return null;
+				},
+
+				elements: {
+					img: function( element ) {
+						// Smarty inside an attribute can't become a placeholder element, so
+						// CKEditor rewrites it to a {cke_protected_N} marker instead. An <img>
+						// carrying one of those can never load, and the browser then draws a
+						// broken image plus its alt text, which is another marker. Show the
+						// dynamic image icon in its place. The real src travels on
+						// data-cke-saved-src and CKEditor restores it when the content is
+						// written back out, so the stored HTML is untouched.
+						var attributes = element.attributes;
+
+						if ( !attributes || !attributes.src || !/^\{cke_protected_\d+\}$/.test( attributes.src ) ) {
+							return;
+						}
+
+						if ( !attributes[ 'data-cke-saved-src' ] ) {
+							attributes[ 'data-cke-saved-src' ] = attributes.src;
+						}
+						attributes.src = dynamicImageIcon;
+					}
 				}
 			} );
 		}

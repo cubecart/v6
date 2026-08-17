@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffb74d"/>
+      <stop offset="55%" stop-color="#fb8c00"/>
+      <stop offset="100%" stop-color="#e65100"/>
+    </linearGradient>
+    <linearGradient id="hl" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.40"/>
+      <stop offset="55%" stop-color="#fff" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="5" width="60" height="54" rx="6" fill="#fffaf2" stroke="#fb8c00" stroke-width="2" stroke-dasharray="6 4"/>
+  <circle cx="19" cy="23" r="6" fill="#fb8c00" opacity="0.55"/>
+  <path d="M7 51l15-18 10 12 8-9 17 15z" fill="#fb8c00" opacity="0.45"/>
+  <rect x="35" y="33" width="27" height="27" rx="7" fill="url(#bg)"/>
+  <rect x="36" y="34" width="25" height="12" rx="5" fill="url(#hl)"/>
+  <text x="48.5" y="47" text-anchor="middle" dominant-baseline="central" font-family="'Palatino','Georgia','Times New Roman',serif" font-size="18" font-weight="bold" fill="#fff">{$}</text>
+</svg>
