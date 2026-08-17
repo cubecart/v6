@@ -119,6 +119,12 @@
       <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/plugins.php?{$VERSION_HASH}"></script>
       <!-- Include CKEditor -->
       <script type="text/javascript" src="includes/ckeditor/ckeditor.js?{$VERSION_HASH}"></script>
+      {* CKEditor stamps its own resources (config.js, plugins, skins, lang) with
+         CKEDITOR.timestamp, which is fixed for the lifetime of a CKEditor build.
+         Our edits to config.js and to the showprotected plugin therefore stayed
+         cached in admins' browsers across CubeCart upgrades. Point it at the
+         version hash so a core update invalidates them. *}
+      <script type="text/javascript">if (typeof CKEDITOR !== 'undefined') { CKEDITOR.timestamp = '{$VERSION_HASH}'; }</script>
       <script type="text/javascript" src="includes/ckeditor/adapters/jquery.js?{$VERSION_HASH}"></script>
       <script src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/dropzone.js?{$VERSION_HASH}"></script>
       <script>
