@@ -1410,10 +1410,11 @@ class GUI
         // InnoDB's `featured` secondary index is ordered by product_id, so no filesort is needed
         // and the scan stops at the LIMIT. The candidate set is randomised in PHP below as before.
         $featured_where = $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1', 'featured' => '1'));
-        $max_row = $GLOBALS['db']->misc('SELECT MAX(`product_id`) AS `max_id` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory`', false);
+        $prefix = $GLOBALS['config']->get('config', 'dbprefix');
+        $max_row = $GLOBALS['db']->misc('SELECT MAX(`product_id`) AS `max_id` FROM `'.$prefix.'CubeCart_inventory`', false);
         $max_id = (is_array($max_row) && !empty($max_row[0]['max_id'])) ? (int)$max_row[0]['max_id'] : 0;
         $pivot = ($max_id > 0) ? mt_rand(0, $max_id) : 0;
-        $featured_products = $GLOBALS['db']->select('CubeCart_inventory', array('product_id'), $featured_where.' AND CubeCart_inventory.product_id >= '.$pivot, array('product_id' => 'ASC'), 15, false, false);
+        $featured_products = $GLOBALS['db']->select('CubeCart_inventory', array('product_id'), $featured_where.' AND '.$prefix.'CubeCart_inventory.product_id >= '.$pivot, array('product_id' => 'ASC'), 15, false, false);
         // If the pivot landed near the highest id and returned too few, top up from the start.
         if (!$featured_products || count($featured_products) < 15) {
             $featured_products = $GLOBALS['db']->select('CubeCart_inventory', array('product_id'), $featured_where, array('product_id' => 'ASC'), 15, false, false);
