@@ -126,7 +126,7 @@
 	  </tr>
 		<tr>
 			<td colspan="2">
-				<textarea name="content[content_html]" id="content_html" class="textbox fck fck-full" data-fck-height="500">{$CONTENT.content_html|escape:'html'}</textarea>
+				<textarea name="content[content_html]" id="content_html" class="textbox fck fck-keep-image-size" data-fck-height="500">{$CONTENT.content_html|escape:'html'}</textarea>
 			</td>
 		</tr>
 		<tr>
@@ -206,7 +206,7 @@
 	  </tr>
 		<tr>
 			<td colspan="2">
-				<textarea name="template[content_html]" id="template_content_html" class="textbox fck fck-full" data-fck-height="500">{$TEMPLATE.content_html|escape:'html'}</textarea>
+				<textarea name="template[content_html]" id="template_content_html" class="textbox fck fck-full fck-keep-image-size" data-fck-height="500">{$TEMPLATE.content_html|escape:'html'}</textarea>
 			</td>
 		</tr>
 		<tr>

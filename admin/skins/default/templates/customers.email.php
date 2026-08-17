@@ -51,7 +51,7 @@
    <div id="email_html" class="tab_content">
       <h3>{$LANG.email.title_content_html}</h3>
       <p>{$LANG.email.help_content_html}</p>
-      <textarea name="newsletter[content_html]" id="content_html" class="textbox fck">{$NEWSLETTER.content_html|escape:"html"}</textarea>
+      <textarea name="newsletter[content_html]" id="content_html" class="textbox fck fck-keep-image-size">{$NEWSLETTER.content_html|escape:"html"}</textarea>
       <p>
          <input type="submit" value="{$LANG.common.save}">
          <button type="button" class="button" id="preview_newsletter" onclick="previewNewsletter()">{$LANG.common.preview}</button>

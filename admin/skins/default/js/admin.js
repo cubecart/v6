@@ -1444,7 +1444,7 @@ if (typeof CKEDITOR !== 'undefined') {
                 });
             };
         }
-        // Storefronts are responsive — width/height attrs override the skin's
+        // Storefronts are responsive, so width/height attrs override the skin's
         // `max-width:100%; height:auto` rules. We don't hide the dialog fields
         // (CKEditor uses them for the live preview), but the output filter
         // below strips them from the saved HTML.
@@ -1456,11 +1456,18 @@ if (typeof CKEDITOR !== 'undefined') {
     //
     // Important gotcha: CKEditor's parser splits `style="..."` into a
     // separate `el.styles` map BEFORE filter rules run, so the style
-    // declarations don't live in `el.attributes.style` — they live in
-    // `el.styles.width` / `el.styles.height`.
+    // declarations don't live in `el.attributes.style`, they live in
+    // `el.styles.width` / `el.styles.height` (note: with `allowedContent = true`
+    // ACF is off and no `el.styles` map is built, so that half is inert today).
+    //
+    // Editors flagged `fck-keep-image-size` opt out. Email and invoice
+    // templates are fixed-layout HTML: Outlook and Gmail ignore responsive CSS,
+    // and an invoice is printed, so those images need explicit dimensions and
+    // must round-trip through the editor untouched.
     CKEDITOR.on('instanceReady', function(ev) {
         var ed = ev.editor;
         if (!ed.dataProcessor || !ed.dataProcessor.htmlFilter) return;
+        if (ed.element && ed.element.hasClass('fck-keep-image-size')) return;
         ed.dataProcessor.htmlFilter.addRules({
             elements: {
                 img: function(el) {
