@@ -116,6 +116,7 @@ class Sanitize
         if (!empty($GLOBALS['glob']['iframe_whitelist']) && is_array($GLOBALS['glob']['iframe_whitelist'])) {
             $allowed_iframe_hosts = array_merge($allowed_iframe_hosts, $GLOBALS['glob']['iframe_whitelist']);
         }
+        $own_host = '';
         if (!empty($GLOBALS['glob']['standard_url'])) {
             $own_host = strtolower((string)parse_url($GLOBALS['glob']['standard_url'], PHP_URL_HOST));
             if ($own_host !== '') {
@@ -123,6 +124,48 @@ class Sanitize
             }
         }
         $allowed_iframe_hosts = array_map('strtolower', $allowed_iframe_hosts);
+
+        // Self-hosted media: <video>/<audio> and their <source>/<track> children are
+        // permitted when every URL they reference is same-origin. A relative path is
+        // always same-origin; an absolute one must match the store's own host, or a
+        // host listed in $glob['media_whitelist'] (e.g. an image/media CDN).
+        //
+        // These elements cannot execute script on their own, and the generic attribute
+        // pass below still strips on* handlers and unsafe URI schemes. The host check is
+        // here so a description cannot be used to embed or hotlink arbitrary remote media.
+        $allowed_media_hosts = array();
+        if (!empty($GLOBALS['glob']['media_whitelist']) && is_array($GLOBALS['glob']['media_whitelist'])) {
+            $allowed_media_hosts = array_map('strtolower', $GLOBALS['glob']['media_whitelist']);
+        }
+        if (!empty($own_host)) {
+            $allowed_media_hosts[] = $own_host;
+        }
+        $media_tags = array('video', 'audio', 'source', 'track');
+        $media_attr_keep = array(
+            'video'  => array('src','poster','width','height','controls','preload','loop','muted','autoplay','playsinline','title','class','id','style'),
+            'audio'  => array('src','controls','preload','loop','muted','autoplay','title','class','id','style'),
+            'source' => array('src','type','media','sizes'),
+            'track'  => array('src','kind','srclang','label','default'),
+        );
+        // Same-origin test shared by every media URL (src and poster).
+        $media_src_ok = function ($url) use ($allowed_media_hosts) {
+            $url = trim(preg_replace('/[\x00-\x20]+/', '', html_entity_decode((string)$url, ENT_QUOTES)));
+            if ($url === '') {
+                return false;
+            }
+            if (strpos($url, '//') === 0) { // protocol-relative
+                $host = strtolower((string)parse_url('https:'.$url, PHP_URL_HOST));
+                return $host !== '' && in_array($host, $allowed_media_hosts, true);
+            }
+            if (preg_match('#^[a-z][a-z0-9+.\-]*:#i', $url, $sm)) { // absolute
+                if (!in_array(strtolower(rtrim($sm[0], ':')), array('http', 'https'), true)) {
+                    return false; // javascript:, data:, etc
+                }
+                $host = strtolower((string)parse_url($url, PHP_URL_HOST));
+                return $host !== '' && in_array($host, $allowed_media_hosts, true);
+            }
+            return true; // relative path, same-origin by definition
+        };
 
 
         $dom  = new DOMDocument();
@@ -145,15 +188,75 @@ class Sanitize
                 continue;
             }
             if ($tag === 'iframe') {
-                $src  = (string)$node->getAttribute('src');
-                $host = strtolower((string)parse_url($src, PHP_URL_HOST));
-                if (stripos($src, 'https://') !== 0 || !in_array($host, $allowed_iframe_hosts, true)) {
+                // Normalise the src before testing it. Requiring a literal 'https://'
+                // prefix rejected embeds that work perfectly well in a browser and wiped
+                // the whole description with no warning (#4199): YouTube's own share code
+                // was protocol-relative (//www.youtube.com/embed/x) for years, older
+                // stored embeds are http://, and a copy-paste can carry leading spaces.
+                // The trusted-host list is what provides the security here, not the
+                // spelling of the scheme.
+                $src = trim(html_entity_decode((string)$node->getAttribute('src'), ENT_QUOTES));
+                $src = preg_replace('/\A[\x00-\x20]+|[\x00-\x20]+\z/', '', $src);
+                if (strpos($src, '//') === 0) {
+                    $src = 'https:'.$src;
+                }
+                $scheme = strtolower((string)parse_url($src, PHP_URL_SCHEME));
+                $host   = strtolower((string)parse_url($src, PHP_URL_HOST));
+                if (!in_array($scheme, array('http', 'https'), true) || !in_array($host, $allowed_iframe_hosts, true)) {
                     $node->parentNode->removeChild($node);
                     continue;
                 }
+                // Write it back as https, so a protocol-relative or http embed does not
+                // become blocked mixed content on an https storefront.
+                $port  = parse_url($src, PHP_URL_PORT);
+                $path  = (string)parse_url($src, PHP_URL_PATH);
+                $query = (string)parse_url($src, PHP_URL_QUERY);
+                $frag  = (string)parse_url($src, PHP_URL_FRAGMENT);
+                $node->setAttribute('src', 'https://'.$host.(!empty($port) ? ':'.(int)$port : '').$path
+                    .($query !== '' ? '?'.$query : '').($frag !== '' ? '#'.$frag : ''));
                 $iframe_keep = array('src','width','height','allow','allowfullscreen','frameborder','title','loading','referrerpolicy');
                 foreach (iterator_to_array($node->attributes) as $attr) {
                     if (!in_array(strtolower($attr->nodeName), $iframe_keep, true)) {
+                        $node->removeAttribute($attr->nodeName);
+                    }
+                }
+                continue;
+            }
+
+            if (in_array($tag, $media_tags, true)) {
+                // <source>/<track> only mean anything inside <video>/<audio>; loose ones
+                // are unwrapped by the generic path below, same as any other stray tag.
+                $parent = strtolower($node->parentNode->nodeName);
+                if (($tag === 'source' || $tag === 'track') && !in_array($parent, array('video', 'audio'), true)) {
+                    while ($node->firstChild) {
+                        $node->parentNode->insertBefore($node->firstChild, $node);
+                    }
+                    $node->parentNode->removeChild($node);
+                    continue;
+                }
+                // A <video>/<audio> with no src of its own is fine: it plays its <source>
+                // children, and each of those is checked in its own turn.
+                $bad = false;
+                foreach (array('src', 'poster') as $url_attr) {
+                    if ($node->hasAttribute($url_attr) && !$media_src_ok($node->getAttribute($url_attr))) {
+                        $bad = true;
+                        break;
+                    }
+                }
+                if ($bad) {
+                    $node->parentNode->removeChild($node);
+                    continue;
+                }
+                foreach (iterator_to_array($node->attributes) as $attr) {
+                    $name = strtolower($attr->nodeName);
+                    if (!in_array($name, $media_attr_keep[$tag], true)) {
+                        $node->removeAttribute($attr->nodeName);
+                        continue;
+                    }
+                    // Same style check the generic attribute pass below applies; media
+                    // elements skip that pass, so it has to be repeated here.
+                    if ($name === 'style'
+                        && preg_match('#(expression|javascript|vbscript|behaviou?r|@import|url\s*\()#i', (string)$attr->nodeValue)) {
                         $node->removeAttribute($attr->nodeName);
                     }
                 }
