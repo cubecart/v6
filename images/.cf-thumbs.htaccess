@@ -1,0 +1,38 @@
+# On-the-fly thumbnails via /cf-thumbs.php - INACTIVE UNTIL RENAMED.
+#
+# Apache only reads a file called exactly .htaccess, so this does nothing as it
+# stands. To enable: rename to .htaccess, or paste the block into the existing
+# one (a CDN offload rule often lives there already). Rename back to disable.
+#
+# DO NOT ENABLE WITHOUT CLOUDFLARE. Every uncached thumbnail costs the origin a
+# GD resize and a category page asks for dozens at once, so an unproxied crawler
+# can pin the CPU. No proxy means stay on on-disk thumbnails: leave this alone
+# and do not set block_thumbs.
+#
+# Enable, in order:
+#   1. curl -sI https://store/ | grep -i cf-ray      confirm it really is proxied
+#   2. includes/global.inc.php:  $glob['block_thumbs'] = 1;
+#   3. rename this file
+#   4. curl -sI https://store/images/cache/foo.200.jpg | grep -i 'x-thumb\|cf-cache'
+#      CF-Cache-Status should be HIT on the second request.
+#      X-Thumb-Warning means step 2 has not taken effect.
+#
+# Full docs at the top of cf-thumbs.php.
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Only hand work to PHP for proxied requests, so a paused or bypassed proxy
+  # leaves the origin alone. cf-thumbs.php enforces this again.
+  RewriteCond %{HTTP:CF-Ray} .
+
+  # !-f means any thumbnail still on disk is served directly, so this is safe to
+  # enable before emptying images/cache. [NC] because some uploads are .JPG.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^cache/.+\.[0-9]+\.(jpe?g|png|gif|webp)$ /cf-thumbs.php [L,NC]
+
+  # Store in a subfolder? The target is document-root relative, so swap the line
+  # above for this, adjusting the folder:
+  # RewriteRule ^cache/.+\.[0-9]+\.(jpe?g|png|gif|webp)$ /store/cf-thumbs.php [L,NC]
+</IfModule>
