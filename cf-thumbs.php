@@ -36,10 +36,11 @@
 
 // --- tunables ---------------------------------------------------------------
 
-// CubeCart's GD auto-rotates from EXIF Orientation. On this store that is wrong:
-// 147 of 12,234 sources claim Orientation=6/8 while their pixels (and burnt-in
-// watermark) are already upright, so honouring it lays them on their side. Set
-// true only if the sources are ever re-scanned with trustworthy EXIF.
+// Off so output matches the thumbnails already sitting in images/cache, which
+// were written before CubeCart's GD class applied EXIF Orientation. Turning it on
+// mid-catalogue re-rotates only the images whose tag says so, and a tag that
+// disagrees with already-upright pixels then lays them on their side. Set true
+// only for a catalogue whose EXIF is known to be trustworthy.
 const CFTHUMBS_APPLY_EXIF_ROTATION = false;
 
 // Refuse to resize for requests that did not come through Cloudflare. A miss
