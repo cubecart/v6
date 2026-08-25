@@ -617,6 +617,15 @@ class ElasticsearchHandler
             if($field === 'stock_level' && $this->_isOutOfStock()) {
                 return $this->delete($id);
             }
+            // A sold-out product was removed from the index by the branch above.
+            // If it is restocked later, a partial update targets a document that
+            // no longer exists and throws document_missing, so the product never
+            // returns to the index. Re-add it in full instead: on the stock_level
+            // path $_index_body carries only the stock flags, so an upsert would
+            // leave a document with no name, price or description.
+            if(!$this->exists($id)) {
+                return $this->add($id);
+            }
             return $this->_client->update($params);
         } catch (Exception $e) {
             $this->_logError($e->getMessage());
