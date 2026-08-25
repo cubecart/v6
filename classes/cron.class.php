@@ -108,14 +108,12 @@ class Cron
 
         // Drive off saved_cart so we catch both pre-checkout abandonment (no
         // order_summary row) and checkout abandonment (Pending order at gateway).
-        // The recent-order gate compares the cart against the customer's orders:
-        // if they placed a Processing/Complete order at or after the cart last
-        // changed, what's left is residue from that purchase, not a live basket.
-        // Anchoring on the cart rather than on session activity matters — a repeat
-        // buyer's last session keeps moving forward while the order date does not,
-        // so a session-relative window reopens the moment they come back to browse
-        // and mails them the items they already bought (#4145). Legacy rows have
-        // `updated` = 0, so any completed order suppresses them: fail safe.
+        // A Processing/Complete order at or after the cart last changed means the
+        // cart is residue from that purchase, not a live basket. Anchor on the
+        // cart, not the session: a repeat buyer's session keeps moving forward
+        // while the order date does not, so a session-relative window would mail
+        // them what they already bought (#4145). Legacy rows have `updated` = 0
+        // and so are always suppressed, which fails safe.
         $pfx = $GLOBALS['config']->get('config', 'dbprefix');
         $query = "SELECT sc.customer_id, sc.basket, c.email, c.first_name, c.last_name, c.language, c.currency, c.country
             FROM `{$pfx}CubeCart_saved_cart` sc
@@ -500,19 +498,14 @@ class Cron
     /**
      * Collect cron tasks contributed by plugins.
      *
-     * Tasks used to have to be methods of this class, so an extension's only
-     * option was to bolt everything onto the single "Run Code Snippets" task —
-     * which gives no individual toggle, no per-task frequency and no separate
-     * last-run/last-result (#4177).
-     *
      * A hook file adds to $tasks, keyed by the `method` value of its row in
      * CubeCart_cron_tasks:
      *
      *   $tasks['myPluginSync'] = array('My_Plugin', 'runSync');
      *
-     * Everything else — the enable toggle, frequency, concurrency lock, due
-     * check and result capture — then applies to it exactly as for a core task.
-     * Core methods win on a name clash so a plugin can't shadow them.
+     * Toggle, frequency, locking and result capture then apply as for a core
+     * task, which previously meant bolting everything onto "Run Code Snippets"
+     * (#4177). Core methods win on a name clash so a plugin cannot shadow them.
      *
      * @return array  method name => callable
      */
@@ -546,8 +539,7 @@ class Cron
                 } elseif (isset($registered[$method]) && is_callable($registered[$method])) {
                     $callable = $registered[$method];
                 } else {
-                    // Previously skipped in silence, which left an unrunnable row
-                    // sitting in the admin list looking healthy forever.
+                    // Skipping silently left an unrunnable row looking healthy.
                     $output[] = $task['label'] . ': skipped (no such task)';
                     continue;
                 }
@@ -592,8 +584,7 @@ class Cron
                 } catch (Exception $e) {
                     $result = substr($e->getMessage(), 0, 255);
                 } catch (Error $e) {
-                    // A fatal in third-party task code must not take the whole
-                    // dispatcher down and strand every later task's lock.
+                    // A fatal in third-party code must not strand every later task's lock.
                     $result = substr($e->getMessage(), 0, 255);
                 }
 

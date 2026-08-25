@@ -1011,16 +1011,11 @@ class Database_Contoller
     /**
      * Structurally validate a string-typed ORDER BY expression.
      *
-     * sqlSafe()/real_escape_string is worthless here: ORDER BY injection needs
-     * no quote, backslash or NUL, so escaping leaves the clause wide open (see
-     * GHSA-fcv7-88v5-vv5f, and GHSA-rm2f-rpcq-6w9f before it — that fix only
-     * hardened the array branch and the one page that was reported).
-     *
-     * Terms are split on top-level commas only, so function expressions with
-     * their own argument lists survive. Each term must then be an identifier or
-     * an allowlisted function call, with an optional ASC/DESC. Anything else is
-     * dropped rather than escaped, because there is no legitimate reason for a
-     * caller to put arbitrary SQL here.
+     * Escaping is useless here: ORDER BY injection needs no quote, backslash or
+     * NUL (GHSA-fcv7-88v5-vv5f, and GHSA-rm2f-rpcq-6w9f before it). So validate
+     * structurally instead. Each top-level term must be an identifier or an
+     * allowlisted function call with an optional ASC/DESC; anything else is
+     * dropped, not escaped.
      *
      * @param string $order
      * @return string|null  'ORDER BY ...' or null when nothing survives
@@ -1032,7 +1027,7 @@ class Database_Contoller
             return null;
         }
 
-        // Split on commas at paren depth 0 so IF(a, b, c) stays in one piece.
+        // Depth 0 only, so IF(a, b, c) stays in one piece.
         $terms = array();
         $buffer = '';
         $depth  = 0;
@@ -1059,12 +1054,9 @@ class Database_Contoller
 
         // Bare column, optionally backticked and/or table/alias qualified.
         $identifier = '(?:`?[a-zA-Z0-9_]+`?\.)?`?[a-zA-Z0-9_]+`?';
-        // Deliberately short: these are the only functions core sorts by. A
-        // caller needing another one should add it here, not bypass the check.
+        // The only functions core sorts by. Add here rather than bypass the check.
         $functions  = 'IF|IFNULL|COALESCE|FIELD|ISNULL|LENGTH|ABS|LOWER|UPPER|CONCAT|RAND';
-        // Function arguments: identifiers, numbers, quoted literals, comparison
-        // and arithmetic operators, and nested calls. No statement keywords, so
-        // a smuggled subquery cannot match.
+        // Identifiers, literals, operators and nested calls. No statement keywords.
         $arguments  = '[a-zA-Z0-9_`\'\"\.\s,=<>!+\-*\/\(\)]*';
 
         $safe = array();
@@ -1077,8 +1069,7 @@ class Database_Contoller
                 trigger_error('Rejected unsafe ORDER BY term: '.$term, E_USER_WARNING);
                 continue;
             }
-            // A nested SELECT/UNION can only appear inside a function argument
-            // list; the argument charset excludes nothing alphabetic, so check.
+            // The argument charset allows any word, so catch nested statements here.
             if (preg_match('/\b(SELECT|UNION|SLEEP|BENCHMARK|INFORMATION_SCHEMA|LOAD_FILE|EXTRACTVALUE|UPDATEXML)\b/i', $term)) {
                 trigger_error('Rejected unsafe ORDER BY term: '.$term, E_USER_WARNING);
                 continue;

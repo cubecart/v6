@@ -23,17 +23,16 @@ class CubeCart_Smarty_Security extends Smarty_Security
         'call_user_func_array', 'preg_replace_callback', 'usort', 'uasort',
         'uksort', 'array_map', 'array_filter', 'array_walk',
         'forward_static_call', 'forward_static_call_array', 'iterator_apply',
-        // Callback-taking siblings of the above. array_walk_recursive is the
-        // bypass reported in GHSA-5mr8-hgcv-3pcj; the rest are the same sink
-        // reached by a different name.
+        // Callback-taking siblings of the above. array_walk_recursive was the
+        // reported bypass (GHSA-5mr8-hgcv-3pcj); the rest are the same sink.
         'array_walk_recursive', 'array_reduce',
         'preg_replace_callback_array', 'mb_ereg_replace_callback',
         'array_udiff', 'array_udiff_assoc', 'array_udiff_uassoc',
         'array_uintersect', 'array_uintersect_assoc', 'array_uintersect_uassoc',
         'array_diff_ukey', 'array_diff_uassoc',
         'array_intersect_ukey', 'array_intersect_uassoc',
-        // Handler registration — deferred callbacks, and the two register_*
-        // functions instantiate an attacker-named class.
+        // Handler registration: deferred callbacks, and register_* instantiates
+        // an attacker-named class.
         'set_error_handler', 'set_exception_handler', 'spl_autoload_register',
         'session_set_save_handler', 'header_register_callback',
         'libxml_set_external_entity_loader',
@@ -78,7 +77,7 @@ class CubeCart_Smarty_Security extends Smarty_Security
         'pclose', 'pcntl_fork', 'pcntl_signal', 'pcntl_wait', 'pcntl_waitpid',
         'posix_kill', 'posix_setuid', 'posix_setgid', 'posix_setsid',
         'proc_close', 'proc_terminate', 'proc_nice', 'proc_get_status',
-        // Apache — virtual() executes a subrequest
+        // Apache: virtual() executes a subrequest
         'virtual', 'apache_setenv', 'apache_note', 'apache_child_terminate',
         // Info disclosure
         'phpinfo', 'php_uname', 'getenv', 'putenv',
@@ -127,12 +126,10 @@ class CubeCart_Smarty_Security extends Smarty_Security
     public $allow_super_globals = true;
 
     /**
-     * Static classes templates may call. Smarty treats an EMPTY array as
-     * "allow all", so leaving it empty lets any {Class::method()} through —
-     * including callback-invoking static methods on whatever happens to be
-     * loaded, which is an RCE gadget past the $dangerous_php denylist (that
-     * list only governs bare function calls). Populated in the constructor
-     * from $trusted_static_classes so this is a real allowlist.
+     * Static classes templates may call. Smarty reads an EMPTY array as "allow
+     * all", which lets any {Class::method()} through and hands an RCE gadget
+     * past $dangerous_php, as that denylist only covers bare function calls.
+     * The constructor fills this from $trusted_static_classes.
      *
      * @var array
      */
@@ -210,16 +207,11 @@ class CubeCart_Smarty_Security extends Smarty_Security
         // Normalise once: the trusted-function checks compare lowercased names.
         $this->dangerous_php = array_map('strtolower', $this->dangerous_php);
 
-        // Per-install exceptions. A third-party extension may legitimately need
-        // something on the list, and there is no way to enumerate in advance
-        // what every extension's templates call — so allow it to be un-banned
-        // rather than force a fork of this file. Set in includes/global.inc.php;
-        // see global.inc.php-dist for the documented example.
-        //
-        // $never_allow can't be overridden. Nothing legitimate in a template
-        // needs to run a shell or eval a string, so those stay banned no matter
-        // what ends up in the config — which also means a compromised or
-        // careless extension can't disarm the policy meant to contain it.
+        // Per-install exceptions, set in includes/global.inc.php (see
+        // global.inc.php-dist), so an extension needing a listed function does not
+        // force a fork of this file. $never_allow is not overridable: a template
+        // has no legitimate need of a shell or eval, and a compromised extension
+        // must not be able to disarm the policy containing it.
         if (isset($GLOBALS['glob']['smarty_allowed_php']) && is_array($GLOBALS['glob']['smarty_allowed_php'])) {
             $never_allow = array(
                 'exec', 'system', 'passthru', 'shell_exec', 'proc_open', 'popen',
@@ -265,11 +257,9 @@ class CubeCart_Smarty_Security extends Smarty_Security
             }
         }
 
-        // Turn static-class access into an allowlist. Left empty (the Smarty
-        // default) it means "allow all", so any {Class::method()} compiles —
-        // see the $static_classes docblock. Restrict to exactly the classes
-        // registered above; namespaced tokens like \Vendor\Pkg\Cls are not in
-        // the list, so they are rejected rather than silently permitted.
+        // Restrict to exactly the classes registered above; the Smarty default of
+        // an empty array means "allow all" (see the $static_classes docblock).
+        // Namespaced tokens are not in the list, so they are rejected.
         $this->static_classes = array_keys($this->trusted_static_classes);
 
         // Fallback for any PHP function not in the pre-registered list.
@@ -289,9 +279,8 @@ class CubeCart_Smarty_Security extends Smarty_Security
      */
     public function isTrustedPhpFunction($function_name, $compiler)
     {
-        // strtolower: PHP function names are case-insensitive, so a
-        // case-sensitive in_array() let {EXEC(...)} or {Array_Walk(...)} past
-        // the entire list regardless of what was on it.
+        // PHP function names are case-insensitive, so a case-sensitive in_array()
+        // let {EXEC(...)} past the whole list.
         if (in_array(strtolower((string)$function_name), $this->dangerous_php, true)) {
             $compiler->trigger_template_error("PHP function '{$function_name}' not allowed by security setting");
             return false;

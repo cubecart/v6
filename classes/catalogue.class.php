@@ -2112,8 +2112,7 @@ class Catalogue
                     $es = new ElasticsearchHandler;
                     $sort = isset($_REQUEST['sort']) ? $_REQUEST['sort'] : array();
                     $es->query($search_data, $sort);
-                    // "View all" is capped at 100 on the MySQL path above; match
-                    // it here so the same URL returns the same set either way.
+                    // Match the MySQL path's "view all" cap so both return the same set.
                     $es_size = (strtolower($page) == 'all') ? 100 : $per_page;
                     $result = $es->search($page, $es_size);
                     

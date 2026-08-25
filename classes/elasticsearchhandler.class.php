@@ -75,8 +75,7 @@ class ElasticsearchHandler
         if(!empty($body)) {
             $this->_index_body = $body;
         } else if (!$this->_indexBody($id)) {
-            // Not indexable (disabled, or only in disabled categories). Remove
-            // any existing document instead of writing an empty one.
+            // Not indexable (disabled, or only in a disabled category): drop any stale document.
             return $this->indexExists() ? $this->delete($id) : false;
         }
         $params = [
@@ -494,9 +493,8 @@ class ElasticsearchHandler
      */
     public function search($from, $size) {
         if (!$this->_isReady()) return false;
-        // $from arrives straight from the page parameter and can be the string
-        // 'all' (the "view all results" option). ('all' - 1) is a fatal
-        // TypeError on PHP 8, and this sits outside the try below.
+        // $from is the raw page param and can be 'all'. ('all' - 1) is fatal on
+        // PHP 8, and this sits outside the try below.
         $from = (is_numeric($from) && (int)$from > 0) ? ((int)$from - 1) * (int)$size : 0;
         $params = [
             'index' => $this->_index,
@@ -534,8 +532,7 @@ class ElasticsearchHandler
             // one index request per product.
             $bulk_body = array();
             foreach ($products as $product) {
-                // Skip anything not publicly reachable rather than bulk-indexing
-                // an empty body for it.
+                // Skip the unreachable rather than bulk-index an empty body.
                 if (!$this->_indexBody($product['product_id'])) {
                     continue;
                 }
@@ -587,9 +584,8 @@ class ElasticsearchHandler
         if (!$this->_isReady()) return false;
         switch($field) {
             case 'stock_level':
-                // Carry the two flags the out-of-stock rule depends on, otherwise
-                // the check below cannot tell a product that has genuinely run out
-                // from one that simply does not track stock.
+                // _isOutOfStock() needs these flags to tell a product that has run
+                // out from one that does not track stock.
                 $flags = $GLOBALS['db']->select('CubeCart_inventory', array('use_stock_level', 'digital'), array('product_id' => (int)$id));
                 $this->_index_body = array(
                     'stock_level'     => (int)Catalogue::getInstance()->getProductStock($id),
@@ -599,8 +595,7 @@ class ElasticsearchHandler
             break;
             default:
                 if (!$this->_indexBody($id)) {
-                    // No longer publicly reachable - drop it rather than leaving
-                    // a stale document behind.
+                    // No longer reachable: drop the stale document.
                     return $this->delete($id);
                 }
         }
@@ -617,12 +612,9 @@ class ElasticsearchHandler
             if($field === 'stock_level' && $this->_isOutOfStock()) {
                 return $this->delete($id);
             }
-            // A sold-out product was removed from the index by the branch above.
-            // If it is restocked later, a partial update targets a document that
-            // no longer exists and throws document_missing, so the product never
-            // returns to the index. Re-add it in full instead: on the stock_level
-            // path $_index_body carries only the stock flags, so an upsert would
-            // leave a document with no name, price or description.
+            // The branch above deletes sold-out products, so a partial update on
+            // restock throws document_missing and the product never returns.
+            // add() rebuilds the whole body; an upsert would keep only the flags.
             if(!$this->exists($id)) {
                 return $this->add($id);
             }
@@ -686,16 +678,13 @@ class ElasticsearchHandler
      * Create body for product to be indexed
      */
     private function _indexBody($product_id) {
-        // Reset first. Without this an early return below leaves the PREVIOUS
-        // product's body in place, and rebuild()'s loop then indexes it under
-        // this product's id.
+        // Reset, or an early return leaves the previous product's body in place
+        // and rebuild()'s loop indexes it under this id.
         $this->_index_body = array();
 
         $product = Catalogue::getInstance()->getProductData($product_id);
-        // getProductData() returns false for anything not publicly reachable -
-        // disabled, or only present in disabled categories. Those must not be
-        // indexed at all. Returning false lets callers skip the product and
-        // remove any stale document, rather than writing an empty one.
+        // getProductData() returns false for anything not publicly reachable.
+        // Signal that so callers skip it and clear any stale document.
         if (empty($product)) return false;
         $cats = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => $product['product_id']));
         $seo = SEO::getInstance();
@@ -742,13 +731,10 @@ class ElasticsearchHandler
     }
 
     /**
-     * Is the product currently held in $this->_index_body out of stock?
+     * Is the product in $this->_index_body out of stock?
      *
-     * Mirrors Catalogue::outOfStockWhere(): a product is only out of stock when
-     * it actually tracks stock AND has none left. Products with
-     * use_stock_level = 0 never run out, and digital products are always
-     * available - which is already how the search query builder treats them,
-     * so index-time and search-time now agree.
+     * Mirrors Catalogue::outOfStockWhere() so index time and search time agree:
+     * only a product that tracks stock and has none left is out of stock.
      */
     private function _isOutOfStock() {
         if ($this->_config['es_is'] != '1') return false;

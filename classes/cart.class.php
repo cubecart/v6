@@ -1319,9 +1319,8 @@ class Cart
                 $basket = serialize($this->basket['contents']);
                 if (empty($old_basket) || $old_basket != $basket) {
                     $old_basket = $basket;
-                    // `updated` records when the contents last actually changed, which
-                    // is what the abandonment cron compares against the customer's
-                    // orders to tell a live cart from post-purchase residue.
+                    // `updated` is when the contents last changed; the abandonment cron
+                    // compares it against orders to spot post-purchase residue.
                     $now = time();
                     if (Database::getInstance()->select('CubeCart_saved_cart', array('basket'), array('customer_id' => $id), false, false, false, false) !== false) {
                         Database::getInstance()->update('CubeCart_saved_cart', array('basket' => $basket, 'updated' => $now), array('customer_id' => $id));
@@ -1348,17 +1347,13 @@ class Cart
     /**
      * Stock already reserved by this basket's own pending order.
      *
-     * When stock is reduced at Pending, placing the order decrements inventory
-     * immediately. If the customer then returns to complete payment (Complete
-     * Payment reloads the basket from the pending order), the revalidation below
-     * would see that reduced level and drop the item as out of stock — the
-     * customer cannot pay for the item their own order is holding (#4223).
+     * With stock reduced at Pending, a customer returning to Complete Payment
+     * is revalidated against the level their own order just reduced, so the
+     * item drops out as unavailable (#4223). The caller credits this back
+     * first, measuring the order against stock as it stood before it.
      *
-     * This returns what the pending order already took out, keyed the same two
-     * ways stock is checked: by options_identifier for matrix stock, and by
-     * product_id for traditional stock. The caller credits it back before the
-     * availability test, so the order is measured against stock as it stood
-     * before this order reserved it.
+     * Keyed both ways stock is checked: options_identifier for matrix stock,
+     * product_id for traditional.
      *
      * @return array  ['oid' => [id => qty], 'pid' => [product_id => qty]]
      */
@@ -1368,8 +1363,7 @@ class Cart
         if (empty($this->basket['cart_order_id'])) {
             return $reserved;
         }
-        // Only a still-pending order holds an un-cancelled reservation; a paid or
-        // cancelled order must not credit stock back into the availability test.
+        // Only a still-pending order holds a live reservation.
         if (!$GLOBALS['db']->select('CubeCart_order_summary', array('id'), array('cart_order_id' => $this->basket['cart_order_id'], 'status' => 1), false, 1, false, false)) {
             return $reserved;
         }
@@ -1412,10 +1406,8 @@ class Cart
                     $this->checkMinimumProductQuantity($product['product_id'], $quantity, false);
 
                     $stock_level = $GLOBALS['catalogue']->getProductStock($product['product_id'], $this->basket['contents'][$hash]['options_identifier'] ?? null);
-                    // Add back what this basket's own pending order already
-                    // reserved, so the item isn't judged out of stock against a
-                    // level it itself reduced (#4223). Matrix stock is keyed on
-                    // options_identifier, traditional stock on product_id.
+                    // Credit back what this basket's own pending order reserved, so
+                    // the item is not judged against a level it reduced (#4223).
                     $item_oid = $this->basket['contents'][$hash]['options_identifier'] ?? null;
                     if (!empty($item_oid) && isset($reserved['oid'][$item_oid])) {
                         $stock_level += $reserved['oid'][$item_oid];

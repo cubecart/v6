@@ -70,8 +70,7 @@ $cron = new Cron();
 if (method_exists($cron, $method)) {
     $callable = array($cron, $method);
 } else {
-    // Plugin-contributed tasks are callable by name here too, so they can be
-    // tested and re-run individually just like core ones.
+    // Plugin tasks are callable by name here too, for testing and re-running.
     $registered = $cron->registeredTasks();
     if (isset($registered[$method]) && is_callable($registered[$method])) {
         $callable = $registered[$method];
