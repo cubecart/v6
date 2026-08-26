@@ -28,6 +28,10 @@
      data-cc-storage-key="{$storage_key|escape:'html'}"
      data-cc-initial-json="{$initial_json|escape:'html'}">
 
+   {* Marker so an emptied picker still posts something. Without it, clearing every
+      image posts no imageset key at all and the save handler skips the update. *}
+   <input type="hidden" name="{if !empty($input_name)}{$input_name|escape:'html'}{else}imageset{/if}_present" value="1">
+
    {if !empty($hint)}
    <p class="img-picker-hint">{$hint}</p>
    {/if}

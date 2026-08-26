@@ -346,7 +346,11 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 
     #############################################
     // Filemanager - Images
-    if (isset($_POST['imageset']) && is_array($_POST['imageset'])) {
+    if (isset($_POST['imageset_present'])) {
+        // Picker was on the page; an absent imageset means every image was removed.
+        $imageset = (isset($_POST['imageset']) && is_array($_POST['imageset'])) ? $_POST['imageset'] : array();
+        $filemanager->assignProductImages($imageset, $product_id);
+    } elseif (isset($_POST['imageset']) && is_array($_POST['imageset'])) {
         $filemanager->assignProductImages($_POST['imageset'], $product_id);
     }
 

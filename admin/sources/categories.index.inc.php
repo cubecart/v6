@@ -50,6 +50,10 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
         $cat_id = $_POST['cat']['cat_id'];
         $old_image = $GLOBALS['db']->select('CubeCart_category', array('cat_image'), array('cat_id' => $_POST['cat']['cat_id']));
         $_POST['cat']['cat_image'] = $old_image[0]['cat_image'];
+        if (isset($_POST['imageset_present']) && empty($_POST['imageset'])) {
+            // Picker was on the page and nothing is selected: clear the image.
+            $_POST['cat']['cat_image'] = '';
+        }
         if (isset($_POST['imageset']) && is_array($_POST['imageset'])) {
             foreach ($_POST['imageset'] as $image_id => $enabled) {
                 if ($enabled == 0) {
