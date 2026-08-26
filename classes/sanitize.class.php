@@ -103,8 +103,11 @@ class Sanitize
         $safe_schemes = array('http','https','mailto','tel');
         // Disallowed tags whose contents are code/markup, not display text: drop the
         // whole subtree. Any other disallowed tag is unwrapped (text kept).
-        $strip_with_content = array('script','style','title','textarea','noscript','iframe',
+        $strip_with_content = array('script','title','textarea','noscript','iframe',
             'object','embed','applet','template','head','link','meta','base','form','svg','math','xml');
+        // CSS constructs that can execute script or fetch a remote resource. Same list
+        // the inline style attribute is tested against, plus -moz-binding.
+        $css_unsafe = '#(expression|javascript|vbscript|behaviou?r|-moz-binding|@import|url\s*\()#i';
 
         // Video embeds: iframes are permitted only from these hosts. Base list plus
         // any hosts in $glob['iframe_whitelist'] and the store's own standard_url domain.
@@ -257,6 +260,21 @@ class Sanitize
                     // elements skip that pass, so it has to be repeated here.
                     if ($name === 'style'
                         && preg_match('#(expression|javascript|vbscript|behaviou?r|@import|url\s*\()#i', (string)$attr->nodeValue)) {
+                        $node->removeAttribute($attr->nodeName);
+                    }
+                }
+                continue;
+            }
+
+            if ($tag === 'style') {
+                // Descriptions built in the editor often carry a <style> block for table
+                // formatting. Keep it, but only when the CSS is inert.
+                if (preg_match($css_unsafe, (string)$node->textContent)) {
+                    $node->parentNode->removeChild($node);
+                    continue;
+                }
+                foreach (iterator_to_array($node->attributes) as $attr) {
+                    if (strtolower($attr->nodeName) !== 'type') {
                         $node->removeAttribute($attr->nodeName);
                     }
                 }
