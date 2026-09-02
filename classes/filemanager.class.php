@@ -487,7 +487,7 @@ class FileManager
             }
         }
         // Remove orphaned records
-        if (($existing = $GLOBALS['db']->select('CubeCart_filemanager', false, array('type' => $this->_mode), false, false, false, false)) !== false) {
+        if (($existing = $GLOBALS['db']->select('CubeCart_filemanager', array('file_id', 'filepath', 'filename'), array('type' => $this->_mode), false, false, false, false)) !== false) {
             foreach ($existing as $file) {
                 if ($file['file_id']>0 && !file_exists($this->_manage_root.'/'.$file['filepath'].$file['filename'])) {
                     $GLOBALS['db']->delete('CubeCart_filemanager', array('file_id' => (int)$file['file_id']));
