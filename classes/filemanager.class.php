@@ -385,7 +385,7 @@ class FileManager
         // is O(1) instead of in_array()'s O(N). On a 10k-file rebuild this
         // collapses ~100M comparisons into ~10k.
         $exists_lookup = array();
-        if (($existing = $GLOBALS['db']->select('CubeCart_filemanager', array('filename', 'filepath'), false, array('filename' => 'ASC'))) !== false) {
+        if (($existing = $GLOBALS['db']->select('CubeCart_filemanager', array('filename', 'filepath'), false, array('filename' => 'ASC'), false, false, false)) !== false) {
             foreach ($existing as $file) {
                 $exists_lookup[$file['filepath'].$file['filename']] = true;
             }
@@ -528,7 +528,7 @@ class FileManager
             }
         }
         // Remove orphaned records
-        if (($existing = $GLOBALS['db']->select('CubeCart_filemanager', false, array('type' => $this->_mode))) !== false) {
+        if (($existing = $GLOBALS['db']->select('CubeCart_filemanager', false, array('type' => $this->_mode), false, false, false, false)) !== false) {
             foreach ($existing as $file) {
                 if ($file['file_id']>0 && !file_exists($this->_manage_root.'/'.$file['filepath'].$file['filename'])) {
                     $GLOBALS['db']->delete('CubeCart_filemanager', array('file_id' => (int)$file['file_id']));

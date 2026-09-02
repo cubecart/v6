@@ -194,6 +194,9 @@ class Cache extends Cache_Controler
         //Make sure the cache file exists
         if ($contents = $this->_redis->get($name)) {
             if (!empty($contents)) {
+                if ($this->_oversized($contents)) {
+                    return false;
+                }
                 $this->_dupes[$id] = json_decode($contents, true);
                 return $this->_dupes[$id];
             }
@@ -270,6 +273,10 @@ class Cache extends Cache_Controler
         if (is_array($data) || is_string($data)) {
             $data = json_encode($data);
         } else {
+            return false;
+        }
+
+        if ($this->_oversized($data)) {
             return false;
         }
 

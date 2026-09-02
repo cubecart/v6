@@ -163,6 +163,9 @@ class Cache extends Cache_Controler
         //Make sure the cache file exists
         if (file_exists($file)) {
             $contents = @file_get_contents($file);
+            if ($this->_oversized($contents)) {
+                return false;
+            }
             $this->_page_cache_usage += strlen($contents);
             $this->_page_cache_file_count++;
             //If there is no boundary then the file isn't valid
@@ -212,6 +215,9 @@ class Cache extends Cache_Controler
         
         try {
             $data = ($serialize) ? serialize($data) : $data;
+            if ($this->_oversized($data)) {
+                return false;
+            }
         } catch (Exception $e) {
             trigger_error($e->getMessage());
             return false;

@@ -145,6 +145,7 @@ class Cache extends Cache_Controler
         //Setup the name of the cache
         $name = $this->_makeName($id);
 
+        // No check here: memcached enforces its own item limit server-side (-I).
         //Make sure the cache file exists
         if ($contents = $this->_memcached->get($name)) {
             if (!empty($contents)) {

@@ -82,10 +82,24 @@ class Cache_Controler
     
     protected $_dupes = array();
 
+    /** @var int Largest cacheable item in bytes; 0 disables. Matches memcached's default. */
+    protected $_max_item_size = 1048576;
+
+    protected function _oversized($payload)
+    {
+        return ($this->_max_item_size > 0 && is_string($payload) && strlen($payload) > $this->_max_item_size);
+    }
+
     ##############################################
 
     protected function __construct()
     {
+        global $glob;
+
+        if (isset($glob['cache_max_item_size']) && is_numeric($glob['cache_max_item_size'])) {
+            $this->_max_item_size = (int)$glob['cache_max_item_size'];
+        }
+
         $this->_setPrefix();
         if (!$this->setPath()) {
             return;

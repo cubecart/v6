@@ -64,6 +64,9 @@ $glob['redis_password'] = '';
 // Database number
 $glob['redis_db'] 		= 0;
 
+// Largest item the cache will store, in bytes. 0 disables.
+$glob['cache_max_item_size'] = 1048576;
+
 // Sessions
 // Set your own session save path e.g. 127.0.0.1:11211
 $glob['session_save_path'] = '';
