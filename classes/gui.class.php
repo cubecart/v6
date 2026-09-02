@@ -37,6 +37,9 @@ class GUI
      * @var array
      */
     public $_product_images = array();
+
+    /** @var bool Captcha solved on THIS request. Not persisted: each submission must solve again. */
+    private $_recaptcha_confirmed = false;
     
     /**
      * Do we have any sale items?
@@ -740,7 +743,7 @@ class GUI
      */
     public function recaptchaRequired()
     {
-        if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
+        if ($GLOBALS['config']->get('config', 'recaptcha') && !$this->_recaptcha_confirmed) {
             $GLOBALS['smarty']->assign('RECAPTCHA', $GLOBALS['config']->get('config', 'recaptcha'));
             return true;
         }
@@ -827,6 +830,7 @@ class GUI
                 }
             }
             $GLOBALS['session']->set('', $recaptcha, 'recaptcha');
+            $this->_recaptcha_confirmed = !empty($recaptcha['confirmed']);
         } elseif (!$GLOBALS['session']->get('confirmed', 'recaptcha')) {
             $GLOBALS['session']->delete('', 'recaptcha');
         }
