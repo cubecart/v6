@@ -23,6 +23,7 @@ class FileManager
     private $_sub_dir;
     private $_max_upload_image_size = 350000;
     private $_md5_filesize_limit = 268435456; // 256MB
+    private $_finfo = null;
 
     public $form_fields = false;
 
@@ -390,6 +391,15 @@ class FileManager
                 $exists_lookup[$file['filepath'].$file['filename']] = true;
             }
         }
+        /* NDL_FM_OPT: one query for the existing hashes, instead of one per file. */
+        $md5_lookup = array();
+        if (($hashes = $GLOBALS['db']->select('CubeCart_filemanager', array('md5hash'), array('type' => $this->_mode), false, false, false, false)) !== false) {
+            foreach ($hashes as $row) {
+                if (!empty($row['md5hash'])) {
+                    $md5_lookup[$row['md5hash']] = true;
+                }
+            }
+        }
         if ($file_array) {
             foreach ($file_array as $key => $file) {
                 if (!is_dir($file)) {
@@ -407,82 +417,28 @@ class FileManager
                     if (isset($exists_lookup[$rel_path])) {
                         continue;
                     }
-                    // Skip file if it is not an image and we're in image mode
+                    /* NDL_FM_OPT: verify the file is a readable image of the type its
+                       extension claims. getimagesize() reads the header; imagecreatefrom*()
+                       decoded the entire bitmap only to throw it away. */
+                    $mime = null;
                     if ($this->_mode == 1) {
-                        // Check mime matches extension
-                        $ext = pathinfo($file, PATHINFO_EXTENSION);
-                        $mime = $this->getMimeType($file);
-        
-                        if(in_array($ext, array('jpg','jpeg'))) {
-                            if($mime!=='image/jpeg') {
+                        $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                        $expect = array(
+                            'jpg'  => 'image/jpeg',
+                            'jpeg' => 'image/jpeg',
+                            'gif'  => 'image/gif',
+                            'png'  => 'image/png',
+                            'webp' => 'image/webp',
+                        );
+                        if (isset($expect[$ext])) {
+                            $mime = $this->getMimeType($file);
+                            if ($mime !== $expect[$ext]) {
                                 trigger_error($file.' has a mime type of '.$mime.'.');
                                 continue;
-                            } else {
-                                try {
-                                    $img = imagecreatefromjpeg($file);
-                                    if(!$img) {
-                                        trigger_error($file.' is not a valid jpg file.');
-                                        continue;
-                                    }
-                                    imagedestroy($img);
-                                } catch (Exception $e) {
-                                    trigger_error($e->getMessage());
-                                    continue;
-                                }
                             }
-                        }
-                        if($ext == 'gif') {
-                            if($mime!=='image/gif') {
-                                trigger_error($file.' has a mime type of '.$mime.'.');
+                            if (@getimagesize($file) === false) {
+                                trigger_error($file.' is not a valid '.$ext.' file.');
                                 continue;
-                            } else {
-                                try {
-                                    $img = imagecreatefromgif($file);
-                                    if(!$img) {
-                                        trigger_error($file.' is not a valid gif file.');
-                                        continue;
-                                    }
-                                    imagedestroy($img);
-                                } catch (Exception $e) {
-                                    trigger_error($e->getMessage());
-                                    continue;
-                                }
-                            }
-                        }
-                        if($ext == 'png') {
-                            if($mime!=='image/png') {
-                                trigger_error($file.' has a mime type of '.$mime.'.');
-                                continue;
-                            } else {
-                                try {
-                                    $img = imagecreatefrompng($file);
-                                    if(!$img) {
-                                        trigger_error($file.' is not a valid png file.');
-                                        continue;
-                                    }
-                                    imagedestroy($img);
-                                } catch (Exception $e) {
-                                    trigger_error($e->getMessage());
-                                    continue;
-                                }
-                            }
-                        }
-                        if($ext == 'webp') {
-                            if($mime!=='image/webp') {
-                                trigger_error($file.' has a mime type of '.$mime.'.');
-                                continue;
-                            } else {
-                                try {
-                                    $img = imagecreatefromwebp($file);
-                                    if(!$img) {
-                                        trigger_error($file.' is not a valid webp file.');
-                                        continue;
-                                    }
-                                    imagedestroy($img);
-                                } catch (Exception $e) {
-                                    trigger_error($e->getMessage());
-                                    continue;
-                                }
                             }
                         }
                     }
@@ -510,14 +466,17 @@ class FileManager
                         'filepath' => $filepath_record,
                         'filename' => $newfilename,
                         'filesize' => $filesize,
-                        'mimetype' => $this->getMimeType($file),
+                        'mimetype' => ($mime !== null) ? $mime : $this->getMimeType($file),
                         'md5hash' => $this->md5file($file, $filesize),
                     );
 
                     // Hash comparison check
-                    $checkhash = $GLOBALS['db']->select('CubeCart_filemanager', array('file_id'), array('type' => $this->_mode, 'md5hash' => $record['md5hash']), false, 1);
+                    $checkhash = !empty($record['md5hash']) && isset($md5_lookup[$record['md5hash']]);
                     if (!$checkhash) {
                         $GLOBALS['db']->insert('CubeCart_filemanager', $record);
+                        if (!empty($record['md5hash'])) {
+                            $md5_lookup[$record['md5hash']] = true;
+                        }
                         $updated = true;
                     } else {
                         if ($tidy) {
@@ -1175,7 +1134,11 @@ class FileManager
      */
     public function getMimeType($file)
     {
-        $finfo = (extension_loaded('fileinfo')) ? new finfo(FILEINFO_MIME_TYPE) : false;
+        /* NDL_FM_OPT: one finfo for the life of the object, not one per file. */
+        if ($this->_finfo === null) {
+            $this->_finfo = (extension_loaded('fileinfo')) ? new finfo(FILEINFO_MIME_TYPE) : false;
+        }
+        $finfo = $this->_finfo;
         if ($finfo && $finfo instanceof finfo) {
             $mime = $finfo->file($file);
         } elseif (function_exists('mime_content_type')) {
