@@ -51,6 +51,22 @@
         return af + '/skins/' + sf + '/images/folder.svg';
     }
 
+    // View preference is the admin's, not the product's, so it is stored once and
+    // shared by every picker. Thumbnails stay the default (#4214).
+    var VIEW_KEY = 'cc_img_picker_view';
+
+    function readView(){
+        try {
+            return localStorage.getItem(VIEW_KEY) === 'list' ? 'list' : 'thumbs';
+        } catch (e) {
+            return 'thumbs';
+        }
+    }
+
+    function writeView(mode){
+        try { localStorage.setItem(VIEW_KEY, mode === 'list' ? 'list' : 'thumbs'); } catch (e) {}
+    }
+
     function readInitial(rootEl){
         var inline = rootEl.getAttribute('data-cc-initial-json');
         if (inline) {
@@ -89,6 +105,9 @@
         self.$newdirIn  = $r.find('.img-picker__newdir-name');
         self.$newdirBtn = $r.find('.img-picker__newdir-btn');
         self.$valSubdir = $r.find('.img-picker__val-subdir');
+        self.$viewBtns  = $r.find('.img-picker__view-btn');
+
+        self.applyView(readView());
 
         self.bind();
         self.renderSelected();
@@ -128,6 +147,16 @@
         self.$bread.on('click', 'a', function(e){
             e.preventDefault();
             self.loadFolder(jQuery(this).attr('data-path') || '');
+        });
+
+        self.$viewBtns.on('click', function(e){
+            e.preventDefault();
+            var mode = this.getAttribute('data-view');
+            writeView(mode);
+            // Every picker on the page follows, so the two tabs cannot disagree.
+            jQuery('[data-cc-image-picker]').each(function(){
+                if (this.ccPicker) this.ccPicker.applyView(mode);
+            });
         });
 
         self.$grid.on('click', '.img-picker__folder', function(e){
@@ -302,6 +331,15 @@
         if (changed) self.renderSelected();
     };
 
+    Picker.prototype.applyView = function(mode){
+        var list = (mode === 'list');
+        this.$grid.toggleClass('is-list', list);
+        this.$viewBtns.each(function(){
+            var active = (this.getAttribute('data-view') === (list ? 'list' : 'thumbs'));
+            jQuery(this).toggleClass('is-active', active).attr('aria-pressed', active ? 'true' : 'false');
+        });
+    };
+
     Picker.prototype.renderBreadcrumb = function(path){
         var html = '<a href="#" data-path="" class="fm_location"><i class="fa fa-folder-open" aria-hidden="true"></i></a>';
         if (path) {
@@ -384,7 +422,7 @@
         for (var i = 0; i < roots.length; i++) {
             if (roots[i].__ccImagePickerInited) continue;
             roots[i].__ccImagePickerInited = true;
-            new Picker(roots[i]);
+            roots[i].ccPicker = new Picker(roots[i]);
         }
     }
 

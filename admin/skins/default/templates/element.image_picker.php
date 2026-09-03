@@ -49,6 +49,10 @@
    <div class="img-picker__browser">
       <div class="img-picker__bar">
          <nav class="img-picker__breadcrumb fm-breadcrumb"></nav>
+         <div class="img-picker__view" role="group" aria-label="{$LANG.filemanager.view_mode|default:'View'}">
+            <button type="button" class="img-picker__view-btn is-active" data-view="thumbs" title="{$LANG.filemanager.view_thumbs|default:'Thumbnails'}" aria-pressed="true"><i class="fa fa-th" aria-hidden="true"></i></button>
+            <button type="button" class="img-picker__view-btn" data-view="list" title="{$LANG.filemanager.view_list|default:'List'}" aria-pressed="false"><i class="fa fa-list" aria-hidden="true"></i></button>
+         </div>
          <div class="img-picker__newdir">
             <input type="text" class="img-picker__newdir-name textbox" placeholder="{$LANG.filemanager.folder_create}" autocomplete="off">
             <button type="button" class="img-picker__newdir-btn button tiny"><i class="fa fa-plus"></i></button>
