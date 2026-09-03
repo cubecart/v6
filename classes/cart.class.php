@@ -1499,6 +1499,10 @@ class Cart
         if (isset($this->basket['coupons']) && is_array($this->basket['coupons']) && count($this->basket['coupons'])>0) {
             $subtotal = 0;
             $coupon = false;
+            // Anything the coupon does not discount. Initialised because the
+            // guards below read them whether or not a coupon populated them.
+            $excluded_products = array();
+            $excluded_shipping = false;
 
             // COUPONS FIRST!!
             foreach ($this->basket['coupons'] as $key => $data) {
@@ -1507,15 +1511,19 @@ class Cart
 
                     $all = (count($data['include']) == 0) ? true : false;
 
-                    if(!$data['shipping_only']) {
-                        foreach ($this->basket['contents'] as $hash => $item) {
-                            if ($all || isset($data['include'][$item['id']])) {
-                                if ($item['total_price_each']>0) {
-                                    $subtotal += ($item['total_price_each'] * $item['quantity']);
-                                }
-                            } elseif ($item['total_price_each']>0) { // excluded items CAN be used against gift certificates!!
-                                $excluded_products[$hash] = $item;
+                    // A shipping_only coupon discounts no products, so every line is
+                    // excluded. The walk still has to happen: the tax adjustment below
+                    // works out the discounted share from $subtotal and $excluded_*, and
+                    // goods left out of both buckets had the shipping discount ratio
+                    // applied to their tax as well (#4244). $all cannot carry the test,
+                    // as a shipping_only coupon has no assigned products and so is $all.
+                    foreach ($this->basket['contents'] as $hash => $item) {
+                        if (!$data['shipping_only'] && ($all || isset($data['include'][$item['id']]))) {
+                            if ($item['total_price_each']>0) {
+                                $subtotal += ($item['total_price_each'] * $item['quantity']);
                             }
+                        } elseif ($item['total_price_each']>0) { // excluded items CAN be used against gift certificates!!
+                            $excluded_products[$hash] = $item;
                         }
                     }
 
@@ -1535,7 +1543,7 @@ class Cart
                         $this->_discount = $subtotal;
                         $this->basket['coupons'][$key]['value_display'] = sprintf('%.2F', $subtotal);
                         $subtotal = 0;
-                        if ((!is_array($excluded_products) && !is_array($excluded_shipping))) {
+                        if (empty($excluded_products) && empty($excluded_shipping)) {
                             $GLOBALS['tax']->adjustTax(0);
                             foreach ($this->basket['coupons'] as $key => $data) {
                                 if ($data['gc']) {
@@ -1563,8 +1571,8 @@ class Cart
                     $subtotal += $this->basket['shipping']['value'];
                 }
             } else {
-                if ((is_array($excluded_products) || is_array($excluded_shipping))) {
-                    if (is_array($excluded_products)) {
+                if (!empty($excluded_products) || !empty($excluded_shipping)) {
+                    if (!empty($excluded_products)) {
                         foreach ($excluded_products as $hash => $item) {
                             if ($item['total_price_each']>0) {
                                 $excluded_subtotal += ($item['total_price_each'] * $item['quantity']);
@@ -1574,7 +1582,7 @@ class Cart
                             }
                         }
                     }
-                    if (is_array($excluded_shipping) && $excluded_shipping['value']>0) {
+                    if (!empty($excluded_shipping) && $excluded_shipping['value']>0) {
                         $excluded_subtotal += $excluded_shipping['value'];
                         if ($excluded_shipping['tax']['amount']>0) {
                             $excluded_tax += $excluded_shipping['tax']['amount_raw'] ?? $excluded_shipping['tax']['amount'];
