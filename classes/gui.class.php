@@ -1347,7 +1347,10 @@ class GUI
             switch ((int)$GLOBALS['config']->get('config', 'catalogue_popular_products_source')) {
                 case 1:  // sale-based
                     $whereStr   = $GLOBALS['catalogue']->outOfStockWhere(false, 'i', true);
-                    $query  = "SELECT `oi`.`product_id`, `i`.`name`, `i`.`price`, `i`.`sale_price`, `i`.`tax_type`, `i`.`tax_inclusive`, SUM(`oi`.`quantity`) as `quantity` FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_inventory` as `oi` JOIN `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory` as `i` WHERE `oi`.`product_id` = `i`.`product_id` AND `i`.`status` = 1 $whereStr GROUP BY `oi`.`product_id` ORDER BY `quantity` DESC LIMIT ".$limit.";";
+                    $prefix     = $GLOBALS['config']->get('config', 'dbprefix');
+                    // Restrict the sum to the last year of orders so the aggregation cost does not grow with the age of the store
+                    $since      = time() - (365 * 86400);
+                    $query  = "SELECT `oi`.`product_id`, `i`.`name`, `i`.`price`, `i`.`sale_price`, `i`.`tax_type`, `i`.`tax_inclusive`, SUM(`oi`.`quantity`) as `quantity` FROM `".$prefix."CubeCart_order_inventory` as `oi` JOIN `".$prefix."CubeCart_order_summary` as `os` ON `os`.`cart_order_id` = `oi`.`cart_order_id` AND `os`.`order_date` >= ".$since." JOIN `".$prefix."CubeCart_inventory` as `i` ON `i`.`product_id` = `oi`.`product_id` WHERE `i`.`status` = 1 $whereStr GROUP BY `oi`.`product_id` ORDER BY `quantity` DESC LIMIT ".$limit.";";
                     $products = $GLOBALS['db']->query($query);
                 break;
                 default: // view-based
