@@ -98,6 +98,12 @@ class GUI
      */
     protected static $_instance;
 
+    /**
+     * Ceiling for the products per page setting. A category page builds every
+     * product it lists, so an unbounded value is a slow page at best.
+     */
+    const MAX_ITEMS_PER_PAGE = 100;
+
     ##############################################
 
     final protected function __construct($admin = false)
@@ -588,6 +594,18 @@ class GUI
         if (isset($_GET[$page_key]) && (int)$_GET[$page_key]>0) {
             return (int)$_GET[$page_key];
         }
+
+        // Products per page set in the store settings wins over the skin's default,
+        // so it survives a skin update instead of needing config.xml edited again
+        // every time (#4195). Only the default is overridden: 'last' drives the
+        // view all link and has to stay on the largest amount the skin offers.
+        if ($list_amount === 'default' && $list_id === 'products') {
+            $configured = $GLOBALS['config']->get('config', 'catalogue_products_per_page');
+            if (is_numeric($configured) && (int)$configured > 0) {
+                return min((int)$configured, self::MAX_ITEMS_PER_PAGE);
+            }
+        }
+
         if (isset($this->_skin_data['layout'][$list_id]['perpage'])) {
             ksort($this->_skin_data['layout'][$list_id]['perpage'], SORT_NUMERIC);
             if($list_amount == 'default') {
@@ -721,21 +739,37 @@ class GUI
      */
     public function perPageSplits($list_id = 'products', $page_key = 'perpage')
     {
-        if (isset($this->_skin_data['layout'][$list_id]['perpage'])) {
-            foreach ($this->_skin_data['layout'][$list_id]['perpage'] as $amount => $default) {
-                if (!isset($_GET[$page_key]) && $default) {
-                    $selected = true;
-                } elseif (isset($_GET[$page_key]) && $_GET[$page_key]==$amount) {
-                    $selected = true;
-                } else {
-                    $selected = false;
-                }
-                    
-                $page_splits[] = array('selected' => $selected ,'url' => currentPage(null, array($page_key => $amount)), 'amount' => $amount);
-            }
-            return $page_splits;
+        if (!isset($this->_skin_data['layout'][$list_id]['perpage'])) {
+            return false;
         }
-        return false;
+
+        // Mark whatever the listing is actually using, rather than the skin's own
+        // default: the store setting can override that (#4195), and the selector
+        // saying 12 while the page shows 2 is worse than not offering the choice.
+        $current = (isset($_GET[$page_key]) && (int)$_GET[$page_key] > 0)
+            ? (int)$_GET[$page_key]
+            : (int)$this->itemsPerPage($list_id, $page_key);
+
+        $amounts = array();
+        foreach (array_keys($this->_skin_data['layout'][$list_id]['perpage']) as $amount) {
+            $amounts[] = (int)$amount;
+        }
+        // A setting the skin does not offer still needs an entry, or the list has
+        // nothing to select and the shopper cannot get back to it once they leave.
+        if ($current > 0 && !in_array($current, $amounts, true)) {
+            $amounts[] = $current;
+        }
+        sort($amounts, SORT_NUMERIC);
+
+        $page_splits = array();
+        foreach ($amounts as $amount) {
+            $page_splits[] = array(
+                'selected' => ($amount === $current),
+                'url'      => currentPage(null, array($page_key => $amount)),
+                'amount'   => $amount,
+            );
+        }
+        return $page_splits;
     }
 
     /**

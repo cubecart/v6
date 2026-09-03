@@ -1910,6 +1910,25 @@ $(window).on('load resize', ccRepositionActiveTab);
 $(document).on('click', '#tab_control .tab', function() { setTimeout(ccRepositionActiveTab, 0); });
 
 
+/* Number fields carry min and max, but a browser only enforces them when the form
+   is validated, so 300 typed into a field capped at 100 sat there looking accepted
+   and was saved. Pull the value back into range when the field loses focus.
+   Delegated, so it covers fields added to the page after load. */
+$(document).on('blur', 'input[type="number"]', function() {
+    var raw = String(this.value).trim();
+    if (raw === '') return;
+    var n = parseFloat(raw);
+    if (isNaN(n)) return;
+    var max = this.getAttribute('max'), min = this.getAttribute('min');
+    if (max !== null && max !== '' && n > parseFloat(max)) n = parseFloat(max);
+    if (min !== null && min !== '' && n < parseFloat(min)) n = parseFloat(min);
+    if (String(n) !== raw) {
+        this.value = n;
+        $(this).trigger('change');
+    }
+});
+
+
 /* Product > Categories tab: client-side filter and selected-row highlighting.
    See cubecart/v6#4209 — the list is one row per category (hundreds on some
    stores), and because input[type=checkbox] is opacity:0 the tick is easy to
