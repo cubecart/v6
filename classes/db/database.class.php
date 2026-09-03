@@ -1232,12 +1232,25 @@ class Database_Contoller
      */
     protected function _logError()
     {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-        $message = 'File: ['.basename($trace[2]['file']).'] Line: ['.$trace[2]['line'].'] "'.$this->_query.'" - '.$this->errorInfo();
-        if (class_exists('Debug')) {
-            Debug::writeSystemErrorLog($message);
-        } else {
-            Database::getInstance()->insert('CubeCart_system_error_log', array('message' => $message, 'time' => time()));
+        // Writing the log is itself a query. If that query fails we must not try to
+        // log that failure too, or each pass embeds the previous statement and the
+        // message grows until memory is exhausted.
+        static $logging = false;
+        if ($logging) {
+            error_log('CubeCart: suppressed recursive SQL error log - ' . substr((string)$this->errorInfo(), 0, 200));
+            return;
+        }
+        $logging = true;
+        try {
+            $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+            $message = 'File: ['.basename($trace[2]['file']).'] Line: ['.$trace[2]['line'].'] "'.$this->_query.'" - '.$this->errorInfo();
+            if (class_exists('Debug')) {
+                Debug::writeSystemErrorLog($message);
+            } else {
+                Database::getInstance()->insert('CubeCart_system_error_log', array('message' => $message, 'time' => time()));
+            }
+        } finally {
+            $logging = false;
         }
     }
 
