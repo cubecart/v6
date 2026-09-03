@@ -1040,7 +1040,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_search` (
 	`hits` INT(64) NOT NULL DEFAULT '1',
 	`searchstr` VARCHAR(255) NOT NULL DEFAULT '',
 	PRIMARY KEY (`id`),
-	KEY `searchstr` (`searchstr`)
+	KEY `searchstr` (`searchstr`),
+	KEY `hits` (`hits`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_sessions` (

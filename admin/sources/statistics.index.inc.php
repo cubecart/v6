@@ -940,9 +940,12 @@ case 'stats_prod_views':
 case 'stats_search':
     $per_page = 15;
     $page     = (isset($_GET['page_search']) && is_numeric($_GET['page_search'])) ? (int)$_GET['page_search'] : 1;
-    $query    = 'SELECT * FROM `'.$glob['dbprefix'].'CubeCart_search` ORDER BY hits DESC';
+    $query    = 'SELECT * FROM `'.$glob['dbprefix'].'CubeCart_search` ORDER BY `hits` DESC';
     if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false && !empty($results)) {
-        $numrows    = $GLOBALS['db']->numrows($query);
+        // Count with COUNT(*), not numrows(): numrows() re-runs the query without the
+        // pagination limit and counts the rows in PHP, so it pulled the whole table.
+        $numrows_q  = $GLOBALS['db']->query('SELECT COUNT(*) AS `c` FROM `'.$glob['dbprefix'].'CubeCart_search`');
+        $numrows    = $numrows_q ? (int)$numrows_q[0]['c'] : 0;
         $divider    = $GLOBALS['db']->query("SELECT SUM(hits) as `totalHits` FROM  `".$glob['dbprefix']."CubeCart_search`");
         $total_hits = (int)($divider[0]['totalHits'] ?? 0);
 
