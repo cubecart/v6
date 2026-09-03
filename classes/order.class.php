@@ -1541,10 +1541,13 @@ class Order
     private function _stockAdjust($table, $where, $change, $refuse_short)
     {
         $change = (int)$change;
-        $guard  = ($refuse_short && $change < 0) ? ' AND `stock_level` >= '.abs($change) : '';
+        // COALESCE because CubeCart_inventory.stock_level is nullable. NULL - 1 is
+        // NULL, so the row would match but never change value, and a zero row count
+        // would be read as a shortfall on a legacy NULL row that simply has no stock.
+        $guard  = ($refuse_short && $change < 0) ? ' AND COALESCE(`stock_level`, 0) >= '.abs($change) : '';
 
         $GLOBALS['db']->misc(sprintf(
-            'UPDATE `%s%s` SET `stock_level` = `stock_level` %s %d WHERE %s%s;',
+            'UPDATE `%s%s` SET `stock_level` = COALESCE(`stock_level`, 0) %s %d WHERE %s%s;',
             $GLOBALS['config']->get('config', 'dbprefix'),
             $table,
             ($change < 0) ? '-' : '+',
