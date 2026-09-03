@@ -196,7 +196,13 @@ class Tax
         }
         if (($rate = $GLOBALS['db']->select('CubeCart_tax_rates', false, array('id' => (int)$tax_id))) !== false) {
             if (($detail = $GLOBALS['db']->select('CubeCart_tax_details', false, array('id' => $rate[0]['details_id']))) !== false) {
-                return array('name' => $detail[0]['name'], 'display' => $detail[0]['display'], 'tax_percent' => $rate[0]['tax_percent'], 'display' => $detail[0]['display']);
+                // The class name is what turns "VAT" into "VAT (Standard Rate 20%)".
+                // Callers rendering a stored order need it to match the basket wording.
+                $type_name = '';
+                if (($class = $GLOBALS['db']->select('CubeCart_tax_class', array('tax_name'), array('id' => (int)$rate[0]['type_id']))) !== false) {
+                    $type_name = $class[0]['tax_name'];
+                }
+                return array('name' => $detail[0]['name'], 'display' => $detail[0]['display'], 'tax_percent' => $rate[0]['tax_percent'], 'type_name' => $type_name);
             }
         }  
     }

@@ -3098,6 +3098,31 @@ class Cubecart
     }
 
     /**
+     * Tax label for a receipt, worded as the basket words it
+     *
+     * fetchTaxDetails() returns the bare name, so a receipt read "VAT" where the
+     * basket read "VAT (Standard Rate 20%)". Compose the same label here, using the
+     * same order of parts as Tax::loadTaxes() so the two always agree.
+     *
+     * @param array $detail
+     * @return string
+     */
+    private function _orderTaxName($detail)
+    {
+        if (empty($detail) || !is_array($detail)) {
+            return '';
+        }
+        $name = !empty($detail['display']) ? $detail['display'] : ($detail['name'] ?? '');
+        if (isset($detail['tax_percent']) && $detail['tax_percent'] !== null) {
+            $qualifier = trim(($detail['type_name'] ?? '').' '.(float)$detail['tax_percent'].'%');
+            if ($qualifier !== '') {
+                $name .= ' ('.$qualifier.')';
+            }
+        }
+        return $name;
+    }
+
+    /**
      * Subtotal as the basket showed it
      *
      * Goods tax sits inside the prices when inclusive, so the subtotal has to carry
@@ -3147,7 +3172,7 @@ class Cubecart
                         $GLOBALS['tax']->loadTaxes(($GLOBALS['config']->get('config', 'basket_tax_by_delivery')) ? $order['country'] : $order['country_d']);
                         foreach ($taxes as $vat) {
                             $detail = $GLOBALS['tax']->fetchTaxDetails($vat['tax_id']);
-                            $vars['taxes'][] = array('name' => $detail['name'], 'value' => $GLOBALS['tax']->priceFormat($vat['amount'], true), 'included' => $tax_inclusive);
+                            $vars['taxes'][] = array('name' => $this->_orderTaxName($detail), 'value' => $GLOBALS['tax']->priceFormat($vat['amount'], true), 'included' => $tax_inclusive);
                         }
                     } else {
                         $vars['taxes'][] = array('name' => $GLOBALS['language']->basket['total_tax'], 'value' => $GLOBALS['tax']->priceFormat($order['total_tax']), 'included' => $tax_inclusive);
@@ -3319,7 +3344,7 @@ class Cubecart
                         $GLOBALS['tax']->loadTaxes(($GLOBALS['config']->get('config', 'basket_tax_by_delivery')) ? $order['country'] : $order['country_d']);
                         foreach ($taxes as $vat) {
                             $detail = $GLOBALS['tax']->fetchTaxDetails($vat['tax_id']);
-                            $vars['taxes'][] = array('name' => $detail['name'], 'value' => $GLOBALS['tax']->priceFormat($vat['amount'], true), 'included' => $tax_inclusive);
+                            $vars['taxes'][] = array('name' => $this->_orderTaxName($detail), 'value' => $GLOBALS['tax']->priceFormat($vat['amount'], true), 'included' => $tax_inclusive);
                         }
                     } else {
                         $vars['taxes'][] = array('name' => $GLOBALS['language']->basket['total_tax'], 'value' => $GLOBALS['tax']->priceFormat($order['total_tax']), 'included' => $tax_inclusive);
