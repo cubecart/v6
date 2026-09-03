@@ -440,6 +440,20 @@ class FileManager
                                 trigger_error($file.' is not a valid '.$ext.' file.');
                                 continue;
                             }
+                        } else {
+                            // An unrecognised extension was skipping the check entirely, so
+                            // anything sitting in images/ was indexed as an image: the
+                            // directory-listing stub images/index.php showed in the manager
+                            // with edit and delete buttons against it.
+                            //
+                            // Judge these on their bytes rather than their name, which keeps
+                            // the less common image formats that were listed before. The name
+                            // is still checked first, because a real image saved as .php is
+                            // an executable file, not a picture.
+                            if ($this->filenameIsIllegal(basename($file)) || @getimagesize($file) === false) {
+                                continue;
+                            }
+                            $mime = $this->getMimeType($file);
                         }
                     }
 

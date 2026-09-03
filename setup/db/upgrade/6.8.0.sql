@@ -15,3 +15,4 @@ CREATE TABLE IF NOT EXISTS `CubeCart_stock_log` (
 	KEY `cart_order_id` (`cart_order_id`),
 	KEY `time` (`time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
+DELETE FROM `CubeCart_filemanager` WHERE `type` = 1 AND `mimetype` IS NOT NULL AND `mimetype` <> '' AND `mimetype` NOT LIKE 'image/%'; #EOQ
