@@ -98,7 +98,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
     if (!empty($_POST['product_id']) && is_numeric($_POST['product_id'])) {
         $GLOBALS['catalogue']->getProductHash($_POST['product_id'], "before");
 
-        $old_product_data = $GLOBALS['db']->select('CubeCart_inventory', array('name', 'digital'), array('product_id' => $_POST['product_id']), false, false, false, false);
+        $old_product_data = $GLOBALS['db']->select('CubeCart_inventory', array('name', 'digital', 'stock_level'), array('product_id' => $_POST['product_id']), false, false, false, false);
 
         $product_id = $_POST['product_id'];
         // Update product
@@ -129,6 +129,16 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
         }
         if ($GLOBALS['db']->update('CubeCart_inventory', $record, array('product_id' => $_POST['product_id']), true, 'all')) {
             $product_id = $_POST['product_id'];
+        }
+
+        // Record a hand edit of the stock level. The form only submits stock_level
+        // when the product is stock tracked, and an unchanged value is not a movement.
+        if (isset($record['stock_level'])) {
+            $stock_was = isset($old_product_data[0]['stock_level']) ? (int)$old_product_data[0]['stock_level'] : 0;
+            $stock_now = (int)$record['stock_level'];
+            if ($stock_now !== $stock_was) {
+                StockLog::record($product_id, null, $stock_now - $stock_was, $stock_now, StockLog::SOURCE_ADMIN, null, $lang['catalogue']['stock_log_edited'] ?? 'Edited in the control panel');
+            }
         }
     } else {
         
@@ -283,8 +293,15 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
             if (!isset($data['product_code']) || empty($data['product_code'])) {
                 $data['product_code'] = $_POST['product_code'].'-'.$pc_postfix;
             }
-            if ($GLOBALS['db']->select('CubeCart_option_matrix', array('matrix_id'), array('product_id' => $product_id, 'options_identifier' => $options_identifier))) {
+            if ($matrix_row = $GLOBALS['db']->select('CubeCart_option_matrix', array('matrix_id', 'stock_level'), array('product_id' => $product_id, 'options_identifier' => $options_identifier))) {
                 $GLOBALS['db']->update('CubeCart_option_matrix', $data, array('options_identifier' => $options_identifier, 'product_id' => $product_id), true, 'all');
+                if (isset($data['stock_level'])) {
+                    $stock_was = (int)$matrix_row[0]['stock_level'];
+                    $stock_now = (int)$data['stock_level'];
+                    if ($stock_now !== $stock_was) {
+                        StockLog::record($product_id, (int)$matrix_row[0]['matrix_id'], $stock_now - $stock_was, $stock_now, StockLog::SOURCE_ADMIN, null, $lang['catalogue']['stock_log_edited'] ?? 'Edited in the control panel');
+                    }
+                }
             } else {
                 $data['options_identifier'] = $options_identifier;
                 $GLOBALS['db']->insert('CubeCart_option_matrix', $data);

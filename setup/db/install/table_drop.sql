@@ -15,6 +15,7 @@ DROP TABLE IF EXISTS `CubeCart_saved_cart`; #EOQ
 DROP TABLE IF EXISTS `CubeCart_seo_urls`; #EOQ 
 DROP TABLE IF EXISTS `CubeCart_shipping_rates`; #EOQ 
 DROP TABLE IF EXISTS `CubeCart_shipping_zones`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_stock_log`; #EOQ
 DROP TABLE IF EXISTS `CubeCart_system_error_log`; #EOQ 
 DROP TABLE IF EXISTS `CubeCart_access_log`; #EOQ 
 DROP TABLE IF EXISTS `CubeCart_addressbook`; #EOQ 

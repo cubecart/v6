@@ -203,6 +203,11 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 
                     if ($product_id = $GLOBALS['db']->insert('CubeCart_inventory', $product_record)) {
                         $insert++;
+                        // Opening balance, so the log accounts for stock that arrived
+                        // with the import rather than starting mid-story.
+                        if (!empty($product_record['use_stock_level']) && !empty($product_record['stock_level'])) {
+                            StockLog::record($product_id, null, (int)$product_record['stock_level'], (int)$product_record['stock_level'], StockLog::SOURCE_IMPORT, null, $lang['catalogue']['stock_log_imported'] ?? 'Opening stock level set by product import');
+                        }
                     }
                     // Insert primary category
                     if (isset($product_record['cat_id']) && !empty($product_record['cat_id'])) {

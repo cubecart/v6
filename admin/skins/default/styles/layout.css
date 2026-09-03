@@ -3592,6 +3592,18 @@ textarea#query {
 .errorlog-detail pre { white-space:pre-wrap; word-break:break-word; background:var(--panel-muted); padding:10px; border-radius:4px; font-size:12px; max-height:60vh; overflow:auto; }
 .errorlog-detail .copy-btn { float:right; }
 
+/* products.stocklog.php — stock audit log */
+.stocklog-filter { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:8px 0 12px; padding:8px 12px; background:var(--highlight); border-radius:4px; }
+.stocklog-filter input.q { width:280px; }
+.stocklog-pinned { display:inline-block; padding:4px 8px; background:var(--panel-muted); border-radius:4px; }
+.stocklog-change { display:inline-block; min-width:38px; padding:2px 8px; border-radius:10px; font-size:12px; font-weight:600; text-align:center; }
+.stocklog-change--green { background:rgba(60,160,80,0.15); color:#2c8a40; }
+.stocklog-change--red   { background:rgba(200,60,60,0.15); color:#b03030; }
+.stocklog-time { white-space:nowrap; }
+.stocklog-variant { color:#5a6478; }
+.stocklog-gone { color:#8a8a8a; font-style:italic; }
+.stocklog-note small { color:#5a6478; }
+
 /* settings.hooks.php — hooks admin */
 .hooks-status { display:inline-block; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.4px; }
 .hooks-status--ok      { background:rgba(60,160,80,0.15);  color:#2c8a40; }

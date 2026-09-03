@@ -1401,6 +1401,8 @@ class Order
         // Stores that allow out of stock purchases sell below zero deliberately, so
         // for them the deduction stays atomic but is never refused.
         $refuse_short = !$GLOBALS['config']->get('config', 'basket_out_of_stock_purchase');
+        // What the audit log shows against every line this pass moves.
+        $note = sprintf($this->_stockLogPhrase('stock_log_status', 'Order status: %1$s'), $this->_statusName($status_id));
 
         foreach ($items as $item) {
             $quantity = (int)$item['quantity'];
@@ -1412,12 +1414,14 @@ class Order
             // line is not stock tracked, and it is skipped as before.
             $table = false;
             $where = '';
+            $matrix_id = null;
             if (!empty($item['options_identifier']) && $options_stock = $GLOBALS['db']->select('CubeCart_option_matrix', array('stock_level', 'matrix_id'), array('product_id' => (int)$item['product_id'], 'options_identifier' => $item['options_identifier'], 'status' => 1, 'use_stock' => 1), false, false, false, false)) {
                 // Key the write on the primary key. The product/options pair the old
                 // code used has no unique index, so it could span rows the SELECT
                 // above never looked at.
                 $table = 'CubeCart_option_matrix';
                 $where = '`matrix_id` = '.(int)$options_stock[0]['matrix_id'];
+                $matrix_id = (int)$options_stock[0]['matrix_id'];
                 $matrix_prod[] = (int)$item['product_id'];
             } elseif ($GLOBALS['db']->select('CubeCart_inventory', array('stock_level'), array('product_id' => (int)$item['product_id'], 'use_stock_level' => 1), false, false, false, false) !== false) {
                 $table = 'CubeCart_inventory';
@@ -1463,7 +1467,9 @@ class Order
                         'where'      => $where,
                         'quantity'   => $quantity,
                         'product_id' => (int)$item['product_id'],
+                        'matrix_id'  => $matrix_id,
                     );
+                    $this->_stockLog($table, $where, (int)$item['product_id'], $matrix_id, -$quantity, $order_id, $note);
                 } else {
                     $this->_stockClaim($item['id'], $order_id, 0);
                     $this->_stock_shortfall[] = array(
@@ -1478,7 +1484,9 @@ class Order
                     // Nothing held against this line, so nothing to return.
                     continue;
                 }
-                $this->_stockAdjust($table, $where, $quantity, false);
+                if ($this->_stockAdjust($table, $where, $quantity, false)) {
+                    $this->_stockLog($table, $where, (int)$item['product_id'], $matrix_id, $quantity, $order_id, $note);
+                }
             } else {
                 continue;
             }
@@ -1490,7 +1498,7 @@ class Order
 
         if ($GLOBALS['config']->get('config', 'update_main_stock')) {
             foreach (array_unique($matrix_prod) as $prod_id) {
-                $this->_rollupMatrixStock((int)$prod_id);
+                $this->_rollupMatrixStock((int)$prod_id, $order_id);
                 if (isset($es)) {
                     $es->update($prod_id, 'stock_level');
                 }
@@ -1567,13 +1575,92 @@ class Order
      *
      * @param int $product_id
      */
-    private function _rollupMatrixStock($product_id)
+    private function _rollupMatrixStock($product_id, $order_id = null)
     {
+        // The rollup writes an absolute value, so the only way to log it as a
+        // movement is to see the row either side.
+        $where  = '`product_id` = '.(int)$product_id;
+        $before = $this->_stockLevel('CubeCart_inventory', $where);
+
         $GLOBALS['db']->misc(sprintf(
             'UPDATE `%1$sCubeCart_inventory` SET `stock_level` = (SELECT COALESCE(SUM(`stock_level`), 0) FROM `%1$sCubeCart_option_matrix` WHERE `product_id` = %2$d AND `status` = 1 AND `use_stock` = 1) WHERE `product_id` = %2$d;',
             $GLOBALS['config']->get('config', 'dbprefix'),
             (int)$product_id
         ), false);
+
+        if ($before === null) {
+            return;
+        }
+        $after = $this->_stockLevel('CubeCart_inventory', $where);
+        if ($after !== null && $after !== $before) {
+            StockLog::record((int)$product_id, null, $after - $before, $after, StockLog::SOURCE_ROLLUP, $order_id, $this->_stockLogPhrase('stock_log_rollup', 'Recalculated from the option matrix'));
+        }
+    }
+
+    /**
+     * Write one stock movement to the audit log
+     *
+     * The resulting level is read back rather than worked out from the change, so
+     * the log reports what the row actually holds. The read only happens when the
+     * merchant has the log switched on.
+     *
+     * @param string $table
+     * @param string $where already-escaped key condition
+     * @param int $product_id
+     * @param int|null $matrix_id
+     * @param int $change signed
+     * @param string $order_id
+     * @param string $note
+     */
+    private function _stockLog($table, $where, $product_id, $matrix_id, $change, $order_id, $note)
+    {
+        StockLog::record($product_id, $matrix_id, $change, $this->_stockLevel($table, $where), StockLog::SOURCE_ORDER, $order_id, $note);
+    }
+
+    /**
+     * Read a stock level straight back after moving it
+     *
+     * @param string $table
+     * @param string $where already-escaped key condition
+     * @return int|null null when the row cannot be read
+     */
+    private function _stockLevel($table, $where)
+    {
+        $result = $GLOBALS['db']->misc(sprintf(
+            'SELECT `stock_level` FROM `%s%s` WHERE %s LIMIT 1;',
+            $GLOBALS['config']->get('config', 'dbprefix'),
+            $table,
+            $where
+        ), false);
+
+        return (is_array($result) && isset($result[0]['stock_level'])) ? (int)$result[0]['stock_level'] : null;
+    }
+
+    /**
+     * Log wording, with a fallback for a language pack that predates the feature
+     *
+     * These run on the checkout path, so a missing key must not raise a warning
+     * or hand sprintf() a null.
+     *
+     * @param string $key
+     * @param string $fallback
+     * @return string
+     */
+    private function _stockLogPhrase($key, $fallback)
+    {
+        return isset($GLOBALS['language']->orders[$key]) ? $GLOBALS['language']->orders[$key] : $fallback;
+    }
+
+    /**
+     * Readable name for an order status
+     *
+     * @param int $status_id
+     * @return string
+     */
+    private function _statusName($status_id)
+    {
+        $key = 'name_'.(int)$status_id;
+        return isset($GLOBALS['language']->order_state[$key]) ? $GLOBALS['language']->order_state[$key] : $key;
     }
 
     /**
@@ -1599,7 +1686,9 @@ class Order
         $matrix_prod = array();
         foreach ($this->_stock_taken as $taken) {
             if ($this->_stockClaim($taken['id'], $order_id, 0)) {
-                $this->_stockAdjust($taken['table'], $taken['where'], $taken['quantity'], false);
+                if ($this->_stockAdjust($taken['table'], $taken['where'], $taken['quantity'], false)) {
+                    $this->_stockLog($taken['table'], $taken['where'], $taken['product_id'], $taken['matrix_id'], $taken['quantity'], $order_id, $this->_stockLogPhrase('stock_log_rollback', 'Returned because the order could not be completed'));
+                }
                 if ($taken['table'] === 'CubeCart_option_matrix') {
                     $matrix_prod[] = $taken['product_id'];
                 }
@@ -1607,7 +1696,7 @@ class Order
         }
         if ($GLOBALS['config']->get('config', 'update_main_stock')) {
             foreach (array_unique($matrix_prod) as $prod_id) {
-                $this->_rollupMatrixStock((int)$prod_id);
+                $this->_rollupMatrixStock((int)$prod_id, $order_id);
             }
         }
         $this->_stock_taken = array();

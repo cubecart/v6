@@ -1098,6 +1098,23 @@ CREATE TABLE IF NOT EXISTS `CubeCart_shipping_zones` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 
+CREATE TABLE IF NOT EXISTS `CubeCart_stock_log` (
+	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`product_id` INT UNSIGNED NOT NULL DEFAULT '0',
+	`matrix_id` INT UNSIGNED NULL DEFAULT NULL,
+	`change` INT NOT NULL DEFAULT '0',
+	`stock_after` INT NULL DEFAULT NULL,
+	`source` VARCHAR(32) NOT NULL DEFAULT '',
+	`cart_order_id` VARCHAR(18) NULL DEFAULT NULL,
+	`admin_id` INT UNSIGNED NULL DEFAULT NULL,
+	`note` VARCHAR(255) NOT NULL DEFAULT '',
+	`time` INT UNSIGNED NOT NULL DEFAULT '0',
+	PRIMARY KEY (`id`),
+	KEY `product_time` (`product_id`, `time`),
+	KEY `cart_order_id` (`cart_order_id`),
+	KEY `time` (`time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
+
 CREATE TABLE IF NOT EXISTS `CubeCart_system_error_log` (
 	`log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 	`message_hash` char(40) NOT NULL DEFAULT '',

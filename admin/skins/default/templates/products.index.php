@@ -236,6 +236,7 @@
          <div><label for="use_stock_level">{$LANG.catalogue.stock_level_use}</label><span><input type="hidden" name="use_stock_level" id="use_stock_level" class="toggle" value="{$PRODUCT.use_stock_level}"></span></div>
          <div><label for="stock_level">{$LANG.catalogue.stock_level}</label><span><input name="stock_level" id="stock_level" class="textbox number" type="text" value="{$PRODUCT.stock_level}"></span>{if isset($DISPLAY_MATRIX_STOCK_NOTE)}&nbsp;{$LANG.catalogue.matrix_stock_level}{/if}</div>
          <div><label for="stock_warning">{$LANG.catalogue.stock_level_warn}</label><span><input name="stock_warning" id="stock_warning" class="textbox number" type="text" value="{$PRODUCT.stock_warning}"></span></div>
+         {if $PRODUCT.product_id}<div><label>&nbsp;</label><span><a href="?_g=products&amp;node=stocklog&amp;product_id={$PRODUCT.product_id}">{$LANG.catalogue.stock_log_view}</a></span></div>{/if}
       </fieldset>
       <fieldset>
          <legend>{$LANG.catalogue.title_misc}</legend>

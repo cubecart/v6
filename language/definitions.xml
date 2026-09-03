@@ -550,6 +550,22 @@
     <string name="set_assign" introduced="5.0.0"><![CDATA[Assign Option Set]]></string>
     <string name="stock_available" introduced="5.0.0"><![CDATA[In stock]]></string>
     <string name="stock_level" introduced="5.0.0"><![CDATA[Stock Level]]></string>
+    <string name="stock_log_after" introduced="6.8.0"><![CDATA[Stock After]]></string>
+    <string name="stock_log_change" introduced="6.8.0"><![CDATA[Change]]></string>
+    <string name="stock_log_deleted_product" introduced="6.8.0"><![CDATA[Deleted product #%1$s]]></string>
+    <string name="stock_log_edited" introduced="6.8.0"><![CDATA[Edited in the control panel]]></string>
+    <string name="stock_log_from" introduced="6.8.0"><![CDATA[From]]></string>
+    <string name="stock_log_imported" introduced="6.8.0"><![CDATA[Opening stock level set by product import]]></string>
+    <string name="stock_log_search" introduced="6.8.0"><![CDATA[Product name, code or order ID]]></string>
+    <string name="stock_log_source" introduced="6.8.0"><![CDATA[Source]]></string>
+    <string name="stock_log_source_admin" introduced="6.8.0"><![CDATA[Admin]]></string>
+    <string name="stock_log_source_api" introduced="6.8.0"><![CDATA[API]]></string>
+    <string name="stock_log_source_import" introduced="6.8.0"><![CDATA[Import]]></string>
+    <string name="stock_log_source_order" introduced="6.8.0"><![CDATA[Order]]></string>
+    <string name="stock_log_source_rollup" introduced="6.8.0"><![CDATA[Matrix Rollup]]></string>
+    <string name="stock_log_title" introduced="6.8.0"><![CDATA[Stock Log]]></string>
+    <string name="stock_log_to" introduced="6.8.0"><![CDATA[To]]></string>
+    <string name="stock_log_view" introduced="6.8.0"><![CDATA[View stock log]]></string>
     <string name="stock_level_use" introduced="5.0.0"><![CDATA[Use Stock Level]]></string>
     <string name="stock_level_warn" introduced="5.0.0"><![CDATA[Stock Level Warning]]></string>
     <string name="submit_review" introduced="5.0.0"><![CDATA[Submit Review]]></string>
@@ -1916,6 +1932,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="nav_marketplace" introduced="6.0.0"><![CDATA[Marketplace]]></string>
     <string name="nav_plugins" introduced="5.0.0"><![CDATA[Manage Extensions]]></string>
     <string name="nav_prod_reviews" introduced="5.0.0"><![CDATA[Reviews]]></string>
+    <string name="nav_stock_log" introduced="6.8.0"><![CDATA[Stock Log]]></string>
     <string name="nav_product_options" introduced="5.0.0"><![CDATA[Product Options]]></string>
     <string name="nav_products" introduced="5.0.0"><![CDATA[Products]]></string>
     <string name="nav_regions" introduced="5.0.0"><![CDATA[Countries/Zones]]></string>
@@ -2069,6 +2086,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="order_not_found" introduced="6.0.0"><![CDATA[Sorry but order %1$s was not found.]]></string>
     <string name="cancel_by_customer" introduced="5.2.13"><![CDATA[Order cancelled by customer from their account area.]]></string>
     <string name="stock_shortfall" introduced="6.8.0"><![CDATA[Not enough stock to reduce for: %1$s. Stock levels were left unchanged for these items.]]></string>
+    <string name="stock_log_rollback" introduced="6.8.0"><![CDATA[Returned because the order could not be completed]]></string>
+    <string name="stock_log_rollup" introduced="6.8.0"><![CDATA[Recalculated from the option matrix]]></string>
+    <string name="stock_log_status" introduced="6.8.0"><![CDATA[Order status: %1$s]]></string>
     <string name="card_card_cvv" introduced="5.0.0"><![CDATA[Security Code]]></string>
     <string name="card_card_details" introduced="5.0.0"><![CDATA[Credit Card Details]]></string>
     <string name="card_card_expire" introduced="5.0.0"><![CDATA[Expiry Date]]></string>

@@ -43,6 +43,7 @@ $nav_items['inventory']  = array(
     $lang['navigation']['nav_products']   => array('address' => '?_g=products&node=index', 'id' => 'nav_products'),
     $lang['navigation']['nav_prod_reviews']  => '?_g=products&node=reviews',
     $lang['navigation']['nav_product_options'] => '?_g=products&node=options',
+    $lang['navigation']['nav_stock_log']   => '?_g=products&node=stocklog',
     $lang['navigation']['nav_coupons']   => '?_g=products&node=coupons',
     $lang['navigation']['nav_manufacturers'] => '?_g=products&node=manufacturers',
     $lang['navigation']['nav_cat_import']  => '?_g=products&node=import',
