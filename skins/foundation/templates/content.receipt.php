@@ -109,7 +109,7 @@
       <tr>
          <td colspan="2"></td>
          <td>{$tax.name}</td>
-         <td class="text-right">{$tax.value}</td>
+         <td class="text-right">{if $tax.included}({$tax.value}){else}{$tax.value}{/if}</td>
       </tr>
       {/foreach}
       {if $DISCOUNT}

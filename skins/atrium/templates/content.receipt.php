@@ -117,7 +117,7 @@
             <dd class="price tabular">{$SUM.shipping}</dd>
          </div>
          {foreach from=$TAXES item=tax}
-         <div class="flex justify-between"><dt class="text-ink-600">{$tax.name}</dt><dd class="price tabular">{$tax.value}</dd></div>
+         <div class="flex justify-between"><dt class="text-ink-600">{$tax.name}</dt><dd class="price tabular">{if $tax.included}({$tax.value}){else}{$tax.value}{/if}</dd></div>
          {/foreach}
          {if $DISCOUNT}
          <div class="flex justify-between"><dt class="text-ink-600">{$LANG.basket.total_discount}</dt><dd class="price tabular text-success-700">{$SUM.discount}</dd></div>
