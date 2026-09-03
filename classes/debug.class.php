@@ -497,7 +497,7 @@ class Debug
         $this->_errors[] = $error;
 
         if ($log) {
-            $backtrace = debug_backtrace();
+            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
             array_shift($backtrace);
             ob_start();
             array_walk($backtrace, function($a){ if(!empty($a['line'])) {print $a['function']."() (".basename($a['file']).":".$a['line'].")\n";}});

@@ -1232,7 +1232,7 @@ class Database_Contoller
      */
     protected function _logError()
     {
-        $trace = debug_backtrace();
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         $message = 'File: ['.basename($trace[2]['file']).'] Line: ['.$trace[2]['line'].'] "'.$this->_query.'" - '.$this->errorInfo();
         if (class_exists('Debug')) {
             Debug::writeSystemErrorLog($message);
