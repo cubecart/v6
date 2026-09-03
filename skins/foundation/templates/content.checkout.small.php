@@ -128,10 +128,10 @@
       {foreach from=$TAXES item=tax}
       <tr>
          <td colspan="2">
-            {$tax.name}
+            {if $tax.included}{$LANG.common.includes} {/if}{$tax.name}
          </td>
          <td width="10%" class="text-right">
-            {if $tax.included}({$CUSTOMER_LOCALE.mark}{$tax.value}){else}{$CUSTOMER_LOCALE.mark}{$tax.value}{/if}
+            {$CUSTOMER_LOCALE.mark}{$tax.value}
          </td>
       </tr>
       {/foreach}

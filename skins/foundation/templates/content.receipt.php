@@ -108,8 +108,8 @@
       {foreach from=$TAXES item=tax}
       <tr>
          <td colspan="2"></td>
-         <td>{$tax.name}</td>
-         <td class="text-right">{if $tax.included}({$tax.value}){else}{$tax.value}{/if}</td>
+         <td>{if $tax.included}{$LANG.common.includes} {/if}{$tax.name}</td>
+         <td class="text-right">{$tax.value}</td>
       </tr>
       {/foreach}
       {if $DISCOUNT}

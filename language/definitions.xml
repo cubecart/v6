@@ -711,6 +711,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="includes" introduced="6.8.0"><![CDATA[Includes]]></string>
     <string name="sale" introduced="6.8.0"><![CDATA[Sale]]></string>
     <string name="free" introduced="6.6.5"><![CDATA[Free]]></string>
     <string name="paid" introduced="6.6.5"><![CDATA[Paid]]></string>

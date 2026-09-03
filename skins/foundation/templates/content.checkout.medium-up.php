@@ -105,8 +105,8 @@
          {foreach from=$TAXES item=tax}
          <tr>
             <td colspan="4"></td>
-            <td>{$tax.name}{$CUSTOMER_LOCALE.mark}</td>
-            <td class="text-right">{if $tax.included}({$tax.value}){else}{$tax.value}{/if}</td>
+            <td>{if $tax.included}{$LANG.common.includes} {/if}{$tax.name}{$CUSTOMER_LOCALE.mark}</td>
+            <td class="text-right">{$tax.value}</td>
          </tr>
          {/foreach}
          {if !empty($CREDIT_USED)}

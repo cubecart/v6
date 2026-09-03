@@ -399,8 +399,8 @@
                 {foreach from=$order.taxes item=tax}
                     <div class="total">
 						<div class="spacer"></div>
-						<div class="label">{$tax.display}</div>
-                        <div class="amount">{if $tax.included}({$tax.value}){else}{$tax.value}{/if}</div>
+						<div class="label">{if $tax.included}{$LANG.common.includes} {/if}{$tax.display}</div>
+                        <div class="amount">{$tax.value}</div>
                     </div>
                 {/foreach}
             {/if}

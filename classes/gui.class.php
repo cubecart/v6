@@ -589,6 +589,27 @@ class GUI
      * @param string $page_key
      * @return int
      */
+    /**
+     * The products per page figure set in the store settings, bounded
+     *
+     * Zero when unset or unusable, so callers can treat that as "fall back to the
+     * skin". Only the products listing has a setting behind it.
+     *
+     * @param string $list_id
+     * @return int
+     */
+    public function configuredItemsPerPage($list_id = 'products')
+    {
+        if ($list_id !== 'products') {
+            return 0;
+        }
+        $configured = $GLOBALS['config']->get('config', 'catalogue_products_per_page');
+        if (!is_numeric($configured) || (int)$configured < 1) {
+            return 0;
+        }
+        return min((int)$configured, self::MAX_ITEMS_PER_PAGE);
+    }
+
     public function itemsPerPage($list_id = 'products', $page_key = 'perpage', $list_amount = 'default')
     {
         if (isset($_GET[$page_key]) && (int)$_GET[$page_key]>0) {
@@ -599,11 +620,8 @@ class GUI
         // so it survives a skin update instead of needing config.xml edited again
         // every time (#4195). Only the default is overridden: 'last' drives the
         // view all link and has to stay on the largest amount the skin offers.
-        if ($list_amount === 'default' && $list_id === 'products') {
-            $configured = $GLOBALS['config']->get('config', 'catalogue_products_per_page');
-            if (is_numeric($configured) && (int)$configured > 0) {
-                return min((int)$configured, self::MAX_ITEMS_PER_PAGE);
-            }
+        if ($list_amount === 'default' && ($configured = $this->configuredItemsPerPage($list_id)) > 0) {
+            return $configured;
         }
 
         if (isset($this->_skin_data['layout'][$list_id]['perpage'])) {
@@ -754,10 +772,13 @@ class GUI
         foreach (array_keys($this->_skin_data['layout'][$list_id]['perpage']) as $amount) {
             $amounts[] = (int)$amount;
         }
-        // A setting the skin does not offer still needs an entry, or the list has
-        // nothing to select and the shopper cannot get back to it once they leave.
-        if ($current > 0 && !in_array($current, $amounts, true)) {
-            $amounts[] = $current;
+        // The store's own figure is a permanent entry, not just one while it happens
+        // to be in use. Injecting only the current value dropped it from the list the
+        // moment a shopper picked something else, stranding them with no way back.
+        foreach (array($this->configuredItemsPerPage($list_id), $current) as $extra) {
+            if ($extra > 0 && !in_array($extra, $amounts, true)) {
+                $amounts[] = $extra;
+            }
         }
         sort($amounts, SORT_NUMERIC);
 

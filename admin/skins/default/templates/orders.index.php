@@ -279,8 +279,8 @@
                   {foreach from=$TAX_SUMMARY item=tax}
                   <tr class="order_summary">
                      <td colspan="3" class="no-bg"></td>
-                     <td nowrap>{$tax.tax_name}</td>
-                     <td class="text-right">{if $tax.tax_included}({$tax.tax_amount}){else}{$tax.tax_amount}{/if}</td>
+                     <td nowrap>{if $tax.tax_included}{$LANG.common.includes} {/if}{$tax.tax_name}</td>
+                     <td class="text-right">{$tax.tax_amount}</td>
                   </tr>
                   {foreachelse}
                   <tr class="order_summary">

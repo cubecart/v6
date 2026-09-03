@@ -217,8 +217,8 @@
 
          {foreach from=$TAXES item=tax}
          <div class="flex justify-between">
-            <dt class="text-ink-600">{$tax.name}{$CUSTOMER_LOCALE.mark}</dt>
-            <dd class="price tabular">{if $tax.included}({$tax.value}){else}{$tax.value}{/if}</dd>
+            <dt class="text-ink-600">{if $tax.included}{$LANG.common.includes} {/if}{$tax.name}{$CUSTOMER_LOCALE.mark}</dt>
+            <dd class="price tabular">{$tax.value}</dd>
          </div>
          {/foreach}
 
