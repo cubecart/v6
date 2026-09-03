@@ -400,7 +400,7 @@
                     <div class="total">
 						<div class="spacer"></div>
 						<div class="label">{$tax.display}</div>
-                        <div class="amount">{$tax.value}</div>
+                        <div class="amount">{if $tax.included}({$tax.value}){else}{$tax.value}{/if}</div>
                     </div>
                 {/foreach}
             {/if}

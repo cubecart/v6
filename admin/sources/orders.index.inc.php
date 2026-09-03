@@ -383,10 +383,15 @@ if (isset($_GET['action'])) {
             }
             $GLOBALS['gui']->addBreadcrumb(($GLOBALS['config']->get('config', 'oid_mode') == 'i' && !empty($summary[0][$GLOBALS['config']->get('config', 'oid_col')])) ? $summary[0][$GLOBALS['config']->get('config', 'oid_col')] : $summary[0]['cart_order_id'], currentPage(array('print_hash')));
             // Load order inventory
+            // Show the order the way the customer saw it at checkout (#4198).
+            $presentation  = Order::storedPresentation($summary[0]);
+            $tax_inclusive = $presentation['inclusive'];
+            $stored_lines  = $presentation['lines'];
             if (($inventory = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $summary[0]['cart_order_id']), array('name' => 'ASC'))) !== false) {
                 $subtotal = 0;
                 $filemanager = new FileManager(FileManager::FM_FILETYPE_DL);
                 foreach ($inventory as $product) {
+                    $product['price'] = Order::displayLinePrice($product, $tax_inclusive, $stored_lines);
                     $subtotal += ($product['price']*$product['quantity']);
                     $product['line'] = $product['price'];
                     $price_total = $product['price']*$product['quantity'];
@@ -465,7 +470,7 @@ if (isset($_GET['action'])) {
             $overview_summary['name_d']  = (isset($summary[0]['name_d']) && !empty($summary[0]['name_d'])) ? $summary[0]['name_d'] : $summary[0]['first_name_d'].' '.$summary[0]['last_name_d'];
             $overview_summary['ship_date']  = $overview_summary['ship_date'] ? formatDispatchDate($overview_summary['ship_date']) : "";
             $overview_summary['discount']  = $GLOBALS['tax']->priceFormat($overview_summary['discount']);
-            $overview_summary['subtotal']  = $GLOBALS['tax']->priceFormat($overview_summary['subtotal']);
+            $overview_summary['subtotal']  = $GLOBALS['tax']->priceFormat(Order::displaySubtotal($overview_summary, $tax_inclusive));
             $overview_summary['shipping']  = $GLOBALS['tax']->priceFormat($overview_summary['shipping']);
             $overview_summary['total_tax']  = $GLOBALS['tax']->priceFormat($overview_summary['total_tax']);
             $overview_summary['show_credit']  = $overview_summary['credit_used'] > 0 ? true : false;
@@ -479,7 +484,8 @@ if (isset($_GET['action'])) {
             if ($overview_summary_taxes) {
                 foreach ($overview_summary_taxes as $overview_tax) {
                     $tax_data = $GLOBALS['tax']->fetchTaxDetails($overview_tax['tax_id']);
-                    $overview_summary_tax['tax_name'] = $tax_data['display'];
+                    $overview_summary_tax['tax_name'] = Order::displayTaxName($tax_data);
+                    $overview_summary_tax['tax_included'] = $tax_inclusive;
                     $overview_summary_tax['tax_amount'] = $GLOBALS['tax']->priceFormat($overview_tax['amount']);
                     $smarty_data['tax_summary'][] = $overview_summary_tax;
                 }
@@ -654,11 +660,15 @@ if (isset($_GET['action'])) {
         foreach ($summaries as $key => $summary) {
             $summary['raw'] = $summary;
             $GLOBALS['smarty']->assign('PAGE_TITLE', (count($_GET['print'])>1) ? $lang['orders']['title_invoices'] : sprintf($lang['orders']['title_invoice_x'], $summary['cart_order_id']));
+            $print_presentation = Order::storedPresentation($summary);
+            $print_inclusive    = $print_presentation['inclusive'];
+            $print_lines        = $print_presentation['lines'];
             if (($inventory = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $summary['cart_order_id']), array('name' => 'ASC'))) !== false) {
                 foreach ($inventory as $item) {
                     $item['raw'] = $item;
-                    $item['item_price'] = Tax::getInstance()->priceFormat($item['price'], true);
-                    $item['price'] = Tax::getInstance()->priceFormat(($item['price']*$item['quantity']), true);
+                    $price_each = Order::displayLinePrice($item, $print_inclusive, $print_lines);
+                    $item['item_price'] = Tax::getInstance()->priceFormat($price_each, true);
+                    $item['price'] = Tax::getInstance()->priceFormat(($price_each*$item['quantity']), true);
                     
                     $options = $order->unSerializeOptions($item['product_options']);
                     foreach ($options as $option) {
@@ -678,7 +688,8 @@ if (isset($_GET['action'])) {
                 $GLOBALS['tax']->loadTaxes($summary['country']);
                 foreach ($taxes as $vat) {
                     $detail = Tax::getInstance()->fetchTaxDetails($vat['tax_id']);
-                    $summary['taxes'][] = array('display' => $detail['display'], 'name' => $detail['name'], 'value' => Tax::getInstance()->priceFormat($vat['amount'], true));
+                    $tax_label = Order::displayTaxName($detail);
+                    $summary['taxes'][] = array('display' => $tax_label, 'name' => $tax_label, 'value' => Tax::getInstance()->priceFormat($vat['amount'], true), 'included' => $print_inclusive);
                 }
             } else {
                 $summary['taxes'][] = array('name' => $lang['basket']['total_tax'], 'value' => Tax::getInstance()->priceFormat($summary['total_tax']));
@@ -690,6 +701,8 @@ if (isset($_GET['action'])) {
             } elseif ($summary['discount_type'] == 'pp') {
                 $summary['percent'] = number_format(($summary['discount']/($summary['subtotal']+$summary['discount']))*100) . '%';
             }
+            // After the percentage above, which is worked out against the ex-tax figure.
+            $summary['subtotal'] = Order::displaySubtotal($summary, $print_inclusive);
             $format = array('discount', 'shipping', 'subtotal', 'total_tax', 'total', 'credit_used');
             $summary['show_credit'] = ($summary['credit_used']>0) ? true : false;
             foreach ($format as $field) {

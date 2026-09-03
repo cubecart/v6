@@ -280,7 +280,7 @@
                   <tr class="order_summary">
                      <td colspan="3" class="no-bg"></td>
                      <td nowrap>{$tax.tax_name}</td>
-                     <td class="text-right">{$tax.tax_amount}</td>
+                     <td class="text-right">{if $tax.tax_included}({$tax.tax_amount}){else}{$tax.tax_amount}{/if}</td>
                   </tr>
                   {foreachelse}
                   <tr class="order_summary">

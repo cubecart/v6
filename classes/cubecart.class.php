@@ -3054,92 +3054,6 @@ class Cubecart
     /**
      * Orders
      */
-    /**
-     * Read the stored basket for an order
-     *
-     * Order rows are kept ex tax, so on an inclusive store a receipt did not match
-     * the checkout it came from (#4198). The basket saved with the order records
-     * what the customer was actually shown, including whether tax was inclusive and
-     * the gross line prices, so presentation is read from there rather than
-     * recalculated against today's tax configuration.
-     *
-     * @param array $order
-     * @return array basket, inclusive flag and lines keyed by hash
-     */
-    private function _orderPresentation($order)
-    {
-        $basket = Order::basketRead($order['basket']);
-        return array(
-            'basket'    => $basket,
-            'inclusive' => !empty($basket['has_inclusive_tax']),
-            'lines'     => (isset($basket['contents']) && is_array($basket['contents'])) ? $basket['contents'] : array(),
-        );
-    }
-
-    /**
-     * Price for one order line as the basket displayed it
-     *
-     * Prefers the stored basket line, which shares the order line's hash and stays
-     * correct even where the normalised price column has gone stale.
-     *
-     * @param array $item
-     * @param bool $inclusive
-     * @param array $lines
-     * @return float
-     */
-    private function _orderLinePrice($item, $inclusive, $lines)
-    {
-        $each = (float)$item['price'];
-        if (!$inclusive) {
-            return $each;
-        }
-        $line = (!empty($item['hash']) && isset($lines[$item['hash']])) ? $lines[$item['hash']] : null;
-        return ($line !== null && isset($line['price'])) ? (float)$line['price'] : $each + (float)$item['tax'];
-    }
-
-    /**
-     * Tax label for a receipt, worded as the basket words it
-     *
-     * fetchTaxDetails() returns the bare name, so a receipt read "VAT" where the
-     * basket read "VAT (Standard Rate 20%)". Compose the same label here, using the
-     * same order of parts as Tax::loadTaxes() so the two always agree.
-     *
-     * @param array $detail
-     * @return string
-     */
-    private function _orderTaxName($detail)
-    {
-        if (empty($detail) || !is_array($detail)) {
-            return '';
-        }
-        $name = !empty($detail['display']) ? $detail['display'] : ($detail['name'] ?? '');
-        if (isset($detail['tax_percent']) && $detail['tax_percent'] !== null) {
-            $qualifier = trim(($detail['type_name'] ?? '').' '.(float)$detail['tax_percent'].'%');
-            if ($qualifier !== '') {
-                $name .= ' ('.$qualifier.')';
-            }
-        }
-        return $name;
-    }
-
-    /**
-     * Subtotal as the basket showed it
-     *
-     * Goods tax sits inside the prices when inclusive, so the subtotal has to carry
-     * it. Shipping tax is charged on top and stays at the foot.
-     *
-     * @param array $order
-     * @param bool $inclusive
-     * @return float
-     */
-    private function _orderSubtotal($order, $inclusive)
-    {
-        if (!$inclusive) {
-            return (float)$order['subtotal'];
-        }
-        return (float)$order['subtotal'] + ((float)$order['total_tax'] - (float)$order['shipping_tax']);
-    }
-
     private function _orders()
     {
         // Order history
@@ -3152,13 +3066,13 @@ class Cubecart
                     $template = 'templates/content.receipt.php';
                     $order = $orders[0];
                     $GLOBALS['gui']->addBreadcrumb(($GLOBALS['config']->get('config', 'oid_mode') == 'i' && !empty($order[$GLOBALS['config']->get('config', 'oid_col')])) ? $order[$GLOBALS['config']->get('config', 'oid_col')] : $order['cart_order_id'], currentPage());
-                    $presentation = $this->_orderPresentation($order);
+                    $presentation = Order::storedPresentation($order);
                     $tax_inclusive = $presentation['inclusive'];
                     $stored_lines  = $presentation['lines'];
                     if (($items = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $order['cart_order_id']))) !== false) {
                         foreach ($items as $item) {
                             // Do price formatting
-                            $price_each = $this->_orderLinePrice($item, $tax_inclusive, $stored_lines);
+                            $price_each = Order::displayLinePrice($item, $tax_inclusive, $stored_lines);
                             $item['price_total'] = $GLOBALS['tax']->priceFormat(($price_each * $item['quantity']), true);
                             $item['price'] = $GLOBALS['tax']->priceFormat($price_each);
                             $options = Order::getInstance()->unSerializeOptions($item['product_options']);
@@ -3172,7 +3086,7 @@ class Cubecart
                         $GLOBALS['tax']->loadTaxes(($GLOBALS['config']->get('config', 'basket_tax_by_delivery')) ? $order['country'] : $order['country_d']);
                         foreach ($taxes as $vat) {
                             $detail = $GLOBALS['tax']->fetchTaxDetails($vat['tax_id']);
-                            $vars['taxes'][] = array('name' => $this->_orderTaxName($detail), 'value' => $GLOBALS['tax']->priceFormat($vat['amount'], true), 'included' => $tax_inclusive);
+                            $vars['taxes'][] = array('name' => Order::displayTaxName($detail), 'value' => $GLOBALS['tax']->priceFormat($vat['amount'], true), 'included' => $tax_inclusive);
                         }
                     } else {
                         $vars['taxes'][] = array('name' => $GLOBALS['language']->basket['total_tax'], 'value' => $GLOBALS['tax']->priceFormat($order['total_tax']), 'included' => $tax_inclusive);
@@ -3191,7 +3105,7 @@ class Cubecart
 
                     // Loop through price values, and do the formatting
                     $order['show_credit'] = ($order['credit_used']>0) ? true : false;
-                    $order['subtotal'] = $this->_orderSubtotal($order, $tax_inclusive);
+                    $order['subtotal'] = Order::displaySubtotal($order, $tax_inclusive);
                     $GLOBALS['smarty']->assign('TAX_INCLUSIVE', $tax_inclusive);
                     foreach (array('discount', 'shipping', 'subtotal', 'total', 'total_tax', 'credit_used') as $key) {
                         $order[$key] = $GLOBALS['tax']->priceFormat($order[$key], true);
@@ -3326,13 +3240,13 @@ class Cubecart
                     $order = $orders[0];
                     $GLOBALS['user']->setGhostId($order['customer_id']);
 
-                    $presentation = $this->_orderPresentation($order);
+                    $presentation = Order::storedPresentation($order);
                     $tax_inclusive = $presentation['inclusive'];
                     $stored_lines  = $presentation['lines'];
                     if (($items = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $order['cart_order_id']))) !== false) {
                         foreach ($items as $item) {
                             // Do price formatting
-                            $price_each = $this->_orderLinePrice($item, $tax_inclusive, $stored_lines);
+                            $price_each = Order::displayLinePrice($item, $tax_inclusive, $stored_lines);
                             $item['price_total'] = $GLOBALS['tax']->priceFormat(($price_each * $item['quantity']), true);
                             $item['price'] = $GLOBALS['tax']->priceFormat($price_each);
                             $item['options'] = Order::getInstance()->unSerializeOptions($item['product_options']);
@@ -3344,7 +3258,7 @@ class Cubecart
                         $GLOBALS['tax']->loadTaxes(($GLOBALS['config']->get('config', 'basket_tax_by_delivery')) ? $order['country'] : $order['country_d']);
                         foreach ($taxes as $vat) {
                             $detail = $GLOBALS['tax']->fetchTaxDetails($vat['tax_id']);
-                            $vars['taxes'][] = array('name' => $this->_orderTaxName($detail), 'value' => $GLOBALS['tax']->priceFormat($vat['amount'], true), 'included' => $tax_inclusive);
+                            $vars['taxes'][] = array('name' => Order::displayTaxName($detail), 'value' => $GLOBALS['tax']->priceFormat($vat['amount'], true), 'included' => $tax_inclusive);
                         }
                     } else {
                         $vars['taxes'][] = array('name' => $GLOBALS['language']->basket['total_tax'], 'value' => $GLOBALS['tax']->priceFormat($order['total_tax']), 'included' => $tax_inclusive);
@@ -3357,7 +3271,7 @@ class Cubecart
                     $order['state'] = is_numeric($order['state']) ? getStateFormat($order['state']) : $order['state'];
                     $order['state_d'] = is_numeric($order['state_d']) ? getStateFormat($order['state_d']) : $order['state_d'];
                     // Loop through price values, and do the formatting
-                    $order['subtotal'] = $this->_orderSubtotal($order, $tax_inclusive);
+                    $order['subtotal'] = Order::displaySubtotal($order, $tax_inclusive);
                     $GLOBALS['smarty']->assign('TAX_INCLUSIVE', $tax_inclusive);
                     foreach (array('discount', 'shipping', 'subtotal', 'total', 'total_tax') as $key) {
                         $order[$key] = $GLOBALS['tax']->priceFormat($order[$key], true);

@@ -428,6 +428,92 @@ class Order
     }
 
     /**
+     * Read the stored basket for an order
+     *
+     * Order rows are kept ex tax, so on an inclusive store the stored figures do not
+     * match the checkout they came from (#4198). The basket saved with the order
+     * records what the customer was actually shown, including whether tax was
+     * inclusive and the gross price of each line, so presentation is read from there
+     * rather than recalculated against today's tax configuration.
+     *
+     * @param array $order order summary row
+     * @return array basket, inclusive flag, and lines keyed by hash
+     */
+    public static function storedPresentation($order)
+    {
+        $basket = self::basketRead($order['basket'] ?? '');
+        return array(
+            'basket'    => $basket,
+            'inclusive' => !empty($basket['has_inclusive_tax']),
+            'lines'     => (isset($basket['contents']) && is_array($basket['contents'])) ? $basket['contents'] : array(),
+        );
+    }
+
+    /**
+     * Price for one order line as the basket displayed it
+     *
+     * Prefers the stored basket line, which shares the order line's hash and stays
+     * correct even where the normalised price column has gone stale.
+     *
+     * @param array $item order inventory row
+     * @param bool $inclusive
+     * @param array $lines stored basket lines keyed by hash
+     * @return float
+     */
+    public static function displayLinePrice($item, $inclusive, $lines)
+    {
+        $each = (float)$item['price'];
+        if (!$inclusive) {
+            return $each;
+        }
+        $line = (!empty($item['hash']) && isset($lines[$item['hash']])) ? $lines[$item['hash']] : null;
+        return ($line !== null && isset($line['price'])) ? (float)$line['price'] : $each + (float)$item['tax'];
+    }
+
+    /**
+     * Subtotal as the basket showed it
+     *
+     * Goods tax sits inside the prices when inclusive, so the subtotal has to carry
+     * it. Shipping tax is charged on top and stays at the foot.
+     *
+     * @param array $order
+     * @param bool $inclusive
+     * @return float
+     */
+    public static function displaySubtotal($order, $inclusive)
+    {
+        if (!$inclusive) {
+            return (float)$order['subtotal'];
+        }
+        return (float)$order['subtotal'] + ((float)$order['total_tax'] - (float)$order['shipping_tax']);
+    }
+
+    /**
+     * Tax label worded as the basket words it
+     *
+     * Tax::fetchTaxDetails() returns the bare name, so "VAT" where the basket reads
+     * "VAT (Standard Rate 20%)". Compose the same label, in the same order of parts
+     * as Tax::loadTaxes(), so the two cannot drift apart.
+     *
+     * @param array $detail as returned by Tax::fetchTaxDetails()
+     * @return string
+     */
+    public static function displayTaxName($detail)
+    {
+        if (empty($detail) || !is_array($detail)) {
+            return '';
+        }
+        $name = !empty($detail['display']) ? $detail['display'] : ($detail['name'] ?? '');
+        if (isset($detail['tax_percent']) && $detail['tax_percent'] !== null) {
+            $qualifier = trim(($detail['type_name'] ?? '').' '.(float)$detail['tax_percent'].'%');
+            if ($qualifier !== '') {
+                $name .= ' ('.$qualifier.')';
+            }
+        }
+        return $name;
+    }
+
+    /**
      * Log payment transaction
      *
      * @param array $log
