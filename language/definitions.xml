@@ -2068,6 +2068,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="expired_basket" introduced="6.1.9"><![CDATA[Sorry but your basket has expired.]]></string>
     <string name="order_not_found" introduced="6.0.0"><![CDATA[Sorry but order %1$s was not found.]]></string>
     <string name="cancel_by_customer" introduced="5.2.13"><![CDATA[Order cancelled by customer from their account area.]]></string>
+    <string name="stock_shortfall" introduced="6.8.0"><![CDATA[Not enough stock to reduce for: %1$s. Stock levels were left unchanged for these items.]]></string>
     <string name="card_card_cvv" introduced="5.0.0"><![CDATA[Security Code]]></string>
     <string name="card_card_details" introduced="5.0.0"><![CDATA[Credit Card Details]]></string>
     <string name="card_card_expire" introduced="5.0.0"><![CDATA[Expiry Date]]></string>

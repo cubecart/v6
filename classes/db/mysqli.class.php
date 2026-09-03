@@ -188,6 +188,8 @@ class Database extends Database_Contoller
         $cache = $cache && !preg_match('#\b('.$this->_cache_block_functions.')\b#', $this->_query) ?: false;
 
         $this->_found_rows = null;
+        $this->_statement_affected = 0;
+        $this->_statement_errno    = 0;
 
         if (!empty($this->_query)) {
             $this->_result = array();
@@ -212,6 +214,13 @@ class Database extends Database_Contoller
             $this->_startTimer();
 
             $result = $this->_db_connect_id->query($this->_query);
+
+            // Snapshot this statement's own outcome before anything else uses the
+            // connection. Both values are live reads, and _logError() below runs an
+            // INSERT, so a caller asking afterwards would get the log write's numbers
+            // rather than its own.
+            $this->_statement_affected = mysqli_affected_rows($this->_db_connect_id);
+            $this->_statement_errno    = (int)$this->_db_connect_id->errno;
 
             if ($result) {
                 if (is_bool($result)) {

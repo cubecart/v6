@@ -73,6 +73,19 @@ class Database_Contoller
      * @var $_found_rows int
      */
     protected $_found_rows  = null;
+
+    /**
+     * Rows affected by the last statement, captured as it ran
+     *
+     * @var int
+     */
+    protected $_statement_affected = 0;
+    /**
+     * Error number of the last statement, captured as it ran
+     *
+     * @var int
+     */
+    protected $_statement_errno = 0;
     /**
      * Store prefix
      *
@@ -563,6 +576,34 @@ class Database_Contoller
         $this->_query = $query;
         $this->_execute($cache, true, $log);
         return $this->_result;
+    }
+
+    /**
+     * Rows affected by the last statement, as counted while it ran.
+     *
+     * affected() re-reads the connection, so anything that queries in between
+     * overwrites it - including the error logger, which runs its own INSERT on
+     * the failure path. Use this when the row count decides program flow, such
+     * as a conditional UPDATE that reports whether it matched.
+     *
+     * @return int
+     */
+    public function statementAffected()
+    {
+        return (int)$this->_statement_affected;
+    }
+
+    /**
+     * Error number of the last statement, as read while it ran.
+     *
+     * Zero means the statement itself succeeded. Pair it with
+     * statementAffected() to tell "matched nothing" from "never ran".
+     *
+     * @return int
+     */
+    public function statementErrno()
+    {
+        return (int)$this->_statement_errno;
     }
 
     /**

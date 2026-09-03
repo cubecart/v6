@@ -29,6 +29,19 @@ class Order
 
     private $_skip_order_complete_email = false;
 
+    /**
+     * Line items the last _manageStock() call could not take stock for
+     *
+     * @var array
+     */
+    private $_stock_shortfall = array();
+    /**
+     * Line items the last _manageStock() call did take stock for
+     *
+     * @var array
+     */
+    private $_stock_taken = array();
+
     private static $_instance;
 
     ## Order status constants
@@ -675,6 +688,13 @@ class Order
             // Update Stock Levels
             $this->_manageStock($status_id, $order_id);
 
+            // Reached from gateway callbacks and admin actions as well as from
+            // placeOrder, so there may be nobody to tell. The order stands either
+            // way; the shortfall is recorded for the merchant.
+            if ($this->stockShortfall()) {
+                $this->_reportShortfall($order_id, false);
+            }
+
             // Set status to complete if it is digital only
             if (isset($complete) && $complete) {
                 if ($GLOBALS['config']->get('config', 'force_completed')!="1") {
@@ -829,6 +849,18 @@ class Order
             foreach ($GLOBALS['hooks']->load('class.order.place_order.postbasket') as $hook) include $hook;
 
             $this->_manageStock(self::ORDER_PENDING, $this->_basket['cart_order_id']);
+
+            // Something sold out while this customer was checking out. Give back
+            // whatever this pass took and send them to the basket with the reason,
+            // rather than on to a gateway to pay for stock that is not there. Only
+            // reachable when stock reduces at Pending; in the other modes the
+            // deduction happens after payment and _reportShortfall records it.
+            if ($this->stockShortfall()) {
+                $this->_rollbackStock($this->_basket['cart_order_id']);
+                $this->_reportShortfall($this->_basket['cart_order_id'], true);
+                httpredir(currentPage(null, array('_a' => 'basket')));
+                return false;
+            }
 
             $this->orderStatus(self::ORDER_PENDING, $this->_basket['cart_order_id'], true);
 
@@ -1328,6 +1360,26 @@ class Order
      * @param string $order_id
      * @return bool
      */
+    /**
+     * Take or return stock for the line items on an order
+     *
+     * Deductions are conditional single statements. A line is claimed by moving
+     * its own stock_updated flag from 0 to 1, then stock is taken only if enough
+     * is still on hand. Either step matching no rows ends that line's attempt, so
+     * two checkouts racing for the last unit cannot both succeed (#4224).
+     *
+     * Lines that are not stock tracked are skipped by the SELECTs below exactly as
+     * they always were: a gift certificate, a product with stock control off, a
+     * deleted product or a disabled option matrix row never reaches the guarded
+     * write, and so is never mistaken for a shortfall.
+     *
+     * Shortfalls are recorded rather than thrown. The caller decides what to do
+     * with them, because that depends on whether a customer is still present.
+     *
+     * @param int $status_id
+     * @param string $order_id
+     * @return bool
+     */
     private function _manageStock($status_id, $order_id)
     {
         if($GLOBALS['config']->get('config', 'elasticsearch')=='1') {
@@ -1338,131 +1390,261 @@ class Order
         }
 
         $matrix_prod = array();
+        $this->_stock_shortfall = array();
+        $this->_stock_taken     = array();
 
-        if (($items = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $order_id), false, false, false, false)) !== false) {
-            $stock_change_time = (int)$GLOBALS['config']->get('config', 'stock_change_time');
+        if (($items = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $order_id), false, false, false, false)) === false) {
+            return false;
+        }
 
-            foreach ($items as $item) {
+        $stock_change_time = (int)$GLOBALS['config']->get('config', 'stock_change_time');
+        // Stores that allow out of stock purchases sell below zero deliberately, so
+        // for them the deduction stays atomic but is never refused.
+        $refuse_short = !$GLOBALS['config']->get('config', 'basket_out_of_stock_purchase');
 
-                // Check stock on options first
-                if (!empty($item['options_identifier']) && $options_stock = $GLOBALS['db']->select('CubeCart_option_matrix', array('stock_level', 'matrix_id'), array('product_id' => (int)$item['product_id'], 'options_identifier' => $item['options_identifier'], 'status' => 1, 'use_stock' => 1), false, false, false, false)) {
-                    $stock = $options_stock[0]['stock_level'];
+        foreach ($items as $item) {
+            $quantity = (int)$item['quantity'];
+            if ($quantity < 1) {
+                continue;
+            }
 
-                    $matrix_prod[] = (int)$item['product_id'];
+            // Find the row holding this line's stock. Matching neither means the
+            // line is not stock tracked, and it is skipped as before.
+            $table = false;
+            $where = '';
+            if (!empty($item['options_identifier']) && $options_stock = $GLOBALS['db']->select('CubeCart_option_matrix', array('stock_level', 'matrix_id'), array('product_id' => (int)$item['product_id'], 'options_identifier' => $item['options_identifier'], 'status' => 1, 'use_stock' => 1), false, false, false, false)) {
+                // Key the write on the primary key. The product/options pair the old
+                // code used has no unique index, so it could span rows the SELECT
+                // above never looked at.
+                $table = 'CubeCart_option_matrix';
+                $where = '`matrix_id` = '.(int)$options_stock[0]['matrix_id'];
+                $matrix_prod[] = (int)$item['product_id'];
+            } elseif ($GLOBALS['db']->select('CubeCart_inventory', array('stock_level'), array('product_id' => (int)$item['product_id'], 'use_stock_level' => 1), false, false, false, false) !== false) {
+                $table = 'CubeCart_inventory';
+                $where = '`product_id` = '.(int)$item['product_id'].' AND `use_stock_level` = 1';
+            }
+            if ($table === false) {
+                continue;
+            }
 
-                    switch ($status_id) {
-                    case self::ORDER_PENDING:
-                        // Update stock on order creation
-                        if (!$item['stock_updated'] && $stock_change_time === 2) {
-                            $stock = $stock-$item['quantity'];
-                            $update = 1;
-                        }
-                        break;
-                    case self::ORDER_PROCESS:
-                        // Update stock on order payment
-                        if (!$item['stock_updated'] && $stock_change_time === 1) {
-                            $stock = $stock-$item['quantity'];
-                            $update = 1;
-                        }
-                        break;
-                    case self::ORDER_COMPLETE:
-                        // Update stock on order completion
-                        if (!$item['stock_updated'] && $stock_change_time === 0) {
-                            $stock = $stock-$item['quantity'];
-                            $update = 1;
-                        }
-                        break;
-                    case self::ORDER_DECLINED:
-                    case self::ORDER_FAILED:
-                    case self::ORDER_CANCELLED:
-                        ## Restore stock
-                        if ($item['stock_updated']) {
-                            $stock = $stock+$item['quantity'];
-                            $update = 0;
-                        }
-                        break;
-                    }
-                    if (isset($stock) && isset($update)) {
-                        // Update store inventory
-                        $GLOBALS['db']->update('CubeCart_option_matrix', array('stock_level' => $stock), array('product_id' => (int)$item['product_id'], 'options_identifier' => $item['options_identifier']));
-                        // Update order inventory information
-                        $GLOBALS['db']->update('CubeCart_order_inventory', array('stock_updated' => (int)$update), array('id' => $item['id'], 'cart_order_id' => $order_id));
-                        // Update Elasticsearch
-                        if(isset($es)) {
-                            $es->update($item['product_id'], 'stock_level');
-                        }
-                        // Unset variables
-                        unset($stock, $update);
-                    }
-                    // skip to the next item
+            $action = false;
+            switch ($status_id) {
+            case self::ORDER_PENDING:
+                $action = ($stock_change_time === 2) ? 'take' : false;
+                break;
+            case self::ORDER_PROCESS:
+                $action = ($stock_change_time === 1) ? 'take' : false;
+                break;
+            case self::ORDER_COMPLETE:
+                $action = ($stock_change_time === 0) ? 'take' : false;
+                break;
+            case self::ORDER_DECLINED:
+            case self::ORDER_FAILED:
+                // Only option stock comes back on a declined or failed payment.
+                // Traditional stock does not. That inconsistency predates this
+                // change and is left as it was rather than altered here (#4258).
+                $action = ($table === 'CubeCart_option_matrix') ? 'give' : false;
+                break;
+            case self::ORDER_CANCELLED:
+                $action = 'give';
+                break;
+            }
+
+            if ($action === 'take') {
+                if (!$this->_stockClaim($item['id'], $order_id, 1)) {
+                    // Already claimed, which means an earlier pass in this same
+                    // request took it. Not a shortfall.
                     continue;
                 }
-                // Traditional stock if the product opts are not set or not set to use stock
-                if (($product = $GLOBALS['db']->select('CubeCart_inventory', array('stock_level'), array('product_id' => (int)$item['product_id'], 'use_stock_level' => 1), false, false, false, false)) !== false) {
-                    $stock = $product[0]['stock_level'];
-
-                    switch ($status_id) {
-                    case self::ORDER_PENDING:
-                        // Update stock on order creation
-                        if (!$item['stock_updated'] && $stock_change_time === 2) {
-                            $stock = $stock-$item['quantity'];
-                            $update = 1;
-                        }
-                        break;
-                    case self::ORDER_PROCESS:
-                        // Update stock on order payment
-                        if (!$item['stock_updated'] && $stock_change_time === 1) {
-                            $stock = $stock-$item['quantity'];
-                            $update = 1;
-                        }
-                        break;
-                    case self::ORDER_COMPLETE:
-                        // Update stock on order completion
-                        if (!$item['stock_updated'] && $stock_change_time === 0) {
-                            $stock = $stock-$item['quantity'];
-                            $update = 1;
-                        }
-                        break;
-                    case self::ORDER_DECLINED:
-                    case self::ORDER_FAILED:
-                        break;
-                    case self::ORDER_CANCELLED:
-                        ## Restore stock
-                        if ($item['stock_updated']) {
-                            $stock = $stock+$item['quantity'];
-                            $update = 0;
-                        }
-                        break;
-                    }
-                    if (isset($stock) && isset($update)) {
-                        // Update store inventory
-                        $GLOBALS['db']->update('CubeCart_inventory', array('stock_level' => $stock), array('product_id' => (int)$item['product_id']));
-                        // Update order inventory information
-                        $GLOBALS['db']->update('CubeCart_order_inventory', array('stock_updated' => (int)$update), array('id' => $item['id'], 'cart_order_id' => $order_id));
-                        // Update Elasticsearch
-                        if(isset($es)) {
-                            $es->update($item['product_id'], 'stock_level');
-                        }
-                        // Unset variables
-                        unset($stock, $update);
-                    }
+                if ($this->_stockAdjust($table, $where, -$quantity, $refuse_short)) {
+                    $this->_stock_taken[] = array(
+                        'id'         => $item['id'],
+                        'table'      => $table,
+                        'where'      => $where,
+                        'quantity'   => $quantity,
+                        'product_id' => (int)$item['product_id'],
+                    );
+                } else {
+                    $this->_stockClaim($item['id'], $order_id, 0);
+                    $this->_stock_shortfall[] = array(
+                        'name'       => $item['name'],
+                        'product_id' => (int)$item['product_id'],
+                        'quantity'   => $quantity,
+                    );
+                    continue;
                 }
-            }
-            if ($GLOBALS['config']->get('config', 'update_main_stock')) {
-                $matrix_prods = array_unique($matrix_prod);
-
-                foreach ($matrix_prods as $prod_id) {
-                    $options_stock = $GLOBALS['db']->select('CubeCart_option_matrix', 'SUM(stock_level) AS stock', array('product_id' => (int)$prod_id, 'status' => 1, 'use_stock' => 1), false, false, false, false);
-                    $GLOBALS['db']->update('CubeCart_inventory', array('stock_level' => $options_stock[0]['stock']), array('product_id' => (int)$prod_id));
-                    // Update Elasticsearch
-                    if(isset($es)) {
-                        $es->update($prod_id, 'stock_level');
-                    }
+            } elseif ($action === 'give') {
+                if (!$this->_stockClaim($item['id'], $order_id, 0)) {
+                    // Nothing held against this line, so nothing to return.
+                    continue;
                 }
+                $this->_stockAdjust($table, $where, $quantity, false);
+            } else {
+                continue;
             }
-            return true;
+
+            if (isset($es)) {
+                $es->update($item['product_id'], 'stock_level');
+            }
         }
-        return false;
+
+        if ($GLOBALS['config']->get('config', 'update_main_stock')) {
+            foreach (array_unique($matrix_prod) as $prod_id) {
+                $this->_rollupMatrixStock((int)$prod_id);
+                if (isset($es)) {
+                    $es->update($prod_id, 'stock_level');
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Claim or release an order line's stock deduction
+     *
+     * Moving stock_updated between 0 and 1 conditionally is what makes the whole
+     * operation safe to repeat: placeOrder can reach _manageStock several times in
+     * one request, and only the pass that wins this statement acts on the line.
+     *
+     * @param int $line_id
+     * @param string $order_id
+     * @param int $to 1 to claim, 0 to release
+     * @return bool true when this call made the change
+     */
+    private function _stockClaim($line_id, $order_id, $to)
+    {
+        $GLOBALS['db']->misc(sprintf(
+            "UPDATE `%sCubeCart_order_inventory` SET `stock_updated` = %d WHERE `id` = %d AND `cart_order_id` = '%s' AND `stock_updated` = %d;",
+            $GLOBALS['config']->get('config', 'dbprefix'),
+            (int)$to,
+            (int)$line_id,
+            $GLOBALS['db']->sqlSafe((string)$order_id),
+            $to ? 0 : 1
+        ), false);
+
+        return ($GLOBALS['db']->statementErrno() === 0 && $GLOBALS['db']->statementAffected() === 1);
+    }
+
+    /**
+     * Move a stock level by a relative amount in one statement
+     *
+     * The read, the test and the write are the same statement, so there is no
+     * window for a concurrent checkout to interleave.
+     *
+     * @param string $table
+     * @param string $where already-escaped key condition
+     * @param int $change negative to take stock, positive to return it
+     * @param bool $refuse_short refuse rather than go below zero
+     * @return bool true when a row moved
+     */
+    private function _stockAdjust($table, $where, $change, $refuse_short)
+    {
+        $change = (int)$change;
+        $guard  = ($refuse_short && $change < 0) ? ' AND `stock_level` >= '.abs($change) : '';
+
+        $GLOBALS['db']->misc(sprintf(
+            'UPDATE `%s%s` SET `stock_level` = `stock_level` %s %d WHERE %s%s;',
+            $GLOBALS['config']->get('config', 'dbprefix'),
+            $table,
+            ($change < 0) ? '-' : '+',
+            abs($change),
+            $where,
+            $guard
+        ), false);
+
+        return ($GLOBALS['db']->statementErrno() === 0 && $GLOBALS['db']->statementAffected() > 0);
+    }
+
+    /**
+     * Recalculate a product's main stock level from its option matrix
+     *
+     * One statement rather than a SELECT SUM followed by an absolute write, which
+     * would otherwise clobber a concurrent deduction it never read.
+     *
+     * @param int $product_id
+     */
+    private function _rollupMatrixStock($product_id)
+    {
+        $GLOBALS['db']->misc(sprintf(
+            'UPDATE `%1$sCubeCart_inventory` SET `stock_level` = (SELECT COALESCE(SUM(`stock_level`), 0) FROM `%1$sCubeCart_option_matrix` WHERE `product_id` = %2$d AND `status` = 1 AND `use_stock` = 1) WHERE `product_id` = %2$d;',
+            $GLOBALS['config']->get('config', 'dbprefix'),
+            (int)$product_id
+        ), false);
+    }
+
+    /**
+     * Did the last _manageStock() call fail to take stock for anything?
+     *
+     * @return array line items it could not take, empty when all was well
+     */
+    public function stockShortfall()
+    {
+        return $this->_stock_shortfall;
+    }
+
+    /**
+     * Give back everything the last _manageStock() call took
+     *
+     * Only for the pre-payment abort. Once a customer has paid, the lines that did
+     * come out of stock are theirs and stay deducted.
+     *
+     * @param string $order_id
+     */
+    private function _rollbackStock($order_id)
+    {
+        $matrix_prod = array();
+        foreach ($this->_stock_taken as $taken) {
+            if ($this->_stockClaim($taken['id'], $order_id, 0)) {
+                $this->_stockAdjust($taken['table'], $taken['where'], $taken['quantity'], false);
+                if ($taken['table'] === 'CubeCart_option_matrix') {
+                    $matrix_prod[] = $taken['product_id'];
+                }
+            }
+        }
+        if ($GLOBALS['config']->get('config', 'update_main_stock')) {
+            foreach (array_unique($matrix_prod) as $prod_id) {
+                $this->_rollupMatrixStock((int)$prod_id);
+            }
+        }
+        $this->_stock_taken = array();
+    }
+
+    /**
+     * Record a stock shortfall
+     *
+     * With a customer still on the page they get the message and the order does not
+     * proceed. Without one the order has already been paid for, so the shortfall is
+     * written to the order and to the store error log for the merchant to act on;
+     * refusing an order after the card has been charged helps nobody.
+     *
+     * @param string $order_id
+     * @param bool $customer_present
+     */
+    private function _reportShortfall($order_id, $customer_present)
+    {
+        if (empty($this->_stock_shortfall)) {
+            return;
+        }
+
+        $names = array();
+        foreach ($this->_stock_shortfall as $short) {
+            $names[] = $short['name'].' ('.$short['quantity'].')';
+        }
+        $summary = sprintf($GLOBALS['language']->orders['stock_shortfall'], implode(', ', $names));
+
+        $this->addNote($order_id, $summary, false);
+
+        if ($customer_present) {
+            $GLOBALS['gui']->setError($GLOBALS['language']->checkout['stock_availability_changed']);
+            foreach ($this->_stock_shortfall as $short) {
+                $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->checkout['error_item_not_available'], $short['name']));
+            }
+        } elseif (class_exists('Debug')) {
+            Debug::writeSystemErrorLog('Order '.$order_id.': '.$summary);
+        }
+
+        $this->_stock_shortfall = array();
     }
 
     /**
