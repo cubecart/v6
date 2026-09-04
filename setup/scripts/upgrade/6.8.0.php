@@ -110,19 +110,21 @@ if (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) {
     $GLOBALS['cache']->clear();
 }
 
-// Import the account activation email across every shipped language. A guest
-// record is only promoted to a real account after the address is confirmed, and
-// this is the message carrying that link. importEmail() is safe to re-run: it
-// inserts only rows that do not already exist, so merchant edited copies
-// survive. Languages whose XML has no translation yet are simply skipped, and
-// User::requestActivation() falls back to any available language at send time.
-$new_emails = array(
-    'account.activate',
-);
-if (is_array($languages)) {
+// Import missing email content for every installed language, as 6.6.0 does.
+// Passing no content type imports whatever the language file has that the store
+// does not, so this picks up account.activate (the confirmation link sent before
+// a guest record becomes a real account) and any other type a refreshed language
+// pack has gained since. importEmail() only inserts rows that do not already
+// exist, so a merchant edited copy is never overwritten.
+//
+// Only the English files carry account.activate today; other languages get it
+// when their pack is updated. Until then User::requestActivation() falls back to
+// any available language rather than sending nothing.
+if (is_array($languages) && !empty($languages)) {
     foreach ($languages as $code => $lang) {
-        foreach ($new_emails as $tpl) {
-            $language->importEmail('email_'.$code.'.xml', CC_LANGUAGE_DIR, $tpl);
+        $email_file = 'email_'.$code.'.xml';
+        if (file_exists(CC_LANGUAGE_DIR.$email_file)) {
+            $language->importEmail($email_file);
         }
     }
 }
