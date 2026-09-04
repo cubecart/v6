@@ -293,8 +293,14 @@ class Order
         $order_summary['raw_shipping'] = $order_summary['shipping'];
         $order_summary['raw_order_date'] = $order_summary['order_date'];
 
+        // Emails have to agree with the basket and the receipt: on an inclusive
+        // store the stored figures are ex tax, so gross them the same way (#4197).
+        $email_presentation = self::storedPresentation($order_summary);
+        $email_inclusive    = $email_presentation['inclusive'];
+        $email_lines        = $email_presentation['lines'];
+
         // Format prices etc for order emails...
-        $order_summary['subtotal']  = Tax::getInstance()->priceFormat($order_summary['subtotal'], true);
+        $order_summary['subtotal']  = Tax::getInstance()->priceFormat(self::displaySubtotal($order_summary, $email_inclusive), true);
         $order_summary['show_credit']  = $order_summary['credit_used'] > 0 ? true : false;
         $order_summary['credit_used']  = Tax::getInstance()->priceFormat($order_summary['credit_used'], true);
         $order_summary['total']  = Tax::getInstance()->priceFormat($order_summary['total'], true);
@@ -318,6 +324,7 @@ class Order
             if ($item['product_id']>0) {
                 $existing_data = $GLOBALS['catalogue']->getProductData($item['product_id']);
                 $product    = is_array($existing_data) ? array_merge($existing_data, $item) : $item;
+                $product['price'] = self::displayLinePrice($product, $email_inclusive, $email_lines);
                 $product['raw_price'] = $product['price'];
                 $product['raw_line_total'] = $product['price'] * $product['quantity'];
                 $product['item_price'] = Tax::getInstance()->priceFormat($product['price']);
@@ -343,7 +350,7 @@ class Order
                 $product['product_options'] = implode(' ', $options);
                 $vars['products'][] = $product;
             } else {
-                $item['price'] = Tax::getInstance()->priceFormat($item['price']);
+                $item['price'] = Tax::getInstance()->priceFormat(self::displayLinePrice($item, $email_inclusive, $email_lines));
                 $vars['products'][] = $item;
             }
         }
@@ -352,7 +359,10 @@ class Order
         if ($order_taxes) {
             foreach ($order_taxes as $order_tax) {
                 $tax_data = Tax::getInstance()->fetchTaxDetails($order_tax['tax_id']);
-                $tax['tax_name']  = $tax_data['name'];
+                // Prefix rather than alter the layout: email templates live in the
+                // database once a store has saved one, so a template change would
+                // never reach them.
+                $tax['tax_name']  = ($email_inclusive ? $GLOBALS['language']->common['includes'].' ' : '').$tax_data['name'];
                 //$tax['tax_percent'] = sprintf('%.3F',$tax_data['tax_percent']);
                 $tax['tax_percent'] = floatval($tax_data['tax_percent']); // get rid of zeroes
                 $tax['tax_amount']  = Tax::getInstance()->priceFormat($order_tax['amount']);
