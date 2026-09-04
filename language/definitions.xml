@@ -665,7 +665,7 @@
     <string name="unit_inches" introduced="6.7.0"><![CDATA[Inches (in)]]></string>
 		<string name="review_verified" introduced="6.8.0"><![CDATA[Verified Purchaser]]></string>
 		<string name="error_review_customer" introduced="6.8.0"><![CDATA[Only registered customers can write a review. Please %1$s, or %2$s.]]></string>
-		<string name="error_review_purchaser" introduced="6.8.0"><![CDATA[Only customers who have bought this product can review it. Please %1$s, or %2$s, using the email address you gave when you ordered.]]></string>
+		<string name="error_review_purchaser" introduced="6.8.0"><![CDATA[Only customers who have bought this product can review it. Please %1$s with the account you ordered with.]]></string>
 	</group>
   <group name="category">
     <string name="edit_category" introduced="6.5.9"><![CDATA[Edit Category]]></string>

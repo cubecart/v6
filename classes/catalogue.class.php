@@ -1637,11 +1637,9 @@ class Catalogue
     /**
      * Has this person bought this product?
      *
-     * Guest checkout means a purchase is not always tied to a customer account,
-     * so an email match counts as well as a customer id. That makes the email a
-     * claim rather than a proof: anyone who knows a buyer's address can satisfy
-     * it. Pair "verified purchasers only" with review moderation, which stays on
-     * by default, rather than treating it as authentication.
+     * Counts only orders tied to the customer account, because nothing today
+     * proves a registered address belongs to the person using it. See the note
+     * in the body before adding an email match back.
      *
      * @param int    $product_id
      * @param int    $customer_id  0 for a guest
@@ -1654,16 +1652,27 @@ class Catalogue
         $customer_id = (int)$customer_id;
         $email       = trim((string)$email);
 
-        if ($product_id <= 0 || ($customer_id <= 0 && $email === '')) {
+        if ($product_id <= 0 || $customer_id <= 0) {
             return false;
         }
 
+        // Deliberately customer id only.
+        //
+        // Matching on the order email looks harmless and is not: registration
+        // does not prove control of the address (verify/verify_expires on
+        // CubeCart_customer serve password recovery, nothing checks an address
+        // at sign up), so anyone who knows an address that placed guest orders
+        // could register with it and inherit those purchases, badge included.
+        // That is the exact spam route this setting exists to close.
+        //
+        // Re-enable the email match only once an address is proven, and gate it
+        // on that proof rather than on the address alone.
         $conditions = array();
         if ($customer_id > 0) {
             $conditions[] = 'OS.`customer_id` = '.$customer_id;
         }
-        if ($email !== '') {
-            $conditions[] = "OS.`email` = '".$GLOBALS['db']->sqlSafe($email)."'";
+        if (empty($conditions)) {
+            return false;
         }
 
         // Processing counts as well as Complete: plenty of stores never move an
