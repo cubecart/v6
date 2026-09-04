@@ -4,8 +4,8 @@
     all: initial;
     position: fixed;
     z-index: 999998;
-    bottom: 0;
-    right: 20px;
+    top: 0;
+    right: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 12px;
     line-height: normal;
@@ -19,8 +19,9 @@
     cursor: pointer;
     background-color: #f2f2f7;
     border: 1px solid #d1d1d6;
-    border-bottom: none;
-    border-radius: 12px 12px 0 0;
+    border-top: none;
+    border-right: none;
+    border-radius: 0 0 0 12px;
     padding: 6px 14px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 12px;
@@ -39,10 +40,11 @@
     display: none;
     background-color: #f2f2f7;
     border: 1px solid #d1d1d6;
-    border-bottom: none;
-    border-radius: 12px 12px 0 0;
+    border-top: none;
+    border-right: none;
+    border-radius: 0 0 0 12px;
     padding: 10px 14px;
-    box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
 }
 .skin_select_widget.open .ssw_panel {
     display: block;
@@ -99,11 +101,6 @@
 .skin_select_widget .ssw_panel .ssw_close:hover {
     color: #333;
     text-decoration: none;
-}
-@media only screen and (max-width: 40em) {
-    .skin_select_widget {
-        display: none;
-    }
 }
 </style>
 <div class="skin_select_widget" id="skin_select_widget">
