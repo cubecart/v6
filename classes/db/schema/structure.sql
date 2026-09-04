@@ -991,6 +991,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_reviews` (
 	`email` VARCHAR(96) NOT NULL,
 	`title` VARCHAR(255) NOT NULL,
 	`review` TEXT NOT NULL,
+	`verified` tinyint(1) NOT NULL DEFAULT '0',
 	`ip_address` VARCHAR(45) NOT NULL COMMENT 'Supports IPv6 addresses',
 	`time` INT UNSIGNED NOT NULL,
 	PRIMARY KEY (`id`),

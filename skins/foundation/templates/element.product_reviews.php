@@ -38,18 +38,27 @@
             </div>
             {/if}
             <div class="{if $review.gravatar_exists}small-9 medium-10{else}small-12{/if} columns review_copy">
-            <blockquote>{$review.review}<cite>{$review.name}{if !empty($review.date)} ({$review.date}){/if}</cite></blockquote>
+            <blockquote>{$review.review}<cite>{$review.name}{if !empty($review.verified)} <span class="label success review_verified">{$LANG.catalogue.review_verified}</span>{/if}{if !empty($review.date)} ({$review.date}){/if}</cite></blockquote>
             </div>
          </div>
       </div>
       {/foreach}
       {if isset($PAGINATION)}{$PAGINATION}{/if}
+      {if $REVIEW_ALLOWED}
       <a href="#" class="button review_show">{$LANG.catalogue.write_a_review}</a>
+      {elseif $REVIEW_BLOCKED}
+      <p class="review_blocked">{if $REVIEW_BLOCKED == 'purchaser'}{$LANG.catalogue.error_review_purchaser}{else}{$LANG.catalogue.error_review_customer}{/if}</p>
+      {/if}
       {else}
       <p>{$LANG.catalogue.product_not_reviewed}</p>
+      {if $REVIEW_ALLOWED}
       <a href="#" class="button review_show">{$LANG.catalogue.write_a_review}</a>
+      {elseif $REVIEW_BLOCKED}
+      <p class="review_blocked">{if $REVIEW_BLOCKED == 'purchaser'}{$LANG.catalogue.error_review_purchaser}{else}{$LANG.catalogue.error_review_customer}{/if}</p>
+      {/if}
       {/if}
    </div>
+   {if $REVIEW_ALLOWED}
    <div id="review_write" class="hide">
       <h3>{$LANG.catalogue.write_review}</h3>
       <form action="{$VAL_SELF}#reviews_write" id="review_form" method="post">
@@ -86,6 +95,7 @@
          </div>
       </form>
    </div>
+   {/if}
    <div class="hide" id="validate_email">{$LANG.common.error_email_invalid}</div>
 </div>
 {/if}

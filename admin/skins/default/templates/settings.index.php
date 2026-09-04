@@ -73,6 +73,19 @@
          <option value="2"{if $CONFIG.enable_reviews=='2'} selected="selected"{/if}>{$LANG.catalogue.reviews_no_gravatar}</option>
          </select>
          </span></div>
+         <div><label for="review_eligibility">{$LANG.settings.review_eligibility}</label><span>
+         <select name="config[review_eligibility]" id="review_eligibility" class="textbox">
+         <option value="0"{if $CONFIG.review_eligibility=='0'} selected="selected"{/if}>{$LANG.settings.review_eligibility_anyone}</option>
+         <option value="1"{if $CONFIG.review_eligibility=='1'} selected="selected"{/if}>{$LANG.settings.review_eligibility_customer}</option>
+         <option value="2"{if $CONFIG.review_eligibility=='2'} selected="selected"{/if}>{$LANG.settings.review_eligibility_purchaser}</option>
+         </select>
+         <small>{$LANG.settings.review_eligibility_note}</small>
+         </span></div>
+         <div><label for="review_notify">{$LANG.settings.review_notify}</label><span>
+         <input type="hidden" name="config[review_notify]" value="0">
+         <input type="checkbox" name="config[review_notify]" id="review_notify" value="1"{if $CONFIG.review_notify!='0'} checked="checked"{/if}>
+         <small>{$LANG.settings.review_notify_note}</small>
+         </span></div>
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_orders}</legend>

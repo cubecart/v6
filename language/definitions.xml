@@ -663,7 +663,10 @@
     <string name="customer_group_pricing" introduced="6.6.0"><![CDATA[Customer Group Pricing]]></string>
     <string name="unit_cm" introduced="6.7.0"><![CDATA[Centimeters (cm)]]></string>
     <string name="unit_inches" introduced="6.7.0"><![CDATA[Inches (in)]]></string>
-  </group>
+		<string name="review_verified" introduced="6.8.0"><![CDATA[Verified Purchaser]]></string>
+		<string name="error_review_customer" introduced="6.8.0"><![CDATA[Only registered customers can write a review. Please sign in.]]></string>
+		<string name="error_review_purchaser" introduced="6.8.0"><![CDATA[Only customers who have bought this product can review it. Please sign in with the account you ordered with.]]></string>
+	</group>
   <group name="category">
     <string name="edit_category" introduced="6.5.9"><![CDATA[Edit Category]]></string>
     <string name="no_products" introduced="5.0.0"><![CDATA[No products found.]]></string>
@@ -2665,7 +2668,14 @@ This email is sent from the store's master email address but it is possible to r
     <string name="weight_unit_kg" introduced="5.0.0"><![CDATA[Metric (kg)]]></string>
     <string name="weight_unit_lb" introduced="5.0.0"><![CDATA[Imperial (lb)]]></string>
     <string name="default_product_sort" introduced="5.2.0"><![CDATA[Product List Sorting]]></string>
-  </group>
+		<string name="review_eligibility" introduced="6.8.0"><![CDATA[Who can write reviews]]></string>
+		<string name="review_eligibility_anyone" introduced="6.8.0"><![CDATA[Anyone]]></string>
+		<string name="review_eligibility_customer" introduced="6.8.0"><![CDATA[Registered customers only]]></string>
+		<string name="review_eligibility_purchaser" introduced="6.8.0"><![CDATA[Verified purchasers only]]></string>
+		<string name="review_eligibility_note" introduced="6.8.0"><![CDATA[Verified purchasers must be signed in and have bought the product on an order that is processing or complete. Reviews still go through moderation.]]></string>
+		<string name="review_notify" introduced="6.8.0"><![CDATA[Email me about new reviews]]></string>
+		<string name="review_notify_note" introduced="6.8.0"><![CDATA[Turn off to stop the new review notification. Reviews still need approving.]]></string>
+	</group>
   <group name="setup">
     <string name="help_dbport" introduced="6.1.1"><![CDATA[This is the database server port. In most cases this can be left empty. Default value is 3306]]></string>
     <string name="help_dbsocket" introduced="6.1.1"><![CDATA[This is the database server socket. In most cases it can be left blank.]]></string>

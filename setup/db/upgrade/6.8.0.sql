@@ -21,3 +21,6 @@ ALTER TABLE `CubeCart_documents` ADD `doc_departments` TEXT NULL; #EOQ
 ALTER TABLE `CubeCart_documents` DROP INDEX `doc_privacy`; #EOQ
 ALTER TABLE `CubeCart_documents` DROP `doc_privacy`; #EOQ
 ALTER TABLE `CubeCart_admin_users` ADD `extensions_dismissed` TEXT NULL; #EOQ
+ALTER TABLE `CubeCart_reviews` ADD `verified` TINYINT(1) NOT NULL DEFAULT '0'; #EOQ
+INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) VALUES ('config', 'review_eligibility', '2') ON DUPLICATE KEY UPDATE `config_value` = `config_value`; #EOQ
+INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) VALUES ('config', 'review_notify', '1') ON DUPLICATE KEY UPDATE `config_value` = `config_value`; #EOQ

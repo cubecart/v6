@@ -3416,8 +3416,19 @@ class Cubecart
         if (($product = $GLOBALS['catalogue']->getProductData($_GET['product_id'])) === false) {
             return;
         }
+        $review_eligibility = $GLOBALS['catalogue']->reviewEligibility((int)$_GET['product_id']);
+        $GLOBALS['smarty']->assign('REVIEW_ALLOWED', $review_eligibility['allowed']);
+        $GLOBALS['smarty']->assign('REVIEW_BLOCKED', $review_eligibility['reason']);
+
         if ($GLOBALS['config']->get('config', 'enable_reviews') && isset($_POST['review']) && is_array($_POST['review'])) {
             $error = false;
+
+            // The form is hidden when the store restricts who may review, but the
+            // handler has to enforce it too or a direct POST walks straight past.
+            if (!$review_eligibility['allowed']) {
+                $GLOBALS['gui']->setError($GLOBALS['language']->catalogue['error_review_'.$review_eligibility['reason']]);
+                $error = true;
+            }
 
             foreach ($GLOBALS['hooks']->load('class.cubecart.review') as $hook) {
                 include $hook;
@@ -3441,6 +3452,13 @@ class Cubecart
             $record['product_id']  = (int)$_GET['product_id'];
             $record['ip_address']  = get_ip_address();
             $record['time']    = time();
+            // Snapshot rather than derive at display time: a later refund should
+            // not silently strip the badge from a review that was honest when
+            // written, and it saves a query per review on the product page.
+            // Only awarded to a signed in buyer. A guest supplies an email that
+            // nothing proves is theirs, so honouring it would let anyone who
+            // knows a customer's address post a badged review.
+            $record['verified'] = !empty($review_eligibility['verified']) ? 1 : 0;
 
             // Validate array
             $required = array('email', 'name', 'review', 'title');
@@ -3470,9 +3488,11 @@ class Cubecart
                     $mail     = new Mailer();
                     $record['link']   = $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFile').'?_g=products&node=reviews&edit='.$review_id;
                     $record['product_name'] = $product['name'];
-                    $content    = $mail->loadContent('admin.review_added', $GLOBALS['language']->current(), $record);
-                    if (!empty($content)) {
-                        $mail->sendEmailAsync($GLOBALS['config']->get('config', 'email_address'), $content);
+                    if ($GLOBALS['config']->get('config', 'review_notify') != '0') {
+                        $content    = $mail->loadContent('admin.review_added', $GLOBALS['language']->current(), $record);
+                        if (!empty($content)) {
+                            $mail->sendEmailAsync($GLOBALS['config']->get('config', 'email_address'), $content);
+                        }
                     }
                 } else {
                     $GLOBALS['gui']->setError($GLOBALS['language']->catalogue['error_review_submit']);

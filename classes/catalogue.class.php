@@ -1634,6 +1634,99 @@ class Catalogue
      * @param bool $return_max
      * @return array/false
      */
+    /**
+     * Has this person bought this product?
+     *
+     * Guest checkout means a purchase is not always tied to a customer account,
+     * so an email match counts as well as a customer id. That makes the email a
+     * claim rather than a proof: anyone who knows a buyer's address can satisfy
+     * it. Pair "verified purchasers only" with review moderation, which stays on
+     * by default, rather than treating it as authentication.
+     *
+     * @param int    $product_id
+     * @param int    $customer_id  0 for a guest
+     * @param string $email
+     * @return bool
+     */
+    public function hasPurchased($product_id, $customer_id = 0, $email = '')
+    {
+        $product_id  = (int)$product_id;
+        $customer_id = (int)$customer_id;
+        $email       = trim((string)$email);
+
+        if ($product_id <= 0 || ($customer_id <= 0 && $email === '')) {
+            return false;
+        }
+
+        $conditions = array();
+        if ($customer_id > 0) {
+            $conditions[] = 'OS.`customer_id` = '.$customer_id;
+        }
+        if ($email !== '') {
+            $conditions[] = "OS.`email` = '".$GLOBALS['db']->sqlSafe($email)."'";
+        }
+
+        // Processing counts as well as Complete: plenty of stores never move an
+        // order past Processing, and requiring Complete would silently refuse
+        // reviews from people who really did buy the product.
+        $statuses = implode(',', array(Order::ORDER_PROCESS, Order::ORDER_COMPLETE));
+
+        $result = $GLOBALS['db']->query(sprintf(
+            'SELECT OI.`id` FROM `%1$sCubeCart_order_inventory` AS OI
+             INNER JOIN `%1$sCubeCart_order_summary` AS OS ON OS.`cart_order_id` = OI.`cart_order_id`
+             WHERE OI.`product_id` = %2$d AND OS.`status` IN (%3$s) AND (%4$s) LIMIT 1',
+            $GLOBALS['config']->get('config', 'dbprefix'),
+            $product_id,
+            $statuses,
+            implode(' OR ', $conditions)
+        ));
+
+        return !empty($result);
+    }
+
+    /**
+     * Who is allowed to write a review, given the store's setting?
+     *
+     * Returns an array of 'allowed' and, when not allowed, a 'reason' key the
+     * skin can turn into a message.
+     *
+     * @param int $product_id
+     * @return array{allowed:bool, reason:string, verified:bool}
+     */
+    public function reviewEligibility($product_id)
+    {
+        // Absent means a store that predates the setting. Default to the
+        // strictest option rather than 0, so the shipped behaviour matches a
+        // fresh install even if the upgrade seed did not run.
+        $mode      = $GLOBALS['config']->get('config', 'review_eligibility');
+        $mode      = ($mode === null || $mode === false || $mode === '') ? 2 : (int)$mode;
+        $logged_in = $GLOBALS['user']->is();
+        $verified  = false;
+
+        if ($logged_in) {
+            $verified = $this->hasPurchased(
+                $product_id,
+                $GLOBALS['user']->get('customer_id'),
+                $GLOBALS['user']->get('email')
+            );
+        }
+
+        switch ($mode) {
+            case 2: // Verified purchasers only
+                if (!$logged_in) {
+                    // A guest could be asked for an email and checked against
+                    // orders, but nothing proves the address is theirs, so the
+                    // strict setting requires an account.
+                    return array('allowed' => false, 'reason' => 'purchaser', 'verified' => false);
+                }
+                return array('allowed' => $verified, 'reason' => $verified ? '' : 'purchaser', 'verified' => $verified);
+            case 1: // Logged-in customers only
+                return array('allowed' => $logged_in, 'reason' => $logged_in ? '' : 'customer', 'verified' => $verified);
+            default: // Anyone, the shipped behaviour
+                return array('allowed' => true, 'reason' => '', 'verified' => $verified);
+        }
+    }
+
     public function getProductStock($product_id = null, $options_identifier_string = null, $return_max = false, $check_existing = false, $quantity = false)
     {
         // Choose option combination specific stock

@@ -52,7 +52,7 @@
                {/if}
                <div class="review_copy min-w-0 text-sm text-ink-700">
                   <p>{$review.review}</p>
-                  <p class="mt-2 text-xs text-ink-500">{$review.name}{if !empty($review.date)} &middot; {$review.date}{/if}</p>
+                  <p class="mt-2 text-xs text-ink-500">{$review.name}{if !empty($review.verified)} <span class="review_verified ml-1 inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20">{$LANG.catalogue.review_verified}</span>{/if}{if !empty($review.date)} &middot; {$review.date}{/if}</p>
                </div>
             </div>
          </li>
@@ -64,9 +64,14 @@
       <p class="mt-4 text-sm text-ink-600">{$LANG.catalogue.product_not_reviewed}</p>
       {/if}
 
+      {if $REVIEW_ALLOWED}
       <button type="button" class="review_show cc-btn cc-btn-secondary mt-6" @click="select('write')">{$LANG.catalogue.write_a_review}</button>
+      {elseif $REVIEW_BLOCKED}
+      <p class="review_blocked mt-6 text-sm text-ink-600">{if $REVIEW_BLOCKED == 'purchaser'}{$LANG.catalogue.error_review_purchaser}{else}{$LANG.catalogue.error_review_customer}{/if}</p>
+      {/if}
    </div>
 
+   {if $REVIEW_ALLOWED}
    <div id="review_write" x-show="isActive('write')" x-cloak class="mt-6">
       <h3 class="text-lg font-semibold text-ink-900">{$LANG.catalogue.write_review}</h3>
       <form action="{$VAL_SELF}#reviews_write" id="review_form" data-cc-validate method="post" class="cc-card mt-4 space-y-4 p-5">
@@ -136,6 +141,7 @@
          </div>
       </form>
    </div>
+   {/if}
 
    <div class="hidden" id="validate_email">{$LANG.common.error_email_invalid}</div>
 </div>
