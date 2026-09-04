@@ -3751,6 +3751,17 @@ class Cubecart
         }
         $GLOBALS['smarty']->assign('LOGIN_HTML', $login_html);
 
+        // This page has one purpose, so a submitted registration is a
+        // registration whether or not the skin sends register=1. The hidden
+        // field in content.register.php is kept for third party skins that post
+        // it, but nothing depends on it any more: a skin that drops it used to
+        // render the form and then silently do nothing on submit.
+        // Keyed on passconf because it is unique to this form, so an unrelated
+        // POST landing on the page is not mistaken for a registration.
+        if (isset($_POST['passconf'])) {
+            $_POST['register'] = 1;
+        }
+
         if (isset($_POST['register']) && !empty($_POST['register'])) {
             $GLOBALS['user']->registerUser();
         }
