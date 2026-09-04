@@ -664,8 +664,8 @@
     <string name="unit_cm" introduced="6.7.0"><![CDATA[Centimeters (cm)]]></string>
     <string name="unit_inches" introduced="6.7.0"><![CDATA[Inches (in)]]></string>
 		<string name="review_verified" introduced="6.8.0"><![CDATA[Verified Purchaser]]></string>
-		<string name="error_review_customer" introduced="6.8.0"><![CDATA[Only registered customers can write a review. Please %s.]]></string>
-		<string name="error_review_purchaser" introduced="6.8.0"><![CDATA[Only customers who have bought this product can review it. Please %s with the account you ordered with.]]></string>
+		<string name="error_review_customer" introduced="6.8.0"><![CDATA[Only registered customers can write a review. Please %1$s, or %2$s.]]></string>
+		<string name="error_review_purchaser" introduced="6.8.0"><![CDATA[Only customers who have bought this product can review it. Please %1$s, or %2$s, using the email address you gave when you ordered.]]></string>
 	</group>
   <group name="category">
     <string name="edit_category" introduced="6.5.9"><![CDATA[Edit Category]]></string>
@@ -1015,6 +1015,7 @@
     <string name="width_short" introduced="6.7.0"><![CDATA[W]]></string>
     <string name="height_short" introduced="6.7.0"><![CDATA[H]]></string>
 		<string name="sign_in" introduced="6.8.0"><![CDATA[sign in]]></string>
+		<string name="create_an_account" introduced="6.8.0"><![CDATA[create an account]]></string>
 	</group>
   <group name="confirm">
     <string name="confirm_page" introduced="5.0.0"><![CDATA[Confirmation Page]]></string>

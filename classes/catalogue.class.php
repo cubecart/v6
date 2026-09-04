@@ -1743,16 +1743,25 @@ class Catalogue
      */
     private function _reviewBlocked($reason)
     {
-        $link = sprintf(
+        // Guest checkout means a buyer may have no account at all, so pointing
+        // them only at sign in is a dead end. Registering with the address they
+        // ordered with is enough: hasPurchased() matches on the order email as
+        // well as the customer id, so eligibility follows immediately.
+        $sign_in = sprintf(
             '<a href="%s/index.php?_a=login">%s</a>',
             $GLOBALS['storeURL'],
             $GLOBALS['language']->common['sign_in']
+        );
+        $register = sprintf(
+            '<a href="%s/index.php?_a=register">%s</a>',
+            $GLOBALS['storeURL'],
+            $GLOBALS['language']->common['create_an_account']
         );
         return array(
             'allowed'  => false,
             'reason'   => $reason,
             'verified' => false,
-            'message'  => sprintf($GLOBALS['language']->catalogue['error_review_'.$reason], $link)
+            'message'  => sprintf($GLOBALS['language']->catalogue['error_review_'.$reason], $sign_in, $register)
         );
     }
 
