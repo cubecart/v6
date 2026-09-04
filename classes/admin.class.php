@@ -337,16 +337,27 @@ class Admin
                         }
                     }
                 } elseif (empty($user[0]['salt'])) {
-                    // Legacy: no salt - oldest format
-                    $salt = $pwd->createSalt();
-                    $pass = $pwd->updateOld($user[0]['password'], $salt);
-                    $update = array(
-                        'salt'  => $salt,
-                        'password' => $pass,
-                        'new_password' => 0
-                    );
-                    if ($GLOBALS['db']->update('CubeCart_admin_users', $update, array('admin_id' => (int)$user[0]['admin_id']))) {
-                        $hash_password = $pass;
+                    // Legacy: no salt, the oldest format, where the stored value is a
+                    // bare md5 of the password. This is also the state the knowledge
+                    // base asks for when recovering a locked out admin by hand.
+                    //
+                    // The submitted password MUST be checked against it before
+                    // migrating. updateOld() derives the new hash from the stored value
+                    // alone, so without this the row was rewritten to that hash and then
+                    // matched against it, meaning any password was accepted and then
+                    // written in as the account's password. On the admin panel that is
+                    // a full takeover for anyone who knows a username.
+                    if (hash_equals((string)$user[0]['password'], md5($password))) {
+                        $salt = $pwd->createSalt();
+                        $pass = $pwd->updateOld($user[0]['password'], $salt);
+                        $update = array(
+                            'salt'  => $salt,
+                            'password' => $pass,
+                            'new_password' => 0
+                        );
+                        if ($GLOBALS['db']->update('CubeCart_admin_users', $update, array('admin_id' => (int)$user[0]['admin_id']))) {
+                            $hash_password = $pass;
+                        }
                     }
                 } else {
                     if ($user[0]['new_password'] == 1) {
