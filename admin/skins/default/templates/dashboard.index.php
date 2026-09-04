@@ -528,18 +528,19 @@
    <table width="100%">
       <thead>
          <tr>
+            <th>&nbsp;</th>
             <th>{$LANG.common.name}</th>
             <th>{$LANG.common.details}</th>
             <th>{$LANG.common.developer}</th>
             <th>{$LANG.common.version}</th>
             <th>{$LANG.common.price}</th>
             <th>{$LANG.common.date}</th>
-            <th>&nbsp;</th>
          </tr>
       </thead>
       <tbody>
       {foreach from=$RECENT_EXTENSIONS item=ext}
          <tr>
+            <td nowrap="nowrap" style="text-align:center"><a href="?_g=dashboard&amp;ack=extension&amp;name={$ext.name|escape:'url'}#extensions_recent" title="{$LANG.common.hide|default:'Hide'}"><i class="fa fa-times"></i></a></td>
             <td>
                {if $ext.recommended}<i class="fa fa-star" style="color:#e88e22" title="{$LANG.common.recommended|default:'Recommended'}"></i> {/if}
                <strong>{$ext.name}</strong>
@@ -551,7 +552,6 @@
             <td nowrap="nowrap">v{$ext.version}</td>
             <td nowrap="nowrap">{if $ext.price}{$ext.price}{else}{$LANG.common.free}{/if}</td>
             <td nowrap="nowrap">{$ext.date}</td>
-            <td nowrap="nowrap" style="text-align:center"><a href="?_g=dashboard&amp;ack=extension&amp;name={$ext.name|escape:'url'}#extensions_recent" title="{$LANG.common.hide|default:'Hide'}"><i class="fa fa-times"></i></a></td>
          </tr>
       {/foreach}
       </tbody>
