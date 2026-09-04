@@ -185,17 +185,14 @@ class User
         $username = (string)$username;
         $password = (string)$password;
 
-        //Check we are not upgrading an unregistered account
-        if ($unregistered = $GLOBALS['db']->select('CubeCart_customer', array('customer_id'), array('type' => 2, 'email' => $username, 'status' => true), false, 1, false, false)) {
-            $record = array(
-                'type' => 1,
-                'new_password' => 1,
-                'password' => Password::getInstance()->hashPassword($password),
-                'salt' => ''
-            );
-            $GLOBALS['db']->update('CubeCart_customer', $record, array('customer_id' => (int)$unregistered[0]['customer_id']));
-            $this->authenticate($username, $password);
-        }
+        // A guest record (type 2) used to be upgraded here: whatever password was
+        // submitted got hashed onto it, type was set to 1, and the login went
+        // through. A guest row has no password to check, so that handed the
+        // record, and every order and address on it, to anyone who knew the
+        // address. Guest records are now claimed only through registration,
+        // which proves ownership by email first. Falling through leaves this as
+        // an ordinary failed login, which also avoids confirming the address is
+        // known to the store.
 
         $hash_password = '';
         //Get customer_id, password, and salt for the user
@@ -420,8 +417,16 @@ class User
                 // Upgrade a guest record (type=2) to registered (type=1) when they
                 // now choose to register. Never downgrade an existing registered
                 // account (the line 1157 caller-side guard already blocks that).
+                // Never promote a guest record to registered without proving
+                // the address belongs to whoever is asking. Leave it at type 2
+                // and send a confirmation link instead.
                 if ((int)$type === 1 && (int)$existing[0]['type'] === 2) {
-                    $data['type'] = 1;
+                    if ($this->requestActivation($existing[0]['customer_id'], $data)) {
+                        $GLOBALS['gui']->setNotify($GLOBALS['language']->account['notify_activation_sent']);
+                    } else {
+                        $GLOBALS['gui']->setError($GLOBALS['language']->account['error_activation_failed']);
+                    }
+                    return $existing[0]['customer_id'];
                 }
                 $GLOBALS['db']->update('CubeCart_customer', $data, array('email' => $data['email']));
                 $customer_id = $existing[0]['customer_id'];
@@ -768,6 +773,96 @@ class User
      * @param string $email
      * @return bool
      */
+    /**
+     * Hold a guest record pending email confirmation.
+     *
+     * A guest checkout leaves a customer row at type 2 carrying that person's
+     * orders and addresses. Claiming it must prove control of the address, so
+     * the submitted details and password are written to the row but the type is
+     * left alone: authenticate() only accepts type 1, so nothing is reachable
+     * until the emailed link is opened.
+     *
+     * @param int   $customer_id
+     * @param array $data  submitted registration fields, already sanitised
+     * @return bool
+     */
+    public function requestActivation($customer_id, array $data)
+    {
+        $customer_id = (int)$customer_id;
+        if ($customer_id <= 0 || empty($data['email'])) {
+            return false;
+        }
+
+        $token = bin2hex(random_bytes(32));
+        $record = $data;
+        unset($record['type'], $record['customer_id'], $record['passconf']);
+        $record['activate'] = $token;
+        $record['activate_expires'] = date('Y-m-d H:i:s', time() + 3600);
+        if (!empty($data['password'])) {
+            $record['password'] = Password::getInstance()->hashPassword($data['password']);
+            $record['salt'] = '';
+            $record['new_password'] = 1;
+        }
+
+        if ($GLOBALS['db']->update('CubeCart_customer', $record, array('customer_id' => $customer_id)) === false) {
+            return false;
+        }
+
+        if (($user = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => $customer_id), false, 1, false, false)) !== false) {
+            $mailer = new Mailer();
+            $vars = array_merge($user[0], array(
+                'activate_link' => CC_STORE_URL.'/index.php?_a=activate&validate='.$token
+            ));
+            $content = $mailer->loadContent('account.activate', $GLOBALS['language']->current(), $vars, true);
+            if (empty($content)) {
+                // Only English ships with this template, so fall back to any
+                // language rather than silently sending nothing.
+                $content = $mailer->loadContent('account.activate', $GLOBALS['language']->current(), $vars, false, true);
+            }
+            if (!empty($content)) {
+                $mailer->sendEmailAsync($user[0]['email'], $content);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Complete an activation from the emailed link.
+     *
+     * @param string $token
+     * @return bool
+     */
+    public function completeActivation($token)
+    {
+        $token = trim((string)$token);
+        if ($token === '' || !ctype_xdigit($token)) {
+            return false;
+        }
+
+        $check = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'email', 'activate_expires'), array('activate' => $token, 'type' => 2), false, 1, false, false);
+        if ($check === false) {
+            return false;
+        }
+        if (empty($check[0]['activate_expires']) || strtotime($check[0]['activate_expires']) < time()) {
+            $GLOBALS['db']->update('CubeCart_customer', array('activate' => 'NULL', 'activate_expires' => 'NULL'), array('customer_id' => (int)$check[0]['customer_id']));
+            return false;
+        }
+
+        $updated = $GLOBALS['db']->update('CubeCart_customer', array(
+            'type' => 1,
+            'activate' => 'NULL',
+            'activate_expires' => 'NULL'
+        ), array('customer_id' => (int)$check[0]['customer_id']));
+
+        // Deliberately not logging them in here. Establishing a session means
+        // regenerating the id, currency, language and cookies exactly as
+        // authenticate() does, and an emailed link is a weak thing to grant a
+        // session on. They set a password during registration, so send them to
+        // sign in with it.
+        return ($updated !== false);
+    }
+
     public function passwordRequest($email)
     {
         if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -941,10 +1036,15 @@ class User
             $_POST['language'] = $GLOBALS['language']->current();
             
             if (is_array($existing) && $existing[0]['type']==2) {
-                $_POST['type'] = 1;
-                $_POST['new_password'] = 1;
-                $GLOBALS['db']->update('CubeCart_customer', $_POST, array('email' => strtolower($_POST['email'])));
-                $insert = $existing[0]['customer_id'];
+                // This address already has a guest record holding somebody's
+                // orders and addresses. Upgrading it here would hand all of that
+                // to whoever filled the form in, so confirm the address first.
+                if ($this->requestActivation($existing[0]['customer_id'], $_POST)) {
+                    $GLOBALS['gui']->setNotify($GLOBALS['language']->account['notify_activation_sent']);
+                } else {
+                    $GLOBALS['gui']->setError($GLOBALS['language']->account['error_activation_failed']);
+                }
+                return true;
             } else {
                 $insert = $GLOBALS['db']->insert('CubeCart_customer', $_POST);
             }

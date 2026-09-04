@@ -132,7 +132,11 @@
     <string name="error_twofa_wait" introduced="6.6.0"><![CDATA[Please wait before requesting a new code.]]></string>
     <string name="notify_twofa_resent" introduced="6.6.0"><![CDATA[A new verification code has been sent to your email.]]></string>
     <string name="error_login_blocked" introduced="6.6.0"><![CDATA[Too many invalid logins have been made. Access has been blocked for %s minutes.]]></string>
-  </group>
+		<string name="notify_activation_sent" introduced="6.8.0"><![CDATA[This email address is already on file from a previous order. To finish creating your account, please open the confirmation link we have just emailed you.]]></string>
+		<string name="notify_activation_complete" introduced="6.8.0"><![CDATA[Your email address is confirmed. You can now sign in.]]></string>
+		<string name="error_activation_failed" introduced="6.8.0"><![CDATA[We could not send the confirmation email. Please try again shortly.]]></string>
+		<string name="error_activation_invalid" introduced="6.8.0"><![CDATA[That confirmation link is invalid or has expired. Please register again to receive a new one.]]></string>
+	</group>
   <group name="address">
     <string name="contact_url" introduced="6.5.12"><![CDATA[Contact URL]]></string>
     <string name="w3w" introduced="6.4.0"><![CDATA[what3words]]></string>

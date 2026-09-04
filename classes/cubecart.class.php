@@ -422,6 +422,18 @@ class Cubecart
                     }
                 break;
 
+                case 'activate':
+                    // Confirmation link from the account activation email. Only
+                    // this completes the promotion of a guest record, so a
+                    // failed or expired token leaves it exactly as it was.
+                    if ($GLOBALS['user']->completeActivation($_GET['validate'] ?? '')) {
+                        $GLOBALS['gui']->setNotify($GLOBALS['language']->account['notify_activation_complete']);
+                    } else {
+                        $GLOBALS['gui']->setError($GLOBALS['language']->account['error_activation_invalid']);
+                    }
+                    httpredir($GLOBALS['seo']->buildURL('login'));
+                break;
+
                 case 'newsletter':
                 case 'unsubscribe':
                     $this->_newsletter();
