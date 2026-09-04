@@ -539,7 +539,7 @@ if (isset($_REQUEST['clearApiLog'])) {
     }
     $clear_post = true;
     if (isset($_GET['redir']) && $_GET['redir'] == 'apikeys') {
-        httpredir('?_g=settings&node=apikeys#apilog');
+        httpredir('?_g=settings&node=apikeys', 'apilog');
         exit;
     }
 }

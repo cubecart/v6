@@ -20,3 +20,4 @@ ALTER TABLE `CubeCart_documents` ADD `doc_contact` TINYINT(1) UNSIGNED NOT NULL 
 ALTER TABLE `CubeCart_documents` ADD `doc_departments` TEXT NULL; #EOQ
 ALTER TABLE `CubeCart_documents` DROP INDEX `doc_privacy`; #EOQ
 ALTER TABLE `CubeCart_documents` DROP `doc_privacy`; #EOQ
+ALTER TABLE `CubeCart_admin_users` ADD `extensions_dismissed` TEXT NULL; #EOQ

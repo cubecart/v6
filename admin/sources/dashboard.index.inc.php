@@ -22,9 +22,30 @@ global $glob, $lang, $admin_data;
 if (isset($_GET['ack']) && $_GET['ack'] === 'extensions') {
     $ack_admin_id = (int)Admin::getInstance()->getId();
     if ($ack_admin_id > 0) {
-        $GLOBALS['db']->update('CubeCart_admin_users', array('extensions_last_seen' => time()), array('admin_id' => $ack_admin_id));
+        // The watermark supersedes any individual dismissals, so clear them and
+        // keep the column from growing forever.
+        $GLOBALS['db']->update('CubeCart_admin_users', array('extensions_last_seen' => time(), 'extensions_dismissed' => 'NULL'), array('admin_id' => $ack_admin_id));
     }
     httpredir('?_g=dashboard');
+    exit;
+}
+
+## Hide a single extension from the "New Extensions" tab, so a merchant can work
+## through the list keeping the ones they care about (#4242). Names are recorded
+## per admin rather than moving the watermark, which would hide everything older.
+if (isset($_GET['ack']) && $_GET['ack'] === 'extension' && !empty($_GET['name'])) {
+    $ack_admin_id = (int)Admin::getInstance()->getId();
+    if ($ack_admin_id > 0) {
+        $row = $GLOBALS['db']->select('CubeCart_admin_users', array('extensions_dismissed'), array('admin_id' => $ack_admin_id));
+        $dismissed = (!empty($row[0]['extensions_dismissed'])) ? json_decode($row[0]['extensions_dismissed'], true) : array();
+        if (!is_array($dismissed)) {
+            $dismissed = array();
+        }
+        $dismissed[] = (string)$_GET['name'];
+        $dismissed = array_values(array_unique($dismissed));
+        $GLOBALS['db']->update('CubeCart_admin_users', array('extensions_dismissed' => json_encode($dismissed)), array('admin_id' => $ack_admin_id));
+    }
+    httpredir('?_g=dashboard', 'extensions_recent');
     exit;
 }
 
@@ -758,8 +779,12 @@ if (is_array($recent_raw) && !empty($recent_raw)) {
     // means existing marketplace extensions aren't counted as "new" for a
     // fresh install — only versions released after that point surface here.
     $recent_baseline = gmmktime(0, 0, 0, 4, 20, 2026);
-    $recent_admin_row = $GLOBALS['db']->select('CubeCart_admin_users', array('extensions_last_seen'), array('admin_id' => (int)Admin::getInstance()->getId()));
+    $recent_admin_row = $GLOBALS['db']->select('CubeCart_admin_users', array('extensions_last_seen', 'extensions_dismissed'), array('admin_id' => (int)Admin::getInstance()->getId()));
     $recent_last_seen = (!empty($recent_admin_row[0]['extensions_last_seen'])) ? (int)$recent_admin_row[0]['extensions_last_seen'] : 0;
+    $recent_dismissed = (!empty($recent_admin_row[0]['extensions_dismissed'])) ? json_decode($recent_admin_row[0]['extensions_dismissed'], true) : array();
+    if (!is_array($recent_dismissed)) {
+        $recent_dismissed = array();
+    }
     $recent_threshold = max($recent_last_seen, $recent_baseline);
 
     $recent_candidates = array();
@@ -776,11 +801,15 @@ if (is_array($recent_raw) && !empty($recent_raw)) {
         if ($recent_ts <= 0 || $recent_ts <= $recent_threshold) {
             continue;
         }
+        if (in_array($recent_ext['name'], $recent_dismissed, true)) {
+            continue;
+        }
         $recent_candidates[] = array(
             'name'         => $recent_ext['name'],
             'description'  => !empty($recent_ext['description']) ? $recent_ext['description'] : '',
             'type'         => !empty($recent_ext['type']) ? $recent_ext['type'] : '',
             'category'     => !empty($recent_ext['category']) ? ucwords(str_replace('_', ' ', $recent_ext['category'])) : '',
+            'creator'      => !empty($recent_ext['creator']) ? $recent_ext['creator'] : '',
             'version'      => $recent_latest['version'],
             'timestamp'    => $recent_ts,
             'date'         => formatTime($recent_ts),
@@ -794,11 +823,18 @@ if (is_array($recent_raw) && !empty($recent_raw)) {
     usort($recent_candidates, function ($a, $b) {
         return $b['timestamp'] - $a['timestamp'];
     });
-    $recent_candidates = array_slice($recent_candidates, 0, 5);
+    // Five was too few to be useful when a merchant had not looked for a while
+    // (#4242). It is a table on its own tab, so a longer list costs nothing but
+    // scrolling, and the list is already bounded by what is new since they last
+    // marked it seen.
+    $recent_total = count($recent_candidates);
+    $recent_candidates = array_slice($recent_candidates, 0, 20);
 
     if (!empty($recent_candidates)) {
         $GLOBALS['smarty']->assign('RECENT_EXTENSIONS', $recent_candidates);
-        $GLOBALS['main']->addTabControl($lang['dashboard']['title_extensions_recent'], 'extensions_recent', null, null, count($recent_candidates));
+        // Count before the slice, so the badge does not quietly under-report when
+        // there are more than the table shows.
+        $GLOBALS['main']->addTabControl($lang['dashboard']['title_extensions_recent'], 'extensions_recent', null, null, $recent_total);
     }
 }
 

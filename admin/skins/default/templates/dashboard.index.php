@@ -530,8 +530,11 @@
          <tr>
             <th>{$LANG.common.name}</th>
             <th>{$LANG.common.details}</th>
+            <th>{$LANG.common.developer}</th>
             <th>{$LANG.common.version}</th>
+            <th>{$LANG.common.price}</th>
             <th>{$LANG.common.date}</th>
+            <th>&nbsp;</th>
          </tr>
       </thead>
       <tbody>
@@ -542,11 +545,13 @@
                <strong>{$ext.name}</strong>
                {if $ext.category} <small style="color:#888">&middot; {$ext.category}</small>{/if}
                {if $ext.is_installed} <span class="ext-badge ext-badge-installed" style="margin-left:4px"><i class="fa fa-check"></i> {$LANG.module.ext_installed|default:'Installed'}</span>{/if}
-               {if $ext.price} <span class="ext-badge ext-badge-paid" style="margin-left:4px"><i class="fa fa-shopping-cart"></i> {$ext.price}</span>{/if}
             </td>
             <td>{if $ext.description}{$ext.description|truncate:140:"&hellip;"}{/if}</td>
+            <td nowrap="nowrap">{$ext.creator}</td>
             <td nowrap="nowrap">v{$ext.version}</td>
+            <td nowrap="nowrap">{if $ext.price}{$ext.price}{else}{$LANG.common.free}{/if}</td>
             <td nowrap="nowrap">{$ext.date}</td>
+            <td nowrap="nowrap" style="text-align:center"><a href="?_g=dashboard&amp;ack=extension&amp;name={$ext.name|escape:'url'}#extensions_recent" title="{$LANG.common.hide|default:'Hide'}"><i class="fa fa-times"></i></a></td>
          </tr>
       {/foreach}
       </tbody>

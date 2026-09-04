@@ -131,7 +131,7 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
                 }
             }
         }
-        httpredir(currentPage(array('restore_backup')).'#hook_code');
+        httpredir(currentPage(array('restore_backup')), 'hook_code');
     }
 
     // Delete hook file backup (protect default)
@@ -145,7 +145,7 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
                 $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_backup_deleted']);
             }
         }
-        httpredir(currentPage(array('delete_backup')).'#hook_code');
+        httpredir(currentPage(array('delete_backup')), 'hook_code');
     }
 
     // Save hook file code if submitted (use RAW POST to avoid HTML entity encoding)
