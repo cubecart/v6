@@ -998,22 +998,59 @@ class GUI
      * @param bool admin_only
      */
     /**
-     * Drop any queued notices, leaving errors alone.
+     * Drop every queued message of one type.
      *
      * For the case where the page is about to redirect somewhere the queued
-     * notices no longer make sense, and would read as a contradiction beside
-     * whatever is set next. Notices merge on Session::set(), so the remaining
+     * messages no longer make sense, and would read as a contradiction beside
+     * whatever is set next. Messages merge on Session::set(), so the remaining
      * set has to be written back with overwrite on.
+     *
+     * Types match those passed to _errorMessage(): error, notice and info.
+     * Use clearErrors() sparingly: a genuine failure still needs reporting, and
+     * clearing one hides the very thing worth seeing. It is here for the case
+     * where the request is abandoned and the error would describe a journey the
+     * customer is no longer on.
+     *
+     * @param string $type
+     * @return void
+     */
+    private function _clearMessages($type)
+    {
+        $gui_message = $GLOBALS['session']->get('GUI_MESSAGE');
+        if (is_array($gui_message) && isset($gui_message[$type])) {
+            unset($gui_message[$type]);
+            $GLOBALS['session']->set('GUI_MESSAGE', $gui_message, 'system', true);
+        }
+    }
+
+    /**
+     * Drop any queued notices, leaving errors alone.
      *
      * @return void
      */
     public function clearNotices()
     {
-        $gui_message = $GLOBALS['session']->get('GUI_MESSAGE');
-        if (is_array($gui_message) && isset($gui_message['notice'])) {
-            unset($gui_message['notice']);
-            $GLOBALS['session']->set('GUI_MESSAGE', $gui_message, 'system', true);
-        }
+        $this->_clearMessages('notice');
+    }
+
+    /**
+     * Drop any queued info messages.
+     *
+     * @return void
+     */
+    public function clearInfo()
+    {
+        $this->_clearMessages('info');
+    }
+
+    /**
+     * Drop any queued errors. See the note on _clearMessages() first.
+     *
+     * @return void
+     */
+    public function clearErrors()
+    {
+        $this->_clearMessages('error');
     }
 
     public function setNotify($message = null, $admin_only = false)
