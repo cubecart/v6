@@ -774,6 +774,24 @@ class User
      * @return bool
      */
     /**
+     * Set when a claim on a guest record was held pending email confirmation,
+     * so callers do not then try to log the customer in and report a failure.
+     *
+     * @var bool
+     */
+    private $_activation_pending = false;
+
+    /**
+     * Was the last account claim held pending email confirmation?
+     *
+     * @return bool
+     */
+    public function activationPending()
+    {
+        return $this->_activation_pending;
+    }
+
+    /**
      * Hold a guest record pending email confirmation.
      *
      * A guest checkout leaves a customer row at type 2 carrying that person's
@@ -809,6 +827,7 @@ class User
         if ($GLOBALS['db']->update('CubeCart_customer', $record, array('customer_id' => $customer_id)) === false) {
             return false;
         }
+        $this->_activation_pending = true;
 
         if (($user = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => $customer_id), false, 1, false, false)) !== false) {
             $mailer = new Mailer();

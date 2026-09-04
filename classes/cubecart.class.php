@@ -1245,8 +1245,16 @@ class Cubecart
 
                     // Log in
                     $GLOBALS['session']->set('redir', $GLOBALS['rootRel'].'index.php?_a=confirm');
-                    if (isset($_POST['register']) && $_POST['register']==1 && !$GLOBALS['user']->authenticate($_POST['user']['email'], $_POST['password'], false, false, false, false)) {
-                        httpredir('index.php?_a=login');
+                    if (isset($_POST['register']) && $_POST['register']==1) {
+                        if ($GLOBALS['user']->activationPending()) {
+                            // The address belongs to an existing guest record, so the
+                            // account is held until the emailed link is opened. Logging
+                            // in here is meant to fail, and reporting that failure would
+                            // contradict the "check your email" notice already shown.
+                            httpredir('index.php?_a=login');
+                        } elseif (!$GLOBALS['user']->authenticate($_POST['user']['email'], $_POST['password'], false, false, false, false)) {
+                            httpredir('index.php?_a=login');
+                        }
                     }
                 }
 
