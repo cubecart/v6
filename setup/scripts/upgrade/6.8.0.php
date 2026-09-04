@@ -92,6 +92,20 @@ if ($existing) {
     }
 }
 
+// The contact form is edited with its document now, so the old admin page has
+// gone. Upgrades overlay new files rather than removing withdrawn ones, so these
+// would sit there and still work, editing settings the storefront no longer reads.
+$admin_folder = !empty($glob['adminFolder']) ? $glob['adminFolder'] : 'admin';
+$obsolete = array($admin_folder.'/sources/documents.contact.inc.php');
+foreach ((array)glob(CC_ROOT_DIR.'/'.$admin_folder.'/skins/*/templates/documents.contact.php') as $template) {
+    $obsolete[] = str_replace(CC_ROOT_DIR.'/', '', $template);
+}
+// Quietly; a file left behind by permissions is untidy, not harmful, since
+// nothing links to it any more.
+foreach ($obsolete as $relative) {
+    @unlink(CC_ROOT_DIR.'/'.$relative);
+}
+
 if (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) {
     $GLOBALS['cache']->clear();
 }
