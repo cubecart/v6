@@ -588,8 +588,22 @@ if (((isset($_GET['delete']) && !empty($_GET['delete'])) || (isset($_POST['delet
 
 if (isset($_POST['status']) && is_array($_POST['status']) && Admin::getInstance()->permissions('products', CC_PERM_EDIT)) {
     // Update Status
+    $es = ($GLOBALS['config']->get('config', 'elasticsearch')=='1') ? new ElasticsearchHandler : false;
     foreach ($_POST['status'] as $product_id => $status) {
         $GLOBALS['db']->update('CubeCart_inventory', array('status' => $status), array('product_id' => $product_id));
+        // Hiding a product here has to reach Elasticsearch too. Product save
+        // already does, via _indexBody() returning false for anything not
+        // publicly reachable, but this is the bulk path and reached none of it,
+        // so disabled products stayed in the index and the search-as-you-type
+        // dropdown kept offering them. add() rebuilds the whole document, which
+        // is what a re-enabled product needs after its own was deleted.
+        if ($es) {
+            if ($status == 1) {
+                $es->add($product_id);
+            } elseif ($es->exists($product_id)) {
+                $es->delete($product_id);
+            }
+        }
     }
     httpredir(currentPage());
 }

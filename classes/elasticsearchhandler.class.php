@@ -442,7 +442,14 @@ class ElasticsearchHandler
             [
                 'bool' =>
                 [
-                    'must'      => array_merge($must,[['bool' => $inner_bool]])
+                    'must'      => array_merge($must,[['bool' => $inner_bool]]),
+                    // A disabled product should not be in the index at all, since
+                    // add() and update() both drop the document once the product
+                    // stops being publicly reachable. This is the second line of
+                    // defence for one that slipped through. must_not rather than
+                    // must, so documents from an older index version, which carry
+                    // no status field, keep matching until the next rebuild.
+                    'must_not'  => [['term' => ['status' => 0]]]
                 ]
             ]
         ];
@@ -704,7 +711,8 @@ class ElasticsearchHandler
             'manufacturer_id' => (int)$product['manufacturer'],
             'featured'      => (int)$product['featured'],
             'digital'       => (int)$product['digital'],
-            'use_stock_level' => (int)$product['use_stock_level'] ## Needed to match core's out-of-stock rule
+            'use_stock_level' => (int)$product['use_stock_level'], ## Needed to match core's out-of-stock rule
+            'status'        => (int)$product['status'] ## Lets a query exclude a document that outlived the product's visibility
         );
 
         // Optional fields — only include when populated so empty strings
