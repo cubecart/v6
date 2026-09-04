@@ -92,13 +92,13 @@
          {include file='templates/content.recaptcha.php' ga_fid='register'}
       </div>
 
-      {* ⚠ name="register", NOT "registration". Cubecart::_register() — and the
-         guest-upgrade path in Cubecart::_checkout() — gate on $_POST['register'];
-         "registration" is read NOWHERE. The hidden field is load-bearing under
-         invisible captcha (mode 3): grecaptcha calls form.submit(), and a
-         programmatic submit does not contribute the clicked button's
-         name/value, so without it registration silently no-ops. *}
-      <input type="hidden" name="register" value="1">
+      {* No hidden register field is needed: Cubecart::_register() decides this
+         is a registration from the posted form itself. That matters under
+         invisible captcha (mode 3), where grecaptcha calls form.submit() and a
+         programmatic submit contributes neither the button's name nor its
+         value, so nothing in the markup would carry the flag. NB the checkout
+         checkbox in content.checkout.confirm.php is a different thing and is
+         still read: it chooses between a guest and a registered account. *}
       <button type="submit" name="register" value="1" data-form-id="registration_form" class="g-recaptcha cc-btn cc-btn-primary mt-6 w-full" id="register_submit">{$LANG.account.register}</button>
    </form>
 
