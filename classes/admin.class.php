@@ -183,7 +183,6 @@ class Admin
                     'password' => Password::getInstance()->hashPassword($password['new']),
                     'verify' => null,
                     'verify_expires' => null,
-                    'new_password' => 1
                 );
                 $where = array(
                     'admin_id' => $check[0]['admin_id'],
@@ -323,7 +322,7 @@ class Admin
 
         if (!empty($username)) {
             // Fetch user record
-            if (($user = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'password', 'salt', 'new_password'), array('username' => $username, 'status' => '1'), null, 1)) !== false) {
+            if (($user = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'password', 'salt'), array('username' => $username, 'status' => '1'), null, 1)) !== false) {
                 $pwd = Password::getInstance();
                 if ($pwd->isBcrypt($user[0]['password'])) {
                     // Modern hash (bcrypt or Argon2id) verification
@@ -332,7 +331,7 @@ class Admin
                         // Upgrade hash if algorithm/cost has been strengthened
                         if ($pwd->needsRehash($hash_password)) {
                             $upgraded = $pwd->hashPassword($password);
-                            $GLOBALS['db']->update('CubeCart_admin_users', array('password' => $upgraded, 'salt' => '', 'new_password' => 1), array('admin_id' => (int)$user[0]['admin_id']));
+                            $GLOBALS['db']->update('CubeCart_admin_users', array('password' => $upgraded, 'salt' => ''), array('admin_id' => (int)$user[0]['admin_id']));
                             $hash_password = $upgraded;
                         }
                     }
@@ -353,14 +352,16 @@ class Admin
                         $update = array(
                             'salt'  => $salt,
                             'password' => $pass,
-                            'new_password' => 0
                         );
                         if ($GLOBALS['db']->update('CubeCart_admin_users', $update, array('admin_id' => (int)$user[0]['admin_id']))) {
                             $hash_password = $pass;
                         }
                     }
                 } else {
-                    if ($user[0]['new_password'] == 1) {
+                    // As in User::authenticate(): whirlpool is 128 hex characters,
+                    // the older salted md5 is 32, so the format is readable from the
+                    // hash without a flag to record it.
+                    if (strlen((string)$user[0]['password']) === 128) {
                         $hash_password = $pwd->getSalted($password, $user[0]['salt']);
                     } else {
                         $hash_password = $pwd->getSaltedOld($password, $user[0]['salt']);
@@ -369,7 +370,7 @@ class Admin
                 // Migrate to bcrypt on successful legacy login
                 if (!empty($hash_password) && $hash_password === $user[0]['password'] && !$pwd->isBcrypt($hash_password)) {
                     $bcrypt_hash = $pwd->hashPassword($password);
-                    $GLOBALS['db']->update('CubeCart_admin_users', array('password' => $bcrypt_hash, 'salt' => '', 'new_password' => 1), array('admin_id' => (int)$user[0]['admin_id']));
+                    $GLOBALS['db']->update('CubeCart_admin_users', array('password' => $bcrypt_hash, 'salt' => ''), array('admin_id' => (int)$user[0]['admin_id']));
                     $hash_password = $bcrypt_hash;
                 }
             } else {
@@ -379,7 +380,7 @@ class Admin
                 $GLOBALS['gui']->setError($GLOBALS['language']->account['error_login']);
                 return false;
             }
-            $result = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'customer_id', 'logins', 'new_password', 'password', 'name', 'email', 'language', 'twofa_enabled', 'twofa_method', 'twofa_secret', 'ip_address', 'browser'), array('username' => $username, 'password' => $hash_password, 'status' => '1'));
+            $result = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'customer_id', 'logins', 'password', 'name', 'email', 'language', 'twofa_enabled', 'twofa_method', 'twofa_secret', 'ip_address', 'browser'), array('username' => $username, 'password' => $hash_password, 'status' => '1'));
             $GLOBALS['session']->blocker($username, 0, (bool)$result, Session::BLOCKER_BACKEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'));
             if ($result) {
                 if (!$GLOBALS['session']->blocked()) {
@@ -392,12 +393,11 @@ class Admin
                         'lastTime'  => time(),
                         'logins'  => $result[0]['logins'] +1,
                     );
-                    if ($result[0]['new_password'] != 1 || !Password::getInstance()->isBcrypt($result[0]['password'])) {
+                    if (!Password::getInstance()->isBcrypt($result[0]['password'])) {
                         $pass = Password::getInstance()->hashPassword($password);
                         $update = array_merge($update, array(
                                 'salt'   => '',
                                 'password'  => $pass,
-                                'new_password' => 1,
                             ));
                     }
                     $GLOBALS['db']->update('CubeCart_admin_users', $update, array('admin_id' => (int)$result[0]['admin_id']));

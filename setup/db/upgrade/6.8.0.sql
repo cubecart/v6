@@ -26,3 +26,5 @@ INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) VALUES ('co
 INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) VALUES ('config', 'review_notify', '1') ON DUPLICATE KEY UPDATE `config_value` = `config_value`; #EOQ
 ALTER TABLE `CubeCart_customer` ADD `activate` VARCHAR(64) NULL DEFAULT NULL; #EOQ
 ALTER TABLE `CubeCart_customer` ADD `activate_expires` DATETIME NULL DEFAULT NULL; #EOQ
+ALTER TABLE `CubeCart_customer` DROP `new_password`; #EOQ
+ALTER TABLE `CubeCart_admin_users` DROP `new_password`; #EOQ

@@ -140,7 +140,6 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
         if ($record['super_user'] == '0' && $count <= 1 && Admin::getInstance()->superUser() && (int)$_POST['admin_id'] === (int)Admin::getInstance()->getId()) {
             $record['super_user'] = '1';
         }
-        $record['new_password'] = 1;
         if ($GLOBALS['db']->update('CubeCart_admin_users', $record, array('admin_id' => $_POST['admin_id']))) {
             $admin_id = Admin::getInstance()->get('admin_id');
             if ($_POST['admin_id']==$admin_id) {

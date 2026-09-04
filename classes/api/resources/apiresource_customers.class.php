@@ -21,7 +21,7 @@ class ApiResource_Customers extends ApiResource
     /**
      * Fields that must NEVER be exposed via API
      */
-    private $_sensitiveFields = array('password', 'salt', 'verify', 'new_password');
+    private $_sensitiveFields = array('password', 'salt', 'verify');
 
     private $_writableFields = array(
         'first_name', 'last_name', 'email', 'phone',

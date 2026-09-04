@@ -196,7 +196,7 @@ class User
 
         $hash_password = '';
         //Get customer_id, password, and salt for the user
-        if (($user = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'password', 'salt', 'new_password'), array('type' => 1, 'email' => $username, 'status' => true), false, 1, false, false)) !== false) {
+        if (($user = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'password', 'salt'), array('type' => 1, 'email' => $username, 'status' => true), false, 1, false, false)) !== false) {
             $pwd = Password::getInstance();
             if ($pwd->isBcrypt($user[0]['password'])) {
                 // Modern hash (bcrypt or Argon2id) verification
@@ -205,7 +205,7 @@ class User
                     // Upgrade hash if algorithm/cost has been strengthened
                     if ($pwd->needsRehash($hash_password)) {
                         $upgraded = $pwd->hashPassword($password);
-                        $GLOBALS['db']->update('CubeCart_customer', array('password' => $upgraded, 'salt' => '', 'new_password' => 1), array('customer_id' => (int)$user[0]['customer_id']));
+                        $GLOBALS['db']->update('CubeCart_customer', array('password' => $upgraded, 'salt' => ''), array('customer_id' => (int)$user[0]['customer_id']));
                         $hash_password = $upgraded;
                     }
                 }
@@ -234,7 +234,11 @@ class User
                     }
                 }
             } else {
-                if ($user[0]['new_password'] == 1) {
+                // Which salted legacy format this is can be read off the hash
+                // itself: getSalted() is whirlpool at 128 hex characters, the
+                // older getSaltedOld() is md5 at 32. That is what the
+                // new_password flag used to record.
+                if (strlen((string)$user[0]['password']) === 128) {
                     $hash_password = $pwd->getSalted($password, $user[0]['salt']);
                 } else {
                     $hash_password = $pwd->getSaltedOld($password, $user[0]['salt']);
@@ -243,7 +247,7 @@ class User
             // Migrate to bcrypt on successful legacy login
             if (!empty($hash_password) && $hash_password === $user[0]['password'] && !$pwd->isBcrypt($hash_password)) {
                 $bcrypt_hash = $pwd->hashPassword($password);
-                $GLOBALS['db']->update('CubeCart_customer', array('password' => $bcrypt_hash, 'salt' => '', 'new_password' => 1), array('customer_id' => (int)$user[0]['customer_id']));
+                $GLOBALS['db']->update('CubeCart_customer', array('password' => $bcrypt_hash, 'salt' => ''), array('customer_id' => (int)$user[0]['customer_id']));
                 $hash_password = $bcrypt_hash;
             }
         }
@@ -253,7 +257,7 @@ class User
             'email'  => $username,
             'password' => $hash_password,
         );
-        $user = $GLOBALS['db']->select('CubeCart_customer', array('language', 'customer_id', 'email', 'password', 'salt', 'new_password', 'currency'), $where, false, 1, false, false);
+        $user = $GLOBALS['db']->select('CubeCart_customer', array('language', 'customer_id', 'email', 'password', 'salt', 'currency'), $where, false, 1, false, false);
 
         $GLOBALS['session']->blocker($username, (is_array($user)) ? $user[0]['customer_id'] : 0, (bool)$user, Session::BLOCKER_FRONTEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'));
         if (!$user) {
@@ -261,12 +265,11 @@ class User
         } else {
             $GLOBALS['session']->set('currency', $user[0]['currency'], 'client');
             $user[0]['language'] = $this->_validLanguage($user[0]['language']);
-            if ($user[0]['new_password'] != 1 || !Password::getInstance()->isBcrypt($user[0]['password'])) {
+            if (!Password::getInstance()->isBcrypt($user[0]['password'])) {
                 $pass = Password::getInstance()->hashPassword($password);
                 $record = array(
                     'salt'   => '',
                     'password'  => $pass,
-                    'new_password' => 1,
                 );
 
                 //Update the DB with the new salt and salted password
@@ -390,7 +393,7 @@ class User
             }
 
             //Change it
-            $record = array('password' => $pwd->hashPassword($_POST['passnew']), 'salt' => '', 'new_password' => 1);
+            $record = array('password' => $pwd->hashPassword($_POST['passnew']), 'salt' => '');
             if ($GLOBALS['db']->update('CubeCart_customer', $record, array('customer_id' => (int)$this->_user_data['customer_id']), true)) {
                 $this->_user_data['password'] = $record['password'];
                 return true;
@@ -417,7 +420,6 @@ class User
     {
         if (!empty($data)) {
             // Insert record(s)
-            $data['new_password'] = '0';
             $data['ip_address']  = get_ip_address();
 
             $data = array_map('trim', $data);
@@ -833,11 +835,11 @@ class User
         $record['activate_expires'] = date('Y-m-d H:i:s', time() + 3600);
         // The password arrives already prepared, and differently per caller:
         // registerUser() bcrypts it, the checkout path in createUser() stores an
-        // md5 and flags new_password '0' for authenticate() to migrate on first
-        // login. Hashing again here would store bcrypt(bcrypt(...)) or
+        // md5 for authenticate() to migrate on first login. Hashing again here
+        // would store bcrypt(bcrypt(...)) or
         // bcrypt(md5(...)), which can never match what the user types, so the
         // account would activate and then refuse every login. Pass it through
-        // exactly as the caller built it, along with salt and new_password.
+        // exactly as the caller built it, along with its salt.
 
         if ($GLOBALS['db']->update('CubeCart_customer', $record, array('customer_id' => $customer_id)) === false) {
             return false;
@@ -956,7 +958,6 @@ class User
                     'password'  => Password::getInstance()->hashPassword((string)$password['password']),
                     'verify'  => null,
                     'verify_expires' => null,
-                    'new_password' => 1
                 );
                 $where = array(
                     'customer_id' => $check[0]['customer_id'],
@@ -1075,10 +1076,6 @@ class User
                 // This address already has a guest record holding somebody's
                 // orders and addresses. Upgrading it here would hand all of that
                 // to whoever filled the form in, so confirm the address first.
-                // registerUser() has already bcrypted the password above, so mark
-                // the row accordingly; the guest record it is overwriting was
-                // created with a legacy md5 filler and new_password '0'.
-                $_POST['new_password'] = 1;
                 if ($this->requestActivation($existing[0]['customer_id'], $_POST)) {
                     // Whatever was queued relates to a journey that has just been
                     // interrupted, so it would sit oddly beside this.
@@ -1218,7 +1215,6 @@ class User
             //Remove things that shouldn't be updated by post
             unset($update['salt']);
             unset($update['password']);
-            unset($update['new_password']);
             unset($update['customer_id']);
             unset($update['status']);
             unset($update['type']);

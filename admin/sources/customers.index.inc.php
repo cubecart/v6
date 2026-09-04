@@ -93,7 +93,6 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
     if (isset($customer['password']) && !empty($customer['password'])) {
         if ($customer['password'] === $customer['passconf']) {
             $customer['salt'] = '';
-            $customer['new_password'] = 1;
             $customer['password'] = Password::getInstance()->hashPassword($customer['password']);
         }
         //Or not
