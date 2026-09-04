@@ -1251,24 +1251,6 @@ class Cubecart
                             // account is held until the emailed link is opened. Logging
                             // in here is meant to fail, and reporting that failure would
                             // contradict the "check your email" notice already shown.
-                            //
-                            // Drop the address-changed notice too. It exists to stop the
-                            // customer proceeding to payment, which is meaningless once
-                            // they are being sent away to confirm their email, and it
-                            // reads as a contradiction sat beside the activation notice.
-                            // Notices merge on set(), so the filtered set has to be
-                            // written back with overwrite on.
-                            $gui_message = $GLOBALS['session']->get('GUI_MESSAGE');
-                            if (is_array($gui_message) && !empty($gui_message['notice'])) {
-                                $drop = array(
-                                    $GLOBALS['language']->checkout['confirm_billing'],
-                                    $GLOBALS['language']->account['notify_address_updated'],
-                                );
-                                foreach ($drop as $text) {
-                                    unset($gui_message['notice'][md5($text)]);
-                                }
-                                $GLOBALS['session']->set('GUI_MESSAGE', $gui_message, 'system', true);
-                            }
                             httpredir('index.php?_a=login');
                         } elseif (!$GLOBALS['user']->authenticate($_POST['user']['email'], $_POST['password'], false, false, false, false)) {
                             httpredir('index.php?_a=login');

@@ -422,6 +422,8 @@ class User
                 // and send a confirmation link instead.
                 if ((int)$type === 1 && (int)$existing[0]['type'] === 2) {
                     if ($this->requestActivation($existing[0]['customer_id'], $data)) {
+                        // As above: the checkout notices no longer apply.
+                        $GLOBALS['gui']->clearNotices();
                         $GLOBALS['gui']->setNotify($GLOBALS['language']->account['notify_activation_sent']);
                     } else {
                         $GLOBALS['gui']->setError($GLOBALS['language']->account['error_activation_failed']);
@@ -1065,6 +1067,9 @@ class User
                 // created with a legacy md5 filler and new_password '0'.
                 $_POST['new_password'] = 1;
                 if ($this->requestActivation($existing[0]['customer_id'], $_POST)) {
+                    // Whatever was queued relates to a journey that has just been
+                    // interrupted, so it would sit oddly beside this.
+                    $GLOBALS['gui']->clearNotices();
                     $GLOBALS['gui']->setNotify($GLOBALS['language']->account['notify_activation_sent']);
                 } else {
                     $GLOBALS['gui']->setError($GLOBALS['language']->account['error_activation_failed']);
