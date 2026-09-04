@@ -24,6 +24,7 @@
 		  <td>{$LANG.translate.title_translations}</td>
 		  <td>{$LANG.documents.document_terms}</td>
 		  <td>{$LANG.documents.document_homepage}</td>
+		  <td>{$LANG.documents.document_contact}</td>
 		  <td>&nbsp;</td>
 		</tr>
 	  </thead>
@@ -49,6 +50,7 @@
 		  </td>
 		  <td style="text-align:center"><input type="radio" name="terms" value="{$document.doc_id}" {$document.terms}></td>
 		  <td style="text-align:center"><input type="radio" name="home" value="{$document.doc_id}" {$document.homepage}></td>
+		  <td style="text-align:center"><input type="radio" name="contact" value="{$document.doc_id}" {$document.contact}></td>
 		  <td style="text-align:center">
 		  	<a href="{if !empty($document.homepage)}index.php{else}index.php?_a=document&doc_id={$document.doc_id}{/if}" title="{$LANG.common.view}" target="_blank"><i class="fa fa-search" title="{$LANG.common.view}"></i></a>
 			<a href="{$document.link.edit}" title="{$LANG.common.edit}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
@@ -84,6 +86,48 @@
 
   <div id="article" class="tab_content">
 	<h3>{$ADD_EDIT_DOCUMENT}</h3>
+	{if $DOCUMENT.doc_contact}
+	{* This document is the contact page, so the form's own settings sit with it.
+	   Recipient addresses and behaviour are shared by every translation; only the
+	   department names below belong to this language's copy (#4243). *}
+	<fieldset><legend>{$LANG.documents.document_contact}</legend>
+	  <div><label for="email">{$LANG.contact.email_override}</label><span><input type="text" name="contact[email]" id="email" value="{$CONTACT.email}" class="textbox"></span></div>
+	  <div><label for="phone">{$LANG.address.phone}</label>
+		<span>
+			<select name="contact[phone]" class="textbox">
+			  <option value="0"{if $CONTACT.phone=='0'} selected="selected"{/if}>{$LANG.common.disabled}</option>
+			  <option value="1"{if $CONTACT.phone=='1'} selected="selected"{/if}>{$LANG.common.enabled} {$LANG.common.optional}</option>
+			  <option value="2"{if $CONTACT.phone=='2'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.common.required})</option>
+			</select>
+		</span>
+	  </div>
+	  <div><label for="attachments">{$LANG.contact.allow_attachments} (Image, Zip, PDF)</label><span><input type="hidden" name="contact[attachments]" id="attachments" value="{$CONTACT.attachments}" class="toggle"></span></div>
+	</fieldset>
+
+	<fieldset><legend>{$LANG.contact.title_departments}</legend>
+	  <div id="departments" class="dept-list" data-cc-row-list data-cc-row-container=".dept-list__rows">
+		<div class="dept-list__rows">
+		{if isset($DEPARTMENTS)}
+		{foreach from=$DEPARTMENTS item=department}
+		  <div class="dept-row" data-cc-row>
+			<input type="text" name="department[name][]" value="{$department.name}" class="textbox dept-row__name" placeholder="{$LANG.common.name}">
+			<input type="text" name="department[email][]" value="{$department.email}" class="textbox dept-row__email" placeholder="{$LANG.common.email}">
+			<button type="button" class="remove dept-row__btn" title="{$LANG.common.remove}"><i class="fa fa-times"></i></button>
+		  </div>
+		{/foreach}
+		{/if}
+		</div>
+		<button type="button" class="add dept-list__add" title="{$LANG.common.add}"><i class="fa fa-plus"></i> {$LANG.common.add}</button>
+		<template data-cc-row-template>
+		  <div class="dept-row" data-cc-row>
+			<input type="text" name="department[name][]" class="textbox dept-row__name" placeholder="{$LANG.common.name}">
+			<input type="text" name="department[email][]" class="textbox dept-row__email" placeholder="{$LANG.common.email} {$LANG.common.optional}">
+			<button type="button" class="remove dept-row__btn" title="{$LANG.common.remove}"><i class="fa fa-times"></i></button>
+		  </div>
+		</template>
+	  </div>
+	</fieldset>
+	{/if}
 		<textarea name="document[doc_content]" id="doc-content" class="textbox fck">{$DOCUMENT.doc_content|escape:"html"}</textarea>
 		<div class="parse_content"><label for="doc_parse">{$LANG.catalogue.parse_content}</label><span><input type="hidden" id="doc_parse" name="document[doc_parse]" value="{if !isset($DOCUMENT.doc_parse)}0{else}{$DOCUMENT.doc_parse}{/if}" class="toggle"></span></div>
   </div>
@@ -107,7 +151,9 @@
   {include file='templates/element.hook_form_content.php'}
 
   <div class="form_control">
+	<input type="hidden" name="previous-tab" id="previous-tab" value="">
 	<input type="submit" value="{$LANG.common.save}">
+	<input type="submit" name="submit_cont" value="{$LANG.common.save_reload}">
 	{if $DISPLAY_DELETE}&nbsp; <a href="{$DOCUMENT.link.delete}" class="delete" title="{$LANG.notification.confirm_delete}">{$LANG.documents.document_delete}</a>{/if}
   </div>
   

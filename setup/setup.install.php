@@ -299,11 +299,15 @@ if (!isset($_SESSION['setup']['permissions'])) {
             $cron->updateExchangeRates($_SESSION['setup']['config']['default_currency'], false);
 
             $default_docs = array(
-                0 => array('doc_name' => str_replace('CubeCart', $_SESSION['setup']['config']['store_name'], $strings['setup']['default_doc_title_welcome']), 'doc_content' => $strings['setup']['default_doc_content_welcome'], 'doc_order' => 1, 'doc_lang' => $config['default_language'], 'doc_home' => 1, 'doc_terms' => 0, 'doc_privacy' => 0),
-                1 => array('doc_name' => $strings['setup']['default_doc_title_about'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 2, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 0, 'doc_privacy' => 0),
-                2 => array('doc_name' => $strings['setup']['default_doc_title_terms'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 3, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 1, 'doc_privacy' => 0),
-                3 => array('doc_name' => $strings['setup']['default_doc_title_privacy'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 4, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 0, 'doc_privacy' => 1),
-                4 => array('doc_name' => $strings['setup']['default_doc_title_returns'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 5, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 0, 'doc_privacy' => 0)
+                0 => array('doc_name' => str_replace('CubeCart', $_SESSION['setup']['config']['store_name'], $strings['setup']['default_doc_title_welcome']), 'doc_content' => $strings['setup']['default_doc_content_welcome'], 'doc_order' => 1, 'doc_lang' => $config['default_language'], 'doc_home' => 1, 'doc_terms' => 0, 'doc_contact' => 0),
+                1 => array('doc_name' => $strings['setup']['default_doc_title_about'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 2, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 0, 'doc_contact' => 0),
+                2 => array('doc_name' => $strings['setup']['default_doc_title_terms'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 3, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 1, 'doc_contact' => 0),
+                3 => array('doc_name' => $strings['setup']['default_doc_title_privacy'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 4, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 0, 'doc_contact' => 0),
+                4 => array('doc_name' => $strings['setup']['default_doc_title_returns'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 5, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 0, 'doc_contact' => 0),
+                // The contact page is a document so it can be translated like any
+                // other. Its content is the blurb above the form; the form itself
+                // still lives at _a=contact (#4243).
+                5 => array('doc_name' => $strings['setup']['default_doc_title_contact'], 'doc_content' => '', 'doc_order' => 6, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 0, 'doc_contact' => 1)
             );
             foreach ($default_docs as $default_doc) {
                 $GLOBALS['db']->insert('CubeCart_documents', $default_doc);
@@ -356,7 +360,9 @@ if (!isset($_SESSION['setup']['permissions'])) {
                     ));
                 }
             }
-            $contact_form_data = array('status' => 1, 'email' => $_SESSION['setup']['admin']['email'], 'description' => '');
+            // The page content lives on the contact document, so only the settings
+            // that are not language specific are seeded here (#4243).
+            $contact_form_data = array('status' => 1, 'email' => $_SESSION['setup']['admin']['email']);
             foreach ($contact_form_data as $cf_key => $cf_value) {
                 $GLOBALS['db']->insert('CubeCart_config', array('name' => 'Contact_Form', 'config_key' => $cf_key, 'config_value' => (string)$cf_value));
             }

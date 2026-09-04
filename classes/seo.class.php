@@ -121,7 +121,7 @@ class SEO
      *
      * @var array of strings
      */
-    private $_static_sections = array('recover', 'saleitems', 'certificates', 'trackback', 'contact', 'search', 'login', 'register');
+    private $_static_sections = array('recover', 'saleitems', 'certificates', 'trackback', 'search', 'login', 'register');
     /**
      * SSL URL
      *
@@ -1420,11 +1420,6 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
             case 'search':
                 $array = array(
                     '_a' => 'search'
-                );
-            break;
-            case 'contact':
-                $array = array(
-                    '_a' => 'contact'
                 );
             break;
             case 'saleitems':

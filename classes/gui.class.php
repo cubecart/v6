@@ -1168,12 +1168,12 @@ class GUI
             }
         }
 
-        // Include contact form, if enabled
-        if (($contact = $GLOBALS['config']->get('Contact_Form')) !== false) {
-            if (isset($contact['status']) && $contact['status']) {
-                $contact_url = $GLOBALS['seo']->buildURL('contact');
-                $GLOBALS['smarty']->assign('CONTACT_URL', $contact_url);
-            }
+        // The contact page is a document now, so its nav entry arrives in $DOCUMENTS
+        // with the rest. CONTACT_URL is still published for the structured data in
+        // element.markup.json-ld.php, pointing at the current language's copy (#4243).
+        $contact_document = Cubecart::getInstance()->getContactDocument();
+        if (is_array($contact_document) && !empty($contact_document['doc_status'])) {
+            $GLOBALS['smarty']->assign('CONTACT_URL', $GLOBALS['seo']->buildURL('doc', $contact_document['doc_id']));
         }
         foreach ($GLOBALS['hooks']->load('class.gui.display_documents') as $hook) {
             include $hook;

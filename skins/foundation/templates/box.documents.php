@@ -16,9 +16,6 @@
          {foreach from=$DOCUMENTS item=document}
          <li><a href="{$document.doc_url}" title="{$document.doc_name}" {if $document.doc_url_openin}target="_blank"{/if}>{$document.doc_name}</a></li>
          {/foreach}
-         {if isset($CONTACT_URL)}
-         <li><a href="{$CONTACT_URL}" title="{$LANG.documents.document_contact}">{$LANG.documents.document_contact}</a></li>
-         {/if}
          {foreach from=$DOCUMENTS_LIST_HOOKS item=list_item}
          <li><a href="{$list_item.href}" title="{$list_item.title}">{$list_item.title}</a></li>
          {/foreach}         

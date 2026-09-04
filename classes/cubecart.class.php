@@ -370,6 +370,16 @@ class Cubecart
                         if ($document['doc_home']=='1') {
                             httpredir('index.php', '', false, 301);
                         }
+
+                        // The contact page is a document so it can be translated, but it
+                        // still needs its form. Hand off rather than redirect: the whole
+                        // point is that each translation keeps its own URL (#4243).
+                        if (self::isContactDocument($document)) {
+                            $GLOBALS['smarty']->assign('SECTION_NAME', 'contact');
+                            $this->_contact($document);
+                            break;
+                        }
+
                         
                         foreach ($GLOBALS['hooks']->load('class.cubecart.document_widgets') as $hook) {
                             include $hook;
@@ -1516,17 +1526,110 @@ class Cubecart
     /**
      * Display contact page
      */
-    private function _contact()
+    /**
+     * The document flagged as the contact page, in the shopper's language
+     *
+     * The flag lives on the parent document only, so find that and let
+     * translateDocument() swap in the translation when there is one (#4243).
+     *
+     * @return array/false
+     */
+    public function getContactDocument()
+    {
+        static $document = null;
+        if ($document !== null) {
+            return $document;
+        }
+        $document = false;
+        if (($rows = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_contact' => 1, 'doc_parent_id' => 0), false, 1, false, false)) !== false) {
+            $document = $rows[0];
+            $GLOBALS['language']->translateDocument($document);
+        }
+        return $document;
+    }
+
+    /**
+     * Is this document the contact page, or a translation of it?
+     *
+     * The flag lives on the parent only: the documents list sets it on
+     * doc_parent_id = 0 rows and deliberately leaves translations alone. A
+     * translation therefore has to resolve it through its parent (#4243).
+     *
+     * @param array $document
+     * @return bool
+     */
+    public static function isContactDocument($document)
+    {
+        if (!is_array($document) || empty($document)) {
+            return false;
+        }
+        if (!empty($document['doc_contact'])) {
+            return true;
+        }
+        if (empty($document['doc_parent_id'])) {
+            return false;
+        }
+        $parent = $GLOBALS['db']->select('CubeCart_documents', array('doc_contact'), array('doc_id' => (int)$document['doc_parent_id']), false, 1, false, false);
+        return ($parent && !empty($parent[0]['doc_contact']));
+    }
+
+    /**
+     * URL of the contact page
+     *
+     * The contact page is a document, so each translation has its own path.
+     *
+     * @param int $doc_id
+     * @return string
+     */
+    public function contactUrl($doc_id = null)
+    {
+        if ($doc_id === null) {
+            $document = $this->getContactDocument();
+            $doc_id = is_array($document) ? $document['doc_id'] : null;
+        }
+        return ($doc_id) ? $GLOBALS['seo']->buildURL('doc', $doc_id) : '';
+    }
+
+    private function _contact($document = null)
     {
         // Contact Form
         $contact = $GLOBALS['config']->get('Contact_Form');
+
+        // Page content, SEO meta and department names come from the contact
+        // document so they translate like any other document. Recipient addresses
+        // and form behaviour stay in config: an inbox is not language specific
+        // (#4243). Reached directly rather than through the document route, look
+        // the document up here.
+        if ($document === null) {
+            $document = $this->getContactDocument();
+        }
+        if (is_array($document) && !empty($document)) {
+            $contact['status']               = $document['doc_status'];
+            $contact['parse']                = $document['doc_parse'];
+            $contact['seo_meta_title']       = $document['seo_meta_title'];
+            $contact['seo_meta_description'] = $document['seo_meta_description'];
+            $contact['content']              = $document['doc_content'];
+            $contact['doc_id']               = $document['doc_id'];
+            $contact['doc_name']             = $document['doc_name'];
+            // Names come from the translation, keyed to the addresses in config.
+            $names = (!empty($document['doc_departments'])) ? json_decode($document['doc_departments'], true) : false;
+            if (is_array($names) && isset($contact['department']) && is_array($contact['department'])) {
+                foreach ($names as $key => $name) {
+                    if (isset($contact['department'][$key]) && $name !== '') {
+                        $contact['department'][$key]['name'] = $name;
+                    }
+                }
+            }
+        }
+
         if ($contact && $contact['status']) {
             $meta_data = array(
                 'description' => $contact['seo_meta_description'] ?? '',
                 'title'   => $contact['seo_meta_title'] ?? ''
             );
             $GLOBALS['seo']->set_meta_data($meta_data);
-            $GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->documents['document_contact'], $GLOBALS['seo']->buildURL('contact'));
+            $contact_title = !empty($contact['doc_name']) ? $contact['doc_name'] : $GLOBALS['language']->documents['document_contact'];
+            $GLOBALS['gui']->addBreadcrumb($contact_title, $this->contactUrl($contact['doc_id'] ?? null));
             if (isset($_POST['contact'])) {
                 $error = false;
                 $required = array('email', 'name', 'subject', 'enquiry');
@@ -1664,9 +1767,10 @@ class Cubecart
                 }
             }
 
-            // Display form
-            $contact['description'] = base64_decode($contact['description']);
-            $contact['description'] = (($contact['parse'] ?? '0') =='1') ? $GLOBALS['smarty']->fetch('string:'.$contact['description']) : $contact['description'];
+            // Display form. Document content is plain HTML; only the old config
+            // copy was base64 encoded, so fall back to decoding that.
+            $description = isset($contact['content']) ? $contact['content'] : base64_decode($contact['description'] ?? '');
+            $contact['description'] = (($contact['parse'] ?? '0') =='1') ? $GLOBALS['smarty']->fetch('string:'.$description) : $description;
             if (!isset($_POST['contact']) && $GLOBALS['user']->is()) {
                 $GLOBALS['smarty']->assign('MESSAGE', array('name' => $GLOBALS['user']->get('first_name').' '.$GLOBALS['user']->get('last_name'), 'email' => $GLOBALS['user']->get('email')));
             }

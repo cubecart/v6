@@ -118,7 +118,22 @@ class Language
                     $GLOBALS['db']->update('CubeCart_customer', array('language' => $switch), array('customer_id' => $customer_id));
                 }
                 $GLOBALS['session']->set('language', $switch, 'client');
-                httpredir(currentPage(array('set_language')));
+                // Return to the pretty URL. currentPage() rebuilds from PHP_SELF and
+                // $_GET, and a rewritten request still carries seo_path there, so it
+                // would drop the shopper on index.php?seo_path=... instead of the
+                // address they were reading. Other parameters, paging for instance,
+                // are carried across.
+                if (!empty($_GET['seo_path'])) {
+                    $query = $_GET;
+                    unset($query['set_language'], $query['seo_path'], $query['token']);
+                    $destination = $GLOBALS['storeURL'].'/'.ltrim(str_replace(array("\r", "\n"), '', (string)$_GET['seo_path']), '/');
+                    if (!empty($query)) {
+                        $destination .= '?'.http_build_query($query);
+                    }
+                } else {
+                    $destination = currentPage(array('set_language'));
+                }
+                httpredir($destination);
             } else {
                 //See if the language is set in the session
                 if (!CC_IN_ADMIN && $GLOBALS['session']->has('language', 'client')) {

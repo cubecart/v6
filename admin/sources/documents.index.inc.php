@@ -36,30 +36,81 @@ if (isset($_POST['document']) && Admin::getInstance()->permissions('documents', 
             $GLOBALS['seo']->unsetdbPath('doc', $doc_id);
         }
         $GLOBALS['seo']->setdbPath('doc', $doc_id, $_POST['seo_path'], true, true);
-        if ($doc_changed) {
-            $GLOBALS['db']->update('CubeCart_documents', array('updated' => date('Y-m-d H:i:s')), array('doc_id' => $doc_id));
-            $GLOBALS['main']->successMessage($lang['documents']['notify_document_update']);
-            $rem_array = array('action','doc_id');
-        } else {
-            $GLOBALS['main']->errorMessage($lang['documents']['error_document_update']);
-        }
     } else {
         $_POST['document']['date_added'] = date('Y-m-d H:i:s');
-        if ($doc_id = $GLOBALS['db']->insert('CubeCart_documents', $_POST['document'])) {
+        $doc_created = ($doc_id = $GLOBALS['db']->insert('CubeCart_documents', $_POST['document'])) ? true : false;
+        if ($doc_created) {
             $GLOBALS['seo']->setdbPath('doc', $doc_id, $_POST['seo_path']);
-            $GLOBALS['main']->successMessage($lang['documents']['notify_document_create']);
-            $rem_array = array('action','doc_id');
-        } else {
-            $GLOBALS['main']->errorMessage($lang['documents']['error_document_create']);
         }
     }
+    // Contact page settings, when this document is the contact page. Recipient
+    // addresses and form behaviour are shared by every translation and stay in
+    // config; department names belong to this language's document (#4243).
+    $contact_saved = false;
+    if (!empty($doc_id) && isset($_POST['contact']) && is_array($_POST['contact'])) {
+        $contact = $GLOBALS['config']->get('Contact_Form');
+        $contact = is_array($contact) ? $contact : array();
+        foreach (array('email', 'phone', 'attachments') as $field) {
+            if (isset($_POST['contact'][$field])) {
+                $contact[$field] = $_POST['contact'][$field];
+            }
+        }
+
+        $names = array();
+        if (isset($_POST['department']['name']) && is_array($_POST['department']['name'])) {
+            $departments = array();
+            $i = 0;
+            foreach ($_POST['department']['name'] as $key => $value) {
+                if (empty($value)) {
+                    continue;
+                }
+                ++$i;
+                // Keyed the same way the storefront resolves a recipient, so the
+                // name and the address stay bound together across languages.
+                $departments[$i] = array('name' => $value, 'email' => $_POST['department']['email'][$key] ?? '');
+                $names[$i] = $value;
+            }
+            $contact['department'] = $departments;
+        }
+        $GLOBALS['config']->set('Contact_Form', '', $contact);
+        $GLOBALS['db']->update('CubeCart_documents', array('doc_departments' => !empty($names) ? json_encode($names) : null), array('doc_id' => (int)$doc_id));
+        $contact_saved = true;
+    }
+
+    // Decide the outcome once everything has been written. The contact settings
+    // live in config rather than on the document, so judging success purely on
+    // rows affected in CubeCart_documents reported a failure when only those
+    // fields were edited (#4243).
+    if (!empty($doc_created)) {
+        $GLOBALS['main']->successMessage($lang['documents']['notify_document_create']);
+        $rem_array = array('action','doc_id');
+    } elseif (isset($doc_created)) {
+        $GLOBALS['main']->errorMessage($lang['documents']['error_document_create']);
+    } elseif (!empty($doc_changed) || $contact_saved) {
+        if (!empty($doc_changed)) {
+            $GLOBALS['db']->update('CubeCart_documents', array('updated' => date('Y-m-d H:i:s')), array('doc_id' => (int)$doc_id));
+        }
+        $GLOBALS['main']->successMessage($lang['documents']['notify_document_update']);
+        $rem_array = array('action','doc_id');
+    } else {
+        $GLOBALS['main']->errorMessage($lang['documents']['error_document_update']);
+    }
+
     foreach ($GLOBALS['hooks']->load('admin.documents.save.post_process') as $hook) {
         include $hook;
     }
-    httpredir(currentPage($rem_array));
+    // Save & Reload comes back to the same document. httpredir() appends the
+    // posted previous-tab as an anchor, so it lands on the tab you were on;
+    // clear it for a plain Save, which goes back to the list.
+    if (isset($_POST['submit_cont'])) {
+        httpredir(currentPage(null, array('action' => 'edit', 'doc_id' => (int)$doc_id)));
+    } else {
+        unset($_POST['previous-tab']);
+        httpredir(currentPage($rem_array));
+    }
 }
 
-if (isset($_POST['terms']) || isset($_POST['home']) || isset($_POST['order']) || isset($_POST['status'])) {
+if (isset($_POST['terms']) || isset($_POST['home']) || isset($_POST['contact']) || isset($_POST['order']) || isset($_POST['status'])) {
     if (Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
         foreach ($GLOBALS['hooks']->load('admin.documents.status') as $hook) {
             include $hook;
@@ -67,10 +118,13 @@ if (isset($_POST['terms']) || isset($_POST['home']) || isset($_POST['order']) ||
         $updated = false;
         $docs = array();
         if (isset($_POST['terms']) && ctype_digit($_POST['terms'])) { ## Set document as terms & conditions
-            $docs[] = array('key' => 'terms', 'id' => $_POST['terms']);
+            $docs[] = array('key' => 'terms', 'id' => $_POST['terms'], 'msg' => 'notify_document_terms');
         }
         if (isset($_POST['home']) && ctype_digit($_POST['home'])) { ## Set doument as homepage
-            $docs[] = array('key' => 'home', 'id' => $_POST['home']);
+            $docs[] = array('key' => 'home', 'id' => $_POST['home'], 'msg' => 'notify_document_home');
+        }
+        if (isset($_POST['contact']) && ctype_digit($_POST['contact'])) { ## Set document as the contact page
+            $docs[] = array('key' => 'contact', 'id' => $_POST['contact'], 'msg' => 'notify_document_contact_page');
         }
 
         if (count($docs)>0) {
@@ -81,7 +135,7 @@ if (isset($_POST['terms']) || isset($_POST['home']) || isset($_POST['order']) ||
                 // doc_parent_id > 0 and shouldn't be touched by this list-level toggle).
                 $GLOBALS['db']->update('CubeCart_documents', array('doc_'.$doc['key'] => 0), 'doc_parent_id = 0 AND doc_id <> '.$target_id);
                 if ($GLOBALS['db']->affected() > 0) {
-                    $GLOBALS['main']->successMessage($lang['documents']['notify_document_'.$doc['key']]);
+                    $GLOBALS['main']->successMessage($lang['documents'][$doc['msg']]);
                     $updated = true;
                 }
             }
@@ -226,6 +280,35 @@ if (isset($_GET['action'])) {
         $data['navigation_link'] = 1;
     }
     $GLOBALS['smarty']->assign('DOCUMENT', $data);
+
+    // The contact flag is a parent-level concept: the list radio only ever sets it
+    // on doc_parent_id = 0 rows, so a translation carries 0 and has to resolve it
+    // through its parent or the settings would vanish once it was saved (#4243).
+    if (empty($data['doc_contact']) && Cubecart::isContactDocument($data)) {
+        $data['doc_contact'] = 1;
+        $GLOBALS['smarty']->assign('DOCUMENT', $data);
+    }
+
+    // Contact page settings, shown with the document that carries the flag. The
+    // addresses come from config because they are shared, the names from this
+    // document so a translation edits its own wording (#4243).
+    if (!empty($data['doc_contact'])) {
+        $contact = $GLOBALS['config']->get('Contact_Form');
+        $contact = is_array($contact) ? $contact : array();
+        $GLOBALS['smarty']->assign('CONTACT', $contact);
+        if (isset($contact['department']) && is_array($contact['department'])) {
+            $names = (!empty($data['doc_departments'])) ? json_decode($data['doc_departments'], true) : array();
+            $departments = array();
+            foreach ($contact['department'] as $key => $dept) {
+                $departments[] = array(
+                    'name'  => (is_array($names) && isset($names[$key]) && $names[$key] !== '') ? $names[$key] : ($dept['name'] ?? ''),
+                    'email' => $dept['email'] ?? '',
+                );
+            }
+            $GLOBALS['smarty']->assign('DEPARTMENTS', $departments);
+        }
+    }
+
     foreach ($GLOBALS['hooks']->load('admin.documents.tabs') as $hook) {
         include $hook;
     }
@@ -260,6 +343,7 @@ if (isset($_GET['action'])) {
             $document['flag']	= file_exists('language/flags/'.$document['doc_lang'].'.png') ? 'language/flags/'.$document['doc_lang'].'.png' : 'language/flags/unknown.png';
             $document['terms']  = ($document['doc_terms']) ? 'checked="checked"' : '';
             $document['homepage'] = ($document['doc_home']) ? 'checked="checked"' : '';
+            $document['contact']  = (!empty($document['doc_contact'])) ? 'checked="checked"' : '';
             $document['fully_translated'] = $GLOBALS['language']->fullyTranslated('document', $document['doc_id']);
             $smarty_data['documents'][] = $document;
         }

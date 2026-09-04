@@ -16,3 +16,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_stock_log` (
 	KEY `time` (`time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 DELETE FROM `CubeCart_filemanager` WHERE `type` = 1 AND `mimetype` IS NOT NULL AND `mimetype` <> '' AND `mimetype` NOT LIKE 'image/%'; #EOQ
+ALTER TABLE `CubeCart_documents` ADD `doc_contact` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'; #EOQ
+ALTER TABLE `CubeCart_documents` ADD `doc_departments` TEXT NULL; #EOQ
+ALTER TABLE `CubeCart_documents` DROP INDEX `doc_privacy`; #EOQ
+ALTER TABLE `CubeCart_documents` DROP `doc_privacy`; #EOQ
