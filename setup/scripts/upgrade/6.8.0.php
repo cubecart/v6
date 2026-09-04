@@ -109,3 +109,20 @@ foreach ($obsolete as $relative) {
 if (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) {
     $GLOBALS['cache']->clear();
 }
+
+// Import the account activation email across every shipped language. A guest
+// record is only promoted to a real account after the address is confirmed, and
+// this is the message carrying that link. importEmail() is safe to re-run: it
+// inserts only rows that do not already exist, so merchant edited copies
+// survive. Languages whose XML has no translation yet are simply skipped, and
+// User::requestActivation() falls back to any available language at send time.
+$new_emails = array(
+    'account.activate',
+);
+if (is_array($languages)) {
+    foreach ($languages as $code => $lang) {
+        foreach ($new_emails as $tpl) {
+            $language->importEmail('email_'.$code.'.xml', CC_LANGUAGE_DIR, $tpl);
+        }
+    }
+}

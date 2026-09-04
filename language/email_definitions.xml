@@ -11,6 +11,15 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
 -->
 <emails version="6.7.4" language="en">
+  <email name="account.activate">
+    <subject><![CDATA[Confirm your email address]]></subject>
+    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
+<p>Someone asked to create an account with this email address, which we already have on file from a previous order. To finish setting the account up, please confirm the address by following the link below:</p>
+<p><a href="{$DATA.activate_link}">{$DATA.activate_link}</a></p>
+<p>If the link above doesn't work, please copy and paste it into your browser address bar. The link expires in 1 hour.</p>
+<p>If this wasn't you, no action is needed and no account has been created. Your previous orders are not accessible until the address is confirmed.</p>]]></content>
+
+  </email>
   <email name="admin.password_recovery">
     <subject><![CDATA[Admin Password Recovery]]></subject>
     <content type="html"><![CDATA[<p>Dear {$DATA.name},</p>
