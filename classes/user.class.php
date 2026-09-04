@@ -210,15 +210,28 @@ class User
                     }
                 }
             } elseif (empty($user[0]['salt'])) {
-                //Legacy: no salt - oldest format
-                $salt = $pwd->createSalt();
-                $pass = $pwd->updateOld($user[0]['password'], $salt);
-                $record = array(
-                    'salt'   => $salt,
-                    'password'  => $pass,
-                );
-                if ($GLOBALS['db']->update('CubeCart_customer', $record, array('customer_id' => (int)$user[0]['customer_id']))) {
-                    $hash_password = $pass;
+                // Legacy: no salt, the oldest format, where the stored value is a
+                // bare md5 of the password.
+                //
+                // The submitted password MUST be checked against it before
+                // migrating. updateOld() derives the new hash from the stored
+                // value alone, so without this the row was rewritten to that hash
+                // and then matched against it, meaning any password was accepted.
+                // The rehash further down then wrote the submitted password in as
+                // the account's password, turning it into a takeover rather than
+                // a one-off bypass. Reachable on any account that had not yet had
+                // a successful login, which includes every account registered
+                // during checkout.
+                if (hash_equals((string)$user[0]['password'], md5($password))) {
+                    $salt = $pwd->createSalt();
+                    $pass = $pwd->updateOld($user[0]['password'], $salt);
+                    $record = array(
+                        'salt'   => $salt,
+                        'password'  => $pass,
+                    );
+                    if ($GLOBALS['db']->update('CubeCart_customer', $record, array('customer_id' => (int)$user[0]['customer_id']))) {
+                        $hash_password = $pass;
+                    }
                 }
             } else {
                 if ($user[0]['new_password'] == 1) {
