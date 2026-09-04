@@ -528,7 +528,7 @@
    <table width="100%">
       <thead>
          <tr>
-            <th>&nbsp;</th>
+            <th>{$LANG.common.hide}</th>
             <th>{$LANG.common.name}</th>
             <th>{$LANG.common.details}</th>
             <th>{$LANG.common.developer}</th>
