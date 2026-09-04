@@ -798,11 +798,13 @@ class User
         unset($record['type'], $record['customer_id'], $record['passconf']);
         $record['activate'] = $token;
         $record['activate_expires'] = date('Y-m-d H:i:s', time() + 3600);
-        if (!empty($data['password'])) {
-            $record['password'] = Password::getInstance()->hashPassword($data['password']);
-            $record['salt'] = '';
-            $record['new_password'] = 1;
-        }
+        // The password arrives already prepared, and differently per caller:
+        // registerUser() bcrypts it, the checkout path in createUser() stores an
+        // md5 and flags new_password '0' for authenticate() to migrate on first
+        // login. Hashing again here would store bcrypt(bcrypt(...)) or
+        // bcrypt(md5(...)), which can never match what the user types, so the
+        // account would activate and then refuse every login. Pass it through
+        // exactly as the caller built it, along with salt and new_password.
 
         if ($GLOBALS['db']->update('CubeCart_customer', $record, array('customer_id' => $customer_id)) === false) {
             return false;
@@ -1039,6 +1041,10 @@ class User
                 // This address already has a guest record holding somebody's
                 // orders and addresses. Upgrading it here would hand all of that
                 // to whoever filled the form in, so confirm the address first.
+                // registerUser() has already bcrypted the password above, so mark
+                // the row accordingly; the guest record it is overwriting was
+                // created with a legacy md5 filler and new_password '0'.
+                $_POST['new_password'] = 1;
                 if ($this->requestActivation($existing[0]['customer_id'], $_POST)) {
                     $GLOBALS['gui']->setNotify($GLOBALS['language']->account['notify_activation_sent']);
                 } else {
