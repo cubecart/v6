@@ -3419,6 +3419,7 @@ class Cubecart
         $review_eligibility = $GLOBALS['catalogue']->reviewEligibility((int)$_GET['product_id']);
         $GLOBALS['smarty']->assign('REVIEW_ALLOWED', $review_eligibility['allowed']);
         $GLOBALS['smarty']->assign('REVIEW_BLOCKED', $review_eligibility['reason']);
+        $GLOBALS['smarty']->assign('REVIEW_BLOCKED_MESSAGE', $review_eligibility['message']);
 
         if ($GLOBALS['config']->get('config', 'enable_reviews') && isset($_POST['review']) && is_array($_POST['review'])) {
             $error = false;
@@ -3426,7 +3427,7 @@ class Cubecart
             // The form is hidden when the store restricts who may review, but the
             // handler has to enforce it too or a direct POST walks straight past.
             if (!$review_eligibility['allowed']) {
-                $GLOBALS['gui']->setError($GLOBALS['language']->catalogue['error_review_'.$review_eligibility['reason']]);
+                $GLOBALS['gui']->setError($review_eligibility['message']);
                 $error = true;
             }
 

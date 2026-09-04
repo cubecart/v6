@@ -1691,7 +1691,7 @@ class Catalogue
      * skin can turn into a message.
      *
      * @param int $product_id
-     * @return array{allowed:bool, reason:string, verified:bool}
+     * @return array{allowed:bool, reason:string, verified:bool, message:string}
      */
     public function reviewEligibility($product_id)
     {
@@ -1717,14 +1717,43 @@ class Catalogue
                     // A guest could be asked for an email and checked against
                     // orders, but nothing proves the address is theirs, so the
                     // strict setting requires an account.
-                    return array('allowed' => false, 'reason' => 'purchaser', 'verified' => false);
+                    return $this->_reviewBlocked('purchaser');
                 }
-                return array('allowed' => $verified, 'reason' => $verified ? '' : 'purchaser', 'verified' => $verified);
+                return $verified
+                    ? array('allowed' => true, 'reason' => '', 'verified' => true, 'message' => '')
+                    : $this->_reviewBlocked('purchaser');
             case 1: // Logged-in customers only
-                return array('allowed' => $logged_in, 'reason' => $logged_in ? '' : 'customer', 'verified' => $verified);
+                return $logged_in
+                    ? array('allowed' => true, 'reason' => '', 'verified' => $verified, 'message' => '')
+                    : $this->_reviewBlocked('customer');
             default: // Anyone, the shipped behaviour
-                return array('allowed' => true, 'reason' => '', 'verified' => $verified);
+                return array('allowed' => true, 'reason' => '', 'verified' => $verified, 'message' => '');
         }
+    }
+
+    /**
+     * The "you cannot review this" message, with "sign in" as a real link.
+     *
+     * Built here rather than in each skin so the wording, the link and the
+     * translation live in one place. The query string form of the login URL is
+     * used deliberately: it works whether or not SEO URLs are switched on.
+     *
+     * @param string $reason 'customer' or 'purchaser'
+     * @return array
+     */
+    private function _reviewBlocked($reason)
+    {
+        $link = sprintf(
+            '<a href="%s/index.php?_a=login">%s</a>',
+            $GLOBALS['storeURL'],
+            $GLOBALS['language']->common['sign_in']
+        );
+        return array(
+            'allowed'  => false,
+            'reason'   => $reason,
+            'verified' => false,
+            'message'  => sprintf($GLOBALS['language']->catalogue['error_review_'.$reason], $link)
+        );
     }
 
     public function getProductStock($product_id = null, $options_identifier_string = null, $return_max = false, $check_existing = false, $quantity = false)

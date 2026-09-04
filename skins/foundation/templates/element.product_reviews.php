@@ -47,14 +47,14 @@
       {if $REVIEW_ALLOWED}
       <a href="#" class="button review_show">{$LANG.catalogue.write_a_review}</a>
       {elseif $REVIEW_BLOCKED}
-      <p class="review_blocked">{if $REVIEW_BLOCKED == 'purchaser'}{$LANG.catalogue.error_review_purchaser}{else}{$LANG.catalogue.error_review_customer}{/if}</p>
+      <p class="review_blocked">{$REVIEW_BLOCKED_MESSAGE}</p>
       {/if}
       {else}
       <p>{$LANG.catalogue.product_not_reviewed}</p>
       {if $REVIEW_ALLOWED}
       <a href="#" class="button review_show">{$LANG.catalogue.write_a_review}</a>
       {elseif $REVIEW_BLOCKED}
-      <p class="review_blocked">{if $REVIEW_BLOCKED == 'purchaser'}{$LANG.catalogue.error_review_purchaser}{else}{$LANG.catalogue.error_review_customer}{/if}</p>
+      <p class="review_blocked">{$REVIEW_BLOCKED_MESSAGE}</p>
       {/if}
       {/if}
    </div>

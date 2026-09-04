@@ -67,7 +67,7 @@
       {if $REVIEW_ALLOWED}
       <button type="button" class="review_show cc-btn cc-btn-secondary mt-6" @click="select('write')">{$LANG.catalogue.write_a_review}</button>
       {elseif $REVIEW_BLOCKED}
-      <p class="review_blocked mt-6 text-sm text-ink-600">{if $REVIEW_BLOCKED == 'purchaser'}{$LANG.catalogue.error_review_purchaser}{else}{$LANG.catalogue.error_review_customer}{/if}</p>
+      <p class="review_blocked mt-6 text-sm text-ink-600">{$REVIEW_BLOCKED_MESSAGE}</p>
       {/if}
    </div>
 
