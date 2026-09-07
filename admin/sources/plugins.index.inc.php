@@ -254,6 +254,10 @@ if ($is_ajax && $_POST['ajax_action'] === 'toggle_module') {
     // Mirror 2: CubeCart_config row for this module
     $GLOBALS['config']->set($ext_module, 'status', $enabled, true);
 
+    // The compiled hook map is built from module status and is cached, so it has
+    // to be rebuilt here or the extension's hooks keep firing after it is switched off.
+    $GLOBALS['hooks']->clearCache();
+
     _ajax_respond(array('success' => true, 'enabled' => $enabled));
 }
 

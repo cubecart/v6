@@ -142,6 +142,22 @@ class HookLoader
         $compiled = array('hooks' => array(), 'snippets' => array(), 'plugins' => array());
         $plugin_set = array();
 
+        // An extension switched off in Manage Extensions must not fire its hooks.
+        // Filtering here rather than rewriting CubeCart_hooks.enabled keeps the
+        // admin's per-hook choices intact, so switching the extension back on
+        // restores exactly the hooks that were enabled before. Only folders with
+        // an explicitly disabled module row are skipped; a plugin with no module
+        // row behaves as it always has.
+        // Read live, not from the query cache: this only runs while the map is being
+        // rebuilt, and a cached status would leave a disabled extension firing on the
+        // storefront until the next full cache clear.
+        $disabled_plugins = array();
+        if (($modules = $GLOBALS['db']->select('CubeCart_modules', array('folder'), array('module' => 'plugins', 'status' => '0'), false, false, false, false)) !== false) {
+            foreach ($modules as $module) {
+                $disabled_plugins[preg_replace('#[^a-z0-9]#iU', '_', $module['folder'])] = true;
+            }
+        }
+
         if (($hooks = $GLOBALS['db']->select('CubeCart_hooks', false, array('enabled' => '1'), array('priority' => 'ASC'))) !== false) {
             foreach ($hooks as $hook) {
                 $this->_security_check($hook['filepath']);
@@ -149,6 +165,9 @@ class HookLoader
                 // mutates include_path/_plugin_list — the constructor handles
                 // those uniformly from the cached _plugin_list.
                 $hook['plugin'] = preg_replace('#[^a-z0-9]#iU', '_', $hook['plugin']);
+                if (isset($disabled_plugins[$hook['plugin']])) {
+                    continue;
+                }
                 $filepath = !empty($hook['filepath']) ? $hook['filepath'] : 'hooks/'.$hook['trigger'].'.php';
                 $fullpath = $this->_hook_dir.'/'.$hook['plugin'].'/'.$filepath;
                 if (!file_exists($fullpath)) {
