@@ -851,7 +851,7 @@ $GLOBALS['smarty']->assign('NEWS_DISMISSED_LINK', (!empty($dismissed_row[0]['new
 if ($GLOBALS['session']->has('rss_news')) {
     $GLOBALS['smarty']->assign('NEWS', $GLOBALS['session']->get('rss_news'));
 } else {
-    $request = new Request('community.cubecart.com', '/c/news-announcements/5.rss');
+    $request = new Request('community.cubecart.com', '/rss/t/news-announcements/discussions');
     $request->setSSL();
     $request->cache(true);
     $request->skiplog(true);
