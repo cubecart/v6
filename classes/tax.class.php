@@ -35,7 +35,9 @@ class Tax
     {
         $cache = Cache::getInstance();
         // Should we be showing prices?
-        if (Config::getInstance()->get('config', 'catalogue_hide_prices') && !User::getInstance()->is() && !CC_IN_ADMIN && !$GLOBALS['session']->has('admin_id', 'admin_data')) {
+        // User::getInstance() authenticates any POSTed credentials, so CC_IN_ADMIN
+        // must be tested first or an admin sign-in also runs a customer login.
+        if (Config::getInstance()->get('config', 'catalogue_hide_prices') && !CC_IN_ADMIN && !$GLOBALS['session']->has('admin_id', 'admin_data') && !User::getInstance()->is()) {
             Session::getInstance()->set('hide_prices', true);
         } else {
             Session::getInstance()->delete('hide_prices');
