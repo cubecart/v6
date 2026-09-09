@@ -15,11 +15,16 @@
     {$DOCUMENT.content}
 </div>
 {/if}
-{if $LATEST_PRODUCTS}
-<div id="content_latest_products">
-   <h2>{$LANG.catalogue.latest_products}</h2>
+{* Homepage product sections. Core (Cubecart::displayHomePage) assigns
+   $HOMEPAGE_SECTIONS from the store settings; with none configured it holds a
+   single Latest Products section built from the same list $LATEST_PRODUCTS
+   still carries, so this renders as it always did until a merchant asks for
+   more. The first section keeps the id content_latest_products. *}
+{foreach from=$HOMEPAGE_SECTIONS item=section name=sections}
+<div id="{if $smarty.foreach.sections.first}content_latest_products{else}content_products_{$smarty.foreach.sections.iteration}{/if}">
+   <h2>{$section.heading}{if $section.url} <a href="{$section.url}" class="section-view-all">{$LANG.common.view_all}</a>{/if}</h2>
    <ul class="small-block-grid-1 medium-block-grid-3 large-block-grid-3" data-equalizer>
-      {foreach from=$LATEST_PRODUCTS item=product}
+      {foreach from=$section.products item=product}
       <li>
          <form action="{$VAL_SELF}" method="post" class="panel add_to_basket">
             <div data-equalizer-watch>
@@ -78,4 +83,4 @@
       {/foreach}
    </ul>
 </div>
-{/if}
+{/foreach}

@@ -473,6 +473,18 @@ if(!file_exists($current_skin_path.'element.turnstile.php')) {
 $GLOBALS['smarty']->assign('unavailable_captchas', $unavailable_captchas);
 $GLOBALS['smarty']->assign('w3w_compatibility', file_exists($current_skin_path.'element.w3w.php'));
 
+/* Homepage sections: unlike the captcha and w3w probes there is no file to test
+   for — every skin has a content.homepage.php — so the test is whether that
+   template actually renders $HOMEPAGE_SECTIONS. A skin that does not still works
+   and still shows $LATEST_PRODUCTS, it just ignores the settings below, and a
+   merchant configuring sections that never appear deserves to be told why. */
+$homepage_sections_compatibility = false;
+$homepage_template = $current_skin_path.'content.homepage.php';
+if (file_exists($homepage_template)) {
+    $homepage_sections_compatibility = (strpos((string)file_get_contents($homepage_template), 'HOMEPAGE_SECTIONS') !== false);
+}
+$GLOBALS['smarty']->assign('homepage_sections_compatibility', $homepage_sections_compatibility);
+
 if ($inventory_columns = $GLOBALS['db']->misc('SHOW FULL COLUMNS FROM '.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory')) {
     $excluded = array('use_stock_level');
     $select_options['product_sort_column'] = array();
@@ -623,4 +635,48 @@ $GLOBALS['smarty']->assign('CRON_FREQUENCIES', array(
     86400  => 'Daily',
     604800 => 'Weekly',
 ));
+/* Homepage sections (issue #4059). One entry per configurable slot, each
+   carrying its own pre-selected option lists so the template stays a loop with
+   no logic in it. Cubecart::HOMEPAGE_SECTIONS is the single definition of how
+   many slots exist. */
+$homepage_sources = array(
+    ''         => $lang['common']['none'],
+    'latest'   => $lang['catalogue']['latest_products'],
+    'featured' => $lang['catalogue']['title_feature'],
+    'sale'     => $lang['catalogue']['title_saleitems'],
+    'popular'  => $lang['catalogue']['title_popular'],
+    'category' => $lang['common']['category'],
+);
+
+// Flat list of live categories for the "category" source.
+$homepage_categories = array();
+if (($category_rows = $GLOBALS['db']->select('CubeCart_category', array('cat_id', 'cat_name'), array('status' => 1), array('cat_name' => 'ASC'))) !== false) {
+    $homepage_categories = $category_rows;
+}
+
+$homepage_sections = array();
+for ($slot = 1; $slot <= Cubecart::HOMEPAGE_SECTIONS; $slot++) {
+    $selected_source = (string)$GLOBALS['config']->get('config', 'homepage_section_'.$slot.'_source');
+    $selected_cat    = (int)$GLOBALS['config']->get('config', 'homepage_section_'.$slot.'_cat');
+
+    $sources = array();
+    foreach ($homepage_sources as $value => $title) {
+        $sources[] = array('value' => $value, 'title' => $title, 'selected' => ($value === $selected_source) ? ' selected="selected"' : '');
+    }
+    $categories = array();
+    foreach ($homepage_categories as $category) {
+        $categories[] = array('value' => $category['cat_id'], 'title' => $category['cat_name'], 'selected' => ((int)$category['cat_id'] === $selected_cat) ? ' selected="selected"' : '');
+    }
+
+    $homepage_sections[] = array(
+        'number'     => $slot,
+        'sources'    => $sources,
+        'categories' => $categories,
+        'is_category'=> ($selected_source === 'category'),
+        'count'      => $GLOBALS['config']->get('config', 'homepage_section_'.$slot.'_count'),
+        'title'      => $GLOBALS['config']->get('config', 'homepage_section_'.$slot.'_title'),
+    );
+}
+$GLOBALS['smarty']->assign('HOMEPAGE_SECTIONS', $homepage_sections);
+
 $page_content = $GLOBALS['smarty']->fetch('templates/settings.index.php');

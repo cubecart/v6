@@ -46,14 +46,29 @@
 </div>
 {/if}
 
-{if $LATEST_PRODUCTS}
-<section id="content_latest_products" aria-labelledby="latest-products-heading">
-   <h2 id="latest-products-heading" class="mb-6 text-xl font-semibold tracking-tight text-ink-900">
-      {$LANG.catalogue.latest_products}
-   </h2>
+{* Homepage product sections. Core (Cubecart::displayHomePage) assigns
+   $HOMEPAGE_SECTIONS from the store settings: each entry is source, heading, url
+   and products, and a store that has configured none gets a single Latest
+   Products section built from the same list $LATEST_PRODUCTS still holds. So
+   this renders identically to the old markup until a merchant configures
+   something. The FIRST section keeps the id content_latest_products whatever its
+   source, so a store's existing CSS or JS targeting it survives being
+   reconfigured; every other skin does the same. *}
+{foreach from=$HOMEPAGE_SECTIONS item=section name=sections}
+<section id="{if $smarty.foreach.sections.first}content_latest_products{else}content_products_{$smarty.foreach.sections.iteration}{/if}"
+         class="{if !$smarty.foreach.sections.first}mt-16{/if}"
+         aria-labelledby="products-heading-{$smarty.foreach.sections.iteration}">
+   <div class="mb-6 flex flex-wrap items-baseline justify-between gap-3">
+      <h2 id="products-heading-{$smarty.foreach.sections.iteration}" class="text-xl font-semibold tracking-tight text-ink-900">
+         {$section.heading}
+      </h2>
+      {if $section.url}
+      <a href="{$section.url}" class="text-sm font-medium text-brand-600 hover:underline">{$LANG.common.view_all}</a>
+      {/if}
+   </div>
 
    <ul role="list" class="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-3 xl:grid-cols-4">
-      {foreach from=$LATEST_PRODUCTS item=product}
+      {foreach from=$section.products item=product}
       <li class="group flex flex-col">
          <form action="{$VAL_SELF}" method="post" class="add_to_basket flex h-full flex-col">
 
@@ -121,4 +136,4 @@
       {/foreach}
    </ul>
 </section>
-{/if}
+{/foreach}

@@ -2681,7 +2681,14 @@ This email is sent from the store's master email address but it is possible to r
 		<string name="review_eligibility_note" introduced="6.8.0"><![CDATA[Verified purchasers must be signed in and have bought the product on an order that is processing or complete. Reviews still go through moderation.]]></string>
 		<string name="review_notify" introduced="6.8.0"><![CDATA[Email me about new reviews]]></string>
 		<string name="review_notify_note" introduced="6.8.0"><![CDATA[Turn off to stop the new review notification. Reviews still need approving.]]></string>
-	</group>
+	    <string name="title_homepage_sections" introduced="6.8.0"><![CDATA[Homepage Sections]]></string>
+    <string name="homepage_section_desc" introduced="6.8.0"><![CDATA[Choose what appears on the home page. Leave a section set to None to hide it.]]></string>
+    <string name="homepage_section_number" introduced="6.8.0"><![CDATA[Section %s]]></string>
+    <string name="homepage_section_source" introduced="6.8.0"><![CDATA[Source]]></string>
+    <string name="homepage_section_count" introduced="6.8.0"><![CDATA[Products to show]]></string>
+    <string name="homepage_section_title" introduced="6.8.0"><![CDATA[Heading]]></string>
+    <string name="homepage_sections_na" introduced="6.8.0"><![CDATA[The active skin does not support homepage sections yet. Its home page will keep showing the Latest Products list only. A skin adds support by rendering $HOMEPAGE_SECTIONS in content.homepage.php.]]></string>
+</group>
   <group name="setup">
     <string name="help_dbport" introduced="6.1.1"><![CDATA[This is the database server port. In most cases this can be left empty. Default value is 3306]]></string>
     <string name="help_dbsocket" introduced="6.1.1"><![CDATA[This is the database server socket. In most cases it can be left blank.]]></string>

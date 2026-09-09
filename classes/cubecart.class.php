@@ -99,39 +99,18 @@ class Cubecart
                 include $hook;
             }
             if ($latestProducts) {
-                foreach ($latestProducts as $product) {
-                    // Product Translation
-                    $GLOBALS['language']->translateProduct($product);
-                    $product['image'] = $GLOBALS['gui']->getProductImage($product['product_id'], 'small');
-                    if(isset($GLOBALS['catalogue']->image_tags[$product['image']])) {
-                        $product['image_tags'] = $GLOBALS['catalogue']->image_tags[$product['image']];
-                    }
-                    
-                    $product['ctrl_sale'] = (!$GLOBALS['tax']->salePrice($product['price'], $product['sale_price']) || !$GLOBALS['config']->get('config', 'catalogue_sale_mode')) ? false : true;
-
-                    $GLOBALS['catalogue']->getProductPrice($product);
-                    $sale = $GLOBALS['tax']->salePrice($product['price'], $product['sale_price']);
-                    $product['price_unformatted'] = $product['price'];
-                    $product['sale_price_unformatted'] = ($sale) ? $product['sale_price'] : null;
-                    $product['price'] = $GLOBALS['tax']->priceFormat($product['price']);
-                    $product['sale_price'] = ($sale) ? $GLOBALS['tax']->priceFormat($product['sale_price']) : null;
-
-                    // ctrl_stock True when a product is considered 'in stock' for purposes of allowing a purchase, either by actually being in stock or via certain settings
-                    $product['ctrl_stock'] = (!$product['use_stock_level'] || $GLOBALS['config']->get('config', 'basket_out_of_stock_purchase') || ($product['use_stock_level'] && $GLOBALS['catalogue']->getProductStock($product['product_id'], null, true) > 0)) ? true : false;
-                    $product['url'] = $GLOBALS['seo']->buildURL('prod', $product['product_id'], '&');
-
-                    $GLOBALS['smarty']->assign('CTRL_REVIEW', (bool)$GLOBALS['config']->get('config', 'enable_reviews'));
-                    if (($product_review = $GLOBALS['db']->select('CubeCart_reviews', 'SUM(`rating`) AS Score, COUNT(`id`) as Count', array('approved' => 1, 'product_id' => $product['product_id']))) !== false) {
-                        if (!empty($product_review[0]['Count'])) {
-                            $product['review_score'] = round($product_review[0]['Score']/$product_review[0]['Count'], 1);
-                        }
-                    }
-                    $product['description_short'] = $GLOBALS['catalogue']->descriptionShort($product);
-                    $products[] = $product;
-                }
+                $products = $this->decorateProductRows($latestProducts);
+                // Still assigned, and still exactly as before: skins that render
+                // $LATEST_PRODUCTS directly must keep working untouched.
                 $GLOBALS['smarty']->assign('LATEST_PRODUCTS', $products);
             }
         }
+
+        /* Homepage product sections (issue #4059). Every skin gets these, and a
+           store that has configured none falls back to a single Latest Products
+           section built from the list above, so nothing changes until a merchant
+           asks for it. */
+        $GLOBALS['smarty']->assign('HOMEPAGE_SECTIONS', $this->_homepageSections($products));
 
         $GLOBALS['smarty']->assign('CTRL_HIDE_PRICES', $GLOBALS['session']->get('hide_prices'));
         foreach ($GLOBALS['hooks']->load('class.cubecart.display_homepage') as $hook) {
@@ -139,6 +118,222 @@ class Cubecart
         }
         $content = $GLOBALS['smarty']->fetch('templates/content.homepage.php');
         $GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
+    }
+
+    /**
+     * Turn raw CubeCart_inventory rows into the shape a product listing expects.
+     *
+     * Extracted from displayHomePage() so every homepage section, whatever its
+     * source, yields identical keys — a template cannot be expected to cope with
+     * "sale items have a formatted price but featured ones do not".
+     *
+     * @param array $rows  rows from CubeCart_inventory
+     * @return array
+     */
+    public function decorateProductRows($rows)
+    {
+        $products = array();
+        if (!is_array($rows)) {
+            return $products;
+        }
+
+        // Assigned once rather than per product: it does not vary by row.
+        $GLOBALS['smarty']->assign('CTRL_REVIEW', (bool)$GLOBALS['config']->get('config', 'enable_reviews'));
+
+        foreach ($rows as $product) {
+            // Product Translation
+            $GLOBALS['language']->translateProduct($product);
+            $product['image'] = $GLOBALS['gui']->getProductImage($product['product_id'], 'small');
+            if (isset($GLOBALS['catalogue']->image_tags[$product['image']])) {
+                $product['image_tags'] = $GLOBALS['catalogue']->image_tags[$product['image']];
+            }
+
+            $product['ctrl_sale'] = (!$GLOBALS['tax']->salePrice($product['price'], $product['sale_price']) || !$GLOBALS['config']->get('config', 'catalogue_sale_mode')) ? false : true;
+
+            $GLOBALS['catalogue']->getProductPrice($product);
+            $sale = $GLOBALS['tax']->salePrice($product['price'], $product['sale_price']);
+            $product['price_unformatted'] = $product['price'];
+            $product['sale_price_unformatted'] = ($sale) ? $product['sale_price'] : null;
+            $product['price'] = $GLOBALS['tax']->priceFormat($product['price']);
+            $product['sale_price'] = ($sale) ? $GLOBALS['tax']->priceFormat($product['sale_price']) : null;
+
+            // ctrl_stock True when a product is considered 'in stock' for purposes of allowing a purchase, either by actually being in stock or via certain settings
+            $product['ctrl_stock'] = (!$product['use_stock_level'] || $GLOBALS['config']->get('config', 'basket_out_of_stock_purchase') || ($product['use_stock_level'] && $GLOBALS['catalogue']->getProductStock($product['product_id'], null, true) > 0)) ? true : false;
+            $product['url'] = $GLOBALS['seo']->buildURL('prod', $product['product_id'], '&');
+
+            if (($product_review = $GLOBALS['db']->select('CubeCart_reviews', 'SUM(`rating`) AS Score, COUNT(`id`) as Count', array('approved' => 1, 'product_id' => $product['product_id']))) !== false) {
+                if (!empty($product_review[0]['Count'])) {
+                    $product['review_score'] = round($product_review[0]['Score']/$product_review[0]['Count'], 1);
+                }
+            }
+            $product['description_short'] = $GLOBALS['catalogue']->descriptionShort($product);
+            $products[] = $product;
+        }
+
+        return $products;
+    }
+
+    /**
+     * The number of configurable homepage sections.
+     *
+     * Fixed slots rather than an open-ended list: the config table is key/value,
+     * and three covers the pattern this exists for (new arrivals + featured +
+     * one category) without needing a repeatable admin UI.
+     */
+    const HOMEPAGE_SECTIONS = 3;
+
+    /**
+     * Build the homepage product sections from the store settings.
+     *
+     * Each entry is: source heading url products
+     * A section whose query returns nothing is DROPPED rather than rendered
+     * empty, so a merchant who points a slot at a category they later empty gets
+     * no stray heading.
+     *
+     * @param array $latest  the already-decorated Latest Products list
+     * @return array
+     */
+    private function _homepageSections($latest = array())
+    {
+        $sections   = array();
+        $configured = false;
+
+        for ($slot = 1; $slot <= self::HOMEPAGE_SECTIONS; $slot++) {
+            $source = strtolower(trim((string)$GLOBALS['config']->get('config', 'homepage_section_'.$slot.'_source')));
+            if ($source === '' || $source === 'none') {
+                continue;
+            }
+            $configured = true;
+
+            $cat_id = (int)$GLOBALS['config']->get('config', 'homepage_section_'.$slot.'_cat');
+            $limit  = (int)$GLOBALS['config']->get('config', 'homepage_section_'.$slot.'_count');
+            $limit  = ($limit > 0 && $limit <= 50) ? $limit : 8;
+
+            $rows = $this->_homepageSectionProducts($source, $cat_id, $limit);
+            if (empty($rows)) {
+                continue;
+            }
+
+            $title = trim((string)$GLOBALS['config']->get('config', 'homepage_section_'.$slot.'_title'));
+            $sections[] = array(
+                'source'   => $source,
+                'heading'  => ($title !== '') ? $title : $this->_homepageSectionHeading($source, $cat_id),
+                'url'      => $this->_homepageSectionUrl($source, $cat_id),
+                'products' => $this->decorateProductRows($rows),
+            );
+        }
+
+        /* No slots set: present the existing Latest Products list as one section
+           so a store that never visits the new setting looks exactly as it did,
+           in every skin. */
+        if (!$configured && !empty($latest)) {
+            $sections[] = array(
+                'source'   => 'latest',
+                'heading'  => $GLOBALS['language']->catalogue['latest_products'],
+                'url'      => '',
+                'products' => $latest,
+            );
+        }
+
+        foreach ($GLOBALS['hooks']->load('class.cubecart.homepage_sections') as $hook) {
+            include $hook;
+        }
+
+        return $sections;
+    }
+
+    /**
+     * Raw inventory rows for one homepage section.
+     *
+     * Every source reuses Catalogue::outOfStockWhere(), so the live-from date and
+     * the "hide out of stock" setting apply the same way they do everywhere else.
+     *
+     * @param string $source  latest|featured|sale|popular|category
+     * @param int    $cat_id  category source only
+     * @param int    $limit
+     * @return array|false
+     */
+    private function _homepageSectionProducts($source, $cat_id, $limit)
+    {
+        $prefix = $GLOBALS['config']->get('config', 'dbprefix');
+
+        switch ($source) {
+            case 'featured':
+                $where = $GLOBALS['catalogue']->outOfStockWhere(array('I.status' => '1', 'I.featured' => '1'), 'I');
+                $order = 'I.date_added DESC, I.product_id DESC';
+                break;
+            case 'sale':
+                // Mirrors the sale-items box: a sale price that is actually a saving.
+                $where = $GLOBALS['catalogue']->outOfStockWhere(array('I.status' => '1'), 'I');
+                $where .= ' AND I.sale_price > 0 AND I.sale_price < I.price';
+                $order = 'I.date_added DESC, I.product_id DESC';
+                break;
+            case 'popular':
+                $where = $GLOBALS['catalogue']->outOfStockWhere(array('I.status' => '1'), 'I');
+                $order = 'I.popularity DESC, I.date_added DESC';
+                break;
+            case 'category':
+                if ($cat_id < 1) {
+                    return false;
+                }
+                $where = $GLOBALS['catalogue']->outOfStockWhere(array('I.status' => '1'), 'I');
+                /* Via the index, not I.cat_id: a product assigned to several
+                   categories has only ONE primary, and picking a secondary
+                   category would otherwise return nothing. */
+                $query = sprintf(
+                    "SELECT DISTINCT I.* FROM `%1\$sCubeCart_inventory` AS I"
+                    ." JOIN `%1\$sCubeCart_category_index` AS X ON X.product_id = I.product_id"
+                    ." JOIN `%1\$sCubeCart_category` AS C ON C.cat_id = X.cat_id AND C.`status` = 1"
+                    ." WHERE X.cat_id = %2\$d AND $where ORDER BY I.date_added DESC, I.product_id DESC",
+                    $prefix,
+                    $cat_id
+                );
+                return $GLOBALS['db']->query($query, $limit);
+            case 'latest':
+            default:
+                $where = $GLOBALS['catalogue']->outOfStockWhere(array('I.status' => '1', 'I.latest' => '1'), 'I');
+                $order = 'I.date_added DESC, I.product_id DESC';
+        }
+
+        $query = sprintf(
+            "SELECT I.* FROM `%1\$sCubeCart_inventory` AS I JOIN `%1\$sCubeCart_category` AS C ON C.cat_id=I.cat_id AND C.`status`=1 AND $where ORDER BY $order",
+            $prefix
+        );
+
+        return $GLOBALS['db']->query($query, $limit);
+    }
+
+    /**
+     * Default heading for a section, resolved here rather than in each skin so
+     * all of them read the same and none has to map a source to a language key.
+     */
+    private function _homepageSectionHeading($source, $cat_id)
+    {
+        switch ($source) {
+            case 'featured':
+                return $GLOBALS['language']->catalogue['title_feature'];
+            case 'sale':
+                return $GLOBALS['language']->catalogue['title_saleitems'];
+            case 'popular':
+                return $GLOBALS['language']->catalogue['title_popular'];
+            case 'category':
+                $category = $GLOBALS['db']->select('CubeCart_category', array('cat_name'), array('cat_id' => (int)$cat_id));
+                return ($category) ? $category[0]['cat_name'] : '';
+            default:
+                return $GLOBALS['language']->catalogue['latest_products'];
+        }
+    }
+
+    /** Where a section's "view all" link should point, empty when it has no listing page. */
+    private function _homepageSectionUrl($source, $cat_id)
+    {
+        if ($source === 'sale') {
+            return $GLOBALS['seo']->buildURL('saleitems');
+        }
+        if ($source === 'category' && $cat_id > 0) {
+            return $GLOBALS['seo']->buildURL('cat', (int)$cat_id);
+        }
+        return '';
     }
 
     /**

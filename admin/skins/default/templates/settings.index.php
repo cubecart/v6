@@ -287,6 +287,39 @@
          <div><label for="catalogue_related_products_count">{$LANG.settings.product_related_number}</label><span><input name="config[catalogue_related_products_count]" id="catalogue_related_products_count" type="number" min="1" max="20" class="textbox number" value="{$CONFIG.catalogue_related_products_count|default:'5'}"></span></div>
       </fieldset>
       <fieldset>
+         <legend>{$LANG.settings.title_homepage_sections}</legend>
+         <p>{$LANG.settings.homepage_section_desc}</p>
+         {if !$homepage_sections_compatibility}
+         <p class="clear important"><strong>{$LANG.settings.homepage_sections_na}</strong></p>
+         {/if}
+         {foreach from=$HOMEPAGE_SECTIONS item=section}
+         <div><label for="homepage_section_{$section.number}_source">{sprintf($LANG.settings.homepage_section_number, $section.number)}</label><span>
+            <select name="config[homepage_section_{$section.number}_source]" id="homepage_section_{$section.number}_source" class="textbox homepage-section-source" data-slot="{$section.number}">
+               {foreach from=$section.sources item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
+            </select>
+            <select name="config[homepage_section_{$section.number}_cat]" id="homepage_section_{$section.number}_cat" class="textbox homepage-section-cat" data-slot="{$section.number}"{if !$section.is_category} style="display:none"{/if}>
+               {foreach from=$section.categories item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
+            </select>
+            <input type="number" min="1" max="50" name="config[homepage_section_{$section.number}_count]" id="homepage_section_{$section.number}_count" class="textbox number" value="{$section.count|default:'8'}" title="{$LANG.settings.homepage_section_count}">
+            <input type="text" name="config[homepage_section_{$section.number}_title]" id="homepage_section_{$section.number}_title" class="textbox" value="{$section.title}" placeholder="{$LANG.settings.homepage_section_title}">
+         </span></div>
+         {/foreach}
+      </fieldset>
+      {literal}
+      <script>
+      // The category picker only applies to the "category" source.
+      document.addEventListener('DOMContentLoaded', function () {
+         document.querySelectorAll('.homepage-section-source').forEach(function (select) {
+            var cat = document.getElementById('homepage_section_' + select.getAttribute('data-slot') + '_cat');
+            if (!cat) return;
+            select.addEventListener('change', function () {
+               cat.style.display = (select.value === 'category') ? '' : 'none';
+            });
+         });
+      });
+      </script>
+      {/literal}
+      <fieldset>
          <legend>{$LANG.settings.title_skins}</legend>
          <div><label for="skin_folder">{$LANG.settings.skins_default_front}</label><span>
             <input type="hidden" class="default-style" value="{$CONFIG.skin_style}">
