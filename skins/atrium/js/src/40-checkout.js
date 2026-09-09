@@ -37,6 +37,11 @@ document.addEventListener('alpine:init', function () {
                 }
                 var reg = document.getElementById('show-reg');
                 if (reg) this.showRegister = reg.checked;
+                // Sync here too, not only on change: the server re-renders the
+                // box already ticked ($REGISTER_CHECKED), and a change event
+                // never fires on that path — so the password fields stayed
+                // un-required and an empty password reached the server.
+                this.syncRegisterRequired();
 
                 // If the server came back with validation errors, the customer
                 // was mid-edit — open the address form rather than hiding it.
@@ -77,10 +82,14 @@ document.addEventListener('alpine:init', function () {
             /* ---- create-an-account toggle ---------------------------------- */
             toggleRegister: function (event) {
                 this.showRegister = event.target.checked;
+                this.syncRegisterRequired();
+            },
+
+            /* required must track visibility, or the browser blocks submit on a
+               field the customer cannot see. Called from init() as well. */
+            syncRegisterRequired: function () {
                 var pw = document.getElementById('reg_password');
                 var pc = document.getElementById('reg_passconf');
-                // required must track visibility or the browser blocks submit on
-                // a field the customer cannot see.
                 if (pw) pw.required = this.showRegister;
                 if (pc) pc.required = this.showRegister;
             },
@@ -266,6 +275,11 @@ window.ccApplyCountryState = function (sel) {
 
     if (wrapper) wrapper.style.display = hidden ? 'none' : '';
 
+    /* The state field is required for some countries and not others, so its
+       "(Optional)" marker cannot be baked into the template. */
+    var mark = document.querySelector('label[for="' + targetId + '"] [data-cc-optional]');
+    if (mark) mark.hidden = (status === '1');
+
     if (hasList && select) {
         var current = (input.value || select.value || '').toLowerCase();
         select.innerHTML = '';
@@ -299,6 +313,28 @@ window.ccApplyCountryState = function (sel) {
     }
 };
 
+/* ---- Address lookup fallback ----------------------------------------------
+ * With a postcode-lookup plugin active ($ADDRESS_LOOKUP) both address templates
+ * render #address_form with class="hidden" — and town and postcode inside it
+ * are `required`. Foundation revealed the block again from show_address_form()
+ * (2.cubecart.js:313-314); Atrium shipped no equivalent, so a failed lookup left
+ * required fields the customer could neither see nor fill, and Save/Checkout
+ * silently refused to submit with its error messages rendered inside the hidden
+ * block. Dormant while no lookup plugin is installed: the block renders visible.
+ * ------------------------------------------------------------------------- */
+window.ccRevealAddressForm = function () {
+    var el = document.getElementById('address_form');
+    if (el) el.classList.remove('hidden');
+};
+
+/* `invalid` does not bubble, hence capture. checkValidity() in 50-validate.js
+   fires it at the field, so the block opens before the validator tries to focus
+   and scroll to a field that is still display:none. */
+document.addEventListener('invalid', function (e) {
+    var block = document.getElementById('address_form');
+    if (block && block.contains(e.target)) window.ccRevealAddressForm();
+}, true);
+
 window.ccInitCountryState = function () {
     document.querySelectorAll('select.country-list, select#country-list').forEach(function (sel) {
         if (sel.dataset.ccBound) return;      // idempotent: safe to call twice
@@ -310,4 +346,20 @@ window.ccInitCountryState = function () {
 
 document.addEventListener('DOMContentLoaded', function () {
     window.ccInitCountryState();
+
+    var block = document.getElementById('address_form');
+    if (!block || !block.classList.contains('hidden')) return;
+
+    // "Address not found" — the customer's way out of a lookup that missed.
+    var fail = document.getElementById('lookup_fail');
+    if (fail) {
+        fail.addEventListener('click', function (e) {
+            e.preventDefault();
+            window.ccRevealAddressForm();
+        });
+    }
+
+    // The server already rejected something, so the customer is mid-correction
+    // and needs the manual fields regardless of what the lookup did.
+    if (document.querySelector('.cc-alert-error')) window.ccRevealAddressForm();
 });

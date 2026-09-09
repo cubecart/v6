@@ -210,6 +210,10 @@
          element.js_foot.php: the bundle parses this blob at alpine:init. *}
       {include file='templates/element.validation_messages.php'}
 
+      {* Exit-intent newsletter modal. Deliberately absent from
+         main.checkout.php — never interrupt a payment. *}
+      {include file='templates/modal.exit.php'}
+
       {include file='templates/element.js_foot.php'}
       {$LIVE_HELP}
       {$SKIN_SELECT}

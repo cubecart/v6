@@ -42,6 +42,8 @@
     color: #fff;
   }
   .cc-btn-primary:hover:not(:disabled) { background-color: var(--color-brand-700); }
+  /* Confirmation state on add-to-basket (12-basket.js clears it after 2.5s). */
+  .cc-btn-primary.cc-btn-added { background-color: var(--color-brand-700); }
 
   .cc-btn-secondary {
     background-color: var(--color-ink-100);
@@ -286,26 +288,17 @@
      box.documents.php, box.newsletter.php and main.php's copyright row set
      their colours with ink utilities (text-ink-900 on headings, text-ink-600
      on links, text-ink-500 on the copyright, border-ink-200 on the divider).
-     Those read dark-on-dark here, so each is overridden by name. Two-class
-     selectors (0,2,0) beat a bare utility (0,1,0), so this wins regardless of
-     source order — it does NOT depend on where Tailwind emits the utilities.
-     If a footer sub-template starts using a different ink shade, add it here. */
+     Those read dark-on-dark here, so each is overridden by name — in the
+     UNLAYERED block at the foot of this file, not here. See the note there
+     before adding another. */
   .cc-footer {
+    /* Pure white here, brighter than the navbar: redefining the token locally
+       carries it to every .cc-footer rule below, social marks included. */
+    --color-chrome-fg: var(--cc-footer-fg, #fff);
     background-color: var(--color-chrome);
     color: var(--color-chrome-fg);
     border-top: 1px solid var(--color-chrome-border);
   }
-  /* Footer text is white throughout, including the copyright row and link
-     list — chrome-muted is reserved for the newsletter placeholder, where a
-     dimmer tone is the point. */
-  .cc-footer .text-ink-900,
-  .cc-footer .text-ink-600,
-  .cc-footer .text-ink-500 { color: var(--color-chrome-fg); }
-  .cc-footer .border-ink-200 { border-color: var(--color-chrome-border); }
-  .cc-footer a { color: var(--color-chrome-fg); }
-  .cc-footer a:hover { color: var(--color-chrome-fg); text-decoration: underline; }
-  .cc-footer .hover\:text-ink-900:hover { color: var(--color-chrome-fg); }
-
   /* The newsletter field sits on the dark band, so it cannot keep the light
      page surface it gets from .cc-input. */
   .cc-footer .cc-input {
@@ -435,6 +428,22 @@
   }
   .prose-cc hr { border: none; border-top: 1px solid var(--color-ink-200); margin-block: 2em; }
 
+  /* ── Always-visible scrollbar ───────────────────────────────────────────
+     macOS hides overlay scrollbars until something scrolls, so a capped panel
+     (the mini-basket) looks truncated rather than scrollable. Force a thin
+     visible track instead. */
+  .cc-scroll-y {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-ink-300) transparent;
+  }
+  .cc-scroll-y::-webkit-scrollbar { width: 8px; }
+  .cc-scroll-y::-webkit-scrollbar-track { background: transparent; }
+  .cc-scroll-y::-webkit-scrollbar-thumb {
+    background-color: var(--color-ink-300);
+    border-radius: 4px;
+  }
+  .cc-scroll-y:hover::-webkit-scrollbar-thumb { background-color: var(--color-ink-400); }
+
   /* ── Visually hidden, but readable by assistive tech ──────────────────── */
   .cc-sr-only {
     position: absolute;
@@ -459,3 +468,22 @@
   }
   .cc-skip:focus { top: 0.5rem; color: #fff; }
 }
+
+/* ── Footer band: beating the utilities Tailwind emits ─────────────────────
+   NOT in @layer components, and that is the whole point. Tailwind v4 emits
+   @layer utilities AFTER @layer components, and a cascade layer beats
+   specificity outright: from inside the layer, .cc-footer .text-ink-600 (0,2,0)
+   still loses to .text-ink-600 (0,1,0) and the footer renders dark-on-dark.
+   Unlayered rules beat every layer, so they live out here instead.
+
+   Footer text is white throughout, including the copyright row and the link
+   list — chrome-muted is reserved for the newsletter placeholder, where a
+   dimmer tone is the point. If a footer sub-template starts using a different
+   ink shade, add it here, not to the block above. */
+.cc-footer .text-ink-900,
+.cc-footer .text-ink-600,
+.cc-footer .text-ink-500 { color: var(--color-chrome-fg); }
+.cc-footer .border-ink-200 { border-color: var(--color-chrome-border); }
+.cc-footer a { color: var(--color-chrome-fg); }
+.cc-footer a:hover { color: var(--color-chrome-fg); text-decoration: underline; }
+.cc-footer .hover\:text-ink-900:hover { color: var(--color-chrome-fg); }

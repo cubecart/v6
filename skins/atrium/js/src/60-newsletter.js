@@ -15,4 +15,40 @@ document.addEventListener('alpine:init', function () {
             showCaptcha: false
         };
     });
+
+    /* Exit-intent modal (templates/modal.exit.php). Shown at most once a
+       month per browser, and never on a touch device: the pointer leaving the
+       viewport top is the only trigger, so there is nothing to fire there. */
+    window.Alpine.data('ccExitModal', function () {
+        return {
+            open: false,
+
+            init: function () {
+                if (document.cookie.indexOf('newsletter_exit=') !== -1) return;
+
+                var self = this;
+                // Armed late: a pointer that swings off the window while the
+                // page is still painting is not an exit.
+                var armed = false;
+                setTimeout(function () { armed = true; }, 3000);
+
+                document.addEventListener('mouseout', function (event) {
+                    if (!armed || self.open) return;
+                    // Only a real exit past the top edge. relatedTarget is
+                    // null when the pointer leaves the document entirely.
+                    if (event.relatedTarget || event.clientY > 0) return;
+                    self.show();
+                });
+            },
+
+            show: function () {
+                this.open = true;
+                document.cookie = 'newsletter_exit=1;path=/;max-age=2592000;SameSite=Lax';
+            },
+
+            close: function () {
+                this.open = false;
+            }
+        };
+    });
 });

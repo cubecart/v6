@@ -56,4 +56,11 @@
 
   /* Digits that line up in columns: prices, quantities, order totals. */
   .tabular, td.price, .price { font-variant-numeric: tabular-nums; }
+
+  /* Tailwind v4 dropped the preflight rule that gave buttons cursor:pointer,
+     so anything not carrying .cc-btn hovers with the plain arrow — including
+     the 28 bare buttons in this skin and every button a plugin injects.
+     :not(:disabled) so .cc-btn:disabled keeps its not-allowed cursor. */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) { cursor: pointer; }
 }

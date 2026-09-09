@@ -37,8 +37,10 @@
       <span class="cc-sr-only">{sprintf($LANG.basket.basket_total, $CART_TOTAL)}</span>
    </a>
 
+   {* Column + max-height: the item list scrolls, the subtotal and the button
+      never leave the viewport however full the basket is. *}
    <div x-show="open" x-cloak x-transition.opacity.duration.150ms
-        class="absolute end-0 z-40 mt-2 w-80 max-w-[90vw] rounded-cc-lg border border-ink-200 bg-ink-100 p-4 shadow-lg"
+        class="absolute end-0 z-40 mt-2 flex max-h-[70vh] w-80 max-w-[90vw] flex-col rounded-cc-lg border border-ink-200 bg-ink-100 p-4 shadow-lg"
         role="dialog" aria-label="{$LANG.basket.shopping_basket|default:'Basket'}">
       {include file='templates/box.basket.content.php'}
    </div>

@@ -2,7 +2,10 @@
 <style>
 .acp_widget {
     all: initial;
-    position: absolute;
+    /* Fixed, not absolute: the toolbar has to stay reachable on a long page.
+       Every skin renders it as the last child of <body>, so no transformed
+       ancestor can capture the fixed positioning. */
+    position: fixed;
     z-index: 999999;
     top: -10px;
     left: -180px;

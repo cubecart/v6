@@ -53,7 +53,8 @@
                 maxlength="3" class="quantity required w-20 text-center">
          <input type="hidden" name="add" value="{$PRODUCT.product_id}">
       </div>
-      <button type="submit" class="cc-btn cc-btn-primary min-w-48 flex-1" :disabled="busy">
+      <button type="submit" class="cc-btn cc-btn-primary min-w-48 flex-1"
+              :class="{ 'cc-btn-added': added }" :disabled="busy">
          <span x-show="!added">{$LANG.catalogue.add_to_basket}</span>
          <span x-show="added" x-cloak>{$LANG.catalogue.added_to_basket}</span>
       </button>

@@ -24,11 +24,13 @@
 
    {if is_array($GALLERY) && count($GALLERY) > 1}
    <ul role="list" class="mt-3 grid grid-cols-5 gap-2 sm:grid-cols-6">
-      {foreach from=$GALLERY item=image}
+      {foreach from=$GALLERY item=image name=g}
       <li>
          <button type="button"
-                 @click="show('{$image.medium}', '{$image.source}')"
-                 class="image-gallery block w-full overflow-hidden rounded-cc border border-ink-200 bg-ink-100 hover:border-brand-600 focus-visible:border-brand-600">
+                 data-medium="{$image.medium}" data-full="{$image.source}"
+                 @click="show('{$image.medium}', '{$image.source}', {$smarty.foreach.g.index})"
+                 :class="index === {$smarty.foreach.g.index} ? 'border-brand-600' : 'border-ink-200'"
+                 class="image-gallery block w-full overflow-hidden rounded-cc border bg-ink-100 hover:border-brand-600 focus-visible:border-brand-600">
             <img src="{$image.small}"
                  alt="{if isset($image.image_tags.alt) && !empty($image.image_tags.alt)}{$image.image_tags.alt}{else}{$image.name}{/if}"
                  {if isset($image.image_tags.title)}title="{$image.image_tags.title}"{/if}
@@ -44,6 +46,8 @@
       <form>, and a <dialog> holding form controls alters submit behaviour. *}
    <div x-show="open" x-cloak x-trap.noscroll="open"
         @keydown.escape.window="close()"
+        @keydown.arrow-left.window="open && step(-1)"
+        @keydown.arrow-right.window="open && step(1)"
         x-transition.opacity.duration.150ms
         class="fixed inset-0 z-50 flex items-center justify-center bg-ink-950/80 p-4"
         role="dialog" aria-modal="true" aria-label="{$PRODUCT.name}">
@@ -54,6 +58,22 @@
             <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round"/>
          </svg>
       </button>
+      <button type="button" x-show="images.length > 1" @click.stop="step(-1)"
+              class="absolute start-4 top-1/2 -translate-y-1/2 rounded-cc bg-ink-100 p-2 text-ink-800 hover:bg-ink-200">
+         <span class="cc-sr-only">{$LANG.common.previous}</span>
+         <svg class="size-6 rtl:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path d="M15 19 8 12l7-7" stroke-linecap="round" stroke-linejoin="round"/>
+         </svg>
+      </button>
+
       <img :src="full" alt="{$PRODUCT.name}" class="max-h-full max-w-full object-contain" @click.stop>
+
+      <button type="button" x-show="images.length > 1" @click.stop="step(1)"
+              class="absolute end-4 top-1/2 -translate-y-1/2 rounded-cc bg-ink-100 p-2 text-ink-800 hover:bg-ink-200">
+         <span class="cc-sr-only">{$LANG.common.next}</span>
+         <svg class="size-6 rtl:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path d="m9 5 7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+         </svg>
+      </button>
    </div>
 </div>

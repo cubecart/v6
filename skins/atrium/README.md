@@ -204,18 +204,26 @@ you do it will look like the new file is being ignored.
 
 ### Intentional omissions
 
-**`modal.exit.php` is deliberately not shipped.** Store Settings → *Show exit modal*
-(`config[exit_modal]`) therefore has no effect on Atrium. Core never fetches the
-template — the only call site in the reference skin is its own `main.php` — so
-omitting it cannot raise a Smarty error.
+**`modal.exit.php` IS shipped.** Store Settings → *Show exit modal*
+(`config[exit_modal]`) drives it. Core never fetches the template, so `main.php`
+includes it explicitly; `main.checkout.php` deliberately does not, because an
+interstitial over a customer mid-payment costs more than a subscriber is worth.
 
-It was a duplicate of the footer newsletter form: same `subscribe` +
-`force_unsubscribe` payload, same handler (`GUI::_displayMailingList()`), wrapped
-in a mouseout interstitial. Subscribe, unsubscribe and double opt-in are
-unaffected and are served by `box.newsletter.php`. The reference implementation
-is also broken three ways (wrapper and form share one id, the submit button has
-no `data-form-id` so invisible captcha cannot submit it, and it duplicates
-`id="newsletter_recaptcha"` from the footer box), so there was nothing to port.
+It posts the same `subscribe` + `force_unsubscribe` payload to the same handler
+(`GUI::_displayMailingList()`) as the footer box. The reference implementation in
+foundation is broken three ways and none of it was ported: there, the wrapper and
+the form share one id, the submit button has no `data-form-id` so invisible
+captcha can never submit it, and `id="newsletter_recaptcha"` is duplicated from
+the footer box. Every id here carries an `_exit` suffix for that reason. It also
+skips the `validate_*` divs — Atrium serves those once, as JSON, from
+`element.validation_messages.php`.
+
+The trigger (`ccExitModal` in `js/src/60-newsletter.js`) is the pointer leaving
+past the top edge, armed 3s after load and remembered for 30 days in the
+`newsletter_exit` cookie. Touch devices have no such event, so it never fires
+there — which also keeps it clear of Google's intrusive-interstitial penalty.
+It is suppressed for a subscribed logged-in customer and on the newsletter page
+itself (`$DISABLE_BOX_NEWSLETTER`).
 
 **`element.recaptcha.invisible.php` IS shipped and is intentionally empty** — it
 is a `file_exists()` capability marker read by the admin settings screen. Deleting

@@ -21,11 +21,14 @@
  * price_display (raw), total (formatted), image, link.
  *}
 {if !empty($CONTENTS)}
-<ul class="divide-y divide-ink-200">
+{assign var='cc_basket_lines' value=$CONTENTS|@count}
+{* min-h-0 is what lets this shrink inside the flex column in box.basket.php. *}
+<ul class="cc-scroll-y min-h-0 divide-y divide-ink-200 overflow-y-auto overscroll-contain">
    {foreach from=$CONTENTS item=item name=items}
    {* Cap the dropdown; the full list is on the basket page. *}
    {if $smarty.foreach.items.index == 10}
-   <li class="py-3 text-center text-xs text-ink-500">&hellip;</li>
+   {assign var='cc_basket_extra' value=$cc_basket_lines - 10}
+   <li class="py-3 text-center text-xs text-ink-500">+{$cc_basket_extra} {if $cc_basket_extra == 1}{$LANG.common.item}{else}{$LANG.common.item_plural}{/if}</li>
    {break}
    {/if}
    <li class="flex gap-3 py-3">
@@ -39,7 +42,7 @@
    </li>
    {/foreach}
 </ul>
-<div class="mt-3 flex items-center justify-between border-t border-ink-200 pt-3">
+<div class="mt-3 flex shrink-0 items-center justify-between border-t border-ink-200 pt-3">
    <span class="text-sm text-ink-600">{$LANG.basket.subtotal|default:$LANG.common.total}</span>
    <span class="price text-base font-semibold text-ink-900">{$CART_TOTAL}</span>
 </div>
@@ -48,7 +51,7 @@
    would bypass its express flow. Atrium ships only the view-basket link below,
    so nothing is hidden today — but any "Checkout now" button added here MUST
    honour that flag. *}
-<a href="{$BUTTON.link}" class="cc-btn cc-btn-primary mt-3 w-full">{$BUTTON.text}</a>
+<a href="{$BUTTON.link}" class="cc-btn cc-btn-primary mt-3 w-full shrink-0">{$BUTTON.text}</a>
 {else}
 <p class="py-6 text-center text-sm text-ink-500">{$LANG.basket.basket_empty}</p>
 {/if}

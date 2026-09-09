@@ -161,13 +161,13 @@
       </div>
       <div>
          <label for="user_email" class="cc-label">{$LANG.common.email}</label>
-         <input type="email" name="user[email]" id="user_email" required value="{$USER.email}" autocomplete="email" maxlength="96">
+         <input type="email" name="user[email]" id="user_email" data-remote="email" required value="{$USER.email}" autocomplete="email" maxlength="96">
       </div>
       {if $CONFIG.emailconf=='1'}
       <div>
          <label for="emailconf" class="cc-label">{$LANG.account.email_confirm}</label>
          {* .nopaste is a contract: core JS blocks paste so the confirmation is typed. *}
-         <input type="email" name="emailconf" id="emailconf" class="nopaste" required maxlength="96">
+         <input type="email" name="emailconf" id="emailconf" data-match="#user_email" data-msg-match="{$LANG.account.error_email_mismatch}" class="nopaste" required maxlength="96">
       </div>
       {/if}
       <div>
@@ -175,7 +175,7 @@
          <input type="tel" name="user[phone]" id="user_phone" required value="{$USER.phone}" autocomplete="tel">
       </div>
       <div>
-         <label for="user_mobile" class="cc-label">{$LANG.address.mobile}</label>
+         <label for="user_mobile" class="cc-label">{$LANG.address.mobile} <span class="font-normal text-ink-500">{$LANG.common.optional}</span></label>
          <input type="tel" name="user[mobile]" id="user_mobile" value="{$USER.mobile}" autocomplete="tel">
       </div>
    </div>
@@ -185,12 +185,12 @@
 
    <div class="mt-3 space-y-4">
       <div>
-         <label for="addr_company" class="cc-label">{$LANG.address.company_name}</label>
+         <label for="addr_company" class="cc-label">{$LANG.address.company_name} <span class="font-normal text-ink-500">{$LANG.common.optional}</span></label>
          <input type="text" name="billing[company_name]" id="addr_company" value="{$BILLING.company_name}" autocomplete="organization">
       </div>
       <div>
          <label for="addr_line1" class="cc-label">{$LANG.address.line1}</label>
-         <input type="text" name="billing[line1]" id="addr_line1" value="{$BILLING.line1|capitalize}" autocomplete="off" autocorrect="off" class="address_lookup" placeholder="{if $ADDRESS_LOOKUP}{$LANG.address.address_lookup}{/if}">
+         <input type="text" name="billing[line1]" id="addr_line1" required value="{$BILLING.line1|capitalize}" autocomplete="off" autocorrect="off" class="address_lookup" placeholder="{if $ADDRESS_LOOKUP}{$LANG.address.address_lookup}{/if}">
       </div>
       {if $ADDRESS_LOOKUP}
       <p id="lookup_fail"><a href="#" class="text-sm underline">{$LANG.address.address_not_found}</a></p>
@@ -209,7 +209,7 @@
                </div>
                <div>
                   <label for="addr_postcode" class="cc-label">{$LANG.address.postcode}</label>
-                  <input type="text" name="billing[postcode]" id="addr_postcode" class="uppercase required" value="{$BILLING.postcode}" autocomplete="postal-code">
+                  <input type="text" name="billing[postcode]" id="addr_postcode" required class="uppercase" value="{$BILLING.postcode}" autocomplete="postal-code">
                </div>
                <div>
                   <label for="country-list" class="cc-label">{$LANG.address.country}</label>
@@ -220,14 +220,14 @@
                   </select>
                </div>
                <div id="state-list_wrapper">
-                  <label for="state-list" class="cc-label">{$LANG.address.state}</label>
+                  <label for="state-list" class="cc-label">{$LANG.address.state} <span data-cc-optional hidden class="font-normal text-ink-500">{$LANG.common.optional}</span></label>
                   <input type="text" name="billing[state]" id="state-list" value="{$BILLING.state|upper}" autocomplete="address-level1">
                   <select name="billing[state]" id="state-list_select" hidden disabled></select>
                </div>
             </div>
             {if !empty($CONFIG.w3w)}
             <div>
-               <label for="w3w_billing" class="cc-label">{$LANG.address.w3w_address} {$LANG.common.optional}</label>
+               <label for="w3w_billing" class="cc-label">{$LANG.address.w3w_address} <span class="font-normal text-ink-500">{$LANG.common.optional}</span></label>
                {include file='templates/element.w3w.php' value=$BILLING.w3w as_id="w3w_as_billing" input_id="w3w_billing" input_name="billing[w3w]" country_id="country-list"}
             </div>
             {/if}
@@ -237,7 +237,7 @@
 
    {if $TERMS_CONDITIONS}
    <div class="mt-6 flex items-start gap-2" id="error_terms_agree">
-      <input type="checkbox" id="reg_terms" name="terms_agree" value="1" {$TERMS_CONDITIONS_CHECKED} rel="error_terms_agree" class="mt-1">
+      <input type="checkbox" id="reg_terms" name="terms_agree" value="1" {$TERMS_CONDITIONS_CHECKED} required data-msg-required="{$LANG.account.error_terms_agree}" rel="error_terms_agree" class="mt-1">
       <label for="reg_terms" class="text-sm text-ink-800">{sprintf($LANG.account.register_terms_agree_link,$TERMS_CONDITIONS)}</label>
    </div>
    {/if}
@@ -275,7 +275,7 @@
             <input type="text" name="delivery[last_name]" id="del_last" required value="{$DELIVERY.last_name|capitalize}" autocomplete="family-name">
          </div>
          <div class="sm:col-span-2">
-            <label for="del_company" class="cc-label">{$LANG.address.company_name}</label>
+            <label for="del_company" class="cc-label">{$LANG.address.company_name} <span class="font-normal text-ink-500">{$LANG.common.optional}</span></label>
             <input type="text" name="delivery[company_name]" id="del_company" value="{$DELIVERY.company_name}" autocomplete="organization">
          </div>
          <div class="sm:col-span-2">
@@ -292,7 +292,7 @@
          </div>
          <div>
             <label for="del_postcode" class="cc-label">{$LANG.address.postcode}</label>
-            <input type="text" name="delivery[postcode]" id="del_postcode" class="uppercase required" value="{$DELIVERY.postcode}" autocomplete="postal-code">
+            <input type="text" name="delivery[postcode]" id="del_postcode" required class="uppercase" value="{$DELIVERY.postcode}" autocomplete="postal-code">
          </div>
          <div>
             <label for="delivery_country" class="cc-label">{$LANG.address.country}</label>
@@ -303,13 +303,13 @@
             </select>
          </div>
          <div id="delivery_state_wrapper">
-            <label for="delivery_state" class="cc-label">{$LANG.address.state}</label>
+            <label for="delivery_state" class="cc-label">{$LANG.address.state} <span data-cc-optional hidden class="font-normal text-ink-500">{$LANG.common.optional}</span></label>
             <input type="text" name="delivery[state]" id="delivery_state" value="{$DELIVERY.state|upper}" autocomplete="address-level1">
             <select name="delivery[state]" id="delivery_state_select" hidden disabled></select>
          </div>
          {if !empty($CONFIG.w3w)}
          <div class="sm:col-span-2">
-            <label for="w3w_delivery" class="cc-label">{$LANG.address.w3w_address} {$LANG.common.optional}</label>
+            <label for="w3w_delivery" class="cc-label">{$LANG.address.w3w_address} <span class="font-normal text-ink-500">{$LANG.common.optional}</span></label>
             {include file='templates/element.w3w.php' value=$DELIVERY.w3w as_id="w3w_as_delivery" input_id="w3w_delivery" input_name="delivery[w3w]" country_id="delivery_country"}
          </div>
          {/if}
@@ -326,16 +326,21 @@
       <label for="show-reg" class="text-sm text-ink-800">{$LANG.account.create_account}</label>
    </div>
 
+   {* minlength/data-match mirror content.register.php. Core enforces both
+      server-side (cubecart.class.php:1190-1197) but the failure comes back as a
+      banner at the top of a long page, which reads as "the button did nothing".
+      `required` is not an attribute here: it is set by ccCheckout to track the
+      checkbox, so an unticked box does not block submit on a hidden field. *}
    <div id="account-reg" x-show="showRegister" x-cloak x-collapse class="mt-4">
       <h3 class="text-sm font-semibold uppercase tracking-wider text-ink-900">{$LANG.account.password}</h3>
       <div class="mt-3 grid gap-4 sm:grid-cols-2">
          <div>
             <label for="reg_password" class="cc-label">{$LANG.account.password}</label>
-            <input type="password" maxlength="64" name="password" id="reg_password" autocomplete="new-password">
+            <input type="password" minlength="6" maxlength="64" name="password" id="reg_password" autocomplete="new-password">
          </div>
          <div>
             <label for="reg_passconf" class="cc-label">{$LANG.user.password_confirm}</label>
-            <input type="password" maxlength="64" name="passconf" id="reg_passconf" autocomplete="new-password">
+            <input type="password" minlength="6" maxlength="64" name="passconf" id="reg_passconf" data-match="#reg_password" autocomplete="new-password">
          </div>
       </div>
    </div>
@@ -345,7 +350,7 @@
 {/if}
 
 <div class="mt-8">
-   <label for="delivery_comments" class="cc-label">{$LANG.basket.your_comments}</label>
+   <label for="delivery_comments" class="cc-label">{$LANG.basket.your_comments} <span class="font-normal text-ink-500">{$LANG.common.optional}</span></label>
    <textarea name="comments" id="delivery_comments" rows="3">{$VAL_CUSTOMER_COMMENTS}</textarea>
 </div>
 

@@ -513,12 +513,37 @@ document.addEventListener('alpine:init', function () {
         return {
             full: initialFull || '',   // full-size src for the lightbox
             open: false,
+            index: 0,
+            images: [],
+
+            /* The thumbnails are the only list of images, so read it back off
+               them rather than serialising $GALLERY into the x-data attribute.
+               A single-image product renders no thumbnails, so images stays
+               empty and the lightbox arrows never appear. */
+            init: function () {
+                var nodes = this.$el.querySelectorAll('[data-full]');
+                for (var i = 0; i < nodes.length; i++) {
+                    this.images.push({
+                        medium: nodes[i].getAttribute('data-medium'),
+                        full: nodes[i].getAttribute('data-full')
+                    });
+                }
+            },
 
             /** Show a thumbnail's larger version in the main preview. */
-            show: function (medium, full) {
+            show: function (medium, full, index) {
                 var preview = document.getElementById('img-preview');
                 if (preview && medium) preview.src = medium;
                 if (full) this.full = full;
+                if (typeof index === 'number') this.index = index;
+            },
+
+            /** Move the lightbox and the page preview together, wrapping. */
+            step: function (delta) {
+                if (this.images.length < 2) return;
+                this.index = (this.index + delta + this.images.length) % this.images.length;
+                var image = this.images[this.index];
+                this.show(image.medium, image.full, this.index);
             },
 
             /** Open the lightbox on whatever is currently previewed. */
@@ -730,6 +755,11 @@ document.addEventListener('alpine:init', function () {
                 }
                 var reg = document.getElementById('show-reg');
                 if (reg) this.showRegister = reg.checked;
+                // Sync here too, not only on change: the server re-renders the
+                // box already ticked ($REGISTER_CHECKED), and a change event
+                // never fires on that path — so the password fields stayed
+                // un-required and an empty password reached the server.
+                this.syncRegisterRequired();
 
                 // If the server came back with validation errors, the customer
                 // was mid-edit — open the address form rather than hiding it.
@@ -770,10 +800,14 @@ document.addEventListener('alpine:init', function () {
             /* ---- create-an-account toggle ---------------------------------- */
             toggleRegister: function (event) {
                 this.showRegister = event.target.checked;
+                this.syncRegisterRequired();
+            },
+
+            /* required must track visibility, or the browser blocks submit on a
+               field the customer cannot see. Called from init() as well. */
+            syncRegisterRequired: function () {
                 var pw = document.getElementById('reg_password');
                 var pc = document.getElementById('reg_passconf');
-                // required must track visibility or the browser blocks submit on
-                // a field the customer cannot see.
                 if (pw) pw.required = this.showRegister;
                 if (pc) pc.required = this.showRegister;
             },
@@ -959,6 +993,11 @@ window.ccApplyCountryState = function (sel) {
 
     if (wrapper) wrapper.style.display = hidden ? 'none' : '';
 
+    /* The state field is required for some countries and not others, so its
+       "(Optional)" marker cannot be baked into the template. */
+    var mark = document.querySelector('label[for="' + targetId + '"] [data-cc-optional]');
+    if (mark) mark.hidden = (status === '1');
+
     if (hasList && select) {
         var current = (input.value || select.value || '').toLowerCase();
         select.innerHTML = '';
@@ -992,6 +1031,28 @@ window.ccApplyCountryState = function (sel) {
     }
 };
 
+/* ---- Address lookup fallback ----------------------------------------------
+ * With a postcode-lookup plugin active ($ADDRESS_LOOKUP) both address templates
+ * render #address_form with class="hidden" — and town and postcode inside it
+ * are `required`. Foundation revealed the block again from show_address_form()
+ * (2.cubecart.js:313-314); Atrium shipped no equivalent, so a failed lookup left
+ * required fields the customer could neither see nor fill, and Save/Checkout
+ * silently refused to submit with its error messages rendered inside the hidden
+ * block. Dormant while no lookup plugin is installed: the block renders visible.
+ * ------------------------------------------------------------------------- */
+window.ccRevealAddressForm = function () {
+    var el = document.getElementById('address_form');
+    if (el) el.classList.remove('hidden');
+};
+
+/* `invalid` does not bubble, hence capture. checkValidity() in 50-validate.js
+   fires it at the field, so the block opens before the validator tries to focus
+   and scroll to a field that is still display:none. */
+document.addEventListener('invalid', function (e) {
+    var block = document.getElementById('address_form');
+    if (block && block.contains(e.target)) window.ccRevealAddressForm();
+}, true);
+
 window.ccInitCountryState = function () {
     document.querySelectorAll('select.country-list, select#country-list').forEach(function (sel) {
         if (sel.dataset.ccBound) return;      // idempotent: safe to call twice
@@ -1003,6 +1064,22 @@ window.ccInitCountryState = function () {
 
 document.addEventListener('DOMContentLoaded', function () {
     window.ccInitCountryState();
+
+    var block = document.getElementById('address_form');
+    if (!block || !block.classList.contains('hidden')) return;
+
+    // "Address not found" — the customer's way out of a lookup that missed.
+    var fail = document.getElementById('lookup_fail');
+    if (fail) {
+        fail.addEventListener('click', function (e) {
+            e.preventDefault();
+            window.ccRevealAddressForm();
+        });
+    }
+
+    // The server already rejected something, so the customer is mid-correction
+    // and needs the manual fields regardless of what the lookup did.
+    if (document.querySelector('.cc-alert-error')) window.ccRevealAddressForm();
 });
 
 /* ---- js/src/50-validate.js ---- */
@@ -1479,6 +1556,42 @@ document.addEventListener('alpine:init', function () {
     window.Alpine.data('ccNewsletter', function () {
         return {
             showCaptcha: false
+        };
+    });
+
+    /* Exit-intent modal (templates/modal.exit.php). Shown at most once a
+       month per browser, and never on a touch device: the pointer leaving the
+       viewport top is the only trigger, so there is nothing to fire there. */
+    window.Alpine.data('ccExitModal', function () {
+        return {
+            open: false,
+
+            init: function () {
+                if (document.cookie.indexOf('newsletter_exit=') !== -1) return;
+
+                var self = this;
+                // Armed late: a pointer that swings off the window while the
+                // page is still painting is not an exit.
+                var armed = false;
+                setTimeout(function () { armed = true; }, 3000);
+
+                document.addEventListener('mouseout', function (event) {
+                    if (!armed || self.open) return;
+                    // Only a real exit past the top edge. relatedTarget is
+                    // null when the pointer leaves the document entirely.
+                    if (event.relatedTarget || event.clientY > 0) return;
+                    self.show();
+                });
+            },
+
+            show: function () {
+                this.open = true;
+                document.cookie = 'newsletter_exit=1;path=/;max-age=2592000;SameSite=Lax';
+            },
+
+            close: function () {
+                this.open = false;
+            }
         };
     });
 });

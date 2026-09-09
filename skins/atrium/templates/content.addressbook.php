@@ -88,7 +88,7 @@
    <form action="{$VAL_SELF}" method="post" id="addressbook_form" data-cc-validate class="mt-4">
       <div class="cc-card space-y-4 p-6">
          <div>
-            <label for="addr_description" class="cc-label">{$LANG.common.description}</label>
+            <label for="addr_description" class="cc-label">{$LANG.common.description} <span class="font-normal text-ink-500">{$LANG.common.optional}</span></label>
             <input type="text" name="description" id="addr_description" value="{$DATA.description}" placeholder="{$LANG.address.example_address_description}">
          </div>
 
@@ -104,7 +104,7 @@
          </div>
 
          <div>
-            <label for="addr_company_name" class="cc-label">{$LANG.address.company_name}</label>
+            <label for="addr_company_name" class="cc-label">{$LANG.address.company_name} <span class="font-normal text-ink-500">{$LANG.common.optional}</span></label>
             <input type="text" name="company_name" id="addr_company_name" value="{$DATA.company_name}" autocomplete="organization">
          </div>
 
@@ -143,7 +143,7 @@
                      </select>
                   </div>
                   <div id="state-list_wrapper">
-                     <label for="state-list" class="cc-label">{$LANG.address.state}</label>
+                     <label for="state-list" class="cc-label">{$LANG.address.state} <span data-cc-optional hidden class="font-normal text-ink-500">{$LANG.common.optional}</span></label>
                      {* Input and select share the name; the JS enables exactly one. *}
                      <input type="text" name="state" id="state-list" value="{$DATA.state|upper}" autocomplete="address-level1">
                      <select name="state" id="state-list_select" hidden disabled></select>
@@ -151,7 +151,7 @@
                </div>
                {if !empty($CONFIG.w3w)}
                <div>
-                  <label for="w3w" class="cc-label">{$LANG.address.w3w_address} {$LANG.common.optional}</label>
+                  <label for="w3w" class="cc-label">{$LANG.address.w3w_address} <span class="font-normal text-ink-500">{$LANG.common.optional}</span></label>
                   {include file='templates/element.w3w.php' value=$DATA.w3w as_id="w3w_as" input_id="w3w" input_name="w3w" country_id="country-list"}
                </div>
                {/if}

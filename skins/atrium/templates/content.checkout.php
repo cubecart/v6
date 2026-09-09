@@ -95,9 +95,13 @@
                      Update button: formnovalidate so 50-validate.js lets it through, and
                      clearProceed() so it does not carry the hidden `proceed` compensator
                      and jump the customer to the next step. *}
+                  {* sm:mx-auto for the same reason as the input above, and it is not
+                     covered by the cell's sm:text-center: a display:block <button>
+                     still sizes shrink-to-fit, so text-align cannot move the box and
+                     it sat flush against the left edge of the column. *}
                   <button type="submit" name="update" value="{$LANG.basket.basket_update}" formnovalidate
                           x-show="changed" x-cloak @click="clearProceed()"
-                          class="mt-1 block text-xs font-medium text-warn-700 underline underline-offset-2 hover:text-warn-800">{$LANG.basket.basket_update}</button>
+                          class="mt-1 block text-xs font-medium text-warn-700 underline underline-offset-2 hover:text-warn-800 sm:mx-auto">{$LANG.basket.basket_update}</button>
                </td>
                <td class="price col-start-2 flex justify-between gap-3 font-medium tabular text-ink-900 sm:table-cell sm:py-4 sm:text-end sm:align-top">
                   <span class="font-normal text-ink-500 sm:hidden">{$LANG.common.price}</span><span>{$item.line_price_display}</span>
@@ -137,7 +141,7 @@
             <label for="shipping_method" class="cc-label">{$LANG.basket.shipping_select}</label>
             {* The only control that re-submits the form; totals must be
                recalculated server-side when the method changes. *}
-            <select name="shipping" id="shipping_method" class="required" @change="$el.form.submit()">
+            <select name="shipping" id="shipping_method" required data-msg-required="{$LANG.checkout.shipping_required}" @change="$el.form.submit()">
                <option value="">{$LANG.form.please_select}</option>
                {foreach from=$SHIPPING key=group item=methods}
                {if $HIDE_OPTION_GROUPS ne '1'}<optgroup label="{$group}">{/if}
@@ -286,21 +290,30 @@
 
    {if $TERMS_CONDITIONS && isset($ALTERNATE_TERMS) && $ALTERNATE_TERMS=='0'}
    <div class="mt-6 flex items-start gap-2">
-      <input type="checkbox" id="reg_terms" name="terms_agree" value="1" rel="error_terms_agree" class="mt-1">
+      <input type="checkbox" id="reg_terms" name="terms_agree" value="1" required data-msg-required="{$LANG.account.error_terms_agree}" rel="error_terms_agree" class="mt-1">
       <label for="reg_terms" class="text-sm text-ink-800">{sprintf($LANG.account.register_terms_agree_link,$TERMS_CONDITIONS)}</label>
    </div>
    {/if}
 
    {* ---- Actions -------------------------------------------------------- *}
-   <div id="checkout_actions" class="mt-8 flex flex-wrap items-center gap-3 border-t border-ink-200 pt-6">
-      <a href="{$STORE_URL}/index.php" class="cc-btn cc-btn-secondary">{$LANG.basket.continue_shopping}</a>
-      <a href="{$STORE_URL}/index.php?_a=basket&empty-basket=true" class="cc-btn cc-btn-ghost !text-danger-600">{$LANG.basket.basket_empty}</a>
-      {* clearProceed() removes any hidden proceed=1 left by an earlier click on
-         Proceed; without it an update would jump to the next checkout step. *}
-      <button type="submit" name="update" value="{$LANG.basket.basket_update}" formnovalidate class="cc-btn cc-btn-secondary" @click="clearProceed()">{$LANG.basket.basket_update}</button>
-      {if $DISABLE_CHECKOUT_BUTTON!==true}
-      <button type="submit" name="proceed" id="checkout_proceed" class="g-recaptcha cc-btn cc-btn-primary ms-auto min-w-48" @click="proceed()">{$CHECKOUT_BUTTON}</button>
-      {/if}
+   {* ⚠ #checkout_actions IS A MOUNT POINT, not just a wrapper. paypal_commerce's
+      class.gui.head_js hook does prependTo('#checkout_actions') for both the
+      `payment` and `cart` placements (config.<skin>.json, foundation's file being
+      the fallback), dropping a pay-later banner and express button in as the
+      FIRST child. So it stays a plain block and the flex row lives on the div
+      below: with the flex on this element the injected banner became a flex item
+      and shunted every button sideways, wrapping Checkout onto its own line. *}
+   <div id="checkout_actions" class="mt-8 border-t border-ink-200 pt-6">
+      <div class="flex flex-wrap items-center gap-3">
+         <a href="{$STORE_URL}/index.php" class="cc-btn cc-btn-secondary">{$LANG.basket.continue_shopping}</a>
+         <a href="{$STORE_URL}/index.php?_a=basket&empty-basket=true" class="cc-btn cc-btn-secondary !text-danger-600">{$LANG.basket.basket_empty}</a>
+         {* clearProceed() removes any hidden proceed=1 left by an earlier click on
+            Proceed; without it an update would jump to the next checkout step. *}
+         <button type="submit" name="update" value="{$LANG.basket.basket_update}" formnovalidate class="cc-btn cc-btn-secondary" @click="clearProceed()">{$LANG.basket.basket_update}</button>
+         {if $DISABLE_CHECKOUT_BUTTON!==true}
+         <button type="submit" name="proceed" id="checkout_proceed" class="g-recaptcha cc-btn cc-btn-primary ms-auto min-w-48" @click="proceed()">{$CHECKOUT_BUTTON}</button>
+         {/if}
+      </div>
    </div>
 
    {if $CUSTOMER_LOCALE.description}
