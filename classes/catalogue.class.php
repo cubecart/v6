@@ -301,6 +301,12 @@ class Catalogue
         }
 
         if (!empty($products)) {
+            /* productAssign() fills review_score for every row below, but the
+               flag that templates gate the stars on was only ever assigned on
+               the product page and the homepage — so a category listing had the
+               scores and could never show them. Assigned once, not per row. */
+            $GLOBALS['smarty']->assign('CTRL_REVIEW', (bool)$GLOBALS['config']->get('config', 'enable_reviews'));
+
             foreach ($products as $product) {
                 $product = $this->getProductPrice($product);
                 // ctrl_stock True when a product is considered 'in stock' for purposes of allowing a purchase, either by actually being in stock or via certain settings

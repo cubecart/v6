@@ -110,9 +110,7 @@
                      <a href="{$product.url}" title="{$product.name}" class="text-ink-900 hover:underline">{$product.name}</a>
                   </h2>
 
-                  {if $product.review_score}
-                  {include file='templates/element.product.review_score.php' score=$product.review_score}
-                  {/if}
+                  {include file='templates/element.product.review_score.php' score=$product.review_score context='listing' uid=$product.product_id}
 
                   {* List view only; in a grid it makes card heights uneven. *}
                   {if !empty($product.description_short)}

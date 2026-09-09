@@ -123,6 +123,15 @@
 	  <label><![CDATA[Show Sale Items]]></label>
 	  <description><![CDATA[Show the Sale Items box in the storefront sidebar. With all three sidebar boxes off the page content takes the full width.]]></description>
 	</setting>
+	<setting name="review_stars" type="select" default="product">
+	  <label><![CDATA[Show Review Stars]]></label>
+	  <description><![CDATA[Where star ratings appear. Listings show one score per card, which can be noisy on a large catalogue, so the default is the product page only.]]></description>
+	  <options>
+		<option value="product"><![CDATA[Product page only]]></option>
+		<option value="all"><![CDATA[Product page and listings]]></option>
+		<option value="none"><![CDATA[Nowhere]]></option>
+	  </options>
+	</setting>
 	<setting name="default_product_view" type="select" default="grid">
 	  <label><![CDATA[Default Product View]]></label>
 	  <description><![CDATA[How category listings first appear. A customer who picks the other view keeps their choice on this device.]]></description>
