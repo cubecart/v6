@@ -56,7 +56,10 @@
       <button type="submit" class="cc-btn cc-btn-primary min-w-48 flex-1"
               :class="{ 'cc-btn-added': added }" :disabled="busy || !$store.optionStock.available">
          <span x-show="!added">{$LANG.catalogue.add_to_basket}</span>
-         <span x-show="added" x-cloak>{$LANG.catalogue.added_to_basket}</span>
+         <span x-show="added" x-cloak class="inline-flex items-center gap-2">
+            {$LANG.catalogue.added_to_basket}
+            {include file='templates/element.icon.check.php'}
+         </span>
       </button>
    </div>
 

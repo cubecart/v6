@@ -46,8 +46,47 @@
     color: var(--cc-brand-fg, #fff);
   }
   .cc-btn-primary:hover:not(:disabled) { background-color: var(--color-brand-700); }
-  /* Confirmation state on add-to-basket (12-basket.js clears it after 2.5s). */
-  .cc-btn-primary.cc-btn-added { background-color: var(--color-brand-700); }
+  /* Confirmation state on add-to-basket (12-basket.js clears it after 2.5s).
+     Green regardless of the merchant's brand colour, and white regardless of
+     --cc-brand-fg: success-600 is dark enough that white is always the readable
+     pairing. The hover selector is repeated or the pointer sitting on the
+     button would paint it brand again mid-confirmation. */
+  .cc-btn-primary.cc-btn-added,
+  .cc-btn-primary.cc-btn-added:hover:not(:disabled) {
+    background-color: var(--color-success-600);
+    border-color: var(--color-success-600);
+    color: #fff;
+  }
+
+  /* The tick draws itself on: the ring sweeps round first, then the check
+     strokes in behind it. x-show toggles display, and an animation replays from
+     the start whenever an element is displayed again, so a second add re-draws
+     rather than appearing finished.
+     Dash lengths are just over each shape: 58 clears the r=9 circumference
+     (~56.5), 20 clears the tick. The ring starts at 12 o'clock rather than
+     3 o'clock, hence the rotate. */
+  .cc-check circle {
+    stroke-dasharray: 58;
+    stroke-dashoffset: 58;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    animation: cc-check-ring 420ms ease-out forwards;
+  }
+  .cc-check path {
+    stroke-dasharray: 20;
+    stroke-dashoffset: 20;
+    animation: cc-check-draw 260ms ease-out 300ms forwards;
+  }
+  @keyframes cc-check-ring {
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes cc-check-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cc-check circle,
+    .cc-check path { animation: none; stroke-dashoffset: 0; }
+  }
 
   /* Text sitting ON a brand-600 surface. Templates use this instead of
      text-white so a merchant's pale Brand Colour flips the label to near-black
