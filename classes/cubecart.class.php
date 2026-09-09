@@ -3567,7 +3567,7 @@ class Cubecart
                         $existing_transactions = $GLOBALS['db']->select('CubeCart_transactions', array('id'), array('order_id' => $order['cart_order_id']));
                         $order['make_payment'] = ($order['status'] == 1 && !empty($order['basket']) && !$existing_transactions) ? true : false;
                         $order['cancel'] = ($order['status']==1 && !$existing_transactions) ? true : false;
-                        $order['status'] = array('icon' => $icon, 'text' => $GLOBALS['language']->order_state['name_'.(int)$order['status']]);
+                        $order['status'] = array('id' => (int)$order['status'], 'icon' => $icon, 'text' => $GLOBALS['language']->order_state['name_'.(int)$order['status']]);
                         $vars['orders'][] = $order;
                     }
                     foreach ($GLOBALS['hooks']->load('class.cubecart.order_list') as $hook) {

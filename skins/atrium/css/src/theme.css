@@ -82,6 +82,14 @@
   --color-success-600: var(--cc-success-600, oklch(52.8% 0.126 152));
   --color-success-700: var(--cc-success-700, oklch(44.8% 0.108 152));
 
+  /* Order-status stamp inks. Fixed hues, independent of the brand accent so
+     a red-branded store cannot print PENDING in the ink of DECLINED. Lifted
+     in the dark block below: the stamp is an outline, colour is the signal. */
+  --color-stamp-pending:  var(--cc-stamp-pending,  oklch(53.2% 0.148 250));
+  --color-stamp-process:  var(--cc-stamp-process,  oklch(62.0% 0.155 55));
+  --color-stamp-complete: var(--cc-stamp-complete, oklch(52.8% 0.126 152));
+  --color-stamp-declined: var(--cc-stamp-declined, oklch(53.4% 0.196 26));
+
   --color-warn-50:  var(--cc-warn-50,  oklch(97.2% 0.026 85));
   --color-warn-200: var(--cc-warn-200, oklch(89.4% 0.088 82));
   --color-warn-600: var(--cc-warn-600, oklch(59.8% 0.132 68));
@@ -127,4 +135,9 @@
   --cc-danger-50: oklch(22.8% 0.052 25);
   --cc-success-50: oklch(21.6% 0.044 152);
   --cc-warn-50: oklch(23.4% 0.048 74);
+
+  --cc-stamp-pending:  oklch(76.2% 0.118 246);
+  --cc-stamp-process:  oklch(78.4% 0.140 62);
+  --cc-stamp-complete: oklch(76.8% 0.126 154);
+  --cc-stamp-declined: oklch(72.5% 0.165 26);
 }

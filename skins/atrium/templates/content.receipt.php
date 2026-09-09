@@ -24,9 +24,7 @@
             {$LANG.basket.order_date}: {$SUM.order_date_formatted}
          </p>
       </div>
-      <span class="order_status order_status_{$SUM.status} rounded-full bg-ink-200 px-3 py-1 text-sm font-medium text-ink-800">
-         {$SUM.order_status}
-      </span>
+      <span class="order_status order_status_{$SUM.status}">{$SUM.order_status}</span>
    </div>
 
    {if $SUM.withdrawal_eligible}

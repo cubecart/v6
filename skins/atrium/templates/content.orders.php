@@ -39,7 +39,7 @@
             </div>
             <div class="text-end">
                <p class="price font-semibold tabular text-ink-900">{$order.total}</p>
-               <p class="mt-1 text-xs text-ink-600">{$order.status.text}</p>
+               <p class="order_status_{$order.status.id} mt-1 text-xs font-medium">{$order.status.text}</p>
             </div>
          </div>
 

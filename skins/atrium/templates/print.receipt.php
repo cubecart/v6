@@ -42,6 +42,37 @@
       tfoot td { border-bottom: none; padding: 4px 10px; }
       tfoot tr.grand td { border-top: 2px solid #111827; font-weight: 700; font-size: 15px; padding-top: 8px; }
       .muted { color: #6b7280; }
+      /* Order-status rubber stamp. Hex, not the skin's oklch tokens: some
+         print engines still choke on oklch(). Colours mirror
+         css/src/theme.css --color-stamp-*; keep the two in step. */
+      .order_status {
+         position: relative;
+         display: inline-block; margin: 30px 10px 0 0;
+         padding: 9px 16px;
+         /* Both frames inside the border box: the mask clips to it. */
+         border: 1px solid currentColor; border-radius: 7px;
+         color: #6b7280;
+         font-size: 15px; font-weight: 800; line-height: 1.2;
+         letter-spacing: .14em; text-transform: uppercase;
+         opacity: .85; transform: rotate(6deg);
+         /* Worn ink, as css/src/components.css. An engine that ignores
+            masks prints the clean stamp. */
+         -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='120'%20height='60'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.9'%20numOctaves='3'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%201.3%200.3'/%3E%3C/filter%3E%3Crect%20width='120'%20height='60'%20filter='url%28%23n%29'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='260'%20height='110'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.18'%20numOctaves='3'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%201.2%200.42'/%3E%3C/filter%3E%3Crect%20width='260'%20height='110'%20filter='url%28%23n%29'/%3E%3C/svg%3E");
+         mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='120'%20height='60'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.9'%20numOctaves='3'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%201.3%200.3'/%3E%3C/filter%3E%3Crect%20width='120'%20height='60'%20filter='url%28%23n%29'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='260'%20height='110'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.18'%20numOctaves='3'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%201.2%200.42'/%3E%3C/filter%3E%3Crect%20width='260'%20height='110'%20filter='url%28%23n%29'/%3E%3C/svg%3E");
+         -webkit-mask-size: 120px 60px, 260px 110px;
+         mask-size: 120px 60px, 260px 110px;
+         -webkit-mask-composite: source-in;
+         mask-composite: intersect;
+         -webkit-print-color-adjust: exact; print-color-adjust: exact;
+      }
+      .order_status::before {
+         content: ""; position: absolute; inset: 4px;
+         border: 3px solid currentColor; border-radius: 3px;
+      }
+      .order_status_1 { color: #1d4ed8; }
+      .order_status_2 { color: #c26a10; }
+      .order_status_3 { color: #15803d; }
+      .order_status_4, .order_status_5, .order_status_6 { color: #c02718; }
       .comments { margin-top: 20px; padding: 12px 14px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; }
       .foot { margin-top: 32px; padding-top: 14px; border-top: 1px solid #e5e7eb; font-size: 11px; color: #6b7280; text-align: center; }
       @media print {
@@ -52,7 +83,9 @@
       {/literal}
    </style>
 </head>
-<body onload="window.print();">
+<!-- 3s delay lets the logo paint first. No braces in the handler: it sits
+     outside the literal block, where Smarty parses them. -->
+<body onload="setTimeout(window.print, 3000);">
 <div class="sheet">
 {foreach from=$LIST_ORDERS item=order}
 
@@ -64,9 +97,9 @@
          <h1>{$LANG.common.invoice}</h1>
          <div class="muted">
             {if $CONFIG.oid_mode=='i'}{$order.{$CONFIG.oid_col}}{else}{$order.cart_order_id}{/if}<br>
-            {$order.order_date}<br>
-            {$order.status}
+            {$order.order_date}
          </div>
+         <span class="order_status order_status_{$order.status}">{$order.order_status}</span>
       </div>
    </div>
 

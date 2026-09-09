@@ -477,6 +477,50 @@
     transition: top 120ms;
   }
   .cc-skip:focus { top: 0.5rem; color: var(--cc-brand-fg, #fff); }
+
+  /* ── Order-status rubber stamp ───────────────────────────────────────
+     Keyed off the core .order_status / .order_status_N classes, so a status
+     added later still gets a stamp, just in the neutral ink. The print
+     invoice keeps its own copy: it never loads this stylesheet. */
+  .order_status {
+    position: relative;
+    display: inline-block;
+    padding: 0.6rem 1.1rem;
+    /* Both frames inside the border box: a mask clips to that box, so an
+       outline would vanish once the speckle mask below is applied. */
+    border: 1px solid currentColor;
+    border-radius: 0.45rem;
+    color: var(--color-ink-500);
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    transform: rotate(6deg);
+    /* Worn ink: fine grain plus coarse patches, compounded. intersect is
+       load-bearing: the default (add) unions the layers and each fills the
+       other's gaps. No mask support means a clean stamp, which is fine. */
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='120'%20height='60'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.9'%20numOctaves='3'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%201.3%200.3'/%3E%3C/filter%3E%3Crect%20width='120'%20height='60'%20filter='url%28%23n%29'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='260'%20height='110'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.18'%20numOctaves='3'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%201.2%200.42'/%3E%3C/filter%3E%3Crect%20width='260'%20height='110'%20filter='url%28%23n%29'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='120'%20height='60'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.9'%20numOctaves='3'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%201.3%200.3'/%3E%3C/filter%3E%3Crect%20width='120'%20height='60'%20filter='url%28%23n%29'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='260'%20height='110'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.18'%20numOctaves='3'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%201.2%200.42'/%3E%3C/filter%3E%3Crect%20width='260'%20height='110'%20filter='url%28%23n%29'/%3E%3C/svg%3E");
+    -webkit-mask-size: 120px 60px, 260px 110px;
+    mask-size: 120px 60px, 260px 110px;
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+  .order_status::before {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border: 3px solid currentColor;
+    border-radius: 0.2rem;
+  }
+  .order_status_1 { color: var(--color-stamp-pending); }
+  .order_status_2 { color: var(--color-stamp-process); }
+  .order_status_3 { color: var(--color-stamp-complete); }
+  .order_status_4,
+  .order_status_5,
+  .order_status_6 { color: var(--color-stamp-declined); }
 }
 
 /* ── Footer band: beating the utilities Tailwind emits ─────────────────────
