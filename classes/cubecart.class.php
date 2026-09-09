@@ -1285,6 +1285,7 @@ class Cubecart
                 }
 
                 // Handle user data, and put into the basket array
+                $old_customer = $this->_basket['customer'] ?? array();
                 $this->_basket['customer'] = $_POST['user'];
 
 				$old_addresses = $GLOBALS['user']->addressCompare($this->_basket['billing_address'], $this->_basket['delivery_address']);
@@ -1354,7 +1355,9 @@ class Cubecart
 
                 $new_addresses = $GLOBALS['user']->addressCompare($this->_basket['billing_address'], $this->_basket['delivery_address']);
 
-                if ($new_addresses!==$old_addresses) {
+                // addressCompare only hashes address lines, so an edit to name,
+                // email or phone alone slipped through to payment unverified.
+                if ($new_addresses!==$old_addresses || $this->_contactChanged($old_customer, $this->_basket['customer'])) {
                     // Set notice to prevent proceed to payment screen
                     $message = ($GLOBALS['cart']->basket['digital_only'] ?? false) ? $GLOBALS['language']->checkout['confirm_billing'] : $GLOBALS['language']->account["notify_address_updated"];
                     $GLOBALS['gui']->setNotify($message);
@@ -1550,6 +1553,17 @@ class Cubecart
     /**
      * Display part of the checkout process
      */
+    /** Did any contact detail the customer can edit change? */
+    private function _contactChanged($old, $new)
+    {
+        foreach (array('first_name', 'last_name', 'email', 'phone', 'mobile') as $key) {
+            if (strtolower(trim($old[$key] ?? '')) !== strtolower(trim($new[$key] ?? ''))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private function _checkoutProcess($section = null)
     {
         switch ($section) {
