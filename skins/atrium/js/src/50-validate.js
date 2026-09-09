@@ -206,6 +206,13 @@
                 });
             },
 
+            /** Is the field actually laid out? offsetParent is null under any
+             *  display:none ancestor; position:fixed is the one false positive. */
+            _isRendered: function (el) {
+                if (el.offsetParent !== null) return true;
+                return window.getComputedStyle(el).position === 'fixed';
+            },
+
             _isField: function (el) {
                 if (!el || !el.name) return false;
                 var t = (el.tagName || '').toUpperCase();
@@ -332,6 +339,18 @@
              */
             checkField: function (field) {
                 if (field.disabled || field.type === 'hidden') { this.clearError(field); return true; }
+
+                /* A field the customer cannot see cannot be a field the customer
+                   can fix. Checkout hides whole blocks whose inputs keep their
+                   `required` — the delivery address while it mirrors billing,
+                   the register form while an address is on file, the manual
+                   address fields behind a postcode lookup — and validating them
+                   blocked submit with the message rendered inside the hidden
+                   block, so the button appeared to do nothing.
+
+                   This is what foundation got for free: jQuery-validate ignores
+                   ":hidden" by default. The server revalidates regardless. */
+                if (!this._isRendered(field)) { this.clearError(field); return true; }
 
                 if (!field.checkValidity()) {
                     var rule = nativeRule(field);

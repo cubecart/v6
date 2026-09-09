@@ -54,10 +54,12 @@
                <label for="phone" class="cc-label">{$LANG.address.phone}</label>
                <input type="tel" name="phone" id="phone" pattern="[0-9\-+().\s]+" value="{$POST.phone}" autocomplete="tel" required>
             </div>
+            {if !isset($SKIN_SETTINGS.show_mobile_field) || $SKIN_SETTINGS.show_mobile_field}
             <div>
                <label for="mobile" class="cc-label">{$LANG.address.mobile}</label>
                <input type="tel" name="mobile" id="mobile" pattern="[0-9\-+().\s]+" data-msg-phone="{$LANG.account.error_valid_mobile_phone}" value="{$POST.mobile}" autocomplete="tel">
             </div>
+            {/if}
          </div>
 
          <h2 class="pt-2 text-sm font-semibold uppercase tracking-wider text-ink-900">{$LANG.account.password}</h2>

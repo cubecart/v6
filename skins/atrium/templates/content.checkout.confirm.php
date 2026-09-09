@@ -115,7 +115,7 @@
          {if !empty($DELIVERY.state)}{$DELIVERY.state|upper}, {/if}{$DELIVERY.postcode}<br>
          {$DELIVERY.country_name}
       </address>
-      <button type="button" class="show_address_form cc-btn cc-btn-secondary mt-3" @click="setMode('register'); document.getElementById('register_false_address').classList.add('hidden')">{$LANG.form.make_changes}</button>
+      <button type="button" class="show_address_form cc-btn cc-btn-secondary mt-3" @click="makeChanges()">{$LANG.form.make_changes}</button>
    </section>
    {/if}
 </div>
@@ -145,7 +145,12 @@
 </div>
 
 {* ---- Register / guest details ---- *}
-<div id="checkout_register_form" x-show="mode === 'register'" x-cloak>
+{* Exactly one of the summary above and this form shows, as in foundation
+   (content.checkout.confirm.php:117): with an address already on file the
+   customer sees the summary and reaches the fields through "Make Changes".
+   Server-rendered rather than x-show so it is right before Alpine boots and
+   with JS off; makeChanges() removes the class. *}
+<div id="checkout_register_form" x-show="mode === 'register'" x-cloak{if !empty($BILLING.line1)} class="hidden"{/if}>
    <h2 class="text-lg font-semibold text-ink-900">{$LANG.account.your_details}</h2>
    <p class="mt-1 text-sm text-ink-600">
       {$LANG.account.already_registered}
@@ -177,10 +182,14 @@
          <label for="user_phone" class="cc-label">{$LANG.address.phone}</label>
          <input type="tel" name="user[phone]" id="user_phone" required value="{$USER.phone}" autocomplete="tel">
       </div>
+      {* "Show Mobile Number" — a merchant setting (config.xml <settings>). The
+         field is optional, so hiding it cannot block a checkout. *}
+      {if !isset($SKIN_SETTINGS.show_mobile_field) || $SKIN_SETTINGS.show_mobile_field}
       <div>
          <label for="user_mobile" class="cc-label">{$LANG.address.mobile} <span class="font-normal text-ink-500">{$LANG.common.optional}</span></label>
          <input type="tel" name="user[mobile]" id="user_mobile" value="{$USER.mobile}" autocomplete="tel">
       </div>
+      {/if}
    </div>
 
    <h3 class="mt-8 text-sm font-semibold uppercase tracking-wider text-ink-900">{$LANG.address.billing_address}</h3>
@@ -266,7 +275,7 @@
    <input type="hidden" name="delivery_is_billing" id="delivery_is_billing" value="1">
    {elseif $ALLOW_DELIVERY_ADDRESS}
    <div class="mt-6 flex items-center gap-2">
-      <input type="checkbox" name="delivery_is_billing" id="delivery_is_billing" {$DELIVERY_CHECKED} @change="deliveryIsBilling = $event.target.checked">
+      <input type="checkbox" name="delivery_is_billing" id="delivery_is_billing" {$DELIVERY_CHECKED} @change="toggleDelivery($event)">
       <label for="delivery_is_billing" class="text-sm text-ink-800">{$LANG.address.delivery_is_billing}</label>
    </div>
    {/if}

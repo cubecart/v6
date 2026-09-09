@@ -1571,6 +1571,13 @@ class Cubecart
         
         if (version_compare($skin_data['info']['compatible']['min'], '6.0.0a', '>=')) {
             unset($blocks[2]);
+            /* The payment step has just been removed, so the gateway page's
+               status (2) now matches no block at all and the bar renders with
+               nothing current. The customer is still on Checkout, so fold it
+               into that step rather than leaving the bar unhighlighted. */
+            if ($status == 2) {
+                $status = 1;
+            }
         }
         
         $step = 1;

@@ -827,6 +827,7 @@ document.addEventListener('alpine:init', function () {
                 if (dib) {
                     this.deliveryIsBilling = dib.type === 'hidden' ? true : dib.checked;
                 }
+                this.syncDeliveryRequired();
                 /* No checkbox means the merchant fixed the mode in the skin
                    settings: `required` renders the password block with no
                    toggle, `guest` renders neither. The block's presence is
@@ -873,6 +874,43 @@ document.addEventListener('alpine:init', function () {
                 var pc = document.getElementById('reg_passconf');
                 if (pw) pw.disabled = login;
                 if (pc) pc.disabled = login;
+            },
+
+            /** "Make Changes": swap the address summary for the editable form. */
+            makeChanges: function () {
+                this.setMode('register');
+                var summary = document.getElementById('register_false_address');
+                if (summary) summary.classList.add('hidden');
+                var form = document.getElementById('checkout_register_form');
+                if (form) form.classList.remove('hidden');
+            },
+
+            /* ---- delivery address ------------------------------------------ */
+            toggleDelivery: function (event) {
+                this.deliveryIsBilling = event.target.checked;
+                this.syncDeliveryRequired();
+            },
+
+            /* required must track visibility. #address_delivery is hidden while
+               delivery mirrors billing, but its fields ship with `required`, so
+               validation failed on controls the customer could not see: the
+               Checkout button did nothing and the messages sat inside the hidden
+               block. Same trap as the register password fields. */
+            syncDeliveryRequired: function () {
+                var required = !this.deliveryIsBilling;
+                ['del_first', 'del_last', 'del_line1', 'del_town', 'del_postcode'].forEach(function (id) {
+                    var el = document.getElementById(id);
+                    if (el) el.required = required;
+                });
+                /* The delivery state's requirement belongs to the chosen
+                   country's zone status, so only ever CLEAR it here and let
+                   ccApplyCountryState set it when the block is shown again. */
+                if (!required) {
+                    ['delivery_state', 'delivery_state_select'].forEach(function (id) {
+                        var el = document.getElementById(id);
+                        if (el) el.required = false;
+                    });
+                }
             },
 
             /* ---- create-an-account toggle ---------------------------------- */
@@ -932,6 +970,9 @@ document.addEventListener('alpine:init', function () {
                ccCheckout component. */
             initCountries: function () {
                 window.ccInitCountryState();
+                // Runs after the zone status has been applied, so a hidden
+                // delivery state cannot come back required.
+                this.syncDeliveryRequired();
             },
 
             _unusedApplyState: function (sel) {
@@ -1369,6 +1410,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             },
 
+            /** Is the field actually laid out? offsetParent is null under any
+             *  display:none ancestor; position:fixed is the one false positive. */
+            _isRendered: function (el) {
+                if (el.offsetParent !== null) return true;
+                return window.getComputedStyle(el).position === 'fixed';
+            },
+
             _isField: function (el) {
                 if (!el || !el.name) return false;
                 var t = (el.tagName || '').toUpperCase();
@@ -1495,6 +1543,18 @@ document.addEventListener('DOMContentLoaded', function () {
              */
             checkField: function (field) {
                 if (field.disabled || field.type === 'hidden') { this.clearError(field); return true; }
+
+                /* A field the customer cannot see cannot be a field the customer
+                   can fix. Checkout hides whole blocks whose inputs keep their
+                   `required` — the delivery address while it mirrors billing,
+                   the register form while an address is on file, the manual
+                   address fields behind a postcode lookup — and validating them
+                   blocked submit with the message rendered inside the hidden
+                   block, so the button appeared to do nothing.
+
+                   This is what foundation got for free: jQuery-validate ignores
+                   ":hidden" by default. The server revalidates regardless. */
+                if (!this._isRendered(field)) { this.clearError(field); return true; }
 
                 if (!field.checkValidity()) {
                     var rule = nativeRule(field);

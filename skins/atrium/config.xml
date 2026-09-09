@@ -99,6 +99,10 @@
 	  <label><![CDATA[Show Company Name]]></label>
 	  <description><![CDATA[Show the company name field on address and checkout forms.]]></description>
 	</setting>
+	<setting name="show_mobile_field" type="bool" default="true">
+	  <label><![CDATA[Show Mobile Number]]></label>
+	  <description><![CDATA[Show the optional mobile number field on checkout and registration.]]></description>
+	</setting>
 	<setting name="show_order_comments" type="bool" default="true">
 	  <label><![CDATA[Show Delivery Notes or Additional Comments]]></label>
 	  <description><![CDATA[Show the free-text comments box at the end of checkout. Existing comments still appear on orders and receipts when this is off.]]></description>
