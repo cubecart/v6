@@ -1650,19 +1650,36 @@ class Cubecart
     {
         $this->_basket =& $GLOBALS['cart']->basket;
 
-        if (isset($this->_basket['cart_order_id'])) {
+        # The basket is emptied at the end of this method, so a refresh of the
+        # receipt arrives with nothing in it. Fall back to the id stashed in the
+        # session there: it is session scoped, so the page replays only for the
+        # shopper who placed the order (#4271).
+        $order_id = $this->_basket['cart_order_id'] ?? false;
+        $replay   = false;
+        if (!$order_id && ($order_id = $GLOBALS['session']->get('complete_order_id'))) {
+            $replay = true;
+        }
+
+        if ($order_id) {
             $this->_checkoutProcess('complete');
-            foreach ($GLOBALS['hooks']->load('class.cubecart.construct.complete') as $hook) {
-                include $hook;
+            # Completion hooks fire once. A replay is a page view, not a
+            # checkout, and extensions here send mail and touch stock.
+            if (!$replay) {
+                foreach ($GLOBALS['hooks']->load('class.cubecart.construct.complete') as $hook) {
+                    include $hook;
+                }
             }
             $formatting  = array('discount', 'price', 'shipping', 'subtotal', 'total', 'total_tax', 'credit_used');
             $empty_basket = true;
             # Get the order details, and display a receipt
-            if (($orders = $GLOBALS['db']->select('CubeCart_order_summary', false, array('cart_order_id' => $this->_basket['cart_order_id']), false, false, false, false)) !== false) {
+            if (($orders = $GLOBALS['db']->select('CubeCart_order_summary', false, array('cart_order_id' => $order_id), false, false, false, false)) !== false) {
                 $order = $orders[0];
                 $GLOBALS['user']->setGhostId($order['customer_id']);
-                if (($items = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $this->_basket['cart_order_id']))) !== false) {
-                    $GLOBALS['smarty']->assign('GA_ITEMS', $items);
+                if (($items = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $order_id))) !== false) {
+                    # Conversion tracking, so first render only.
+                    if (!$replay) {
+                        $GLOBALS['smarty']->assign('GA_ITEMS', $items);
+                    }
                     $prod_ids = array();
                     foreach ($items as $item) {
                         array_push($prod_ids, $item['product_id']);
@@ -1724,33 +1741,38 @@ class Cubecart
 
                 $GLOBALS['smarty']->assign('SUM', $order);
 
-                switch ($order['status']) {
-                case self::ORDER_PENDING:
-                    $GLOBALS['gui']->setNotify($GLOBALS['language']->confirm['order_pending']);
-                    break;
-                case self::ORDER_PROCESS:
-                    $GLOBALS['gui']->setNotify($GLOBALS['language']->confirm['order_processing']);
-                    break;
-                case self::ORDER_COMPLETE:
-                    if((int)preg_replace('/[^0-9]/', '', $order['total'])==0) {
-                        $GLOBALS['gui']->setNotify($GLOBALS['language']->confirm['free_order_complete']);
-                    } else {
-                        $GLOBALS['gui']->setNotify($GLOBALS['language']->confirm['order_complete']);
+                # Order notices belong to the checkout that just happened, not
+                # to a refresh. Declined and failed orders keep their basket, so
+                # a replay never reaches the payment-retry branch below.
+                if (!$replay) {
+                    switch ($order['status']) {
+                    case self::ORDER_PENDING:
+                        $GLOBALS['gui']->setNotify($GLOBALS['language']->confirm['order_pending']);
+                        break;
+                    case self::ORDER_PROCESS:
+                        $GLOBALS['gui']->setNotify($GLOBALS['language']->confirm['order_processing']);
+                        break;
+                    case self::ORDER_COMPLETE:
+                        if((int)preg_replace('/[^0-9]/', '', $order['total'])==0) {
+                            $GLOBALS['gui']->setNotify($GLOBALS['language']->confirm['free_order_complete']);
+                        } else {
+                            $GLOBALS['gui']->setNotify($GLOBALS['language']->confirm['order_complete']);
+                        }
+                        break;
+                    case self::ORDER_DECLINED:
+                    case self::ORDER_FAILED:
+                        $empty_basket = false;
+                        $GLOBALS['gui']->setError($GLOBALS['language']->confirm['order_failed']);
+                        $GLOBALS['smarty']->assign('CTRL_PAYMENT', true);
+                        break;
+                    case self::ORDER_CANCELLED:
+                        $GLOBALS['gui']->setError($GLOBALS['language']->confirm['order_cancelled']);
+                        break;
                     }
-                    break;
-                case self::ORDER_DECLINED:
-                case self::ORDER_FAILED:
-                    $empty_basket = false;
-                    $GLOBALS['gui']->setError($GLOBALS['language']->confirm['order_failed']);
-                    $GLOBALS['smarty']->assign('CTRL_PAYMENT', true);
-                    break;
-                case self::ORDER_CANCELLED:
-                    $GLOBALS['gui']->setError($GLOBALS['language']->confirm['order_cancelled']);
-                    break;
                 }
 
                 // Display Affilate Tracker code
-                $affiliates = $this->_getAffiliates(self::AFFILIATE_COMPLETE);
+                $affiliates = $replay ? false : $this->_getAffiliates(self::AFFILIATE_COMPLETE);
                 if ($affiliates) {
                     $GLOBALS['smarty']->assign('AFFILIATES', $affiliates);
                 }
@@ -1760,7 +1782,10 @@ class Cubecart
                 $GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
             }
             // Empty the basket
-            if ($empty_basket) {
+            if ($empty_basket && !$replay) {
+                # Read back by the fallback above. Not the 'basket' namespace,
+                # which clear() wipes.
+                $GLOBALS['session']->set('complete_order_id', $order_id);
                 $GLOBALS['cart']->clear();
             }
         } else {
