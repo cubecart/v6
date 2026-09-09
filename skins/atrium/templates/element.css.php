@@ -40,6 +40,11 @@
 {foreach from=$CSS item=css_file}
 <link rel="stylesheet" href="{$ROOT_PATH}{$css_file|ltrim:'/'}">
 {/foreach}
+{* Brand colours from the skin settings. AFTER tailwind.css so the --cc-* names
+   it reads as fallbacks are already in play, and BEFORE custom.css so a merchant
+   editing that file still overrules the picker. *}
+{include file='templates/element.brand_colours.php'}
+
 {* Merchant overrides load LAST so they win. custom.css needs no rebuild and is
    the only edit point a skin update will not overwrite. *}
 <link rel="stylesheet" href="{$ROOT_PATH}skins/{$SKIN_FOLDER}/css/custom.css?v={$CSS_VERSION}">

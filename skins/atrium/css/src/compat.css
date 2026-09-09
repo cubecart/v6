@@ -115,10 +115,10 @@
     line-height: 1.25rem;
     border: 1px solid transparent;
     background-color: var(--color-brand-600);
-    color: #fff;
+    color: var(--cc-brand-fg, #fff);   /* see .cc-on-brand in components.css */
     cursor: pointer;
   }
-  .button:hover { background-color: var(--color-brand-700); color: #fff; }
+  .button:hover { background-color: var(--color-brand-700); color: var(--cc-brand-fg, #fff); }
   .button.secondary {
     background-color: var(--color-ink-100);
     color: var(--color-ink-900);

@@ -666,8 +666,8 @@ class GUI
      *
      * Returns the DEFINITIONS in document order, keyed by name, each:
      *   name type default label description options
-     * `type` is one of bool|select|text and anything else is coerced to text,
-     * so an unrecognised type can never render an uncontrolled field.
+     * `type` is one of bool|select|text|color and anything else is coerced to
+     * text, so an unrecognised type can never render an uncontrolled field.
      *
      * The presence of at least one setting is what puts the config cog on the
      * skin's card in Manage Extensions (plugins.index.inc.php).
@@ -700,7 +700,7 @@ class GUI
             }
 
             $type = strtolower((string)$node['type']);
-            if (!in_array($type, array('bool', 'select', 'text'), true)) {
+            if (!in_array($type, array('bool', 'select', 'text', 'color'), true)) {
                 $type = 'text';
             }
 
@@ -774,7 +774,52 @@ class GUI
             }
         }
 
+        foreach ($schema as $name => $definition) {
+            if ($definition['type'] !== 'color') {
+                continue;
+            }
+            /* Re-validate on the way OUT, not just on save. These values are
+               interpolated into a <style> block, and a row edited straight in
+               the database would otherwise be a CSS injection. Anything that is
+               not #rrggbb becomes empty, which every caller already treats as
+               "no override". */
+            if (!preg_match('/^#[0-9a-f]{6}$/i', (string)$settings[$name])) {
+                $settings[$name] = '';
+            }
+            /* Companion key for any colour: the text colour that stays legible
+               on it. Buttons painted in a merchant's pale brand colour would
+               otherwise keep white labels and become unreadable. */
+            $settings[$name.'_fg'] = self::readableTextOn($settings[$name]);
+        }
+
         return $settings;
+    }
+
+    /**
+     * Black or white, whichever reads better on the given #rrggbb.
+     *
+     * WCAG relative luminance, so the decision matches the contrast a checker
+     * would measure rather than a naive average of the channels. Returns white
+     * for an empty or unusable value, which is what the skin's own dark brand
+     * colour wants.
+     *
+     * @param string $hex
+     * @return string  a CSS colour
+     */
+    public static function readableTextOn($hex)
+    {
+        if (!preg_match('/^#([0-9a-f]{6})$/i', (string)$hex, $match)) {
+            return '#ffffff';
+        }
+        $channels = array();
+        foreach (str_split($match[1], 2) as $pair) {
+            $value = hexdec($pair) / 255;
+            $channels[] = ($value <= 0.03928) ? $value / 12.92 : pow(($value + 0.055) / 1.055, 2.4);
+        }
+        $luminance = 0.2126 * $channels[0] + 0.7152 * $channels[1] + 0.0722 * $channels[2];
+
+        // Contrast against white vs against black, whichever is greater.
+        return ((1.05 / ($luminance + 0.05)) >= (($luminance + 0.05) / 0.05)) ? '#ffffff' : '#111318';
     }
 
     /**

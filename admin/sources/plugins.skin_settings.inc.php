@@ -59,6 +59,16 @@ if (isset($_POST['skin_settings']) && Admin::getInstance()->permissions('mainten
                 $value = isset($posted[$name]) ? (string)$posted[$name] : '';
                 $save[$name] = in_array($value, $allowed, true) ? $value : (string)$definition['default'];
                 break;
+            case 'color':
+                // Empty is legitimate and means "no override". Anything else
+                // must be #rrggbb: this value is interpolated into a <style>
+                // block on the storefront.
+                $value = isset($posted[$name]) ? trim((string)$posted[$name]) : '';
+                if ($value !== '' && !preg_match('/^#[0-9a-f]{6}$/i', $value)) {
+                    $value = (string)$definition['default'];
+                }
+                $save[$name] = strtolower($value);
+                break;
             default:
                 $save[$name] = isset($posted[$name]) ? (string)$posted[$name] : '';
         }

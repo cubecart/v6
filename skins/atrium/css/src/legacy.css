@@ -48,7 +48,7 @@
    * call — it is not undefined, despite appearing so in the template. */
   .pagination .current {
     background-color: var(--color-brand-600);
-    color: #fff;
+    color: var(--cc-brand-fg, #fff);   /* see .cc-on-brand in components.css */
     font-weight: 600;
   }
 

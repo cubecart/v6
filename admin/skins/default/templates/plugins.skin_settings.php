@@ -34,6 +34,13 @@
                   <option value="{$option.value}"{if $option.selected} selected="selected"{/if}>{$option.label}</option>
                   {/foreach}
                </select>
+            {elseif $field.type == 'color'}
+               {* Two controls, one value. The swatch is the picker; the text box
+                  is how a brand hex gets pasted in, and it is the one that posts
+                  so an empty value stays empty — <input type="color"> has no
+                  empty state and would silently post #000000. *}
+               <input type="color" class="skin-colour-picker" data-target="skin_setting_{$field.name}" value="{if $field.value}{$field.value}{else}#000000{/if}">
+               <input type="text" name="skin_settings[{$field.name}]" id="skin_setting_{$field.name}" class="textbox skin-colour-hex" maxlength="7" placeholder="#rrggbb" value="{$field.value}">
             {else}
                <input type="text" name="skin_settings[{$field.name}]" id="skin_setting_{$field.name}" class="textbox" value="{$field.value}">
             {/if}
@@ -50,3 +57,19 @@
       <input type="submit" name="save" value="{$LANG.common.save}">
    </div>
 </form>
+{literal}
+<script>
+// Keep each colour swatch and its hex box in step. The hex box owns the value.
+document.addEventListener('DOMContentLoaded', function () {
+   document.querySelectorAll('.skin-colour-picker').forEach(function (picker) {
+      var hex = document.getElementById(picker.getAttribute('data-target'));
+      if (!hex) return;
+      picker.addEventListener('input', function () { hex.value = picker.value; });
+      hex.addEventListener('input', function () {
+         // Ignore half-typed values; the picker only accepts a full #rrggbb.
+         if (/^#[0-9a-f]{6}$/i.test(hex.value)) picker.value = hex.value;
+      });
+   });
+});
+</script>
+{/literal}

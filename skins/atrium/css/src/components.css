@@ -39,11 +39,21 @@
 
   .cc-btn-primary {
     background-color: var(--color-brand-600);
-    color: #fff;
+    /* Not a hardcoded #fff: a merchant's Brand Colour can be pale, and
+       element.brand_colours.php sets --cc-brand-fg to whichever of black or
+       white actually reads on it. Falls back to white, which is right for the
+       skin's own dark blue. */
+    color: var(--cc-brand-fg, #fff);
   }
   .cc-btn-primary:hover:not(:disabled) { background-color: var(--color-brand-700); }
   /* Confirmation state on add-to-basket (12-basket.js clears it after 2.5s). */
   .cc-btn-primary.cc-btn-added { background-color: var(--color-brand-700); }
+
+  /* Text sitting ON a brand-600 surface. Templates use this instead of
+     text-white so a merchant's pale Brand Colour flips the label to near-black
+     (--cc-brand-fg, set by element.brand_colours.php) rather than leaving it
+     invisible. Falls back to white for the skin's own dark blue. */
+  .cc-on-brand { color: var(--cc-brand-fg, #fff); }
 
   .cc-btn-secondary {
     background-color: var(--color-ink-100);
@@ -461,12 +471,12 @@
     left: 0.5rem; top: -3rem;
     z-index: 100;
     background-color: var(--color-brand-600);
-    color: #fff;
+    color: var(--cc-brand-fg, #fff);   /* same reason as .cc-btn-primary */
     padding: 0.5rem 1rem;
     border-radius: var(--radius-cc);
     transition: top 120ms;
   }
-  .cc-skip:focus { top: 0.5rem; color: #fff; }
+  .cc-skip:focus { top: 0.5rem; color: var(--cc-brand-fg, #fff); }
 }
 
 /* ── Footer band: beating the utilities Tailwind emits ─────────────────────

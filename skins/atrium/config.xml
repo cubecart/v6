@@ -84,6 +84,17 @@
        bool reaches templates as a real boolean, so {if $SKIN_SETTINGS.x} is
        safe — a stored "0" would otherwise be a truthy non-empty string. -->
   <settings>
+	<!-- Empty means "no override": the skin keeps its own palette. One colour is
+	     enough to brand the store; the second is optional and only repaints the
+	     nav/footer band. -->
+	<setting name="brand_colour" type="color" default="">
+	  <label><![CDATA[Brand Colour]]></label>
+	  <description><![CDATA[Your main brand colour. Drives buttons, links, focus rings and price accents. Leave empty to keep the Atrium blue.]]></description>
+	</setting>
+	<setting name="secondary_colour" type="color" default="">
+	  <label><![CDATA[Secondary Colour]]></label>
+	  <description><![CDATA[Optional. Repaints the navigation and footer bands. Leave empty to keep the near-black default.]]></description>
+	</setting>
 	<setting name="show_company_name" type="bool" default="true">
 	  <label><![CDATA[Show Company Name]]></label>
 	  <description><![CDATA[Show the company name field on address and checkout forms.]]></description>

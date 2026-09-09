@@ -43,7 +43,7 @@
    {if ($i > $page + floor((float)$show / 2))}{break}{/if}
    {$params[$var_name] = $i}
    {if ($i == $page)}
-   <span class="current rounded-cc bg-brand-600 px-3 py-2 text-sm font-semibold text-white" aria-current="page">{$i}</span>
+   <span class="current rounded-cc bg-brand-600 px-3 py-2 text-sm font-semibold cc-on-brand" aria-current="page">{$i}</span>
    {else}
    <a href="{$current}{http_build_query($params)}{$anchor}" class="rounded-cc px-3 py-2 text-sm font-medium text-ink-700 hover:bg-ink-200">{$i}</a>
    {/if}
