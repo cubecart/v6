@@ -1360,7 +1360,16 @@ class Cubecart
                     $GLOBALS['gui']->setNotify($message);
                 }
 
-                if ($GLOBALS['gui']->recaptchaRequired()) {
+                /* Challenge the submission that PLACES THE ORDER, not every post
+                   on the checkout page. "Update basket", "Apply" and the shipping
+                   select post from controls that mint no captcha token (only the
+                   proceed button carries .g-recaptcha), so enforcing it on those
+                   failed verification every time and put a "verify you are human"
+                   error in front of the customer on each one.
+
+                   #4251 still holds: the confirmation is request-scoped, so the
+                   order submission itself must always solve a fresh challenge. */
+                if (isset($_POST['proceed']) && $GLOBALS['gui']->recaptchaRequired()) {
                     if (($message = $GLOBALS['session']->get('error', 'recaptcha')) === false) {
                         //If the error message from recaptcha fails for some reason:
                         $error_messages[] = $GLOBALS['language']->form['verify_human_fail'];
