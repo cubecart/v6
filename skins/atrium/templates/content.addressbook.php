@@ -103,10 +103,12 @@
             </div>
          </div>
 
+         {if !isset($SKIN_SETTINGS.show_company_name) || $SKIN_SETTINGS.show_company_name}
          <div>
             <label for="addr_company_name" class="cc-label">{$LANG.address.company_name} <span class="font-normal text-ink-500">{$LANG.common.optional}</span></label>
             <input type="text" name="company_name" id="addr_company_name" value="{$DATA.company_name}" autocomplete="organization">
          </div>
+         {/if}
 
          <div>
             <label for="addr_line1" class="cc-label">{$LANG.address.line1}</label>

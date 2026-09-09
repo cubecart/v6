@@ -753,8 +753,12 @@ document.addEventListener('alpine:init', function () {
                 if (dib) {
                     this.deliveryIsBilling = dib.type === 'hidden' ? true : dib.checked;
                 }
+                /* No checkbox means the merchant fixed the mode in the skin
+                   settings: `required` renders the password block with no
+                   toggle, `guest` renders neither. The block's presence is
+                   therefore the answer in both cases. */
                 var reg = document.getElementById('show-reg');
-                if (reg) this.showRegister = reg.checked;
+                this.showRegister = reg ? reg.checked : !!document.getElementById('account-reg');
                 // Sync here too, not only on change: the server re-renders the
                 // box already ticked ($REGISTER_CHECKED), and a change event
                 // never fires on that path — so the password fields stayed

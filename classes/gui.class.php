@@ -662,6 +662,122 @@ class GUI
     }
 
     /**
+     * The settings a skin declares in the <settings> block of its config.xml.
+     *
+     * Returns the DEFINITIONS in document order, keyed by name, each:
+     *   name type default label description options
+     * `type` is one of bool|select|text and anything else is coerced to text,
+     * so an unrecognised type can never render an uncontrolled field.
+     *
+     * The presence of at least one setting is what puts the config cog on the
+     * skin's card in Manage Extensions (plugins.index.inc.php).
+     *
+     * @param string $skin  folder name; defaults to the active skin
+     * @return array
+     */
+    public function getSkinSettingsSchema($skin = '')
+    {
+        $skin = !empty($skin) ? $skin : $this->_skin;
+        if (empty($skin)) {
+            return array();
+        }
+
+        $xml = $this->getSkinConfig('', $skin);
+        if (!is_object($xml) || !isset($xml->settings)) {
+            return array();
+        }
+
+        $schema = array();
+        foreach ($xml->settings->children() as $node) {
+            if ($node->getName() !== 'setting') {
+                continue;
+            }
+            $name = (string)$node['name'];
+            // The name becomes a config_key and a Smarty key, so keep it boring.
+            if ($name === '' || !preg_match('/^[a-z0-9_]{1,64}$/i', $name)) {
+                trigger_error(sprintf('Skin "%s" declares a setting with an unusable name and it was skipped.', $skin), E_USER_NOTICE);
+                continue;
+            }
+
+            $type = strtolower((string)$node['type']);
+            if (!in_array($type, array('bool', 'select', 'text'), true)) {
+                $type = 'text';
+            }
+
+            $setting = array(
+                'name'        => $name,
+                'type'        => $type,
+                'default'     => (string)$node['default'],
+                'label'       => ((string)$node->label !== '') ? (string)$node->label : ucwords(str_replace('_', ' ', $name)),
+                'description' => (string)$node->description,
+                'options'     => array(),
+            );
+
+            if ($type === 'select' && isset($node->options)) {
+                foreach ($node->options->children() as $option) {
+                    $value = (string)$option['value'];
+                    $setting['options'][] = array(
+                        'value' => $value,
+                        'label' => ((string)$option !== '') ? (string)$option : $value,
+                    );
+                }
+            }
+            // A select with no options would render an empty control that can
+            // never satisfy its own default.
+            if ($type === 'select' && empty($setting['options'])) {
+                continue;
+            }
+
+            $schema[$name] = $setting;
+        }
+
+        return $schema;
+    }
+
+    /**
+     * A skin's settings as VALUES: the XML defaults with the stored overrides
+     * applied. Stored under config name "skin_<folder>", so two skins never
+     * collide and neither can collide with a module of the same name.
+     *
+     * Keys absent from the schema are ignored rather than returned: a setting
+     * removed from config.xml must stop reaching templates even while its row
+     * is still in the config table.
+     *
+     * bool always comes back as a real boolean so {if $SKIN_SETTINGS.x} is safe;
+     * "0" from the database is otherwise a truthy non-empty string in Smarty.
+     *
+     * @param string $skin  folder name; defaults to the active skin
+     * @return array name => value
+     */
+    public function getSkinSettings($skin = '')
+    {
+        $skin = !empty($skin) ? $skin : $this->_skin;
+        $schema = $this->getSkinSettingsSchema($skin);
+        if (empty($schema)) {
+            return array();
+        }
+
+        $settings = array();
+        foreach ($schema as $name => $definition) {
+            $settings[$name] = ($definition['type'] === 'bool')
+                ? in_array(strtolower($definition['default']), array('1', 'true', 'yes', 'on'), true)
+                : $definition['default'];
+        }
+
+        $stored = $GLOBALS['config']->get('skin_'.$skin);
+        if (is_array($stored)) {
+            foreach ($stored as $key => $value) {
+                if (!isset($schema[$key])) {
+                    continue;
+                }
+                $settings[$key] = ($schema[$key]['type'] === 'bool') ? (bool)(int)$value : (string)$value;
+            }
+        }
+
+        return $settings;
+    }
+
+    /**
      * Get the currently available skins
      *
      * @return array of skin data
@@ -2074,6 +2190,16 @@ class GUI
         }
 
         $GLOBALS['smarty']->assign('SKIN_CUSTOM', $custom);
+
+        /* Merchant-editable counterpart to <custom>: <settings> is edited from
+           Manage Extensions and stored in the config table, where <custom> is
+           developer-only and lives solely in config.xml. Cached because
+           _setSkin() runs on every request; the admin page clears this key. */
+        if (($settings = $GLOBALS['cache']->read('skin.'.$this->_skin.'.settings')) === false) {
+            $settings = $this->getSkinSettings($this->_skin);
+            $GLOBALS['cache']->write($settings, 'skin.'.$this->_skin.'.settings');
+        }
+        $GLOBALS['smarty']->assign('SKIN_SETTINGS', $settings);
 
         $GLOBALS['smarty']->assign('SKIN_FOLDER', $this->_skin);
         $common = file_exists(CC_ROOT_DIR.CC_DS.'skins'.CC_DS.$this->_skin.CC_DS.'images'.CC_DS.'common') ? 'common' : '';

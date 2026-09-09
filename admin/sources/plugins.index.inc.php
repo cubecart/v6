@@ -451,6 +451,13 @@ foreach ($skin_paths as $skin_path) {
             'version' => (string)$xml->info->version,
             'basename' => $basename,
             'creator' => (string)$xml->info->creator,
+            /* The cog only appears when edit_url is set (element.ext_card.php),
+               so a skin declaring no <settings> gets no config button and no
+               page it could lead to. Skins do not route through the module
+               handler, hence the node= form rather than type=/module=. */
+            'edit_url' => isset($xml->settings) && count($xml->settings->children())
+                ? '?_g=plugins&node=skin_settings&skin='.$basename
+                : '',
         );
         unset($xml);
     }

@@ -64,7 +64,10 @@
    {/if}
 </div>
 
-{if !isset($CONFIG.newsletter_status) || $CONFIG.newsletter_status=='1'}
+{* Two gates, and both must pass: the STORE switch ($CONFIG.newsletter_status,
+   Store Settings) and the SKIN setting, which only hides the checkout opt-in and
+   leaves the footer signup alone. *}
+{if (!isset($CONFIG.newsletter_status) || $CONFIG.newsletter_status=='1') && (!isset($SKIN_SETTINGS.show_mailing_list) || $SKIN_SETTINGS.show_mailing_list)}
    {if !$USER_SUBSCRIBED}
    <div class="mt-6 flex items-center gap-2">
       <input type="checkbox" id="mailing_list" name="mailing_list" value="1">
@@ -184,10 +187,15 @@
    {if !$ALLOW_DELIVERY_ADDRESS}<p class="mt-1 text-sm text-ink-600">{$LANG.address.ship_to_billing_only}</p>{/if}
 
    <div class="mt-3 space-y-4">
+         {* "Show Company Name" — a merchant setting declared in config.xml
+            (<settings>) and edited from Manage Extensions. Defaults to showing
+            if the value is missing, so a skin without the setting is unaffected. *}
+         {if !isset($SKIN_SETTINGS.show_company_name) || $SKIN_SETTINGS.show_company_name}
       <div>
          <label for="addr_company" class="cc-label">{$LANG.address.company_name} <span class="font-normal text-ink-500">{$LANG.common.optional}</span></label>
          <input type="text" name="billing[company_name]" id="addr_company" value="{$BILLING.company_name}" autocomplete="organization">
       </div>
+      {/if}
       <div>
          <label for="addr_line1" class="cc-label">{$LANG.address.line1}</label>
          <input type="text" name="billing[line1]" id="addr_line1" required value="{$BILLING.line1|capitalize}" autocomplete="off" autocorrect="off" class="address_lookup" placeholder="{if $ADDRESS_LOOKUP}{$LANG.address.address_lookup}{/if}">
@@ -242,7 +250,8 @@
    </div>
    {/if}
 
-   {if !isset($CONFIG.newsletter_status) || $CONFIG.newsletter_status=='1'}
+   {* Same two gates as the logged-in branch above. *}
+   {if (!isset($CONFIG.newsletter_status) || $CONFIG.newsletter_status=='1') && (!isset($SKIN_SETTINGS.show_mailing_list) || $SKIN_SETTINGS.show_mailing_list)}
    <div class="mt-3 flex items-center gap-2">
       <input type="checkbox" id="mailing_list" name="mailing_list" value="1" {$MAILING_LIST_SUBSCRIBE}>
       <label for="mailing_list" class="text-sm text-ink-800">{$LANG.account.register_mailing}</label>
@@ -274,10 +283,12 @@
             <label for="del_last" class="cc-label">{$LANG.user.name_last}</label>
             <input type="text" name="delivery[last_name]" id="del_last" required value="{$DELIVERY.last_name|capitalize}" autocomplete="family-name">
          </div>
+         {if !isset($SKIN_SETTINGS.show_company_name) || $SKIN_SETTINGS.show_company_name}
          <div class="sm:col-span-2">
             <label for="del_company" class="cc-label">{$LANG.address.company_name} <span class="font-normal text-ink-500">{$LANG.common.optional}</span></label>
             <input type="text" name="delivery[company_name]" id="del_company" value="{$DELIVERY.company_name}" autocomplete="organization">
          </div>
+         {/if}
          <div class="sm:col-span-2">
             <label for="del_line1" class="cc-label">{$LANG.address.line1}</label>
             <input type="text" name="delivery[line1]" id="del_line1" required value="{$DELIVERY.line1|capitalize}" autocomplete="address-line1">
@@ -321,17 +332,35 @@
       Must appear AFTER the selects so the fields exist when it initialises. *}
    <script>var county_list = {if !empty($STATE_JSON)}{$STATE_JSON}{else}false{/if};</script>
 
+   {* "Checkout Registration" — a merchant setting (config.xml <settings>):
+        choice    the opt-in checkbox, and the default
+        guest     no account offered at all; neither the checkbox nor the
+                  password fields render, so `register` never posts
+        required  no opt-out, so the flag posts from a hidden input and the
+                  password fields are always visible
+      An existing customer can still log in under all three: that is the
+      mode === 'login' panel above, which this does not touch. *}
+   {assign var='cc_reg_mode' value=$SKIN_SETTINGS.registration_mode|default:'choice'}
+
+   {if $cc_reg_mode == 'choice'}
    <div class="mt-6 flex items-center gap-2">
       <input type="checkbox" name="register" id="show-reg" value="1" {$REGISTER_CHECKED} @change="toggleRegister($event)">
       <label for="show-reg" class="text-sm text-ink-800">{$LANG.account.create_account}</label>
    </div>
+   {elseif $cc_reg_mode == 'required'}
+   <input type="hidden" name="register" value="1">
+   {/if}
 
+   {if $cc_reg_mode != 'guest'}
    {* minlength/data-match mirror content.register.php. Core enforces both
       server-side (cubecart.class.php:1190-1197) but the failure comes back as a
       banner at the top of a long page, which reads as "the button did nothing".
       `required` is not an attribute here: it is set by ccCheckout to track the
-      checkbox, so an unticked box does not block submit on a hidden field. *}
-   <div id="account-reg" x-show="showRegister" x-cloak x-collapse class="mt-4">
+      checkbox, so an unticked box does not block submit on a hidden field.
+
+      In `required` mode the block carries no x-show/x-collapse: it must be
+      visible even before Alpine boots, and there is nothing to toggle. *}
+   <div id="account-reg"{if $cc_reg_mode == 'choice'} x-show="showRegister" x-cloak x-collapse{/if} class="mt-4">
       <h3 class="text-sm font-semibold uppercase tracking-wider text-ink-900">{$LANG.account.password}</h3>
       <div class="mt-3 grid gap-4 sm:grid-cols-2">
          <div>
@@ -344,15 +373,21 @@
          </div>
       </div>
    </div>
+   {/if}
 
    {include file='templates/content.recaptcha.php' ga_fid='checkout'}
 </div>
 {/if}
 
+{* "Show Delivery Notes or Additional Comments" — a merchant setting
+   (config.xml <settings>). Only the INPUT is gated: comments already stored on
+   an order still render on the receipt and in admin. *}
+{if !isset($SKIN_SETTINGS.show_order_comments) || $SKIN_SETTINGS.show_order_comments}
 <div class="mt-8">
    <label for="delivery_comments" class="cc-label">{$LANG.basket.your_comments} <span class="font-normal text-ink-500">{$LANG.common.optional}</span></label>
    <textarea name="comments" id="delivery_comments" rows="3">{$VAL_CUSTOMER_COMMENTS}</textarea>
 </div>
+{/if}
 
 {* Validation strings looked up BY ID by core JS and by plugins. Keep the ids. *}
 <div class="hidden" id="validate_required">{$LANG.form.required}</div>

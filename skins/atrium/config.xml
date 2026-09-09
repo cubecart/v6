@@ -67,6 +67,61 @@
 	<image reference="medium" maximum="800" quality="82" default="noimage.png" />
 	<image reference="large" maximum="1200" quality="82" default="noimage.png" />
   </images>
+  <!-- MERCHANT-EDITABLE settings. Declaring any <setting> here puts a config cog
+       on this skin's card in Manage Extensions; the values are stored in the
+       config table under "skin_atrium" and reach templates as
+       $SKIN_SETTINGS[<name>], cached under skin.atrium.settings.
+
+       Contrast with <custom> below, which is developer-only: it has no admin UI
+       and lives solely in this file.
+
+         name      [a-z0-9_], becomes the config_key and the Smarty key
+         type      bool | select | text   (anything else is treated as text)
+         default   used until the merchant saves; for bool: 1/true/yes/on
+         label     shown in admin; falls back to the name, title-cased
+         options   select only, and a select with none of them is skipped
+
+       bool reaches templates as a real boolean, so {if $SKIN_SETTINGS.x} is
+       safe — a stored "0" would otherwise be a truthy non-empty string. -->
+  <settings>
+	<setting name="show_company_name" type="bool" default="true">
+	  <label><![CDATA[Show Company Name]]></label>
+	  <description><![CDATA[Show the company name field on address and checkout forms.]]></description>
+	</setting>
+	<setting name="show_order_comments" type="bool" default="true">
+	  <label><![CDATA[Show Delivery Notes or Additional Comments]]></label>
+	  <description><![CDATA[Show the free-text comments box at the end of checkout. Existing comments still appear on orders and receipts when this is off.]]></description>
+	</setting>
+	<setting name="show_mailing_list" type="bool" default="true">
+	  <label><![CDATA[Show Subscribe to Mailing List]]></label>
+	  <description><![CDATA[Show the newsletter opt-in on checkout. Has no effect when the store's newsletter is switched off in Store Settings.]]></description>
+	</setting>
+	<setting name="show_coupon_code" type="bool" default="true">
+	  <label><![CDATA[Show Promo Code Field]]></label>
+	  <description><![CDATA[Show the promo/discount code box on checkout. Codes already applied to the basket still show, so a customer can always see and remove one.]]></description>
+	</setting>
+	<setting name="show_featured" type="bool" default="true">
+	  <label><![CDATA[Show Featured Products]]></label>
+	  <description><![CDATA[Show the Featured Products box in the storefront sidebar.]]></description>
+	</setting>
+	<setting name="show_best_sellers" type="bool" default="true">
+	  <label><![CDATA[Show Best Sellers]]></label>
+	  <description><![CDATA[Show the Best Sellers box in the storefront sidebar.]]></description>
+	</setting>
+	<setting name="show_sale_items" type="bool" default="true">
+	  <label><![CDATA[Show Sale Items]]></label>
+	  <description><![CDATA[Show the Sale Items box in the storefront sidebar. With all three sidebar boxes off the page content takes the full width.]]></description>
+	</setting>
+	<setting name="registration_mode" type="select" default="choice">
+	  <label><![CDATA[Checkout Registration]]></label>
+	  <description><![CDATA[Whether a customer may create an account while checking out. Existing customers can always log in, whichever is chosen.]]></description>
+	  <options>
+		<option value="choice"><![CDATA[Customer chooses]]></option>
+		<option value="guest"><![CDATA[Guest checkout only]]></option>
+		<option value="required"><![CDATA[Registration required]]></option>
+	  </options>
+	</setting>
+  </settings>
   <!-- Flattened into $SKIN_CUSTOM[<name>], one level only (gui.class.php:1946-1957).
        Cached under skin.atrium.custom — clear the cache after editing. -->
   <custom>

@@ -168,14 +168,25 @@
                {$PAGE_CONTENT}
             </main>
 
-            {* Each box self-guards on its own data, so this aside can render
-               empty; the .cc-sidebar:empty rule in components.css is what drops
-               its width when that happens. *}
+            {* Sidebar visibility is three merchant settings (config.xml
+               <settings>). With all three off the <aside> is not rendered at all
+               and <main>'s flex-1 takes the full width — deliberately not left
+               to .cc-sidebar:empty, which needs ZERO child nodes and would still
+               see the whitespace between these includes.
+
+               That :empty rule still earns its place for the other case: the
+               boxes are on, but each self-guards on its own data, so a store
+               with no featured/popular/sale products renders them all empty. *}
+            {assign var='cc_sb_featured' value=!isset($SKIN_SETTINGS.show_featured) || $SKIN_SETTINGS.show_featured}
+            {assign var='cc_sb_popular'  value=!isset($SKIN_SETTINGS.show_best_sellers) || $SKIN_SETTINGS.show_best_sellers}
+            {assign var='cc_sb_sale'     value=!isset($SKIN_SETTINGS.show_sale_items) || $SKIN_SETTINGS.show_sale_items}
+            {if $cc_sb_featured || $cc_sb_popular || $cc_sb_sale}
             <aside class="cc-sidebar mt-10 space-y-6 lg:mt-0 lg:w-72 lg:shrink-0">
-               {include file='templates/box.featured.php'}
-               {include file='templates/box.popular.php'}
-               {include file='templates/box.sale_items.php'}
+               {if $cc_sb_featured}{include file='templates/box.featured.php'}{/if}
+               {if $cc_sb_popular}{include file='templates/box.popular.php'}{/if}
+               {if $cc_sb_sale}{include file='templates/box.sale_items.php'}{/if}
             </aside>
+            {/if}
          </div>
       </div>
 

@@ -251,6 +251,11 @@
          </div>
          {/if}
 
+         {* "Show Promo Code Field" — a merchant setting (config.xml <settings>).
+            Only the ENTRY box is gated: the $COUPONS loop above still lists any
+            code already on the basket, with its remove link, so turning this off
+            can never strand a customer with a discount they cannot see. *}
+         {if !isset($SKIN_SETTINGS.show_coupon_code) || $SKIN_SETTINGS.show_coupon_code}
          <div class="border-t border-ink-200 pt-3">
             <label for="coupon" class="cc-label">{$LANG.basket.coupon_add}</label>
             <div class="flex gap-2">
@@ -258,6 +263,7 @@
                <button type="submit" name="update" id="apply_coupon" formnovalidate value="{$LANG.common.apply}" class="cc-btn cc-btn-secondary shrink-0" @click="clearProceed()">{$LANG.common.apply}</button>
             </div>
          </div>
+         {/if}
       </dl>
    </div>
 
