@@ -13,7 +13,7 @@
  *   name="quantity"        quantity
  * The CSRF token is injected before </form> by GUI::display().
  *}
-<div x-data="ccProductList()">
+<div x-data="ccProductList('{$SKIN_SETTINGS.default_product_view|default:'grid'}')">
 
    <h1 class="text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl">{$category.cat_name}</h1>
 

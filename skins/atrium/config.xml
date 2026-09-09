@@ -112,6 +112,14 @@
 	  <label><![CDATA[Show Sale Items]]></label>
 	  <description><![CDATA[Show the Sale Items box in the storefront sidebar. With all three sidebar boxes off the page content takes the full width.]]></description>
 	</setting>
+	<setting name="default_product_view" type="select" default="grid">
+	  <label><![CDATA[Default Product View]]></label>
+	  <description><![CDATA[How category listings first appear. A customer who picks the other view keeps their choice on this device.]]></description>
+	  <options>
+		<option value="grid"><![CDATA[Grid]]></option>
+		<option value="list"><![CDATA[List]]></option>
+	  </options>
+	</setting>
 	<setting name="registration_mode" type="select" default="choice">
 	  <label><![CDATA[Checkout Registration]]></label>
 	  <description><![CDATA[Whether a customer may create an account while checking out. Existing customers can always log in, whichever is chosen.]]></description>
