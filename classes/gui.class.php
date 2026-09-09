@@ -489,7 +489,14 @@ class GUI
         } elseif (empty($this->_logo)) {
             $this->_setLogo();
         }
-        return ($absolute) ? $GLOBALS['storeURL'].'/'.$this->_logo : $this->_logo;
+
+        // An uninstalled skin leaves its logos entry pointing at a missing file.
+        $logo = $this->_logo;
+        if (empty($logo) || !file_exists(CC_ROOT_DIR.'/'.$logo)) {
+            $logo = $this->_getLogoDefault();
+        }
+
+        return ($absolute) ? $GLOBALS['storeURL'].'/'.$logo : $logo;
     }
 
     /**
@@ -1127,8 +1134,9 @@ class GUI
                 ## Use the 'All Skins' logo
                 $target = 'images/logos/'.$custom['all']['all'];
             } elseif (!empty($logo_config)) {
-                ## Use the first skin logo already built
-                $target = reset($logo_config);
+                // The active skin, not whichever sorts first.
+                $active = $GLOBALS['config']->get('config', 'skin_folder').$GLOBALS['config']->get('config', 'skin_style');
+                $target = isset($logo_config[$active]) ? $logo_config[$active] : reset($logo_config);
             } else {
                 ## Last resort: look for default logo
                 $target = $this->_getLogoDefault();
