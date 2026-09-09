@@ -528,6 +528,52 @@ jQuery(document).ready(function ($) {
     // -------------------------------
     // Product options -> price + image update
     // -------------------------------
+    /* Per-combination availability (#cc-option-stock, Catalogue::optionStockMap).
+       Keyed on assign_id because that is what the form posts; only the listed
+       participants count towards the key, since a product can carry options that
+       are not part of the stock matrix. An unknown combination means "no
+       opinion" — leave the button alone and let the server decide, as before. */
+    var cc_option_stock = null;
+    var cc_stock_el = document.getElementById('cc-option-stock');
+    if (cc_stock_el) {
+        try {
+            var parsed = JSON.parse(cc_stock_el.textContent);
+            if (parsed && parsed.combinations) cc_option_stock = parsed;
+        } catch (e) {
+            cc_option_stock = null;
+        }
+    }
+
+    function cc_check_combination() {
+        if (!cc_option_stock) return;
+        var participants = cc_option_stock.participants || [];
+        var chosen = [];
+        $('[name^=productOptions]').each(function () {
+            var field = this;
+            if ((field.type === 'radio' || field.type === 'checkbox') && !field.checked) return;
+            var id = parseInt(field.value, 10);
+            if ($.inArray(id, participants) !== -1) chosen.push(id);
+        });
+
+        var entry = null;
+        if (chosen.length) {
+            chosen.sort(function (a, b) { return a - b; });
+            entry = cc_option_stock.combinations[chosen.join('|')];
+        }
+        var unavailable = !!(entry && !entry.ok);
+
+        $('#add_to_basket_button').prop('disabled', unavailable);
+        var $note = $('#option_stock_note');
+        if (unavailable) {
+            var label = $note.attr('data-label') || 'Out of stock';
+            $note.text(entry.note ? label + ' ' + entry.note : label).show();
+        } else {
+            $note.hide();
+        }
+    }
+    cc_check_combination();
+    $('[name^=productOptions]').on('change', cc_check_combination);
+
     if ($('#ptp').length > 0 && $('[name^=productOptions]').length > 0) {
         price_inc_options();
         $("[name^=productOptions]").on('change', function () {

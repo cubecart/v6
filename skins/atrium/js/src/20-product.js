@@ -19,14 +19,80 @@
  *   [name^=productOptions] carry data-price and data-price-original.
  *   class="absolute" means the option REPLACES the base price rather than
  *   adding to it — subtract the base before adding the option's own price.
+ *
+ * COMBINATION STOCK (#cc-option-stock, from Catalogue::optionStockMap):
+ *   {participants:[assign_id...], combinations:{"46|53":{ok:false,note:""}}}
+ *   Keyed on assign_id because that is what the form posts. Only participants
+ *   count towards the key — a product can carry options that are not part of
+ *   the stock matrix, and including one would never match. An unknown
+ *   combination means "no opinion": leave the button alone and let the server
+ *   decide, exactly as before.
+ *
+ *   ⚠ A STORE, not component state. The option fields and the add-to-basket
+ *   button sit inside ccAddToBasket, so @change on a select is evaluated in
+ *   THAT scope: reads resolve up to ccProduct, but a write lands on the child
+ *   scope and the parent never sees it. Held here once, read by both.
  */
 
 document.addEventListener('alpine:init', function () {
+    window.Alpine.store('optionStock', {
+        available: true,
+        note: '',
+        _map: null,
+
+        load: function () {
+            var el = document.getElementById('cc-option-stock');
+            if (!el) return;
+            try {
+                var data = JSON.parse(el.textContent);
+                if (data && data.combinations) this._map = data;
+            } catch (e) {
+                // A malformed payload must not take the page down with it.
+                this._map = null;
+            }
+        },
+
+        /* Judge the combination currently selected on the page.
+           Scans the DOCUMENT rather than taking an element: called from a
+           @change handler, Alpine's $el is the SELECT that fired, not the
+           component root, so searching "inside" it finds nothing. Only one
+           product form carries productOptions fields, and `participants`
+           filters out anything not in the stock matrix anyway. */
+        check: function () {
+            if (!this._map) return;
+
+            var participants = this._map.participants || [];
+            var chosen = [];
+            var fields = document.querySelectorAll('[name^=productOptions]');
+            for (var i = 0; i < fields.length; i++) {
+                var field = fields[i];
+                if ((field.type === 'radio' || field.type === 'checkbox') && !field.checked) continue;
+                var id = parseInt(field.value, 10);
+                if (participants.indexOf(id) !== -1) chosen.push(id);
+            }
+
+            // Nothing from the matrix chosen yet, so there is nothing to judge.
+            if (!chosen.length) {
+                this.available = true;
+                this.note = '';
+                return;
+            }
+
+            chosen.sort(function (a, b) { return a - b; });
+            var entry = this._map.combinations[chosen.join('|')];
+            this.available = entry ? !!entry.ok : true;
+            this.note = (entry && entry.note) ? entry.note : '';
+        }
+    });
+
     window.Alpine.data('ccProduct', function () {
         return {
             _seq: 0,
 
             init: function () {
+                window.Alpine.store('optionStock').load();
+                window.Alpine.store('optionStock').check();
+
                 // Only meaningful when there is a price element AND options.
                 if (!document.getElementById('ptp')) return;
                 if (!this.$el.querySelector('[name^=productOptions]')) return;
@@ -138,6 +204,7 @@ document.addEventListener('alpine:init', function () {
             onOptionChange: function (event) {
                 this.recalc();
                 this.swapImage(event);
+                window.Alpine.store('optionStock').check();
             }
         };
     });

@@ -34,8 +34,15 @@
       <input type="hidden" name="add" value="{$PRODUCT.product_id}">
    </div>
    <div  class="small-12 medium-9 columns">
-      <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button postfix">{$LANG.catalogue.add_to_basket}</button>
+      <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button postfix" id="add_to_basket_button">{$LANG.catalogue.add_to_basket}</button>
    </div>
+   {* Per-combination availability from core (Catalogue::optionStockMap): says an
+      option combination is sold out BEFORE the customer submits and gets bounced
+      back. Absent or empty means "no opinion" and nothing changes. *}
+   {if !empty($OPTION_STOCK)}
+   <script type="application/json" id="cc-option-stock">{$OPTION_STOCK nofilter}</script>
+   <div class="small-12 columns"><div id="option_stock_note" class="alert-box alert" role="status" style="display:none" data-label="{$LANG.catalogue.out_of_stock_short}"></div></div>
+   {/if}
    {if $PRODUCT.minimum_quantity>1}<div><small>{sprintf($LANG.catalogue.min_purchase_quantity,$PRODUCT.minimum_quantity)}</small></div>{/if}
    {if $PRODUCT.maximum_quantity gte $PRODUCT.minimum_quantity}<div><small>{sprintf($LANG.catalogue.max_purchase_quantity,$PRODUCT.maximum_quantity)}</small></div>{/if}
    {/if}

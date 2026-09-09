@@ -424,6 +424,11 @@ class Catalogue
                 $GLOBALS['smarty']->assign('CTRL_OUT_OF_STOCK', $out);
 
                 $GLOBALS['smarty']->assign('REVIEW_SCORE_MAX', 5);
+
+                /* Per-combination availability, so the storefront can say a
+                   size/colour is sold out BEFORE the customer adds it and gets
+                   bounced back. Every skin can use it; see optionStockMap(). */
+                $GLOBALS['smarty']->assign('OPTION_STOCK', json_encode($this->optionStockMap((int)$product['product_id'])));
                 //Are we displaying reviews, or the "tell-a-friend" form?
 
                 $GLOBALS['smarty']->assign('CTRL_REVIEW', (bool)$GLOBALS['config']->get('config', 'enable_reviews'));
@@ -536,6 +541,128 @@ class Catalogue
      * @param array $selected_options_array
      * @return array/false
      */
+    /**
+     * Availability of every option combination of a product, for the storefront.
+     *
+     * Returns:
+     *   participants  the assign_ids that take part in a combination
+     *   combinations  keyed by those assign_ids, ascending, joined with "|"
+     *
+     * Keyed on ASSIGN_ID because that is what the form posts and therefore all a
+     * browser can see; the matrix's own options_identifier is an md5 of the
+     * option/value ids (getOptionsIdentifier) and there is no md5 in a browser.
+     * `participants` lets a skin ignore any option that is not part of the
+     * matrix, which would otherwise poison the key.
+     *
+     * Deliberately NOT the stock level: a quantity is competitive information
+     * and nothing on the page needs it. Each entry is:
+     *   ok    bool    can this combination be added to the basket
+     *   note  string  the row's restock note, when it has one
+     *
+     * A combination missing from the matrix is absent, and callers must treat
+     * absent as "no opinion" — the server stays the authority either way.
+     *
+     * @param int $product_id
+     * @return array
+     */
+    public function optionStockMap($product_id)
+    {
+        $product_id = (int)$product_id;
+        $empty = array('participants' => array(), 'combinations' => array());
+        if ($product_id < 1) {
+            return $empty;
+        }
+
+        // Only options flagged matrix_include take part in a combination.
+        $assigned = $GLOBALS['db']->select(
+            'CubeCart_option_assign',
+            array('assign_id', 'option_id', 'value_id'),
+            array('product' => $product_id, 'matrix_include' => 1),
+            array('option_id' => 'ASC', 'value_id' => 'ASC')
+        );
+        if (!$assigned) {
+            return $empty;
+        }
+
+        $by_option = array();
+        $participants = array();
+        foreach ($assigned as $row) {
+            $by_option[(int)$row['option_id']][] = array('assign_id' => (int)$row['assign_id'], 'value_id' => (int)$row['value_id']);
+            $participants[] = (int)$row['assign_id'];
+        }
+        ksort($by_option);
+
+        /* The cartesian product is what the matrix rows are, so this is normally
+           small — but a product with several many-valued options could produce
+           thousands. Bail rather than bloat the page; the page then behaves as
+           it always has and the server still catches it on submit. */
+        $combinations = 1;
+        foreach ($by_option as $values) {
+            $combinations *= count($values);
+            if ($combinations > 500) {
+                return $empty;
+            }
+        }
+
+        $matrix = array();
+        if (($rows = $GLOBALS['db']->select('CubeCart_option_matrix', array('options_identifier', 'stock_level', 'use_stock', 'status', 'restock_note'), array('product_id' => $product_id))) !== false) {
+            foreach ($rows as $row) {
+                $matrix[$row['options_identifier']] = $row;
+            }
+        }
+        if (empty($matrix)) {
+            return $empty;
+        }
+
+        $sets = array(array());
+        foreach ($by_option as $option_id => $values) {
+            $expanded = array();
+            foreach ($sets as $set) {
+                foreach ($values as $value) {
+                    $expanded[] = $set + array($option_id => $value);
+                }
+            }
+            $sets = $expanded;
+        }
+
+        $allow_out_of_stock = (bool)$GLOBALS['config']->get('config', 'basket_out_of_stock_purchase');
+        $map = array();
+
+        foreach ($sets as $set) {
+            ksort($set);
+            $identifier = '';
+            $assign_ids = array();
+            foreach ($set as $option_id => $value) {
+                // Must match getOptionsIdentifier(): ids concatenated, in this order.
+                $identifier .= $option_id.$value['value_id'];
+                $assign_ids[] = $value['assign_id'];
+            }
+            $identifier = md5($identifier);
+            if (!isset($matrix[$identifier])) {
+                continue;
+            }
+            $row = $matrix[$identifier];
+
+            if (!$row['status']) {
+                $ok = false;
+            } elseif (!$row['use_stock']) {
+                $ok = true;                       // stock is not tracked for this row
+            } else {
+                $ok = ($row['stock_level'] > 0) || $allow_out_of_stock;
+            }
+
+            $entry = array('ok' => $ok);
+            if (!empty($row['restock_note'])) {
+                $entry['note'] = (string)$row['restock_note'];
+            }
+            sort($assign_ids, SORT_NUMERIC);
+            $map[implode('|', $assign_ids)] = $entry;
+        }
+
+        sort($participants, SORT_NUMERIC);
+        return array('participants' => $participants, 'combinations' => $map);
+    }
+
     public function displayProductOptions($product_id = null, $selected_options_array = null)
     {
         if (isset($product_id) && is_numeric($product_id)) {

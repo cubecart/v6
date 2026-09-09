@@ -54,11 +54,25 @@
          <input type="hidden" name="add" value="{$PRODUCT.product_id}">
       </div>
       <button type="submit" class="cc-btn cc-btn-primary min-w-48 flex-1"
-              :class="{ 'cc-btn-added': added }" :disabled="busy">
+              :class="{ 'cc-btn-added': added }" :disabled="busy || !$store.optionStock.available">
          <span x-show="!added">{$LANG.catalogue.add_to_basket}</span>
          <span x-show="added" x-cloak>{$LANG.catalogue.added_to_basket}</span>
       </button>
    </div>
+
+   {* Per-combination availability, from core (Catalogue::optionStockMap): says
+      an option combination is sold out BEFORE the customer submits and gets
+      bounced back. Absent or empty means "no opinion" and nothing changes. *}
+   {if !empty($OPTION_STOCK)}
+   <script type="application/json" id="cc-option-stock">{$OPTION_STOCK nofilter}</script>
+   {* Hidden by default and revealed by removing the class, rather than x-show:
+      the class binding is what the button beside it uses and it demonstrably
+      re-runs on a store change, where x-show's effect on this element did not.
+      Starting hidden also means no flash of an out-of-stock line before JS. *}
+   <p class="mt-2 hidden text-sm font-medium text-danger-700" :class="{ 'hidden': $store.optionStock.available }" role="status">
+      {$LANG.catalogue.out_of_stock_short}<span class="hidden font-normal" :class="{ 'hidden': !$store.optionStock.note }" x-text="$store.optionStock.note"></span>
+   </p>
+   {/if}
 
    {if $PRODUCT.minimum_quantity>1}
    <p class="mt-2 text-sm text-ink-500">{sprintf($LANG.catalogue.min_purchase_quantity,$PRODUCT.minimum_quantity)}</p>
