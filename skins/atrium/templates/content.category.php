@@ -138,9 +138,11 @@
                                value="{$product.minimum_quantity|default:'1'}"
                                min="{$product.minimum_quantity|default:'1'}" maxlength="3"
                                class="quantity w-16 text-center">
+                        {* Icon only below sm: see content.homepage.php. *}
                         <button type="submit" class="cc-btn cc-btn-primary flex-1 sm:flex-none" :disabled="busy">
-                           <span x-show="!added">{$LANG.catalogue.add_to_basket}</span>
-                           <span x-show="added" x-cloak>{$LANG.catalogue.added_to_basket}</span>
+                           {include file='templates/element.icon.basket.php' class='size-5 sm:hidden'}
+                           <span class="sr-only sm:not-sr-only" x-show="!added">{$LANG.catalogue.add_to_basket}</span>
+                           <span class="sr-only sm:not-sr-only" x-show="added" x-cloak>{$LANG.catalogue.added_to_basket}</span>
                         </button>
                         <input type="hidden" name="add" value="{$product.product_id}">
                      </div>

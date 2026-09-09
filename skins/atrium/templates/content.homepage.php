@@ -113,7 +113,12 @@
                       value="{$product.minimum_quantity|default:'1'}"
                       min="{$product.minimum_quantity|default:'1'}" maxlength="3"
                       class="quantity required w-16 text-center">
-               <button type="submit" class="cc-btn cc-btn-primary flex-1">{$LANG.catalogue.add_to_basket}</button>
+               {* Icon only below sm: the label wraps to two lines in a narrow
+                  grid cell and the card reads as cramped. *}
+               <button type="submit" class="cc-btn cc-btn-primary flex-1">
+                  {include file='templates/element.icon.basket.php' class='size-5 sm:hidden'}
+                  <span class="sr-only sm:not-sr-only">{$LANG.catalogue.add_to_basket}</span>
+               </button>
             </div>
 
             {elseif !$CATALOGUE_MODE}
