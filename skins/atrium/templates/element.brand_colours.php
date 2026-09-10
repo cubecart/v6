@@ -18,15 +18,10 @@
  * broken. The ramp below is derived from the one colour with color-mix(), which
  * keeps the merchant's hue and needs no build step and no colour maths in PHP.
  *
- * ⚠ The dark block is NOT optional. theme.css lifts brand 50/100/600/700 for
- * dark mode on [data-theme="dark"], which is the SAME specificity as :root, and
- * this file loads after tailwind.css — so a :root-only override beats the lift
- * and leaves a light-mode accent sitting on a near-black page. The mix ratios
- * below reproduce theme.css's own dark values when fed the shipped blue.
+ * ⚠ The dark block is required: theme.css lifts brand 50/100/600/700 on
+ * [data-theme="dark"], same specificity as :root, and this file loads later.
  *
- * This setting deliberately overrides whichever colour sub-theme is selected
- * (css/cubecart.<style>.css, linked earlier by element.css.php). A merchant who
- * has typed an exact brand colour means it.
+ * Deliberately overrides the selected sub-theme: an exact hex was typed.
  *
  * ⚠ The values are validated to #rrggbb by GUI::getSkinSettings() on the way
  * out of the config table, not merely on save — they land inside a <style>.
@@ -53,13 +48,8 @@
    --cc-brand-fg: {$SKIN_SETTINGS.brand_colour_fg};
 {/if}
 {if !empty($SKIN_SETTINGS.secondary_colour)}
-   /* The navigation band. Non-inverting by design, so there is one definition
-      rather than a light and a dark variant. No sub-theme touches these, so
-      this never competes with the theme picker.
-
-      The FOOTER is deliberately not painted from here: components.css remaps
-      these same token names to --cc-footer-* inside .cc-footer, so the two
-      bands are set separately. */
+   /* The nav band. Non-inverting, so one definition serves both themes. The
+      FOOTER is separate — .cc-footer remaps these names to --cc-footer-*. */
    --cc-chrome:        {$SKIN_SETTINGS.secondary_colour};
    --cc-chrome-hover:  color-mix(in oklab, {$SKIN_SETTINGS.secondary_colour} 88%, {$SKIN_SETTINGS.secondary_colour_fg});
    --cc-chrome-border: color-mix(in oklab, {$SKIN_SETTINGS.secondary_colour} 82%, {$SKIN_SETTINGS.secondary_colour_fg});
@@ -72,9 +62,7 @@
    {/if}
 {/if}
 {if !empty($SKIN_SETTINGS.footer_colour)}
-   /* The footer band, read by the .cc-footer block in components.css. Same
-      derivation as the nav band above; no -sale token, because the footer has
-      no sale link. */
+   /* The footer band (.cc-footer in components.css). No -sale: no sale link. */
    --cc-footer:        {$SKIN_SETTINGS.footer_colour};
    --cc-footer-hover:  color-mix(in oklab, {$SKIN_SETTINGS.footer_colour} 88%, {$SKIN_SETTINGS.footer_colour_fg});
    --cc-footer-border: color-mix(in oklab, {$SKIN_SETTINGS.footer_colour} 82%, {$SKIN_SETTINGS.footer_colour_fg});
@@ -83,17 +71,9 @@
 {/if}
 }
 {if !empty($SKIN_SETTINGS.brand_colour)}
-/* Dark mode reverses the ramp's direction at the accent end: 600 becomes a
-   LIGHT tint so it clears a near-black page, and 700, its hover, lighter still.
-   Only the four stops theme.css itself overrides are restated here; the others
-   inherit from :root above, exactly as the built-in palette does.
-
-   Each stop is declared TWICE on purpose. Mixing toward white raises lightness
-   but drags chroma down with it, so the accent washes out; relative colour
-   syntax sets the lightness and keeps the hue and (scaled) chroma, which
-   reproduces theme.css's own dark values almost exactly when fed the shipped
-   blue. A browser too old for oklch(from …) simply keeps the color-mix line,
-   which is still a lift and still better than the light ramp on a dark page. */
+/* Dark reverses the accent end: 600 becomes a light tint, 700 lighter still.
+   Declared twice on purpose — color-mix toward white washes the chroma out, so
+   the relative-colour line follows and wins where supported. */
 [data-theme="dark"] {
    --cc-brand-50:  color-mix(in oklab, {$SKIN_SETTINGS.brand_colour} 42%, black);
    --cc-brand-50:  oklch(from {$SKIN_SETTINGS.brand_colour} 24.2% calc(c * 0.40) h);

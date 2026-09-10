@@ -1,29 +1,18 @@
 /**
- * Atrium — recently viewed products.
+ * Atrium — recently viewed products. No template literals (00-boot.js).
  *
- * HOUSE RULE: no ES6 template literals in this folder. See 00-boot.js.
+ * localStorage only, never sent to the server: no core change, no table, no
+ * session, nothing to disclose.
  *
- * The list is this browser's alone: localStorage, never sent to the server.
- * That is the feature, not an implementation detail — it means no core change,
- * no table, no session, and nothing to disclose in a privacy policy.
- *
- * ⚠ Everything is built with createElement and textContent, never innerHTML.
- * The values were written by this skin, but localStorage is writable by
- * anything else running on the origin, so it is treated as untrusted input on
- * the way back in: the URL is scheme-checked and the image is dropped unless it
- * looks like one.
+ * ⚠ Read back as UNTRUSTED — anything on the origin can write that key. URLs are
+ * scheme-checked and nodes are built with textContent, never innerHTML.
  */
 (function () {
     'use strict';
 
     var KEY = 'cc_recent';
     var MAX_STORED = 12;
-    /* One full row at the widest breakpoint. Narrower viewports show fewer,
-       and that is decided in CSS (.cc-recent-row) rather than here: a JS count
-       would need a resize listener, would be wrong until it fired, and would
-       have to re-render on every rotate. Rendering four and hiding two costs
-       nothing — the images are loading="lazy", and a display:none image is
-       never fetched. */
+    // One row at the widest breakpoint; CSS (.cc-recent-row) trims the rest.
     var MAX_SHOWN = 4;
 
     function read() {
@@ -32,7 +21,7 @@
             var list = raw ? JSON.parse(raw) : [];
             return Object.prototype.toString.call(list) === '[object Array]' ? list : [];
         } catch (e) {
-            return [];   // blocked storage, or somebody left junk in the key
+            return [];   // blocked storage, or junk in the key
         }
     }
 
@@ -42,8 +31,7 @@
         } catch (e) { /* private mode, or quota */ }
     }
 
-    /* Only http(s) and root-relative paths. Blocks a javascript: or data: URL
-       smuggled into storage from turning a thumbnail into a script. */
+    // http(s) and root-relative only: blocks a smuggled javascript: URL.
     function safeUrl(value) {
         var url = String(value || '');
         return (/^https?:\/\//i.test(url) || url.charAt(0) === '/') ? url : '';
@@ -62,7 +50,7 @@
         if (!item || !item.id) return null;
 
         var list = read();
-        // Seen before: lift it to the front rather than storing it twice.
+        // Seen before: lift to the front rather than store it twice.
         for (var i = list.length - 1; i >= 0; i--) {
             if (String(list[i].id) === String(item.id)) list.splice(i, 1);
         }
@@ -93,7 +81,6 @@
         heading.className = 'mt-3 text-sm font-medium';
         var nameLink = document.createElement('a');
         nameLink.href = link.href;
-        // textContent, not innerHTML: the name came back out of storage.
         nameLink.textContent = String(item.name || '');
         nameLink.className = 'text-ink-900 hover:underline';
         heading.appendChild(nameLink);
@@ -117,15 +104,13 @@
         var shown = 0;
         for (var i = 0; i < items.length && shown < MAX_SHOWN; i++) {
             var item = items[i];
-            // Never show the page you are already on.
+            // Never the page you are already on.
             if (currentId && String(item.id) === currentId) continue;
             if (!item.url || !safeUrl(item.url)) continue;
             list.appendChild(card(item));
             shown++;
         }
-        /* One product viewed and nothing else to show is not "recently viewed",
-           it is a row of one. The section stays hidden until it earns its
-           heading. */
+        // A row of one is not "recently viewed".
         if (shown > 1) section.classList.remove('hidden');
     }
 

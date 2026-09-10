@@ -50,11 +50,8 @@
 	  <description><![CDATA[The shipped Atrium blue]]></description>
 	  <default />
 	</style>
-	<!-- Sub-themes repaint the BRAND ramp only, from css/cubecart.<directory>.css.
-	     Each needs that file to exist: element.css.php links it unconditionally
-	     from $SKIN_SUBSET, so a style with no stylesheet 404s on every page.
-	     images="false" keeps every style sharing the one images/ folder; only
-	     the colours differ, so per-style image sets would be dead weight. -->
+	<!-- Brand ramp only, from css/cubecart.<directory>.css. That file MUST exist:
+	     element.css.php links it unconditionally from $SKIN_SUBSET. -->
 	<style images="false">
 	  <directory>grey</directory>
 	  <name><![CDATA[Grey]]></name>
@@ -90,9 +87,7 @@
        $product['image_tags'][<reference>] (gui.class.php:685-694,
        catalogue.class.php:1906-1922). Removing one removes that Smarty variable. -->
   <!-- default="noimage.svg": core serves a vector placeholder straight from the
-       skin rather than sending it through GD (catalogue.class.php, imagePath).
-       One 1KB file replaces eight cached PNGs and is crisp at every size.
-       ⚠ That handling arrived in 6.8.0, which is why minVersion says so. -->
+       skin instead of through GD. ⚠ Needs 6.8.0 — hence minVersion. -->
   <images>
 	<image reference="thumbnail" maximum="400" quality="82" default="noimage.svg" />
 	<image reference="category" maximum="1200" quality="82" default="noimage.svg" />
@@ -126,8 +121,7 @@
 	<!-- Empty means "no override": the skin keeps its own palette. One colour is
 	     enough to brand the store; the second is optional and only repaints the
 	     nav/footer band. -->
-	<!-- Keep in step with the whitelist in templates/element.font.php: a value
-	     that is not a key there renders nothing. -->
+	<!-- Keep in step with the whitelist in templates/element.font.php. -->
 	<setting name="google_font" type="select" default="">
 	  <label><![CDATA[Font]]></label>
 	  <description><![CDATA[The typeface for the whole storefront. Skin default is Figtree, which ships with the skin and is served from your own site. Choosing one of the others loads it from Google instead, which adds a request to Google on every page, checkout included, and sends your visitors' IP addresses to them.]]></description>
@@ -164,9 +158,8 @@
 	  <label><![CDATA[Brand Colour]]></label>
 	  <description><![CDATA[Your brand colour, for buttons, links, focus rings and price accents. This replaces the skin's sub-theme colour, so leave it empty unless none of the sub-themes is close enough to your brand.]]></description>
 	</setting>
-	<!-- The key stays secondary_colour so saved values survive: only the label
-	     changed. "Secondary Colour" read as a second accent to pair with Brand
-	     Colour, which is not what it does. -->
+	<!-- Key stays secondary_colour so saved values survive; only the label
+	     changed, because it never was a second accent. -->
 	<setting name="secondary_colour" type="color" default="">
 	  <label><![CDATA[Header Colour]]></label>
 	  <description><![CDATA[Repaints the navigation band under the header, which no sub-theme touches. Leave empty to keep the near-black default.]]></description>

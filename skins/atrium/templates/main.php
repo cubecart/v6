@@ -23,10 +23,8 @@
  *     :class="open ? 'block' : 'hidden'"
  * ─────────────────────────────────────────────────────────────────────────────
  *}
-{* Main Menu skin setting. Read once here because it decides TWO places: whether
-   the header renders the horizontal band, and how the content wrapper is laid
-   out. Defaulted rather than assumed present, so a store that has never saved
-   the skin settings still renders. *}
+{* Main Menu setting. Read once: it decides both the header band and the
+   content wrapper. Defaulted, for a store that never saved the settings. *}
 {assign var='cc_menu_vertical' value=(($SKIN_SETTINGS.main_menu_layout|default:'horizontal') == 'vertical')}
 <!DOCTYPE html>
 <html dir="{$TEXT_DIRECTION}" lang="{$HTML_LANG}"{if $SKIN_CUSTOM.colour_scheme == 'dark'} data-theme="dark"{/if}>
@@ -154,10 +152,9 @@
             mobile drawer below includes the same box.navigation.php and must
             stay light.
 
-            The Main Menu setting moves this same include down into the content
-            grid as .cc-navrail instead — see below. Only ONE of the two may
-            render: box.navigation.php carries ids, and the mobile drawer is
-            already a second copy. *}
+            Main Menu can move this same include into the content grid as
+            .cc-navrail instead. Only ONE may render: box.navigation.php carries
+            ids and the drawer is already a second copy. *}
          {if !$cc_menu_vertical}
          <div class="cc-navbar hidden lg:block">
             <div class="cc-container py-1">
@@ -239,9 +236,8 @@
 
       <div class="{$SECTION_NAME}_wrapper cc-container py-8">
          {include file='templates/element.breadcrumb.php'}
-         {* Horizontal: flex, main + optional sidebar. Vertical: a grid that also
-            has to hold the rail, so the sidebar can drop below the content at lg
-            and come back beside it at xl. See .cc-layout-rail. *}
+         {* Vertical needs a grid, not flex, so the sidebar can drop below the
+            content at lg and return beside it at xl. See .cc-layout-rail. *}
          <div class="{if $cc_menu_vertical}cc-layout-rail{else}lg:flex lg:gap-10{/if}">
             {if $cc_menu_vertical}
             <div class="cc-navrail hidden lg:block">

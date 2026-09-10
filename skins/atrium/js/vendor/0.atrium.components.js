@@ -447,22 +447,11 @@ document.addEventListener('alpine:init', function () {
 
 /* ---- js/src/13-flight.js ---- */
 /**
- * Atrium — product image flies to the basket.
+ * Atrium — product image flies to the basket. No template literals (00-boot.js).
  *
- * HOUSE RULE: no ES6 template literals in this folder. See 00-boot.js.
- *
- * Called by ccAddToBasket (12-basket.js) at click time, NOT after the response:
- * the source image and the basket icon both have to be measured while the page
- * is still the one the customer clicked on, and the mini-basket fragment is
- * replaced wholesale a moment later.
- *
- * A clone is animated, never the image itself — the original stays in the grid,
- * and on the product page it is the gallery image the customer is still
- * looking at.
- *
- * Deliberately silent about failure. Every guard below returns rather than
- * throwing, because this runs inside the add-to-basket path and a flourish must
- * never be able to break a purchase.
+ * Called at click time, not after the response: both elements must be measured
+ * before the mini-basket fragment is swapped out. Every guard returns rather
+ * than throws — a flourish must not be able to break a purchase.
  */
 window.ccFlyToBasket = function (img) {
     if (!img) return;
@@ -473,8 +462,7 @@ window.ccFlyToBasket = function (img) {
 
     var from = img.getBoundingClientRect();
     var to = target.getBoundingClientRect();
-    /* Zero width means the image has not laid out, or the basket is the
-       below-sm variant that is off-screen. Nothing sensible to animate to. */
+    // Not laid out, or the off-screen below-sm basket.
     if (!from.width || !to.width) return;
 
     var clone = document.createElement('img');
@@ -492,8 +480,7 @@ window.ccFlyToBasket = function (img) {
     var dx = (to.left + to.width / 2) - (from.left + from.width / 2);
     var dy = (to.top + to.height / 2) - (from.top + from.height / 2);
 
-    /* The midpoint is lifted 70px above the straight line. A linear path reads
-       as a file transfer; the arc reads as a throw, which is the whole point. */
+    // Lifted 70px: a straight line reads as a file transfer, the arc as a throw.
     var flight = clone.animate([
         { transform: 'translate(0px, 0px) scale(1)', opacity: 0.95 },
         { transform: 'translate(' + (dx * 0.5) + 'px, ' + ((dy * 0.5) - 70) + 'px) scale(0.55)', opacity: 0.9, offset: 0.55 },
@@ -503,8 +490,7 @@ window.ccFlyToBasket = function (img) {
     function cleanup() { if (clone.parentNode) clone.remove(); }
     flight.onfinish = cleanup;
     flight.oncancel = cleanup;
-    /* Belt and braces: a backgrounded tab can leave an animation neither
-       finished nor cancelled, and an abandoned clone would sit over the page. */
+    // A backgrounded tab can leave it neither finished nor cancelled.
     window.setTimeout(cleanup, 1500);
 };
 
@@ -1479,26 +1465,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /* ---- js/src/41-coupon.js ---- */
 /**
- * Discount code celebration.
+ * Atrium — discount code celebration. No template literals (00-boot.js).
  *
- * Applying a coupon is POST -> discountAdd() -> httpredir(currentPage()), so by
- * the time anything could animate, the page has been thrown away and rebuilt.
- * The trigger therefore has to survive a navigation, and it cannot come from
- * the server: core sets an error notice when a code is rejected but nothing at
- * all when one is accepted.
+ * Applying a coupon redirects, and core sets a notice only on FAILURE, so there
+ * is no success signal to read after the reload. Instead: stash the typed code
+ * on submit, and fire only if it now appears as applied. Read once and cleared,
+ * so a refresh or back-button cannot replay it.
  *
- * So: stash the typed code in sessionStorage on submit, and on the next load
- * fire only if that code is now listed as applied. That distinguishes the three
- * outcomes without a core change —
- *   accepted -> the code appears in $COUPONS, celebrate
- *   rejected -> it does not, stay quiet and let the error notice speak
- *   refresh  -> the flag was already consumed, stay quiet
- * The flag is read once and cleared immediately, so a reload, a back-button
- * restore or a second tab can never replay it.
- *
- * The whole thing is opt-out: templates only emit data-cc-coupon when the
- * merchant leaves "Celebrate Discount Codes" on, and with no attributes there
- * is nothing to match, so this file costs a querySelector and stops.
+ * Opt-out: templates emit data-cc-coupon only when the setting is on.
  */
 (function () {
     'use strict';
@@ -1511,9 +1485,7 @@ document.addEventListener('DOMContentLoaded', function () {
             window.sessionStorage.removeItem(KEY);
             return v;
         } catch (e) {
-            /* Private mode and blocked storage both throw on access, not just
-               on write. No flag simply means no celebration. */
-            return null;
+            return null;   // blocked storage throws on read too
         }
     }
 
@@ -1527,9 +1499,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return String(code || '').replace(/\s+/g, '').toLowerCase();
     }
 
-    /* Arm on the Apply button rather than on form submit: this form is also
-       submitted by the shipping select and by Proceed, and neither should leave
-       a pending code behind. */
+    // The Apply button, not form submit: shipping and Proceed post this form too.
     function arm() {
         var button = document.getElementById('apply_coupon');
         var input = document.getElementById('coupon');
@@ -1540,8 +1510,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    /* Colours come from the live tokens, so confetti matches whichever
-       sub-theme or brand colour the store is running. */
+    // From the live tokens, so it matches the store's sub-theme.
     function palette() {
         var style = window.getComputedStyle(document.documentElement);
         var names = ['--color-brand-400', '--color-brand-600', '--color-success-600', '--color-star', '--color-brand-300'];
@@ -1571,9 +1540,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var pieces = [];
         var count = 80;
         for (var i = 0; i < count; i++) {
-            /* Fired upward in a fan, then gravity takes over: a burst out of the
-               discount line itself reads as "this is what just happened",
-               where a full-screen drop would read as a site-wide event. */
+            // A fan out of the discount line, not a full-screen drop.
             var angle = (-Math.PI / 2) + (Math.random() - 0.5) * 1.7;
             var speed = 5 + Math.random() * 7;
             pieces.push({
@@ -1635,17 +1602,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!row) return;   // rejected, or the setting is off
 
         row.classList.add('cc-coupon-won');
-        /* Lifted from the row core already rendered, so it stays translated and
-           says the real code and the real saving. */
+        // Lifted from the rendered row, so it stays translated.
         if (window.ccAnnounce) window.ccAnnounce(row.textContent);
 
         if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-        /* The redirect lands at the top of the page, and on a phone the order
-           summary can be well below the fold. Firing anyway would burn the one
-           moment this exists for on an empty patch of screen the customer is
-           not looking at, so off-screen keeps the flash and skips the burst —
-           the flash is still there when they scroll down to it. */
+        // Off-screen keeps the flash and skips the burst nobody would see.
         var box = row.getBoundingClientRect();
         var middle = box.top + box.height / 2;
         if (middle < 0 || middle > (window.innerHeight || document.documentElement.clientHeight)) return;
@@ -1663,31 +1625,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /* ---- js/src/42-recent.js ---- */
 /**
- * Atrium — recently viewed products.
+ * Atrium — recently viewed products. No template literals (00-boot.js).
  *
- * HOUSE RULE: no ES6 template literals in this folder. See 00-boot.js.
+ * localStorage only, never sent to the server: no core change, no table, no
+ * session, nothing to disclose.
  *
- * The list is this browser's alone: localStorage, never sent to the server.
- * That is the feature, not an implementation detail — it means no core change,
- * no table, no session, and nothing to disclose in a privacy policy.
- *
- * ⚠ Everything is built with createElement and textContent, never innerHTML.
- * The values were written by this skin, but localStorage is writable by
- * anything else running on the origin, so it is treated as untrusted input on
- * the way back in: the URL is scheme-checked and the image is dropped unless it
- * looks like one.
+ * ⚠ Read back as UNTRUSTED — anything on the origin can write that key. URLs are
+ * scheme-checked and nodes are built with textContent, never innerHTML.
  */
 (function () {
     'use strict';
 
     var KEY = 'cc_recent';
     var MAX_STORED = 12;
-    /* One full row at the widest breakpoint. Narrower viewports show fewer,
-       and that is decided in CSS (.cc-recent-row) rather than here: a JS count
-       would need a resize listener, would be wrong until it fired, and would
-       have to re-render on every rotate. Rendering four and hiding two costs
-       nothing — the images are loading="lazy", and a display:none image is
-       never fetched. */
+    // One row at the widest breakpoint; CSS (.cc-recent-row) trims the rest.
     var MAX_SHOWN = 4;
 
     function read() {
@@ -1696,7 +1647,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var list = raw ? JSON.parse(raw) : [];
             return Object.prototype.toString.call(list) === '[object Array]' ? list : [];
         } catch (e) {
-            return [];   // blocked storage, or somebody left junk in the key
+            return [];   // blocked storage, or junk in the key
         }
     }
 
@@ -1706,8 +1657,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } catch (e) { /* private mode, or quota */ }
     }
 
-    /* Only http(s) and root-relative paths. Blocks a javascript: or data: URL
-       smuggled into storage from turning a thumbnail into a script. */
+    // http(s) and root-relative only: blocks a smuggled javascript: URL.
     function safeUrl(value) {
         var url = String(value || '');
         return (/^https?:\/\//i.test(url) || url.charAt(0) === '/') ? url : '';
@@ -1726,7 +1676,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!item || !item.id) return null;
 
         var list = read();
-        // Seen before: lift it to the front rather than storing it twice.
+        // Seen before: lift to the front rather than store it twice.
         for (var i = list.length - 1; i >= 0; i--) {
             if (String(list[i].id) === String(item.id)) list.splice(i, 1);
         }
@@ -1757,7 +1707,6 @@ document.addEventListener('DOMContentLoaded', function () {
         heading.className = 'mt-3 text-sm font-medium';
         var nameLink = document.createElement('a');
         nameLink.href = link.href;
-        // textContent, not innerHTML: the name came back out of storage.
         nameLink.textContent = String(item.name || '');
         nameLink.className = 'text-ink-900 hover:underline';
         heading.appendChild(nameLink);
@@ -1781,15 +1730,13 @@ document.addEventListener('DOMContentLoaded', function () {
         var shown = 0;
         for (var i = 0; i < items.length && shown < MAX_SHOWN; i++) {
             var item = items[i];
-            // Never show the page you are already on.
+            // Never the page you are already on.
             if (currentId && String(item.id) === currentId) continue;
             if (!item.url || !safeUrl(item.url)) continue;
             list.appendChild(card(item));
             shown++;
         }
-        /* One product viewed and nothing else to show is not "recently viewed",
-           it is a row of one. The section stays hidden until it earns its
-           heading. */
+        // A row of one is not "recently viewed".
         if (shown > 1) section.classList.remove('hidden');
     }
 

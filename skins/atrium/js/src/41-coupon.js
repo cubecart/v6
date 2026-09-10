@@ -1,24 +1,12 @@
 /**
- * Discount code celebration.
+ * Atrium — discount code celebration. No template literals (00-boot.js).
  *
- * Applying a coupon is POST -> discountAdd() -> httpredir(currentPage()), so by
- * the time anything could animate, the page has been thrown away and rebuilt.
- * The trigger therefore has to survive a navigation, and it cannot come from
- * the server: core sets an error notice when a code is rejected but nothing at
- * all when one is accepted.
+ * Applying a coupon redirects, and core sets a notice only on FAILURE, so there
+ * is no success signal to read after the reload. Instead: stash the typed code
+ * on submit, and fire only if it now appears as applied. Read once and cleared,
+ * so a refresh or back-button cannot replay it.
  *
- * So: stash the typed code in sessionStorage on submit, and on the next load
- * fire only if that code is now listed as applied. That distinguishes the three
- * outcomes without a core change —
- *   accepted -> the code appears in $COUPONS, celebrate
- *   rejected -> it does not, stay quiet and let the error notice speak
- *   refresh  -> the flag was already consumed, stay quiet
- * The flag is read once and cleared immediately, so a reload, a back-button
- * restore or a second tab can never replay it.
- *
- * The whole thing is opt-out: templates only emit data-cc-coupon when the
- * merchant leaves "Celebrate Discount Codes" on, and with no attributes there
- * is nothing to match, so this file costs a querySelector and stops.
+ * Opt-out: templates emit data-cc-coupon only when the setting is on.
  */
 (function () {
     'use strict';
@@ -31,9 +19,7 @@
             window.sessionStorage.removeItem(KEY);
             return v;
         } catch (e) {
-            /* Private mode and blocked storage both throw on access, not just
-               on write. No flag simply means no celebration. */
-            return null;
+            return null;   // blocked storage throws on read too
         }
     }
 
@@ -47,9 +33,7 @@
         return String(code || '').replace(/\s+/g, '').toLowerCase();
     }
 
-    /* Arm on the Apply button rather than on form submit: this form is also
-       submitted by the shipping select and by Proceed, and neither should leave
-       a pending code behind. */
+    // The Apply button, not form submit: shipping and Proceed post this form too.
     function arm() {
         var button = document.getElementById('apply_coupon');
         var input = document.getElementById('coupon');
@@ -60,8 +44,7 @@
         });
     }
 
-    /* Colours come from the live tokens, so confetti matches whichever
-       sub-theme or brand colour the store is running. */
+    // From the live tokens, so it matches the store's sub-theme.
     function palette() {
         var style = window.getComputedStyle(document.documentElement);
         var names = ['--color-brand-400', '--color-brand-600', '--color-success-600', '--color-star', '--color-brand-300'];
@@ -91,9 +74,7 @@
         var pieces = [];
         var count = 80;
         for (var i = 0; i < count; i++) {
-            /* Fired upward in a fan, then gravity takes over: a burst out of the
-               discount line itself reads as "this is what just happened",
-               where a full-screen drop would read as a site-wide event. */
+            // A fan out of the discount line, not a full-screen drop.
             var angle = (-Math.PI / 2) + (Math.random() - 0.5) * 1.7;
             var speed = 5 + Math.random() * 7;
             pieces.push({
@@ -155,17 +136,12 @@
         if (!row) return;   // rejected, or the setting is off
 
         row.classList.add('cc-coupon-won');
-        /* Lifted from the row core already rendered, so it stays translated and
-           says the real code and the real saving. */
+        // Lifted from the rendered row, so it stays translated.
         if (window.ccAnnounce) window.ccAnnounce(row.textContent);
 
         if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-        /* The redirect lands at the top of the page, and on a phone the order
-           summary can be well below the fold. Firing anyway would burn the one
-           moment this exists for on an empty patch of screen the customer is
-           not looking at, so off-screen keeps the flash and skips the burst —
-           the flash is still there when they scroll down to it. */
+        // Off-screen keeps the flash and skips the burst nobody would see.
         var box = row.getBoundingClientRect();
         var middle = box.top + box.height / 2;
         if (middle < 0 || middle > (window.innerHeight || document.documentElement.clientHeight)) return;

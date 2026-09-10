@@ -65,25 +65,11 @@
       </button>
    </div>
 
-   {* Honest scarcity, and only honest scarcity. The number is the store's real
-      stock_level, shown only when the merchant has stock control on FOR THIS
-      PRODUCT (use_stock_level) and has set a threshold. No invented counts and
-      no countdown timers: a customer who buys on a false "only 2 left" and
-      later works that out has been sold to once and lost twice.
-
-      Note $PRODUCT.available is an enum 0/1 ("is this product on sale"), not a
-      count — the count is stock_level.
-
-      ⚠ unsuppressed_stock_level, NOT stock_level. Core blanks the latter to
-      FALSE unless the store's "Display Stock Levels" setting is on, but that
-      setting means "publish an exact count on every product", which is a
-      different decision from "warn me when one is nearly gone". Setting a
-      threshold here is the merchant opting in to the second on its own.
-
-      ⚠ For a product with option-matrix stock the value can be a RANGE STRING
-      like "2 - 9", which is not a number and must not be compared as one, so
-      such products show nothing. Per-combination stock is already in the page
-      as $OPTION_STOCK if this ever needs to follow the customer's selection. *}
+   {* The real figure or nothing — no invented counts, no countdown timers.
+      ⚠ unsuppressed_stock_level, NOT stock_level: core blanks the latter unless
+      "Display Stock Levels" is on, which is a different decision from "warn me
+      when one is nearly gone".
+      ⚠ is_numeric guard: option-matrix products give a range like "2 - 9". *}
    {if !empty($SKIN_SETTINGS.low_stock_threshold) && $PRODUCT.use_stock_level
        && is_numeric($PRODUCT.unsuppressed_stock_level)
        && $PRODUCT.unsuppressed_stock_level > 0

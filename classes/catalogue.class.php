@@ -500,12 +500,9 @@ class Catalogue
                         $product['stock_level'] =  ($stock_variations[0]['min_stock'] == $stock_variations[0]['max_stock']) ? $stock_variations[0]['max_stock'] : $stock_variations[0]['min_stock'].' - '.$stock_variations[0]['max_stock'];
                     }
                 }
-                // Capture the real figure BEFORE the display setting can blank it.
-                // These two lines used to be the other way round, which made
-                // unsuppressed_stock_level a copy of the suppressed value and so
-                // never unsuppressed at all. A skin needs the true number to say
-                // "only 2 left" without the store also having to publish an exact
-                // count on every product, which is a different decision.
+                // Capture the real figure BEFORE the display setting blanks it.
+                // These were the other way round, which made
+                // unsuppressed_stock_level never actually unsuppressed.
                 $product['unsuppressed_stock_level'] = $product['stock_level'];
                 $product['stock_level'] = ($GLOBALS['config']->get('config', 'stock_level')=='1') ? $product['stock_level'] : false;
                 $GLOBALS['smarty']->assign('PRODUCT', $product);
@@ -2053,20 +2050,11 @@ class Catalogue
             $file = $placeholder_image;
         }
 
-        /* A VECTOR placeholder is served exactly where it lives.
-         *
-         * Everything below assumes the file sits under images/source and can be
-         * rasterised into images/cache at the requested size. Neither holds for
-         * a skin's own placeholder in SVG: GD cannot decode it, and the URL
-         * builders would produce images/cache|source/skins/<skin>/images/... ,
-         * a path that does not exist. The @getimagesize() guard further down
-         * catches the first problem but resolves to the second, so an SVG
-         * default would 404 without this.
-         *
-         * Restricted to files under skins/ on purpose. An SVG *uploaded* as a
-         * product image already works: it genuinely lives in images/source, so
-         * the existing fallback returns a URL that resolves.
-         */
+        /* A vector placeholder is served where it lives. Everything below
+         * assumes images/source + a GD rasterise, and neither works for an SVG
+         * under skins/ — the URL builders would point at a path that does not
+         * exist. Restricted to skins/: an SVG *uploaded* as a product image is
+         * genuinely in images/source and already resolves. */
         if (!empty($file) && preg_match('#^skins/#', $file) && preg_match('#\.svgz?$#i', $file) && file_exists($source)) {
             switch (strtolower($path)) {
                 case 'filename':

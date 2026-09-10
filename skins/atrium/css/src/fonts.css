@@ -1,24 +1,10 @@
 /**
- * Bundled webfont: Figtree (SIL Open Font License 1.1, fonts/LICENSE).
+ * Bundled webfont: Figtree (SIL OFL 1.1, fonts/LICENSE).
  *
- * SELF-HOSTED ON PURPOSE. The obvious alternative, a <link> to Google's CDN on
- * every page, is render-blocking, sends the visitor's IP to a third party on
- * the checkout page, and adds an entry to a PCI script inventory. Serving two
- * files from the store's own origin has none of those, and at 20KB + 10KB it is
- * smaller than most product thumbnails.
+ * Self-hosted, not Google's CDN: no render-blocking third party on checkout, no
+ * visitor IP sent to Google, nothing extra in a PCI script inventory. 30KB.
  *
- * ⚠ url() is relative to the COMPILED stylesheet, css/tailwind.css, not to this
- * file. tailwind.css bypasses {combine} (see element.css.php), so nothing
- * rewrites these paths afterwards.
- *
- * One variable file per subset covering wght 400-700, which is every weight the
- * skin uses. The unicode-range split is Google's own: a store whose language
- * needs no accented Latin never downloads the second file.
- *
- * font-display: swap — text paints in the fallback stack immediately and
- * reflows when the font lands, rather than being invisible for up to 3s. The
- * fallback in --font-sans (theme.css) is the same system stack the skin used
- * before this file existed, so a failed download is a non-event.
+ * ⚠ url() is relative to the COMPILED css/tailwind.css, not to this file.
  */
 @font-face {
   font-family: 'Figtree';

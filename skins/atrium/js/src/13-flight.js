@@ -1,20 +1,9 @@
 /**
- * Atrium — product image flies to the basket.
+ * Atrium — product image flies to the basket. No template literals (00-boot.js).
  *
- * HOUSE RULE: no ES6 template literals in this folder. See 00-boot.js.
- *
- * Called by ccAddToBasket (12-basket.js) at click time, NOT after the response:
- * the source image and the basket icon both have to be measured while the page
- * is still the one the customer clicked on, and the mini-basket fragment is
- * replaced wholesale a moment later.
- *
- * A clone is animated, never the image itself — the original stays in the grid,
- * and on the product page it is the gallery image the customer is still
- * looking at.
- *
- * Deliberately silent about failure. Every guard below returns rather than
- * throwing, because this runs inside the add-to-basket path and a flourish must
- * never be able to break a purchase.
+ * Called at click time, not after the response: both elements must be measured
+ * before the mini-basket fragment is swapped out. Every guard returns rather
+ * than throws — a flourish must not be able to break a purchase.
  */
 window.ccFlyToBasket = function (img) {
     if (!img) return;
@@ -25,8 +14,7 @@ window.ccFlyToBasket = function (img) {
 
     var from = img.getBoundingClientRect();
     var to = target.getBoundingClientRect();
-    /* Zero width means the image has not laid out, or the basket is the
-       below-sm variant that is off-screen. Nothing sensible to animate to. */
+    // Not laid out, or the off-screen below-sm basket.
     if (!from.width || !to.width) return;
 
     var clone = document.createElement('img');
@@ -44,8 +32,7 @@ window.ccFlyToBasket = function (img) {
     var dx = (to.left + to.width / 2) - (from.left + from.width / 2);
     var dy = (to.top + to.height / 2) - (from.top + from.height / 2);
 
-    /* The midpoint is lifted 70px above the straight line. A linear path reads
-       as a file transfer; the arc reads as a throw, which is the whole point. */
+    // Lifted 70px: a straight line reads as a file transfer, the arc as a throw.
     var flight = clone.animate([
         { transform: 'translate(0px, 0px) scale(1)', opacity: 0.95 },
         { transform: 'translate(' + (dx * 0.5) + 'px, ' + ((dy * 0.5) - 70) + 'px) scale(0.55)', opacity: 0.9, offset: 0.55 },
@@ -55,7 +42,6 @@ window.ccFlyToBasket = function (img) {
     function cleanup() { if (clone.parentNode) clone.remove(); }
     flight.onfinish = cleanup;
     flight.oncancel = cleanup;
-    /* Belt and braces: a backgrounded tab can leave an animation neither
-       finished nor cancelled, and an abandoned clone would sit over the page. */
+    // A backgrounded tab can leave it neither finished nor cancelled.
     window.setTimeout(cleanup, 1500);
 };

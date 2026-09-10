@@ -216,12 +216,8 @@
   :is(.cc-navbar, .cc-navrail) .cc-nav-sale:hover { color: var(--color-chrome-sale); }
 
   /* ── The same nav, vertically ──────────────────────────────────────────
-     Chosen with the Main Menu setting; main.php then renders the rail in the
-     content grid instead of the band in the header. Same DOM again, so the
-     colour rules above are shared with :is() rather than duplicated.
-
-     Desktop only: below lg the rail is hidden and the hamburger drawer takes
-     over exactly as it does for the horizontal band. */
+     Main Menu setting. Same DOM, which is why the colour rules above use :is()
+     rather than being duplicated. Desktop only; below lg the drawer takes over. */
   .cc-navrail {
     border-radius: var(--radius-cc-lg);
     background-color: var(--color-chrome);
@@ -229,19 +225,16 @@
   }
   .cc-navrail .cc-nav > ul { display: block; }
   .cc-navrail .cc-nav-link { width: 100%; justify-content: space-between; }
-  /* First-level menus fly out SIDEWAYS here — dropping below would push the
-     rest of the rail down. This is the same rule deeper menus already use. */
+  /* Sideways, or it would push the rest of the rail down. */
   .cc-navrail .cc-nav > ul > .cc-nav-parent > .cc-nav-menu {
     inset-inline-start: 100%;
     top: -0.375rem;
   }
-  /* Caret points at the flyout, and stays pointing at it while open: there is
-     nothing below to point down to. */
+  /* Points at the flyout, open or closed: there is nothing below. */
   .cc-navrail .cc-nav-caret,
   .cc-navrail .cc-nav-caret.rotate-180 { transform: rotate(-90deg); }
 
-  /* Content grid for the vertical layout. Two columns at lg, with the sidebar
-     boxes under the content; three at xl once there is room for them beside it.
+  /* Two columns at lg with the sidebar boxes below the content, three at xl.
      Flex could not do that without duplicating the aside. */
   .cc-layout-rail { display: grid; gap: 2.5rem; }
   .cc-layout-rail > .cc-sidebar { margin-top: 0; }
@@ -251,14 +244,12 @@
       grid-template-columns: 14rem minmax(0, 1fr);
       align-items: start;
     }
-    /* The rail spans both rows so the boxes tuck under the content, not under
-       the menu. */
+    /* Spans both rows so the boxes tuck under the content, not the menu. */
     .cc-layout-rail > .cc-navrail { grid-row: 1 / -1; }
     .cc-layout-rail > .cc-sidebar { grid-column: 2; }
   }
   @media (min-width: 80rem) {
-    /* auto, not a fixed track: a store with all three sidebar boxes turned off
-       renders no <aside> at all, and a fixed track would leave a gap. */
+    /* auto: with all sidebar boxes off there is no <aside> and no gap. */
     .cc-layout-rail { grid-template-columns: 14rem minmax(0, 1fr) auto; }
     .cc-layout-rail > .cc-sidebar { grid-column: 3; grid-row: 1; }
   }
@@ -389,22 +380,11 @@
      UNLAYERED block at the foot of this file, not here. See the note there
      before adding another. */
   .cc-footer {
-    /* The footer band is INDEPENDENT of the navigation band. Both start at the
-       same near-black, but the Header Colour setting must not drag the footer
-       with it: a store can want a coloured header over a black footer, which is
-       the common case, and the reverse is rare.
-
-       Done by remapping the chrome tokens locally rather than by rewriting the
-       twenty-odd .cc-footer rules below to a second set of names — custom
-       properties inherit, so every descendant rule that reads --color-chrome-*
-       picks these up unchanged, social marks and the newsletter field included.
-
-       The literals repeat theme.css's chrome defaults on purpose. They cannot
-       indirect through --cc-chrome-*, or setting the header colour would move
-       the footer again, which is the whole point of splitting them. Keep the
-       two in step when either changes.
-
-       --color-chrome-fg is pure white here, brighter than the navbar. */
+    /* INDEPENDENT of the nav band: a coloured header over a black footer is
+       the common case. Remapped locally so every .cc-footer rule below keeps
+       reading --color-chrome-* unchanged. The literals repeat theme.css's
+       chrome defaults on purpose — indirecting through --cc-chrome-* would drag
+       the footer back to the header colour. Keep the two in step. */
     --color-chrome:        var(--cc-footer,        oklch(17.5% 0.009 250));
     --color-chrome-hover:  var(--cc-footer-hover,  oklch(26.0% 0.011 250));
     --color-chrome-border: var(--cc-footer-border, oklch(30.0% 0.011 250));
@@ -643,11 +623,8 @@
 
   /* Added by 12-basket.js to the freshly injected #mini-basket fragment, and
      removed once it has played so a second add replays it. */
-  /* Recently viewed: always exactly ONE row, however wide the viewport. The
-     grid is 2 / 3 / 4 columns like every other product grid in the skin, so the
-     script renders four and these trim the overflow. Done here rather than in
-     JS so it is right on first paint and follows a rotate with no re-render.
-     Breakpoints are Tailwind's lg (64rem) and xl (80rem). */
+  /* Recently viewed: one row at every width. The script renders four; these
+     trim it. In CSS so it is right on first paint and survives a rotate. */
   @media (max-width: 63.999rem) {
     .cc-recent-row > li:nth-child(n+3) { display: none; }
   }
@@ -655,8 +632,8 @@
     .cc-recent-row > li:nth-child(n+4) { display: none; }
   }
 
-  /* The clone that flies to the basket (js/src/13-flight.js). Fixed and inert:
-     it crosses the whole page and must never swallow a click on the way. */
+  /* The clone that flies to the basket (13-flight.js). Inert: it crosses the
+     whole page and must not swallow a click. */
   .cc-flight {
     position: fixed;
     z-index: 60;
@@ -666,12 +643,9 @@
     will-change: transform, opacity;
   }
 
-  /* ── Discount code applied ─────────────────────────────────────────────
-     Fired by js/src/41-coupon.js after the redirect that follows applying a
-     code. The row flash is the part that carries the meaning, so it is NOT
-     inside the reduced-motion opt-out below — a brief highlight is not motion
-     in the vestibular sense, and without it a reduced-motion visitor gets no
-     confirmation at all beyond a number quietly changing. */
+  /* ── Discount code applied (41-coupon.js) ──────────────────────────────
+     The flash carries the meaning, so it is deliberately outside the
+     reduced-motion opt-out: without it that visitor gets no confirmation. */
   .cc-coupon-won { animation: cc-coupon-won 1400ms ease-out; }
 
   @keyframes cc-coupon-won {
@@ -686,8 +660,7 @@
     100%    { color: var(--color-success-700); font-weight: inherit; }
   }
 
-  /* The confetti canvas is created and removed by JS. Fixed and inert: it must
-     never intercept a click on the Proceed button underneath it. */
+  /* Created and removed by JS. Inert, or it would eat the Proceed click. */
   .cc-confetti {
     position: fixed;
     inset: 0;
