@@ -196,24 +196,72 @@
     background-color: var(--color-chrome);
     border-top: 1px solid var(--color-chrome-border);
   }
-  .cc-navbar .cc-nav-link { color: var(--color-chrome-fg); }
-  .cc-navbar .cc-nav-link:hover {
+  :is(.cc-navbar, .cc-navrail) .cc-nav-link { color: var(--color-chrome-fg); }
+  :is(.cc-navbar, .cc-navrail) .cc-nav-link:hover {
     background-color: var(--color-chrome-hover);
     color: var(--color-chrome-fg);
   }
   /* Dropdown panels hang off the dark bar, so they carry the band's colours
      down with them rather than reverting to the page surface. */
-  .cc-navbar .cc-nav-menu {
+  :is(.cc-navbar, .cc-navrail) .cc-nav-menu {
     background-color: var(--color-chrome);
     border-color: var(--color-chrome-border);
   }
-  .cc-navbar .cc-nav-menu .cc-nav-link { color: var(--color-chrome-fg); }
+  :is(.cc-navbar, .cc-navrail) .cc-nav-menu .cc-nav-link { color: var(--color-chrome-fg); }
   /* The sale link keeps its red signal in both contexts. Declared here rather
      than as a !text-danger-600 utility in the template, because !important
      would beat the .cc-navbar override below and paint mid-red on near-black. */
   .cc-nav-sale, .cc-nav-sale:hover { color: var(--color-danger-600); }
-  .cc-navbar .cc-nav-sale,
-  .cc-navbar .cc-nav-sale:hover { color: var(--color-chrome-sale); }
+  :is(.cc-navbar, .cc-navrail) .cc-nav-sale,
+  :is(.cc-navbar, .cc-navrail) .cc-nav-sale:hover { color: var(--color-chrome-sale); }
+
+  /* ── The same nav, vertically ──────────────────────────────────────────
+     Chosen with the Main Menu setting; main.php then renders the rail in the
+     content grid instead of the band in the header. Same DOM again, so the
+     colour rules above are shared with :is() rather than duplicated.
+
+     Desktop only: below lg the rail is hidden and the hamburger drawer takes
+     over exactly as it does for the horizontal band. */
+  .cc-navrail {
+    border-radius: var(--radius-cc-lg);
+    background-color: var(--color-chrome);
+    padding: 0.5rem;
+  }
+  .cc-navrail .cc-nav > ul { display: block; }
+  .cc-navrail .cc-nav-link { width: 100%; justify-content: space-between; }
+  /* First-level menus fly out SIDEWAYS here — dropping below would push the
+     rest of the rail down. This is the same rule deeper menus already use. */
+  .cc-navrail .cc-nav > ul > .cc-nav-parent > .cc-nav-menu {
+    inset-inline-start: 100%;
+    top: -0.375rem;
+  }
+  /* Caret points at the flyout, and stays pointing at it while open: there is
+     nothing below to point down to. */
+  .cc-navrail .cc-nav-caret,
+  .cc-navrail .cc-nav-caret.rotate-180 { transform: rotate(-90deg); }
+
+  /* Content grid for the vertical layout. Two columns at lg, with the sidebar
+     boxes under the content; three at xl once there is room for them beside it.
+     Flex could not do that without duplicating the aside. */
+  .cc-layout-rail { display: grid; gap: 2.5rem; }
+  .cc-layout-rail > .cc-sidebar { margin-top: 0; }
+
+  @media (min-width: 64rem) {
+    .cc-layout-rail {
+      grid-template-columns: 14rem minmax(0, 1fr);
+      align-items: start;
+    }
+    /* The rail spans both rows so the boxes tuck under the content, not under
+       the menu. */
+    .cc-layout-rail > .cc-navrail { grid-row: 1 / -1; }
+    .cc-layout-rail > .cc-sidebar { grid-column: 2; }
+  }
+  @media (min-width: 80rem) {
+    /* auto, not a fixed track: a store with all three sidebar boxes turned off
+       renders no <aside> at all, and a fixed track would leave a gap. */
+    .cc-layout-rail { grid-template-columns: 14rem minmax(0, 1fr) auto; }
+    .cc-layout-rail > .cc-sidebar { grid-column: 3; grid-row: 1; }
+  }
 
   /* ── Homepage hero banners ──────────────────────────────────────────────
      Enhances the .cc-hero block that the INSTALLER writes into the default

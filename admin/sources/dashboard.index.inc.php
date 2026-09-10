@@ -866,9 +866,7 @@ if ($GLOBALS['session']->has('rss_news')) {
                     }
                     $news[$key] = (string)$value;
                 }
-                if (!empty($news['title'])) {
-                    $news['title'] = trim(explode('-', $news['title'], 2)[0]);
-                }
+                
                 if ($data['version'] >= 2) {
                     foreach ($data->channel->item as $item) {
                         $title = (string)$item->title;

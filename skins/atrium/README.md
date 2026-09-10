@@ -46,9 +46,15 @@ buttons, links, focus rings and price accents change; the bands, the neutrals
 and the semantic red/green/amber stay put. A sub-theme should change what the
 store is branded with, not what "your payment failed" looks like.
 
+**Main Menu.** Horizontal band under the header (default), or a vertical rail
+down the left of the page. Desktop only — below `lg` both use the slide-out
+drawer. Same markup either way; `main.php` renders `.cc-navbar` or `.cc-navrail`
+and switches the content wrapper to `.cc-layout-rail`, a grid that puts the
+sidebar boxes under the content at `lg` and beside it at `xl`.
+
 **Skin settings** (the cog on the skin's card in Manage Extensions) cover the
-colours below plus what to show: quick view, listing add-to-basket, basket count
-and total, company name, mobile number, mailing list, coupon field, order
+menu and colours plus what to show: quick view, listing add-to-basket, basket
+count and total, company name, mobile number, mailing list, coupon field, order
 comments, review stars, product view, checkout registration mode. `<settings>`
 in `config.xml` is the full list.
 

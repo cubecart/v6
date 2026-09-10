@@ -122,6 +122,14 @@
 	<!-- Empty means "no override": the skin keeps its own palette. One colour is
 	     enough to brand the store; the second is optional and only repaints the
 	     nav/footer band. -->
+	<setting name="main_menu_layout" type="select" default="horizontal">
+	  <label><![CDATA[Main Menu]]></label>
+	  <description><![CDATA[Where the category menu sits on desktop. Vertical moves it to a rail down the left of the page instead of the band under the header. Phones and tablets use the slide-out drawer either way.]]></description>
+	  <options>
+		<option value="horizontal"><![CDATA[Horizontal band (Recommended)]]></option>
+		<option value="vertical"><![CDATA[Vertical rail]]></option>
+	  </options>
+	</setting>
 	<setting name="brand_colour" type="color" default="">
 	  <label><![CDATA[Brand Colour]]></label>
 	  <description><![CDATA[Your brand colour, for buttons, links, focus rings and price accents. This replaces the skin's sub-theme colour, so leave it empty unless none of the sub-themes is close enough to your brand.]]></description>
