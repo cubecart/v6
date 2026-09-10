@@ -95,6 +95,14 @@
 	  <label><![CDATA[Secondary Colour]]></label>
 	  <description><![CDATA[Optional. Repaints the navigation and footer bands. Leave empty to keep the near-black default.]]></description>
 	</setting>
+	<setting name="show_basket_total" type="bool" default="true">
+	  <label><![CDATA[Show Basket Total]]></label>
+	  <description><![CDATA[Show the basket total beside the basket icon in the header. Hidden on small screens either way, where there is no room for it.]]></description>
+	</setting>
+	<setting name="show_basket_count" type="bool" default="true">
+	  <label><![CDATA[Show Basket Item Count]]></label>
+	  <description><![CDATA[Show the number of items as a badge on the basket icon. With this off, a basket with something in it is still shown by a filled icon.]]></description>
+	</setting>
 	<setting name="show_company_name" type="bool" default="true">
 	  <label><![CDATA[Show Company Name]]></label>
 	  <description><![CDATA[Show the company name field on address and checkout forms.]]></description>

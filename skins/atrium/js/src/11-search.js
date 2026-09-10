@@ -11,6 +11,23 @@
  * exactly the flag foundation used.
  */
 
+/* Header magnifier, below lg. The panel it reveals lives in main.php and the
+   state is the shared ui store, so the drawer's closeAll() closes it too.
+   Focus is moved on the next frame: x-show flips display, and an element that
+   is still display:none cannot take focus. */
+window.ccToggleSearch = function () {
+    var store = window.Alpine.store('ui');
+    store.searchOpen = !store.searchOpen;
+    if (!store.searchOpen) return;
+    // The drawer is positioned below a 4rem header; leaving it open while the
+    // search row grows the header would leave a gap above it.
+    store.menuOpen = false;
+    window.requestAnimationFrame(function () {
+        var el = document.getElementById('cc-search-input-mobile');
+        if (el) el.focus();
+    });
+};
+
 document.addEventListener('alpine:init', function () {
     window.Alpine.data('ccSearch', function () {
         return {

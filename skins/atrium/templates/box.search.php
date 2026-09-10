@@ -12,12 +12,17 @@
  *                             flag
  *   data-amount / data-image  SAYT result count and whether to show thumbnails
  *
- * Rendered once per page — a second copy would duplicate the input name.
+ * Rendered TWICE below lg: the inline desktop box and the panel the header's
+ * magnifier reveals. Pass uid to the second one ({include ... uid='mobile'})
+ * and every id here gains that suffix, so the label/input pairing and the
+ * listbox reference stay unambiguous. The input NAME is deliberately the same
+ * in both: they are separate forms, and the name is part of the contract above.
  *}
+{if isset($uid) && $uid}{assign var='cc_s_uid' value="-`$uid`"}{else}{assign var='cc_s_uid' value=''}{/if}
 <div class="w-full" x-data="ccSearch()" @click.outside="close()" @keydown.escape.window="close()">
    <form action="{$STORE_URL}/search{$CONFIG.seo_ext}" class="search_form relative" method="get" role="search">
-      <label for="cc-search-input" class="cc-sr-only">{$LANG.common.search}</label>
-      <input id="cc-search-input"
+      <label for="cc-search-input{$cc_s_uid}" class="cc-sr-only">{$LANG.common.search}</label>
+      <input id="cc-search-input{$cc_s_uid}"
              name="search[keywords]"
              type="search"
              x-ref="input"
@@ -41,7 +46,7 @@
 
       {* Search-as-you-type results. Only ever populated when Elasticsearch is
          enabled — ccSearch() bails otherwise. *}
-      <ul id="sayt_results" x-show="open && results.length" x-cloak
+      <ul id="sayt_results{$cc_s_uid}" x-show="open && results.length" x-cloak
           x-transition.opacity.duration.150ms
           {* .cc-pending dims the stale list while a newer query is in flight and
              blocks clicks on rows that are about to be replaced. *}

@@ -5,9 +5,15 @@
  * $CURRENCIES / $CURRENT_CURRENCY from GUI::_displayCurrencySwitch(). Symbols
  * are escaped with htmlall because they are raw config values that may already
  * contain entities.
+ *
+ * Core pre-renders this to a string that main.php prints TWICE, in the header
+ * and in the mobile drawer, so the wrapper carries a class rather than an id.
+ * It also must not hide itself at any width: the call site decides, or a
+ * self-applied `hidden md:block` cancels against the drawer's `md:hidden` and
+ * it becomes reachable at no width at all, which is the bug this fixes.
  *}
 {if is_array($CURRENCIES)}
-<div id="box-currency" class="hidden md:block">
+<div class="box-currency">
 {if count($CURRENCIES)>1}
    <div x-data="ccDisclosure()" @click.outside="close()" @keydown.escape.window="close()" class="relative">
       <button type="button" @click="toggle()" :aria-expanded="open ? 'true' : 'false'"

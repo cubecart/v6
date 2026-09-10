@@ -21,9 +21,15 @@
  * Language::LANG_REGEX makes the country half OPTIONAL, so a code can arrive
  * with no country at all — that, and any language whose flag we do not ship,
  * falls back to core's PNG via onerror.
+ *
+ * Core pre-renders this to a string that main.php prints TWICE, in the header
+ * and in the mobile drawer, so the wrapper carries a class rather than an id.
+ * It also must not hide itself at any width: the call site decides, or a
+ * self-applied `hidden md:block` cancels against the drawer's `md:hidden` and
+ * it becomes reachable at no width at all, which is the bug this fixes.
  *}
 {if $LANGUAGES}
-<div id="box-language" class="hidden md:block">
+<div class="box-language">
    <div x-data="ccDisclosure()" @click.outside="close()" @keydown.escape.window="close()" class="relative">
       <button type="button" @click="toggle()" :aria-expanded="open ? 'true' : 'false'"
               class="cc-btn cc-btn-ghost gap-1.5" title="{$current_language.title}" rel="nofollow">

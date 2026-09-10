@@ -64,16 +64,20 @@
       <header class="cc-header sticky top-0 z-30 border-b border-ink-200 bg-ink-100/95 backdrop-blur">
          <div class="cc-container flex h-16 min-w-0 items-center gap-3 sm:gap-4">
 
+            {* One control for both directions: the bars fold into an X while the
+               drawer is open (.cc-burger in components.css). Opening the menu
+               closes the search panel, or the drawer would start below a header
+               that has grown taller than it thinks. *}
             <button type="button"
                     class="cc-btn cc-btn-ghost -ml-2 p-2 lg:hidden"
                     x-data="ccDrawer('menuOpen')"
-                    @click="open = true"
+                    @click="$store.ui.searchOpen = false; open = !open"
                     :aria-expanded="open ? 'true' : 'false'"
                     aria-controls="cc-mobile-nav">
                <span class="cc-sr-only">{$LANG.navigation.expand_for_more}</span>
-               <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-                  <path d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" stroke-linecap="round"/>
-               </svg>
+               <span class="cc-burger" :class="{ 'is-open': open }" aria-hidden="true">
+                  <span></span><span></span><span></span>
+               </span>
             </button>
 
             {* min-w-0, deliberately not shrink-0: a flex item defaults to
@@ -95,11 +99,38 @@
                ⚠ All four are templateExists()-guarded except box.basket.php,
                which is fetched unguarded — that template MUST exist. *}
             <div class="ms-auto flex shrink-0 items-center gap-1 sm:gap-2">
+               {* Below lg the search box is not in the header row: this reveals
+                  the panel underneath it. ccToggleSearch() also moves focus. *}
+               <button type="button" class="cc-btn cc-btn-ghost p-2 lg:hidden"
+                       @click="window.ccToggleSearch()"
+                       :aria-expanded="$store.ui.searchOpen ? 'true' : 'false'"
+                       aria-controls="cc-search-panel"
+                       x-data>
+                  <span class="cc-sr-only">{$LANG.common.search}</span>
+                  <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                     <path d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+               </button>
                {$SESSION}
-               {$CURRENCY}
-               {$LANGUAGE}
+               {* Currency and language hide themselves below md and reappear in
+                  the drawer, which is where there is room for them. The wrapper
+                  is what does it, so the boxes themselves stay layout-agnostic
+                  and render correctly in both places. *}
+               <div class="hidden items-center gap-1 md:flex sm:gap-2">
+                  {$CURRENCY}
+                  {$LANGUAGE}
+               </div>
                {$SHOPPING_CART}
             </div>
+         </div>
+
+         {* Search panel, below lg only. A second copy of box.search.php with its
+            own id suffix; the desktop one above stays in the header row. *}
+         <div id="cc-search-panel" x-data x-show="$store.ui.searchOpen" x-cloak
+              x-transition.opacity.duration.150ms
+              @keydown.escape.window="$store.ui.searchOpen = false"
+              class="cc-container border-t border-ink-200 pb-3 pt-3 lg:hidden">
+            {include file='templates/box.search.php' uid='mobile'}
          </div>
 
          {* ⚠ box.navigation.php must be {include}d, never replaced with
@@ -120,8 +151,11 @@
       </header>
 
       <div x-data="ccDrawer('menuOpen')" x-cloak>
+         {* Dim starts below the header so the burger stays lit and tappable:
+            it is the close control now. top-header is the --spacing-header
+            token, the same 4rem as the header row's h-16. *}
          <div x-show="open" x-transition.opacity
-              class="fixed inset-0 z-40 bg-ink-950/50 lg:hidden"
+              class="fixed inset-x-0 bottom-0 top-header z-40 bg-ink-950/50 lg:hidden"
               @click="close()" aria-hidden="true"></div>
          <div id="cc-mobile-nav" x-show="open" role="dialog" aria-modal="true"
               x-trap.noscroll="open"
@@ -132,26 +166,23 @@
               x-transition:leave="transition ease-in duration-150"
               x-transition:leave-start="translate-x-0"
               x-transition:leave-end="-translate-x-full"
-              class="cc-nav-mobile fixed inset-y-0 left-0 z-50 w-80 max-w-[85vw] overflow-y-auto border-r border-ink-200 bg-ink-100 p-4 lg:hidden">
-            <div class="flex items-center justify-between">
-               <span class="text-sm font-semibold text-ink-900">{$LANG.common.menu|default:'Menu'}</span>
-               <button type="button" class="cc-btn cc-btn-ghost p-2" @click="close()">
-                  <span class="cc-sr-only">{$LANG.common.close|default:'Close'}</span>
-                  <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-                     <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round"/>
-                  </svg>
-               </button>
-            </div>
-
-            <div class="mt-4">{include file='templates/box.search.php'}</div>
+              class="cc-nav-mobile fixed bottom-0 left-0 top-header z-50 w-80 max-w-[85vw] overflow-y-auto border-r border-ink-200 bg-ink-100 p-4 lg:hidden">
+            {* No visible heading or close button: the header's burger is the X.
+               This one is for keyboard users, who are held inside the dialog by
+               x-trap and so cannot reach that burger by tabbing. Escape works
+               too; this is the discoverable equivalent. *}
+            <button type="button" class="cc-sr-only" @click="close()">{$LANG.common.close|default:'Close'}</button>
 
             {* Same box.navigation.php as the desktop bar; the .cc-nav-mobile
                class on the drawer is what restyles it into a stacked accordion
                in components.css. *}
-            <div class="mt-4 border-t border-ink-200 pt-4">
+            <div>
                {include file='templates/box.navigation.php'}
             </div>
 
+            {* The only place these are reachable below md: the header hides its
+               own copies there. Search is NOT here any more, it is the
+               magnifier in the header. *}
             <div class="mt-4 flex flex-wrap items-center gap-2 border-t border-ink-200 pt-4 md:hidden">
                {$CURRENCY}
                {$LANGUAGE}
