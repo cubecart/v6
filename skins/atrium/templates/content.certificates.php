@@ -26,7 +26,13 @@
    <div class="cc-card mt-6 space-y-4 p-5">
       <div>
          <label for="gc-value" class="cc-label">{$LANG.common.value} ({$CONFIG.default_currency})</label>
-         <input type="text" name="gc[value]" id="gc-value" value="{$POST.value}" required inputmode="decimal">
+         {* type=number so the store's configured range is enforced in the
+            browser, not just by core after a round trip. min/max are only
+            emitted when set, matching core: it skips each check when the
+            setting is empty. *}
+         <input type="number" name="gc[value]" id="gc-value" value="{$POST.value}" required
+                step="0.01" inputmode="decimal"
+                {if !empty($GC.min)}min="{$GC.min}"{/if} {if !empty($GC.max)}max="{$GC.max}"{/if}>
       </div>
 
       <div>
