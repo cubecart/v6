@@ -121,6 +121,16 @@ document.addEventListener('alpine:init', function () {
                 this.busy = false;
                 this.searched = true;
                 this.open = true;
+
+                /* Announce only the empty case, and only from the markup the
+                   server rendered: a bare result count would need a string this
+                   skin does not have, and an untranslated one is worse than
+                   silence. */
+                if (!this.results.length) {
+                    var empty = document.querySelector('#sayt_results, #sayt_results-mobile');
+                    empty = empty && empty.parentNode ? empty.parentNode.querySelector('p') : null;
+                    if (empty) window.ccAnnounce(empty.textContent);
+                }
             }
         };
     });

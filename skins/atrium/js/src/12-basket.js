@@ -61,6 +61,11 @@ document.addEventListener('alpine:init', function () {
                         var fresh = document.getElementById('mini-basket');
                         if (fresh) {
                             window.Alpine.store('basket').syncFrom(fresh);
+                            /* The swapped fragment carries a translated
+                               "Your basket total is X" for screen readers.
+                               Reuse it rather than inventing a string here. */
+                            var spoken = fresh.querySelector('.cc-sr-only');
+                            if (spoken) window.ccAnnounce(spoken.textContent);
                             // Settle the swapped fragment and bump the count, so
                             // the basket visibly acknowledges the add. Removed
                             // once played, or a second add would not replay it

@@ -46,6 +46,10 @@
                when something is injected, so a store with the module off does
                not get a phantom gap. *}
             <div id="pp_product_mount" class="[&:not(:empty)]:mt-6"></div>
+
+            {* Sticky mobile buy bar. Inside the form on purpose: it is a second
+               submit for it. See the template header. *}
+            {include file='templates/element.product.sticky_buy.php'}
          </div>
       </div>
 

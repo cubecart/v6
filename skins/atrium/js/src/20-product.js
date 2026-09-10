@@ -92,6 +92,7 @@ document.addEventListener('alpine:init', function () {
             init: function () {
                 window.Alpine.store('optionStock').load();
                 window.Alpine.store('optionStock').check();
+                this.watchBuyButton();
 
                 // Only meaningful when there is a price element AND options.
                 if (!document.getElementById('ptp')) return;
@@ -167,6 +168,11 @@ document.addEventListener('alpine:init', function () {
                     if (!Array.isArray(prices)) return;
 
                     ptpEl.innerHTML = prices[0];
+                    // Keep the sticky bar's price in step with the options.
+                    var mirrors = document.querySelectorAll('[data-cc-price-mirror]');
+                    for (var m = 0; m < mirrors.length; m++) {
+                        mirrors[m].innerHTML = prices[0];
+                    }
                     if (fbpEl && prices.length > 1) {
                         fbpEl.innerHTML = prices[1];
                         // Hide the "was" price when the option choice has made
@@ -199,6 +205,27 @@ document.addEventListener('alpine:init', function () {
                 if (!src) return;
                 var preview = document.getElementById('img-preview');
                 if (preview) preview.src = src;
+            },
+
+            /* Reveal the sticky bar once the real button scrolls away.
+               IntersectionObserver rather than a scroll handler: no listener
+               running on every frame, and it reports the state on registration
+               so the bar is correct if the customer lands mid-page on a
+               #fragment. Browsers without it simply never show the bar, which
+               is the behaviour this skin had until now. */
+            watchBuyButton: function () {
+                var target = document.getElementById('cc-main-buy');
+                if (!target || !('IntersectionObserver' in window)) return;
+                new window.IntersectionObserver(function (entries) {
+                    /* isIntersecting alone is not enough: it is false both when
+                       the button has scrolled off the TOP and when it is still
+                       below the fold, and showing a duplicate buy button before
+                       the customer has even reached the real one is just noise.
+                       boundingClientRect.top < 0 distinguishes the two. */
+                    var entry = entries[0];
+                    var scrolledPast = entry.boundingClientRect.top < 0;
+                    window.Alpine.store('ui').stickyBuy = !entry.isIntersecting && scrolledPast;
+                }, { threshold: 0 }).observe(target);
             },
 
             onOptionChange: function (event) {

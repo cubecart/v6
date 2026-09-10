@@ -43,6 +43,11 @@
       {include file='templates/content.recaptcha.head.php'}
    </head>
    <body class="min-h-screen bg-ink-50 text-ink-800 antialiased">
+      {* Polite live region. Everything announced through it is text the server
+         already rendered somewhere on the page, so it needs no strings of its
+         own and stays translated. window.ccAnnounce() in 00-boot.js writes here. *}
+      <div id="cc-live" class="cc-sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+
       {* MUST be first inside <body>: GUI::__construct() queues the script that
          writes the cc_browser capability cookie used for bot protection. *}
       {foreach from=$BODY_JS_TOP item=js}{$js}{/foreach}

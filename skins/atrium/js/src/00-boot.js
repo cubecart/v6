@@ -68,7 +68,30 @@
     window.ccUrl = ccUrl;
     window.ccPost = ccPost;
 
-    document.addEventListener('alpine:init', function () {
+    /**
+ * Announce something to screen readers.
+ *
+ * Writes into the polite live region in main.php. Nothing in this skin used to
+ * be announced at all: adding to the basket swapped the mini-basket, changed
+ * the icon and played an animation, and a screen reader user heard silence.
+ *
+ * The text is always lifted from markup the server already rendered, never
+ * built here, so it stays translated without shipping strings into JS.
+ *
+ * The region is cleared first: assistive tech ignores a write that is identical
+ * to what is already there, so adding the same product twice would announce
+ * once. The clear-then-set on the next frame makes it a fresh change.
+ */
+window.ccAnnounce = function (text) {
+    var region = document.getElementById('cc-live');
+    if (!region || !text) return;
+    region.textContent = '';
+    window.requestAnimationFrame(function () {
+        region.textContent = String(text).replace(/\s+/g, ' ').trim();
+    });
+};
+
+document.addEventListener('alpine:init', function () {
         var Alpine = window.Alpine;
 
         /* ── Stores ──────────────────────────────────────────────────────────
@@ -80,6 +103,10 @@
             menuOpen: false,
             drawerOpen: false,
             searchOpen: false,
+            /* Product page only: true once the real Add to Basket button has
+               scrolled out of view, which reveals the sticky bar. Set by an
+               IntersectionObserver in 20-product.js. */
+            stickyBuy: false,
 
             closeAll: function () {
                 this.menuOpen = false;

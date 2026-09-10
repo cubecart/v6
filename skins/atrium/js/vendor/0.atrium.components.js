@@ -72,7 +72,30 @@
     window.ccUrl = ccUrl;
     window.ccPost = ccPost;
 
-    document.addEventListener('alpine:init', function () {
+    /**
+ * Announce something to screen readers.
+ *
+ * Writes into the polite live region in main.php. Nothing in this skin used to
+ * be announced at all: adding to the basket swapped the mini-basket, changed
+ * the icon and played an animation, and a screen reader user heard silence.
+ *
+ * The text is always lifted from markup the server already rendered, never
+ * built here, so it stays translated without shipping strings into JS.
+ *
+ * The region is cleared first: assistive tech ignores a write that is identical
+ * to what is already there, so adding the same product twice would announce
+ * once. The clear-then-set on the next frame makes it a fresh change.
+ */
+window.ccAnnounce = function (text) {
+    var region = document.getElementById('cc-live');
+    if (!region || !text) return;
+    region.textContent = '';
+    window.requestAnimationFrame(function () {
+        region.textContent = String(text).replace(/\s+/g, ' ').trim();
+    });
+};
+
+document.addEventListener('alpine:init', function () {
         var Alpine = window.Alpine;
 
         /* ── Stores ──────────────────────────────────────────────────────────
@@ -84,6 +107,10 @@
             menuOpen: false,
             drawerOpen: false,
             searchOpen: false,
+            /* Product page only: true once the real Add to Basket button has
+               scrolled out of view, which reveals the sticky bar. Set by an
+               IntersectionObserver in 20-product.js. */
+            stickyBuy: false,
 
             closeAll: function () {
                 this.menuOpen = false;
@@ -290,6 +317,16 @@ document.addEventListener('alpine:init', function () {
                 this.busy = false;
                 this.searched = true;
                 this.open = true;
+
+                /* Announce only the empty case, and only from the markup the
+                   server rendered: a bare result count would need a string this
+                   skin does not have, and an untranslated one is worse than
+                   silence. */
+                if (!this.results.length) {
+                    var empty = document.querySelector('#sayt_results, #sayt_results-mobile');
+                    empty = empty && empty.parentNode ? empty.parentNode.querySelector('p') : null;
+                    if (empty) window.ccAnnounce(empty.textContent);
+                }
             }
         };
     });
@@ -359,6 +396,11 @@ document.addEventListener('alpine:init', function () {
                         var fresh = document.getElementById('mini-basket');
                         if (fresh) {
                             window.Alpine.store('basket').syncFrom(fresh);
+                            /* The swapped fragment carries a translated
+                               "Your basket total is X" for screen readers.
+                               Reuse it rather than inventing a string here. */
+                            var spoken = fresh.querySelector('.cc-sr-only');
+                            if (spoken) window.ccAnnounce(spoken.textContent);
                             // Settle the swapped fragment and bump the count, so
                             // the basket visibly acknowledges the add. Removed
                             // once played, or a second add would not replay it
@@ -480,6 +522,7 @@ document.addEventListener('alpine:init', function () {
             init: function () {
                 window.Alpine.store('optionStock').load();
                 window.Alpine.store('optionStock').check();
+                this.watchBuyButton();
 
                 // Only meaningful when there is a price element AND options.
                 if (!document.getElementById('ptp')) return;
@@ -555,6 +598,11 @@ document.addEventListener('alpine:init', function () {
                     if (!Array.isArray(prices)) return;
 
                     ptpEl.innerHTML = prices[0];
+                    // Keep the sticky bar's price in step with the options.
+                    var mirrors = document.querySelectorAll('[data-cc-price-mirror]');
+                    for (var m = 0; m < mirrors.length; m++) {
+                        mirrors[m].innerHTML = prices[0];
+                    }
                     if (fbpEl && prices.length > 1) {
                         fbpEl.innerHTML = prices[1];
                         // Hide the "was" price when the option choice has made
@@ -587,6 +635,27 @@ document.addEventListener('alpine:init', function () {
                 if (!src) return;
                 var preview = document.getElementById('img-preview');
                 if (preview) preview.src = src;
+            },
+
+            /* Reveal the sticky bar once the real button scrolls away.
+               IntersectionObserver rather than a scroll handler: no listener
+               running on every frame, and it reports the state on registration
+               so the bar is correct if the customer lands mid-page on a
+               #fragment. Browsers without it simply never show the bar, which
+               is the behaviour this skin had until now. */
+            watchBuyButton: function () {
+                var target = document.getElementById('cc-main-buy');
+                if (!target || !('IntersectionObserver' in window)) return;
+                new window.IntersectionObserver(function (entries) {
+                    /* isIntersecting alone is not enough: it is false both when
+                       the button has scrolled off the TOP and when it is still
+                       below the fold, and showing a duplicate buy button before
+                       the customer has even reached the real one is just noise.
+                       boundingClientRect.top < 0 distinguishes the two. */
+                    var entry = entries[0];
+                    var scrolledPast = entry.boundingClientRect.top < 0;
+                    window.Alpine.store('ui').stickyBuy = !entry.isIntersecting && scrolledPast;
+                }, { threshold: 0 }).observe(target);
             },
 
             onOptionChange: function (event) {

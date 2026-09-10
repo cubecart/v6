@@ -53,7 +53,9 @@
                 maxlength="3" class="quantity required w-20 text-center">
          <input type="hidden" name="add" value="{$PRODUCT.product_id}">
       </div>
-      <button type="submit" class="cc-btn cc-btn-primary min-w-48 flex-1"
+      {* id is the sticky bar's observer target (20-product.js): the bar appears
+         once this button leaves the viewport. *}
+      <button type="submit" id="cc-main-buy" class="cc-btn cc-btn-primary min-w-48 flex-1"
               :class="{ 'cc-btn-added': added }" :disabled="busy || !$store.optionStock.available">
          <span x-show="!added">{$LANG.catalogue.add_to_basket}</span>
          <span x-show="added" x-cloak class="inline-flex items-center gap-2">
