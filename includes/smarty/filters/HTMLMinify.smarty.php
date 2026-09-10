@@ -14,6 +14,15 @@ define('MINIFY_HTML', '<[!/]?[a-zA-Z\d:.-]+[\s\S]*?>');
 define('MINIFY_HTML_ENT', '&(?:[a-zA-Z\d]+|\#\d+|\#x[a-fA-F\d]+);');
 define('MINIFY_HTML_KEEP', '<pre(?:\s[^<>]*?)?>[\s\S]*?</pre>|<code(?:\s[^<>]*?)?>[\s\S]*?</code>|<script(?:\s[^<>]*?)?>[\s\S]*?</script>|<style(?:\s[^<>]*?)?>[\s\S]*?</style>|<textarea(?:\s[^<>]*?)?>[\s\S]*?</textarea>');
 
+// PCRE's \s, \S and \b follow the C library's locale tables, and
+// Language::_setLocale() calls setlocale(LC_ALL, 'en_GB.UTF-8'), under which
+// byte 0xA0 classifies as whitespace. In UTF-8 content 0xA0 is the SECOND byte
+// of a non-breaking space (U+00A0 = C2 A0), so '#\s+#' collapsed that byte on
+// its own and left an orphaned C2, which browsers render as U+FFFD. Match
+// ASCII whitespace explicitly so the pattern is locale-independent.
+define('MINIFY_S', '[ \t\n\r\f\x0B]');
+define('MINIFY_NS', '[^ \t\n\r\f\x0B]');
+
 // by default we minify URLs
 if ( ! defined("HTML_MINIFY_URL_ENABLED")) {
 	define("HTML_MINIFY_URL_ENABLED", true);
@@ -178,7 +187,7 @@ function fn_minify_html($input, $comment = 2, $quote = 1) {
             // was decoded and |escape was silently undone skin-wide (#4217).
             $output .= html_entity_decode($part);
         } else {
-            $output .= preg_replace('#\s+#', ' ', $part);
+            $output .= preg_replace('#' . MINIFY_S . '+#', ' ', $part);
         }
         $prev = $part;
     }
@@ -196,7 +205,7 @@ function fn_minify_html_union($input, $quote) {
         strpos($input, "\t") === false
     ) return $input;
     global $url;
-    return preg_replace_callback('#<\s*([^\/\s]+)\s*(?:>|(\s[^<>]+?)\s*>)#', function($m) use($quote, $url) {
+    return preg_replace_callback('#<' . MINIFY_S . '*([^\/ \t\n\r\f\x0B]+)' . MINIFY_S . '*(?:>|(' . MINIFY_S . '[^<>]+?)' . MINIFY_S . '*>)#', function($m) use($quote, $url) {
         if (isset($m[2])) {
             // Minify inline CSS(s)
             if (stripos($m[2], ' style=') !== false && HTML_MINIFY_INLINE_CSS_ENABLED) {
@@ -225,11 +234,11 @@ function fn_minify_html_union($input, $quote) {
             $a = 'a(sync|uto(focus|play))|c(hecked|ontrols)|d(efer|isabled)|hidden|ismap|loop|multiple|open|re(adonly|quired)|s((cop|elect)ed|pellcheck)';
             $a = '<' . $m[1] . preg_replace([
                 // From `a="a"`, `a='a'`, `a="true"`, `a='true'`, `a=""` and `a=''` to `a` [^1]
-                '#\s(' . $a . ')(?:=([\'"]?)(?:true|\1)?\2)#i',
+                '#' . MINIFY_S . '(' . $a . ')(?:=([\'"]?)(?:true|\1)?\2)#i',
                 // Remove extra white–space(s) between HTML attribute(s) [^2]
-                '#\s*([^\s=]+?)(=(?:\S+|([\'"]?).*?\3)|$)#',
+                '#' . MINIFY_S . '*([^ \t\n\r\f\x0B=]+?)(=(?:' . MINIFY_NS . '+|([\'"]?).*?\3)|$)#',
                 // From `<img />` to `<img/>` [^3]
-                '#\s+\/$#'
+                '#' . MINIFY_S . '+\/$#'
             ], [
                 // [^1]
                 ' $1',
