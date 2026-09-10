@@ -30,6 +30,33 @@ this is enough to reskin it without touching a template or installing anything.
 Self-hosting a webfont? Put the `@font-face` in `custom.css` too. Do not add a
 third-party font CDN link — this stylesheet loads on the checkout page.
 
+### Colour sub-themes
+
+Atrium ships seven styles, picked in the admin panel where the skin is chosen:
+Blue (the default), Grey, Teal, Green, Purple, Red and Amber. Each repaints the
+**brand ramp only** — buttons, links, focus rings, price accents. The navigation
+and footer band, the neutrals and the semantic red/green/amber are the same in
+every one, because a sub-theme should change what the store is branded with, not
+what "your payment failed" looks like.
+
+The three colour controls do not overlap, apart from one deliberate override:
+
+| Control | Paints | Notes |
+| --- | --- | --- |
+| Sub-theme | the brand ramp | Seven curated palettes, contrast-checked, dark mode included |
+| **Brand Colour** setting | the brand ramp | Exact hex for a brand none of the seven matches. **Replaces the sub-theme** |
+| **Header Colour** setting | the navigation band | No sub-theme touches the bands, so these never compete |
+| **Footer Colour** setting | the footer band | Independent of the header: a coloured header over a black footer is the common case |
+
+`custom.css` loads after all of them and wins outright.
+
+Adding one is two files: a `<style>` block in `config.xml` and a matching
+`css/cubecart.<directory>.css`. That stylesheet **must** exist, because
+`element.css.php` links it unconditionally from `$SKIN_SUBSET` and a missing one
+404s on every page. Give it a `[data-theme="dark"]` block as well as `:root`:
+`theme.css` lifts brand 50/100/600/700 for dark mode at the same specificity, and
+a sub-theme file loads later, so without one the light ramp wins in dark mode.
+
 ---
 
 ## For developers

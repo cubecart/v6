@@ -46,9 +46,44 @@
 	     images/noimage.png must exist there (not images/default/). -->
 	<style images="false" default="true">
 	  <directory>default</directory>
-	  <name><![CDATA[Default]]></name>
-	  <description><![CDATA[Default Subtheme]]></description>
+	  <name><![CDATA[Blue]]></name>
+	  <description><![CDATA[The shipped Atrium blue]]></description>
 	  <default />
+	</style>
+	<!-- Sub-themes repaint the BRAND ramp only, from css/cubecart.<directory>.css.
+	     Each needs that file to exist: element.css.php links it unconditionally
+	     from $SKIN_SUBSET, so a style with no stylesheet 404s on every page.
+	     images="false" keeps every style sharing the one images/ folder; only
+	     the colours differ, so per-style image sets would be dead weight. -->
+	<style images="false">
+	  <directory>grey</directory>
+	  <name><![CDATA[Grey]]></name>
+	  <description><![CDATA[Neutral grey accent]]></description>
+	</style>
+	<style images="false">
+	  <directory>teal</directory>
+	  <name><![CDATA[Teal]]></name>
+	  <description><![CDATA[Teal accent]]></description>
+	</style>
+	<style images="false">
+	  <directory>green</directory>
+	  <name><![CDATA[Green]]></name>
+	  <description><![CDATA[Green accent]]></description>
+	</style>
+	<style images="false">
+	  <directory>purple</directory>
+	  <name><![CDATA[Purple]]></name>
+	  <description><![CDATA[Purple accent]]></description>
+	</style>
+	<style images="false">
+	  <directory>red</directory>
+	  <name><![CDATA[Red]]></name>
+	  <description><![CDATA[Red accent]]></description>
+	</style>
+	<style images="false">
+	  <directory>amber</directory>
+	  <name><![CDATA[Amber]]></name>
+	  <description><![CDATA[Amber accent]]></description>
 	</style>
   </styles>
   <!-- Each reference here literally creates $PRODUCT.<reference> and
@@ -89,11 +124,18 @@
 	     nav/footer band. -->
 	<setting name="brand_colour" type="color" default="">
 	  <label><![CDATA[Brand Colour]]></label>
-	  <description><![CDATA[Your main brand colour. Drives buttons, links, focus rings and price accents. Leave empty to keep the Atrium blue.]]></description>
+	  <description><![CDATA[Your brand colour, for buttons, links, focus rings and price accents. This replaces the skin's sub-theme colour, so leave it empty unless none of the sub-themes is close enough to your brand.]]></description>
 	</setting>
+	<!-- The key stays secondary_colour so saved values survive: only the label
+	     changed. "Secondary Colour" read as a second accent to pair with Brand
+	     Colour, which is not what it does. -->
 	<setting name="secondary_colour" type="color" default="">
-	  <label><![CDATA[Secondary Colour]]></label>
-	  <description><![CDATA[Optional. Repaints the navigation and footer bands. Leave empty to keep the near-black default.]]></description>
+	  <label><![CDATA[Header Colour]]></label>
+	  <description><![CDATA[Repaints the navigation band under the header, which no sub-theme touches. Leave empty to keep the near-black default.]]></description>
+	</setting>
+	<setting name="footer_colour" type="color" default="">
+	  <label><![CDATA[Footer Colour]]></label>
+	  <description><![CDATA[Repaints the footer band on its own. Leave empty to keep the near-black default, whatever the header is set to.]]></description>
 	</setting>
 	<setting name="show_quick_view" type="bool" default="true">
 	  <label><![CDATA[Show Quick View]]></label>

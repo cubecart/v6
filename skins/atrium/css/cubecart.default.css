@@ -1,11 +1,15 @@
 /**
- * Per-subtheme stylesheet for the "default" style.
+ * Per-subtheme stylesheet for the "default" style, shown in admin as Blue.
+ *
+ * DELIBERATELY EMPTY. Blue is the skin's own palette: theme.css already carries
+ * it as the fallback of every --cc-brand-* token, so overriding it here would be
+ * the same values written twice.
  *
  * config.xml declares <styles><style><directory>default</directory>, which sets
  * $SKIN_SUBSET and makes element.css.php link this file. It MUST exist or every
  * page 404s on it.
  *
- * Add a new subtheme by adding a <style> block to config.xml and creating the
- * matching css/cubecart.<directory>.css. Merchant-specific tweaks belong in
- * css/custom.css instead — this file is overwritten by skin updates.
+ * The coloured siblings (cubecart.grey.css and the rest) show the shape a
+ * sub-theme takes. Merchant-specific tweaks belong in css/custom.css instead —
+ * this file is overwritten by skin updates.
  */

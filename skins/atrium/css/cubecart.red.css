@@ -1,0 +1,43 @@
+/**
+ * Atrium sub-theme: Red.
+ *
+ * Declared in config.xml <styles>; core sets $SKIN_SUBSET from config.skin_style
+ * and element.css.php links this file after tailwind.css.
+ *
+ * ACCENT ONLY. The nav/footer band, the neutrals, the semantic colours and
+ * the star and what3words marks are untouched: a sub-theme changes what the
+ * store is branded with, not what "your payment failed" looks like. Merchants
+ * who want the band repainted use the Secondary Colour skin setting.
+ *
+ * Lightness and the chroma curve are lifted straight from the shipped blue
+ * ramp in css/src/theme.css and the hue rotated, so every sub-theme has the
+ * same weight and the same text contrast as the default.
+ *
+ * The dark block is NOT optional. theme.css lifts brand 50/100/600/700 for
+ * dark mode on [data-theme="dark"], which has the same specificity as :root;
+ * this file loads later, so without its own dark block the light ramp would
+ * win in dark mode and the accent would be far too heavy.
+ *
+ * The Brand Colour skin setting still overrides all of this: element.css.php
+ * loads element.brand_colours.php after this file.
+ */
+:root {
+  --cc-brand-50: oklch(97.2% 0.014 14);
+  --cc-brand-100: oklch(93.8% 0.032 14);
+  --cc-brand-200: oklch(88.2% 0.061 14);
+  --cc-brand-300: oklch(80.4% 0.098 14);
+  --cc-brand-400: oklch(70.2% 0.135 19);
+  --cc-brand-500: oklch(61.5% 0.158 22);
+  --cc-brand-600: oklch(53.8% 0.161 25);
+  --cc-brand-700: oklch(46.2% 0.142 27);
+  --cc-brand-800: oklch(39.8% 0.116 28);
+  --cc-brand-900: oklch(34.8% 0.093 29);
+  --cc-brand-950: oklch(24.2% 0.065 31);
+}
+
+[data-theme="dark"] {
+  --cc-brand-50: oklch(24.2% 0.065 31);
+  --cc-brand-100: oklch(30.4% 0.082 29);
+  --cc-brand-600: oklch(68.4% 0.139 21);
+  --cc-brand-700: oklch(76.2% 0.113 17);
+}

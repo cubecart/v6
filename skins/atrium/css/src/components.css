@@ -341,9 +341,27 @@
      UNLAYERED block at the foot of this file, not here. See the note there
      before adding another. */
   .cc-footer {
-    /* Pure white here, brighter than the navbar: redefining the token locally
-       carries it to every .cc-footer rule below, social marks included. */
-    --color-chrome-fg: var(--cc-footer-fg, #fff);
+    /* The footer band is INDEPENDENT of the navigation band. Both start at the
+       same near-black, but the Header Colour setting must not drag the footer
+       with it: a store can want a coloured header over a black footer, which is
+       the common case, and the reverse is rare.
+
+       Done by remapping the chrome tokens locally rather than by rewriting the
+       twenty-odd .cc-footer rules below to a second set of names — custom
+       properties inherit, so every descendant rule that reads --color-chrome-*
+       picks these up unchanged, social marks and the newsletter field included.
+
+       The literals repeat theme.css's chrome defaults on purpose. They cannot
+       indirect through --cc-chrome-*, or setting the header colour would move
+       the footer again, which is the whole point of splitting them. Keep the
+       two in step when either changes.
+
+       --color-chrome-fg is pure white here, brighter than the navbar. */
+    --color-chrome:        var(--cc-footer,        oklch(17.5% 0.009 250));
+    --color-chrome-hover:  var(--cc-footer-hover,  oklch(26.0% 0.011 250));
+    --color-chrome-border: var(--cc-footer-border, oklch(30.0% 0.011 250));
+    --color-chrome-muted:  var(--cc-footer-muted,  oklch(72.0% 0.010 250));
+    --color-chrome-fg:     var(--cc-footer-fg,     #fff);
     background-color: var(--color-chrome);
     color: var(--color-chrome-fg);
     border-top: 1px solid var(--color-chrome-border);

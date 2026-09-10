@@ -47,7 +47,7 @@
             </span>
             {* Trailing text after the control is how the ACP shows field help
                (see the shipping modules); there is no .hint class in its CSS. *}
-            {if $field.description} {$field.description}{/if}
+            <small>{if $field.description} {$field.description}{/if}</small>
          </div>
          {/foreach}
       </fieldset>
