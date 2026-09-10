@@ -202,8 +202,13 @@
          </div>
          {/if}
 
+         {* data-cc-coupon is what 41-coupon.js matches the code the customer
+            just typed against, and emitting it is what turns the celebration
+            on: with the setting off there is no attribute, nothing matches, and
+            the script stops. remove_code, not voucher — voucher has the
+            " (10%)" suffix appended to it for percentage coupons. *}
          {foreach from=$COUPONS item=coupon}
-         <div class="flex justify-between">
+         <div class="flex justify-between"{if !isset($SKIN_SETTINGS.celebrate_coupon) || $SKIN_SETTINGS.celebrate_coupon} data-cc-coupon="{$coupon.remove_code}"{/if}>
             <dt class="text-ink-600">
                {$coupon.voucher}
                <a href="{$VAL_SELF}&remove_code={$coupon.remove_code}" title="{$LANG.common.remove}" class="remove-coupon ms-1 text-danger-600">&times;</a>

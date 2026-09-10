@@ -643,6 +643,37 @@
 
   /* Added by 12-basket.js to the freshly injected #mini-basket fragment, and
      removed once it has played so a second add replays it. */
+  /* ── Discount code applied ─────────────────────────────────────────────
+     Fired by js/src/41-coupon.js after the redirect that follows applying a
+     code. The row flash is the part that carries the meaning, so it is NOT
+     inside the reduced-motion opt-out below — a brief highlight is not motion
+     in the vestibular sense, and without it a reduced-motion visitor gets no
+     confirmation at all beyond a number quietly changing. */
+  .cc-coupon-won { animation: cc-coupon-won 1400ms ease-out; }
+
+  @keyframes cc-coupon-won {
+    0%   { transform: scale(1); }
+    12%  { transform: scale(1.06); }
+    26%  { transform: scale(1); }
+  }
+  .cc-coupon-won dd { animation: cc-coupon-flash 1400ms ease-out; }
+
+  @keyframes cc-coupon-flash {
+    0%, 55% { color: var(--color-success-600); font-weight: 700; }
+    100%    { color: var(--color-success-700); font-weight: inherit; }
+  }
+
+  /* The confetti canvas is created and removed by JS. Fixed and inert: it must
+     never intercept a click on the Proceed button underneath it. */
+  .cc-confetti {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
   .cc-basket-updated { animation: cc-basket-settle 200ms ease-out; }
   .cc-basket-updated .cc-btn { animation: cc-basket-bump 320ms cubic-bezier(0.2, 0.9, 0.3, 1.2); }
 

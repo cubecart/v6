@@ -203,6 +203,10 @@
 	  <label><![CDATA[Show Subscribe to Mailing List]]></label>
 	  <description><![CDATA[Show the newsletter opt-in on checkout. Has no effect when the store's newsletter is switched off in Store Settings.]]></description>
 	</setting>
+	<setting name="celebrate_coupon" type="bool" default="true">
+	  <label><![CDATA[Celebrate Discount Codes]]></label>
+	  <description><![CDATA[Play a short burst of confetti over the basket when a customer successfully applies a discount code. Nothing is shown when a code is rejected, and visitors who ask their device for reduced motion get the highlight without the confetti.]]></description>
+	</setting>
 	<setting name="show_coupon_code" type="bool" default="true">
 	  <label><![CDATA[Show Promo Code Field]]></label>
 	  <description><![CDATA[Show the promo/discount code box on checkout. Codes already applied to the basket still show, so a customer can always see and remove one.]]></description>
