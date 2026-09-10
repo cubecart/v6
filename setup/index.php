@@ -140,7 +140,7 @@ $default_config_settings = array(
   'admin_notify_status' => '2',
   'catalogue_mode' => '0',
   'debug' => '0',
-  'skin_folder' => 'foundation',
+  'skin_folder' => 'atrium',
   'skin_style' => 'default',
   'skin_change' => '0',
   'email_method' => 'mail',
@@ -805,7 +805,7 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
 
             ## Redefine the default skin
             $reset      = array(
-        'skin_folder' => 'foundation',
+        'skin_folder' => 'atrium',
         'skin_style' => 'default',
         'default_language' => $default_language
       );
@@ -927,10 +927,10 @@ function build_logos($image_name = '')
 {
     global $db;
 
-    $logo_path = empty($image_name) ? 'skins/foundation/images/default/logo/default.png' : 'images/logos/'.$image_name;
+    $logo_path = empty($image_name) ? 'skins/atrium/images/default/logo/default.png' : 'images/logos/'.$image_name;
 
     $logo_config = array(
-    'foundationdefault' => $logo_path,
+    'atriumdefault' => $logo_path,
     'emails' => $logo_path,
     'invoices' => $logo_path
   );
