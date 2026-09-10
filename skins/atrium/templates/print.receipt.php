@@ -42,6 +42,8 @@
       tfoot td { border-bottom: none; padding: 4px 10px; }
       tfoot tr.grand td { border-top: 2px solid #111827; font-weight: 700; font-size: 15px; padding-top: 8px; }
       .muted { color: #6b7280; }
+      .inv-meta { text-align: right; }
+      .ret-addr { margin-top: 6px; }
       /* Order-status rubber stamp. Hex, not the skin's oklch tokens: some
          print engines still choke on oklch(). Colours mirror
          css/src/theme.css --color-stamp-*; keep the two in step. */
@@ -93,7 +95,7 @@
       <div class="logo">
          <img src="{$STORE_LOGO}" alt="{$CONFIG.store_name}">
       </div>
-      <div style="text-align:right">
+      <div class="inv-meta">
          <h1>{$LANG.common.invoice}</h1>
          <div class="muted">
             {if $CONFIG.oid_mode=='i'}{$order.{$CONFIG.oid_col}}{else}{$order.cart_order_id}{/if}<br>
@@ -191,7 +193,7 @@
    <div class="foot">
       {$LANG.orders.title_thanks}
       {if !empty($STORE.address)}
-      <div style="margin-top:6px">
+      <div class="ret-addr">
          {$LANG.address.return_address}:
          {if !empty($STORE.address)}{$STORE.address}, {/if}
          {if !empty($STORE.county)}{$STORE.county}, {/if}

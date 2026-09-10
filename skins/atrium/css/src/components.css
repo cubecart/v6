@@ -676,3 +676,34 @@
   width: auto;
   max-width: none;
 }
+
+/* ── PayPal express mount on the product page ─────────────────────────────
+   NOT in @layer components, and this one is not about Tailwind: the module
+   injects its own <style> into the body, which is unlayered, and unlayered
+   author styles beat every cascade layer whatever the specificity. A layered
+   rule here would lose to it.
+
+   What it ships: #paypal-button-container div gets max-width 355px and a 5px
+   right padding, but no horizontal centring, so on a wider column the block
+   sits left of centre and the padding pulls it further off. Centre the pair
+   and drop the padding. */
+#pp_product_mount { text-align: center; }
+
+/* The module sets text-align on the container AND its divs from a module
+   setting, so centring the mount alone never reaches them. The button block is
+   inline-level, so it is the CONTAINER's text-align that positions it; the
+   margin-inline is for the case where a future SDK renders it as a block. */
+#pp_product_mount #paypal-button-container,
+#pp_product_mount #paypal-button-container div {
+  text-align: center;
+}
+
+/* The 5px right padding is on the container as well as the divs, and left on
+   the container it narrows the content box, so the centred block lands 2.5px
+   off. Both, or neither. */
+#pp_product_mount #paypal-button-container,
+#pp_product_mount #paypal-button-container div {
+  padding-right: 0;
+}
+
+#pp_product_mount #paypal-button-container div { margin-inline: auto; }

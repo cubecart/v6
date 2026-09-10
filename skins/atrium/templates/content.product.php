@@ -31,6 +31,21 @@
             {include file='templates/element.product.call_to_action.php'}
 
             {include file='templates/element.product.options.php'}
+
+            {* PayPal express button and pay-later message mount, targeted by
+               modules/plugins/paypal_commerce/config.atrium.json.
+
+               AFTER the options on purpose: express checkout sends the customer
+               straight to PayPal with whatever is selected right now, so the
+               button must come after the choosers, not before them.
+
+               An empty div rather than an existing wrapper, because the module
+               prependTo()s its block and would otherwise land at the top of
+               whatever it is pointed at. Inside the form, because the button
+               reads quantity and options from it. The margin is applied only
+               when something is injected, so a store with the module off does
+               not get a phantom gap. *}
+            <div id="pp_product_mount" class="[&:not(:empty)]:mt-6"></div>
          </div>
       </div>
 
