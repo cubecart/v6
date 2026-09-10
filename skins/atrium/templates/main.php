@@ -178,7 +178,10 @@
             <p x-show="$store.quickView.busy" class="py-12 text-center text-sm text-ink-500">
                <span x-text="$store.quickView.title"></span>
             </p>
-            <div x-html="$store.quickView.html"></div>
+            {* Deliberately NOT x-html: see the warning in 23-quickview.js. The
+               store writes here with innerHTML and Alpine's observer initialises
+               what lands. *}
+            <div id="cc-quickview-body"></div>
          </div>
       </div>
 
