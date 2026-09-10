@@ -101,11 +101,22 @@
   --color-warn-700: var(--cc-warn-700, oklch(50.4% 0.114 62));
 
   /* ── Type ────────────────────────────────────────────────────────────────
-     System stacks only. No webfont link: element.css.php is loaded on every
-     storefront page including checkout, and a third-party font CDN there is a
-     render-blocking dependency, a GDPR data transfer, and a PCI script-inventory
-     item. Merchants who want a webfont self-host it via custom.css. */
-  --font-sans: var(--cc-font-sans, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+     System stacks BY DEFAULT, and no webfont is fetched unless a merchant asks
+     for one: element.css.php is loaded on every storefront page including
+     checkout, and a third-party font CDN there is a render-blocking dependency,
+     a GDPR data transfer, and a PCI script-inventory item.
+
+     The default family, Figtree, is BUNDLED and served from the store's own
+     origin (css/src/fonts.css, fonts/) precisely so the default costs none of
+     the three. The system stack stays behind it: if the woff2 fails to load the
+     page is unchanged from how this skin looked before it was bundled.
+
+     The "Font" skin setting opts in to a Google-HOSTED font instead
+     (element.font.php), which sets --cc-font-sans and so replaces Figtree
+     entirely — the bundled files are then never requested, because nothing
+     references the family. That path does carry the three costs, which is why
+     it is opt-in and says so in the setting's own description. */
+  --font-sans: var(--cc-font-sans, "Figtree", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
   --font-serif: var(--cc-font-serif, ui-serif, Georgia, Cambria, "Times New Roman", serif);
   --font-mono: var(--cc-font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
 

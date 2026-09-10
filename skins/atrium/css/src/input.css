@@ -44,6 +44,7 @@
  * invert cleanly without an explicit opt-in. */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
+@import "./fonts.css";
 @import "./theme.css";
 @import "./base.css";
 @import "./components.css";

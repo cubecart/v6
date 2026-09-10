@@ -40,6 +40,10 @@
 {foreach from=$CSS item=css_file}
 <link rel="stylesheet" href="{$ROOT_PATH}{$css_file|ltrim:'/'}">
 {/foreach}
+{* Optional Google Font from the skin settings. Renders nothing unless the
+   merchant picked one. Same placement rule as the colours below. *}
+{include file='templates/element.font.php'}
+
 {* Brand colours from the skin settings. AFTER tailwind.css so the --cc-* names
    it reads as fallbacks are already in play, and BEFORE custom.css so a merchant
    editing that file still overrules the picker. *}

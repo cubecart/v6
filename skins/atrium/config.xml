@@ -122,6 +122,32 @@
 	<!-- Empty means "no override": the skin keeps its own palette. One colour is
 	     enough to brand the store; the second is optional and only repaints the
 	     nav/footer band. -->
+	<!-- Keep in step with the whitelist in templates/element.font.php: a value
+	     that is not a key there renders nothing. -->
+	<setting name="google_font" type="select" default="">
+	  <label><![CDATA[Font]]></label>
+	  <description><![CDATA[The typeface for the whole storefront. Skin default is Figtree, which ships with the skin and is served from your own site. Choosing one of the others loads it from Google instead, which adds a request to Google on every page, checkout included, and sends your visitors' IP addresses to them.]]></description>
+	  <options>
+		<option value=""><![CDATA[Skin default (Figtree)]]></option>
+		<option value="Inter"><![CDATA[Inter]]></option>
+		<option value="Roboto"><![CDATA[Roboto]]></option>
+		<option value="Open Sans"><![CDATA[Open Sans]]></option>
+		<option value="Lato"><![CDATA[Lato]]></option>
+		<option value="Montserrat"><![CDATA[Montserrat]]></option>
+		<option value="Poppins"><![CDATA[Poppins]]></option>
+		<option value="Nunito Sans"><![CDATA[Nunito Sans]]></option>
+		<option value="Source Sans 3"><![CDATA[Source Sans 3]]></option>
+		<option value="Work Sans"><![CDATA[Work Sans]]></option>
+		<option value="DM Sans"><![CDATA[DM Sans]]></option>
+		<option value="Figtree"><![CDATA[Figtree]]></option>
+		<option value="Rubik"><![CDATA[Rubik]]></option>
+		<option value="Karla"><![CDATA[Karla]]></option>
+		<option value="Raleway"><![CDATA[Raleway]]></option>
+		<option value="Lora"><![CDATA[Lora]]></option>
+		<option value="Merriweather"><![CDATA[Merriweather]]></option>
+		<option value="Playfair Display"><![CDATA[Playfair Display]]></option>
+	  </options>
+	</setting>
 	<setting name="main_menu_layout" type="select" default="horizontal">
 	  <label><![CDATA[Main Menu]]></label>
 	  <description><![CDATA[Where the category menu sits on desktop. Vertical moves it to a rail down the left of the page instead of the band under the header. Phones and tablets use the slide-out drawer either way.]]></description>

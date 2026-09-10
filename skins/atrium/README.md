@@ -16,6 +16,7 @@ skin shows an admin-only banner on older stores.
 | `css/tailwind.css` | The compiled stylesheet. Committed, served directly |
 | `css/cubecart.<style>.css` | One per sub-theme, linked from `$SKIN_SUBSET` |
 | `css/custom.css` | Yours. Loaded last, never overwritten |
+| `fonts/` | Bundled Figtree woff2 + its OFL licence |
 | `js/src/` | Alpine components. **Edited, not shipped** |
 | `js/vendor/0.atrium.components.js` | The concatenated bundle. Committed |
 | `config.xml` | Sub-themes, image sizes, admin settings, `<custom>` block |
@@ -45,6 +46,14 @@ Grey, Teal, Green, Purple, Red, Amber. Each repaints the brand ramp only, so
 buttons, links, focus rings and price accents change; the bands, the neutrals
 and the semantic red/green/amber stay put. A sub-theme should change what the
 store is branded with, not what "your payment failed" looks like.
+
+**Font.** Skin default is **Figtree, bundled** (`fonts/`, 30KB across two
+subsets, served from the store's own origin). The dropdown also offers 17
+Google-hosted families; picking one sets `--cc-font-sans` and replaces Figtree,
+whose files are then never requested. That path is opt-in because it adds a
+third-party request to every page including checkout: render-blocking, a GDPR
+transfer of the visitor's IP to Google, and one more line in a PCI script
+inventory.
 
 **Main Menu.** Horizontal band under the header (default), or a vertical rail
 down the left of the page. Desktop only — below `lg` both use the slide-out
@@ -79,8 +88,8 @@ place with no backup. `custom.css` loads last, so it beats everything above.
 }
 ```
 
-Self-hosting a webfont? Put the `@font-face` here too. Do not add a third-party
-font CDN link: this stylesheet loads on the checkout page.
+Self-hosting a webfont? Put the `@font-face` here too — it is the privacy- and
+performance-safe way to change the type, and it beats the Font setting.
 
 ### `<custom>` in `config.xml` (developer-only, no admin UI)
 
@@ -248,6 +257,11 @@ AJAX calls must use the product's **SEO URL**;
 
 Everything shipped is MIT and GPL-3.0 compatible: Tailwind CSS, Alpine.js and
 plugins, jQuery, jQuery Migrate. See `js/vendor/VERSIONS.txt`.
+
+The bundled **Figtree** in `fonts/` is copyright 2022 The Figtree Project
+Authors, SIL Open Font License 1.1. The licence ships verbatim as
+`fonts/LICENSE` — do not delete it. OFL permits redistribution alongside a
+GPL-3.0 skin; it is a font, not linked code.
 
 Country flags in `images/flags/` are from
 [lipis/flag-icons](https://github.com/lipis/flag-icons) (4x3 set), copyright (c)

@@ -1,0 +1,38 @@
+/**
+ * Bundled webfont: Figtree (SIL Open Font License 1.1, fonts/LICENSE).
+ *
+ * SELF-HOSTED ON PURPOSE. The obvious alternative, a <link> to Google's CDN on
+ * every page, is render-blocking, sends the visitor's IP to a third party on
+ * the checkout page, and adds an entry to a PCI script inventory. Serving two
+ * files from the store's own origin has none of those, and at 20KB + 10KB it is
+ * smaller than most product thumbnails.
+ *
+ * ⚠ url() is relative to the COMPILED stylesheet, css/tailwind.css, not to this
+ * file. tailwind.css bypasses {combine} (see element.css.php), so nothing
+ * rewrites these paths afterwards.
+ *
+ * One variable file per subset covering wght 400-700, which is every weight the
+ * skin uses. The unicode-range split is Google's own: a store whose language
+ * needs no accented Latin never downloads the second file.
+ *
+ * font-display: swap — text paints in the fallback stack immediately and
+ * reflows when the font lands, rather than being invisible for up to 3s. The
+ * fallback in --font-sans (theme.css) is the same system stack the skin used
+ * before this file existed, so a failed download is a non-event.
+ */
+@font-face {
+  font-family: 'Figtree';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('../fonts/figtree-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Figtree';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('../fonts/figtree-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
