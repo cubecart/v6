@@ -24,6 +24,10 @@ document.addEventListener('alpine:init', function () {
                placeholder those rows lose their 40px leading box and the text
                jumps left, breaking the column. */
             showImages: false,
+            /* A newer query is in flight. Dims the stale list rather than
+               blanking it, so the panel does not collapse and reflow between
+               keystrokes. */
+            busy: false,
             _seq: 0,
 
             close: function () {
@@ -62,6 +66,7 @@ document.addEventListener('alpine:init', function () {
                 if (!term) {
                     this.results = [];
                     this.searched = false;
+                    this.busy = false;
                     this.open = false;
                     return;
                 }
@@ -72,6 +77,7 @@ document.addEventListener('alpine:init', function () {
 
                 // Guard against out-of-order responses: only the newest wins.
                 var seq = ++this._seq;
+                this.busy = true;
 
                 try {
                     var res = await fetch('?_e=es&q=' + encodeURIComponent(term) + '&a=' + encodeURIComponent(amount), {
@@ -95,6 +101,7 @@ document.addEventListener('alpine:init', function () {
                     this.results = [];
                 }
 
+                this.busy = false;
                 this.searched = true;
                 this.open = true;
             }

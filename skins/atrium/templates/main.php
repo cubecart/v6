@@ -61,7 +61,7 @@
       </div>
       {/if}
 
-      <header class="sticky top-0 z-30 border-b border-ink-200 bg-ink-100/95 backdrop-blur">
+      <header class="cc-header sticky top-0 z-30 border-b border-ink-200 bg-ink-100/95 backdrop-blur">
          <div class="cc-container flex h-16 min-w-0 items-center gap-3 sm:gap-4">
 
             <button type="button"

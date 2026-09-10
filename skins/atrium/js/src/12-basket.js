@@ -59,7 +59,17 @@ document.addEventListener('alpine:init', function () {
                     if (host) {
                         host.outerHTML = text;
                         var fresh = document.getElementById('mini-basket');
-                        if (fresh) window.Alpine.store('basket').syncFrom(fresh);
+                        if (fresh) {
+                            window.Alpine.store('basket').syncFrom(fresh);
+                            // Settle the swapped fragment and bump the count, so
+                            // the basket visibly acknowledges the add. Removed
+                            // once played, or a second add would not replay it
+                            // (the class would already be on the element).
+                            fresh.classList.add('cc-basket-updated');
+                            setTimeout(function () {
+                                fresh.classList.remove('cc-basket-updated');
+                            }, 400);
+                        }
                     }
 
                     this.added = true;

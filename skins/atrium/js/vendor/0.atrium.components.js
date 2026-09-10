@@ -193,6 +193,10 @@ document.addEventListener('alpine:init', function () {
                placeholder those rows lose their 40px leading box and the text
                jumps left, breaking the column. */
             showImages: false,
+            /* A newer query is in flight. Dims the stale list rather than
+               blanking it, so the panel does not collapse and reflow between
+               keystrokes. */
+            busy: false,
             _seq: 0,
 
             close: function () {
@@ -231,6 +235,7 @@ document.addEventListener('alpine:init', function () {
                 if (!term) {
                     this.results = [];
                     this.searched = false;
+                    this.busy = false;
                     this.open = false;
                     return;
                 }
@@ -241,6 +246,7 @@ document.addEventListener('alpine:init', function () {
 
                 // Guard against out-of-order responses: only the newest wins.
                 var seq = ++this._seq;
+                this.busy = true;
 
                 try {
                     var res = await fetch('?_e=es&q=' + encodeURIComponent(term) + '&a=' + encodeURIComponent(amount), {
@@ -264,6 +270,7 @@ document.addEventListener('alpine:init', function () {
                     this.results = [];
                 }
 
+                this.busy = false;
                 this.searched = true;
                 this.open = true;
             }
@@ -333,7 +340,17 @@ document.addEventListener('alpine:init', function () {
                     if (host) {
                         host.outerHTML = text;
                         var fresh = document.getElementById('mini-basket');
-                        if (fresh) window.Alpine.store('basket').syncFrom(fresh);
+                        if (fresh) {
+                            window.Alpine.store('basket').syncFrom(fresh);
+                            // Settle the swapped fragment and bump the count, so
+                            // the basket visibly acknowledges the add. Removed
+                            // once played, or a second add would not replay it
+                            // (the class would already be on the element).
+                            fresh.classList.add('cc-basket-updated');
+                            setTimeout(function () {
+                                fresh.classList.remove('cc-basket-updated');
+                            }, 400);
+                        }
                     }
 
                     this.added = true;

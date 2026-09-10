@@ -39,7 +39,7 @@
       </div>
       {/if}
 
-      <header class="border-b border-ink-200 bg-ink-100">
+      <header class="cc-header border-b border-ink-200 bg-ink-100">
          <div class="cc-container flex h-16 items-center justify-between">
             <a href="{$ROOT_PATH}" class="flex items-center">
                <img src="{$STORE_LOGO}" alt="{$CONFIG.store_name}" class="max-h-10 w-auto">

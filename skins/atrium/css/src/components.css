@@ -517,6 +517,36 @@
   }
   .cc-skip:focus { top: 0.5rem; color: var(--cc-brand-fg, #fff); }
 
+  /* ── Async pending states ─────────────────────────────────────────────
+     The mini-basket and the search panel both swap content under the user
+     without a page load. Without a beat of feedback the change either goes
+     unnoticed or reads as a glitch. Everything here is short enough to feel
+     like response rather than decoration, and the blanket reduced-motion rule
+     in @layer base flattens all of it. */
+
+  /* Added by 12-basket.js to the freshly injected #mini-basket fragment, and
+     removed once it has played so a second add replays it. */
+  .cc-basket-updated { animation: cc-basket-settle 200ms ease-out; }
+  .cc-basket-updated .cc-btn { animation: cc-basket-bump 320ms cubic-bezier(0.2, 0.9, 0.3, 1.2); }
+
+  @keyframes cc-basket-settle {
+    from { opacity: 0.35; }
+    to   { opacity: 1; }
+  }
+  @keyframes cc-basket-bump {
+    0%   { transform: scale(1); }
+    35%  { transform: scale(1.09); }
+    100% { transform: scale(1); }
+  }
+
+  /* Search results while a newer query is in flight: dimmed and inert, so the
+     stale list cannot be clicked and the wait is visible. */
+  .cc-pending {
+    opacity: 0.45;
+    pointer-events: none;
+    transition: opacity 120ms ease-out;
+  }
+
   /* ── Order-status rubber stamp ───────────────────────────────────────
      Keyed off the core .order_status / .order_status_N classes, so a status
      added later still gets a stamp, just in the neutral ink. The print

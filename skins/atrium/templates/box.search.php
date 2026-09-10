@@ -43,6 +43,9 @@
          enabled — ccSearch() bails otherwise. *}
       <ul id="sayt_results" x-show="open && results.length" x-cloak
           x-transition.opacity.duration.150ms
+          {* .cc-pending dims the stale list while a newer query is in flight and
+             blocks clicks on rows that are about to be replaced. *}
+          :class="{ 'cc-pending': busy }" :aria-busy="busy ? 'true' : 'false'"
           class="absolute inset-x-0 top-full z-40 mt-1 max-h-96 overflow-y-auto rounded-cc-lg border border-ink-200 bg-ink-100 py-1 shadow-lg"
           role="listbox">
          <template x-for="p in results" :key="p.product_id">
@@ -72,7 +75,7 @@
             </li>
          </template>
       </ul>
-      <p x-show="open && searched && !results.length" x-cloak
+      <p x-show="open && searched && !busy && !results.length" x-cloak
          class="absolute inset-x-0 top-full z-40 mt-1 rounded-cc-lg border border-ink-200 bg-ink-100 px-3 py-2 text-sm text-ink-500 shadow-lg">
          {$LANG.search.no_results|default:'No results found'}
       </p>

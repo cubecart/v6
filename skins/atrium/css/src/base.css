@@ -64,3 +64,31 @@
   button:not(:disabled),
   [role="button"]:not(:disabled) { cursor: pointer; }
 }
+
+/* ── Cross-document view transitions ──────────────────────────────────────
+   Outside @layer base on purpose: @view-transition is a top-level at-rule and
+   a cascade layer would swallow it.
+
+   Navigations cross-fade instead of white-flashing. Chromium and Safari honour
+   it; Firefox ignores the rule and behaves exactly as before, so there is no
+   fallback to write.
+
+   The header is named, which excludes it from the cross-fade and keeps it
+   painted in place while the content changes. That is the part people actually
+   notice. A name must be unique per page or the browser abandons the whole
+   transition, so this is keyed to a class carried by exactly one element rather
+   than to the bare <header> tag, which a plugin could add a second of.
+
+   ::view-transition animations run on the pseudo-element tree, which the
+   blanket reduced-motion rule in @layer base does not reach, hence the
+   explicit opt-out. */
+@view-transition { navigation: auto; }
+
+
+.cc-header { view-transition-name: cc-header; }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
+}
