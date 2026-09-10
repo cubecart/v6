@@ -2,8 +2,9 @@
 
 CubeCart v6 storefront skin. Tailwind CSS v4 + Alpine.js 3.
 
-Requires **CubeCart 6.7.6 or newer**. Core does not enforce `<minVersion>`, so the
-skin shows an admin-only banner on older stores.
+Requires **CubeCart 6.8.0 or newer**. Core does not enforce `<minVersion>`, so the
+skin shows an admin-only banner on older stores — but note the placeholder image
+genuinely needs 6.8.0, see below.
 
 ---
 
@@ -17,6 +18,7 @@ skin shows an admin-only banner on older stores.
 | `css/cubecart.<style>.css` | One per sub-theme, linked from `$SKIN_SUBSET` |
 | `css/custom.css` | Yours. Loaded last, never overwritten |
 | `fonts/` | Bundled Figtree woff2 + its OFL licence |
+| `images/noimage.svg` | The "no image" placeholder. Vector, 1KB |
 | `js/src/` | Alpine components. **Edited, not shipped** |
 | `js/vendor/0.atrium.components.js` | The concatenated bundle. Committed |
 | `config.xml` | Sub-themes, image sizes, admin settings, `<custom>` block |
@@ -89,6 +91,20 @@ in `config.xml` is the full list.
 | Brand Colour | brand ramp | Exact hex. **Replaces the sub-theme** |
 | Header Colour | navigation band | No sub-theme touches the bands |
 | Footer Colour | footer band | Independent of the header |
+
+### The placeholder image
+
+`images/noimage.svg` is what a product with no image shows. It is a **vector**,
+which needs core 6.8.0: skin placeholders normally go through `imagePath()`'s
+GD resize-and-cache pipeline, and 6.8.0 added an early return that serves an SVG
+under `skins/` straight from where it lives. On an older core the config's
+`default="noimage.svg"` resolves to a path that does not exist and every
+image-less product 404s, so do not back-port the skin without that change.
+
+One 1KB file replaces the eight cached PNGs the old raster needed, and it is
+crisp at every size. There is deliberately **no text in it** — the previous
+placeholder had "NO IMAGE AVAILABLE" burned into the pixels, which no
+translation could reach.
 
 ### `css/custom.css`
 

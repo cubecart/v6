@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="No image">
+  <!--
+    Atrium placeholder for a product with no image.
+
+    NO TEXT, deliberately. The old one had "NO IMAGE AVAILABLE" burned into the
+    pixels: untranslatable, and it shouted on a page where it should whisper.
+    A picture glyph says the same thing in every language.
+
+    Colours are the skin's own ink ramp (theme.css), written as hex rather
+    than as cc custom properties: this file is rasterised by GD for the cached
+    sizes, and it is loaded in an img element, where page custom properties do
+    not reach either way.
+
+    Square, because every Atrium product grid uses aspect-square.
+  -->
+  <rect width="512" height="512" fill="#f2f4f5"/>
+  <g fill="none" stroke="#d0d4d8" stroke-width="14" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="128" y="150" width="256" height="212" rx="20"/>
+    <!-- Hills, drawn to sit on the frame's floor so the shape reads as a photo. -->
+    <path d="M128 316 l58-62 44 47 62-74 84 89"/>
+  </g>
+  <circle cx="212" cy="206" r="19" fill="#d0d4d8"/>
+</svg>

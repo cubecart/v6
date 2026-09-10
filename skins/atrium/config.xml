@@ -17,7 +17,7 @@
 	     single-gateway hidden-input behaviour arrive in 6.7.4, and element.meta.php
 	     changes in 6.7.6. Core reads this for display only (plugins.index.inc.php:418)
 	     and does NOT enforce it, so main.php also shows an admin-only banner. -->
-	<minVersion>6.7.6</minVersion>
+	<minVersion>6.8.0</minVersion>
 	<maxVersion>6.*.*</maxVersion>
 	<creator>CubeCart</creator>
 	<homepage>https://www.cubecart.com</homepage>
@@ -89,18 +89,22 @@
   <!-- Each reference here literally creates $PRODUCT.<reference> and
        $product['image_tags'][<reference>] (gui.class.php:685-694,
        catalogue.class.php:1906-1922). Removing one removes that Smarty variable. -->
+  <!-- default="noimage.svg": core serves a vector placeholder straight from the
+       skin rather than sending it through GD (catalogue.class.php, imagePath).
+       One 1KB file replaces eight cached PNGs and is crisp at every size.
+       ⚠ That handling arrived in 6.8.0, which is why minVersion says so. -->
   <images>
-	<image reference="thumbnail" maximum="400" quality="82" default="noimage.png" />
-	<image reference="category" maximum="1200" quality="82" default="noimage.png" />
-	<image reference="subcategory" maximum="300" quality="82" default="noimage.png" />
-	<image reference="gallery" maximum="120" quality="82" default="noimage.png" />
-	<image reference="checkout" maximum="120" quality="82" default="noimage.png" />
-	<image reference="normal" maximum="600" quality="82" default="noimage.png" />
-	<image reference="enlarge" maximum="1600" quality="82" default="noimage.png" />
-	<image reference="tiny" maximum="64" quality="82" default="noimage.png" />
-	<image reference="small" maximum="300" quality="82" default="noimage.png" />
-	<image reference="medium" maximum="800" quality="82" default="noimage.png" />
-	<image reference="large" maximum="1200" quality="82" default="noimage.png" />
+	<image reference="thumbnail" maximum="400" quality="82" default="noimage.svg" />
+	<image reference="category" maximum="1200" quality="82" default="noimage.svg" />
+	<image reference="subcategory" maximum="300" quality="82" default="noimage.svg" />
+	<image reference="gallery" maximum="120" quality="82" default="noimage.svg" />
+	<image reference="checkout" maximum="120" quality="82" default="noimage.svg" />
+	<image reference="normal" maximum="600" quality="82" default="noimage.svg" />
+	<image reference="enlarge" maximum="1600" quality="82" default="noimage.svg" />
+	<image reference="tiny" maximum="64" quality="82" default="noimage.svg" />
+	<image reference="small" maximum="300" quality="82" default="noimage.svg" />
+	<image reference="medium" maximum="800" quality="82" default="noimage.svg" />
+	<image reference="large" maximum="1200" quality="82" default="noimage.svg" />
   </images>
   <!-- MERCHANT-EDITABLE settings. Declaring any <setting> here puts a config cog
        on this skin's card in Manage Extensions; the values are stored in the

@@ -2053,6 +2053,37 @@ class Catalogue
             $file = $placeholder_image;
         }
 
+        /* A VECTOR placeholder is served exactly where it lives.
+         *
+         * Everything below assumes the file sits under images/source and can be
+         * rasterised into images/cache at the requested size. Neither holds for
+         * a skin's own placeholder in SVG: GD cannot decode it, and the URL
+         * builders would produce images/cache|source/skins/<skin>/images/... ,
+         * a path that does not exist. The @getimagesize() guard further down
+         * catches the first problem but resolves to the second, so an SVG
+         * default would 404 without this.
+         *
+         * Restricted to files under skins/ on purpose. An SVG *uploaded* as a
+         * product image already works: it genuinely lives in images/source, so
+         * the existing fallback returns a URL that resolves.
+         */
+        if (!empty($file) && preg_match('#^skins/#', $file) && preg_match('#\.svgz?$#i', $file) && file_exists($source)) {
+            switch (strtolower($path)) {
+                case 'filename':
+                    return basename($file);
+                case 'root':
+                    return CC_ROOT_DIR.'/'.$file;
+                case 'url':
+                    return $GLOBALS['storeURL'].'/'.$file;
+                case 'rel':
+                case 'relative':
+                    return $GLOBALS['rootRel'].$file;
+                default:
+                    trigger_error('No image path set', E_USER_NOTICE);
+                    return false;
+            }
+        }
+
         if (!is_dir($source) && file_exists($source)) {
             if ($mode == 'source') {
                 $folder  = 'source';
