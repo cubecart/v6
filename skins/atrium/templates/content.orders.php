@@ -52,10 +52,10 @@
             <a href="{$STORE_URL}/index.php?_a=basket&reorder={$order.cart_order_id}" class="cc-btn cc-btn-secondary">{$LANG.common.reorder}</a>
             {/if}
             {if $order.cancel}
-            <a href="{$VAL_SELF}&cancel={$order.cart_order_id}" class="cc-btn cc-btn-ghost !text-danger-600">{$LANG.basket.cancel_order}</a>
+            <a href="{$VAL_SELF}&cancel={$order.cart_order_id}" class="cc-btn cc-btn-secondary !text-danger-600">{$LANG.basket.cancel_order}</a>
             {/if}
             {if $order.withdrawal_eligible}
-            <a href="{$order.withdrawal_url}" class="cc-btn cc-btn-ghost">{$LANG.withdrawal.button}</a>
+            <a href="{$order.withdrawal_url}" class="cc-btn cc-btn-secondary">{$LANG.withdrawal.button}</a>
             {/if}
          </div>
       </li>
