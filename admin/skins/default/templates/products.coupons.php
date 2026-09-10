@@ -47,7 +47,9 @@
 		{/foreach}
 	  </tbody>
 	</table>
+	<div class="pagination">
 	{$PAGINATION_COUPONS}
+	</div>
   </div>
 
   <div id="certificates" class="tab_content">
@@ -82,7 +84,9 @@
 		{/if}
 	  </tbody>
 	</table>
+	<div class="pagination">
 	{$PAGINATION_CERTIFICATES}
+	</div>
   </div>
  {/if}
 
