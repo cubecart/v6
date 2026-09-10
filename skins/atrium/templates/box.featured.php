@@ -14,7 +14,7 @@
            alt="{if isset($featured.image_tags.alt) && !empty($featured.image_tags.alt)}{$featured.image_tags.alt}{else}{$featured.name}{/if}"
            {if isset($featured.image_tags.title)}title="{$featured.image_tags.title}"{/if}
            loading="lazy"
-           class="aspect-square w-full object-cover">
+           class="cc-media aspect-square w-full object-cover">
    </a>
    <h4 class="mt-3 text-sm font-medium">
       <a href="{$featured.url}" title="{$featured.name}" class="text-ink-900 hover:underline">{$featured.name}</a>

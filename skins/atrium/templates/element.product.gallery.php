@@ -12,7 +12,7 @@
 <div x-data="ccGallery('{if isset($PRODUCT.source)}{$PRODUCT.source}{else}{$PRODUCT.medium}{/if}')">
 
    <button type="button" @click="enlarge()"
-           class="block w-full overflow-hidden rounded-cc-lg border border-ink-200 bg-ink-100"
+           class="cc-media block w-full overflow-hidden rounded-cc-lg border border-ink-200"
            title="{$LANG.catalogue.click_enlarge}">
       <img id="img-preview"
            src="{$PRODUCT.medium}"
@@ -30,7 +30,7 @@
                  data-medium="{$image.medium}" data-full="{$image.source}"
                  @click="show('{$image.medium}', '{$image.source}', {$smarty.foreach.g.index})"
                  :class="index === {$smarty.foreach.g.index} ? 'border-brand-600' : 'border-ink-200'"
-                 class="image-gallery block w-full overflow-hidden rounded-cc border bg-ink-100 hover:border-brand-600 focus-visible:border-brand-600">
+                 class="image-gallery cc-media block w-full overflow-hidden rounded-cc border hover:border-brand-600 focus-visible:border-brand-600">
             <img src="{$image.small}"
                  alt="{if isset($image.image_tags.alt) && !empty($image.image_tags.alt)}{$image.image_tags.alt}{else}{$image.name}{/if}"
                  {if isset($image.image_tags.title)}title="{$image.image_tags.title}"{/if}
@@ -66,7 +66,9 @@
          </svg>
       </button>
 
-      <img :src="full" alt="{$PRODUCT.name}" class="max-h-full max-w-full object-contain" @click.stop>
+      {* .cc-media, same white plate as every other catalogue image: a
+         transparent PNG on the dark overlay would otherwise read as a hole. *}
+      <img :src="full" alt="{$PRODUCT.name}" class="cc-media max-h-full max-w-full object-contain" @click.stop>
 
       <button type="button" x-show="images.length > 1" @click.stop="step(1)"
               class="absolute end-4 top-1/2 -translate-y-1/2 rounded-cc bg-ink-100 p-2 text-ink-800 hover:bg-ink-200">

@@ -517,6 +517,17 @@
   }
   .cc-skip:focus { top: 0.5rem; color: var(--cc-brand-fg, #fff); }
 
+  /* ── Catalogue imagery plate ──────────────────────────────────────────
+     Every surface a product, category or certificate image sits on. White, not
+     an ink token, and the same in both themes: cut-out PNGs are authored
+     against white, so a themed plate turns them into a dark hole in dark mode
+     and a grey-on-grey smudge in light. Applies to the image itself where
+     there is no wrapper to carry it.
+
+     Only for catalogue imagery. Avatars, logos, payment marks and icons are
+     chrome and keep the theme background. */
+  .cc-media { background-color: #fff; }
+
   /* ── Async pending states ─────────────────────────────────────────────
      The mini-basket and the search panel both swap content under the user
      without a page load. Without a beat of feedback the change either goes

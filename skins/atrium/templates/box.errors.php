@@ -11,9 +11,16 @@
  *
  * The .cc-alert-error class is a contract, not decoration: the checkout uses it
  * to detect an error state and re-open the guest form.
+ *
+ * cc-stale-errors dismisses the error box when the page knows the error no
+ * longer describes the current state. The product page fires it when an option
+ * dropdown changes, because "that combination is out of stock" stops being true
+ * the moment the customer picks a different one. Errors only: a notice is a
+ * record of something that happened, not a claim about the form in front of you.
  *}
 {if isset($GUI_MESSAGE.error)}
-<div class="cc-alert cc-alert-error mb-4" role="alert" x-data="ccAlert" x-show="shown" x-cloak>
+<div class="cc-alert cc-alert-error mb-4" role="alert" x-data="ccAlert" x-show="shown" x-cloak
+     @cc-stale-errors.window="dismiss()">
    <div class="min-w-0 flex-1">
       <p class="font-semibold">{$LANG.gui_message.errors_detected}</p>
       <ul class="mt-1 list-disc space-y-1 ps-5">

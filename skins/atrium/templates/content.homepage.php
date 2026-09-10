@@ -72,7 +72,7 @@
       <li class="group flex flex-col">
          <form action="{$VAL_SELF}" method="post" class="add_to_basket flex h-full flex-col">
 
-            <a href="{$product.url}" class="block overflow-hidden rounded-cc-lg border border-ink-200 bg-ink-100">
+            <a href="{$product.url}" class="cc-media block overflow-hidden rounded-cc-lg border border-ink-200">
                <img src="{$product.image}"
                     alt="{if isset($product.image_tags.alt) && !empty($product.image_tags.alt)}{$product.image_tags.alt}{else}{$product.name}{/if}"
                     {if isset($product.image_tags.title)}title="{$product.image_tags.title}"{/if}

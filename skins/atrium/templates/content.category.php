@@ -21,7 +21,7 @@
    <img src="{$category.image}"
         alt="{if isset($category.image_tags.alt)}{$category.image_tags.alt}{else}{$category.cat_name}{/if}"
         {if isset($category.image_tags.title)}title="{$category.image_tags.title}"{/if}
-        class="mt-4 w-full rounded-cc-lg object-cover">
+        class="cc-media mt-4 w-full rounded-cc-lg object-cover">
    {/if}
 
    {if !empty($category.cat_desc)}
@@ -37,7 +37,7 @@
                  alt="{if isset($subcat.image_tags.alt)}{$subcat.image_tags.alt}{else}{$subcat.cat_name}{/if}"
                  {if isset($subcat.image_tags.title)}title="{$subcat.image_tags.title}"{/if}
                  loading="lazy"
-                 class="aspect-square w-full rounded-cc border border-ink-200 bg-ink-100 object-cover">
+                 class="cc-media aspect-square w-full rounded-cc border border-ink-200 object-cover">
             <span class="mt-2 block text-xs text-ink-700 group-hover:text-ink-900">{$subcat.cat_name}</span>
          </a>
       </li>
@@ -96,7 +96,7 @@
                   :class="isGrid() ? 'flex flex-col' : 'flex gap-5'">
 
                <a href="{$product.url}" title="{$product.name}"
-                  class="block shrink-0 overflow-hidden rounded-cc-lg border border-ink-200 bg-ink-100"
+                  class="cc-media block shrink-0 overflow-hidden rounded-cc-lg border border-ink-200"
                   :class="isGrid() ? '' : 'w-28 sm:w-40'">
                   <img src="{$product.thumbnail}"
                        alt="{if isset($product.image_tags.thumbnail.alt) && !empty($product.image_tags.thumbnail.alt)}{$product.image_tags.thumbnail.alt}{else}{$product.name}{/if}"

@@ -65,7 +65,7 @@
                            rebuilds the index. Drop the src on error so that degrades to the
                            neutral slot below rather than a broken-image icon. *}
                         <template x-if="p.thumbnail">
-                           <img :src="p.thumbnail" :alt="p.name" class="size-10 object-cover" loading="lazy"
+                           <img :src="p.thumbnail" :alt="p.name" class="cc-media size-10 object-cover" loading="lazy"
                                 @error="p.thumbnail = ''">
                         </template>
                      </span>

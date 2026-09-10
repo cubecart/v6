@@ -576,6 +576,13 @@ document.addEventListener('alpine:init', function () {
                 this.recalc();
                 this.swapImage(event);
                 window.Alpine.store('optionStock').check();
+
+                /* A failed add-to-basket reloads the PDP with a server-side
+                   error, typically "that option combination is out of stock".
+                   Picking a different option makes that error a statement about
+                   a selection the customer is no longer making, so retire it.
+                   box.errors.php listens for this on window. */
+                window.dispatchEvent(new CustomEvent('cc-stale-errors'));
             }
         };
     });

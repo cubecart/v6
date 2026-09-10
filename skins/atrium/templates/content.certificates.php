@@ -20,7 +20,7 @@
    <img src="{$GC.image}"
         alt="{if isset($GC.image_tags.alt)}{$GC.image_tags.alt}{else}{$LANG.catalogue.gift_certificates}{/if}"
         {if isset($GC.image_tags.title)}title="{$GC.image_tags.title}"{/if}
-        class="mt-6 w-full rounded-cc-lg">
+        class="cc-media mt-6 w-full rounded-cc-lg">
    {/if}
 
    <div class="cc-card mt-6 space-y-4 p-5">
