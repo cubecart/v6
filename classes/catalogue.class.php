@@ -355,7 +355,7 @@ class Catalogue
      * @param bool $popularity
      * @return bool
      */
-    public function displayProduct($product = false, $popularity = false)
+    public function displayProduct($product = false, $popularity = false, $template = 'templates/content.product.php')
     {
         if (isset($product) && is_numeric($product)) {
             if (($product = $this->getProductData($product)) !== false) {
@@ -524,7 +524,10 @@ class Catalogue
             if (isset($contentDefined) && $contentDefined === true) {
                 return true;
             }
-            $content = $GLOBALS['smarty']->fetch('templates/content.product.php');
+            # $template lets a caller render the same product variables through a
+            # different file. The quick-view endpoint in Cubecart::loadPage() uses
+            # it for a fragment; everything else gets the default page.
+            $content = $GLOBALS['smarty']->fetch($template);
             $GLOBALS['smarty']->assign('SECTION_NAME', 'product');
             $GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
 

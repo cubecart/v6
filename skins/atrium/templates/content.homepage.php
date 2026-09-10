@@ -72,13 +72,26 @@
       <li class="group flex flex-col">
          <form action="{$VAL_SELF}" method="post" class="add_to_basket flex h-full flex-col">
 
-            <a href="{$product.url}" class="cc-media block overflow-hidden rounded-cc-lg border border-ink-200">
-               <img src="{$product.image}"
-                    alt="{if isset($product.image_tags.alt) && !empty($product.image_tags.alt)}{$product.image_tags.alt}{else}{$product.name}{/if}"
-                    {if isset($product.image_tags.title)}title="{$product.image_tags.title}"{/if}
-                    loading="lazy"
-                    class="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-105">
-            </a>
+            <div class="group relative">
+               <a href="{$product.url}" class="cc-media block overflow-hidden rounded-cc-lg border border-ink-200">
+                  <img src="{$product.image}"
+                       alt="{if isset($product.image_tags.alt) && !empty($product.image_tags.alt)}{$product.image_tags.alt}{else}{$product.name}{/if}"
+                       {if isset($product.image_tags.title)}title="{$product.image_tags.title}"{/if}
+                       loading="lazy"
+                       class="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-105">
+               </a>
+               {* Quick view lives ON the image: revealed on hover, and on
+                  keyboard focus so it is not mouse-only. A sibling of the
+                  link, never inside it: a <button> inside an <a> is invalid
+                  and browsers reparent it. *}
+               {if !isset($SKIN_SETTINGS.show_quick_view) || $SKIN_SETTINGS.show_quick_view}
+               <a x-data href="{$product.url}" title="{$product.name}"
+                  class="cc-btn cc-btn-secondary absolute inset-x-2 bottom-2 hidden opacity-0 shadow transition-opacity focus-visible:opacity-100 group-hover:opacity-100 sm:flex"
+                  @click.prevent="$store.quickView.show('{$product.product_id}', '{$product.name|escape:'javascript'}', '{$product.url}')">
+                  {$LANG.catalogue.quick_view|default:'Quick View'}
+               </a>
+               {/if}
+            </div>
 
             <h3 class="mt-3 text-sm font-medium">
                {* text-ink-900 must sit on the <a>, not the <h3>: the base layer styles
@@ -127,6 +140,7 @@
             {elseif !$CATALOGUE_MODE}
             <button type="submit" class="cc-btn cc-btn-secondary mt-2 w-full" disabled>{$LANG.catalogue.out_of_stock_short}</button>
             {/if}
+
 
             <input type="hidden" name="add" value="{$product.product_id}">
          </form>

@@ -95,6 +95,10 @@
 	  <label><![CDATA[Secondary Colour]]></label>
 	  <description><![CDATA[Optional. Repaints the navigation and footer bands. Leave empty to keep the near-black default.]]></description>
 	</setting>
+	<setting name="show_quick_view" type="bool" default="true">
+	  <label><![CDATA[Show Quick View]]></label>
+	  <description><![CDATA[Show a Quick View button on product listings, which opens the product in a window without leaving the page. Hidden on phones either way, where the product page is a better experience than a modal.]]></description>
+	</setting>
 	<setting name="show_listing_add_to_basket" type="bool" default="true">
 	  <label><![CDATA[Show Add to Basket on Listings]]></label>
 	  <description><![CDATA[Show the quantity box and Add to Basket button on category pages, the home page and other product listings. Turn this off to send customers to the product page first, which suits stores whose products have options or need explaining.]]></description>

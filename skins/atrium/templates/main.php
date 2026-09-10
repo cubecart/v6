@@ -155,6 +155,33 @@
          </div>
       </header>
 
+      {* Quick view. One modal per page; the fragment is fetched from
+         ?_g=quickview and injected with x-html, which Alpine initialises. It is
+         cleared on close, not merely hidden, because the fragment carries the
+         product page's ids and only one copy may exist. *}
+      <div x-data x-show="$store.quickView.open" x-cloak
+           x-transition.opacity.duration.150ms
+           @keydown.escape.window="$store.quickView.close()"
+           class="fixed inset-0 z-50 flex items-center justify-center p-4">
+         <div class="absolute inset-0 bg-ink-950/50" @click="$store.quickView.close()" aria-hidden="true"></div>
+         <div class="relative z-10 max-h-[85dvh] w-full max-w-3xl overflow-y-auto rounded-cc-lg border border-ink-200 bg-ink-100 p-5 shadow-lg"
+              role="dialog" aria-modal="true" :aria-label="$store.quickView.title"
+              x-trap.noscroll="$store.quickView.open">
+            <button type="button" class="cc-btn cc-btn-ghost absolute end-2 top-2 p-2"
+                    @click="$store.quickView.close()">
+               <span class="cc-sr-only">{$LANG.common.close|default:'Close'}</span>
+               <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                  <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round"/>
+               </svg>
+            </button>
+
+            <p x-show="$store.quickView.busy" class="py-12 text-center text-sm text-ink-500">
+               <span x-text="$store.quickView.title"></span>
+            </p>
+            <div x-html="$store.quickView.html"></div>
+         </div>
+      </div>
+
       <div x-data="ccDrawer('menuOpen')" x-cloak>
          {* Dim starts below the header so the burger stays lit and tappable:
             it is the close control now. top-header is the --spacing-header

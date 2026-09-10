@@ -396,6 +396,38 @@ class Cubecart
     {
         if (isset($_GET['_g']) && !empty($_GET['_g'])) {
             switch (strtolower($_GET['_g'])) {
+                case 'quickview':
+                    # Product fragment for the skin's quick-view modal. The skin
+                    # supplies templates/content.quickview.php; a skin without one
+                    # gets an empty response and its JS falls back to opening the
+                    # product page.
+                    #
+                    # popularity is deliberately false: a quick look is not a
+                    # product view, and counting it would inflate the popular
+                    # products list every time a customer glances at a card.
+                    $GLOBALS['debug']->supress();
+                    $quickview_id = isset($_GET['product_id']) ? (int)$_GET['product_id'] : 0;
+                    # getProductData() returns an EMPTY ARRAY for an id that does
+                    # not exist, and displayProduct()'s own guard is !== false, so
+                    # without this check a bad id renders an empty product rather
+                    # than nothing. An empty response is what the skin's JS treats
+                    # as "no quick view here", so it matters.
+                    $quickview_data = $quickview_id > 0 ? $GLOBALS['catalogue']->getProductData($quickview_id) : false;
+                    if (!empty($quickview_data['product_id']) && $GLOBALS['smarty']->templateExists('templates/content.quickview.php')) {
+                        $GLOBALS['catalogue']->displayProduct($quickview_id, false, 'templates/content.quickview.php');
+                        # The fragment contains a form and is echoed directly, so it
+                        # never passes through GUI::display(), which is what normally
+                        # injects the CSRF token before every </form>. Without this the
+                        # add-to-basket POST fails Sanitize::checkToken() and the
+                        # response is a page rather than the mini-basket fragment.
+                        echo preg_replace(
+                            '#</form>#i',
+                            '<input type="hidden" name="token" class="cc_session_token" value="'.$GLOBALS['session']->getToken().'"></form>',
+                            (string)$GLOBALS['smarty']->getTemplateVars('PAGE_CONTENT')
+                        );
+                    }
+                    exit;
+                break;
                 case 'ajax_price_format':
                     $GLOBALS['debug']->supress();
                     if (is_numeric($_GET['price'])) {

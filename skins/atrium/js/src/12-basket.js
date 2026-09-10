@@ -55,6 +55,16 @@ document.addEventListener('alpine:init', function () {
                     // Swap the mini-basket. Alpine's MutationObserver
                     // initialises x-data on the inserted subtree automatically,
                     // so the replacement is live with no re-init call.
+                    /* Guard against a response that is not the mini-basket
+                       fragment. A rejected CSRF token, an expired session or a
+                       plugin error all return a full page, and injecting one
+                       into the header with outerHTML tears the DOM apart and
+                       re-initialises a second copy of every component on it. */
+                    if (text.indexOf('id="mini-basket"') === -1) {
+                        form.submit();
+                        return;
+                    }
+
                     var host = document.getElementById('mini-basket');
                     if (host) {
                         host.outerHTML = text;

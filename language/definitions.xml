@@ -363,6 +363,7 @@
     <string name="category_selected_only" introduced="6.7.6"><![CDATA[Selected only]]></string>
     <string name="checkout_latest_products" introduced="5.0.0"><![CDATA[Check out these great products...]]></string>
     <string name="click_enlarge" introduced="5.0.0"><![CDATA[Click to enlarge]]></string>
+    <string name="quick_view" introduced="6.8.0"><![CDATA[Quick View]]></string>
     <string name="condition" introduced="5.0.0"><![CDATA[Condition]]></string>
     <string name="condition_new" introduced="5.0.0"><![CDATA[New]]></string>
     <string name="condition_used" introduced="5.0.0"><![CDATA[Used]]></string>

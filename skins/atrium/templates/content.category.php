@@ -95,15 +95,41 @@
                   x-data="ccAddToBasket()" @submit="submit($event)"
                   :class="isGrid() ? 'flex flex-col' : 'flex gap-5'">
 
-               <a href="{$product.url}" title="{$product.name}"
-                  class="cc-media block shrink-0 overflow-hidden rounded-cc-lg border border-ink-200"
-                  :class="isGrid() ? '' : 'w-28 sm:w-40'">
-                  <img src="{$product.thumbnail}"
-                       alt="{if isset($product.image_tags.thumbnail.alt) && !empty($product.image_tags.thumbnail.alt)}{$product.image_tags.thumbnail.alt}{else}{$product.name}{/if}"
-                       {if isset($product.image_tags.thumbnail.title)}title="{$product.image_tags.thumbnail.title}"{/if}
-                       loading="lazy"
-                       class="aspect-square w-full object-cover">
-               </a>
+               <div class="group relative shrink-0" :class="isGrid() ? '' : 'w-28 sm:w-40'">
+                  <a href="{$product.url}" title="{$product.name}"
+                     class="cc-media block overflow-hidden rounded-cc-lg border border-ink-200">
+                     <img src="{$product.thumbnail}"
+                          alt="{if isset($product.image_tags.thumbnail.alt) && !empty($product.image_tags.thumbnail.alt)}{$product.image_tags.thumbnail.alt}{else}{$product.name}{/if}"
+                          {if isset($product.image_tags.thumbnail.title)}title="{$product.image_tags.thumbnail.title}"{/if}
+                          loading="lazy"
+                          class="aspect-square w-full object-cover">
+                  </a>
+                  {* Quick view lives ON the image: revealed on hover, and on
+                     keyboard focus so it is not mouse-only. A sibling of the
+                     link, never inside it: an anchor inside an anchor is
+                     invalid and browsers reparent it.
+
+                     ⚠ x-data on the anchor is REQUIRED, not decoration. Alpine
+                     only processes directives inside an x-data tree, and the home
+                     page's product form has no component on it, so @click there
+                     was ignored entirely and the link simply navigated. A bare
+                     x-data makes the trigger its own tiny component and works
+                     wherever it is dropped.
+
+                     It is a LINK, not a button, on purpose. @click.prevent
+                     swallows the navigation whenever Alpine is running, and if
+                     the skin's JS has not loaded, or a cached page predates the
+                     quick-view store, the browser simply follows the href to the
+                     product page. A <button> in that situation does nothing at
+                     all, which is what a customer reports as broken. *}
+                  {if !isset($SKIN_SETTINGS.show_quick_view) || $SKIN_SETTINGS.show_quick_view}
+                  <a x-data href="{$product.url}" title="{$product.name}"
+                     class="cc-btn cc-btn-secondary absolute inset-x-2 bottom-2 hidden opacity-0 shadow transition-opacity focus-visible:opacity-100 group-hover:opacity-100 sm:flex"
+                     @click.prevent="$store.quickView.show('{$product.product_id}', '{$product.name|escape:'javascript'}', '{$product.url}')">
+                     {$LANG.catalogue.quick_view|default:'Quick View'}
+                  </a>
+                  {/if}
+               </div>
 
                <div class="min-w-0 flex-1" :class="isGrid() ? 'mt-3 flex flex-col' : ''">
                   <h2 class="text-sm font-medium">
@@ -158,6 +184,7 @@
                      {elseif !$CATALOGUE_MODE}
                      <button type="submit" class="cc-btn cc-btn-secondary w-full sm:w-auto" disabled>{$LANG.catalogue.out_of_stock_short}</button>
                      {/if}
+
                   </div>
                </div>
             </form>
