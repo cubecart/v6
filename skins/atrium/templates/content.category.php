@@ -132,6 +132,11 @@
 
                      {* ctrl_stock: purchasable — in stock, or allowed out of stock by store settings. *}
                      {elseif $product.ctrl_stock && !$CATALOGUE_MODE}
+                     {* show_listing_add_to_basket (config.xml): a store whose products
+                        have options or need explaining can send customers to the
+                        product page instead. The tile's image and title already link
+                        there, so nothing is unreachable when this is off. *}
+                     {if !isset($SKIN_SETTINGS.show_listing_add_to_basket) || $SKIN_SETTINGS.show_listing_add_to_basket}
                      <div class="flex gap-2">
                         <label class="cc-sr-only" for="qty-cat-{$product.product_id}">{$LANG.common.quantity}</label>
                         <input type="number" id="qty-cat-{$product.product_id}" name="quantity"
@@ -148,6 +153,7 @@
                         </button>
                         <input type="hidden" name="add" value="{$product.product_id}">
                      </div>
+                     {/if}
 
                      {elseif !$CATALOGUE_MODE}
                      <button type="submit" class="cc-btn cc-btn-secondary w-full sm:w-auto" disabled>{$LANG.catalogue.out_of_stock_short}</button>

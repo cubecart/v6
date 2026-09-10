@@ -95,6 +95,10 @@
 	  <label><![CDATA[Secondary Colour]]></label>
 	  <description><![CDATA[Optional. Repaints the navigation and footer bands. Leave empty to keep the near-black default.]]></description>
 	</setting>
+	<setting name="show_listing_add_to_basket" type="bool" default="true">
+	  <label><![CDATA[Show Add to Basket on Listings]]></label>
+	  <description><![CDATA[Show the quantity box and Add to Basket button on category pages, the home page and other product listings. Turn this off to send customers to the product page first, which suits stores whose products have options or need explaining.]]></description>
+	</setting>
 	<setting name="show_basket_total" type="bool" default="true">
 	  <label><![CDATA[Show Basket Total]]></label>
 	  <description><![CDATA[Show the basket total beside the basket icon in the header. Hidden on small screens either way, where there is no room for it.]]></description>

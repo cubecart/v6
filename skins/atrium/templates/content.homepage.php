@@ -107,6 +107,8 @@
 
             {* ctrl_stock: purchasable — in stock, or allowed out of stock by store settings. *}
             {elseif $product.ctrl_stock && !$CATALOGUE_MODE}
+            {* show_listing_add_to_basket: see content.category.php. *}
+            {if !isset($SKIN_SETTINGS.show_listing_add_to_basket) || $SKIN_SETTINGS.show_listing_add_to_basket}
             <div class="mt-2 flex gap-2">
                <label class="cc-sr-only" for="qty-{$product.product_id}">{$LANG.common.quantity}</label>
                <input type="number" id="qty-{$product.product_id}" name="quantity"
@@ -120,6 +122,7 @@
                   <span class="sr-only sm:not-sr-only">{$LANG.catalogue.add_to_basket}</span>
                </button>
             </div>
+            {/if}
 
             {elseif !$CATALOGUE_MODE}
             <button type="submit" class="cc-btn cc-btn-secondary mt-2 w-full" disabled>{$LANG.catalogue.out_of_stock_short}</button>
