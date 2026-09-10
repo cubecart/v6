@@ -13,7 +13,8 @@ document.addEventListener('alpine:init', function () {
         return {
             full: initialFull || '',   // full-size src for the lightbox
             open: false,
-            index: 0,
+            index: 0,        // which image the PAGE preview is showing
+            lightboxIndex: 0, // which image the LIGHTBOX is showing
             images: [],
 
             /* The thumbnails are the only list of images, so read it back off
@@ -38,18 +39,23 @@ document.addEventListener('alpine:init', function () {
                 if (typeof index === 'number') this.index = index;
             },
 
-            /** Move the lightbox and the page preview together, wrapping. */
+            /* Move the LIGHTBOX only, wrapping. It used to carry the page
+               preview and the thumbnail highlight with it, so arrowing through
+               images animated the page behind the overlay and left the customer
+               on a different image than the one they opened. The page keeps its
+               own position; lightboxIndex is re-synced on every open. */
             step: function (delta) {
                 if (this.images.length < 2) return;
-                this.index = (this.index + delta + this.images.length) % this.images.length;
-                var image = this.images[this.index];
-                this.show(image.medium, image.full, this.index);
+                this.lightboxIndex = (this.lightboxIndex + delta + this.images.length) % this.images.length;
+                var image = this.images[this.lightboxIndex];
+                if (image && image.full) this.full = image.full;
             },
 
             /** Open the lightbox on whatever is currently previewed. */
             enlarge: function () {
                 var preview = document.getElementById('img-preview');
                 if (!this.full && preview) this.full = preview.src;
+                this.lightboxIndex = this.index;
                 this.open = true;
             },
 
