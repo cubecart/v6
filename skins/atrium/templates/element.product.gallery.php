@@ -68,7 +68,7 @@
 
       {* .cc-media, same white plate as every other catalogue image: a
          transparent PNG on the dark overlay would otherwise read as a hole. *}
-      <img :src="full" alt="{$PRODUCT.name}" class="cc-media max-h-full max-w-full object-contain" @click.stop>
+      <img :src="full" alt="{$PRODUCT.name}" class="cc-media max-h-full max-w-full rounded-cc-lg object-contain" @click.stop>
 
       <button type="button" x-show="images.length > 1" @click.stop="step(1)"
               class="absolute end-4 top-1/2 -translate-y-1/2 rounded-cc bg-ink-100 p-2 text-ink-800 hover:bg-ink-200">
