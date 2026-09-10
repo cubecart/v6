@@ -67,6 +67,11 @@
    </div>
 
    {foreach from=$COMMENTS item=html}{$html}{/foreach}
+
+   {* record=true: this is the only page that knows the product, so it is the
+      only one that writes to the list. Rendering happens everywhere it is
+      included. *}
+   {include file='templates/element.recently_viewed.php' record=true}
 </div>
 {else}
 <div class="py-16 text-center">

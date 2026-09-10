@@ -39,6 +39,14 @@ document.addEventListener('alpine:init', function () {
                 if (this.busy) return;
                 this.busy = true;
 
+                /* Fire the flight NOW, not after the response: it has to be
+                   measured against the page the customer clicked on, and the
+                   mini-basket is replaced wholesale below. The first image in
+                   the form is the product one in both places this form appears
+                   — the gallery is inside the form on the product page, and the
+                   thumbnail is inside it on a listing. */
+                if (window.ccFlyToBasket) window.ccFlyToBasket(form.querySelector('img'));
+
                 var action = form.getAttribute('action') || window.location.href;
                 action = action.replace(/\?.*/, '');
                 var url = action + (action.indexOf('?') > -1 ? '&' : '?') +

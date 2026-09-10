@@ -61,6 +61,22 @@ drawer. Same markup either way; `main.php` renders `.cc-navbar` or `.cc-navrail`
 and switches the content wrapper to `.cc-layout-rail`, a grid that puts the
 sidebar boxes under the content at `lg` and beside it at `xl`.
 
+**Rewards and flourishes.** Applying a valid discount code fires a short burst
+of confetti out of the discount line (see `js/src/41-coupon.js` for why that has
+to survive a redirect). Adding to the basket flies a copy of the product image
+into the basket icon. Both respect `prefers-reduced-motion`, and neither can
+break a purchase: every guard returns rather than throwing.
+
+**Only N left.** Off by default. Shows the store's real `stock_level` on the
+product page once it drops to a chosen threshold — never an invented number and
+never a countdown timer. Needs core's own *Display Stock Levels* on as well,
+because a low-stock warning is a stock level.
+
+**Recently viewed.** A row of the visitor's last few products on the product and
+category pages. The list lives in their own `localStorage`, is never sent
+anywhere, and is read back as untrusted input: URLs are scheme-checked and every
+node is built with `textContent`, never `innerHTML`.
+
 **Skin settings** (the cog on the skin's card in Manage Extensions) cover the
 menu and colours plus what to show: quick view, listing add-to-basket, basket
 count and total, company name, mobile number, mailing list, coupon field, order

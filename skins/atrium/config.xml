@@ -203,6 +203,20 @@
 	  <label><![CDATA[Show Subscribe to Mailing List]]></label>
 	  <description><![CDATA[Show the newsletter opt-in on checkout. Has no effect when the store's newsletter is switched off in Store Settings.]]></description>
 	</setting>
+	<setting name="low_stock_threshold" type="select" default="0">
+	  <label><![CDATA[Low Stock Warning]]></label>
+	  <description><![CDATA[Show "Only 2 left in stock" on the product page once the real stock level drops to this number or below. Only ever shows the true figure, and only for products you track stock on. Works on its own: you do not have to switch on Display Stock Levels and publish an exact count on every product.]]></description>
+	  <options>
+		<option value="0"><![CDATA[Do not show]]></option>
+		<option value="3"><![CDATA[3 or fewer]]></option>
+		<option value="5"><![CDATA[5 or fewer]]></option>
+		<option value="10"><![CDATA[10 or fewer]]></option>
+	  </options>
+	</setting>
+	<setting name="show_recently_viewed" type="bool" default="true">
+	  <label><![CDATA[Show Recently Viewed]]></label>
+	  <description><![CDATA[Show a row of the products this visitor looked at recently. The list is kept in their own browser and is never sent to the store or to anyone else.]]></description>
+	</setting>
 	<setting name="celebrate_coupon" type="bool" default="true">
 	  <label><![CDATA[Celebrate Discount Codes]]></label>
 	  <description><![CDATA[Play a short burst of confetti over the basket when a customer successfully applies a discount code. Nothing is shown when a code is rejected, and visitors who ask their device for reduced motion get the highlight without the confetti.]]></description>

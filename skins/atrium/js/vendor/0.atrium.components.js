@@ -374,6 +374,14 @@ document.addEventListener('alpine:init', function () {
                 if (this.busy) return;
                 this.busy = true;
 
+                /* Fire the flight NOW, not after the response: it has to be
+                   measured against the page the customer clicked on, and the
+                   mini-basket is replaced wholesale below. The first image in
+                   the form is the product one in both places this form appears
+                   — the gallery is inside the form on the product page, and the
+                   thumbnail is inside it on a listing. */
+                if (window.ccFlyToBasket) window.ccFlyToBasket(form.querySelector('img'));
+
                 var action = form.getAttribute('action') || window.location.href;
                 action = action.replace(/\?.*/, '');
                 var url = action + (action.indexOf('?') > -1 ? '&' : '?') +
@@ -436,6 +444,69 @@ document.addEventListener('alpine:init', function () {
         };
     });
 });
+
+/* ---- js/src/13-flight.js ---- */
+/**
+ * Atrium — product image flies to the basket.
+ *
+ * HOUSE RULE: no ES6 template literals in this folder. See 00-boot.js.
+ *
+ * Called by ccAddToBasket (12-basket.js) at click time, NOT after the response:
+ * the source image and the basket icon both have to be measured while the page
+ * is still the one the customer clicked on, and the mini-basket fragment is
+ * replaced wholesale a moment later.
+ *
+ * A clone is animated, never the image itself — the original stays in the grid,
+ * and on the product page it is the gallery image the customer is still
+ * looking at.
+ *
+ * Deliberately silent about failure. Every guard below returns rather than
+ * throwing, because this runs inside the add-to-basket path and a flourish must
+ * never be able to break a purchase.
+ */
+window.ccFlyToBasket = function (img) {
+    if (!img) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var target = document.getElementById('mini-basket');
+    if (!target) return;
+
+    var from = img.getBoundingClientRect();
+    var to = target.getBoundingClientRect();
+    /* Zero width means the image has not laid out, or the basket is the
+       below-sm variant that is off-screen. Nothing sensible to animate to. */
+    if (!from.width || !to.width) return;
+
+    var clone = document.createElement('img');
+    if (!clone.animate) return;               // no Web Animations API
+    clone.src = img.currentSrc || img.src;
+    clone.alt = '';
+    clone.setAttribute('aria-hidden', 'true');
+    clone.className = 'cc-flight';
+    clone.style.left = from.left + 'px';
+    clone.style.top = from.top + 'px';
+    clone.style.width = from.width + 'px';
+    clone.style.height = from.height + 'px';
+    document.body.appendChild(clone);
+
+    var dx = (to.left + to.width / 2) - (from.left + from.width / 2);
+    var dy = (to.top + to.height / 2) - (from.top + from.height / 2);
+
+    /* The midpoint is lifted 70px above the straight line. A linear path reads
+       as a file transfer; the arc reads as a throw, which is the whole point. */
+    var flight = clone.animate([
+        { transform: 'translate(0px, 0px) scale(1)', opacity: 0.95 },
+        { transform: 'translate(' + (dx * 0.5) + 'px, ' + ((dy * 0.5) - 70) + 'px) scale(0.55)', opacity: 0.9, offset: 0.55 },
+        { transform: 'translate(' + dx + 'px, ' + dy + 'px) scale(0.12)', opacity: 0.15 }
+    ], { duration: 620, easing: 'cubic-bezier(0.33, 0, 0.67, 1)' });
+
+    function cleanup() { if (clone.parentNode) clone.remove(); }
+    flight.onfinish = cleanup;
+    flight.oncancel = cleanup;
+    /* Belt and braces: a backgrounded tab can leave an animation neither
+       finished nor cancelled, and an abandoned clone would sit over the page. */
+    window.setTimeout(cleanup, 1500);
+};
 
 /* ---- js/src/20-product.js ---- */
 /**
@@ -1587,6 +1658,149 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
         arm();
         celebrate();
+    }
+}());
+
+/* ---- js/src/42-recent.js ---- */
+/**
+ * Atrium — recently viewed products.
+ *
+ * HOUSE RULE: no ES6 template literals in this folder. See 00-boot.js.
+ *
+ * The list is this browser's alone: localStorage, never sent to the server.
+ * That is the feature, not an implementation detail — it means no core change,
+ * no table, no session, and nothing to disclose in a privacy policy.
+ *
+ * ⚠ Everything is built with createElement and textContent, never innerHTML.
+ * The values were written by this skin, but localStorage is writable by
+ * anything else running on the origin, so it is treated as untrusted input on
+ * the way back in: the URL is scheme-checked and the image is dropped unless it
+ * looks like one.
+ */
+(function () {
+    'use strict';
+
+    var KEY = 'cc_recent';
+    var MAX_STORED = 12;
+    /* One full row at the widest breakpoint. Narrower viewports show fewer,
+       and that is decided in CSS (.cc-recent-row) rather than here: a JS count
+       would need a resize listener, would be wrong until it fired, and would
+       have to re-render on every rotate. Rendering four and hiding two costs
+       nothing — the images are loading="lazy", and a display:none image is
+       never fetched. */
+    var MAX_SHOWN = 4;
+
+    function read() {
+        try {
+            var raw = window.localStorage.getItem(KEY);
+            var list = raw ? JSON.parse(raw) : [];
+            return Object.prototype.toString.call(list) === '[object Array]' ? list : [];
+        } catch (e) {
+            return [];   // blocked storage, or somebody left junk in the key
+        }
+    }
+
+    function write(list) {
+        try {
+            window.localStorage.setItem(KEY, JSON.stringify(list));
+        } catch (e) { /* private mode, or quota */ }
+    }
+
+    /* Only http(s) and root-relative paths. Blocks a javascript: or data: URL
+       smuggled into storage from turning a thumbnail into a script. */
+    function safeUrl(value) {
+        var url = String(value || '');
+        return (/^https?:\/\//i.test(url) || url.charAt(0) === '/') ? url : '';
+    }
+
+    function record() {
+        var node = document.getElementById('cc-recent-record');
+        if (!node) return null;
+
+        var item;
+        try {
+            item = JSON.parse(node.textContent);
+        } catch (e) {
+            return null;
+        }
+        if (!item || !item.id) return null;
+
+        var list = read();
+        // Seen before: lift it to the front rather than storing it twice.
+        for (var i = list.length - 1; i >= 0; i--) {
+            if (String(list[i].id) === String(item.id)) list.splice(i, 1);
+        }
+        list.unshift(item);
+        if (list.length > MAX_STORED) list.length = MAX_STORED;
+        write(list);
+        return String(item.id);
+    }
+
+    function card(item) {
+        var li = document.createElement('li');
+        li.className = 'group flex flex-col';
+
+        var link = document.createElement('a');
+        link.href = safeUrl(item.url);
+        link.title = String(item.name || '');
+        link.className = 'cc-media block overflow-hidden rounded-cc-lg border border-ink-200';
+
+        var img = document.createElement('img');
+        img.src = safeUrl(item.img);
+        img.alt = String(item.name || '');
+        img.loading = 'lazy';
+        img.className = 'aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-105';
+        link.appendChild(img);
+        li.appendChild(link);
+
+        var heading = document.createElement('h3');
+        heading.className = 'mt-3 text-sm font-medium';
+        var nameLink = document.createElement('a');
+        nameLink.href = link.href;
+        // textContent, not innerHTML: the name came back out of storage.
+        nameLink.textContent = String(item.name || '');
+        nameLink.className = 'text-ink-900 hover:underline';
+        heading.appendChild(nameLink);
+        li.appendChild(heading);
+
+        if (item.price) {
+            var price = document.createElement('div');
+            price.className = 'price mt-2 text-base font-semibold text-ink-900';
+            price.textContent = String(item.price);
+            li.appendChild(price);
+        }
+        return li;
+    }
+
+    function render(currentId) {
+        var section = document.getElementById('cc-recent');
+        var list = document.getElementById('cc-recent-list');
+        if (!section || !list) return;
+
+        var items = read();
+        var shown = 0;
+        for (var i = 0; i < items.length && shown < MAX_SHOWN; i++) {
+            var item = items[i];
+            // Never show the page you are already on.
+            if (currentId && String(item.id) === currentId) continue;
+            if (!item.url || !safeUrl(item.url)) continue;
+            list.appendChild(card(item));
+            shown++;
+        }
+        /* One product viewed and nothing else to show is not "recently viewed",
+           it is a row of one. The section stays hidden until it earns its
+           heading. */
+        if (shown > 1) section.classList.remove('hidden');
+    }
+
+    function init() {
+        render(record());
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
     }
 }());
 

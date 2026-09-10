@@ -643,6 +643,29 @@
 
   /* Added by 12-basket.js to the freshly injected #mini-basket fragment, and
      removed once it has played so a second add replays it. */
+  /* Recently viewed: always exactly ONE row, however wide the viewport. The
+     grid is 2 / 3 / 4 columns like every other product grid in the skin, so the
+     script renders four and these trim the overflow. Done here rather than in
+     JS so it is right on first paint and follows a rotate with no re-render.
+     Breakpoints are Tailwind's lg (64rem) and xl (80rem). */
+  @media (max-width: 63.999rem) {
+    .cc-recent-row > li:nth-child(n+3) { display: none; }
+  }
+  @media (min-width: 64rem) and (max-width: 79.999rem) {
+    .cc-recent-row > li:nth-child(n+4) { display: none; }
+  }
+
+  /* The clone that flies to the basket (js/src/13-flight.js). Fixed and inert:
+     it crosses the whole page and must never swallow a click on the way. */
+  .cc-flight {
+    position: fixed;
+    z-index: 60;
+    pointer-events: none;
+    border-radius: var(--radius-cc);
+    object-fit: cover;
+    will-change: transform, opacity;
+  }
+
   /* ── Discount code applied ─────────────────────────────────────────────
      Fired by js/src/41-coupon.js after the redirect that follows applying a
      code. The row flash is the part that carries the meaning, so it is NOT

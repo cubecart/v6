@@ -365,6 +365,9 @@
     <string name="checkout_latest_products" introduced="5.0.0"><![CDATA[Check out these great products...]]></string>
     <string name="click_enlarge" introduced="5.0.0"><![CDATA[Click to enlarge]]></string>
     <string name="quick_view" introduced="6.8.0"><![CDATA[Quick View]]></string>
+    <string name="recently_viewed" introduced="6.8.0"><![CDATA[Recently Viewed]]></string>
+    <string name="stock_low" introduced="6.8.0"><![CDATA[Only %d left in stock]]></string>
+    <string name="stock_low_one" introduced="6.8.0"><![CDATA[Only 1 left in stock]]></string>
     <string name="condition" introduced="5.0.0"><![CDATA[Condition]]></string>
     <string name="condition_new" introduced="5.0.0"><![CDATA[New]]></string>
     <string name="condition_used" introduced="5.0.0"><![CDATA[Used]]></string>

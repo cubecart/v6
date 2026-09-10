@@ -500,8 +500,14 @@ class Catalogue
                         $product['stock_level'] =  ($stock_variations[0]['min_stock'] == $stock_variations[0]['max_stock']) ? $stock_variations[0]['max_stock'] : $stock_variations[0]['min_stock'].' - '.$stock_variations[0]['max_stock'];
                     }
                 }
-                $product['stock_level'] = ($GLOBALS['config']->get('config', 'stock_level')=='1') ? $product['stock_level'] : false;
+                // Capture the real figure BEFORE the display setting can blank it.
+                // These two lines used to be the other way round, which made
+                // unsuppressed_stock_level a copy of the suppressed value and so
+                // never unsuppressed at all. A skin needs the true number to say
+                // "only 2 left" without the store also having to publish an exact
+                // count on every product, which is a different decision.
                 $product['unsuppressed_stock_level'] = $product['stock_level'];
+                $product['stock_level'] = ($GLOBALS['config']->get('config', 'stock_level')=='1') ? $product['stock_level'] : false;
                 $GLOBALS['smarty']->assign('PRODUCT', $product);
             }
             if (($category = $GLOBALS['db']->select('CubeCart_category_index', false, array('product_id' => (int)$product['product_id'], 'primary' => 1), array('priority' => 'DESC'), 1)) !== false) {

@@ -197,5 +197,7 @@
       </ul>
 
       {include file='templates/element.category.pagination.traditional.php'}
+
+      {include file='templates/element.recently_viewed.php'}
    </div>
 </div>
