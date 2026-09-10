@@ -33,6 +33,12 @@ class Catalogue
     public $image_tags = array();
     public $sale_on = false;
 
+    /* Ceiling on the per-combination stock level published in optionStockMap().
+       A skin needs the number to say "only 2 left", but the map is public JSON
+       in the page source and dumping the whole inventory there is a different
+       matter. Above this, the count is simply omitted. */
+    const LOW_STOCK_DISCLOSE_MAX = 10;
+
     const OPTION_SELECT     = 0;
     const OPTION_TEXTBOX    = 1;
     const OPTION_TEXTAREA   = 2;
@@ -658,6 +664,9 @@ class Catalogue
             }
 
             $entry = array('ok' => $ok);
+            if ($row['use_stock'] && $row['stock_level'] > 0 && $row['stock_level'] <= self::LOW_STOCK_DISCLOSE_MAX) {
+                $entry['stock'] = (int)$row['stock_level'];
+            }
             if (!empty($row['restock_note'])) {
                 $entry['note'] = (string)$row['restock_note'];
             }

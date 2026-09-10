@@ -225,12 +225,17 @@ window.ccToggleSearch = function () {
 };
 
 document.addEventListener('alpine:init', function () {
-    window.Alpine.data('ccSearch', function () {
+    window.Alpine.data('ccSearch', function (uid) {
         return {
+            uid: uid || '',
             term: '',
             results: [],
             open: false,
             searched: false,
+            /* Keyboard position in the result list. -1 means "in the input":
+               Enter then submits the form and searches, which is what a
+               customer who ignored the suggestions expects. */
+            active: -1,
             /* Mirrors data-image. The template needs it so it can reserve the
                thumbnail slot even when a product has no image — 308 of the
                indexed products carry no `thumbnail` field at all, and without a
@@ -245,6 +250,30 @@ document.addEventListener('alpine:init', function () {
 
             close: function () {
                 this.open = false;
+                this.active = -1;
+            },
+
+            /** Stable per-row id, for aria-activedescendant. */
+            optionId: function (i) {
+                return 'sayt-opt' + this.uid + '-' + i;
+            },
+
+            /** Arrow keys. Wraps, so Up from the input lands on the last row. */
+            move: function (delta) {
+                if (!this.open || !this.results.length) return;
+                var n = this.results.length;
+                this.active = (this.active + delta + n) % n;
+                var el = document.getElementById(this.optionId(this.active));
+                // block:'nearest' keeps the panel still when the row is already visible.
+                if (el) el.scrollIntoView({ block: 'nearest' });
+            },
+
+            /** Enter. Returns false when nothing is selected so the form submits. */
+            choose: function () {
+                var hit = this.results[this.active];
+                if (this.active < 0 || !hit) return false;
+                window.location = hit.url;
+                return true;
             },
 
             /** Escape user input before it is ever put back into the DOM. */
@@ -317,6 +346,7 @@ document.addEventListener('alpine:init', function () {
                 this.busy = false;
                 this.searched = true;
                 this.open = true;
+                this.active = -1;
 
                 /* Announce only the empty case, and only from the markup the
                    server rendered: a bare result count would need a string this
@@ -535,11 +565,19 @@ document.addEventListener('alpine:init', function () {
     window.Alpine.store('optionStock', {
         available: true,
         note: '',
+        // Stock of the SELECTED combination, or 0 when unknown or not low.
+        // Core only publishes it up to Catalogue::LOW_STOCK_DISCLOSE_MAX.
+        stock: 0,
         _map: null,
+        _one: '',
+        _many: '',
 
         load: function () {
             var el = document.getElementById('cc-option-stock');
             if (!el) return;
+            // Translated on the server; %d is substituted here.
+            this._one = el.getAttribute('data-low-one') || '';
+            this._many = el.getAttribute('data-low-many') || '';
             try {
                 var data = JSON.parse(el.textContent);
                 if (data && data.combinations) this._map = data;
@@ -547,6 +585,14 @@ document.addEventListener('alpine:init', function () {
                 // A malformed payload must not take the page down with it.
                 this._map = null;
             }
+        },
+
+        /** "Only 2 left in stock" for the current combination, or ''. */
+        lowText: function (threshold) {
+            var n = this.stock;
+            if (!n || !threshold || n > threshold) return '';
+            var s = (n === 1 && this._one) ? this._one : this._many;
+            return s ? s.replace('%d', n) : '';
         },
 
         /* Judge the combination currently selected on the page.
@@ -572,6 +618,7 @@ document.addEventListener('alpine:init', function () {
             if (!chosen.length) {
                 this.available = true;
                 this.note = '';
+                this.stock = 0;
                 return;
             }
 
@@ -579,6 +626,7 @@ document.addEventListener('alpine:init', function () {
             var entry = this._map.combinations[chosen.join('|')];
             this.available = entry ? !!entry.ok : true;
             this.note = (entry && entry.note) ? entry.note : '';
+            this.stock = (entry && entry.stock) ? entry.stock : 0;
         }
     });
 
@@ -1637,6 +1685,7 @@ document.addEventListener('DOMContentLoaded', function () {
     'use strict';
 
     var KEY = 'cc_recent';
+    var removeLabel = 'Remove';   // replaced from the template's data attribute
     var MAX_STORED = 12;
     // One row at the widest breakpoint; CSS (.cc-recent-row) trims the rest.
     var MAX_SHOWN = 4;
@@ -1655,6 +1704,15 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             window.localStorage.setItem(KEY, JSON.stringify(list));
         } catch (e) { /* private mode, or quota */ }
+    }
+
+    /** Drop one product from the stored list. */
+    function forget(id) {
+        var list = read();
+        for (var i = list.length - 1; i >= 0; i--) {
+            if (String(list[i].id) === String(id)) list.splice(i, 1);
+        }
+        write(list);
     }
 
     // http(s) and root-relative only: blocks a smuggled javascript: URL.
@@ -1686,9 +1744,45 @@ document.addEventListener('DOMContentLoaded', function () {
         return String(item.id);
     }
 
+    /* Always visible rather than hover-revealed: on a touch device there is no
+       hover, and a control the customer cannot find is not a control. */
+    function removeButton(item, li) {
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'absolute end-1.5 top-1.5 z-10 grid size-7 place-items-center rounded-full ' +
+                           'bg-ink-50/90 text-ink-600 shadow hover:bg-ink-200 hover:text-ink-900';
+        var label = (removeLabel + ' ' + (item.name || '')).trim();
+        button.title = label;
+        button.setAttribute('aria-label', label);
+        button.innerHTML = '<svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+                           'stroke-width="2" aria-hidden="true"><path d="M6 18 18 6M6 6l12 12" ' +
+                           'stroke-linecap="round"/></svg>';
+        button.addEventListener('click', function () {
+            forget(item.id);
+            li.remove();
+            /* nth-child does the trimming, so removing a node promotes a hidden
+               one into the row on its own.
+
+               Hidden only at ZERO, not at one. The "a row of one is not
+               recently viewed" rule below applies to the FIRST render; once a
+               customer has removed something deliberately, the one they kept is
+               the one they want to see, and taking the section away with it
+               looks like the X cleared everything. */
+            var list = document.getElementById('cc-recent-list');
+            var section = document.getElementById('cc-recent');
+            if (list && section && !list.children.length) section.classList.add('hidden');
+        });
+        return button;
+    }
+
     function card(item) {
         var li = document.createElement('li');
         li.className = 'group flex flex-col';
+
+        // The button is a SIBLING of the link, never inside it: a <button> in an
+        // <a> is invalid and browsers reparent it.
+        var frame = document.createElement('div');
+        frame.className = 'relative';
 
         var link = document.createElement('a');
         link.href = safeUrl(item.url);
@@ -1701,7 +1795,9 @@ document.addEventListener('DOMContentLoaded', function () {
         img.loading = 'lazy';
         img.className = 'aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-105';
         link.appendChild(img);
-        li.appendChild(link);
+        frame.appendChild(link);
+        frame.appendChild(removeButton(item, li));
+        li.appendChild(frame);
 
         var heading = document.createElement('h3');
         heading.className = 'mt-3 text-sm font-medium';
@@ -1725,6 +1821,8 @@ document.addEventListener('DOMContentLoaded', function () {
         var section = document.getElementById('cc-recent');
         var list = document.getElementById('cc-recent-list');
         if (!section || !list) return;
+
+        removeLabel = section.getAttribute('data-remove-label') || removeLabel;
 
         var items = read();
         var shown = 0;

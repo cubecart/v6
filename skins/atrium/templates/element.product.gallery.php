@@ -18,6 +18,9 @@
            src="{$PRODUCT.medium}"
            alt="{if isset($PRODUCT.image_tags.medium.alt) && !empty($PRODUCT.image_tags.medium.alt)}{$PRODUCT.image_tags.medium.alt}{else}{$PRODUCT.name}{/if}"
            {if isset($PRODUCT.image_tags.medium.title)}title="{$PRODUCT.image_tags.medium.title}"{/if}
+           {* The LCP element on every product page. Never lazy, and hinted, or
+              the browser discovers it at normal priority behind the CSS. *}
+           fetchpriority="high"
            class="aspect-square w-full object-contain">
       <span class="cc-sr-only">{$LANG.catalogue.click_enlarge}</span>
    </button>

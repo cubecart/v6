@@ -19,7 +19,7 @@
  * in both: they are separate forms, and the name is part of the contract above.
  *}
 {if isset($uid) && $uid}{assign var='cc_s_uid' value="-`$uid`"}{else}{assign var='cc_s_uid' value=''}{/if}
-<div class="w-full" x-data="ccSearch()" @click.outside="close()" @keydown.escape.window="close()">
+<div class="w-full" x-data="ccSearch('{$cc_s_uid}')" @click.outside="close()" @keydown.escape.window="close()">
    <form action="{$STORE_URL}/search{$CONFIG.seo_ext}" class="search_form relative" method="get" role="search">
       <label for="cc-search-input{$cc_s_uid}" class="cc-sr-only">{$LANG.common.search}</label>
       <input id="cc-search-input{$cc_s_uid}"
@@ -29,6 +29,19 @@
              x-model="term"
              @input.debounce.300ms="go()"
              @focus="go()"
+             {* Combobox keyboard contract. .prevent on the arrows stops the
+                caret jumping to the ends of the term while you pick a row;
+                Enter only preventDefaults when a row IS selected, so Enter from
+                the input still submits and runs a full search. *}
+             role="combobox"
+             aria-autocomplete="list"
+             aria-controls="sayt_results{$cc_s_uid}"
+             :aria-expanded="open && results.length ? 'true' : 'false'"
+             :aria-activedescendant="active >= 0 ? optionId(active) : null"
+             @keydown.arrow-down.prevent="move(1)"
+             @keydown.arrow-up.prevent="move(-1)"
+             @keydown.enter="if (choose()) $event.preventDefault()"
+             @keydown.escape="close()"
              autocomplete="off"
              data-image="true"
              data-amount="15"
@@ -53,9 +66,13 @@
           :class="{ 'cc-pending': busy }" :aria-busy="busy ? 'true' : 'false'"
           class="absolute inset-x-0 top-full z-40 mt-1 max-h-96 overflow-y-auto rounded-cc-lg border border-ink-200 bg-ink-100 py-1 shadow-lg"
           role="listbox">
-         <template x-for="p in results" :key="p.product_id">
-            <li>
-               <a :href="p.url" class="flex items-center gap-3 px-3 py-2 text-sm text-ink-800 hover:bg-ink-200">
+         <template x-for="(p, i) in results" :key="p.product_id">
+            <li :id="optionId(i)" role="option" :aria-selected="i === active ? 'true' : 'false'">
+               {* Pointer and keyboard share one highlight, so moving the mouse
+                  over the list does not leave two rows looking selected. *}
+               <a :href="p.url" @mouseenter="active = i"
+                  class="flex items-center gap-3 px-3 py-2 text-sm text-ink-800 hover:bg-ink-200"
+                  :class="i === active ? 'bg-ink-200' : ''">
                   {* The slot is reserved whenever images are enabled, even when the product
                      has none: 308 indexed products carry no `thumbnail` field, and an x-if on
                      p.thumbnail alone rendered NOTHING for them — those rows lost the 40px

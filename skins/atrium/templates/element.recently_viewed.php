@@ -21,7 +21,10 @@
 {rdelim}</script>
 {/if}
 
-<section id="cc-recent" class="mt-16 hidden" aria-labelledby="cc-recent-heading">
+{* data-remove-label: the per-card remove button is built in JS, so its
+   translated label has to be handed over from here. *}
+<section id="cc-recent" class="mt-16 hidden" aria-labelledby="cc-recent-heading"
+         data-remove-label="{$LANG.common.remove|default:'Remove'|escape}">
    <h2 id="cc-recent-heading" class="mb-6 text-xl font-semibold tracking-tight text-ink-900">
       {$LANG.catalogue.recently_viewed|default:'Recently Viewed'}
    </h2>

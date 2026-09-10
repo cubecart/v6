@@ -83,7 +83,10 @@
       an option combination is sold out BEFORE the customer submits and gets
       bounced back. Absent or empty means "no opinion" and nothing changes. *}
    {if !empty($OPTION_STOCK)}
-   <script type="application/json" id="cc-option-stock">{$OPTION_STOCK nofilter}</script>
+   {* data-low-* carry the translated strings; 20-product.js substitutes %d. *}
+   <script type="application/json" id="cc-option-stock"
+           data-low-one="{$LANG.catalogue.stock_low_one|default:'Only 1 left in stock'|escape}"
+           data-low-many="{$LANG.catalogue.stock_low|default:'Only %d left in stock'|escape}">{$OPTION_STOCK nofilter}</script>
    {* Hidden by default and revealed by removing the class, rather than x-show:
       the class binding is what the button beside it uses and it demonstrably
       re-runs on a store change, where x-show's effect on this element did not.
@@ -91,6 +94,14 @@
    <p class="mt-2 hidden text-sm font-medium text-danger-700" :class="{ 'hidden': $store.optionStock.available }" role="status">
       {$LANG.catalogue.out_of_stock_short}<span class="hidden font-normal" :class="{ 'hidden': !$store.optionStock.note }" x-text="$store.optionStock.note"></span>
    </p>
+   {* Low stock for the SELECTED combination. The product-level line above can
+      never fire on an option-matrix product, because core reports its stock as
+      a range like "2 - 9"; this follows the customer's choice instead. *}
+   {if !empty($SKIN_SETTINGS.low_stock_threshold)}
+   <p class="mt-3 text-sm font-medium text-warn-700" role="status"
+      x-show="$store.optionStock.lowText({$SKIN_SETTINGS.low_stock_threshold})" x-cloak
+      x-text="$store.optionStock.lowText({$SKIN_SETTINGS.low_stock_threshold})"></p>
+   {/if}
    {/if}
 
    {if $PRODUCT.minimum_quantity>1}

@@ -29,12 +29,17 @@ window.ccToggleSearch = function () {
 };
 
 document.addEventListener('alpine:init', function () {
-    window.Alpine.data('ccSearch', function () {
+    window.Alpine.data('ccSearch', function (uid) {
         return {
+            uid: uid || '',
             term: '',
             results: [],
             open: false,
             searched: false,
+            /* Keyboard position in the result list. -1 means "in the input":
+               Enter then submits the form and searches, which is what a
+               customer who ignored the suggestions expects. */
+            active: -1,
             /* Mirrors data-image. The template needs it so it can reserve the
                thumbnail slot even when a product has no image — 308 of the
                indexed products carry no `thumbnail` field at all, and without a
@@ -49,6 +54,30 @@ document.addEventListener('alpine:init', function () {
 
             close: function () {
                 this.open = false;
+                this.active = -1;
+            },
+
+            /** Stable per-row id, for aria-activedescendant. */
+            optionId: function (i) {
+                return 'sayt-opt' + this.uid + '-' + i;
+            },
+
+            /** Arrow keys. Wraps, so Up from the input lands on the last row. */
+            move: function (delta) {
+                if (!this.open || !this.results.length) return;
+                var n = this.results.length;
+                this.active = (this.active + delta + n) % n;
+                var el = document.getElementById(this.optionId(this.active));
+                // block:'nearest' keeps the panel still when the row is already visible.
+                if (el) el.scrollIntoView({ block: 'nearest' });
+            },
+
+            /** Enter. Returns false when nothing is selected so the form submits. */
+            choose: function () {
+                var hit = this.results[this.active];
+                if (this.active < 0 || !hit) return false;
+                window.location = hit.url;
+                return true;
             },
 
             /** Escape user input before it is ever put back into the DOM. */
@@ -121,6 +150,7 @@ document.addEventListener('alpine:init', function () {
                 this.busy = false;
                 this.searched = true;
                 this.open = true;
+                this.active = -1;
 
                 /* Announce only the empty case, and only from the markup the
                    server rendered: a bare result count would need a string this

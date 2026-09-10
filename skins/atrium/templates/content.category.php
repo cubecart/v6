@@ -89,7 +89,7 @@
           :class="isGrid()
              ? 'grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-3 xl:grid-cols-4'
              : 'flex flex-col divide-y divide-ink-200'">
-         {foreach from=$PRODUCTS item=product}
+         {foreach from=$PRODUCTS item=product name=products}
          <li :class="isGrid() ? '' : 'py-5 first:pt-0'">
             <form action="{$VAL_SELF}" method="post" class="add_to_basket h-full"
                   x-data="ccAddToBasket()" @submit="submit($event)"
@@ -101,7 +101,9 @@
                      <img src="{$product.thumbnail}"
                           alt="{if isset($product.image_tags.thumbnail.alt) && !empty($product.image_tags.thumbnail.alt)}{$product.image_tags.thumbnail.alt}{else}{$product.name}{/if}"
                           {if isset($product.image_tags.thumbnail.title)}title="{$product.image_tags.thumbnail.title}"{/if}
-                          loading="lazy"
+                          {* See content.homepage.php: the first row is the LCP
+                             candidate and must not be lazy. *}
+                          {if $smarty.foreach.products.iteration <= 4}{if $smarty.foreach.products.first}fetchpriority="high"{/if}{else}loading="lazy"{/if}
                           class="aspect-square w-full object-cover">
                   </a>
                   {* Quick view lives ON the image: revealed on hover, and on

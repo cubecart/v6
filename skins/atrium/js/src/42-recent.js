@@ -11,6 +11,7 @@
     'use strict';
 
     var KEY = 'cc_recent';
+    var removeLabel = 'Remove';   // replaced from the template's data attribute
     var MAX_STORED = 12;
     // One row at the widest breakpoint; CSS (.cc-recent-row) trims the rest.
     var MAX_SHOWN = 4;
@@ -29,6 +30,15 @@
         try {
             window.localStorage.setItem(KEY, JSON.stringify(list));
         } catch (e) { /* private mode, or quota */ }
+    }
+
+    /** Drop one product from the stored list. */
+    function forget(id) {
+        var list = read();
+        for (var i = list.length - 1; i >= 0; i--) {
+            if (String(list[i].id) === String(id)) list.splice(i, 1);
+        }
+        write(list);
     }
 
     // http(s) and root-relative only: blocks a smuggled javascript: URL.
@@ -60,9 +70,45 @@
         return String(item.id);
     }
 
+    /* Always visible rather than hover-revealed: on a touch device there is no
+       hover, and a control the customer cannot find is not a control. */
+    function removeButton(item, li) {
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'absolute end-1.5 top-1.5 z-10 grid size-7 place-items-center rounded-full ' +
+                           'bg-ink-50/90 text-ink-600 shadow hover:bg-ink-200 hover:text-ink-900';
+        var label = (removeLabel + ' ' + (item.name || '')).trim();
+        button.title = label;
+        button.setAttribute('aria-label', label);
+        button.innerHTML = '<svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+                           'stroke-width="2" aria-hidden="true"><path d="M6 18 18 6M6 6l12 12" ' +
+                           'stroke-linecap="round"/></svg>';
+        button.addEventListener('click', function () {
+            forget(item.id);
+            li.remove();
+            /* nth-child does the trimming, so removing a node promotes a hidden
+               one into the row on its own.
+
+               Hidden only at ZERO, not at one. The "a row of one is not
+               recently viewed" rule below applies to the FIRST render; once a
+               customer has removed something deliberately, the one they kept is
+               the one they want to see, and taking the section away with it
+               looks like the X cleared everything. */
+            var list = document.getElementById('cc-recent-list');
+            var section = document.getElementById('cc-recent');
+            if (list && section && !list.children.length) section.classList.add('hidden');
+        });
+        return button;
+    }
+
     function card(item) {
         var li = document.createElement('li');
         li.className = 'group flex flex-col';
+
+        // The button is a SIBLING of the link, never inside it: a <button> in an
+        // <a> is invalid and browsers reparent it.
+        var frame = document.createElement('div');
+        frame.className = 'relative';
 
         var link = document.createElement('a');
         link.href = safeUrl(item.url);
@@ -75,7 +121,9 @@
         img.loading = 'lazy';
         img.className = 'aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-105';
         link.appendChild(img);
-        li.appendChild(link);
+        frame.appendChild(link);
+        frame.appendChild(removeButton(item, li));
+        li.appendChild(frame);
 
         var heading = document.createElement('h3');
         heading.className = 'mt-3 text-sm font-medium';
@@ -99,6 +147,8 @@
         var section = document.getElementById('cc-recent');
         var list = document.getElementById('cc-recent-list');
         if (!section || !list) return;
+
+        removeLabel = section.getAttribute('data-remove-label') || removeLabel;
 
         var items = read();
         var shown = 0;

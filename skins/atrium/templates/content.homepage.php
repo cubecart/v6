@@ -68,7 +68,7 @@
    </div>
 
    <ul role="list" class="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-3 xl:grid-cols-4">
-      {foreach from=$section.products item=product}
+      {foreach from=$section.products item=product name=products}
       <li class="group flex flex-col">
          <form action="{$VAL_SELF}" method="post" class="add_to_basket flex h-full flex-col">
 
@@ -77,7 +77,12 @@
                   <img src="{$product.image}"
                        alt="{if isset($product.image_tags.alt) && !empty($product.image_tags.alt)}{$product.image_tags.alt}{else}{$product.name}{/if}"
                        {if isset($product.image_tags.title)}title="{$product.image_tags.title}"{/if}
-                       loading="lazy"
+                       {* Above the fold: the first row must not be lazy. Chrome
+                          deprioritises lazy images, so lazily loading the LCP
+                          element delays it measurably. Four is the widest grid
+                          (xl:grid-cols-4); the first is also the LCP candidate
+                          on a store with no hero banner. *}
+                       {if $smarty.foreach.products.iteration <= 4}{if $smarty.foreach.products.first}fetchpriority="high"{/if}{else}loading="lazy"{/if}
                        class="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-105">
                </a>
                {* Quick view lives ON the image: revealed on hover, and on

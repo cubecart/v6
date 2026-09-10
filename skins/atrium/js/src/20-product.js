@@ -38,11 +38,19 @@ document.addEventListener('alpine:init', function () {
     window.Alpine.store('optionStock', {
         available: true,
         note: '',
+        // Stock of the SELECTED combination, or 0 when unknown or not low.
+        // Core only publishes it up to Catalogue::LOW_STOCK_DISCLOSE_MAX.
+        stock: 0,
         _map: null,
+        _one: '',
+        _many: '',
 
         load: function () {
             var el = document.getElementById('cc-option-stock');
             if (!el) return;
+            // Translated on the server; %d is substituted here.
+            this._one = el.getAttribute('data-low-one') || '';
+            this._many = el.getAttribute('data-low-many') || '';
             try {
                 var data = JSON.parse(el.textContent);
                 if (data && data.combinations) this._map = data;
@@ -50,6 +58,14 @@ document.addEventListener('alpine:init', function () {
                 // A malformed payload must not take the page down with it.
                 this._map = null;
             }
+        },
+
+        /** "Only 2 left in stock" for the current combination, or ''. */
+        lowText: function (threshold) {
+            var n = this.stock;
+            if (!n || !threshold || n > threshold) return '';
+            var s = (n === 1 && this._one) ? this._one : this._many;
+            return s ? s.replace('%d', n) : '';
         },
 
         /* Judge the combination currently selected on the page.
@@ -75,6 +91,7 @@ document.addEventListener('alpine:init', function () {
             if (!chosen.length) {
                 this.available = true;
                 this.note = '';
+                this.stock = 0;
                 return;
             }
 
@@ -82,6 +99,7 @@ document.addEventListener('alpine:init', function () {
             var entry = this._map.combinations[chosen.join('|')];
             this.available = entry ? !!entry.ok : true;
             this.note = (entry && entry.note) ? entry.note : '';
+            this.stock = (entry && entry.stock) ? entry.stock : 0;
         }
     });
 
