@@ -30,21 +30,24 @@
    <h1 class="text-xl font-semibold tracking-tight text-ink-900">{$LANG.account.your_addressbook}</h1>
 
    {* FORM 1 — delete only. Keep it isolated from the edit form. *}
+   {assign var='cc_address_count' value=$ADDRESSES|@count}
    <form action="{$VAL_SELF}" method="post" class="mt-6">
       <ul role="list" class="space-y-4">
          {foreach from=$ADDRESSES item=address}
          <li class="cc-card p-5{if $address.billing} border-brand-600{/if}">
-            <div class="flex items-start justify-between gap-4">
+            <div class="flex items-stretch justify-between gap-4">
                <div class="min-w-0">
                   {if $address.description}<p class="text-sm font-semibold text-ink-900">{$address.description}</p>{/if}
                   <address class="mt-1 text-sm not-italic leading-relaxed text-ink-700">
-                     {$address.first_name|capitalize} {$address.last_name|capitalize}<br>
+                     {$address.first_name|capitalize:true} {$address.last_name|capitalize:true}<br>
                      {if $address.company_name}{$address.company_name}<br>{/if}
-                     {$address.line1|capitalize}<br>
-                     {if !empty($address.line2)}{$address.line2|capitalize}<br>{/if}
+                     {$address.line1|capitalize:true}<br>
+                     {if !empty($address.line2)}{$address.line2|capitalize:true}<br>{/if}
                      {$address.town|upper}<br>
-                     {if !empty($address.state)}{$address.state|upper}<br>{/if}
-                     {$address.postcode}
+                     {* Postcode sits with the county rather than on a line of its
+                        own: a UK address was running to seven lines and the card
+                        was mostly whitespace. *}
+                     {if !empty($address.state)}{$address.state|upper}, {/if}{$address.postcode}
                      {if $CONFIG.store_country_name!==$address.country}<br>{$address.country}{/if}
                   </address>
                   <p class="mt-2 flex flex-wrap gap-2 text-xs">
@@ -52,26 +55,54 @@
                      {if $address.default}<span class="rounded-full bg-ink-200 px-2 py-0.5 text-ink-700">{$LANG.address.default_address|default:$LANG.common.default}</span>{/if}
                   </p>
                </div>
-               <div class="flex shrink-0 flex-col items-end gap-2">
+               <div class="flex shrink-0 flex-col items-stretch gap-2">
                   <a href="{$VAL_SELF}&action=edit&address_id={$address.address_id}" class="cc-btn cc-btn-secondary">{$LANG.common.edit}</a>
-                  {* A billing address cannot be deleted — core disables it. *}
-                  <label class="flex items-center gap-1.5 text-xs text-ink-600">
-                     <input type="checkbox" name="delete[]" value="{$address.address_id}"{if $address.billing} disabled{/if}>
-                     {$LANG.common.delete}
-                  </label>
+                  {* One delete per card. name="delete[]" on a submit button posts
+                     only the button that was pressed, so core's array contract
+                     (User::deleteAddress) is unchanged.
+
+                     ⚠ Two addresses are deliberately undeletable here:
+                       · the billing address. Exactly one address carries
+                         billing=1 (User::saveAddress resets the others) and
+                         getAddresses(false) looks it up by that flag to prefill
+                         checkout. Nothing in core promotes a replacement, so
+                         deleting it leaves the account with no billing address.
+                       · the last remaining address, for the same reason plus
+                         the account would have none at all.
+                     Core enforces NEITHER: deleteAddress() deletes whatever ids
+                     it is given. This is the only guard, so keep it. *}
+                  {if !$address.billing && $cc_address_count > 1}
+                  <button type="submit" name="delete[]" value="{$address.address_id}"
+                          class="cc-btn cc-btn-secondary !text-danger-600"
+                          x-data @click="if (!window.confirm($el.dataset.confirm)) $event.preventDefault()"
+                          data-confirm="{$LANG.account.confirm_address_delete|default:'Delete this address?'}">{$LANG.common.delete}</button>
+                  {/if}
+
+                  {* The what3words address, bottom right, in the dead space under
+                     the buttons. Only rendered when the customer has one, so a
+                     card without one keeps its old shape. *}
+                  {if !empty($address.w3w)}
+                  <p class="mt-auto pt-2 text-end text-xs text-ink-600">
+                     <a href="https://what3words.com/{$address.w3w}" target="_blank" rel="noopener" class="hover:underline">
+                        <span class="w3w-slashes">///</span>{$address.w3w}
+                     </a>
+                  </p>
+                  {/if}
                </div>
             </div>
          </li>
          {/foreach}
       </ul>
 
-      <div class="mt-6 flex flex-wrap items-center gap-3">
-         <a href="{$VAL_SELF}&action=add" class="cc-btn cc-btn-secondary">{$LANG.address.address_add}</a>
-         <button type="submit" class="cc-btn cc-btn-ghost !text-danger-600">{$LANG.common.delete}</button>
+      {* Stacked and full width below sm, a row from sm up. As a wrap-only row
+         the ms-auto pushed the primary button onto a second line and hard right,
+         so on a phone it sat alone and out of line with the other two. *}
+      <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+         <a href="{$VAL_SELF}&action=add" class="cc-btn cc-btn-secondary w-full sm:w-auto">{$LANG.address.address_add}</a>
          {if $CHECKOUT_BUTTON}
-         <a href="?_a=basket" class="cc-btn cc-btn-primary ms-auto">{$LANG.basket.basket_secure_checkout}</a>
+         <a href="?_a=basket" class="cc-btn cc-btn-primary w-full sm:ms-auto sm:w-auto">{$LANG.basket.basket_secure_checkout}</a>
          {else}
-         <a href="?" class="cc-btn cc-btn-primary ms-auto">{$LANG.basket.continue_shopping}</a>
+         <a href="?" class="cc-btn cc-btn-primary w-full sm:ms-auto sm:w-auto">{$LANG.basket.continue_shopping}</a>
          {/if}
       </div>
    </form>
@@ -95,11 +126,11 @@
          <div class="grid gap-4 sm:grid-cols-2">
             <div>
                <label for="addr_first_name" class="cc-label">{$LANG.user.name_first}</label>
-               <input type="text" name="first_name" id="addr_first_name" value="{$DATA.first_name|capitalize}" maxlength="32" autocomplete="given-name" required>
+               <input type="text" name="first_name" id="addr_first_name" value="{$DATA.first_name|capitalize:true}" maxlength="32" autocomplete="given-name" required>
             </div>
             <div>
                <label for="addr_last_name" class="cc-label">{$LANG.user.name_last}</label>
-               <input type="text" name="last_name" id="addr_last_name" value="{$DATA.last_name|capitalize}" maxlength="32" autocomplete="family-name" required>
+               <input type="text" name="last_name" id="addr_last_name" value="{$DATA.last_name|capitalize:true}" maxlength="32" autocomplete="family-name" required>
             </div>
          </div>
 
@@ -112,7 +143,7 @@
 
          <div>
             <label for="addr_line1" class="cc-label">{$LANG.address.line1}</label>
-            <input type="text" name="line1" id="addr_line1" value="{$DATA.line1|capitalize}" class="address_lookup" autocomplete="off" autocorrect="off" required
+            <input type="text" name="line1" id="addr_line1" value="{$DATA.line1|capitalize:true}" class="address_lookup" autocomplete="off" autocorrect="off" required
                    placeholder="{if $ADDRESS_LOOKUP}{$LANG.address.address_lookup}{/if}">
          </div>
          {if $ADDRESS_LOOKUP}
@@ -123,7 +154,7 @@
             <div class="space-y-4">
                <div>
                   <label for="addr_line2" class="cc-label">{$LANG.address.line2}</label>
-                  <input type="text" name="line2" id="addr_line2" value="{$DATA.line2|capitalize}" autocomplete="address-line2">
+                  <input type="text" name="line2" id="addr_line2" value="{$DATA.line2|capitalize:true}" autocomplete="address-line2">
                </div>
                <div class="grid gap-4 sm:grid-cols-2">
                   <div>
@@ -173,9 +204,13 @@
       </div>
 
       <input type="hidden" name="address_id" value="{$DATA.address_id}">
-      <div class="mt-6 flex gap-3">
-         <button type="submit" name="save" value="1" class="cc-btn cc-btn-primary">{$LANG.common.save}</button>
-         <a href="{$VAL_SELF}" class="cc-btn cc-btn-secondary">{$LANG.common.cancel}</a>
+      <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+         <button type="submit" name="save" value="1" class="cc-btn cc-btn-primary w-full sm:w-auto">{$LANG.common.save}</button>
+         {* NOT $VAL_SELF: currentPage() keeps action=edit&address_id=..., so that
+            just reloads this form. $REDIR is core's sanitised ?redir= and
+            defaults to addressbook, so Cancel also returns to checkout when the
+            form was reached from there. *}
+         <a href="{$STORE_URL}/index.php?_a={$REDIR}" class="cc-btn cc-btn-secondary w-full sm:w-auto">{$LANG.common.cancel}</a>
       </div>
    </form>
 

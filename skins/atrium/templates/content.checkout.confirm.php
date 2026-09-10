@@ -32,16 +32,28 @@
 <div class="grid gap-8 lg:grid-cols-2">
    <section>
       <h2 class="text-lg font-semibold text-ink-900">{if $CTRL_DELIVERY}{$LANG.address.billing_address}{else}{$LANG.address.billing_delivery_address}{/if}</h2>
-      <address class="mt-3 text-sm not-italic leading-relaxed text-ink-700">
-         {$DATA.first_name|capitalize} {$DATA.last_name|capitalize}<br>
-         {if $DATA.company_name}{$DATA.company_name}<br>{/if}
-         {$DATA.line1|capitalize}<br>
-         {if $DATA.line2}{$DATA.line2|capitalize}<br>{/if}
-         {$DATA.town|upper}<br>
-         {if !empty($DATA.state)}{$DATA.state|upper}, {/if}{$DATA.postcode}
-         {if $CONFIG.store_country_name!==$DATA.country}<br>{$DATA.country}{/if}
-      </address>
-      <a href="{$STORE_URL}/index.php?_a=addressbook&action=edit&address_id={$DATA.address_id}&redir=confirm" class="cc-btn cc-btn-secondary mt-3">{$LANG.address.address_edit}</a>
+      {* Same card and Edit affordance as the delivery addresses opposite, minus
+         the radio: there is only ever one billing address. The description is
+         left off because core names it after its own role, so it would just
+         repeat the heading. *}
+      <div class="cc-card mt-3 flex items-start gap-3 p-4">
+         <div class="min-w-0 flex-1">
+            <address class="text-sm not-italic leading-relaxed text-ink-700">
+               {$DATA.first_name|capitalize:true} {$DATA.last_name|capitalize:true}<br>
+               {if $DATA.company_name}{$DATA.company_name}<br>{/if}
+               {$DATA.line1|capitalize:true}<br>
+               {if $DATA.line2}{$DATA.line2|capitalize:true}<br>{/if}
+               {$DATA.town|upper}<br>
+               {if !empty($DATA.state)}{$DATA.state|upper}, {/if}{$DATA.postcode}
+               {if $CONFIG.store_country_name!==$DATA.country}<br>{$DATA.country}{/if}
+            </address>
+            {if !empty($DATA.w3w)}
+            <span class="mt-1 block text-xs text-ink-600"><span class="w3w-slashes">///</span>{$DATA.w3w}</span>
+            {/if}
+         </div>
+         <a href="{$STORE_URL}/index.php?_a=addressbook&action=edit&address_id={$DATA.address_id}&redir=confirm"
+            class="cc-btn cc-btn-ghost shrink-0">{$LANG.common.edit}</a>
+      </div>
    </section>
 
    {* See the CTRL_DELIVERY note in the header. *}
@@ -53,13 +65,60 @@
    {if $CTRL_DELIVERY}
    <section>
       <h2 class="text-lg font-semibold text-ink-900">{$LANG.address.delivery_address}</h2>
-      <label class="cc-sr-only" for="delivery_address">{$LANG.address.delivery_address}</label>
-      <select name="delivery_address" id="delivery_address" class="mt-3 capitalize">
-         {foreach from=$ADDRESSES item=address}
-         <option value="{$address.address_id}" {$address.selected}>{$address.description} ({$address.town|upper}, {$address.postcode})</option>
-         {/foreach}
-      </select>
-      <a href="{$STORE_URL}/index.php?_a=addressbook&action=add&redir=confirm" class="cc-btn cc-btn-secondary mt-3">{$LANG.address.address_add}</a>
+      {* Was a <select> showing "Description (TOWN, POSTCODE)", which is not enough
+         to tell two addresses apart and is easy to mis-read at a glance. Radios
+         instead, one card per address, each showing the address in full.
+
+         $ADDRESSES already carries every formatted field (Cubecart::_confirm
+         builds it from User::getAddresses), so this needs no core change, and
+         core reads $_POST['delivery_address'] the same from a radio as from a
+         select. It even prepares $address.checked for exactly this.
+
+         Collapsed, only the chosen card is shown; Change reveals the rest. With
+         JavaScript off every card is visible and the radios work on their own,
+         which is why there is no x-cloak here. *}
+      <div class="mt-3" x-data="{ open: false, selected: '{foreach from=$ADDRESSES item=address}{if $address.checked}{$address.address_id}{/if}{/foreach}' }">
+         <fieldset class="space-y-3">
+            <legend class="cc-sr-only">{$LANG.address.delivery_address}</legend>
+            {foreach from=$ADDRESSES item=address}
+            {* Card is a div, not a label: the Edit link is a sibling of the
+               label, because an <a> inside a <label> is invalid and clicking it
+               would also toggle the radio. *}
+            <div class="cc-card flex items-start gap-3 p-4"
+                 x-show="open || selected === '{$address.address_id}'"
+                 :class="selected === '{$address.address_id}' ? 'border-brand-600' : ''">
+               <label class="flex min-w-0 flex-1 cursor-pointer gap-3">
+                  <input type="radio" name="delivery_address" value="{$address.address_id}" {$address.checked}
+                         class="mt-1 shrink-0" @change="selected = '{$address.address_id}'; open = false">
+                  <span class="min-w-0">
+                     {if $address.description}<span class="block text-sm font-semibold text-ink-900">{$address.description}</span>{/if}
+                     <span class="mt-1 block text-sm not-italic leading-relaxed text-ink-700">
+                        {$address.first_name|capitalize:true} {$address.last_name|capitalize:true}<br>
+                        {if $address.company_name}{$address.company_name}<br>{/if}
+                        {$address.line1|capitalize:true}<br>
+                        {if !empty($address.line2)}{$address.line2|capitalize:true}<br>{/if}
+                        {$address.town|upper}<br>
+                        {if !empty($address.state)}{$address.state|upper}, {/if}{$address.postcode}
+                        {if $CONFIG.store_country_name!==$address.country}<br>{$address.country}{/if}
+                     </span>
+                     {if !empty($address.w3w)}
+                     <span class="mt-1 block text-xs text-ink-600"><span class="w3w-slashes">///</span>{$address.w3w}</span>
+                     {/if}
+                  </span>
+               </label>
+               <a href="{$STORE_URL}/index.php?_a=addressbook&action=edit&address_id={$address.address_id}&redir=confirm"
+                  class="cc-btn cc-btn-ghost shrink-0">{$LANG.common.edit}</a>
+            </div>
+            {/foreach}
+         </fieldset>
+
+         <div class="mt-3 flex flex-wrap gap-2">
+            {if $ADDRESSES|@count > 1}
+            <button type="button" class="cc-btn cc-btn-secondary" x-show="!open" @click="open = true">{$LANG.common.change_address|default:'Change Address'}</button>
+            {/if}
+            <a href="{$STORE_URL}/index.php?_a=addressbook&action=add&redir=confirm" class="cc-btn cc-btn-secondary">{$LANG.address.address_add}</a>
+         </div>
+      </div>
    </section>
    {/if}
 </div>
@@ -85,17 +144,17 @@
    <section>
       <h2 class="text-lg font-semibold text-ink-900">{$LANG.address.billing_address}</h2>
       <address class="mt-3 text-sm not-italic leading-relaxed text-ink-700">
-         {$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+         {$BILLING.first_name|capitalize:true} {$BILLING.last_name|capitalize:true}<br>
          {if $BILLING.company_name}{$BILLING.company_name}<br>{/if}
-         {$BILLING.line1|capitalize}<br>
-         {if $BILLING.line2}{$BILLING.line2|capitalize}<br>{/if}
+         {$BILLING.line1|capitalize:true}<br>
+         {if $BILLING.line2}{$BILLING.line2|capitalize:true}<br>{/if}
          {$BILLING.town|upper}<br>
          {if !empty($BILLING.state)}{$BILLING.state|upper}, {/if}{$BILLING.postcode}<br>
          {$BILLING.country_name}
       </address>
       <h3 class="mt-4 text-sm font-semibold text-ink-900">{$LANG.account.contact_details}</h3>
       <ul class="mt-2 space-y-1 text-sm text-ink-700">
-         <li>{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize} &lt;{$USER.email}&gt;</li>
+         <li>{$BILLING.first_name|capitalize:true} {$BILLING.last_name|capitalize:true} &lt;{$USER.email}&gt;</li>
          <li>{$USER.phone}</li>
          {if !empty($USER.mobile)}<li>{$USER.mobile}</li>{/if}
       </ul>
@@ -107,10 +166,10 @@
    <section>
       <h2 class="text-lg font-semibold text-ink-900">{$LANG.address.delivery_address}</h2>
       <address class="mt-3 text-sm not-italic leading-relaxed text-ink-700">
-         {$DELIVERY.first_name|capitalize} {$DELIVERY.last_name|capitalize}<br>
+         {$DELIVERY.first_name|capitalize:true} {$DELIVERY.last_name|capitalize:true}<br>
          {if $DELIVERY.company_name}{$DELIVERY.company_name}<br>{/if}
-         {$DELIVERY.line1|capitalize}<br>
-         {if $DELIVERY.line2}{$DELIVERY.line2|capitalize}<br>{/if}
+         {$DELIVERY.line1|capitalize:true}<br>
+         {if $DELIVERY.line2}{$DELIVERY.line2|capitalize:true}<br>{/if}
          {$DELIVERY.town|upper}<br>
          {if !empty($DELIVERY.state)}{$DELIVERY.state|upper}, {/if}{$DELIVERY.postcode}<br>
          {$DELIVERY.country_name}
@@ -161,11 +220,11 @@
    <div class="mt-3 grid gap-4 sm:grid-cols-2">
       <div>
          <label for="user_first" class="cc-label">{$LANG.user.name_first}</label>
-         <input type="text" name="user[first_name]" id="user_first" required value="{$USER.first_name|capitalize}" autocomplete="given-name" maxlength="32">
+         <input type="text" name="user[first_name]" id="user_first" required value="{$USER.first_name|capitalize:true}" autocomplete="given-name" maxlength="32">
       </div>
       <div>
          <label for="user_last" class="cc-label">{$LANG.user.name_last}</label>
-         <input type="text" name="user[last_name]" id="user_last" required value="{$USER.last_name|capitalize}" autocomplete="family-name" maxlength="32">
+         <input type="text" name="user[last_name]" id="user_last" required value="{$USER.last_name|capitalize:true}" autocomplete="family-name" maxlength="32">
       </div>
       <div>
          <label for="user_email" class="cc-label">{$LANG.common.email}</label>
@@ -207,7 +266,7 @@
       {/if}
       <div>
          <label for="addr_line1" class="cc-label">{$LANG.address.line1}</label>
-         <input type="text" name="billing[line1]" id="addr_line1" required value="{$BILLING.line1|capitalize}" autocomplete="off" autocorrect="off" class="address_lookup" placeholder="{if $ADDRESS_LOOKUP}{$LANG.address.address_lookup}{/if}">
+         <input type="text" name="billing[line1]" id="addr_line1" required value="{$BILLING.line1|capitalize:true}" autocomplete="off" autocorrect="off" class="address_lookup" placeholder="{if $ADDRESS_LOOKUP}{$LANG.address.address_lookup}{/if}">
       </div>
       {if $ADDRESS_LOOKUP}
       <p id="lookup_fail"><a href="#" class="text-sm underline">{$LANG.address.address_not_found}</a></p>
@@ -217,7 +276,7 @@
          <div class="space-y-4">
             <div>
                <label for="addr_line2" class="cc-label">{$LANG.address.line2}</label>
-               <input type="text" name="billing[line2]" id="addr_line2" value="{$BILLING.line2|capitalize}" autocomplete="address-line2">
+               <input type="text" name="billing[line2]" id="addr_line2" value="{$BILLING.line2|capitalize:true}" autocomplete="address-line2">
             </div>
             <div class="grid gap-4 sm:grid-cols-2">
                <div>
@@ -286,11 +345,11 @@
       <div class="mt-3 grid gap-4 sm:grid-cols-2">
          <div>
             <label for="del_first" class="cc-label">{$LANG.user.name_first}</label>
-            <input type="text" name="delivery[first_name]" id="del_first" required value="{$DELIVERY.first_name|capitalize}" autocomplete="given-name">
+            <input type="text" name="delivery[first_name]" id="del_first" required value="{$DELIVERY.first_name|capitalize:true}" autocomplete="given-name">
          </div>
          <div>
             <label for="del_last" class="cc-label">{$LANG.user.name_last}</label>
-            <input type="text" name="delivery[last_name]" id="del_last" required value="{$DELIVERY.last_name|capitalize}" autocomplete="family-name">
+            <input type="text" name="delivery[last_name]" id="del_last" required value="{$DELIVERY.last_name|capitalize:true}" autocomplete="family-name">
          </div>
          {if !isset($SKIN_SETTINGS.show_company_name) || $SKIN_SETTINGS.show_company_name}
          <div class="sm:col-span-2">
@@ -300,11 +359,11 @@
          {/if}
          <div class="sm:col-span-2">
             <label for="del_line1" class="cc-label">{$LANG.address.line1}</label>
-            <input type="text" name="delivery[line1]" id="del_line1" required value="{$DELIVERY.line1|capitalize}" autocomplete="address-line1">
+            <input type="text" name="delivery[line1]" id="del_line1" required value="{$DELIVERY.line1|capitalize:true}" autocomplete="address-line1">
          </div>
          <div class="sm:col-span-2">
             <label for="del_line2" class="cc-label">{$LANG.address.line2}</label>
-            <input type="text" name="delivery[line2]" id="del_line2" value="{$DELIVERY.line2|capitalize}" autocomplete="address-line2">
+            <input type="text" name="delivery[line2]" id="del_line2" value="{$DELIVERY.line2|capitalize:true}" autocomplete="address-line2">
          </div>
          <div>
             <label for="del_town" class="cc-label">{$LANG.address.town}</label>

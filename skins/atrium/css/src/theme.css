@@ -70,6 +70,11 @@
      readout and an aria-label. */
   --color-star: var(--cc-star, oklch(72% 0.150 80));
 
+  /* what3words brand red, for the /// prefix. NON-INVERTING like the star and
+     the chrome tokens: it is somebody else's brand mark, and a themed version
+     of it is simply the wrong colour. */
+  --color-w3w: var(--cc-w3w, #e11f26);
+
   /* ── Semantic. Separate from brand: a store's accent must never be the
        same signal as "your payment failed". ────────────────────────────── */
   --color-danger-50:  var(--cc-danger-50,  oklch(96.8% 0.016 22));

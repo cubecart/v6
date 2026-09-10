@@ -518,6 +518,15 @@
   }
   .cc-skip:focus { top: 0.5rem; color: var(--cc-brand-fg, #fff); }
 
+  /* The /// that prefixes a what3words address, in their brand red. Sits in
+     front of the input rather than inside its value, because the component
+     writes the value and part of a value cannot be coloured anyway. */
+  .w3w-slashes {
+    color: var(--color-w3w);
+    font-weight: 600;
+    letter-spacing: -0.05em;
+  }
+
   /* ── Catalogue imagery plate ──────────────────────────────────────────
      Every surface a product, category or certificate image sits on. White, not
      an ink token, and the same in both themes: cut-out PNGs are authored
@@ -707,3 +716,36 @@
 }
 
 #pp_product_mount #paypal-button-container div { margin-inline: auto; }
+
+/* ── what3words input ─────────────────────────────────────────────────────
+   NOT in @layer components, and every declaration carries !important. Neither
+   is laziness: the component injects its OWN stylesheet at RUNTIME, so it lands
+   after this file in the cascade and wins every specificity tie. Measured, the
+   field kept the component's 16px padding and its own font size, so it sat
+   visibly apart from every other field on the form.
+
+   These values are copied from the skin's own input rule above; keep the two in
+   step. The only intentional difference is padding-inline-start, which leaves
+   room for the red /// drawn in front of the box.
+
+   .w3w-field is on the wrapper in element.w3w.php purely to out-specify. */
+.w3w-field .what3words-autosuggest-input-wrapper input,
+.w3w-field what3words-autosuggest input {
+  display: block !important;
+  width: 100% !important;
+  border: 1px solid var(--color-ink-300) !important;
+  border-radius: var(--radius-cc) !important;
+  background-color: var(--color-ink-50) !important;
+  color: var(--color-ink-900) !important;
+  padding: 0.5rem 0.75rem !important;
+  padding-inline-start: 1.75rem !important;
+  font-size: 0.9375rem !important;
+  line-height: 1.5rem !important;
+}
+
+.w3w-field .what3words-autosuggest-input-wrapper input:focus,
+.w3w-field what3words-autosuggest input:focus {
+  border-color: var(--color-brand-600) !important;
+  outline: 2px solid transparent !important;
+  box-shadow: 0 0 0 1px var(--color-brand-600) !important;
+}

@@ -36,27 +36,27 @@
       <section>
          <h3 class="text-sm font-medium text-ink-900">{$LANG.address.billing_address}</h3>
          <address class="mt-1 text-sm not-italic leading-relaxed text-ink-700">
-            {$SUM.first_name|capitalize} {$SUM.last_name|capitalize}<br>
+            {$SUM.first_name|capitalize:true} {$SUM.last_name|capitalize:true}<br>
             {if $SUM.company_name}{$SUM.company_name}<br>{/if}
-            {$SUM.line1|capitalize}<br>
-            {if $SUM.line2}{$SUM.line2|capitalize}<br>{/if}
+            {$SUM.line1|capitalize:true}<br>
+            {if $SUM.line2}{$SUM.line2|capitalize:true}<br>{/if}
             {$SUM.town|upper}<br>
             {if !empty($SUM.state)}{$SUM.state|upper}, {/if}{$SUM.postcode}
             {if $CONFIG.store_country_name!==$SUM.country}<br>{$SUM.country}{/if}
-            {if !empty($SUM.w3w)}<div class="w3w mt-1">///<a href="https://what3words.com/{$SUM.w3w}" class="underline">{$SUM.w3w}</a></div>{/if}
+            {if !empty($SUM.w3w)}<div class="w3w mt-1"><span class="w3w-slashes">///</span><a target="_blank" rel="noopener" href="https://what3words.com/{$SUM.w3w}" class="underline">{$SUM.w3w}</a></div>{/if}
          </address>
       </section>
       <section>
          <h3 class="text-sm font-medium text-ink-900">{$LANG.address.delivery_address}</h3>
          <address class="mt-1 text-sm not-italic leading-relaxed text-ink-700">
-            {$SUM.first_name_d} {$SUM.last_name_d}<br>
+            {$SUM.first_name_d|capitalize:true} {$SUM.last_name_d|capitalize:true}<br>
             {if $SUM.company_name_d}{$SUM.company_name_d}<br>{/if}
-            {$SUM.line1_d|capitalize}<br>
-            {if $SUM.line2_d}{$SUM.line2_d|capitalize}<br>{/if}
+            {$SUM.line1_d|capitalize:true}<br>
+            {if $SUM.line2_d}{$SUM.line2_d|capitalize:true}<br>{/if}
             {$SUM.town_d|upper}<br>
             {if !empty($SUM.state_d)}{$SUM.state_d|upper}, {/if}{$SUM.postcode_d}
             {if $CONFIG.store_country_name!==$SUM.country_d}<br>{$SUM.country_d}{/if}
-            {if !empty($SUM.w3w_d)}<div class="w3w mt-1">///<a href="https://what3words.com/{$SUM.w3w_d}" class="underline">{$SUM.w3w_d}</a></div>{/if}
+            {if !empty($SUM.w3w_d)}<div class="w3w mt-1"><span class="w3w-slashes">///</span><a target="_blank" rel="noopener" href="https://what3words.com/{$SUM.w3w_d}" class="underline">{$SUM.w3w_d}</a></div>{/if}
          </address>
       </section>
    </div>

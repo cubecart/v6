@@ -12,8 +12,14 @@
  * w3w_compatibility flag, so deleting or renaming it makes the settings screen
  * report the skin as not what3words-capable.
  *
- * ⚠ THE API NAMES BELOW ARE v5 (this file loads javascript-components@5.0.0
- * when the merchant has a w3w_user_key) AND ARE NOT INTERCHANGEABLE WITH v3's:
+ * ⚠ ALWAYS the v5 components, whichever key the store has. It used to load the
+ * v3.1 SDK for stores on the auto-provisioned partner key while still rendering
+ * v5 markup and listening for v5 events, so on those stores the widget produced
+ * nothing the form could post and the what3words address was silently dropped
+ * on every save. The partner key works against the same API the v5 components
+ * call, so it is simply passed as api_key.
+ *
+ * ⚠ THE API NAMES BELOW ARE v5 AND ARE NOT INTERCHANGEABLE WITH v3's:
  *   clip_to_country       underscores — the hyphenated form is simply ignored,
  *                         so suggestions silently stop being clipped
  *   selected_suggestion   the event; "select" never fires, which left the
@@ -34,17 +40,29 @@
    the element, which works before the custom element upgrades. *}
 {if !isset($cc_w3w_sdk)}
 {assign var='cc_w3w_sdk' value=true scope='global'}
-{if !empty($CONFIG.w3w_user_key)}
 <script type="module" async src="https://cdn.what3words.com/javascript-components@5.0.0/dist/what3words/what3words.esm.js"></script>
 <script nomodule async src="https://cdn.what3words.com/javascript-components@5.0.0/dist/what3words/what3words.js"></script>
-{elseif !empty($CONFIG.w3w)}
-<script defer src="https://assets.what3words.com/sdk/v3.1/what3words.js?key={$CONFIG.w3w}"></script>
 {/if}
-{/if}
-<what3words-autosuggest{if !empty($CONFIG.w3w_user_key)} api_key="{$CONFIG.w3w_user_key}"{/if} id="{$as_id}" initial_value="{$value}"></what3words-autosuggest>
-{* The component renders its OWN input and does not adopt a slotted one, so the
-   posted value lives in this hidden field and is written by the event below.
-   A visible <input> here renders a second, empty box above the real one. *}
+{* ⚠ The component WRAPS A SLOTTED INPUT. Left empty it hydrates to a 30px box
+   with nothing to type in, which is why what3words addresses were never being
+   captured: there was no field, so no suggestion was ever selected and the
+   hidden value below stayed empty through every save.
+
+   The slotted input carries no name, so it is never posted. The posted value is
+   the hidden field, written by the selected_suggestion handler below, which
+   keeps what reaches the server to a real what3words address rather than
+   whatever half-typed text was in the box. *}
+<div class="w3w-field relative">
+   {* The /// is a real element in front of the field, not part of its value:
+      the component owns the value and you cannot colour three characters of it.
+      pointer-events-none so clicking the slashes still focuses the input, and
+      z-10 because the component wraps the input in its own positioned box,
+      which otherwise paints over the slashes and hides them entirely. *}
+   <span aria-hidden="true" class="w3w-slashes pointer-events-none absolute inset-y-0 start-3 z-10 flex items-center">///</span>
+   <what3words-autosuggest api_key="{if !empty($CONFIG.w3w_user_key)}{$CONFIG.w3w_user_key}{else}{$CONFIG.w3w}{/if}" id="{$as_id}" initial_value="{$value}">
+      <input type="text" id="{$input_id}_visible" class="w-full" autocomplete="off" placeholder="{$LANG.address.w3w_address|default:'what3words address'}"{if $value} value="{$value}"{/if}>
+   </what3words-autosuggest>
+</div>
 <input type="hidden" name="{$input_name}" id="{$input_id}" value="{$value}">
 <script>
 (function () {
@@ -68,5 +86,40 @@
       // Core stores and renders the bare words; the /// is added by the templates.
       field.value = String(suggestion.words).replace(/^\/{3}/, '');
    });
+
+   var visible = document.getElementById('{$input_id}_visible');
+   if (visible) {
+      /* The component owns the value and keeps putting its own /// prefix back:
+         on focus, on selection, and after its own reformatting. The slashes are
+         already drawn in front of the box, so left alone the customer sees six.
+
+         ⚠ Every one of these listeners is needed. Setting a value from script
+         fires no input event, so the focus case is invisible to an input
+         listener, and the component writes AFTER its own handlers run, hence
+         the deferral to the next tick. */
+      var strip = function () {
+         if (visible.value.indexOf('///') === 0) {
+            var caret = visible.selectionStart;
+            visible.value = visible.value.slice(3);
+            if (typeof caret === 'number' && visible === document.activeElement) {
+               caret = Math.max(0, caret - 3);
+               try { visible.setSelectionRange(caret, caret); } catch (e) {}
+            }
+         }
+      };
+      var stripSoon = function () { window.setTimeout(strip, 0); };
+      strip();
+      ['focus', 'click', 'input', 'keyup', 'change', 'blur'].forEach(function (name) {
+         visible.addEventListener(name, stripSoon);
+      });
+      as.addEventListener('selected_suggestion', stripSoon);
+
+      /* Clearing the box clears the saved address. Without this, emptying the
+         field left the previously chosen address in the hidden input and it was
+         silently saved again. */
+      visible.addEventListener('input', function () {
+         if (!visible.value.trim() && field) field.value = '';
+      });
+   }
 })();
 </script>

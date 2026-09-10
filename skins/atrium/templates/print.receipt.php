@@ -42,6 +42,9 @@
       tfoot td { border-bottom: none; padding: 4px 10px; }
       tfoot tr.grand td { border-top: 2px solid #111827; font-weight: 700; font-size: 15px; padding-top: 8px; }
       .muted { color: #6b7280; }
+      /* what3words brand red. Hex, like everything else in this file: it never
+         loads the skin stylesheet. */
+      .w3w-slashes { color: #e11f26; font-weight: 600; letter-spacing: -.05em; }
       .inv-meta { text-align: right; }
       .ret-addr { margin-top: 6px; }
       /* Order-status rubber stamp. Hex, not the skin's oklch tokens: some
@@ -109,14 +112,14 @@
       <div class="col">
          <div class="label">{$LANG.common.invoice}</div>
          {if !empty($order.company_name)}<strong>{$order.company_name}</strong><br>{/if}
-         {$order.first_name|capitalize} {$order.last_name|capitalize}<br>
-         {if !empty($order.line1)}{$order.line1|capitalize}<br>{/if}
-         {if !empty($order.line2)}{$order.line2|capitalize}<br>{/if}
+         {$order.first_name|capitalize:true} {$order.last_name|capitalize:true}<br>
+         {if !empty($order.line1)}{$order.line1|capitalize:true}<br>{/if}
+         {if !empty($order.line2)}{$order.line2|capitalize:true}<br>{/if}
          {if !empty($order.town)}{$order.town|upper}<br>{/if}
          {if !empty($order.state)}{$order.state|upper}<br>{/if}
          {$order.postcode}<br>
          {if !empty($order.country)}{$order.country}{/if}
-         {if !empty($order.w3w)}<div class="w3w">///<a href="https://what3words.com/{$order.w3w}">{$order.w3w}</a></div>{/if}
+         {if !empty($order.w3w)}<div class="w3w"><span class="w3w-slashes">///</span><a target="_blank" rel="noopener" href="https://what3words.com/{$order.w3w}">{$order.w3w}</a></div>{/if}
       </div>
       <div class="col">
          <div class="label">{$CONFIG.store_name}</div>

@@ -76,6 +76,7 @@
     <string name="no_orders_made" introduced="5.0.0"><![CDATA[No orders have been made.]]></string>
     <string name="notify_address_added" introduced="5.0.0"><![CDATA[Address has been saved.]]></string>
     <string name="notify_address_delete" introduced="5.0.0"><![CDATA[Address has been deleted.]]></string>
+    <string name="confirm_address_delete" introduced="6.8.0"><![CDATA[Delete this address?]]></string>
     <string name="notify_address_updated" introduced="5.0.0"><![CDATA[Address has been updated and new shipping options may be available. Click &quot;Checkout&quot; to proceed.]]></string>
     <string name="notify_details_updated" introduced="5.0.0"><![CDATA[Your profile has been updated.]]></string>
     <string name="notify_logged_out" introduced="5.0.0"><![CDATA[You have been logged out successfully.]]></string>
@@ -849,6 +850,7 @@
     <string name="cancel" introduced="5.0.0"><![CDATA[Cancel]]></string>
     <string name="pause" introduced="6.7.0"><![CDATA[Pause]]></string>
     <string name="resume" introduced="6.7.0"><![CDATA[Resume]]></string>
+    <string name="change_address" introduced="6.8.0"><![CDATA[Change Address]]></string>
     <string name="change_currency" introduced="5.0.0"><![CDATA[Change Currency]]></string>
     <string name="change_language" introduced="5.0.0"><![CDATA[Change Language]]></string>
     <string name="change_skin" introduced="5.0.0"><![CDATA[Change Skin]]></string>

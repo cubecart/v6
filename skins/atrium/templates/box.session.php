@@ -12,7 +12,7 @@
       <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
          <path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      <span class="hidden sm:inline">{$CUSTOMER.first_name|capitalize}</span>
+      <span class="hidden sm:inline">{$CUSTOMER.first_name|capitalize:true}</span>
       <svg class="size-4 transition-transform" :class="open ? 'rotate-180' : ''" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
          <path d="m19.5 8.25-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -20,7 +20,7 @@
    <ul x-show="open" x-cloak x-transition.opacity.duration.150ms
        class="absolute end-0 z-40 mt-2 w-60 rounded-cc-lg border border-ink-200 bg-ink-100 py-1.5 shadow-lg">
       <li class="border-b border-ink-200 px-4 pb-2 pt-1 text-sm font-medium text-ink-900">
-         {$CUSTOMER.first_name|capitalize} {$CUSTOMER.last_name|capitalize}
+         {$CUSTOMER.first_name|capitalize:true} {$CUSTOMER.last_name|capitalize:true}
       </li>
       <li><a href="{$STORE_URL}/index.php?_a=profile" class="block px-4 py-2 text-sm text-ink-700 hover:bg-ink-200">{$LANG.account.your_details}</a></li>
       <li><a href="{$STORE_URL}/index.php?_a=vieworder" class="block px-4 py-2 text-sm text-ink-700 hover:bg-ink-200">{$LANG.account.your_orders}</a></li>

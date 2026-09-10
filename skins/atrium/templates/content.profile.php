@@ -33,11 +33,11 @@
          <div class="grid gap-4 sm:grid-cols-2">
             <div>
                <label for="first_name" class="cc-label">{$LANG.user.name_first}</label>
-               <input type="text" name="first_name" id="first_name" value="{$USER.first_name|capitalize}" maxlength="32" autocomplete="given-name" required>
+               <input type="text" name="first_name" id="first_name" value="{$USER.first_name|capitalize:true}" maxlength="32" autocomplete="given-name" required>
             </div>
             <div>
                <label for="last_name" class="cc-label">{$LANG.user.name_last}</label>
-               <input type="text" name="last_name" id="last_name" value="{$USER.last_name|capitalize}" maxlength="32" autocomplete="family-name" required>
+               <input type="text" name="last_name" id="last_name" value="{$USER.last_name|capitalize:true}" maxlength="32" autocomplete="family-name" required>
             </div>
             <div>
                {* id="acc_email" is the equalTo target for emailconf — keep it. *}
