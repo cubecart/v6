@@ -60,6 +60,32 @@ document.addEventListener('alpine:init', function () {
             }
         },
 
+        /* Hold the quantity field to what the chosen combination has left.
+           Core trims an over-order on submit, but only after the customer has
+           committed to it. data-qty-max is the product-level ceiling, restored
+           when this combination publishes no figure of its own — which is also
+           the case above LOW_STOCK_DISCLOSE_MAX, where the exact count is
+           deliberately not in the page. */
+        capQuantity: function () {
+            var input = document.getElementById('product_quantity');
+            if (!input) return;
+
+            var base = parseInt(input.getAttribute('data-qty-max'), 10);
+            var max = this.stock > 0 ? this.stock : null;
+            if (!isNaN(base)) max = (max === null) ? base : Math.min(base, max);
+
+            if (max === null) {
+                input.removeAttribute('max');
+                return;
+            }
+            input.max = max;
+            if ((parseInt(input.value, 10) || 0) > max) {
+                input.value = max;
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        },
+
         /** "Only 2 left in stock" for the current combination, or ''. */
         lowText: function (threshold) {
             var n = this.stock;
@@ -100,6 +126,7 @@ document.addEventListener('alpine:init', function () {
             this.available = entry ? !!entry.ok : true;
             this.note = (entry && entry.note) ? entry.note : '';
             this.stock = (entry && entry.stock) ? entry.stock : 0;
+            this.capQuantity();
         }
     });
 

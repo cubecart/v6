@@ -44,12 +44,29 @@
    <button type="submit" class="cc-btn cc-btn-secondary w-full" disabled>{$LANG.common.unavailable}</button>
    {else}
    <div class="flex flex-wrap gap-3">
+      {* The ceiling is the LOWER of the merchant's maximum_quantity and what is
+         actually in stock. Core already refuses an over-order (Cart::add sets
+         error_too_many_added and trims the quantity), but only after the
+         customer has submitted — capping the field means they never meet that.
+
+         Stock only counts when the product tracks it and the store does not
+         allow buying out of stock. data-qty-max keeps the product-level figure
+         so 20-product.js can restore it when a combination's own stock no
+         longer applies. *}
+      {assign var='cc_qty_max' value=''}
+      {if $PRODUCT.maximum_quantity gte $PRODUCT.minimum_quantity}{assign var='cc_qty_max' value=$PRODUCT.maximum_quantity}{/if}
+      {if $PRODUCT.use_stock_level && !$CONFIG.basket_out_of_stock_purchase
+          && is_numeric($PRODUCT.unsuppressed_stock_level) && $PRODUCT.unsuppressed_stock_level > 0
+          && ($cc_qty_max == '' || $PRODUCT.unsuppressed_stock_level < $cc_qty_max)}
+      {assign var='cc_qty_max' value=$PRODUCT.unsuppressed_stock_level}
+      {/if}
       <div>
          <label for="product_quantity" class="cc-sr-only">{$LANG.common.quantity}</label>
          <input type="number" id="product_quantity" name="quantity"
                 value="{$PRODUCT.minimum_quantity|default:'1'}"
                 min="{$PRODUCT.minimum_quantity|default:'1'}"
-                {if $PRODUCT.maximum_quantity gte $PRODUCT.minimum_quantity}max="{$PRODUCT.maximum_quantity}"{/if}
+                {if $cc_qty_max != ''}max="{$cc_qty_max}"{/if}
+                data-qty-max="{if $PRODUCT.maximum_quantity gte $PRODUCT.minimum_quantity}{$PRODUCT.maximum_quantity}{/if}"
                 maxlength="3" data-cc-stepper class="quantity required w-20 text-center">
          <input type="hidden" name="add" value="{$PRODUCT.product_id}">
       </div>

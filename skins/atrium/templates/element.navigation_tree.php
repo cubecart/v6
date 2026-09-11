@@ -9,6 +9,10 @@
  *
  * $BRANCH = {name, cat_id, cat_level, product_count, url}
  *
+ * ⚠ NO title attribute on the links. The category name is already the visible
+ * text, so a title adds nothing but a native tooltip that hovers OVER the open
+ * menu and covers its first row.
+ *
  * Because children render before parents, a template cannot know its own depth
  * at render time. Emit identical markup at every level and do depth-dependent
  * styling with CSS descendant selectors (.cc-nav, css/src/components.css). Do
@@ -22,10 +26,14 @@
 <li class="cc-nav-item cc-nav-parent" x-data="ccDisclosure()"
     @mouseenter="open = true" @mouseleave="close()"
     @keydown.escape.window="close()">
-   <a href="{$BRANCH.url}" title="{$BRANCH.name}" class="cc-nav-link"
+   <a href="{$BRANCH.url}" class="cc-nav-link"
       :aria-expanded="open ? 'true' : 'false'">
       <span>{$BRANCH.name}</span>
-      <svg class="cc-nav-caret" :class="open ? 'rotate-180' : ''" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      {* is-open, NOT Tailwind's rotate-180: that utility sets the standalone
+         `rotate` property, which composes with the `transform` these carets
+         need in a flyout and cannot be cancelled (the minifier strips
+         `rotate:0deg` as a no-op). Rotation is entirely CSS's job here. *}
+      <svg class="cc-nav-caret" :class="open ? 'is-open' : ''" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
          <path d="m19.5 8.25-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
    </a>
@@ -35,6 +43,6 @@
 </li>
 {else}
 <li class="cc-nav-item">
-   <a href="{$BRANCH.url}" title="{$BRANCH.name}" class="cc-nav-link"><span>{$BRANCH.name}</span></a>
+   <a href="{$BRANCH.url}" class="cc-nav-link"><span>{$BRANCH.name}</span></a>
 </li>
 {/if}

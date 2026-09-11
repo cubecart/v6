@@ -58,6 +58,18 @@
         if (input.getAttribute('data-cc-stepped')) return;
         input.setAttribute('data-cc-stepped', '1');
 
+        /* The buttons honour min/max, but typing does not. Clamp on change so a
+           typed 50 becomes the 3 that are actually in stock, rather than being
+           trimmed by core after the customer has already submitted. */
+        input.addEventListener('change', function () {
+            var max = parseFloat(input.max);
+            var min = parseFloat(input.min);
+            var value = parseFloat(input.value);
+            if (isNaN(value)) return;
+            if (!isNaN(max) && value > max) input.value = max;
+            else if (!isNaN(min) && value < min) input.value = min;
+        });
+
         var group = document.createElement('span');
         group.className = 'inline-flex items-center gap-1';
         input.parentNode.insertBefore(group, input);

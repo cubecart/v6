@@ -203,9 +203,36 @@
   }
   /* Dropdown panels hang off the dark bar, so they carry the band's colours
      down with them rather than reverting to the page surface. */
+  /* A panel the same colour as the band merges into it, leaving the rounded
+     corners as the only separation — which is what made them look wrong. Step
+     it toward the FOREGROUND rather than toward white, so it lifts on a dark
+     band and deepens on a light one, and a nested menu steps again. Row hover
+     stays --color-chrome-hover, which is lighter still than either. */
   :is(.cc-navbar, .cc-navrail) .cc-nav-menu {
-    background-color: var(--color-chrome);
+    background-color: color-mix(in oklch, var(--color-chrome) 90%, var(--color-chrome-fg));
     border-color: var(--color-chrome-border);
+    box-shadow: 0 14px 32px -10px rgb(0 0 0 / 0.55);
+  }
+  :is(.cc-navbar, .cc-navrail) .cc-nav-menu .cc-nav-menu {
+    background-color: color-mix(in oklch, var(--color-chrome) 82%, var(--color-chrome-fg));
+  }
+
+  /* The panel MEETS the band, and its visible top lands exactly on the band's
+     bottom edge — level with a third-level flyout, which is measured from the
+     panel rather than from the link.
+
+     top:100% is the bottom of the LINK, and the band adds py-1 below it, so the
+     panel starts 0.25rem too high. That 0.25rem is a transparent top border
+     rather than an offset: an offset would put 4px of no-man's-land between the
+     link and the panel, and since the panel is absolutely positioned and
+     outside the <li> that carries the hover, crossing it would close the menu.
+     background-clip keeps the background off the border, and what shows through
+     is the band itself, so there is no light strip. */
+  .cc-navbar .cc-nav > ul > .cc-nav-parent > .cc-nav-menu {
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    border-top: 0.25rem solid transparent;
+    background-clip: padding-box;
   }
   :is(.cc-navbar, .cc-navrail) .cc-nav-menu .cc-nav-link { color: var(--color-chrome-fg); }
   /* The sale link keeps its red signal in both contexts. Declared here rather
@@ -232,7 +259,7 @@
   }
   /* Points at the flyout, open or closed: there is nothing below. */
   .cc-navrail .cc-nav-caret,
-  .cc-navrail .cc-nav-caret.rotate-180 { transform: rotate(-90deg); }
+  .cc-navrail .cc-nav-caret.is-open { transform: rotate(-90deg); }
 
   /* Two columns at lg with the sidebar boxes below the content, three at xl.
      Flex could not do that without duplicating the aside. */
@@ -404,6 +431,8 @@
   .cc-footer .cc-input::placeholder { color: var(--color-chrome-muted); }
 
   .cc-nav-caret { width: 1rem; height: 1rem; flex-shrink: 0; transition: transform 150ms; }
+  /* Top level in the band: flips to point back up at its own trigger. */
+  .cc-nav-caret.is-open { transform: rotate(180deg); }
 
   .cc-nav-item { position: relative; }
 
@@ -413,9 +442,9 @@
     min-width: 14rem;
     padding-block: 0.375rem;
     border: 1px solid var(--color-ink-200);
-    border-radius: var(--radius-cc-lg);
+    border-radius: var(--radius-cc);
     background-color: var(--color-ink-100);
-    box-shadow: 0 10px 30px -12px rgb(0 0 0 / 0.25);
+    box-shadow: 0 12px 28px -8px rgb(0 0 0 / 0.30);
   }
 
   /* First-level menu drops BELOW its trigger... */
@@ -425,9 +454,17 @@
   }
   /* ...every deeper menu flies out to the SIDE, or they would stack on top
      of each other and only the deepest would be reachable. */
+  /* A flyout is an EXTENSION of the panel it came from: flush against it, so
+     only the one free corner is rounded. Logical properties, so end-end is
+     bottom-right in LTR and bottom-left in RTL. The shared edge loses its
+     border too — the lighter background already marks the boundary, and two
+     adjacent borders read as a double line. */
   .cc-nav-menu .cc-nav-menu {
     inset-inline-start: 100%;
     top: -0.375rem;
+    border-radius: 0;
+    border-end-end-radius: var(--radius-cc);
+    border-inline-start: 0;
   }
 
   /* Items inside a menu are full-width rows, not inline pills. */
@@ -439,9 +476,10 @@
     padding: 0.5rem 0.875rem;
     white-space: normal;
   }
-  /* Caret points sideways in a flyout. */
-  .cc-nav-menu .cc-nav-caret { transform: rotate(-90deg); }
-  .cc-nav-menu .cc-nav-caret.rotate-180 { transform: rotate(-90deg); }
+  /* Sideways in a flyout, pointing at the menu it opens — open or closed,
+     since there is nothing below to point down to. */
+  .cc-nav-menu .cc-nav-caret,
+  .cc-nav-menu .cc-nav-caret.is-open { transform: rotate(-90deg); }
 
   /* ── The same nav markup, restyled for the mobile drawer ───────────────
      The drawer includes box.navigation.php a second time rather than shipping
@@ -475,9 +513,10 @@
     box-shadow: none;
   }
   .cc-nav-mobile .cc-nav-menu .cc-nav-link { padding-inline-start: 0.75rem; }
-  /* Caret points down at every depth here, since nothing flies out sideways. */
+  /* Down at every depth here, since nothing flies out sideways, and flipped
+     when the branch is open. */
   .cc-nav-mobile .cc-nav-caret { transform: none; }
-  .cc-nav-mobile .cc-nav-caret.rotate-180 { transform: rotate(180deg); }
+  .cc-nav-mobile .cc-nav-caret.is-open { transform: rotate(180deg); }
 
 
   /* ── Sidebar ────────────────────────────────────────────────────────────
