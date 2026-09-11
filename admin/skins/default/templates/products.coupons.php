@@ -14,6 +14,11 @@
 
   <div id="coupons" class="tab_content">
 	<h3>{$LANG.catalogue.title_coupons}</h3>
+	<p class="coupon-filter">
+	  <input type="text" name="coupon_filter[coupons]" value="{$FILTER.coupons|escape:'html'}" class="textbox" placeholder="{$LANG.catalogue.coupon_search}">
+	  <input type="submit" name="coupon_filter_submit" value="{$LANG.common.search}" class="tiny">
+	  {if $FILTER.coupons}<a href="?_g=products&amp;node=coupons&amp;reset_filter=coupons">{$LANG.common.reset}</a>{/if}
+	</p>
 	<table>
 	  <thead>
 		<tr>
@@ -54,6 +59,11 @@
 
   <div id="certificates" class="tab_content">
 	<h3>{$LANG.catalogue.gift_certificates}</h3>
+	<p class="coupon-filter">
+	  <input type="text" name="coupon_filter[certificates]" value="{$FILTER.certificates|escape:'html'}" class="textbox" placeholder="{$LANG.catalogue.certificate_search}">
+	  <input type="submit" name="coupon_filter_submit" value="{$LANG.common.search}" class="tiny">
+	  {if $FILTER.certificates}<a href="?_g=products&amp;node=coupons&amp;reset_filter=certificates">{$LANG.common.reset}</a>{/if}
+	</p>
 	<table>
 	  <thead>
 		<tr>
@@ -70,11 +80,14 @@
 		{foreach from=$CERTIFICATES item=certificate}
 		<tr>
 		  <td style="text-align:center"><input type="hidden" id="status_{$certificate.coupon_id}" name="status[{$certificate.coupon_id}]" value="{$certificate.status}" class="toggle"></td>
-		  <td>{$certificate.code}</td>
+		  <td><a href="{$certificate.link_edit}" class="edit" title="{$LANG.common.edit}">{$certificate.code}</a></td>
 		  <td>{$certificate.value}</td>
 		  <td>{$certificate.expires}</td>
 		  <td><a href="?_g=orders&action=edit&order_id={$certificate.cart_order_id}">{$certificate.display_oid}</a></td>
-		  <td><a href="{$certificate.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+		  <td>
+			<a href="{$certificate.link_edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+			<a href="{$certificate.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+		  </td>
 		</tr>
 		{/foreach}
 		{else}

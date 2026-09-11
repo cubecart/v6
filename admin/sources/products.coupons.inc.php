@@ -29,7 +29,36 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete']) && Admin::getInstance(
     httpredir(currentPage(array('delete')));
 }
 
-if (isset($_POST['status']) && is_array($_POST['status'])) {
+/* Search terms live in the session, matching the stock log, so paging, sorting
+   and the status toggles all keep them. Both lists share the page's single
+   <form>, so a search posts alongside everything else and must be read before
+   the status block redirects away. */
+$coupon_filter = array('coupons' => '', 'certificates' => '');
+if (isset($_GET['reset_filter'])) {
+    foreach ($coupon_filter as $list => $discard) {
+        $GLOBALS['session']->delete('coupon_q_'.$list);
+    }
+    httpredir('?_g=products&node=coupons', ($_GET['reset_filter'] == 'certificates') ? 'certificates' : 'coupons');
+}
+if (isset($_POST['coupon_filter']) && is_array($_POST['coupon_filter'])) {
+    foreach ($coupon_filter as $list => $discard) {
+        $value = isset($_POST['coupon_filter'][$list]) ? trim((string)$_POST['coupon_filter'][$list]) : '';
+        if ($value === '') {
+            $GLOBALS['session']->delete('coupon_q_'.$list);
+        } else {
+            $GLOBALS['session']->set('coupon_q_'.$list, $value);
+        }
+    }
+}
+foreach ($coupon_filter as $list => $discard) {
+    $coupon_filter[$list] = (string)$GLOBALS['session']->get('coupon_q_'.$list);
+}
+// Land back on the tab the search was run from, not the first one.
+$coupon_tab = isset($_POST['previous-tab']) ? preg_replace('/[^a-z_-]/i', '', $_POST['previous-tab']) : '';
+
+// The search button is the first submit on the page, so it is also what Enter
+// fires. Skip the status save then, or every search claims to have saved.
+if (isset($_POST['status']) && is_array($_POST['status']) && !isset($_POST['coupon_filter_submit'])) {
     Admin::getInstance()->permissions('settings', CC_PERM_EDIT, true);
     foreach ($_POST['status'] as $id => $status) {
         $GLOBALS['db']->update('CubeCart_coupons', array('status' => $status), array('coupon_id' => $id));
@@ -38,7 +67,12 @@ if (isset($_POST['status']) && is_array($_POST['status'])) {
     foreach ($GLOBALS['hooks']->load('admin.product.coupons.status') as $hook) {
         include $hook;
     }
-    httpredir(currentPage());
+    httpredir(currentPage(), $coupon_tab);
+}
+// A search on its own still needs the round trip: the terms are in the session
+// and the lists are built further down from a GET.
+if (isset($_POST['coupon_filter_submit'])) {
+    httpredir(currentPage(array('c_page', 'gc_page')), $coupon_tab);
 }
 
 if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
@@ -288,7 +322,14 @@ if (isset($_GET['action'])) {
     $per_page  = 20;
     $page_var  = 'gc_page';
     $page  = (isset($_GET[$page_var])) ? $_GET[$page_var] : 1;
-    $certificates = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_coupons` AS `C` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` AS `S` ON `C`.`cart_order_id` = `S`.`cart_order_id`', '`C`.*, `S`.`id`, `S`.`custom_oid`', '`C`.`cart_order_id` IS NOT NULL', $_GET[$certificate_sort_key], $per_page, $page);
+    // Order number as well as code: "which card came off order 123456" is the
+    // other way merchants come at this list.
+    $certificate_where = '`C`.`cart_order_id` IS NOT NULL';
+    if ($coupon_filter['certificates'] !== '') {
+        $safe = $GLOBALS['db']->sqlSafe($coupon_filter['certificates']);
+        $certificate_where .= " AND (`C`.`code` LIKE '%".$safe."%' OR `C`.`cart_order_id` LIKE '%".$safe."%' OR `S`.`custom_oid` LIKE '%".$safe."%')";
+    }
+    $certificates = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_coupons` AS `C` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` AS `S` ON `C`.`cart_order_id` = `S`.`cart_order_id`', '`C`.*, `S`.`id`, `S`.`custom_oid`', $certificate_where, $_GET[$certificate_sort_key], $per_page, $page);
     $pagination = $GLOBALS['db']->pagination(false, $per_page, $page, 5, $page_var, 'certificates');
     if ($certificates) {
         $config_oid_col = $GLOBALS['config']->get('config','oid_col');
@@ -330,7 +371,12 @@ if (isset($_GET['action'])) {
     $per_page = 20;
     $page_var  = 'c_page';
     $page  = (isset($_GET[$page_var])) ? $_GET[$page_var] : 1;
-    $coupons  = $GLOBALS['db']->select('CubeCart_coupons', false, '`cart_order_id` IS NULL', $_GET[$coupon_sort_key], $per_page, $page);
+    $coupon_where = '`cart_order_id` IS NULL';
+    if ($coupon_filter['coupons'] !== '') {
+        $safe = $GLOBALS['db']->sqlSafe($coupon_filter['coupons']);
+        $coupon_where .= " AND (`code` LIKE '%".$safe."%' OR `description` LIKE '%".$safe."%')";
+    }
+    $coupons  = $GLOBALS['db']->select('CubeCart_coupons', false, $coupon_where, $_GET[$coupon_sort_key], $per_page, $page);
     $pagination = $GLOBALS['db']->pagination(false, $per_page, $page, 5, $page_var, 'coupons');
     if ($coupons) {
         foreach ($coupons as $coupon) {
@@ -349,6 +395,7 @@ if (isset($_GET['action'])) {
         $GLOBALS['smarty']->assign('COUPONS', $smarty_data['list_coupon']);
         $GLOBALS['smarty']->assign('PAGINATION_COUPONS', $pagination);
     }
+    $GLOBALS['smarty']->assign('FILTER', $coupon_filter);
     $GLOBALS['smarty']->assign('DISPLAY_COUPONS', true);
 }
 $page_content = $GLOBALS['smarty']->fetch('templates/products.coupons.php');
