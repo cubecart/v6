@@ -11,7 +11,10 @@
  *}
 <div x-data="ccGallery('{if isset($PRODUCT.source)}{$PRODUCT.source}{else}{$PRODUCT.medium}{/if}')">
 
+   {* touchstart is passive: nothing is prevented, and marking it so keeps the
+      page's own vertical scrolling on the fast path. *}
    <button type="button" @click="enlarge()"
+           @touchstart.passive="swipeStart($event)" @touchend="swipeEnd($event)"
            class="cc-media block w-full overflow-hidden rounded-cc-lg border border-ink-200"
            title="{$LANG.catalogue.click_enlarge}">
       <img id="img-preview"
@@ -26,7 +29,21 @@
    </button>
 
    {if is_array($GALLERY) && count($GALLERY) > 1}
-   <ul role="list" class="mt-3 grid grid-cols-5 gap-2 sm:grid-cols-6">
+   {* Dots instead of thumbnails on a phone: swipe is the way through the images
+      there, and a thumbnail strip costs a row of vertical space to say the same
+      thing. From sm up the thumbnails are back and the dots go. *}
+   <div class="mt-3 flex justify-center gap-2 sm:hidden">
+      {foreach from=$GALLERY item=image name=d}
+      <button type="button" @click="goTo({$smarty.foreach.d.index})"
+              :aria-current="index === {$smarty.foreach.d.index} ? 'true' : 'false'"
+              class="size-2.5 rounded-full transition-colors"
+              :class="index === {$smarty.foreach.d.index} ? 'bg-ink-800' : 'bg-ink-300'">
+         <span class="cc-sr-only">{sprintf($LANG.catalogue.go_to_image|default:'Go to image %d', $smarty.foreach.d.iteration)}</span>
+      </button>
+      {/foreach}
+   </div>
+
+   <ul role="list" class="mt-3 hidden grid-cols-5 gap-2 sm:grid sm:grid-cols-6">
       {foreach from=$GALLERY item=image name=g}
       <li>
          <button type="button"
@@ -47,7 +64,10 @@
 
    {* Plain overlay, not a native <dialog>: this sits inside the product
       <form>, and a <dialog> holding form controls alters submit behaviour. *}
+   {* Swipe anywhere on the overlay, not just on the image: the picture is
+      object-contain, so on a phone most of the overlay is the space beside it. *}
    <div x-show="open" x-cloak x-trap.noscroll="open"
+        @touchstart.passive="swipeStart($event)" @touchend="swipeLightbox($event)"
         @keydown.escape.window="close()"
         @keydown.arrow-left.window="open && step(-1)"
         @keydown.arrow-right.window="open && step(1)"
