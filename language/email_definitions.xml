@@ -10,7 +10,7 @@
  * Email:  hello@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
 -->
-<emails version="6.7.4" language="en">
+<emails version="6.8.0" language="en">
   <email name="account.activate">
     <subject><![CDATA[Confirm your email address]]></subject>
     <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
