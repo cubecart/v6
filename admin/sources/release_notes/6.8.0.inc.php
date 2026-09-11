@@ -74,4 +74,4 @@ $features = array(
     '4197' => 'Fixed remaining tax-inclusive rounding issues',
     '4195' => 'The "Products per page" setting on the Layout tab overrides the skin again'
 );
-$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 47, $notes);
+$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 48, $notes);
