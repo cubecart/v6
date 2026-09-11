@@ -433,11 +433,11 @@
       <div class="mt-3 grid gap-4 sm:grid-cols-2">
          <div>
             <label for="reg_password" class="cc-label">{$LANG.account.password}</label>
-            <input type="password" minlength="6" maxlength="64" name="password" id="reg_password" autocomplete="new-password">
+            <input type="password" minlength="8" maxlength="64" name="password" id="reg_password" autocomplete="new-password">
          </div>
          <div>
             <label for="reg_passconf" class="cc-label">{$LANG.user.password_confirm}</label>
-            <input type="password" minlength="6" maxlength="64" name="passconf" id="reg_passconf" data-match="#reg_password" autocomplete="new-password">
+            <input type="password" minlength="8" maxlength="64" name="passconf" id="reg_passconf" data-match="#reg_password" autocomplete="new-password">
          </div>
       </div>
    </div>

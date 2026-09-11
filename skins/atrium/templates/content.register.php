@@ -66,11 +66,11 @@
          <div class="grid gap-4 sm:grid-cols-2">
             <div>
                <label for="reg_password" class="cc-label">{$LANG.account.password}</label>
-               <input type="password" name="password" id="reg_password" minlength="6" maxlength="64" autocomplete="new-password" required>
+               <input type="password" name="password" id="reg_password" minlength="8" maxlength="64" autocomplete="new-password" required>
             </div>
             <div>
                <label for="passconf" class="cc-label">{$LANG.user.password_confirm}</label>
-               <input type="password" name="passconf" id="passconf" minlength="6" maxlength="64" data-match="#reg_password" autocomplete="new-password" required>
+               <input type="password" name="passconf" id="passconf" minlength="8" maxlength="64" data-match="#reg_password" autocomplete="new-password" required>
             </div>
          </div>
 

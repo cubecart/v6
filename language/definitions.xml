@@ -46,12 +46,12 @@
     <string name="error_details_wrong" introduced="5.0.0"><![CDATA[Incorrect details, please try again.]]></string>
     <string name="error_email_in_use" introduced="5.0.0"><![CDATA[There is already an account assigned to that email address. Please login.]]></string>
     <string name="error_login" introduced="5.0.0"><![CDATA[Invalid username or password]]></string>
-    <string name="error_pass_length" introduced="6.0.0"><![CDATA[Your password is less than six characters in length. We strongly recommend that you <a href="?_a=profile">change it</a>.]]></string>
+    <string name="error_pass_length" introduced="6.0.0"><![CDATA[Your password is shorter than we now recommend. Please consider <a href="?_a=profile">changing it</a> to something longer.]]></string>
     <string name="error_name_required" introduced="5.0.0"><![CDATA[Please enter your name.]]></string>
     <string name="error_firstname_required" introduced="6.0.0"><![CDATA[Please enter your first name.]]></string>
     <string name="error_lastname_required" introduced="6.0.0"><![CDATA[Please enter your last name.]]></string>
     <string name="error_password_empty" introduced="5.0.0"><![CDATA[Please enter a password.]]></string>
-    <string name="error_password_length" introduced="6.0.0"><![CDATA[Please enter at least 6 characters for your password.]]></string>
+    <string name="error_password_length" introduced="6.0.0"><![CDATA[Please enter at least 8 characters for your password.]]></string>
     <string name="error_password_length_max" introduced="6.0.0"><![CDATA[Password must be less than 64 characters long.]]></string>
     <string name="error_password_mismatch" introduced="5.0.0"><![CDATA[Your passwords do not match.]]></string>
     <string name="error_email_mismatch" introduced="6.4.5"><![CDATA[Please check your email address matches.]]></string>
@@ -891,6 +891,13 @@
     <string name="downloads" introduced="5.0.0"><![CDATA[Downloads]]></string>
     <string name="edit" introduced="5.0.0"><![CDATA[Edit]]></string>
     <string name="show_password" introduced="6.8.0"><![CDATA[Show password]]></string>
+    <string name="password_strength" introduced="6.8.0"><![CDATA[Password strength]]></string>
+    <string name="password_weak" introduced="6.8.0"><![CDATA[Weak]]></string>
+    <string name="password_fair" introduced="6.8.0"><![CDATA[Fair]]></string>
+    <string name="password_good" introduced="6.8.0"><![CDATA[Good]]></string>
+    <string name="password_strong" introduced="6.8.0"><![CDATA[Strong]]></string>
+    <string name="password_hint_length" introduced="6.8.0"><![CDATA[Longer is stronger. Three random words beat a short password with symbols.]]></string>
+    <string name="password_hint_common" introduced="6.8.0"><![CDATA[This is one of the most commonly used passwords. Please choose another.]]></string>
     <string name="hide_password" introduced="6.8.0"><![CDATA[Hide password]]></string>
     <string name="quantity_increase" introduced="6.8.0"><![CDATA[Increase quantity]]></string>
     <string name="quantity_decrease" introduced="6.8.0"><![CDATA[Decrease quantity]]></string>

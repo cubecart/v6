@@ -16,6 +16,11 @@
  */
 class User
 {
+    /* Minimum for a password being SET. NIST 800-63B floor, length only.
+       ⚠ Login does NOT enforce it: an existing short password still signs in
+       and is nudged instead, so raising this locks nobody out. */
+    const PASSWORD_MIN_LENGTH = 8;
+
 
     /**
      * Is bot?
@@ -296,7 +301,7 @@ class User
 
                     $pass_len = strlen($password);
 
-                    if ($pass_len > 0 && $pass_len < 6) {
+                    if ($pass_len > 0 && $pass_len < self::PASSWORD_MIN_LENGTH) {
                         $GLOBALS['gui']->setInfo($GLOBALS['language']->account['error_pass_length']);
                     }
 
@@ -383,7 +388,7 @@ class User
                 $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_mismatch']);
                 return false;
             }
-            if (strlen($_POST['passnew']) < 6) {
+            if (strlen($_POST['passnew']) < self::PASSWORD_MIN_LENGTH) {
                 $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_length']);
                 return false;
             }
@@ -935,7 +940,7 @@ class User
     {
         if (filter_var($email, FILTER_VALIDATE_EMAIL) && !empty($verification) && !empty($password['password']) && !empty($password['passconf']) && ($password['password'] === $password['passconf'])) {
             
-            if (strlen($password['password']) < 6) {
+            if (strlen($password['password']) < self::PASSWORD_MIN_LENGTH) {
                 $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_length']);
                 return false;
             }
@@ -1009,7 +1014,7 @@ class User
                 $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_mismatch']);
                 $error['pass'] = true;
             }
-            if (strlen($_POST['password']) < 6) {
+            if (strlen($_POST['password']) < self::PASSWORD_MIN_LENGTH) {
                 $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_length']);
                 $error['pass'] = true;
             }

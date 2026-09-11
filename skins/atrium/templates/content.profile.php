@@ -76,11 +76,11 @@
             <div>
                {* id="passnew" is the equalTo target for passconf — keep it. *}
                <label for="passnew" class="cc-label">{$LANG.user.password_new}</label>
-               <input type="password" name="passnew" id="passnew" minlength="6" maxlength="64" autocomplete="new-password">
+               <input type="password" name="passnew" id="passnew" minlength="8" maxlength="64" autocomplete="new-password">
             </div>
             <div>
                <label for="passconf" class="cc-label">{$LANG.user.password_confirm}</label>
-               <input type="password" name="passconf" id="passconf" minlength="6" maxlength="64" data-match="#passnew" autocomplete="new-password">
+               <input type="password" name="passconf" id="passconf" minlength="8" maxlength="64" data-match="#passnew" autocomplete="new-password">
             </div>
          </div>
       </div>
