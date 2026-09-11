@@ -3027,6 +3027,7 @@ This email was sent automatically by the CubeCart setup tool.]]></string>
     <string name="language_updates_available" introduced="6.6.3"><![CDATA[Language updates available:]]></string>
     <string name="error_language_install" introduced="6.6.0"><![CDATA[Failed to install language. Please check your internet connection and try again.]]></string>
     <string name="error_language_install_write" introduced="6.6.0"><![CDATA[Cannot install language: %s is not writable.]]></string>
+    <string name="error_language_install_version" introduced="6.8.0"><![CDATA[Cannot install language %1$s: version %2$s requires a newer version of CubeCart than %3$s.]]></string>
   </group>
   <group name="ui">
     <string name="drag_reorder" introduced="5.0.0"><![CDATA[Drag to reorder]]></string>

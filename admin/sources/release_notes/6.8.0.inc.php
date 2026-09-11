@@ -45,6 +45,7 @@ $features = array(
     '4274' => 'Promotional codes and gift cards can be searched, and a gift card in that list can now be opened for editing',
 
     // Fixes and improvements
+    '4275' => 'Language packs built for a newer CubeCart release are no longer offered for install or upgrade',
     '4272' => 'Restored the missing pagination styling on the gift card and discount code lists',
     '4271' => 'Fixed the order confirmation page rendering only once, with a refresh redirecting to the basket',
     '4270' => 'The payment gate now keys off explicit state rather than the message queue',
@@ -74,4 +75,4 @@ $features = array(
     '4197' => 'Fixed remaining tax-inclusive rounding issues',
     '4195' => 'The "Products per page" setting on the Layout tab overrides the skin again'
 );
-$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 48, $notes);
+$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 49, $notes);

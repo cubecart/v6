@@ -311,8 +311,10 @@ if (!$GLOBALS['session']->has('language_update_check')) {
                     $api_versions[$api_lang['code']] = $api_lang['version'];
                 }
                 foreach ($installed as $code => $info) {
+                    // Ignore packs built for a newer CubeCart release
                     if (isset($api_versions[$code]) && !empty($info['version'])
-                        && version_compare($api_versions[$code], $info['version'], '>')) {
+                        && version_compare($api_versions[$code], $info['version'], '>')
+                        && version_compare($api_versions[$code], CC_VERSION, '<=')) {
                         $lang_updates[] = trim((string)$info['title']).' ('.$info['version'].' &rarr; '.$api_versions[$code].')';
                     }
                 }

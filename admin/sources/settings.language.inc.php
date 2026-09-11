@@ -94,6 +94,7 @@ if (isset($_POST['export']) && Admin::getInstance()->permissions('settings', CC_
 if (isset($_GET['install']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT) && isset($_GET['token']) && $_GET['token'] == SESSION_TOKEN) {
     $install_code = $_GET['install'];
     $installed = false;
+    $version_blocked = false;
 
     // Validate language code format
     if (preg_match('#^[a-z]{2}\-[A-Z]{2}$#', $install_code)) {
@@ -113,7 +114,13 @@ if (isset($_GET['install']) && Admin::getInstance()->permissions('settings', CC_
             if ($api_data && !empty($api_data['languages'])) {
                 foreach ($api_data['languages'] as $api_lang) {
                     if ($api_lang['code'] === $install_code) {
-                        $download_url = $api_lang['download'];
+                        // Never install a pack built for a newer CubeCart release
+                        if (!empty($api_lang['version']) && version_compare($api_lang['version'], CC_VERSION, '>')) {
+                            $GLOBALS['main']->errorMessage(sprintf($lang['translate']['error_language_install_version'], $install_code, $api_lang['version'], CC_VERSION));
+                            $version_blocked = true;
+                        } else {
+                            $download_url = $api_lang['download'];
+                        }
                         break;
                     }
                 }
@@ -197,7 +204,7 @@ if (isset($_GET['install']) && Admin::getInstance()->permissions('settings', CC_
 
     if ($installed) {
         $GLOBALS['main']->successMessage(sprintf($lang['translate']['notify_language_installed'], $install_code));
-    } else {
+    } elseif (!$version_blocked) {
         $GLOBALS['main']->errorMessage($lang['translate']['error_language_install']);
     }
     httpredir(currentPage(array('install', 'token')));
@@ -466,7 +473,8 @@ if (isset($_GET['export'])) {
             $info['placeholder'] = $subdomain.'.'.$domain;
             // Version info + upgrade flag
             $info['api_version'] = $api_versions[$code] ?? null;
-            $info['upgrade_available'] = (!empty($info['api_version']) && !empty($info['version']) && version_compare($info['api_version'], $info['version'], '>'));
+            // Only offer packs built for this CubeCart release or older
+            $info['upgrade_available'] = (!empty($info['api_version']) && !empty($info['version']) && version_compare($info['api_version'], $info['version'], '>') && version_compare($info['api_version'], CC_VERSION, '<='));
             if ($info['upgrade_available']) {
                 $info['upgrade_url'] = currentPage(null, array('install' => $code, 'token' => SESSION_TOKEN)).'#lang_list';
             }
@@ -480,6 +488,9 @@ if (isset($_GET['export'])) {
         $installed_codes = is_array($languageList) ? array_keys($languageList) : array();
         $available = array();
         foreach ($api_data['languages'] as $api_lang) {
+            if (!empty($api_lang['version']) && version_compare($api_lang['version'], CC_VERSION, '>')) {
+                continue;
+            }
             if (!in_array($api_lang['code'], $installed_codes)) {
                 $api_lang['install_url'] = currentPage(null, array('install' => $api_lang['code'], 'token' => SESSION_TOKEN)).'#lang_available';
                 $available[] = $api_lang;
