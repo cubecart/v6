@@ -88,11 +88,12 @@
                </span>
             </button>
 
-            {* min-w-0, deliberately not shrink-0: a flex item defaults to
-               min-width:auto, so an oversized merchant logo would refuse to
-               shrink and push the header past the viewport. *}
+            {* min-w-0 on both, deliberately not shrink-0: a flex item defaults
+               to min-width:auto, so an oversized merchant logo would refuse to
+               shrink and push the header past the viewport. The img needs it
+               too, or it overflows the shrunken link onto the search button. *}
             <a href="{$ROOT_PATH}" class="flex min-w-0 items-center">
-               <img src="{$STORE_LOGO}" alt="{$CONFIG.store_name}" class="max-h-10 w-auto max-w-[50vw] object-contain sm:max-w-none">
+               <img src="{$STORE_LOGO}" alt="{$CONFIG.store_name}" class="max-h-10 w-auto min-w-0 max-w-[50vw] object-contain sm:max-w-none">
             </a>
 
             <div class="ms-auto hidden w-full max-w-md lg:block">

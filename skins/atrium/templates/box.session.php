@@ -38,7 +38,13 @@
    </ul>
 {else}
    <div class="flex items-center gap-1">
-      <a href="{$STORE_URL}/login{$CONFIG.seo_ext}" class="cc-btn cc-btn-ghost">{$LANG.account.login}</a>
+      {* icon only below sm, where the header has no room for the word *}
+      <a href="{$STORE_URL}/login{$CONFIG.seo_ext}" class="cc-btn cc-btn-ghost gap-1.5" aria-label="{$LANG.account.login}">
+         <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" stroke-linecap="round" stroke-linejoin="round"/>
+         </svg>
+         <span class="hidden sm:inline">{$LANG.account.login}</span>
+      </a>
       <a href="{$STORE_URL}/register{$CONFIG.seo_ext}" class="cc-btn cc-btn-ghost hidden sm:inline-flex">{$LANG.account.register}</a>
    </div>
 {/if}
