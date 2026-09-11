@@ -303,6 +303,9 @@
          element.js_foot.php: the bundle parses this blob at alpine:init. *}
       {include file='templates/element.validation_messages.php'}
 
+      {* Labels for the controls 14-controls.js builds. Same ordering rule. *}
+      {include file='templates/element.ui_strings.php'}
+
       {* Exit-intent newsletter modal. Deliberately absent from
          main.checkout.php — never interrupt a payment. *}
       {include file='templates/modal.exit.php'}

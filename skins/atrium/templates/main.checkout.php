@@ -63,6 +63,8 @@
          </div>
       </footer>
 
+      {include file='templates/element.ui_strings.php'}
+
       {include file='templates/element.js_foot.php'}
       {$LIVE_HELP}
       {$ACP_WIDGET}

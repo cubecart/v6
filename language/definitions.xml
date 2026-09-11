@@ -890,6 +890,11 @@
     <string name="download" introduced="5.0.0"><![CDATA[Download]]></string>
     <string name="downloads" introduced="5.0.0"><![CDATA[Downloads]]></string>
     <string name="edit" introduced="5.0.0"><![CDATA[Edit]]></string>
+    <string name="show_password" introduced="6.8.0"><![CDATA[Show password]]></string>
+    <string name="hide_password" introduced="6.8.0"><![CDATA[Hide password]]></string>
+    <string name="quantity_increase" introduced="6.8.0"><![CDATA[Increase quantity]]></string>
+    <string name="quantity_decrease" introduced="6.8.0"><![CDATA[Decrease quantity]]></string>
+    <string name="back_to_top" introduced="6.8.0"><![CDATA[Back to top]]></string>
     <string name="eg" introduced="5.0.0"><![CDATA[e.g.]]></string>
     <string name="email" introduced="5.0.0"><![CDATA[Email]]></string>
     <string name="email_example" introduced="5.0.0"><![CDATA[name@example.com]]></string>

@@ -163,7 +163,7 @@
                   </div>
                   <div>
                      <label for="addr_postcode" class="cc-label">{$LANG.address.postcode}</label>
-                     <input type="text" name="postcode" id="addr_postcode" value="{$DATA.postcode}" class="uppercase" autocomplete="postal-code" required>
+                     <input type="text" name="postcode" id="addr_postcode" value="{$DATA.postcode}" class="uppercase" autocapitalize="characters" autocomplete="postal-code" required>
                   </div>
                   <div>
                      {* rel="state-list" makes 40-checkout.js resolve the target

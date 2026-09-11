@@ -285,7 +285,7 @@
                </div>
                <div>
                   <label for="addr_postcode" class="cc-label">{$LANG.address.postcode}</label>
-                  <input type="text" name="billing[postcode]" id="addr_postcode" required class="uppercase" value="{$BILLING.postcode}" autocomplete="postal-code">
+                  <input type="text" name="billing[postcode]" id="addr_postcode" required class="uppercase" value="{$BILLING.postcode}" autocapitalize="characters" autocomplete="postal-code">
                </div>
                <div>
                   <label for="country-list" class="cc-label">{$LANG.address.country}</label>
@@ -371,7 +371,7 @@
          </div>
          <div>
             <label for="del_postcode" class="cc-label">{$LANG.address.postcode}</label>
-            <input type="text" name="delivery[postcode]" id="del_postcode" required class="uppercase" value="{$DELIVERY.postcode}" autocomplete="postal-code">
+            <input type="text" name="delivery[postcode]" id="del_postcode" required class="uppercase" value="{$DELIVERY.postcode}" autocapitalize="characters" autocomplete="postal-code">
          </div>
          <div>
             <label for="delivery_country" class="cc-label">{$LANG.address.country}</label>

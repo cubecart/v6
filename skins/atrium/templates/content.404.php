@@ -14,4 +14,8 @@
       <a href="{$STORE_URL}" class="cc-btn cc-btn-primary">{$LANG.common.home}</a>
       <a href="{$ROOT_PATH}index.php?_a=contact" class="cc-btn cc-btn-secondary">{$LANG.common.contact_us|default:'Contact us'}</a>
    </div>
+
+{* A mistyped product URL is the most recoverable visitor there is: give them
+   back what they were just looking at rather than only a link home. *}
+{include file='templates/element.recently_viewed.php'}
 </div>

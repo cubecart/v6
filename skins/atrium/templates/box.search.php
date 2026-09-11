@@ -43,6 +43,7 @@
              @keydown.enter="if (choose()) $event.preventDefault()"
              @keydown.escape="close()"
              autocomplete="off"
+             enterkeyhint="search"
              data-image="true"
              data-amount="15"
              class="search_input w-full ps-4 pe-11{if $CONFIG.elasticsearch=='1'} es{/if}"
