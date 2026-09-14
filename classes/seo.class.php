@@ -256,7 +256,8 @@ class SEO
         $url = ($absolute) ? $GLOBALS['storeURL'].'/' : $GLOBALS['rootRel'];
 
         if (!$item_id && in_array($type, $this->_static_sections)) {
-            if (($item = $GLOBALS['db']->select('CubeCart_seo_urls', array('path'), array('type' => $type, 'redirect' => 0), false, 1, false, false)) !== false) {
+            if (($item = $this->_lookupSeoUrl($type)) !== false) {
+                $item = array($item);
                 foreach ($GLOBALS['hooks']->load('class.seo.buildurl.static_sections') as $hook) {
                     include $hook;
                 } 
@@ -264,7 +265,8 @@ class SEO
             } else {
                 return  $url.$this->setdbPath($type, '', '', false).$this->_extension;
             }
-        } elseif (($item = $GLOBALS['db']->select('CubeCart_seo_urls', array('path'), array('type' => $type, 'item_id' => $item_id, 'redirect' => 0), false, 1, false, false)) !== false) {
+        } elseif (($item = $this->_lookupSeoUrl($type, $item_id)) !== false) {
+            $item = array($item);
             foreach ($GLOBALS['hooks']->load('class.seo.buildurl.dynamic_url') as $hook) {
                 include $hook;
             }
@@ -284,6 +286,7 @@ class SEO
     public function delete($type, $item_id)
     {
         if (in_array($type, $this->_dynamic_sections) && is_numeric($item_id)) {
+            $this->_forgetSeoUrl($type, $item_id);
             return $GLOBALS['db']->delete('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id));
         }
         return false;
@@ -338,6 +341,56 @@ class SEO
     }
 
     /**
+     * Drop a remembered row. Called by everything here that writes one.
+     *
+     * @param string $type
+     * @param int|false $item_id
+     */
+    private function _forgetSeoUrl($type, $item_id = false)
+    {
+        $type = strtolower((string)$type);
+        $key  = ($item_id === false || $item_id === null || $item_id === '') ? 0 : (int)$item_id;
+        unset($this->_seo_url_cache[$type][$key]);
+    }
+
+    /**
+     * Look up a CubeCart_seo_urls row, remembered for this request only.
+     *
+     * These selects bypass the query cache (a stale path is a broken link), so
+     * one page repeated the same lookup a dozen times. Hits only: a miss can
+     * lead to setdbPath() creating the row.
+     *
+     * @param string $type
+     * @param int|false $item_id  false for static sections, which have none
+     * @return array|false  Row {path, custom}, or false
+     */
+    private function _lookupSeoUrl($type, $item_id = false)
+    {
+        $type = strtolower((string)$type);
+        $key  = ($item_id === false || $item_id === null) ? 0 : (int)$item_id;
+
+        if (isset($this->_seo_url_cache[$type][$key])) {
+            $cached = $this->_seo_url_cache[$type][$key];
+            return array('path' => $cached['path'], 'custom' => $cached['custom'] ? 1 : 0);
+        }
+
+        $where = ($item_id === false || $item_id === null)
+            ? array('type' => $type, 'redirect' => 0)
+            : array('type' => $type, 'item_id' => $item_id, 'redirect' => 0);
+
+        $rows = $GLOBALS['db']->select('CubeCart_seo_urls', array('path', 'custom'), $where, false, 1, false, false);
+        if ($rows === false) {
+            return false;
+        }
+
+        $this->_seo_url_cache[$type][$key] = array(
+            'path'   => $rows[0]['path'],
+            'custom' => (bool)$rows[0]['custom'],
+        );
+        return $rows[0];
+    }
+
+    /**
      * Generate SEO path
      *
      * @param string $id
@@ -356,8 +409,8 @@ class SEO
         }
 
         if (in_array($type, $this->_static_sections)) { /*! Static */
-            if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'path', array('type' => $type, 'redirect' => 0), false, 1, false, false)) !== false) {
-                $path = $existing[0]['path'];
+            if (($existing = $this->_lookupSeoUrl($type)) !== false) {
+                $path = $existing['path'];
             } else {
                 /* Force static English SEO paths until we have improved SEO for languages */
                 $current_language = $GLOBALS['language']->current();
@@ -385,9 +438,9 @@ class SEO
                         $existing = array(array('path' => $cached['path'], 'custom' => $cached['custom'] ? 1 : 0));
                         $path = $cached['path'];
                         $custom = (bool)$cached['custom'];
-                    } elseif (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', array('path', 'custom'), array('type' => 'cat', 'item_id' => $id, 'redirect' => 0), false, 1, false, false)) !== false) {
-                        $path = $existing[0]['path'];
-                        $custom = (bool)$existing[0]['custom'];
+                    } elseif (($existing = $this->_lookupSeoUrl('cat', $id)) !== false) {
+                        $path = $existing['path'];
+                        $custom = (bool)$existing['custom'];
                     } elseif (is_numeric($id) && isset($this->_cat_dirs[$id])) {
                         $path = $this->getDirectory($id);
                     } elseif (!isset($this->_cat_dirs[$id])) {
@@ -416,8 +469,8 @@ class SEO
                 case 'document':
                 case 'viewdoc':
                     // check its not been made already
-                    if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'path', array('type' => 'doc', 'item_id' => $id, 'redirect' => 0), false, 1, false, false)) !== false) {
-                        $path = $existing[0]['path'];
+                    if (($existing = $this->_lookupSeoUrl('doc', $id)) !== false) {
+                        $path = $existing['path'];
                     } else {
                         $docs = $GLOBALS['db']->select('CubeCart_documents', array('doc_name'), array('doc_id' => $id));
                         $path = $docs[0]['doc_name'];
@@ -432,8 +485,8 @@ class SEO
                         $cached = $this->_seo_url_cache['prod'][(int)$id];
                         $existing = array(array('path' => $cached['path']));
                         $path = $cached['path'];
-                    } elseif (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'path', array('type' => 'prod', 'item_id' => $id, 'redirect' => 0), false, 1, false, false)) !== false) {
-                        $path = $existing[0]['path'];
+                    } elseif (($existing = $this->_lookupSeoUrl('prod', $id)) !== false) {
+                        $path = $existing['path'];
                     } elseif (($prods = $GLOBALS['db']->select('CubeCart_inventory', array('product_id', 'name', 'cat_id'), array('product_id' => (int)$id), false, 1)) !== false) {
                         if ($GLOBALS['config']->get('config', 'seo_add_cats')==0) {
                             $path = $prods[0]['name'];
@@ -471,8 +524,8 @@ class SEO
      */
     public function getdbPath($type, $item_id)
     {
-        if (($item = $GLOBALS['db']->select('CubeCart_seo_urls', array('path'), array('type' => $type, 'item_id' => $item_id, 'redirect' => 0), false, 1, false, false)) !== false) {
-            return $item[0]['path'];
+        if (($item = $this->_lookupSeoUrl($type, $item_id)) !== false) {
+            return $item['path'];
         } else {
             return '';
         }
@@ -881,6 +934,27 @@ class SEO
      */
     public function setdbPath($type, $item_id, $path, $bool = true, $show_error = true, $status_code = 0)
     {
+        // Dropped either side: the body calls generatePath(), which re-reads and
+        // re-caches the row before the write lands.
+        $this->_forgetSeoUrl($type, $item_id);
+        $result = $this->_setdbPath($type, $item_id, $path, $bool, $show_error, $status_code);
+        $this->_forgetSeoUrl($type, $item_id);
+        return $result;
+    }
+
+    /**
+     * Write a DB path. Callers use setdbPath(), which wraps the cache drops.
+     *
+     * @param string $type
+     * @param int $item_id
+     * @param string $path
+     * @param bool $bool
+     * @param bool $show_error
+     * @param int $status_code
+     * @return bool/string
+     */
+    private function _setdbPath($type, $item_id, $path, $bool = true, $show_error = true, $status_code = 0)
+    {
         // Check dynamic $type has an valid $item_id
         if(in_array($type, $this->_dynamic_sections) && (int)$item_id <= 0) {
             return false;
@@ -1155,6 +1229,7 @@ class SEO
      */
     public function unsetdbPath($type, $item_id) 
     {
+        $this->_forgetSeoUrl($type, $item_id);
         return $GLOBALS['db']->update('CubeCart_seo_urls', array('redirect' => 301), array('type' => $type, 'item_id' => $item_id, 'redirect' => 0));
     }
 

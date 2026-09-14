@@ -2938,7 +2938,12 @@ class Cubecart
      */
     private function _getSocial($section, $method = 'getButtonHTML')
     {
-        if (($social_plugins = $GLOBALS['db']->select('CubeCart_modules', array('folder'), array('module' => 'social', 'status' => '1'))) !== false) {
+        // Same for every section, and a product page asks twice.
+        static $social_plugins_cache = null;
+        if ($social_plugins_cache === null) {
+            $social_plugins_cache = $GLOBALS['db']->select('CubeCart_modules', array('folder'), array('module' => 'social', 'status' => '1'));
+        }
+        if (($social_plugins = $social_plugins_cache) !== false) {
             foreach ($social_plugins as $plugin) {
                 $file_path = CC_ROOT_DIR.'/modules/social/'.$plugin['folder'].'/social.class.php';
                 if (file_exists($file_path)) {

@@ -1660,7 +1660,14 @@ class Order
             $guard
         ), false);
 
-        return ($GLOBALS['db']->statementErrno() === 0 && $GLOBALS['db']->statementAffected() > 0);
+        $adjusted = ($GLOBALS['db']->statementErrno() === 0 && $GLOBALS['db']->statementAffected() > 0);
+
+        // Stock just moved; Catalogue's per-request memo is now wrong.
+        if ($adjusted && isset($GLOBALS['catalogue']) && is_object($GLOBALS['catalogue'])) {
+            $GLOBALS['catalogue']->flushProductCache();
+        }
+
+        return $adjusted;
     }
 
     /**
@@ -1683,6 +1690,11 @@ class Order
             $GLOBALS['config']->get('config', 'dbprefix'),
             (int)$product_id
         ), false);
+
+        // As _stockAdjust(): the level just changed under the memo.
+        if (isset($GLOBALS['catalogue']) && is_object($GLOBALS['catalogue'])) {
+            $GLOBALS['catalogue']->flushProductCache();
+        }
 
         if ($before === null) {
             return;

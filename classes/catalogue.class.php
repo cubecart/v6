@@ -24,6 +24,12 @@ class Catalogue
     private $_pathElements;
     private $_category_translations = array();
     private $_category_access_cache = array();
+    private $_category_restriction_cache = array();
+    private $_filemanager_cache = array();
+    private $_option_lookup_cache = array();
+    private $_stock_max_cache = array();
+    private $_pricing_tier_cache = array();
+    private $_product_row_cache = array();
     private $_option_required = false;
     private $_options_line_price = 0;
     private $_sort_by_relevance = false;
@@ -1140,11 +1146,25 @@ class Catalogue
      */
     private function _getCategoryRestrictions($cat_id)
     {
-        $visited = array();
         $current = (int)$cat_id;
+        if (array_key_exists($current, $this->_category_restriction_cache)) {
+            return $this->_category_restriction_cache[$current];
+        }
+
+        // Siblings share ancestors, and every node on the way up resolves to the
+        // same answer, so cache the whole chain rather than just the leaf.
+        $chain = array();
+        $visited = array();
+        $result = null;
 
         while ($current > 0 && !isset($visited[$current])) {
             $visited[$current] = true;
+
+            if (array_key_exists($current, $this->_category_restriction_cache)) {
+                $result = $this->_category_restriction_cache[$current];
+                break;
+            }
+            $chain[] = $current;
 
             $groups = $GLOBALS['db']->select('CubeCart_category_group', array('group_id'), array('cat_id' => $current));
             if ($groups) {
@@ -1154,7 +1174,8 @@ class Catalogue
                 }
                 $cat = $GLOBALS['db']->select('CubeCart_category', array('guest_access'), array('cat_id' => $current));
                 $guest_access = ($cat) ? (int)$cat[0]['guest_access'] : 1;
-                return array('groups' => $group_ids, 'guest_access' => $guest_access);
+                $result = array('groups' => $group_ids, 'guest_access' => $guest_access);
+                break;
             }
 
             // No restrictions on this category — walk up to parent
@@ -1165,7 +1186,11 @@ class Catalogue
             $current = (int)$parent[0]['cat_parent_id'];
         }
 
-        return null;
+        foreach ($chain as $node) {
+            $this->_category_restriction_cache[$node] = $result;
+        }
+
+        return $result;
     }
 
     /**
@@ -1391,11 +1416,38 @@ class Catalogue
             }
             $result = $GLOBALS['db']->query($query);
         } else {
-            $result = $GLOBALS['db']->select('CubeCart_inventory', false, $where, $order, $per_page, $page, false, false);
+            /* Called three times per product page (_product, displayProduct,
+               displayProductOptions). Only the two reads are cached; the parse,
+               pricing and product_data hook below still run every call.
+               flushProductCache() clears this when stock moves. */
+            $row_key = !CC_IN_ADMIN ? serialize(array($where, $order, $per_page, $page)) : null;
+            if ($row_key !== null && array_key_exists($row_key, $this->_product_row_cache)) {
+                $result = $this->_product_row_cache[$row_key];
+            } else {
+                $result = $GLOBALS['db']->select('CubeCart_inventory', false, $where, $order, $per_page, $page, false, false);
+                if ($row_key !== null) {
+                    $this->_product_row_cache[$row_key] = $result;
+                }
+            }
         }
 
         // Get product option specific data
-        $products_matrix_data = $GLOBALS['db']->select('CubeCart_option_matrix', array('stock_level' , 'product_code', 'upc', 'jan', 'isbn', 'image'), array('product_id' => $product_id, 'options_identifier' => $options_identifier, 'status' => 1), false, false, false, false);
+        /* Key by the SQL, not the PHP type: callers pass the id as both '152' and
+           152. null and '' stay distinct - IS NULL vs = ''. */
+        $matrix_key = null;
+        if (!CC_IN_ADMIN) {
+            $matrix_key = 'm|'
+                .(is_array($product_id) ? implode(',', array_map('strval', $product_id)) : (string)$product_id)
+                .'|'.($options_identifier === null ? 'NULL' : 'S'.(string)$options_identifier);
+        }
+        if ($matrix_key !== null && array_key_exists($matrix_key, $this->_product_row_cache)) {
+            $products_matrix_data = $this->_product_row_cache[$matrix_key];
+        } else {
+            $products_matrix_data = $GLOBALS['db']->select('CubeCart_option_matrix', array('stock_level' , 'product_code', 'upc', 'jan', 'isbn', 'image'), array('product_id' => $product_id, 'options_identifier' => $options_identifier, 'status' => 1), false, false, false, false);
+            if ($matrix_key !== null) {
+                $this->_product_row_cache[$matrix_key] = $products_matrix_data;
+            }
+        }
         if ($products_matrix_data) {
             foreach ($products_matrix_data[0] as $key => $value) {
                 if (!is_null($value) && !empty($value)) {
@@ -1481,20 +1533,62 @@ class Catalogue
      * @param int $product_id
      * @return array/false
      */
+    /**
+     * Forget remembered product rows and stock figures. Called by anything that
+     * moves stock: order processing deducts, then reads the level back.
+     */
+    public function flushProductCache()
+    {
+        $this->_product_row_cache = array();
+        $this->_stock_max_cache   = array();
+    }
+
+    /**
+     * Read option definition rows, remembered for this request only.
+     *
+     * Products share option sets, so a listing issued the same group/value
+     * SELECT once per product. Reference data; admin skips it, being where
+     * options are edited.
+     *
+     * @param string $table
+     * @param array|false $columns
+     * @param array $where
+     * @param array|false $order
+     * @return array|false
+     */
+    private function _optionLookup($table, $columns, $where, $order = false)
+    {
+        if (CC_IN_ADMIN) {
+            return $GLOBALS['db']->select($table, $columns, $where, $order);
+        }
+
+        $key = $table.'|'.serialize($columns).'|'.serialize($where).'|'.serialize($order);
+        if (!array_key_exists($key, $this->_option_lookup_cache)) {
+            $this->_option_lookup_cache[$key] = $GLOBALS['db']->select($table, $columns, $where, $order);
+        }
+        return $this->_option_lookup_cache[$key];
+    }
+
     public function getProductOptions($product_id = null)
     {
         $sale_percent = ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == 2 && $GLOBALS['config']->get('config', 'catalogue_sale_percentage')>0) ? $GLOBALS['config']->get('config', 'catalogue_sale_percentage') : false;
 
-        if (($setlist = $GLOBALS['db']->select('CubeCart_options_set_product', array('set_id'), array('product_id' => (int)$product_id))) !== false) {
+        if (($setlist = $this->_optionLookup('CubeCart_options_set_product', array('set_id'), array('product_id' => (int)$product_id))) !== false) {
             // Fetch Option Sets
             foreach ($setlist as $set_data) {
-                if (($sets = $GLOBALS['db']->select('CubeCart_options_set_member', false, array('set_id' => (int)$set_data['set_id']))) !== false) {
+                if (($sets = $this->_optionLookup('CubeCart_options_set_member', false, array('set_id' => (int)$set_data['set_id']))) !== false) {
                     foreach ($sets as $set) {
                         $set_members[] = $set['set_member_id'];
                         $set_groups[] = $set['option_id'];
                         $set_values[$set['option_id']][] = $set['value_id'];
                     }
-                    if (($groups = $GLOBALS['db']->select('CubeCart_option_group', false, array('option_id' => $set_groups), array('priority' => 'ASC', 'option_name' => 'ASC'))) !== false) {
+                    // As above: same rows, shareable cache key.
+                    $set_members = array_values(array_unique($set_members));
+                    $set_groups  = array_values(array_unique($set_groups));
+                    foreach ($set_values as $k => $v) {
+                        $set_values[$k] = array_values(array_unique($v));
+                    }
+                    if (($groups = $this->_optionLookup('CubeCart_option_group', false, array('option_id' => $set_groups), array('priority' => 'ASC', 'option_name' => 'ASC'))) !== false) {
                         foreach ($groups as $group) {
                             if ($group['option_required']) {
                                 $this->_option_required = true;
@@ -1503,9 +1597,9 @@ class Catalogue
                                 if (isset($set_values[$group['option_id']]) && !empty($set_values[$group['option_id']])) {
                                     $value_id = $set_values[$group['option_id']];
                                 }
-                                if (is_array($value_id) && ($values = $GLOBALS['db']->select('CubeCart_option_value', false, array('value_id' => $value_id), array('priority' => 'ASC', 'value_name' => 'ASC'))) !== false) {
+                                if (is_array($value_id) && ($values = $this->_optionLookup('CubeCart_option_value', false, array('value_id' => $value_id), array('priority' => 'ASC', 'value_name' => 'ASC'))) !== false) {
                                     foreach ($values as $value) {
-                                        if (($assigns = $GLOBALS['db']->select('CubeCart_option_assign', false, array('value_id' => $value['value_id'], 'option_id' => $value['option_id'], 'product' => (int)$product_id, 'set_member_id' => $set_members))) !== false) {
+                                        if (($assigns = $this->_optionLookup('CubeCart_option_assign', false, array('value_id' => $value['value_id'], 'option_id' => $value['option_id'], 'product' => (int)$product_id, 'set_member_id' => $set_members))) !== false) {
                                             foreach ($assigns as $assign) {
                                                 if (!$assign['set_enabled']) {
                                                     continue;
@@ -1524,7 +1618,7 @@ class Catalogue
                                 }
                             } else {
                                 // Text option
-                                if (($assigns = $GLOBALS['db']->select('CubeCart_option_assign', false, array('option_id' => $group['option_id'], 'product' => (int)$product_id))) !== false) {
+                                if (($assigns = $this->_optionLookup('CubeCart_option_assign', false, array('option_id' => $group['option_id'], 'product' => (int)$product_id))) !== false) {
                                     if ($sale_percent) {
                                         $assigns[0]['option_price_original'] = $assigns[0]['option_price'];
                                         $assigns[0]['option_price'] = $assigns[0]['option_price'] - ($assigns[0]['option_price'] / 100) * $sale_percent;
@@ -1545,7 +1639,7 @@ class Catalogue
             }
         }
 
-        if (($products = $GLOBALS['db']->select('CubeCart_option_assign', false, array('product' => (int)$product_id, 'set_member_id' => 0, 'set_enabled' => '1'))) !== false) {
+        if (($products = $this->_optionLookup('CubeCart_option_assign', false, array('product' => (int)$product_id, 'set_member_id' => 0, 'set_enabled' => '1'))) !== false) {
             $option = array();
 
             $sale_percent = ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == 2 && $GLOBALS['config']->get('config', 'catalogue_sale_percentage')>0) ? $GLOBALS['config']->get('config', 'catalogue_sale_percentage') : false;
@@ -1562,7 +1656,15 @@ class Catalogue
                     $mid[] = $assigned['value_id'];
                 }
             }
-            if (($categories = $GLOBALS['db']->select('CubeCart_option_group', false, array('option_id' => $top), array('priority' => 'ASC', 'option_name' => 'ASC'))) !== false) {
+            // Built one row per assigned value: `IN (1,1,1,1,1,1,3,3,3)`. Same rows
+            // either way, but the deduped list is what makes the cache key shared.
+            if (isset($top)) {
+                $top = array_values(array_unique($top));
+            }
+            if (isset($mid)) {
+                $mid = array_values(array_unique($mid));
+            }
+            if (($categories = $this->_optionLookup('CubeCart_option_group', false, array('option_id' => $top), array('priority' => 'ASC', 'option_name' => 'ASC'))) !== false) {
                 foreach ($categories as $category) {
                     $array = false;
                     if ($category['option_required']) {
@@ -1570,7 +1672,7 @@ class Catalogue
                     }
                     if (in_array($category['option_type'], $this->_options_selectable)) {
                         // Get Option Values
-                        if (($values = $GLOBALS['db']->select('CubeCart_option_value', false, array('option_id' => $category['option_id'], 'value_id' => $mid), array('priority' => 'ASC', 'value_name' => 'ASC'))) !== false) {
+                        if (($values = $this->_optionLookup('CubeCart_option_value', false, array('option_id' => $category['option_id'], 'value_id' => $mid), array('priority' => 'ASC', 'value_name' => 'ASC'))) !== false) {
                             foreach ($values as $value) {
                                 foreach ($option[$value['option_id']] as $opt) {
                                     if ($opt['value_id'] == $value['value_id']) {
@@ -1724,7 +1826,17 @@ class Catalogue
                 'group_id'   => is_array($group_id) ? array_merge(array(0), $group_id) : $group_id,
             );
 
-            if (($pricing = $GLOBALS['db']->select('CubeCart_pricing_quantity', array('quantity', 'price'), $search, array('quantity' => 'ASC', 'price' => 'ASC'))) !== false) {
+            // Same product is priced more than once per page.
+            $tier_key = serialize($search);
+            if (!CC_IN_ADMIN && array_key_exists($tier_key, $this->_pricing_tier_cache)) {
+                $pricing = $this->_pricing_tier_cache[$tier_key];
+            } else {
+                $pricing = $GLOBALS['db']->select('CubeCart_pricing_quantity', array('quantity', 'price'), $search, array('quantity' => 'ASC', 'price' => 'ASC'));
+                if (!CC_IN_ADMIN) {
+                    $this->_pricing_tier_cache[$tier_key] = $pricing;
+                }
+            }
+            if ($pricing !== false) {
                 foreach ($pricing as $price) {
                     $tier = ($GLOBALS['config']->get('config', 'catalogue_sale_mode')==2) ? ($price['price'] - ($price['price'] / 100) * $GLOBALS['config']->get('config', 'catalogue_sale_percentage')) : $price['price'];
                     // Retail and group tiers can both match the same quantity - keep the cheaper.
@@ -1751,7 +1863,7 @@ class Catalogue
                         continue;
                     } else {
                         //If the sale price is still better than the quantity price use the sale price
-                        if (!$sale || ((double)$product_data['sale_price'] == 0) || ($sale && $product_data['sale_price'] > $price)) {
+                        if (!$sale || ((float)$product_data['sale_price'] == 0) || ($sale && $product_data['sale_price'] > $price)) {
                             $product_data['price'] = $price;
                             $product_data['sale_price'] = $price;
                             $product_data['price_to_pay'] = $price;
@@ -1933,7 +2045,17 @@ class Catalogue
                 $rows = array('stock_level', 'restock_note');
                 $where = array('product_id' => (int)$product_id, 'options_identifier' => $options_identifier_string, 'status' => 1, 'use_stock' => 1);
             }
-            if($products_matrix = $GLOBALS['db']->select('CubeCart_option_matrix', $rows, $where, false, 1, false, false)) {
+            // $return_max selects stock_level alone, so the restock_note session
+            // write below cannot fire. The other branch stays uncached for that.
+            if ($return_max && !CC_IN_ADMIN && array_key_exists((int)$product_id, $this->_stock_max_cache)) {
+                $products_matrix = $this->_stock_max_cache[(int)$product_id];
+            } else {
+                $products_matrix = $GLOBALS['db']->select('CubeCart_option_matrix', $rows, $where, false, 1, false, false);
+                if ($return_max && !CC_IN_ADMIN) {
+                    $this->_stock_max_cache[(int)$product_id] = $products_matrix;
+                }
+            }
+            if ($products_matrix) {
                 if (is_numeric($products_matrix[0]['stock_level'])) {
                     if (!empty($products_matrix[0]['restock_note'])) {
                         $GLOBALS['session']->set('restock_note', $products_matrix[0]['restock_note']);
@@ -2019,7 +2141,18 @@ class Catalogue
         }
         
         if (is_numeric($input)) {
-            if (($result = $GLOBALS['db']->select('CubeCart_filemanager', false, array('file_id' => (int)$input))) !== false) {
+            // Asked once per skin image mode, per gallery image. Nothing on the
+            // front end writes this table. Admin skips it: renames land mid-request.
+            $file_id = (int)$input;
+            if (!CC_IN_ADMIN && array_key_exists($file_id, $this->_filemanager_cache)) {
+                $result = $this->_filemanager_cache[$file_id];
+            } else {
+                $result = $GLOBALS['db']->select('CubeCart_filemanager', false, array('file_id' => $file_id));
+                if (!CC_IN_ADMIN) {
+                    $this->_filemanager_cache[$file_id] = $result;
+                }
+            }
+            if ($result !== false) {
                 $file  = $result[0]['filepath'].$result[0]['filename'];
             } else {
                 $return_placeholder = true;
