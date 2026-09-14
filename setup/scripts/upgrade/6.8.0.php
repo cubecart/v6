@@ -128,3 +128,75 @@ if (is_array($languages) && !empty($languages)) {
         }
     }
 }
+
+/**
+ * Apache 2.4 maps .js to text/javascript, which the DEFLATE list generated since
+ * #1905 never named, so skin JavaScript ships uncompressed (~300KB on the default
+ * skin). seo.class.php now generates the fix, but that only reaches new installs:
+ * _checkModRewrite() leaves an existing .htaccess alone forever. Patched here.
+ *
+ * Additive - types are appended, nothing removed - so a tuned line survives and a
+ * second run is a no-op. A store with no mod_deflate block is left alone.
+ */
+$htaccess_path = CC_ROOT_DIR.'/.htaccess';
+
+if (!file_exists($htaccess_path)) {
+    // No file yet; _checkModRewrite() will write the corrected block itself.
+} elseif (!is_writable($htaccess_path)) {
+    trigger_error('.htaccess is not writable, so JavaScript compression could not be enabled. Add "text/javascript" to the AddOutputFilterByType DEFLATE line by hand.', E_USER_WARNING);
+} else {
+    $htaccess_before = file_get_contents($htaccess_path);
+
+    // No woff/png/jpg/webp: already compressed, deflating again just costs CPU.
+    $wanted = array(
+        'text/javascript',      // what Apache 2.4 actually labels .js
+        'application/json',
+        'application/ld+json',
+        'application/xml',
+        'application/rss+xml',
+        'image/svg+xml',
+    );
+
+    $added = array();
+    $htaccess_after = preg_replace_callback(
+        '/^([ \t]*AddOutputFilterByType\s+DEFLATE)([^\r\n]*)$/mi',
+        function ($m) use ($wanted, &$added) {
+            $types = preg_split('/\s+/', trim($m[2]), -1, PREG_SPLIT_NO_EMPTY);
+            foreach ($wanted as $type) {
+                if (!in_array($type, $types, true)) {
+                    $types[] = $type;
+                    $added[] = $type;
+                }
+            }
+            return $m[1].' '.implode(' ', $types);
+        },
+        $htaccess_before
+    );
+
+    if ($htaccess_after === null) {
+        trigger_error('.htaccess could not be parsed, so JavaScript compression was left unchanged.', E_USER_WARNING);
+    } elseif (empty($added)) {
+        // Already correct, or the store has no mod_deflate block to patch.
+        if (!preg_match('/AddOutputFilterByType\s+DEFLATE/i', $htaccess_before)) {
+            trigger_error('No mod_deflate block found in .htaccess, so JavaScript compression was not enabled. If the server supports it, add "AddOutputFilterByType DEFLATE text/javascript text/css" inside an <IfModule mod_deflate.c> block.', E_USER_NOTICE);
+        }
+    } else {
+        // This file can 503 the whole store. backup/ is denied to the web.
+        $backup_path = CC_ROOT_DIR.'/backup/htaccess-pre-'.CC_VERSION.'-'.date('YmdHis').'.txt';
+        @file_put_contents($backup_path, $htaccess_before);
+
+        if (@file_put_contents($htaccess_path, $htaccess_after, LOCK_EX) === false) {
+            trigger_error('Could not write .htaccess, so JavaScript compression was not enabled.', E_USER_WARNING);
+        } else {
+            clearstatcache(true, $htaccess_path);
+            // Read back rather than trust the write; we still hold the original.
+            $verify = file_get_contents($htaccess_path);
+            if ($verify !== $htaccess_after) {
+                @file_put_contents($htaccess_path, $htaccess_before, LOCK_EX);
+                trigger_error('.htaccess did not verify after writing and has been restored unchanged. JavaScript compression was not enabled.', E_USER_WARNING);
+            } else {
+                trigger_error('Enabled compression in .htaccess for: '.implode(', ', array_unique($added)).'. Previous file saved to '.basename($backup_path).' in the backup folder.', E_USER_NOTICE);
+            }
+        }
+    }
+}

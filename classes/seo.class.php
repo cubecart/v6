@@ -1273,7 +1273,8 @@ class SEO
 
 ### GZIP Compression ###
 <ifmodule mod_deflate.c>
-	AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css application/x-javascript application/javascript
+	# Apache 2.4 serves .js as text/javascript; without it, scripts go out raw.
+	AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css text/javascript application/x-javascript application/javascript application/json application/ld+json application/xml application/rss+xml image/svg+xml
 </ifmodule>
 
 ### Files Expiration ###
