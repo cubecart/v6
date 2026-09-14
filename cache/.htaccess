@@ -2,3 +2,12 @@ Deny from all
 <Files ~ "\.(png|js|css)$">
   Allow from all
 </Files>
+
+# {combine} puts the newest input's mtime in the FILENAME, so a rebuild is always
+# a new URL. Matched on that stamp alone; anything else keeps the store default.
+<IfModule mod_headers.c>
+  <FilesMatch "_[0-9]{14}\.(css|js)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+    Header unset Expires
+  </FilesMatch>
+</IfModule>

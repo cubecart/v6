@@ -1,0 +1,24 @@
+# Long-cache versioned skin assets.
+#
+# element.css.php / element.js_foot.php append ?v=<content hash> (build/stamp.php),
+# so a changed file is always a changed URL. Applied ONLY to requests carrying
+# ?v=: custom skins often link CSS/JS unversioned, and a year-long cache would
+# leave a merchant unable to ship a fix. Skin images are unversioned too.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Without this, turning the engine on here REPLACES the parent rules for
+    # everything under skins/, and a missing asset stops falling through to the
+    # store's SEO catch-all. Inherited rules run after the one below.
+    RewriteOptions Inherit
+
+    RewriteCond %{QUERY_STRING} (^|&)v=[^&]+
+    RewriteRule \.(css|js)$ - [E=CC_VERSIONED_ASSET:1]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header set Cache-Control "public, max-age=31536000, immutable" env=CC_VERSIONED_ASSET
+    # mod_expires still emits its own 7-day Expires; drop it where overridden.
+    Header unset Expires env=CC_VERSIONED_ASSET
+</IfModule>
