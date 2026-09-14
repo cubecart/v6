@@ -20,11 +20,11 @@ $notes = <<<END
 
     <p><strong>Upgrading stores are not switched.</strong> Your current skin stays selected and Foundation is untouched. Atrium appears in Manage Extensions to be chosen when you are ready, and is what a new installation starts with.</p>
 
-    <p>Beyond the skin: every stock movement is now recorded in an audit log, stock is deducted atomically so concurrent checkouts cannot oversell the last item, product reviews can be restricted to verified purchasers, new accounts can be held until the customer confirms their email address, and the Contact Us form is finally multi-lingual.</p>
+    <p>Beyond the skin: every stock movement is now recorded in an audit log, stock is deducted atomically so concurrent checkouts cannot oversell the last item, product reviews can be restricted to verified purchasers, new accounts can be held until the customer confirms their email address, and the Contact Us form is finally multi-lingual. The storefront also does less work per request: repeated database lookups are cached, and JavaScript is compressed for the first time.</p>
 
     <p>Also included, without individual issue numbers: the minimum password length is raised from 6 to 8 characters in line with NIST SP 800-63B (existing shorter passwords still sign in); a fix for replacement characters appearing in minified pages on servers whose locale made the minifier treat a UTF-8 non-breaking space as whitespace; core now serves SVG images from a skin directly rather than through the GD resize pipeline; SVG country flags; a cache item size ceiling; the image file manager no longer lists files that are not images; and reduced per-request work in the file manager rebuild, the orphan sweep and error backtraces.</p>
 
-    <p>The upgrade adds the <code>CubeCart_stock_log</code> table, an index on <code>CubeCart_search</code>, <code>verified</code> on <code>CubeCart_reviews</code>, <code>activate</code> and <code>activate_expires</code> on <code>CubeCart_customer</code>, <code>doc_contact</code> and <code>doc_departments</code> on <code>CubeCart_documents</code>, and <code>extensions_dismissed</code> on <code>CubeCart_admin_users</code>. It drops the unused <code>new_password</code> columns and the <code>doc_privacy</code> column.</p>
+    <p>The upgrade adds the <code>CubeCart_stock_log</code> table, an index on <code>CubeCart_search</code>, <code>verified</code> on <code>CubeCart_reviews</code>, <code>activate</code> and <code>activate_expires</code> on <code>CubeCart_customer</code>, <code>doc_contact</code> and <code>doc_departments</code> on <code>CubeCart_documents</code>, and <code>extensions_dismissed</code> on <code>CubeCart_admin_users</code>. It drops the unused <code>new_password</code> columns and the <code>doc_privacy</code> column. The upgrade also adds the missing compression types to your <code>.htaccess</code>, keeping a copy of the original in the <code>backup</code> folder; nothing else in that file is changed.</p>
 END;
 
 $features = array(
@@ -45,6 +45,7 @@ $features = array(
     '4274' => 'Promotional codes and gift cards can be searched, and a gift card in that list can now be opened for editing',
 
     // Fixes and improvements
+    '4276' => 'Storefront performance: far fewer repeated database lookups per page, Atrium\'s JavaScript minified and combined into two requests, and JavaScript and SVG now gzipped where they previously were not. Versioned skin assets are cached for a year',
     '4275' => 'Language packs built for a newer CubeCart release are no longer offered for install or upgrade',
     '4272' => 'Restored the missing pagination styling on the gift card and discount code lists',
     '4271' => 'Fixed the order confirmation page rendering only once, with a refresh redirecting to the basket',
