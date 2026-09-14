@@ -8,7 +8,12 @@ cd "$(dirname "$0")/.."
 
 [ -d node_modules ] || npm install
 
-npx tailwindcss -i ./css/src/input.css -o ./css/tailwind.css --minify
+npx tailwindcss -i ./css/src/input.css -o ./css/tailwind.css --minify --map
+
+# The CLI can only inline the map. Move it to its own file so the stylesheet
+# visitors download stays 63 KB rather than 317 KB.
+php ./build/extract-css-map.php
+
 php ./build/stamp.php
 
 echo "built css/tailwind.css ($(wc -c < ./css/tailwind.css) bytes)"

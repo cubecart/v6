@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Dev-only build tooling for the Atrium skin. Never shipped to merchants; excluded from the release zip.",
   "scripts": {
-    "build": "tailwindcss -i ./css/src/input.css -o ./css/tailwind.css --minify",
+    "build": "tailwindcss -i ./css/src/input.css -o ./css/tailwind.css --minify --map",
     "dev": "tailwindcss -i ./css/src/input.css -o ./css/tailwind.css --watch"
   },
   "devDependencies": {
@@ -14,6 +14,7 @@
     "@alpinejs/persist": "^3.16.0",
     "@tailwindcss/cli": "^4.0.0",
     "alpinejs": "^3.16.0",
+    "esbuild": "^0.28.2",
     "jquery": "^3.7.1",
     "jquery-migrate": "^3.5.2",
     "tailwindcss": "^4.0.0"

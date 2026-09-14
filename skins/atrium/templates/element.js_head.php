@@ -23,8 +23,8 @@
  * plugins still call. Not slim either — slim omits $.ajax and the effects
  * methods, which are what they use most.
  *
- * Plain <script> tags rather than {combine}: already minified, and re-running
- * JSMin over vendor code risks corruption for no gain.
+ * jQuery + migrate are built into atrium.head.js by build/bundle-js.sh. Not
+ * {combine}: JSMin throws on our Alpine build and corrupts modern vendor code.
  *}
 {literal}<script>
 (function () {
@@ -46,8 +46,7 @@
    });
 }());
 </script>{/literal}
-<script defer src="{$ROOT_PATH}skins/{$SKIN_FOLDER}/js/vendor/jquery.min.js"></script>
-<script defer src="{$ROOT_PATH}skins/{$SKIN_FOLDER}/js/vendor/jquery-migrate.min.js"></script>
+<script defer src="{$ROOT_PATH}skins/{$SKIN_FOLDER}/js/vendor/atrium.head.js?v={$CSS_VERSION}"></script>
 <script>window.CC_ROOT_PATH = "{$ROOT_PATH}";</script>
 {* Plugin-injected head JS. MUST come after jQuery. *}
 {foreach from=$HEAD_JS item=js}{$js}{/foreach}

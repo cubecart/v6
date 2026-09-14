@@ -22,10 +22,9 @@ $root = dirname(__DIR__);
 $out  = $root . '/templates/element.css.version.php';
 $hash = 'dev';
 
-// The JS bundle is served with the same ?v= as the CSS, so it must be part of
-// the hash — otherwise a JS-only fix ships behind a stale cache-buster and
-// returning browsers keep the broken bundle indefinitely.
-foreach (['/css/tailwind.css', '/css/custom.css', '/js/vendor/0.atrium.components.js'] as $f) {
+// The JS bundles share the CSS ?v=, so they must feed the hash too, or a JS-only
+// fix ships behind a stale cache-buster.
+foreach (['/css/tailwind.css', '/css/custom.css', '/js/vendor/atrium.head.js', '/js/vendor/atrium.app.js'] as $f) {
     if (is_file($root . $f)) {
         $hash = substr(hash('sha256', $hash . hash_file('sha256', $root . $f)), 0, 10);
     }

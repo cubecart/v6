@@ -20,7 +20,8 @@ genuinely needs 6.8.0, see below.
 | `fonts/` | Bundled Figtree woff2 + its OFL licence |
 | `images/noimage.svg` | The "no image" placeholder. Vector, 1KB |
 | `js/src/` | Alpine components. **Edited, not shipped** |
-| `js/vendor/0.atrium.components.js` | The concatenated bundle. Committed |
+| `js/vendor/atrium.app.js` | Built bundle: `js/src/*.js` + Alpine plugins + Alpine core, minified, with `.map`. Committed |
+| `js/vendor/atrium.head.js` | Built bundle: jQuery + jquery-migrate, minified, with `.map`. Committed |
 | `config.xml` | Sub-themes, image sizes, admin settings, `<custom>` block |
 
 Every colour, radius and font resolves through a `--cc-*` custom property with a

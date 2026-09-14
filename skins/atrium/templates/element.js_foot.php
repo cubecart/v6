@@ -13,13 +13,11 @@
  *    in js/vendor/, clear of JSMin — so on a store with no such plugins the
  *    array IS empty.
  *
- * 2. Atrium's own bundle, which registers inside an 'alpine:init' listener, so
- *    its position relative to Alpine does not matter.
+ * 2. atrium.app.js - js/src/*.js, Alpine plugins, then Alpine core, in that
+ *    order (build/bundle-js.sh). Core fires alpine:init on load, so a plugin
+ *    bundled after it would register too late.
  *
- * 3. Alpine PLUGINS, then 4. Alpine CORE last: core auto-starts on load and
- *    fires alpine:init, so a plugin loading after it registers too late.
- *
- * All four are `defer`, so they execute in document order after parsing.
+ * Both are `defer`, so they run in document order after parsing.
  *
  * ⚠ js/vendor/ is NOT auto-globbed — GUI::__construct()'s glob is
  * non-recursive — so every file below needs its tag written out by hand.
@@ -31,12 +29,4 @@
 {combine input=$js_foot output='cache/js_foot.{$SKIN_FOLDER}.js' age='604800' debug=$CONFIG.debug||!$CONFIG.cache}
 {/if}
 
-<script defer src="{$ROOT_PATH}skins/{$SKIN_FOLDER}/js/vendor/0.atrium.components.js?v={$CSS_VERSION}"></script>
-
-<script defer src="{$ROOT_PATH}skins/{$SKIN_FOLDER}/js/vendor/alpine-focus.min.js"></script>
-<script defer src="{$ROOT_PATH}skins/{$SKIN_FOLDER}/js/vendor/alpine-collapse.min.js"></script>
-<script defer src="{$ROOT_PATH}skins/{$SKIN_FOLDER}/js/vendor/alpine-anchor.min.js"></script>
-<script defer src="{$ROOT_PATH}skins/{$SKIN_FOLDER}/js/vendor/alpine-persist.min.js"></script>
-
-{* Alpine core LAST of the Alpine group. *}
-<script defer src="{$ROOT_PATH}skins/{$SKIN_FOLDER}/js/vendor/alpine.min.js"></script>
+<script defer src="{$ROOT_PATH}skins/{$SKIN_FOLDER}/js/vendor/atrium.app.js?v={$CSS_VERSION}"></script>
