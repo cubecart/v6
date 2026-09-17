@@ -813,7 +813,7 @@ function update_quantity(rel, sign) {
     var new_val = old_val;
 
     if (sign == '+') {
-        if (old_val < 999) new_val = old_val + 1; else return false;
+        if (old_val < 9999) new_val = old_val + 1; else return false;
     } else if (sign == '-') {
         if (old_val < 1) return false;
         new_val = old_val - 1;

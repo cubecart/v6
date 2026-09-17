@@ -16,6 +16,11 @@
 class Cart
 {
     /**
+     * Highest quantity accepted for a single basket line
+     */
+    const MAX_QUANTITY = 9999;
+
+    /**
      * Current basket
      *
      * @var array
@@ -219,8 +224,13 @@ class Cart
             include $hook;
         }
         // Prevent quantities of less than one or non numerical user input
-        if (!is_numeric($quantity) || $quantity < 1 || $quantity > 999) {
+        if (!is_numeric($quantity) || $quantity < 1) {
             $quantity = 1;
+        }
+        // Cap rather than reset, so a bulk order is reduced to the limit and reported.
+        if ($quantity > self::MAX_QUANTITY) {
+            $quantity = self::MAX_QUANTITY;
+            $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->catalogue['error_maximum_quantity'], self::MAX_QUANTITY));
         }
 
         // Don't allow products to be added to the basket if prices are hidden AND they're not logged in

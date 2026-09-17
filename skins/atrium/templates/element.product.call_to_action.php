@@ -67,7 +67,7 @@
                 min="{$PRODUCT.minimum_quantity|default:'1'}"
                 {if $cc_qty_max != ''}max="{$cc_qty_max}"{/if}
                 data-qty-max="{if $PRODUCT.maximum_quantity gte $PRODUCT.minimum_quantity}{$PRODUCT.maximum_quantity}{/if}"
-                maxlength="3" data-cc-stepper class="quantity required w-20 text-center">
+                maxlength="4" data-cc-stepper class="quantity required w-20 text-center">
          <input type="hidden" name="add" value="{$PRODUCT.product_id}">
       </div>
       {* id is the sticky bar's observer target (20-product.js): the bar appears

@@ -169,7 +169,7 @@
                         <label class="cc-sr-only" for="qty-cat-{$product.product_id}">{$LANG.common.quantity}</label>
                         <input type="number" id="qty-cat-{$product.product_id}" name="quantity"
                                value="{$product.minimum_quantity|default:'1'}"
-                               min="{$product.minimum_quantity|default:'1'}" maxlength="3"
+                               min="{$product.minimum_quantity|default:'1'}" maxlength="4"
                                class="quantity w-16 text-center">
                         {* Icon only below sm: see content.homepage.php. *}
                         <button type="submit" class="cc-btn cc-btn-primary flex-1 sm:flex-none"

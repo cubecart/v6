@@ -131,7 +131,7 @@
                <label class="cc-sr-only" for="qty-{$product.product_id}">{$LANG.common.quantity}</label>
                <input type="number" id="qty-{$product.product_id}" name="quantity"
                       value="{$product.minimum_quantity|default:'1'}"
-                      min="{$product.minimum_quantity|default:'1'}" maxlength="3"
+                      min="{$product.minimum_quantity|default:'1'}" maxlength="4"
                       class="quantity required w-16 text-center">
                {* Icon only below sm: the label wraps to two lines in a narrow
                   grid cell and the card reads as cramped. *}

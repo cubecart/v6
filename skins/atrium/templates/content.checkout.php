@@ -81,8 +81,8 @@
                      above already names the field for assistive tech. *}
                   <span class="text-ink-500 sm:hidden" aria-hidden="true">{$LANG.common.quantity}</span>
                   <div>
-                  <input name="quan[{$hash}]" id="quan_{$hash}" type="number" min="0" max="999"
-                         x-model.number="qty" value="{$item.quantity}" maxlength="3"
+                  <input name="quan[{$hash}]" id="quan_{$hash}" type="number" min="0" max="9999"
+                         x-model.number="qty" value="{$item.quantity}" maxlength="4"
                          {* sm:mx-auto is load-bearing. The cell is sm:text-center, but this
                            input is display:block (components.css styles bare inputs so that
                            unclassed core/plugin fields look right), and text-align cannot

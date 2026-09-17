@@ -262,7 +262,7 @@ document.addEventListener('alpine:init', function () {
 
             step: function (delta) {
                 var next = this.qty + delta;
-                if (next < 0 || next > 999) return;
+                if (next < 0 || next > 9999) return;
                 this.qty = next;
             }
         };
