@@ -182,6 +182,14 @@ class ElasticsearchHandler
                                 'type' => 'edge_ngram',
                                 'min_gram' => 2,
                                 'max_gram' => 20
+                            ],
+                            // Joins adjacent word pairs, so "Rock Salt" indexes "rocksalt" too.
+                            'catenate_filter' => [
+                                'type' => 'shingle',
+                                'min_shingle_size' => 2,
+                                'max_shingle_size' => 2,
+                                'output_unigrams' => false,
+                                'token_separator' => ''
                             ]
                         ],
                         'analyzer' => [
@@ -189,6 +197,12 @@ class ElasticsearchHandler
                                 'type' => 'custom',
                                 'tokenizer' => 'standard',
                                 'filter' => ['lowercase','autocomplete_filter']
+                            ],
+                            // Catenated pairs then prefixes, so "topso" still matches.
+                            'catenate' => [
+                                'type' => 'custom',
+                                'tokenizer' => 'standard',
+                                'filter' => ['lowercase','catenate_filter','autocomplete_filter']
                             ]
                         ]
                     ]
@@ -199,7 +213,11 @@ class ElasticsearchHandler
                             'type' => 'text',
                             'analyzer' => 'autocomplete',
                             'fields' => [
-                                'keyword' => ['type' => 'keyword']
+                                'keyword' => ['type' => 'keyword'],
+                                'compact' => [
+                                    'type' => 'text',
+                                    'analyzer' => 'catenate'
+                                ]
                             ]
                         ],
                         'date_added' => [
@@ -343,6 +361,15 @@ class ElasticsearchHandler
                     ['query' => $q,
                     'analyzer' => 'standard',
                     'boost' => 3
+                    ]
+                ]
+            ],
+            // Run together terms. Same standard override as name, for the same reason.
+            ['match' =>
+                ['name.compact' =>
+                    ['query' => $q,
+                    'analyzer' => 'standard',
+                    'boost' => 1.5
                     ]
                 ]
             ],
