@@ -476,8 +476,24 @@ class Order
         if (!$inclusive) {
             return $each;
         }
+        $quantity = max(1, (int)$item['quantity']);
+        // `tax` is the whole line, so divide before adding it to a per-unit price.
+        $row = $each + ((float)$item['tax'] / $quantity);
+
         $line = (!empty($item['hash']) && isset($lines[$item['hash']])) ? $lines[$item['hash']] : null;
-        return ($line !== null && isset($line['price'])) ? (float)$line['price'] : $each + (float)$item['tax'];
+        if ($line === null || !isset($line['total_price_each'])) {
+            return $row;
+        }
+        // A changed quantity means the line was edited after checkout, so the basket is stale.
+        if (isset($line['quantity']) && (int)$line['quantity'] !== $quantity) {
+            return $row;
+        }
+        // The basket keeps the unrounded net. Gross it at the rate this line was charged.
+        $rate = isset($line['tax_each']['tax_percent'])
+            ? (float)$line['tax_each']['tax_percent']
+            : (float)($item['tax_percent'] ?? 0);
+
+        return (float)$line['total_price_each'] * (1 + $rate / 100);
     }
 
     /**

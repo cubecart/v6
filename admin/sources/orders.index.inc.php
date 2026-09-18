@@ -112,6 +112,10 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
     }
     // Update Products
     if (isset($_POST['inv']) && is_array($_POST['inv'])) {
+        // The price box shows what the customer was charged, which is tax inclusive,
+        // while the column is ex tax. Read the order back the same way it was rendered.
+        $save_summary = $GLOBALS['db']->select('CubeCart_order_summary', array('basket'), array('cart_order_id' => $order_id), false, 1, false, false);
+        $save_shown   = Order::storedPresentation(is_array($save_summary) ? $save_summary[0] : array());
         foreach ($_POST['inv'] as $data) {
             if (!isset($data['productOptions']) || !is_array($data['productOptions'])) {
                 $data['productOptions'] = array();
@@ -121,6 +125,17 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
             $matrix = $GLOBALS['db']->select('CubeCart_option_matrix', false, array('product_id' => (int)$data['product_id'], 'options_identifier' => $data['options_identifier']));
             if ($matrix) {
                 $data['product_code'] = (empty($matrix[0]['product_code']) ? $data['product_code'] : $matrix[0]['product_code']);
+            }
+            if (isset($data['price']) && !empty($data['id'])) {
+                $stored = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('id' => (int)$data['id'], 'cart_order_id' => $order_id), false, 1, false, false);
+                if (is_array($stored)) {
+                    $rate = (float)$stored[0]['tax_percent'];
+                    if (abs((float)$data['price'] - Order::displayLinePrice($stored[0], $save_shown['inclusive'], $save_shown['lines'])) <= 0.005) {
+                        unset($data['price']); // untouched, so leave the stored ex tax price alone
+                    } elseif ($save_shown['inclusive'] && $rate > 0) {
+                        $data['price'] = (float)$data['price'] / (1 + $rate / 100); // entered inclusive, stored ex tax
+                    }
+                }
             }
             $data['options_array'] 		= serialize($data['productOptions']);
             $data['product_options'] 	= $GLOBALS['order']->serializeOptions($data['productOptions'], $data['product_id']);
