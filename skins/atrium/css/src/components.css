@@ -603,6 +603,17 @@
   }
   .cc-skip:focus { top: 0.5rem; color: var(--cc-brand-fg, #fff); }
 
+  /* Modal overlays: over PayPal's buttons (300), under a captcha challenge (2e9).
+     Fallback only, modals take the top layer via popover. Rest resets UA chrome. */
+  .cc-overlay {
+    z-index: 1000;
+    width: auto;
+    height: auto;
+    margin: 0;
+    border: 0;
+    color: inherit;
+  }
+
   /* The /// that prefixes a what3words address, in their brand red. Sits in
      front of the input rather than inside its value, because the component
      writes the value and part of a value cannot be coloured anyway. */

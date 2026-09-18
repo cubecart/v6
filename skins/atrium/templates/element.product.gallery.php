@@ -62,17 +62,18 @@
    </ul>
    {/if}
 
-   {* Plain overlay, not a native <dialog>: this sits inside the product
-      <form>, and a <dialog> holding form controls alters submit behaviour. *}
+   {* popover, not <dialog>: same top layer, no form semantics, and this sits
+      inside the product <form>. "manual" leaves dismissal to Alpine. *}
    {* Swipe anywhere on the overlay, not just on the image: the picture is
       object-contain, so on a phone most of the overlay is the space beside it. *}
    <div x-show="open" x-cloak x-trap.noscroll="open"
+        popover="manual" x-effect="ccTopLayer($el, open)"
         @touchstart.passive="swipeStart($event)" @touchend="swipeLightbox($event)"
         @keydown.escape.window="close()"
         @keydown.arrow-left.window="open && step(-1)"
         @keydown.arrow-right.window="open && step(1)"
         x-transition.opacity.duration.150ms
-        class="fixed inset-0 z-50 flex items-center justify-center bg-ink-950/80 p-4"
+        class="cc-overlay fixed inset-0 flex items-center justify-center bg-ink-950/80 p-4"
         role="dialog" aria-modal="true" aria-label="{$PRODUCT.name}">
       <button type="button" @click="close()"
               class="absolute end-4 top-4 rounded-cc bg-ink-100 p-2 text-ink-800 hover:bg-ink-200">

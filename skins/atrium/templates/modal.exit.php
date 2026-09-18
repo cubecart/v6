@@ -27,9 +27,10 @@
 {if !$IS_USER || !$CTRL_SUBSCRIBED}
 {if !isset($DISABLE_BOX_NEWSLETTER) || !$DISABLE_BOX_NEWSLETTER}
 <div x-data="ccExitModal()" x-show="open" x-cloak x-trap.noscroll="open"
+     popover="manual" x-effect="ccTopLayer($el, open)"
      @keydown.escape.window="close()"
      x-transition.opacity.duration.150ms
-     class="fixed inset-0 z-50 flex items-center justify-center bg-ink-950/80 p-4"
+     class="cc-overlay fixed inset-0 flex items-center justify-center bg-ink-950/80 p-4"
      role="dialog" aria-modal="true" aria-labelledby="exit-modal-title">
 
    <div class="relative w-full max-w-md rounded-cc-lg border border-ink-200 bg-ink-100 p-6 shadow-lg" @click.stop>
@@ -44,7 +45,9 @@
       <h2 id="exit-modal-title" class="pe-8 text-lg font-semibold text-ink-900">{$LANG.email.exit_title}</h2>
       <p class="mt-2 text-sm text-ink-600">{$LANG.email.exit_copy}</p>
 
-      <form action="{$VAL_SELF}" method="post" id="newsletter_form_exit" data-cc-validate class="mt-4">
+      {* Captcha challenges append to <body>; leave the top layer so they show. *}
+      <form action="{$VAL_SELF}" method="post" id="newsletter_form_exit" data-cc-validate class="mt-4"
+            @click.capture="ccTopLayer($root, false)">
          <label for="newsletter_email_exit" class="cc-sr-only">{$LANG.newsletter.enter_email_signup}</label>
          <div class="flex gap-2">
             <input name="subscribe" id="newsletter_email_exit" type="email" maxlength="250"

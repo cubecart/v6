@@ -91,6 +91,22 @@ window.ccAnnounce = function (text) {
     });
 };
 
+/** Put an open overlay in the top layer, above every z-index on the page.
+ *  No-op without popover support; .cc-overlay's z-index is the fallback. */
+window.ccTopLayer = function (el, wanted) {
+    if (!el || typeof el.showPopover !== 'function') return;
+    el.ccWantsTop = !!wanted;
+    if (wanted) {
+        try { el.showPopover(); } catch (e) {}
+        return;
+    }
+    // Late, so x-transition can finish fading out.
+    setTimeout(function () {
+        if (el.ccWantsTop) return;
+        try { el.hidePopover(); } catch (e) {}
+    }, 250);
+};
+
 document.addEventListener('alpine:init', function () {
         var Alpine = window.Alpine;
 
