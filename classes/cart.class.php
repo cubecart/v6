@@ -1519,7 +1519,8 @@ class Cart
                 if (!$data['gc']) {
                     $coupon = true;
 
-                    $all = (count($data['include']) == 0) ? true : false;
+                    // A hook can replace this record and omit 'include'; count(null) is fatal on PHP 8.
+                    $all = (count($data['include'] ?? array()) == 0) ? true : false;
 
                     // A shipping_only coupon discounts no products, so every line is
                     // excluded. The walk still has to happen: the tax adjustment below
