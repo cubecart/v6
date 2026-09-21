@@ -106,14 +106,18 @@ document.addEventListener('alpine:init', function () {
                 if (delta) this.step(delta);
             },
 
+            /* 40rem is Tailwind's sm. Below it the lightbox adds nothing. */
+            _canEnlarge: function () {
+                return window.matchMedia('(min-width: 40rem)').matches;
+            },
+
             /** Open the lightbox on whatever is currently previewed. */
             enlarge: function () {
-                /* A swipe ends in a click on the same element. Without this the
-                   lightbox opens every time the customer flicks through. */
-                if (this._swiped) {
-                    this._swiped = false;
-                    return;
-                }
+                // A swipe ends in a click here, which must not open the lightbox.
+                var swiped = this._swiped;
+                this._swiped = false;
+                if (swiped) return;
+                if (!this._canEnlarge()) return;
                 var preview = document.getElementById('img-preview');
                 if (!this.full && preview) this.full = preview.src;
                 this.lightboxIndex = this.index;

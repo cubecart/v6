@@ -25,7 +25,8 @@
               the browser discovers it at normal priority behind the CSS. *}
            fetchpriority="high"
            class="aspect-square w-full object-contain">
-      <span class="cc-sr-only">{$LANG.catalogue.click_enlarge}</span>
+      {* Hidden below sm: enlarge() does nothing there. *}
+      <span class="cc-sr-only hidden sm:inline">{$LANG.catalogue.click_enlarge}</span>
    </button>
 
    {if is_array($GALLERY) && count($GALLERY) > 1}
