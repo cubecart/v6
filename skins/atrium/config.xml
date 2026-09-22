@@ -154,6 +154,14 @@
 		<option value="vertical"><![CDATA[Vertical rail]]></option>
 	  </options>
 	</setting>
+	<setting name="image_fit" type="select" default="cover">
+	  <label><![CDATA[Image Fit]]></label>
+	  <description><![CDATA[How catalogue images fill the square tiles in listings. Crop trims anything that will not fit. Fit shows the whole image with blank space around it. The main product page image is always shown whole.]]></description>
+	  <options>
+		<option value="cover"><![CDATA[Crop to fill the tile (Recommended)]]></option>
+		<option value="contain"><![CDATA[Fit the whole image]]></option>
+	  </options>
+	</setting>
 	<setting name="brand_colour" type="color" default="">
 	  <label><![CDATA[Brand Colour]]></label>
 	  <description><![CDATA[Your brand colour, for buttons, links, focus rings and price accents. This replaces the skin's sub-theme colour, so leave it empty unless none of the sub-themes is close enough to your brand.]]></description>

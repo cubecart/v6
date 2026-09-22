@@ -13,6 +13,7 @@
  *   name="quantity"        quantity
  * The CSRF token is injected before </form> by GUI::display().
  *}
+{include file='templates/element.media_fit.php'}
 <div x-data="ccProductList('{$SKIN_SETTINGS.default_product_view|default:'grid'}')">
 
    <h1 class="text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl">{$category.cat_name}</h1>
@@ -37,7 +38,7 @@
                  alt="{if isset($subcat.image_tags.alt)}{$subcat.image_tags.alt}{else}{$subcat.cat_name}{/if}"
                  {if isset($subcat.image_tags.title)}title="{$subcat.image_tags.title}"{/if}
                  loading="lazy"
-                 class="cc-media aspect-square w-full rounded-cc border border-ink-200 object-cover">
+                 class="cc-media aspect-square w-full rounded-cc border border-ink-200 {$cc_media_fit}">
             <span class="mt-2 block text-xs text-ink-700 group-hover:text-ink-900">{$subcat.cat_name}</span>
          </a>
       </li>
@@ -104,7 +105,7 @@
                           {* See content.homepage.php: the first row is the LCP
                              candidate and must not be lazy. *}
                           {if $smarty.foreach.products.iteration <= 4}{if $smarty.foreach.products.first}fetchpriority="high"{/if}{else}loading="lazy"{/if}
-                          class="aspect-square w-full object-cover">
+                          class="aspect-square w-full {$cc_media_fit}">
                   </a>
                   {* Quick view lives ON the image: revealed on hover, and on
                      keyboard focus so it is not mouse-only. A sibling of the

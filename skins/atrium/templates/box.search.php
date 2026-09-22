@@ -18,6 +18,7 @@
  * listbox reference stay unambiguous. The input NAME is deliberately the same
  * in both: they are separate forms, and the name is part of the contract above.
  *}
+{include file='templates/element.media_fit.php'}
 {if isset($uid) && $uid}{assign var='cc_s_uid' value="-`$uid`"}{else}{assign var='cc_s_uid' value=''}{/if}
 <div class="w-full" x-data="ccSearch('{$cc_s_uid}')" @click.outside="close()" @keydown.escape.window="close()">
    <form action="{$STORE_URL}/search{$CONFIG.seo_ext}" class="search_form relative" method="get" role="search">
@@ -88,7 +89,7 @@
                            rebuilds the index. Drop the src on error so that degrades to the
                            neutral slot below rather than a broken-image icon. *}
                         <template x-if="p.thumbnail">
-                           <img :src="p.thumbnail" :alt="p.name" class="cc-media size-10 object-cover" loading="lazy"
+                           <img :src="p.thumbnail" :alt="p.name" class="cc-media size-10 {$cc_media_fit}" loading="lazy"
                                 @error="p.thumbnail = ''">
                         </template>
                      </span>

@@ -64,6 +64,15 @@ drawer. Same markup either way; `main.php` renders `.cc-navbar` or `.cc-navrail`
 and switches the content wrapper to `.cc-layout-rail`, a grid that puts the
 sidebar boxes under the content at `lg` and beside it at `xl`.
 
+**Image Fit.** Crop to fill the square tile (default), or fit the whole image
+inside it. Applies to every square catalogue thumbnail: listings, the featured
+box, search results, basket lines and the gallery strip. The main product image
+is always fitted whole whatever this is set to, and `.cc-media` gives the blank
+space a white backing. Each template that uses it includes
+`element.media_fit.php`, which resolves `$cc_media_fit` to the class name
+itself. That include cannot live in `main.php`: content templates render first,
+so the variable would be empty in every listing.
+
 **Rewards and flourishes.** Applying a valid discount code fires a short burst
 of confetti out of the discount line (see `js/src/41-coupon.js` for why that has
 to survive a redirect). Adding to the basket flies a copy of the product image

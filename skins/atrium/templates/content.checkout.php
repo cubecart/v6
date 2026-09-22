@@ -25,6 +25,7 @@
  * ⚠ class="nosubmit" on the gateway radios and country selects opts them OUT of
  * the auto-submit behaviour. Only the shipping select re-submits the form.
  *}
+{include file='templates/element.media_fit.php'}
 {if isset($ITEMS)}
 <div x-data="ccCheckout()">
 <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data" id="checkout_form" data-cc-validate>
@@ -58,7 +59,7 @@
             <tr class="grid grid-cols-[5rem_1fr] items-start gap-x-3 gap-y-1 py-4 sm:table-row sm:gap-0 sm:py-0" x-data="ccBasketLine('{$item.quantity}')" id="basket_item_{$hash}">
                <td class="col-start-1 row-span-2 row-start-1 sm:table-cell sm:w-24 sm:py-4 sm:pe-3 sm:align-top">
                   <a href="{$item.link}" title="{$item.name}" class="cc-media block w-20 overflow-hidden rounded-cc border border-ink-200">
-                     <img src="{$item.image}" alt="{$item.name}" loading="lazy" class="cc-media aspect-square w-full object-cover">
+                     <img src="{$item.image}" alt="{$item.name}" loading="lazy" class="cc-media aspect-square w-full {$cc_media_fit}">
                   </a>
                </td>
                <td class="col-start-2 sm:table-cell sm:py-4 sm:pe-3 sm:align-top">

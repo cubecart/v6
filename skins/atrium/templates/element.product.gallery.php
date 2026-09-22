@@ -9,6 +9,7 @@
  * a product option carries its own image (data-image on the option). Renaming
  * it silently breaks option image switching.
  *}
+{include file='templates/element.media_fit.php'}
 <div x-data="ccGallery('{if isset($PRODUCT.source)}{$PRODUCT.source}{else}{$PRODUCT.medium}{/if}')">
 
    {* touchstart is passive: nothing is prevented, and marking it so keeps the
@@ -56,7 +57,7 @@
                  alt="{if isset($image.image_tags.alt) && !empty($image.image_tags.alt)}{$image.image_tags.alt}{else}{$image.name}{/if}"
                  {if isset($image.image_tags.title)}title="{$image.image_tags.title}"{/if}
                  loading="lazy"
-                 class="aspect-square w-full object-cover">
+                 class="aspect-square w-full {$cc_media_fit}">
          </button>
       </li>
       {/foreach}

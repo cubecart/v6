@@ -12,6 +12,7 @@
  * The CSRF token input is injected before </form> by GUI::display() — do not
  * add one by hand.
  *}
+{include file='templates/element.media_fit.php'}
 {if isset($DOCUMENT)}
 {* ccHero drives the .cc-hero scroller that arrives INSIDE $DOCUMENT.content
    (installer-seeded markup, so controls cannot be templated into it). The
@@ -83,7 +84,7 @@
                           (xl:grid-cols-4); the first is also the LCP candidate
                           on a store with no hero banner. *}
                        {if $smarty.foreach.products.iteration <= 4}{if $smarty.foreach.products.first}fetchpriority="high"{/if}{else}loading="lazy"{/if}
-                       class="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                       class="aspect-square w-full {$cc_media_fit} transition-transform duration-300 group-hover:scale-105">
                </a>
                {* Quick view lives ON the image: revealed on hover, and on
                   keyboard focus so it is not mouse-only. A sibling of the

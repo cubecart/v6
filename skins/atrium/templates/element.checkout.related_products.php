@@ -9,6 +9,7 @@
  * the skin. Copying a product card in from another template renders a broken
  * image with no error.
  *}
+{include file='templates/element.media_fit.php'}
 {if $RELATED}
 <section class="mt-12 border-t border-ink-200 pt-8">
    <h2 class="text-lg font-semibold tracking-tight text-ink-900">{$LANG.catalogue.related_products}</h2>
@@ -16,7 +17,7 @@
       {foreach from=$RELATED item=product}
       <li>
          <a href="{$product.url}" title="{$product.name}" class="cc-media block overflow-hidden rounded-cc-lg border border-ink-200">
-            <img src="{$product.img_src}" alt="{$product.name}" loading="lazy" class="cc-media aspect-square w-full object-cover">
+            <img src="{$product.img_src}" alt="{$product.name}" loading="lazy" class="cc-media aspect-square w-full {$cc_media_fit}">
          </a>
          <h3 class="mt-2 text-sm font-medium">
             <a href="{$product.url}" title="{$product.name}" class="text-ink-900 hover:underline">{$product.name}</a>
