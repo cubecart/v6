@@ -481,6 +481,21 @@
   .cc-nav-menu .cc-nav-caret,
   .cc-nav-menu .cc-nav-caret.is-open { transform: rotate(-90deg); }
 
+  /* Long flyouts must fit the window: the sticky header stops the page
+     scrolling them into view. See #4289. */
+  @media (min-width: 64rem) {
+    .cc-nav-menu .cc-nav-item { position: static; }
+    .cc-nav-menu .cc-nav-menu { min-height: calc(100% + 0.75rem); }
+    .cc-nav-menu .cc-nav-menu:has(> li:nth-child(15)) {
+      columns: 2;
+      column-gap: 0;
+      width: max-content;
+    }
+    .cc-nav-menu .cc-nav-menu > li { break-inside: avoid; }
+    .cc-nav-menu .cc-nav-menu:has(> li:nth-child(15)) > .cc-nav-parent { position: relative; }
+    .cc-nav-menu .cc-nav-menu:has(> li:nth-child(15)) > .cc-nav-parent > .cc-nav-menu { min-height: 0; }
+  }
+
   /* ── The same nav markup, restyled for the mobile drawer ───────────────
      The drawer includes box.navigation.php a second time rather than shipping
      a duplicate tree (foundation kept box.off_canvas.left.php in sync by hand
