@@ -162,6 +162,18 @@
 		<option value="contain"><![CDATA[Fit the whole image]]></option>
 	  </options>
 	</setting>
+	<setting name="logo_height" type="select" default="2.5">
+	  <label><![CDATA[Logo Size]]></label>
+	  <description><![CDATA[The tallest your logo can be in the header. The header grows with it from 64px upwards. On phones the logo is also limited to half the screen width, so it never crowds out the menu and basket buttons.]]></description>
+	  <options>
+		<option value="2.5"><![CDATA[40px (Default)]]></option>
+		<option value="3"><![CDATA[48px]]></option>
+		<option value="3.5"><![CDATA[56px]]></option>
+		<option value="4"><![CDATA[64px]]></option>
+		<option value="4.5"><![CDATA[72px]]></option>
+		<option value="5"><![CDATA[80px]]></option>
+	  </options>
+	</setting>
 	<setting name="brand_colour" type="color" default="">
 	  <label><![CDATA[Brand Colour]]></label>
 	  <description><![CDATA[Your brand colour, for buttons, links, focus rings and price accents. This replaces the skin's sub-theme colour, so leave it empty unless none of the sub-themes is close enough to your brand.]]></description>

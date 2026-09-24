@@ -126,6 +126,7 @@
 
   /* ── Layout ──────────────────────────────────────────────────────────── */
   --spacing-header: var(--cc-header-height, 4rem);
+  --spacing-logo: var(--cc-logo-height, 2.5rem);
 }
 
 /* Dark palette. Token-level only — no component ever declares a colour inside

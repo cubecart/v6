@@ -40,9 +40,9 @@
       {/if}
 
       <header class="cc-header border-b border-ink-200 bg-ink-100">
-         <div class="cc-container flex h-16 items-center justify-between">
+         <div class="cc-container flex h-header items-center justify-between">
             <a href="{$ROOT_PATH}" class="flex items-center">
-               <img src="{$STORE_LOGO}" alt="{$CONFIG.store_name}" class="max-h-10 w-auto">
+               <img src="{$STORE_LOGO}" alt="{$CONFIG.store_name}" class="max-h-logo w-auto">
             </a>
             <span class="text-sm text-ink-500">{$LANG.common.checkout|default:'Checkout'}</span>
          </div>

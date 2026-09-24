@@ -70,7 +70,7 @@
       {/if}
 
       <header class="cc-header sticky top-0 z-30 border-b border-ink-200 bg-ink-100/95 backdrop-blur">
-         <div class="cc-container flex h-16 min-w-0 items-center gap-3 sm:gap-4">
+         <div class="cc-container flex h-header min-w-0 items-center gap-3 sm:gap-4">
 
             {* One control for both directions: the bars fold into an X while the
                drawer is open (.cc-burger in components.css). Opening the menu
@@ -93,7 +93,7 @@
                shrink and push the header past the viewport. The img needs it
                too, or it overflows the shrunken link onto the search button. *}
             <a href="{$ROOT_PATH}" class="flex min-w-0 items-center">
-               <img src="{$STORE_LOGO}" alt="{$CONFIG.store_name}" class="max-h-10 w-auto min-w-0 max-w-[50vw] object-contain sm:max-w-none">
+               <img src="{$STORE_LOGO}" alt="{$CONFIG.store_name}" class="max-h-logo w-auto min-w-0 max-w-[50vw] object-contain sm:max-w-none">
             </a>
 
             <div class="ms-auto hidden w-full max-w-md lg:block">
@@ -198,7 +198,7 @@
       <div x-data="ccDrawer('menuOpen')" x-cloak>
          {* Dim starts below the header so the burger stays lit and tappable:
             it is the close control now. top-header is the --spacing-header
-            token, the same 4rem as the header row's h-16. *}
+            token, which also sizes the header row (h-header). *}
          <div x-show="open" x-transition.opacity
               class="fixed inset-x-0 bottom-0 top-header z-40 bg-ink-950/50 lg:hidden"
               @click="close()" aria-hidden="true"></div>

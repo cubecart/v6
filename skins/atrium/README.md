@@ -73,6 +73,13 @@ space a white backing. Each template that uses it includes
 itself. That include cannot live in `main.php`: content templates render first,
 so the variable would be empty in every listing.
 
+**Logo Size.** The logo's maximum height, 40px (default) to 80px. The header
+row grows to `max(4rem, logo + 0.5rem)`, so 5.5rem at the top setting.
+`element.logo_size.php` sets `--cc-logo-height` and `--cc-header-height`, read
+by the `logo` and `header` spacing tokens in `theme.css`. The row is `h-header`
+and the drawer is `top-header`, so both follow the one variable. It renders
+nothing at the default, and only emits one of the listed values.
+
 **Rewards and flourishes.** Applying a valid discount code fires a short burst
 of confetti out of the discount line (see `js/src/41-coupon.js` for why that has
 to survive a redirect). Adding to the basket flies a copy of the product image

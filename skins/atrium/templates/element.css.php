@@ -48,6 +48,7 @@
    it reads as fallbacks are already in play, and BEFORE custom.css so a merchant
    editing that file still overrules the picker. *}
 {include file='templates/element.brand_colours.php'}
+{include file='templates/element.logo_size.php'}
 
 {* Merchant overrides load LAST so they win. custom.css needs no rebuild and is
    the only edit point a skin update will not overwrite. *}
