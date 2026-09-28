@@ -173,6 +173,38 @@ document.addEventListener('alpine:init', function () {
         Alpine.data('ccTabs', function (initial) {
             return {
                 tab: initial || '',
+                /* A #hash naming one of this set's panels opens it and scrolls to it,
+                   e.g. "Quantity discounts available" -> #quantity_discounts (#4288). */
+                init: function () {
+                    var self = this;
+                    var reveal = function (hash, smooth) {
+                        var id = (hash || '').replace(/^#/, '');
+                        if (!id) return false;
+                        var panel = document.getElementById(id);
+                        if (!panel || panel.getAttribute('role') !== 'tabpanel' || !self.$root.contains(panel)) return false;
+                        self.tab = id;
+                        self.$nextTick(function () {
+                            // Clear the sticky header and the tab row. As a scroll margin it also
+                            // holds for the browser's own fragment jump, which lands after ours.
+                            var header = document.querySelector('.cc-header');
+                            var offset = (header ? header.offsetHeight : 0) + 16;
+                            var rootTop = self.$root.getBoundingClientRect().top;
+                            panel.style.scrollMarginTop = (offset + panel.getBoundingClientRect().top - rootTop) + 'px';
+                            var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                            window.scrollTo({ top: rootTop + window.pageYOffset - offset, behavior: smooth && !reduce ? 'smooth' : 'instant' });
+                        });
+                        return true;
+                    };
+                    reveal(window.location.hash, false);
+                    window.addEventListener('hashchange', function () { reveal(window.location.hash, true); });
+                    // Clicking a link whose hash is already in the URL fires no hashchange.
+                    document.addEventListener('click', function (e) {
+                        var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+                        if (a && a.getAttribute('href') === window.location.hash && reveal(window.location.hash, true)) {
+                            e.preventDefault();
+                        }
+                    });
+                },
                 select: function (id) { this.tab = id; },
                 isActive: function (id) { return this.tab === id; }
             };
