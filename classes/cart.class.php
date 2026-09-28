@@ -94,6 +94,13 @@ class Cart
     private $_weight   = 0;
 
     /**
+     * This request marked the basket's order paid, so don't persist it again
+     *
+     * @var bool
+     */
+    private $_paid_in_request = false;
+
+    /**
      * Class instance
      *
      * @var instance
@@ -517,6 +524,18 @@ class Cart
         }
 
         return $_country;
+    }
+
+    /**
+     * Stop this request writing the saved basket once its order is paid
+     *
+     * @param string $cart_order_id
+     */
+    public function orderPaid($cart_order_id)
+    {
+        if (!empty($this->basket['cart_order_id']) && $this->basket['cart_order_id'] === $cart_order_id) {
+            $this->_paid_in_request = true;
+        }
     }
 
     /**
@@ -1329,13 +1348,19 @@ class Cart
                 $basket = serialize($this->basket['contents']);
                 if (empty($old_basket) || $old_basket != $basket) {
                     $old_basket = $basket;
+                    // The request that took payment keeps running (async mail) after the receipt clears the basket (#4291).
+                    if ($this->_paid_in_request) {
+                        return;
+                    }
                     // `updated` is when the contents last changed; the abandonment cron
                     // compares it against orders to spot post-purchase residue.
-                    $now = time();
-                    if (Database::getInstance()->select('CubeCart_saved_cart', array('basket'), array('customer_id' => $id), false, false, false, false) !== false) {
-                        Database::getInstance()->update('CubeCart_saved_cart', array('basket' => $basket, 'updated' => $now), array('customer_id' => $id));
+                    $stored = Database::getInstance()->select('CubeCart_saved_cart', array('basket'), array('customer_id' => $id), false, false, false, false);
+                    if ($stored !== false) {
+                        if ($stored[0]['basket'] !== $basket) {
+                            Database::getInstance()->update('CubeCart_saved_cart', array('basket' => $basket, 'updated' => time()), array('customer_id' => $id));
+                        }
                     } else {
-                        Database::getInstance()->insert('CubeCart_saved_cart', array('customer_id' => $id, 'basket' => $basket, 'updated' => $now));
+                        Database::getInstance()->insert('CubeCart_saved_cart', array('customer_id' => $id, 'basket' => $basket, 'updated' => time()));
                     }
                 }
             }

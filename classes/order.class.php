@@ -617,6 +617,14 @@ class Order
                 $GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_cart_abandonment` SET `recovered_at` = '".date('Y-m-d H:i:s')."' WHERE `customer_id` = ".(int)$this->_order_summary['customer_id']." AND `recovered_at` IS NULL AND `expires_at` >= NOW()");
             }
 
+            // Paid: drop the saved basket server side, so it goes even if the buyer never reaches the receipt (#4291).
+            if ((int)$currentStatus[0]['status'] === self::ORDER_PENDING && in_array((int)$status_id, array(self::ORDER_PROCESS, self::ORDER_COMPLETE), true) && !empty($this->_order_summary['customer_id'])) {
+                $GLOBALS['db']->delete('CubeCart_saved_cart', array('customer_id' => (int)$this->_order_summary['customer_id']));
+                if (isset($GLOBALS['cart']) && $GLOBALS['cart'] instanceof Cart) {
+                    $GLOBALS['cart']->orderPaid($order_id);
+                }
+            }
+
             foreach ($GLOBALS['hooks']->load('class.order.order_status') as $hook) {
                 include $hook;
             }
