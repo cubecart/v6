@@ -209,7 +209,8 @@ class Cron
 
             // Prefer the Pending order's snapshot when one exists — that's what
             // the customer will resume. Fall back to saved_cart for pre-checkout.
-            $pending = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id', 'currency', 'country', 'country_d'), array('customer_id' => $customer_id, 'status' => 1), array('order_date' => 'DESC'), 1, false, false);
+            // Only a recent one: stores that never expire Pending orders keep years-old abandoned checkouts (#ISSUE).
+            $pending = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id', 'currency', 'country', 'country_d'), '`customer_id` = '.$customer_id.' AND `status` = 1 AND `order_date` >= '.(int)$max_age_cutoff, array('order_date' => 'DESC'), 1, false, false);
 
             // Load currency + tax zone for this recipient. Prefer the Pending
             // order's stored values (customer will resume in that currency);
