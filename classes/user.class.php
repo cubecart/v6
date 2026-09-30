@@ -1001,7 +1001,7 @@ class User
             $error['email'] = true;
         } else {
             // check for duplicates
-            if ($existing = $GLOBALS['db']->select('CubeCart_customer', array('email', 'type', 'customer_id'), array('email' => strtolower($_POST['email'])))) {
+            if ($existing = $GLOBALS['db']->select('CubeCart_customer', array('email', 'type', 'customer_id'), array('email' => strtolower($_POST['email'])), false, false, false, false)) {
                 if ($existing[0]['type']==1) {
                     $GLOBALS['gui']->setError($GLOBALS['language']->account['error_email_in_use']);
                     $error['dupe'] = true;
@@ -1092,6 +1092,11 @@ class User
                 return true;
             } else {
                 $insert = $GLOBALS['db']->insert('CubeCart_customer', $_POST);
+                if (!$insert) {
+                    // e.g. refused by the unique email key
+                    $GLOBALS['gui']->setError($GLOBALS['language']->account['error_email_in_use']);
+                    return false;
+                }
             }
 
             foreach ($GLOBALS['hooks']->load('class.user.register_user.inserted') as $hook) {

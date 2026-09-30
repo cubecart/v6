@@ -103,7 +103,7 @@ class ApiResource_Customers extends ApiResource
         $this->_validateRequired($data, array('first_name', 'last_name', 'email'));
 
         // Check duplicate email
-        $existing = $this->_db->select('CubeCart_customer', array('customer_id'), array('email' => $data['email']));
+        $existing = $this->_db->select('CubeCart_customer', array('customer_id'), array('email' => $data['email']), false, 1, false, false);
         if ($existing) {
             ApiResponse::error('A customer with this email already exists', 'CONFLICT', 409);
         }

@@ -450,7 +450,7 @@ class Cubecart
                         $result = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', 'subscriber_id', array('email' => $_POST['subscribe']), false, 1, false, false);
                     } else {
                         $email = isset($_POST['user']['email']) ? $_POST['user']['email'] : $_POST['email'];
-                        $result = $GLOBALS['db']->select('CubeCart_customer', 'customer_id', array('email' => $email, 'type' => 1));
+                        $result = $GLOBALS['db']->select('CubeCart_customer', 'customer_id', array('email' => $email, 'type' => 1), false, 1, false, false);
                     }
 
                     if ($result) {
@@ -1420,7 +1420,7 @@ class Cubecart
                     $error_messages[] = $GLOBALS['language']->common['error_email_invalid'];
                 }
                 // Check email is not in use
-                if ($GLOBALS['db']->select('CubeCart_customer', array('email'), array('email' => $_POST['user']['email'], 'type' => 1))) {
+                if ($GLOBALS['db']->select('CubeCart_customer', array('email'), array('email' => $_POST['user']['email'], 'type' => 1), false, 1, false, false)) {
                     // Email in use
                     $errors['email'] = true;
                     $error_messages[] = $GLOBALS['language']->account['error_email_in_use'];
