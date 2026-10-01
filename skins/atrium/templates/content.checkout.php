@@ -73,7 +73,7 @@
                   {/if}
                </td>
                <td class="price tabular col-start-2 flex justify-between gap-3 sm:table-cell sm:py-4 sm:text-end sm:align-top">
-                  <span class="text-ink-500 sm:hidden">{$LANG.catalogue.price_each}</span><span>{$item.price_display}</span>
+                  <span class="text-ink-500 sm:hidden">{$LANG.catalogue.price_each}</span><span>{$item.line_price_display}</span>
                </td>
                <td class="col-start-2 flex items-center justify-between gap-3 sm:table-cell sm:py-4 sm:text-center sm:align-top">
                   <label class="cc-sr-only" for="quan_{$hash}">{$LANG.common.quantity}</label>
@@ -105,7 +105,7 @@
                           class="mt-1 block text-xs font-medium text-warn-700 underline underline-offset-2 hover:text-warn-800 sm:mx-auto">{$LANG.basket.basket_update}</button>
                </td>
                <td class="price col-start-2 flex justify-between gap-3 font-medium tabular text-ink-900 sm:table-cell sm:py-4 sm:text-end sm:align-top">
-                  <span class="font-normal text-ink-500 sm:hidden">{$LANG.common.price}</span><span>{$item.line_price_display}</span>
+                  <span class="font-normal text-ink-500 sm:hidden">{$LANG.common.price}</span><span>{$item.price_display}</span>
                </td>
                <td class="col-start-2 text-end sm:table-cell sm:py-4 sm:ps-3 sm:align-top">
                   <a href="{$STORE_URL}/index.php?_a=basket&remove-item={$hash}"
