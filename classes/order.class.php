@@ -2251,7 +2251,9 @@ class Order
             foreach ($this->_basket['contents'] as $hash => $item) {
                 $basket_items[] = $hash;
                 if (is_array($stored_items[$hash]) && $stored_items[$hash]['quantity']!==$item['quantity']) {
-                    $record = array('quantity' => $item['quantity'], 'tax' => ($item['tax_each'] !== false ? $item['tax_each']['amount'] : 0));
+                    // A changed quantity can cross a quantity or group pricing tier, so the
+                    // unit price must be rewritten too. Stored ex tax, as _orderAddProduct writes it.
+                    $record = array('quantity' => $item['quantity'], 'tax' => ($item['tax_each'] !== false ? $item['tax_each']['amount'] : 0), 'price' => (!isset($item['certificate'])) ? $item['total_price_each'] : $item['certificate']['value']);
                     foreach ($GLOBALS['hooks']->load('class.order.products.update.pre') as $hook) include $hook;
                     $GLOBALS['db']->update('CubeCart_order_inventory', $record, array('id' => $stored_items[$hash]['id'], 'cart_order_id' => $this->_order_id));
                 } elseif (!isset($stored_items[$hash])) {
