@@ -1,0 +1,53 @@
+name: Attach release package
+
+# Builds the downloadable package and attaches it to the release.
+#
+# Without this, a release has no asset, and www.cubecart.com's get_latest_release()
+# silently falls back to GitHub's generated source archive, which extracts to a
+# folder named after the repo (v6-<version>) instead of CubeCart-<version>.
+#
+# The package contents are defined by .gitattributes export-ignore. Checking out
+# the tag itself means each release is packaged by the rules in force when it was
+# cut, rather than by whatever is on the default branch today.
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      # Pinned to a commit rather than a moving tag: this job can write release
+      # assets, which merchants install, so a hijacked tag would reach them.
+      # actions/checkout v4.4.0
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Build and verify the package
+        env:
+          # Passed as an env var, not interpolated into the script, so a tag name
+          # can never be executed as shell.
+          VER: ${{ github.event.release.tag_name }}
+        run: |
+          set -euo pipefail
+          git archive --format=zip -9 --prefix="CubeCart-${VER}/" HEAD -o "CubeCart-${VER}.zip"
+          # Listed once to a file on purpose: piping into `grep -q` closes the pipe
+          # early, which under `pipefail` fails the step on a perfectly good archive.
+          unzip -Z1 "CubeCart-${VER}.zip" > /tmp/package-list.txt
+          for f in index.php admin.php setup/index.php; do
+            grep -qx "CubeCart-${VER}/${f}" /tmp/package-list.txt \
+              || { echo "::error::package is missing ${f}, refusing to publish"; exit 1; }
+          done
+          COUNT=$(wc -l < /tmp/package-list.txt)
+          echo "CubeCart-${VER}.zip: ${COUNT} files, $(du -h "CubeCart-${VER}.zip" | cut -f1)" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Attach to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VER: ${{ github.event.release.tag_name }}
+        run: gh release upload "$VER" "CubeCart-${VER}.zip" --clobber

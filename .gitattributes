@@ -14,3 +14,6 @@
 /skins/atrium/build export-ignore
 /skins/atrium/package.json export-ignore
 /skins/atrium/.gitignore export-ignore
+
+# CI definitions are not part of a release package.
+/.github export-ignore
