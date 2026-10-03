@@ -34,6 +34,7 @@ class Catalogue
     private $_options_line_price = 0;
     private $_sort_by_relevance = false;
     private $_where_live_from = '';
+    private $_where_live_until = '';
     private $_product_data = array();
 
     public $image_tags = array();
@@ -88,6 +89,10 @@ class Catalogue
         $pre_release = $GLOBALS['db']->select('CubeCart_inventory', 'product_id', '`live_from` > UNIX_TIMESTAMP()', false, 1, false, false);
         if($pre_release) {
             $this->_where_live_from = ' AND `live_from` < UNIX_TIMESTAMP() ';
+        }
+        $post_close = $GLOBALS['db']->select('CubeCart_inventory', 'product_id', '`live_until` < UNIX_TIMESTAMP() AND `live_until` > 0', false, 1, false, false);
+        if ($post_close) {
+        	$this->_where_live_until = ' AND (`live_until` > UNIX_TIMESTAMP() OR `live_until` = 0) ';
         }
         $this->saleOn();
         if(!CC_IN_ADMIN && !$this->sale_on) {
@@ -2311,6 +2316,7 @@ class Catalogue
     {
         $def = $original ? str_replace('WHERE ', '', $GLOBALS['db']->where('CubeCart_inventory', $original, $label)) : '';
         $def .= $this->_where_live_from;
+        $def .= $this->_where_live_until;
 
         if ($GLOBALS['config']->get('config', 'hide_out_of_stock') && !Admin::getInstance()->is()) {
             $def .= ($force || $def) ? ' AND' : '';
@@ -2823,6 +2829,7 @@ class Catalogue
 
             $whereString = (isset($where) && is_array($where)) ? implode(' ', $where) : '';
             $whereString .= $this->_where_live_from;
+            $whereString .= $this->_where_live_until;
 
             $joinString = (isset($joins) && is_array($joins)) ? implode(' JOIN ', $joins) : '';
             if (!empty($joinString)) {
