@@ -334,6 +334,7 @@
     <string name="live_from" introduced="6.2.3"><![CDATA[List from (Leave empty to list now)]]></string>
     <string name="live_from_eg" introduced="6.2.3"><![CDATA[e.g. 10 September 2020 14:00:00]]></string>
     <string name="live_time_invalid" introduced="6.2.3"><![CDATA[The listing time specified wasn't accepted. Please try again.]]></string>
+    <string name="live_until" introduced="6.3.x"><![CDATA[List until (Leave empty to keep it listed)]]></string>
     <string name="guide_currency" introduced="6.2.0"><![CDATA[Guide Currency]]></string>
     <string name="gc_failed" introduced="6.1.14"><![CDATA[Failed to send gift card by email. Please check <a href="?_g=settings#Advanced_Settings">email configuration</a>.]]></string>
     <string name="gc_specific_error" introduced="6.1.14"><![CDATA[A specific error message may be found in the <a href="?_g=settings&node=errorlog#system_error_log">error log</a>.]]></string>
