@@ -11,7 +11,7 @@ Try the storefront and admin on the [live demo](https://www.cubecart.com/demo).
 - PHP 7.4 or later, 8.4 recommended
 - MySQL 5.7+ or MariaDB 10.3+, using InnoDB
 - Apache 2.4 works out of the box with the included `.htaccess`. Nginx needs [rewrite rules](https://kb.cubecart.com/getting-started/installation/configuring-cubecart-with-nginx).
-- PHP extensions: mysqli, GD, SimpleXML, cURL, Zip, mbstring, fileinfo, DOM and OpenSSL
+- PHP extensions: mysqli, GD, SimpleXML, cURL, Zip, mbstring, fileinfo, DOM, XMLWriter and OpenSSL
 
 Full details are at [cubecart.com/requirements](https://www.cubecart.com/requirements).
 
