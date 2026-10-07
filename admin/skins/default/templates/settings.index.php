@@ -503,7 +503,7 @@
             </select></span>
          </div>
          <div><label for="debug_ip_addresses">{$LANG.settings.debug_ip_addresses}</label><span><input name="config[debug_ip_addresses]" id="debug_ip_addresses" type="text" class="textbox" value="{$CONFIG.debug_ip_addresses}"></span></div>
-         <div><label for="cache">{$LANG.settings.cache_enable} (<a href="https://support.cubecart.com/hc/en-gb/articles/360003831737" target="_blank">{$CACHE_METHOD}</a>)</label><span><select name="config[cache]" id="cache" class="textbox">
+         <div><label for="cache">{$LANG.settings.cache_enable} (<a href="https://kb.cubecart.com/administration/performance/how-do-i-enable-memcached-or-redis-caching" target="_blank">{$CACHE_METHOD}</a>)</label><span><select name="config[cache]" id="cache" class="textbox">
      {foreach from=$OPT_CACHE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
    </select></span></div>
       </fieldset>
