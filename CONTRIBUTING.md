@@ -9,4 +9,4 @@ If you need specific feature which isn't currently included with CubeCart please
 Please provide an overview of the issue with steps to reproduce. If you have forked CubeCart we appreciate pull requests to review. The GitHub issue tracker is NOT a source to seek technical support. Instead please contact our support staff via the [helpdesk](https://www.cubecart.com/contact).
 
 ## Security Issues
-This is a sensitive area and we would request that they are not posted to GitHub publicly. Instead please submit your findings with proof of concept to our sale staff on the [helpdesk](https://www.cubecart.com/contact).
+Please don't post security issues on GitHub publicly. Report them privately as described in [SECURITY.md](SECURITY.md).
