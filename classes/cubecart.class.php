@@ -1389,7 +1389,8 @@ class Cubecart
 
                 // addressCompare only hashes address lines, so an edit to name,
                 // email or phone alone slipped through to payment unverified.
-                if ($new_addresses!==$old_addresses || $this->_contactChanged($old_customer, $this->_basket['customer'])) {
+                $details_changed = ($new_addresses!==$old_addresses || $this->_contactChanged($old_customer, $this->_basket['customer']));
+                if ($details_changed) {
                     // Set notice to prevent proceed to payment screen
                     $message = ($GLOBALS['cart']->basket['digital_only'] ?? false) ? $GLOBALS['language']->checkout['confirm_billing'] : $GLOBALS['language']->account["notify_address_updated"];
                     $GLOBALS['gui']->setNotify($message);
@@ -1402,9 +1403,13 @@ class Cubecart
                    failed verification every time and put a "verify you are human"
                    error in front of the customer on each one.
 
-                   #4251 still holds: the confirmation is request-scoped, so the
-                   order submission itself must always solve a fresh challenge. */
-                if (isset($_POST['proceed']) && $GLOBALS['gui']->recaptchaRequired()) {
+                   #4251 still holds: a solve on the details step covers only the
+                   confirm click that follows, and placing the order uses it up. */
+                $solved = (int)$GLOBALS['session']->get('checkout_solved', 'captcha');
+                if (isset($_POST['proceed']) && !$GLOBALS['gui']->recaptchaRequired()) {
+                    $GLOBALS['session']->set('checkout_solved', time(), 'captcha');
+                } elseif (isset($_POST['proceed']) && ($details_changed || $solved < time() - 1800)) {
+                    $GLOBALS['session']->delete('checkout_solved', 'captcha');
                     if (($message = $GLOBALS['session']->get('error', 'recaptcha')) === false) {
                         //If the error message from recaptcha fails for some reason:
                         $error_messages[] = $GLOBALS['language']->form['verify_human_fail'];
@@ -2850,6 +2855,7 @@ class Cubecart
     {
         if (!isset($_REQUEST['gateway']) || (isset($_GET['cart_order_id']) && $_GET['retrieve'])) {
             Order::getInstance()->placeOrder();
+            $GLOBALS['session']->delete('checkout_solved', 'captcha');
         }
 
         foreach ($GLOBALS['hooks']->load('class.cubecart.construct.gateway') as $hook) {
