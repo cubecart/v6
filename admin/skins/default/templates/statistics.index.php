@@ -242,11 +242,19 @@ window.addEventListener('resize', function() {
 });
 
 // Vanilla JS — this script runs before jQuery is loaded by the admin layout.
+// A 401 means the session has expired: reload so the login page brings the user back here.
+function statsSessionExpired(r) {
+    if (r.status !== 401) return false;
+    window.location.reload();
+    return true;
+}
+
 function statsFetchInto(div, url) {
     div.setAttribute('data-loading', '1');
     div.innerHTML = '<p class="stat-loading">Loading…</p>';
     return fetch(url, { credentials: 'same-origin' })
         .then(function(r) {
+            if (statsSessionExpired(r)) return new Promise(function() {});
             if (!r.ok) throw new Error('HTTP ' + r.status);
             return r.text();
         })
@@ -362,7 +370,7 @@ function statsRefreshOnline() {
     var qs  = new URLSearchParams(window.location.search);
     if (qs.get('bots') !== null) url += '&bots=' + encodeURIComponent(qs.get('bots'));
     fetch(url, { credentials: 'same-origin', cache: 'no-store' })
-        .then(function(r) { return r.ok ? r.text() : null; })
+        .then(function(r) { return (statsSessionExpired(r) || !r.ok) ? null : r.text(); })
         .then(function(html) {
             if (html === null) return;
             div.innerHTML = html;

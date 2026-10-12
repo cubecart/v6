@@ -14,6 +14,12 @@ if (!defined('CC_INI_SET')) {
     die('Access Denied');
 }
 
+// A tab fragment fetched by script gets a 401, not a login page to paste into the tab
+if (isset($_GET['format']) && $_GET['format'] === 'fragment') {
+    http_response_code(401);
+    exit;
+}
+
 // If a 2FA challenge is pending, force the twofa page regardless of _g parameter
 if ($GLOBALS['session']->get('twofa_pending_admin_id', 'client')) {
     $_GET['_g'] = 'twofa';
