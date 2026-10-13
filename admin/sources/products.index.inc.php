@@ -60,19 +60,17 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
         $record['name'] = strip_tags($record['name']);
     }
     if (!empty($record['spec_array'])) {
-        $spec_decoded = json_decode(base64_decode($record['spec_array']), true);
-        if (is_array($spec_decoded)) {
-            foreach ($spec_decoded as &$spec_row) {
-                if (is_array($spec_row)) {
-                    foreach ($spec_row as &$spec_val) {
-                        $spec_val = strip_tags($spec_val);
-                    }
-                    unset($spec_val);
+        $spec_decoded = Catalogue::decodeSpecArray($record['spec_array']);
+        foreach ($spec_decoded as &$spec_row) {
+            if (is_array($spec_row)) {
+                foreach ($spec_row as &$spec_val) {
+                    $spec_val = strip_tags($spec_val);
                 }
+                unset($spec_val);
             }
-            unset($spec_row);
-            $record['spec_array'] = base64_encode(json_encode($spec_decoded));
         }
+        unset($spec_row);
+        $record['spec_array'] = base64_encode(json_encode($spec_decoded));
     }
     unset($record['categories'], $record['group'], $record['image']);
 
@@ -1274,7 +1272,7 @@ if (isset($_GET['action'])) {
         }
         if(!empty($result[0]['spec_array'])) {
             $result[0]['spec_array_b64'] = $result[0]['spec_array'];
-            $result[0]['spec_array'] = json_decode(base64_decode($result[0]['spec_array']), true);
+            $result[0]['spec_array'] = Catalogue::decodeSpecArray($result[0]['spec_array']);
         }
         $GLOBALS['smarty']->assign('PRODUCT', $result[0]);
 

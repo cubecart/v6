@@ -405,10 +405,7 @@ class ApiResource_Products extends ApiResource
 
         // Decode spec_array if present
         if (isset($product['spec_array']) && !empty($product['spec_array']) && !is_array($product['spec_array'])) {
-            $product['spec_array'] = json_decode(base64_decode($product['spec_array']), true);
-            if (!is_array($product['spec_array'])) {
-                $product['spec_array'] = array();
-            }
+            $product['spec_array'] = Catalogue::decodeSpecArray($product['spec_array']);
         }
 
         return $product;

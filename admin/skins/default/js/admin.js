@@ -35,7 +35,12 @@ $(document).ready(function() {
                     specs.push([name, value]);
                 }
             });
-            $('#spec_array').val(btoa(JSON.stringify(specs)));
+            // UTF-8 before base64: btoa() only takes Latin-1, so a spec such as
+            // "10 × 20 cm" was mangled and one with "–" threw (#4303).
+            const bytes = new TextEncoder().encode(JSON.stringify(specs));
+            let binary = '';
+            bytes.forEach(function (b) { binary += String.fromCharCode(b); });
+            $('#spec_array').val(btoa(binary));
         }
 
         $('#spec-container').on('click', '.add', function(e) {

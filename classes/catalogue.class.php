@@ -1464,7 +1464,7 @@ class Catalogue
             $count = count($result);
             $data = array();
             foreach ($result as $product) {
-                $product['spec_array'] = !empty($product['spec_array']) ? json_decode(base64_decode($product['spec_array']), true) : array();
+                $product['spec_array'] = self::decodeSpecArray($product['spec_array']);
                 $product['product_weight'] = (float)$product['product_weight'];
                 $GLOBALS['language']->translateProduct($product);
                 $product['description'] = ($product['product_parse']==1) ? $GLOBALS['smarty']->fetch('string:'.$product['description']) : $product['description'];
@@ -2302,6 +2302,29 @@ class Catalogue
         } else {
             return '';
         }
+    }
+
+    /**
+     * Decode a product's stored specifications
+     *
+     * The admin used to base64 the JSON straight from btoa(), which writes
+     * characters such as × and ° as single Latin-1 bytes. That JSON is not
+     * valid UTF-8, so it is read again as Latin-1 before giving up (#4303).
+     *
+     * @param string $encoded base64 encoded JSON
+     * @return array
+     */
+    public static function decodeSpecArray($encoded)
+    {
+        if (empty($encoded) || !is_string($encoded)) {
+            return array();
+        }
+        $json = base64_decode($encoded);
+        $specs = json_decode((string)$json, true);
+        if (!is_array($specs) && $json !== false && !mb_check_encoding($json, 'UTF-8')) {
+            $specs = json_decode(mb_convert_encoding($json, 'UTF-8', 'ISO-8859-1'), true);
+        }
+        return is_array($specs) ? $specs : array();
     }
 
     /**
