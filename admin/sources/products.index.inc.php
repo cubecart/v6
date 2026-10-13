@@ -94,6 +94,10 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
         $record['live_from'] = strtotime($_POST['live_from']);
         if(!$record['live_from']) $GLOBALS['main']->errorMessage($lang['catalogue']['live_time_invalid']);
     }
+    if(!empty($_POST['live_until'])) {
+    	$record['live_until'] = strtotime($_POST['live_until']);
+    	if(!$record['live_until']) $GLOBALS['main']->errorMessage($lang['catalogue']['live_time_invalid']);
+    }
 
     if (!empty($_POST['product_id']) && is_numeric($_POST['product_id'])) {
         $GLOBALS['catalogue']->getProductHash($_POST['product_id'], "before");
