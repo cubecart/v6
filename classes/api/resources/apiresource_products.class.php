@@ -35,7 +35,7 @@ class ApiResource_Products extends ApiResource
         'stock_level', 'stock_warning', 'product_weight', 'tax_type',
         'tax_inclusive', 'status', 'digital', 'digital_path', 'manufacturer',
         'condition', 'seo_meta_title', 'seo_meta_description', 'seo_meta_keywords',
-        'featured', 'latest', 'noindex', 'live_from', 'spec_copy',
+        'featured', 'latest', 'noindex', 'live_from', 'live_until', 'spec_copy',
     );
 
     /**
