@@ -530,7 +530,16 @@
   .cc-nav-mobile .cc-nav-menu .cc-nav-link { padding-inline-start: 0.75rem; }
   /* Down at every depth here, since nothing flies out sideways, and flipped
      when the branch is open. */
-  .cc-nav-mobile .cc-nav-caret { transform: none; }
+  /* The caret toggles its branch here, so give it a thumb-sized target: at
+     16px a near miss lands on the link and leaves the page. The negative
+     margins keep the row the same height. */
+  .cc-nav-mobile .cc-nav-caret {
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0.875rem;
+    margin: -0.875rem -0.5rem -0.875rem 0;
+    transform: none;
+  }
   .cc-nav-mobile .cc-nav-caret.is-open { transform: rotate(180deg); }
 
 

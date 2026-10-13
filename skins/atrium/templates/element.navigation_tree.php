@@ -23,11 +23,23 @@
  * Alpine initialises from the DOM.
  *}
 {if isset($BRANCH.children)}
+{* Hover opens a flyout for a mouse only, and never in the mobile drawer.
+   A tap fires an emulated mouseenter and then the click, so on touch it
+   opened the branch and followed the link in one go. In the drawer the
+   branches are an in-flow accordion, so hover-to-open made the list grow and
+   shrink under a moving mouse and the next category slid out from under it.
+   For the same reason a click elsewhere closes a flyout but not a drawer
+   branch: opening one must not collapse an open one above it and move it.
+   The caret toggles the branch instead of following the link; the name still
+   goes to the category. *}
 <li class="cc-nav-item cc-nav-parent" x-data="ccDisclosure()"
-    @mouseenter="open = true" @mouseleave="close()"
+    @pointerenter="$event.pointerType === 'mouse' && !$el.closest('.cc-nav-mobile') && (open = true)"
+    @pointerleave="$event.pointerType === 'mouse' && !$el.closest('.cc-nav-mobile') && close()"
+    @click.outside="!$el.closest('.cc-nav-mobile') && close()"
     @keydown.escape.window="close()">
    <a href="{$BRANCH.url}" class="cc-nav-link"
-      :aria-expanded="open ? 'true' : 'false'">
+      :aria-expanded="open ? 'true' : 'false'"
+      @click="$event.target.closest('.cc-nav-caret') && ($event.preventDefault(), toggle())">
       <span>{$BRANCH.name}</span>
       {* is-open, NOT Tailwind's rotate-180: that utility sets the standalone
          `rotate` property, which composes with the `transform` these carets
