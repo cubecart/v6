@@ -500,7 +500,8 @@ class Order
      * Subtotal as the basket showed it
      *
      * Goods tax sits inside the prices when inclusive, so the subtotal has to carry
-     * it. Shipping tax is charged on top and stays at the foot.
+     * it. Shipping tax and import tariffs are charged on top and stay at the foot,
+     * as the basket does (#4300).
      *
      * @param array $order
      * @param bool $inclusive
@@ -511,7 +512,33 @@ class Order
         if (!$inclusive) {
             return (float)$order['subtotal'];
         }
-        return (float)$order['subtotal'] + ((float)$order['total_tax'] - (float)$order['shipping_tax']);
+        return (float)$order['subtotal'] + ((float)$order['total_tax'] - (float)$order['shipping_tax'] - self::_tariffTotal($order['cart_order_id'] ?? ''));
+    }
+
+    /**
+     * Import tariffs charged on an order
+     *
+     * Tariff rows are stored with an 'i'-prefixed tax_id. They only ever apply to
+     * goods, never to shipping, so they never overlap shipping_tax.
+     *
+     * @param string $order_id
+     * @return float
+     */
+    private static function _tariffTotal($order_id)
+    {
+        if (empty($order_id)) {
+            return 0.0;
+        }
+        $tariffs = 0.0;
+        $rows = $GLOBALS['db']->select('CubeCart_order_tax', array('tax_id', 'amount'), array('cart_order_id' => $order_id));
+        if (is_array($rows)) {
+            foreach ($rows as $row) {
+                if (is_string($row['tax_id']) && isset($row['tax_id'][0]) && $row['tax_id'][0] === 'i') {
+                    $tariffs += (float)$row['amount'];
+                }
+            }
+        }
+        return $tariffs;
     }
 
     /**
