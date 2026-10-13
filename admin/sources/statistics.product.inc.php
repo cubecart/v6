@@ -116,10 +116,14 @@ if($product) {
         }
     }
 
-    // Top variants (only when product has options recorded)
-    $variants_sql = 'SELECT `I`.`options_identifier`, SUM(`I`.`quantity`) AS `units`, SUM(`I`.`price` * `I`.`quantity`) AS `revenue` FROM '.$base_join.' WHERE '.$sales_where.' AND `I`.`options_identifier` IS NOT NULL AND `I`.`options_identifier` <> \'\' GROUP BY `I`.`options_identifier` ORDER BY `units` DESC LIMIT 5';
-    $variants = $GLOBALS['db']->query($variants_sql);
-    if($variants) {
+    // Every variant sold, best first (only when product has options recorded).
+    // Rebuilding the option matrix gives a variant a new identifier while older
+    // order lines keep the old one, so rows are labelled from the current matrix,
+    // then from what the order line recorded, and merged by label (#4304).
+    $variants_sql = 'SELECT `I`.`options_identifier`, MAX(`I`.`product_code`) AS `order_code`, MAX(`I`.`product_options`) AS `order_options`, SUM(`I`.`quantity`) AS `units`, SUM(`I`.`price` * `I`.`quantity`) AS `revenue` FROM '.$base_join.' WHERE '.$sales_where.' AND `I`.`options_identifier` IS NOT NULL AND `I`.`options_identifier` <> \'\' GROUP BY `I`.`options_identifier`';
+    $variant_rows = $GLOBALS['db']->query($variants_sql);
+    $variants = array();
+    if($variant_rows) {
         $matrix_lookup = $GLOBALS['db']->select('CubeCart_option_matrix', array('options_identifier','product_code'), array('product_id' => $product_id), false, false, false, false);
         $matrix_codes = array();
         if($matrix_lookup) {
@@ -127,9 +131,28 @@ if($product) {
                 $matrix_codes[$m['options_identifier']] = $m['product_code'];
             }
         }
+        foreach($variant_rows as $row) {
+            $options = $row['order_options'] ? array_filter(Order::getInstance()->unSerializeOptions($row['order_options']), 'is_string') : array();
+            if(!empty($matrix_codes[$row['options_identifier']])) {
+                $label = $matrix_codes[$row['options_identifier']];
+            } elseif(!empty($row['order_code']) && $row['order_code'] !== $product['product_code']) {
+                $label = $row['order_code'];
+            } elseif(!empty($options)) {
+                $label = implode(', ', $options);
+            } else {
+                $label = $row['options_identifier'];
+            }
+            if(!isset($variants[$label])) {
+                $variants[$label] = array('product_code' => $label, 'units' => 0, 'revenue' => 0);
+            }
+            $variants[$label]['units'] += (int)$row['units'];
+            $variants[$label]['revenue'] += (float)$row['revenue'];
+        }
+        usort($variants, function($a, $b) {
+            return $b['units'] <=> $a['units'];
+        });
         foreach($variants as &$v) {
-            $v['product_code'] = isset($matrix_codes[$v['options_identifier']]) ? $matrix_codes[$v['options_identifier']] : $v['options_identifier'];
-            $v['revenue_fmt'] = $tax->priceFormat((float)$v['revenue']);
+            $v['revenue_fmt'] = $tax->priceFormat($v['revenue']);
         }
         unset($v);
     }
