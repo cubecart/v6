@@ -1320,7 +1320,9 @@ function cc_track_event($event_name, $params = array())
             CURLOPT_CONNECTTIMEOUT => 3,
         ));
         @curl_exec($ch);
-        curl_close($ch);
+        if (PHP_VERSION_ID < 80000) {
+            curl_close($ch);
+        }
     }
 }
 

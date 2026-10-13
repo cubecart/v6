@@ -340,7 +340,9 @@ function cfthumbs_render($source, $type, $size, $quality)
             imagesavealpha($out, true);
         }
         imagecopyresampled($out, $im, 0, 0, 0, 0, $out_width, $out_height, $width, $height);
-        imagedestroy($im);
+        if (PHP_VERSION_ID < 80000) {
+            imagedestroy($im);
+        }
     }
 
     if (CFTHUMBS_APPLY_EXIF_ROTATION && $type == IMAGETYPE_JPEG && function_exists('exif_read_data')) {
@@ -349,7 +351,7 @@ function cfthumbs_render($source, $type, $size, $quality)
             $angle = array(3 => 180, 6 => -90, 8 => 90);
             if (isset($angle[$exif['Orientation']])) {
                 $rotated = imagerotate($out, $angle[$exif['Orientation']], 0);
-                if ($rotated) { imagedestroy($out); $out = $rotated; }
+                if ($rotated) { if (PHP_VERSION_ID < 80000) { imagedestroy($out); } $out = $rotated; }
             }
         }
     }
@@ -375,7 +377,9 @@ function cfthumbs_render($source, $type, $size, $quality)
             $ok = false;
     }
     $data = ob_get_clean();
-    imagedestroy($out);
+    if (PHP_VERSION_ID < 80000) {
+        imagedestroy($out);
+    }
 
     return ($ok && $data !== '') ? $data : false;
 }
