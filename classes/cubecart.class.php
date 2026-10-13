@@ -2287,7 +2287,7 @@ class Cubecart
                     foreach ($methods as $data) {
                         $data['value_inclusive'] = $data['value'];
                         if (isset($data['tax_inclusive']) && (bool)$data['tax_inclusive']) {
-                            $GLOBALS['tax']->inclusiveTaxRemove($data['value'], $data['tax_id']);
+                            $GLOBALS['tax']->inclusiveTaxRemove($data['value'], $data['tax_id'], 'shipping');
                         } else {
                             $data['value_inclusive'] = null;
                         }
