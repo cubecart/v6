@@ -1607,9 +1607,6 @@ class FileManager
                         $img = @imagecreatefromjpeg($target);
                         if ($img !== false) {
                             @imagejpeg($img, $target, 95);
-                            if (PHP_VERSION_ID < 80000) {
-                                @imagedestroy($img);
-                            }
                             clearstatcache(true, $target);
                             $GLOBALS['db']->update('CubeCart_filemanager', array('filesize' => filesize($target)), array('file_id' => (int)$fid));
                         }

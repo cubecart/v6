@@ -376,7 +376,8 @@ class Catalogue
     {
         if (isset($product) && is_numeric($product)) {
             if (($product = $this->getProductData($product)) !== false) {
-                $product['condition'] = isset($GLOBALS['language']->common[$product['condition']]) ? $GLOBALS['language']->common[$product['condition']] : '-';
+                $condition = $product['condition'] ?? '';
+                $product['condition'] = isset($GLOBALS['language']->common[$condition]) ? $GLOBALS['language']->common[$condition] : '-';
                 $meta_data = array(
                     'name'   => $product['name'],
                     'path'   => null,

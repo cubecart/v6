@@ -54,12 +54,6 @@ class GD
 
     public function gdClear()
     {
-        if ($this->_gdImageOutput && PHP_VERSION_ID < 80000) {
-            imagedestroy($this->_gdImageOutput);
-        }
-        if ($this->_gdImageSource && PHP_VERSION_ID < 80000) {
-            imagedestroy($this->_gdImageSource);
-        }
         $this->_gdImageOutput = false;
         $this->_gdImageSource = false;
         $this->_gdImageData  = false;
@@ -81,9 +75,6 @@ class GD
             $ow = imagesx($im);
             $h = ($oh < $h) ? $oh : $h;
             $w = ($ow < $w) ? $ow : $w;
-            if ($this->_gdImageOutput && PHP_VERSION_ID < 80000) {
-                imagedestroy($this->_gdImageOutput);
-            }
             $this->_gdImageOutput = imagecreatetruecolor($w, $h);
             if ($this->_gdImageType == IMAGETYPE_GIF) {
                 $transIndex = imagecolortransparent($im);
@@ -217,9 +208,6 @@ class GD
             }
             if ($proceed) {
                 // Create the output file and resample
-                if ($this->_gdImageOutput && PHP_VERSION_ID < 80000) {
-                    imagedestroy($this->_gdImageOutput);
-                }
                 $this->_gdImageOutput = imagecreatetruecolor($out_width, $out_height);
                 if ($this->_gdImageType == IMAGETYPE_GIF) {
                     $transIndex = imagecolortransparent($im);
@@ -285,21 +273,12 @@ class GD
                     if($this->_gdWebpSupport) {
                         $result = imagewebp($im, $file, $this->_gdJpegQuality);
                     } else {
-                        if ($im !== $source && PHP_VERSION_ID < 80000) {
-                            imagedestroy($im);
-                        }
                         return false;
                     }
                     break;
                 default:
                     trigger_error(__METHOD__.' - Unknown file type', E_USER_NOTICE);
-                    if ($im !== $source && PHP_VERSION_ID < 80000) {
-                        imagedestroy($im);
-                    }
                     return false;
-            }
-            if ($im !== $source && PHP_VERSION_ID < 80000) {
-                imagedestroy($im);
             }
             return $result;
         }

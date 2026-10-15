@@ -723,9 +723,6 @@ class ACP
             CURLOPT_MAXREDIRS      => 5,
         ));
         $response = curl_exec($ch);
-        if (PHP_VERSION_ID < 80000) {
-            curl_close($ch);
-        }
         if ($response === false || $response === '') return '';
 
         $h = strtolower($response);

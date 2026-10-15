@@ -91,11 +91,7 @@ class Request
 
     public function __destruct()
     {
-        if ($this->_curl) {
-            if (PHP_VERSION_ID < 80000) {
-                curl_close($this->_curl);
-            }
-        } else {
+        if (!$this->_curl) {
             fclose($this->_fp);
         }
     }

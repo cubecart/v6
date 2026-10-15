@@ -2027,9 +2027,6 @@ class Cubecart
                             if (file_exists($_FILES['attachments']['tmp_name'][$i])) {
                                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                                 $detected_type = finfo_file($finfo, $_FILES['attachments']['tmp_name'][$i]);
-                                if (PHP_VERSION_ID < 80000) {
-                                    finfo_close($finfo);
-                                }
                             }
                             if($detected_type && in_array($detected_type, $allowed)) {
                                 $mailer->AddAttachment($_FILES['attachments']['tmp_name'][$i], $attachment_prefix.$_FILES['attachments']['name'][$i]);
