@@ -36,17 +36,11 @@ class Config
      */
     private $_temp  = array();
     /**
-     * Write the config to the DB
-     *
-     * @var bool
-     */
-    private $_write_db = false;
-    /**
-     * Array of variables before config is written used for validation
+     * Keys changed since the last write, by config name
      *
      * @var array
      */
-    private $_pre_enc_config = array();
+    private $_dirty = array();
 
     /**
      * Class instance
@@ -93,7 +87,7 @@ class Config
     public function __destruct()
     {
         //Do we need to write to the db
-        if ($this->_write_db) {
+        if (!empty($this->_dirty)) {
             $this->_writeDB();
         }
     }
@@ -259,27 +253,29 @@ class Config
             $data = $this->_stripslashes($data);
         }
 
-        /**
-         * Check to see if the data is the same as it was.
-         * If it is we dont need to do anything
-         */
-        if ($this->has($config_name, $element) && $this->get($config_name, $element) === $data) {
-            return true;
-        }
-
         //If there isn't an element assign the entire thing
         if (empty($element)) {
+            $current = $this->get($config_name);
             $this->_config[$config_name] = $data;
+            if (is_array($data)) {
+                foreach ($data as $key => $value) {
+                    if ($force_write || !is_array($current) || !array_key_exists($key, $current) || !$this->_same($current[$key], $value)) {
+                        $this->_dirty[$config_name][$key] = true;
+                    }
+                }
+            }
         } else {
+            // Unchanged values are not written
+            if (!$force_write && $this->has($config_name, $element) && $this->_same($this->get($config_name, $element), $data)) {
+                return true;
+            }
             $this->_config[$config_name][$element] = $data;
+            $this->_dirty[$config_name][$element] = true;
         }
 
         //Write the to the db
-        if (!$force_write) {
-            $this->_write_db = true;
-        } else {
+        if ($force_write) {
             $this->_writeDB();
-            $this->_write_db = false;
         }
         return true;
     }
@@ -392,46 +388,68 @@ class Config
     }
 
     /**
-     * Write config to db
+     * Compare two values as they would be stored, ignoring array key order
+     *
+     * @param mixed $a
+     * @param mixed $b
+     * @return bool
+     */
+    private function _same($a, $b)
+    {
+        return $this->_normalise($a) === $this->_normalise($b);
+    }
+
+    /**
+     * Normalise a value for comparison
+     *
+     * @param mixed $value
+     * @return mixed
+     */
+    private function _normalise($value)
+    {
+        if (is_array($value)) {
+            ksort($value);
+            return array_map(array($this, '_normalise'), $value);
+        }
+        return (is_scalar($value) || $value === null) ? (string)$value : $value;
+    }
+
+    /**
+     * Write changed config keys to db
      */
     private function _writeDB()
     {
-        if (!empty($this->_config) && is_array($this->_config)) {
-            $db = Database::getInstance();
-            foreach ($this->_config as $config => $data) {
-                //Remove data that was merged in
-                if (!empty($this->_temp) && isset($this->_temp[$config])) {
-                    $match = array_intersect_key($this->_temp[$config], $this->_config[$config]);
-                    if (!empty($match)) {
-                        foreach ($match as $k => $v) {
-                            unset($data[$k]);
-                        }
-                    }
-                }
-                //If there is a problem abort
-                if (empty($data)) {
+        if (empty($this->_dirty)) {
+            return;
+        }
+        //Safeguard to prevent config loss
+        if (!isset($this->_config['config']['store_name'])) {
+            return false;
+        }
+        $db = Database::getInstance();
+        foreach ($this->_dirty as $config => $keys) {
+            if (strlen($config) > 100) {
+                trigger_error('Config write size error: '.$config, E_USER_ERROR);
+                continue;
+            }
+            // Upsert each key to avoid race conditions
+            // The old DELETE + INSERT pattern was not atomic — concurrent
+            // requests could read an empty table mid-write and lose config
+            foreach (array_keys($keys) as $key) {
+                //Skip data that was merged in
+                if (isset($this->_temp[$config]) && array_key_exists($key, $this->_temp[$config])) {
                     continue;
                 }
-                //Safeguard to prevent config loss
-                if ($config == 'config' && !isset($data['store_name'])) {
-                    return false;
-                }
-                if (strlen($config) > 100) {
-                    trigger_error('Config write size error: '.$config, E_USER_ERROR);
+                if (!isset($this->_config[$config]) || !is_array($this->_config[$config]) || !array_key_exists($key, $this->_config[$config])) {
                     continue;
                 }
-                $this->_pre_enc_config = $data;
-                // Upsert each key to avoid race conditions
-                // The old DELETE + INSERT pattern was not atomic — concurrent
-                // requests could read an empty table mid-write and lose config
-                foreach ($data as $key => $value) {
-                    $db->upsert('CubeCart_config', array(
-                        'name'         => $config,
-                        'config_key'   => $key,
-                        'config_value' => $this->_encodeValue($value)
-                    ), array('config_value'));
-                }
+                $db->upsert('CubeCart_config', array(
+                    'name'         => $config,
+                    'config_key'   => $key,
+                    'config_value' => $this->_encodeValue($this->_config[$config][$key])
+                ), array('config_value'));
             }
         }
+        $this->_dirty = array();
     }
 }
