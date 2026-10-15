@@ -21,8 +21,8 @@ require CC_INCLUDES_DIR.'bootstrap.data.inc.php';
 // We will not need this anymore
 unset($glob);
 $GLOBALS['config']->merge('config', '', $config_default);
-//Check security token
-if ($GLOBALS['config']->get('config', 'csrf')=='1') {
+//Check security token if the skin that served this visitor uses it
+if ($GLOBALS['session']->get('csrf', 'system', $GLOBALS['config']->get('config', 'csrf'))=='1') {
     Sanitize::checkToken();
 }
 // Shared view-layer bootstrap (Smarty, Language, HookLoader, SSL, SEO, GUI, Tax)

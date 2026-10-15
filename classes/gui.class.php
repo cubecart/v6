@@ -135,12 +135,10 @@ class GUI
             //Setup current skin data
             $this->_skin_data = $this->_skins[$this->_skin];
 
-            // Make sure CSRF is enabled if skin has it enabled
-            if ($this->_skin_data['info']['csrf'] && $GLOBALS['config']->get('config', 'csrf')!=='1') {
-                $GLOBALS['config']->set('config', 'csrf', '1');
-            } elseif (!$this->_skin_data['info']['csrf'] && $GLOBALS['config']->get('config', 'csrf')=='1') {
-                $GLOBALS['config']->set('config', 'csrf', '0');
-            }
+            // CSRF follows the skin serving this visitor, never the store-wide setting
+            $csrf = $this->_skin_data['info']['csrf'] ? '1' : '0';
+            $GLOBALS['config']->merge('config', 'csrf', $csrf);
+            $GLOBALS['session']->set('csrf', $csrf);
 
             //Set smarty to the skin
             $GLOBALS['smarty']->template_dir = CC_ROOT_DIR.'/skins/'.$this->_skin.'/';
