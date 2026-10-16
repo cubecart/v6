@@ -13,13 +13,14 @@
  * be repeated here if checkout needs it (hence the duplicated offline banner).
  *}
 <!DOCTYPE html>
-<html dir="{$TEXT_DIRECTION}" lang="{$HTML_LANG}"{if $SKIN_CUSTOM.colour_scheme == 'dark'} data-theme="dark"{/if}>
+<html dir="{$TEXT_DIRECTION}" lang="{$HTML_LANG}"{if ($SKIN_SETTINGS.colour_scheme|default:'light') == 'dark'} data-theme="dark"{/if}>
    <head>
       <title>{$META_TITLE}</title>
       {include file='templates/element.meta.php'}
       <link href="{$CANONICAL}" rel="canonical">
       <link href="{$ROOT_PATH}favicon.ico" rel="shortcut icon" type="image/x-icon">
       {include file='templates/element.css.php'}
+      {include file='templates/element.colour_scheme.php'}
       {include file='templates/element.js_head.php'}
       {* ⚠ Invisible reCAPTCHA (mode 3) bootstrap. Without it the protected
          forms on this layout silently produce no captcha token and every
@@ -42,7 +43,7 @@
       <header class="cc-header border-b border-ink-200 bg-ink-100">
          <div class="cc-container flex h-header items-center justify-between">
             <a href="{$ROOT_PATH}" class="flex items-center">
-               <img src="{$STORE_LOGO}" alt="{$CONFIG.store_name}" class="max-h-logo w-auto">
+               <img src="{$STORE_LOGO}" alt="{$CONFIG.store_name}" class="cc-logo max-h-logo w-auto">
             </a>
             <span class="text-sm text-ink-500">{$LANG.common.checkout|default:'Checkout'}</span>
          </div>

@@ -658,6 +658,14 @@
      chrome and keep the theme background. */
   .cc-media { background-color: #fff; }
 
+  /* The one exception: most logos are dark artwork on transparency and vanish
+     on the dark header, so dark mode sits the logo on a white plate. */
+  [data-theme="dark"] .cc-logo {
+    background-color: #fff;
+    border-radius: var(--radius-cc);
+    padding: 0.25rem 0.5rem;
+  }
+
   /* ── Morphing hamburger ───────────────────────────────────────────────
      Three bars that fold into an X, so one button both opens and closes the
      drawer. Bars rather than two SVG paths because the transform origin is

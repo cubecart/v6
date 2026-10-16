@@ -36,10 +36,10 @@
 @source not "../../assets/**";
 @source not "../../_design/**";
 
-/* Dark mode is skin-controlled, not OS-controlled: main.php stamps
- * data-theme on <html> from $SKIN_CUSTOM.colour_scheme. Merchants who want to
- * follow the OS set colour_scheme=auto in config.xml, which adds the stamp
- * from a tiny inline script before paint. Never bare prefers-color-scheme —
+/* Dark mode is skin-controlled, not OS-controlled: the main templates stamp
+ * data-theme on <html> from the Colour Scheme setting. "Follow browser" adds
+ * the stamp from a tiny inline script before paint (element.colour_scheme.php).
+ * Never bare prefers-color-scheme —
  * a storefront full of merchant-supplied product HTML cannot be trusted to
  * invert cleanly without an explicit opt-in. */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));

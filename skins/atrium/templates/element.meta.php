@@ -39,5 +39,12 @@
 <link rel="alternate" href="{$language.url}" hreflang="{if $language.code==$CONFIG.default_language}x-default{else}{$language.code}{/if}">
 {/foreach}
 {/if}
+{* Browser toolbar tint, matching the Colour Scheme setting. *}
+{if ($SKIN_SETTINGS.colour_scheme|default:'light') == 'auto'}
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0b1215" media="(prefers-color-scheme: dark)">
+{elseif $SKIN_SETTINGS.colour_scheme == 'dark'}
+<meta name="theme-color" content="#0b1215">
+{else}
+<meta name="theme-color" content="#ffffff">
+{/if}

@@ -110,7 +110,8 @@
        and lives solely in this file.
 
          name      [a-z0-9_], becomes the config_key and the Smarty key
-         type      bool | select | text   (anything else is treated as text)
+         type      bool | select | text | color | size   (anything else is treated as text)
+                   color is #rrggbb; size is a px or % length, a bare number meaning px
          default   used until the merchant saves; for bool: 1/true/yes/on
          label     shown in admin; falls back to the name, title-cased
          options   select only, and a select with none of them is skipped
@@ -154,13 +155,38 @@
 		<option value="vertical"><![CDATA[Vertical rail]]></option>
 	  </options>
 	</setting>
-	<setting name="image_fit" type="select" default="cover">
+	<setting name="image_fit" type="select" default="contain">
 	  <label><![CDATA[Image Fit]]></label>
-	  <description><![CDATA[How catalogue images fill the square tiles in listings. Crop trims anything that will not fit. Fit shows the whole image with blank space around it. The main product page image is always shown whole.]]></description>
+	  <description><![CDATA[How catalogue images fill the square tiles in listings. Fit shows the whole image with blank space around it. Crop trims anything that will not fit. The main product page image is always shown whole.]]></description>
 	  <options>
-		<option value="cover"><![CDATA[Crop to fill the tile (Recommended)]]></option>
-		<option value="contain"><![CDATA[Fit the whole image]]></option>
+		<option value="contain"><![CDATA[Fit the whole image (Recommended)]]></option>
+		<option value="cover"><![CDATA[Crop to fill the tile]]></option>
 	  </options>
+	</setting>
+	<setting name="category_image_width" type="size" default="">
+	  <label><![CDATA[Category Image Width]]></label>
+	  <description><![CDATA[How wide the image at the top of a category page can be. Leave empty to stretch it across the page, or enter a maximum such as 120px or 50% to show it at its own size up to that width.]]></description>
+	</setting>
+	<setting name="products_per_row" type="select" default="4">
+	  <label><![CDATA[Products Per Row]]></label>
+	  <description><![CDATA[How many products sit side by side in category, search and home page listings on a wide screen. Phones always show two.]]></description>
+	  <options>
+		<option value="3"><![CDATA[3]]></option>
+		<option value="4"><![CDATA[4 (Default)]]></option>
+		<option value="5"><![CDATA[5]]></option>
+	  </options>
+	</setting>
+	<setting name="category_description_position" type="select" default="above">
+	  <label><![CDATA[Category Description]]></label>
+	  <description><![CDATA[Where a category's description appears. Below suits long descriptions written for search engines, so customers see the products first.]]></description>
+	  <options>
+		<option value="above"><![CDATA[Above the products (Default)]]></option>
+		<option value="below"><![CDATA[Below the products]]></option>
+	  </options>
+	</setting>
+	<setting name="show_subcategory_images" type="bool" default="true">
+	  <label><![CDATA[Show Subcategory Images]]></label>
+	  <description><![CDATA[Show an image on each subcategory tile at the top of a category page. Turn it off to show the names only, which suits categories without images of their own.]]></description>
 	</setting>
 	<setting name="logo_height" type="select" default="2.5">
 	  <label><![CDATA[Logo Size]]></label>
@@ -187,6 +213,15 @@
 	<setting name="footer_colour" type="color" default="">
 	  <label><![CDATA[Footer Colour]]></label>
 	  <description><![CDATA[Repaints the footer band on its own. Leave empty to keep the near-black default, whatever the header is set to.]]></description>
+	</setting>
+	<setting name="colour_scheme" type="select" default="light">
+	  <label><![CDATA[Colour Scheme]]></label>
+	  <description><![CDATA[Light or dark storefront, or follow each visitor's browser, which normally follows their device's light or dark mode. In dark mode your logo sits on a white backing so a dark logo stays visible, and product images keep their white backgrounds.]]></description>
+	  <options>
+		<option value="light"><![CDATA[Light (Default)]]></option>
+		<option value="dark"><![CDATA[Dark]]></option>
+		<option value="auto"><![CDATA[Follow browser]]></option>
+	  </options>
 	</setting>
 	<setting name="show_quick_view" type="bool" default="true">
 	  <label><![CDATA[Show Quick View]]></label>
@@ -285,7 +320,6 @@
        Cached under skin.atrium.custom — clear the cache after editing. -->
   <custom>
 	<recaptcha_badge_position>bottomright</recaptcha_badge_position><!-- bottomright | bottomleft | inline -->
-	<colour_scheme>light</colour_scheme><!-- light | auto -->
 	<container_width>screen-2xl</container_width>
   </custom>
 </skin>

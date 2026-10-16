@@ -64,8 +64,8 @@ drawer. Same markup either way; `main.php` renders `.cc-navbar` or `.cc-navrail`
 and switches the content wrapper to `.cc-layout-rail`, a grid that puts the
 sidebar boxes under the content at `lg` and beside it at `xl`.
 
-**Image Fit.** Crop to fill the square tile (default), or fit the whole image
-inside it. Applies to every square catalogue thumbnail: listings, the featured
+**Image Fit.** Fit the whole image inside the square tile (default), or crop
+it to fill the tile. Applies to every square catalogue thumbnail: listings, the featured
 box, search results, basket lines and the gallery strip. The main product image
 is always fitted whole whatever this is set to, and `.cc-media` gives the blank
 space a white backing. Each template that uses it includes
@@ -79,6 +79,29 @@ row grows to `max(4rem, logo + 0.5rem)`, so 5.5rem at the top setting.
 by the `logo` and `header` spacing tokens in `theme.css`. The row is `h-header`
 and the drawer is `top-header`, so both follow the one variable. It renders
 nothing at the default, and only emits one of the listed values.
+
+**Category Image Width.** Empty (default) stretches the category page image
+across the page with `w-full`. A value such as `120px` or `50%` drops `w-full`
+for an inline `max-width`, so the image shows at its own size up to that limit.
+It is a `size` setting, validated by `GUI::cssSize()` on save and when read.
+
+**Products Per Row.** 3, 4 (default) or 5 products across category, search and
+home page listings at `xl`; phones always get two. `element.product_grid.php`
+resolves it into `$cc_grid_cols` and `$cc_grid_row`, the first-row count that
+must not be lazy loaded.
+
+**Category Description.** Above the subcategories and products (default), or
+below the products, for long descriptions written for search engines.
+
+**Show Subcategory Images.** On by default. Off turns the subcategory tiles into
+bordered name-only links, for categories that have no images of their own.
+
+**Colour Scheme.** Light (default), Dark, or Follow browser. Dark stamps
+`data-theme="dark"` on `<html>` in `main.php`, `main.checkout.php` and
+`main.stream.php`; Follow browser sets it from `prefers-color-scheme` in
+`element.colour_scheme.php` before first paint, and keeps following it if the
+device switches. In dark mode `.cc-logo` gets a white plate so dark logos stay
+visible.
 
 **Rewards and flourishes.** Applying a valid discount code fires a short burst
 of confetti out of the discount line (see `js/src/41-coupon.js` for why that has
@@ -142,7 +165,8 @@ performance-safe way to change the type, and it beats the Font setting.
 
 ### `<custom>` in `config.xml` (developer-only, no admin UI)
 
-`colour_scheme` (`light` | `auto`), `container_width`, `recaptcha_badge_position`.
+`container_width`, `recaptcha_badge_position`. Dark mode moved to the Colour
+Scheme setting.
 Flattened into `$SKIN_CUSTOM[<name>]`, one level deep, cached under
 `skin.atrium.custom` — clear the cache after editing.
 

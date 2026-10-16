@@ -41,6 +41,8 @@
                   empty state and would silently post #000000. *}
                <input type="color" class="skin-colour-picker" data-target="skin_setting_{$field.name}" value="{if $field.value}{$field.value}{else}#000000{/if}">
                <input type="text" name="skin_settings[{$field.name}]" id="skin_setting_{$field.name}" class="textbox skin-colour-hex" maxlength="7" placeholder="#rrggbb" value="{$field.value}">
+            {elseif $field.type == 'size'}
+               <input type="text" name="skin_settings[{$field.name}]" id="skin_setting_{$field.name}" class="textbox" maxlength="10" placeholder="120px / 50%" value="{$field.value}">
             {else}
                <input type="text" name="skin_settings[{$field.name}]" id="skin_setting_{$field.name}" class="textbox" value="{$field.value}">
             {/if}

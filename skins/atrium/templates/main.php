@@ -27,17 +27,14 @@
    content wrapper. Defaulted, for a store that never saved the settings. *}
 {assign var='cc_menu_vertical' value=(($SKIN_SETTINGS.main_menu_layout|default:'horizontal') == 'vertical')}
 <!DOCTYPE html>
-<html dir="{$TEXT_DIRECTION}" lang="{$HTML_LANG}"{if $SKIN_CUSTOM.colour_scheme == 'dark'} data-theme="dark"{/if}>
+<html dir="{$TEXT_DIRECTION}" lang="{$HTML_LANG}"{if ($SKIN_SETTINGS.colour_scheme|default:'light') == 'dark'} data-theme="dark"{/if}>
    <head>
       <title>{$META_TITLE}</title>
       {include file='templates/element.meta.php'}
       <link href="{$CANONICAL}" rel="canonical">
       <link href="{$ROOT_PATH}favicon.ico" rel="shortcut icon" type="image/x-icon">
       {include file='templates/element.css.php'}
-      {if $SKIN_CUSTOM.colour_scheme == 'auto'}
-      {* Must stay inline and ahead of first paint, or the wrong theme flashes. *}
-      <script>{literal}(function(){try{if(matchMedia('(prefers-color-scheme: dark)').matches){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();{/literal}</script>
-      {/if}
+      {include file='templates/element.colour_scheme.php'}
       {include file='templates/element.js_head.php'}
       {* ⚠ Invisible reCAPTCHA (mode 3) bootstrap. Every layout that can contain
          a protected form needs it, or those forms silently produce no captcha
@@ -93,7 +90,7 @@
                shrink and push the header past the viewport. The img needs it
                too, or it overflows the shrunken link onto the search button. *}
             <a href="{$ROOT_PATH}" class="flex min-w-0 items-center">
-               <img src="{$STORE_LOGO}" alt="{$CONFIG.store_name}" class="max-h-logo w-auto min-w-0 max-w-[50vw] object-contain sm:max-w-none">
+               <img src="{$STORE_LOGO}" alt="{$CONFIG.store_name}" class="cc-logo max-h-logo w-auto min-w-0 max-w-[50vw] object-contain sm:max-w-none">
             </a>
 
             <div class="ms-auto hidden w-full max-w-md lg:block">

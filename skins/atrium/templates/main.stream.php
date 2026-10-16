@@ -14,13 +14,14 @@
  *   $STREAM_HOOK plugin-supplied; never set by core, so it renders empty.
  *}
 <!DOCTYPE html>
-<html dir="{$TEXT_DIRECTION}" lang="{$HTML_LANG}"{if $SKIN_CUSTOM.colour_scheme == 'dark'} data-theme="dark"{/if}>
+<html dir="{$TEXT_DIRECTION}" lang="{$HTML_LANG}"{if ($SKIN_SETTINGS.colour_scheme|default:'light') == 'dark'} data-theme="dark"{/if}>
    <head>
       <title>{$META_TITLE}</title>
       {include file='templates/element.meta.php'}
       <link href="{$CANONICAL}" rel="canonical">
       <link href="{$ROOT_PATH}favicon.ico" rel="shortcut icon" type="image/x-icon">
       {include file='templates/element.css.php'}
+      {include file='templates/element.colour_scheme.php'}
       {include file='templates/element.js_head.php'}
    </head>
    <body class="min-h-screen bg-ink-50 text-ink-800 antialiased">

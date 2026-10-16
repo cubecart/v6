@@ -705,7 +705,7 @@ class GUI
             }
 
             $type = strtolower((string)$node['type']);
-            if (!in_array($type, array('bool', 'select', 'text', 'color'), true)) {
+            if (!in_array($type, array('bool', 'select', 'text', 'color', 'size'), true)) {
                 $type = 'text';
             }
 
@@ -797,7 +797,38 @@ class GUI
             $settings[$name.'_fg'] = self::readableTextOn($settings[$name]);
         }
 
+        // Sizes go into a style attribute, so re-validate these on the way out too.
+        foreach ($schema as $name => $definition) {
+            if ($definition['type'] === 'size') {
+                $settings[$name] = self::cssSize($settings[$name]);
+            }
+        }
+
         return $settings;
+    }
+
+    /**
+     * Normalise a skin setting length to "120px" or "50%"
+     *
+     * A bare number is taken as pixels and percentages are capped at 100.
+     * Anything else returns empty, which callers treat as "not set".
+     *
+     * @param string $value
+     * @return string
+     */
+    public static function cssSize($value)
+    {
+        $value = strtolower(str_replace(' ', '', trim((string)$value)));
+        if (preg_match('/^\d{1,4}(\.\d{1,2})?$/', $value)) {
+            $value .= 'px';
+        }
+        if (!preg_match('/^(\d{1,4}(?:\.\d{1,2})?)(px|%)$/', $value, $match) || (float)$match[1] <= 0) {
+            return '';
+        }
+        if ($match[2] === '%' && (float)$match[1] > 100) {
+            return '100%';
+        }
+        return ((float)$match[1] + 0).$match[2];
     }
 
     /**

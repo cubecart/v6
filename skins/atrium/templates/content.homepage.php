@@ -13,6 +13,7 @@
  * add one by hand.
  *}
 {include file='templates/element.media_fit.php'}
+{include file='templates/element.product_grid.php'}
 {if isset($DOCUMENT)}
 {* ccHero drives the .cc-hero scroller that arrives INSIDE $DOCUMENT.content
    (installer-seeded markup, so controls cannot be templated into it). The
@@ -68,7 +69,7 @@
       {/if}
    </div>
 
-   <ul role="list" class="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-3 xl:grid-cols-4">
+   <ul role="list" class="grid {$cc_grid_cols} gap-x-6 gap-y-10">
       {foreach from=$section.products item=product name=products}
       <li class="group flex flex-col">
          <form action="{$VAL_SELF}" method="post" class="add_to_basket flex h-full flex-col">
@@ -80,10 +81,10 @@
                        {if isset($product.image_tags.title)}title="{$product.image_tags.title}"{/if}
                        {* Above the fold: the first row must not be lazy. Chrome
                           deprioritises lazy images, so lazily loading the LCP
-                          element delays it measurably. Four is the widest grid
-                          (xl:grid-cols-4); the first is also the LCP candidate
-                          on a store with no hero banner. *}
-                       {if $smarty.foreach.products.iteration <= 4}{if $smarty.foreach.products.first}fetchpriority="high"{/if}{else}loading="lazy"{/if}
+                          element delays it measurably. $cc_grid_row is the widest
+                          row (element.product_grid.php); the first is also the LCP
+                          candidate on a store with no hero banner. *}
+                       {if $smarty.foreach.products.iteration <= $cc_grid_row}{if $smarty.foreach.products.first}fetchpriority="high"{/if}{else}loading="lazy"{/if}
                        class="aspect-square w-full {$cc_media_fit} transition-transform duration-300 group-hover:scale-105">
                </a>
                {* Quick view lives ON the image: revealed on hover, and on

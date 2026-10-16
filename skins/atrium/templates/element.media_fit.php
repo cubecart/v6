@@ -11,8 +11,8 @@
  * Both class names are spelled out literally: the CSS build scans the templates
  * and would drop whichever one no template mentions.
  *}
-{if ($SKIN_SETTINGS.image_fit|default:'cover') == 'contain'}
-{assign var='cc_media_fit' value='object-contain' scope='global'}
-{else}
+{if ($SKIN_SETTINGS.image_fit|default:'contain') == 'cover'}
 {assign var='cc_media_fit' value='object-cover' scope='global'}
+{else}
+{assign var='cc_media_fit' value='object-contain' scope='global'}
 {/if}

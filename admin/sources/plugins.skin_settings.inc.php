@@ -69,15 +69,22 @@ if (isset($_POST['skin_settings']) && Admin::getInstance()->permissions('mainten
                 }
                 $save[$name] = strtolower($value);
                 break;
+            case 'size':
+                // Empty means "not set". Anything else must be a px or % length:
+                // this value is written into a style attribute on the storefront.
+                $value = isset($posted[$name]) ? trim((string)$posted[$name]) : '';
+                $size  = GUI::cssSize($value);
+                $save[$name] = ($value === '' || $size !== '') ? $size : GUI::cssSize($definition['default']);
+                break;
             default:
                 $save[$name] = isset($posted[$name]) ? (string)$posted[$name] : '';
         }
     }
 
     $GLOBALS['config']->set('skin_'.$skin, '', $save, true);
-    // _setSkin() serves SKIN_SETTINGS from here, so the storefront would keep
-    // showing the old values until this key goes.
-    $GLOBALS['cache']->delete('skin.'.$skin.'.settings');
+    // A full clear: skin.<folder>.settings is rebuilt from a cached config query,
+    // so deleting that key alone kept serving the old values.
+    $GLOBALS['cache']->clear();
 
     $GLOBALS['main']->successMessage($lang['settings']['notify_settings_update']);
     httpredir('?_g=plugins&node=skin_settings&skin='.$skin);
