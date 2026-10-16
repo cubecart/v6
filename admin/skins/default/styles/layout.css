@@ -2818,6 +2818,8 @@ textarea#query {
     color: #b5cc6a !important;
   }
   :root {
+    /* Native controls (select lists, checkboxes, scrollbars) follow this. */
+    color-scheme: dark;
     --bg: #0f1214;
     --panel: #171b1f;
     --panel-subtle: #15191d;
@@ -2933,7 +2935,7 @@ textarea#query {
   /* inputs */
   .textbox,
   textarea.textbox,
-  select.textbox,
+  select,
   input.textbox {
     background-color: var(--input-bg) !important;
     border: 1px solid var(--input-border) !important;
@@ -2942,8 +2944,24 @@ textarea#query {
   .textbox:focus,
   .textbox:hover,
   textarea.textbox:focus,
-  textarea.textbox:hover {
+  textarea.textbox:hover,
+  select:focus,
+  select:hover {
     background-color: var(--input-bg-focus) !important;
+  }
+  select option {
+    background-color: var(--input-bg);
+    color: var(--text);
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text-muted) !important;
+    opacity: 1;
+  }
+  /* The checkbox sprites are light images; invert them so they are not white blocks. */
+  .custom-checkbox,
+  img.checkbox {
+    filter: invert(0.88);
   }
   input.textbox[disabled],
   .phrases input.textbox[disabled] {
