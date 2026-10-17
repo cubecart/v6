@@ -183,7 +183,7 @@ class Cache extends Cache_Controler
                 unlink($file);
                 return false;
             }
-            $this->_dupes[$id] = ($serialized) ? unserialize($data) : $data;
+            $this->_dupes[$id] = ($serialized) ? unserialize($data, ['allowed_classes' => false]) : $data;
             return $this->_dupes[$id];
         }
 
