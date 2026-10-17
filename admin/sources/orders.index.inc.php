@@ -415,7 +415,7 @@ if (isset($_GET['action'])) {
                     $product['line_formatted'] = Tax::getInstance()->priceFormat($product['price']);
                     $product['price_total_formatted'] = Tax::getInstance()->priceFormat($price_total);
 
-                    $product['options'] = Catalogue::getInstance()->displayProductOptions($product['product_id'], unserialize((string)$product['options_array']));
+                    $product['options'] = Catalogue::getInstance()->displayProductOptions($product['product_id'], unserialize((string)$product['options_array'], ['allowed_classes' => false]));
 
                     $options_array = $order->unSerializeOptions($product['product_options']);
                     $product['options_array'] = $options_array;
@@ -424,7 +424,7 @@ if (isset($_GET['action'])) {
                     $custom_data = array();
                     
                     if (!empty($product['custom'])) {
-                        if ($custom_data = unserialize($product['custom'])) {
+                        if ($custom_data = unserialize($product['custom'], ['allowed_classes' => false])) {
                             if (is_array($custom_data)) {
                                 foreach ($custom_data as $key => $value) {
                                     if ($key == 'method') {
@@ -572,7 +572,7 @@ if (isset($_GET['action'])) {
                 $GLOBALS['main']->addTabControl($lang['orders']['title_card_details'], 'credit_card');
                 $decrypt = Encryption::getInstance();
                 $decrypt->setup(false, $summary[0]['cart_order_id']);
-                $card = unserialize((string)$decrypt->decrypt(stripslashes($summary[0]['offline_capture'])));
+                $card = unserialize((string)$decrypt->decrypt(stripslashes($summary[0]['offline_capture'])), ['allowed_classes' => false]);
 
                 $card = (!empty($card)) ? $card : array('card_type' => '', 'card_number' => '', 'card_expire' => '', 'card_valid' => '', 'card_issue' => '', 'card_cvv' => '');
                 foreach ($card as $key => $value) {
