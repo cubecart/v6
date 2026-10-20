@@ -82,9 +82,10 @@ if (Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
             if($GLOBALS['seo']->setdbPath($_POST['type'], (int)$_POST['item_id'], $_POST['path'], true, false, $_POST['redirect'])) {
                 $GLOBALS['main']->successMessage($lang['notification']['notify_success_add_redirect']);
                 // Mark every matching 404 entry as resolved (was: only the first).
-                $GLOBALS['db']->update('CubeCart_404_log', array('done' => 1, 'warn' => 0), array('uri' => $_POST['path']));
+                // String WHEREs: an array value starting with - or ~ is read as an operator (#4315)
+                $GLOBALS['db']->update('CubeCart_404_log', array('done' => 1, 'warn' => 0), "`uri` = '".$GLOBALS['db']->sqlSafe($_POST['path'])."'");
             } else {
-                $existing = $GLOBALS['db']->select('CubeCart_seo_urls', false, array('path' => $_POST['path']));
+                $existing = $GLOBALS['db']->select('CubeCart_seo_urls', false, "`path` = '".$GLOBALS['db']->sqlSafe($_POST['path'])."'");
                 $a = '';
                 switch($existing[0]['type']) {
                     case 'prod':
