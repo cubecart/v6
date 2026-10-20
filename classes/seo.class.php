@@ -545,7 +545,7 @@ class SEO
         }
 
         if (!empty($path)) {
-            if (($item = $GLOBALS['db']->select('CubeCart_seo_urls', false, array('path' => $path), false, 1, false, false)) !== false) {
+            if (($item = $GLOBALS['db']->select('CubeCart_seo_urls', false, $this->_pathWhere($path), false, 1, false, false)) !== false) {
                 if(in_array($item[0]['redirect'],array('301','302'))) {
                     $GLOBALS['db']->query(sprintf("UPDATE `%sCubeCart_seo_urls` SET `hit_count` = `hit_count` + 1, `last_hit` = NOW() WHERE `id` = %d", $GLOBALS['config']->get('config', 'dbprefix'), (int)$item[0]['id']));
                     httpredir($GLOBALS['storeURL'].'/'.$this->getdbPath($item[0]['type'], $item[0]['item_id']), '', false, (int)$item[0]['redirect']);
@@ -1009,7 +1009,7 @@ class SEO
                 }
             } else {
                 // Check for duplicate path
-                if (!$GLOBALS['db']->select('CubeCart_seo_urls', false, array('path' => $path), false, 1, false, false)) {
+                if (!$GLOBALS['db']->select('CubeCart_seo_urls', false, $this->_pathWhere($path), false, 1, false, false)) {
                     $GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $this->_handleExtension($path), 'custom' => $custom));
                     if(empty($this->_extension) && in_array($type, $this->_static_sections)) { // Backward compatibility 
                         $GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $this->_handleExtension($path).'.html', 'redirect' => 301));
@@ -1559,6 +1559,17 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
     private function _handleExtension($path, $uid = '') {
         $extension = preg_match('/\.html$/', $path) ?  '.html' : $this->_extension;
         return $path = str_replace('.html', '', $path).$uid.$extension;
+    }
+
+    /**
+     * Exact-match WHERE for a path, as a string because where() reads a leading - + < > ! ~ as an operator
+     *
+     * @param string $path
+     * @return string
+     */
+    private function _pathWhere($path)
+    {
+        return "`path` = '".$GLOBALS['db']->sqlSafe($path)."'";
     }
 
     /**
