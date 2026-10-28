@@ -270,8 +270,9 @@
       <div class="small-12 large-8 columns"><label for="reg_passconf" class="show-for-medium-up">{$LANG.user.password_confirm}</label><input type="password" maxlength="64" autocomplete="off" name="passconf" id="reg_passconf"  required  placeholder="{$LANG.user.password_confirm} {$LANG.form.required}" autocomplete="new-password"></div>
    </div>
 </div>
-{include file='templates/content.recaptcha.php' ga_fid='checkout'}
 </div>
+{* Outside #checkout_register_form, which is hidden once an address is known. *}
+{include file='templates/content.recaptcha.php' ga_fid='checkout'}
 {/if}
 <label for="delivery_comments" class="return"><strong>{$LANG.basket.your_comments}</strong></label>
 <textarea name="comments" id="delivery_comments">{$VAL_CUSTOMER_COMMENTS}</textarea>

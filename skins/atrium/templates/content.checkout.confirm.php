@@ -442,9 +442,9 @@
       </div>
    </div>
    {/if}
-
-   {include file='templates/content.recaptcha.php' ga_fid='checkout'}
 </div>
+{* Outside #checkout_register_form, which is hidden once an address is known. *}
+<div class="mt-6">{include file='templates/content.recaptcha.php' ga_fid='checkout'}</div>
 {/if}
 
 {* "Show Delivery Notes or Additional Comments" — a merchant setting

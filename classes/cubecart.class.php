@@ -1410,7 +1410,10 @@ class Cubecart
                     $GLOBALS['session']->set('checkout_solved', time(), 'captcha');
                 } elseif (isset($_POST['proceed']) && ($details_changed || $solved < time() - 1800)) {
                     $GLOBALS['session']->delete('checkout_solved', 'captcha');
-                    if (($message = $GLOBALS['session']->get('error', 'recaptcha')) === false) {
+                    if (empty($_POST['g-recaptcha-response']) && empty($_POST['h-captcha-response']) && empty($_POST['cf-turnstile-response'])) {
+                        // No token sent: a new solve is due, nothing failed.
+                        $GLOBALS['gui']->setNotify($GLOBALS['language']->form['verify_human_required']);
+                    } elseif (($message = $GLOBALS['session']->get('error', 'recaptcha')) === false) {
                         //If the error message from recaptcha fails for some reason:
                         $error_messages[] = $GLOBALS['language']->form['verify_human_fail'];
                     } else {
