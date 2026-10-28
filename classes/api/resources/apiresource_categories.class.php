@@ -99,6 +99,7 @@ class ApiResource_Categories extends ApiResource
         $this->_validateRequired($data, array('cat_name'));
 
         $record = $this->_filterFields($data, $this->_writableFields);
+        $record = $this->_richText($record, array('cat_desc'));
         if (!isset($record['cat_parent_id'])) {
             $record['cat_parent_id'] = 0;
         }
@@ -133,6 +134,7 @@ class ApiResource_Categories extends ApiResource
 
         $data   = $this->_getRequestBody();
         $record = $this->_filterFields($data, $this->_writableFields);
+        $record = $this->_richText($record, array('cat_desc'));
         if (empty($record)) {
             ApiResponse::error('No valid fields to update', 'BAD_REQUEST', 400);
         }

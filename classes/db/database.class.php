@@ -1240,7 +1240,7 @@ class Database_Contoller
         // Session singleton can still be mid-construction when its own DELETE
         // statements run (Session::__construct → Session::_start → delete).
         // PHP 8.1 warns on an unset $GLOBALS key, so isset-guard first.
-        if (CC_IN_ADMIN && $purge && $affected
+        if (CC_IN_ADMIN && $purge && $affected && isset($GLOBALS['main'])
             && isset($GLOBALS['session']) && is_object($GLOBALS['session']) && method_exists($GLOBALS['session'], 'set')
             && !$GLOBALS['session']->has('CLEAR_CACHE')
             && (int)$GLOBALS['session']->get('logins','admin_data') <= 3

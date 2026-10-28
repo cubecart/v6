@@ -175,6 +175,7 @@ class ApiResource_Products extends ApiResource
         $this->_validateRequired($data, array('name', 'price'));
 
         $record = $this->_filterFields($data, $this->_writableFields);
+        $record = $this->_richText($record, array('description', 'description_short', 'spec_copy'));
         $record['date_added'] = time();
         $record['updated']    = time();
 
@@ -224,6 +225,7 @@ class ApiResource_Products extends ApiResource
 
         $data   = $this->_getRequestBody();
         $record = $this->_filterFields($data, $this->_writableFields);
+        $record = $this->_richText($record, array('description', 'description_short', 'spec_copy'));
         if (empty($record)) {
             ApiResponse::error('No valid fields to update', 'BAD_REQUEST', 400);
         }

@@ -19,6 +19,8 @@ abstract class ApiResource
     protected $_auth;
     protected $_db;
     protected $_resourceName = '';
+    // Uncleaned request body, for rich-text fields only (see _richText()).
+    protected $_rawBody = array();
 
     /**
      * Maximum items per page
@@ -182,7 +184,25 @@ abstract class ApiResource
         if ($data === null && json_last_error() !== JSON_ERROR_NONE) {
             ApiResponse::error('Invalid JSON in request body: ' . json_last_error_msg(), 'INVALID_JSON', 400);
         }
-        return is_array($data) ? $data : array();
+        $this->_rawBody = is_array($data) ? $data : array();
+        // php://input skips Sanitize::cleanGlobals(), so clean it the same way form posts are.
+        return Sanitize::cleanStrings($this->_rawBody);
+    }
+
+    /**
+     * Take rich-text fields from the raw body through htmlClean(), as the admin forms do
+     * @param array $record Filtered record
+     * @param array $fields Rich-text field names
+     * @return array Record with those fields sanitized
+     */
+    protected function _richText($record, $fields)
+    {
+        foreach ($fields as $field) {
+            if (array_key_exists($field, $record) && is_string($this->_rawBody[$field] ?? null)) {
+                $record[$field] = Sanitize::htmlClean($this->_rawBody[$field]);
+            }
+        }
+        return $record;
     }
 
     /**

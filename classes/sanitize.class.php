@@ -345,6 +345,24 @@ class Sanitize
         self::_clean($_REQUEST);
     }
 
+    /**
+     * Clean the string values of an array the way cleanGlobals() cleans request data.
+     *
+     * @param array $data
+     * @return array
+     */
+    public static function cleanStrings($data)
+    {
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $data[$key] = self::cleanStrings($value);
+            } elseif (is_string($value) && $value !== '') {
+                $data[$key] = self::_safety($value);
+            }
+        }
+        return $data;
+    }
+
     //=====[ Private ]=======================================
 
     /**
