@@ -3597,8 +3597,11 @@ class Cubecart
                 }
             } else {
                 if (isset($_GET['cancel']) && Order::validOrderId(trim($_GET['cancel']))) {
+                    // Only the customer's own pending, unpaid order: the same rule that shows the cancel link.
+                    $cancel = $GLOBALS['db']->select('CubeCart_order_summary', array('status'), array('cart_order_id' => $_GET['cancel'], 'customer_id' => $GLOBALS['user']->get('customer_id')), false, 1, false, false);
+                    $paid = $GLOBALS['db']->select('CubeCart_transactions', array('id'), array('order_id' => $_GET['cancel']), false, 1, false, false);
                     $order = Order::getInstance();
-                    if ($order->orderStatus(Order::ORDER_CANCELLED, $_GET['cancel'])) {
+                    if ($cancel && (int)$cancel[0]['status'] === Order::ORDER_PENDING && !$paid && $order->orderStatus(Order::ORDER_CANCELLED, $_GET['cancel'])) {
                         // Specify order was cancelled by customer
                         $note	= array(
                             'admin_id'		=> 0,
