@@ -1039,7 +1039,7 @@ class GUI
                 } else {
                     $data = array(
                         'secret' => $GLOBALS['config']->get('config', 'recaptcha_secret_key'),
-                        'response' => $_POST['g-recaptcha-response']
+                        'response' => $_POST['h-captcha-response']
                     );
                     $request = new Request('hcaptcha.com', '/siteverify');
                     $request->setMethod('get');
