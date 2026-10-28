@@ -263,7 +263,7 @@
         gateway: { required: msg.gateway },
         shipping: { required: msg.shipping }
       },
-      submitHandler: function (form) { form.submit(); }
+      submitHandler: function (form) { if (checkout_submit_once(form)) form.submit(); }
     });
 
     // Checkout dynamic rules for register/login toggle

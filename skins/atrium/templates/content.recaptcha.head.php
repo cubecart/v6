@@ -34,7 +34,8 @@ var reCaptchaCallback = function () {
          'callback': function () {
             var formId = el.getAttribute('data-form-id');
             var form = formId ? document.getElementById(formId) : el.closest('form');
-            if (form) form.submit();
+            // form.submit() fires no submit event, so claim the checkout here (#4316).
+            if (form && (!window.ccClaimSubmit || window.ccClaimSubmit(form))) form.submit();
          }
       });
       } catch (e) {

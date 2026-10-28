@@ -36,6 +36,7 @@
     transition: background-color 120ms, color 120ms, border-color 120ms;
   }
   .cc-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+  .cc-btn[aria-disabled="true"] { opacity: 0.55; cursor: progress; }
 
   .cc-btn-primary {
     background-color: var(--color-brand-600);

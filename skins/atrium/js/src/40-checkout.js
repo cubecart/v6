@@ -408,3 +408,63 @@ document.addEventListener('DOMContentLoaded', function () {
     // and needs the manual fields regardless of what the lookup did.
     if (document.querySelector('.cc-alert-error')) window.ccRevealAddressForm();
 });
+
+/* ---- One checkout submission at a time (#4316) ----------------------------
+ * ⚠ Buttons are never disabled: a disabled button posts no name, and core needs name="proceed".
+ * ------------------------------------------------------------------------- */
+(function () {
+    var HOLD_MS = 30000;   // a stalled gateway must not strand the page
+    var timer = null;
+
+    function isSubmit(el) { return el.type === 'submit' || el.type === 'image'; }
+
+    function inFlight(form) {
+        return !!form && form.id === 'checkout_form' && form.getAttribute('aria-busy') === 'true';
+    }
+
+    function release() {
+        clearTimeout(timer);
+        var form = document.getElementById('checkout_form');
+        if (!form) return;
+        form.removeAttribute('aria-busy');
+        form.querySelectorAll('[data-cc-sent]').forEach(function (b) {
+            b.removeAttribute('data-cc-sent');
+            b.removeAttribute('aria-disabled');
+        });
+    }
+
+    /** False while an earlier checkout submission is still in flight. */
+    window.ccClaimSubmit = function (form) {
+        if (!form || form.id !== 'checkout_form') return true;
+        if (inFlight(form)) return false;
+        form.setAttribute('aria-busy', 'true');
+        form.querySelectorAll('button, input[type="submit"], input[type="image"]').forEach(function (b) {
+            if (!isSubmit(b) || b.hasAttribute('aria-disabled')) return;
+            b.setAttribute('aria-disabled', 'true');
+            b.setAttribute('data-cc-sent', '1');
+        });
+        timer = setTimeout(release, HOLD_MS);
+        return true;
+    };
+
+    // Capture on document runs before the validator and grecaptcha see the press.
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest('button, input[type="submit"], input[type="image"]');
+        if (!btn || !isSubmit(btn) || !inFlight(btn.form)) return;
+        e.preventDefault();
+        e.stopPropagation();
+    }, true);
+
+    document.addEventListener('submit', function (e) {
+        if (!inFlight(e.target)) return;
+        e.preventDefault();
+        e.stopPropagation();
+    }, true);
+
+    // Window bubble runs last, so a submit that validation cancelled is not claimed.
+    window.addEventListener('submit', function (e) {
+        if (!e.defaultPrevented) window.ccClaimSubmit(e.target);
+    });
+
+    window.addEventListener('pageshow', function (e) { if (e.persisted) release(); });
+})();

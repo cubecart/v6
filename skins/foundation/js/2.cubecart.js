@@ -226,6 +226,12 @@ jQuery(document).ready(function ($) {
     $('#checkout_proceed').on('click', function () {
         $('<input>', { type: 'hidden', name: 'proceed', value: '1' }).appendTo('form#checkout_form');
     });
+    $(window).on('pageshow', function (e) { if (e.originalEvent.persisted) checkout_submit_release(); });
+    // Capture phase, so a second press never reaches grecaptcha either.
+    document.addEventListener('click', function (e) {
+        var btn = $(e.target).closest(':submit')[0];
+        if (btn && $(btn.form).data('sent')) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
 
     // -------------------------------
     // Country/State dependent menus (initialise + change)
@@ -743,6 +749,22 @@ function checkout_form_toggle(register) {
         $("#checkout_login_btn").prop('disabled', false);
         $('#checkout_form').removeAttr("action").attr("action", '#login');
     }
+}
+
+// #4316: one checkout submission at a time. Buttons stay enabled so name="proceed" still posts.
+var checkout_submit_timer = null;
+function checkout_submit_once(form) {
+    if ($(form).data('sent')) return false;
+    $(form).data('sent', true).attr('aria-busy', 'true')
+        .find(':submit').not('.disabled').addClass('disabled checkout-sent').attr('aria-disabled', 'true');
+    checkout_submit_timer = setTimeout(checkout_submit_release, 30000);
+    return true;
+}
+
+function checkout_submit_release() {
+    clearTimeout(checkout_submit_timer);
+    $('#checkout_form').removeData('sent').removeAttr('aria-busy')
+        .find('.checkout-sent').removeClass('disabled checkout-sent').removeAttr('aria-disabled');
 }
 
 function set_product_view(delay) {
