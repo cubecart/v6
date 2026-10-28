@@ -23,7 +23,7 @@ if (isset($_GET['order_id']) && !preg_match(Order::TRADITIONAL_ORDER_FORMAT, $_G
     }
 }
 
-if (isset($_POST['month_purge']) && ctype_digit($_POST['month_purge'])) {
+if (isset($_POST['month_purge']) && ctype_digit($_POST['month_purge']) && Admin::getInstance()->permissions('orders', CC_PERM_DELETE)) {
     if ($purge_oids = $GLOBALS['db']->select('CubeCart_order_summary', "cart_order_id", "`order_date` < ".strtotime("-".(string)$_POST['month_purge']." month"))) {
         foreach ($purge_oids as $purge_oid) {
             $_POST['multi-order'][] = $purge_oid['cart_order_id'];
@@ -831,6 +831,13 @@ if (isset($_GET['action'])) {
 
         $updated = $deleted = $pinned = $unpinned = false;
         $add_array = array();
+        // Bulk actions need the same rights as their single-order equivalents.
+        if (($_POST['multi-action'] ?? '') == 'delete' && !Admin::getInstance()->permissions('orders', CC_PERM_DELETE)) {
+            $_POST['multi-action'] = '';
+        }
+        if (!empty($_POST['multi-status']) && !Admin::getInstance()->permissions('orders', CC_PERM_EDIT)) {
+            $_POST['multi-status'] = '';
+        }
 
         foreach ($_POST['multi-order'] as $order_id) {
             // If multi action variable is numeric we need to update the order status
