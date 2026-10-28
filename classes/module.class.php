@@ -398,7 +398,7 @@ class Module
 		$GLOBALS['smarty']->assign('ALL_COUNTRIES', $all_countries);
 
 		// Enabled zones
-		$enabled = (!empty($this->_settings['countries'])) ? unserialize($this->_settings['countries']) : array();
+		$enabled = (!empty($this->_settings['countries'])) ? unserialize($this->_settings['countries'], ['allowed_classes' => false]) : array();
 		$enabled_countries = array();
 		if (is_array($enabled)) {
 			sort($enabled);
@@ -416,7 +416,7 @@ class Module
 		$zone_tabs = $GLOBALS['smarty']->fetch('templates/modules.zones.php');
 
 		// Disabled zones
-		$disabled = (!empty($this->_settings['disabled_countries'])) ? unserialize($this->_settings['disabled_countries']) : array();
+		$disabled = (!empty($this->_settings['disabled_countries'])) ? unserialize($this->_settings['disabled_countries'], ['allowed_classes' => false]) : array();
 		$disabled_countries = array();
 		if (is_array($disabled)) {
 			sort($disabled);

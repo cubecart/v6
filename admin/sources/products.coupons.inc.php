@@ -179,7 +179,7 @@ if (isset($_GET['action'])) {
             $GLOBALS['smarty']->assign('COUPON', $coupon[0]);
             $GLOBALS['smarty']->assign('LEGEND', $lang['catalogue']['title_coupon_edit']);
             if (!empty($coupon[0]['product_id'])) {
-                $product_id = unserialize($coupon[0]['product_id']);
+                $product_id = unserialize($coupon[0]['product_id'], ['allowed_classes' => false]);
                 // pull the first item off as it's our orders to be inclusive or exclusive
                 $incexc = array_shift($product_id);
                 // this will handle legacy coupons so we don't lose any products from them
@@ -224,8 +224,9 @@ if (isset($_GET['action'])) {
     }
     // List Manufacturers
     if (($manufacturers = $GLOBALS['db']->select('CubeCart_manufacturers', false, false, array('name' => 'ASC'))) !== false) {
-        if (isset($coupon[0]['manufacturer_id']) && is_array(unserialize($coupon[0]['manufacturer_id']))) {
-            $manufacturer_assigned = array_flip(unserialize($coupon[0]['manufacturer_id']));
+        $unserialised = isset($coupon[0]['manufacturer_id']) ? unserialize($coupon[0]['manufacturer_id'], ['allowed_classes' => false]) : false;
+        if (is_array($unserialised)) {
+            $manufacturer_assigned = array_flip($unserialised);
         }
         foreach ($manufacturers as $manufacturer) {
             $manufacturer['selected'] = isset($manufacturer_assigned[$manufacturer['id']]) ? true : false;
@@ -236,8 +237,9 @@ if (isset($_GET['action'])) {
     $GLOBALS['smarty']->assign('INCEXC', $smarty_data['incexc']);
     
     // List Categories
-    if (isset($coupon[0]['category_id']) && is_array(unserialize($coupon[0]['category_id']))) {
-        $category_assigned = array_flip(unserialize($coupon[0]['category_id']));
+    $unserialised = isset($coupon[0]['category_id']) ? unserialize($coupon[0]['category_id'], ['allowed_classes' => false]) : false;
+    if (is_array($unserialised)) {
+        $category_assigned = array_flip($unserialised);
     }
 
     $categoryArray = $GLOBALS['db']->select('CubeCart_category', array('cat_name', 'cat_parent_id', 'cat_id'));
@@ -267,8 +269,9 @@ if (isset($_GET['action'])) {
     }
     if($shipping = $GLOBALS['db']->select('CubeCart_modules', array('folder'), array('module' => 'shipping', 'status' => 1))) {
         // List shipping methods
-        if (isset($coupon[0]['shipping_id']) && is_array(unserialize($coupon[0]['shipping_id']))) {
-            $shipping_assigned = array_flip(unserialize($coupon[0]['shipping_id']));
+        $unserialised = isset($coupon[0]['shipping_id']) ? unserialize($coupon[0]['shipping_id'], ['allowed_classes' => false]) : false;
+        if (is_array($unserialised)) {
+            $shipping_assigned = array_flip($unserialised);
         }
         $shipping_data = array();
         foreach($shipping as $s) {
@@ -281,8 +284,9 @@ if (isset($_GET['action'])) {
 
     // List countries (restrict coupon to delivery country)
     $country_assigned = array();
-    if (isset($coupon[0]['country_id']) && is_array(unserialize($coupon[0]['country_id']))) {
-        $country_assigned = array_flip(unserialize($coupon[0]['country_id']));
+    $unserialised = isset($coupon[0]['country_id']) ? unserialize($coupon[0]['country_id'], ['allowed_classes' => false]) : false;
+    if (is_array($unserialised)) {
+        $country_assigned = array_flip($unserialised);
     }
     $smarty_data['countries'] = array();
     if ($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name'), 'status > 0', array('name' => 'ASC'))) {
