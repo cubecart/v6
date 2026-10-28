@@ -993,9 +993,11 @@ class Cubecart
         // Update shipping values
         if (isset($_POST['shipping']) && !empty($_POST['shipping'])) {
             $posted_shipping = json_decode(base64url_decode($_POST['shipping']), true);
-
-            $GLOBALS['cart']->set('shipping', $posted_shipping);
-            $GLOBALS['cart']->set('shipping_hash', '');
+            // Only one of the store's own options (it carries an offset); _displayBasket() re-checks its values.
+            if (is_array($posted_shipping) && isset($posted_shipping['offset'])) {
+                $GLOBALS['cart']->set('shipping', $posted_shipping);
+                $GLOBALS['cart']->set('shipping_hash', '');
+            }
             if (!isset($_POST['proceed'])) {
                 httpredir(currentPage());
             }
@@ -2321,7 +2323,9 @@ class Cubecart
                         if (isset($this->_basket['shipping']['offset']) && (int)$this->_basket['shipping']['offset'] == $offset) {
                             $offset_matched = true;
                             $option['selected'] = ' selected="selected"';
-                            if ((string)$value['value'] !== (string)$this->_basket['shipping']['value']) {
+                            // The selection is posted by the client, so every priced field must match the store's own record.
+                            $trusted = array_flip(array('value', 'tax_id', 'tax', 'name', 'product', 'folder', 'module_folder'));
+                            if ((string)$value['value'] !== (string)($this->_basket['shipping']['value'] ?? '') || array_intersect_key($this->_basket['shipping'], $trusted) != array_intersect_key($value, $trusted)) {
                                 $this->_basket['shipping'] = $value;
                                 $GLOBALS['cart']->save();
                                 httpredir(currentPage());
@@ -2338,7 +2342,9 @@ class Cubecart
 
                 // Lets try to choose cheapest shipping option
                 // for them if they haven't chosen already
-                if (((!isset($this->_basket['shipping']) || empty($this->_basket['shipping'])) && !$digital_only) || (!$offset_matched && isset($this->_basket['shipping']['offset']) && !$digital_only)) {
+                // A stored selection that matches no offered method is stale or forged, with or without an offset.
+                $replaced = !$offset_matched && !empty($this->_basket['shipping']) && is_array($this->_basket['shipping']);
+                if (((!isset($this->_basket['shipping']) || empty($this->_basket['shipping'])) && !$digital_only) || ($replaced && !$digital_only)) {
                     if (isset($this->_basket['free_coupon_shipping']) && $this->_basket['free_coupon_shipping']==1) {
                         $shipping_defaults = 'default';
                     } else {
@@ -2406,7 +2412,13 @@ class Cubecart
                             if (!isset($this->_basket['free_coupon_shipping'])) {
                                 httpredir(currentPage());
                             }
+                        } elseif ($replaced) {
+                            // This request's totals used the replaced selection.
+                            httpredir(currentPage());
                         }
+                    } elseif ($replaced) {
+                        $GLOBALS['cart']->set('shipping', array());
+                        httpredir(currentPage());
                     } elseif (!$GLOBALS['config']->get('config', 'allow_no_shipping')) {
                         trigger_error('Shipping not setup or allow no shipping not enabled', E_USER_WARNING);
                     }
