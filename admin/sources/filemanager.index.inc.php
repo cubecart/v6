@@ -135,7 +135,7 @@ if (isset($_POST['bulk_move']) && !empty($_POST['multi_delete']) && !empty($_POS
     httpredir(currentPage());
 }
 
-if (isset($_GET['delete']) || isset($_POST['multi_delete']) && Admin::getInstance()->permissions('filemanager', CC_PERM_DELETE)) {
+if ((isset($_GET['delete']) || isset($_POST['multi_delete'])) && Admin::getInstance()->permissions('filemanager', CC_PERM_DELETE)) {
     if(isset($_GET['delete'])) {
         $items = array($_GET['delete']);
     } else {

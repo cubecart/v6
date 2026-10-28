@@ -28,7 +28,7 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete']) && Admin::getInstance(
 }
 
 ## Bulk delete reviews
-if (!empty($_POST['delete']['email'])) {
+if (!empty($_POST['delete']['email']) && Admin::getInstance()->permissions('reviews', CC_PERM_DELETE)) {
     if ($GLOBALS['db']->delete('CubeCart_reviews', array('email' => $_POST['delete']['email']))) {
         $GLOBALS['main']->successMessage($lang['reviews']['notify_review_deleted']);
     }
@@ -36,7 +36,7 @@ if (!empty($_POST['delete']['email'])) {
 if (isset($_POST['multi-status']) && isset($_POST['go'])) {
     switch ($_POST['multi-status']) {
         case 'delete':
-            if (!empty($_POST['delete']['individual'])) {
+            if (!empty($_POST['delete']['individual']) && Admin::getInstance()->permissions('reviews', CC_PERM_DELETE)) {
                 if ($GLOBALS['db']->delete('CubeCart_reviews', array('id' => array_keys($_POST['delete']['individual'])))) {
                     $GLOBALS['main']->successMessage($lang['reviews']['notify_review_deleted']);
                 }
@@ -44,7 +44,7 @@ if (isset($_POST['multi-status']) && isset($_POST['go'])) {
         break;
     }
 }
-if (!empty($_POST['delete']['ip_address'])) {
+if (!empty($_POST['delete']['ip_address']) && Admin::getInstance()->permissions('reviews', CC_PERM_DELETE)) {
     if ($GLOBALS['db']->delete('CubeCart_reviews', array('ip_address' => $_POST['delete']['ip_address']))) {
         $GLOBALS['main']->successMessage($lang['reviews']['notify_review_deleted']);
     }

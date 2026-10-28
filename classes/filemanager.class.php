@@ -57,8 +57,11 @@ class FileManager
         $this->_manage_dir = str_replace(CC_ROOT_DIR.'/', '', $this->_manage_root);
         $this->_sub_dir  = ($sub_dir) ? $this->formatPath($sub_dir) : null;
 
+        // The auto-handlers change files, so only an admin with file manager edit rights may trigger them.
+        $can_edit = defined('ADMIN_CP') && ADMIN_CP && Admin::getInstance()->permissions('filemanager', CC_PERM_EDIT, false, false);
+
         //Auto-handler: Create Directory
-        if (isset($_POST['fm']['create-dir']) && $_POST['fm']['create-dir']!=='') {
+        if ($can_edit && isset($_POST['fm']['create-dir']) && $_POST['fm']['create-dir']!=='') {
             if ($create = $this->createDirectory($_POST['fm']['create-dir'])) {
                 $GLOBALS['gui']->setNotify($GLOBALS['language']->filemanager['success_create_folder']);
             } else {
@@ -66,7 +69,7 @@ class FileManager
             }
         }
         // Auto-handler: image details & cropping
-        if (isset($_POST['file_id']) && is_numeric($_POST['file_id'])) {
+        if ($can_edit && isset($_POST['file_id']) && is_numeric($_POST['file_id'])) {
             if (($file = $GLOBALS['db']->select('CubeCart_filemanager', false, array('file_id' => (int)$_POST['file_id']))) !== false) {
                 if (isset($_POST['details'])) {
                     if (!$this->filenameIsIllegal($_POST['details']['filename'])) {
