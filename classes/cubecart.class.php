@@ -1458,7 +1458,8 @@ class Cubecart
                     $GLOBALS['gui']->setError($error_messages);
                 }
 
-                if (!isset($errors)) {
+                // Only the Checkout press creates the account: it is the post the captcha guards.
+                if (!isset($errors) && isset($_POST['proceed'])) {
                     // Create the user account
                     $_POST['user']['password'] = (isset($_POST['register']) && $_POST['register']==1) ? md5($_POST['password']) : md5(time().$_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']);
                     $type = (isset($_POST['register']) && $_POST['register']==1) ? 1 : 2;
