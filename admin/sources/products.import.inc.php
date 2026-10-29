@@ -107,6 +107,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
                     if (in_array($field_name, array('price','sale_price','cost_price'))) {
                         $value = preg_replace("/[^0-9\.]/", "", $value);
                     } elseif ($field_name == 'manufacturer' && !empty($value) && !is_numeric($value)) {
+                        $value = strip_tags($value); // match the product editor; CSV names must be plain text
                         $manuf_key = strtolower(trim($value));
                         if (isset($import_manuf_cache[$manuf_key])) {
                             $value = $import_manuf_cache[$manuf_key];
@@ -182,6 +183,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
                 }
                 // Insert if we have a product record with at minimum a value for the product name
                 if (isset($product_record) && !empty($product_record) && !empty($product_record['name'])) {
+                    $product_record['name'] = strip_tags($product_record['name']); // match the product editor (plain-text name)
                     $product_record['date_added']	= $GLOBALS['session']->get('date_added', 'import');
                     // Insert product
                     if (!isset($product_record['product_code']) || empty($product_record['product_code'])) {
@@ -221,6 +223,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 								if(!empty($breadcrumbs[0])) {
 									foreach($breadcrumbs as $key => $breadcrumb) {
 										$breadcrumb = trim($breadcrumb);
+								$breadcrumb = strip_tags($breadcrumb); // CSV category names must be plain text
 										$cat_cache_key = $cat.'|'.$breadcrumb;
 										if (isset($import_cat_cache[$cat_cache_key])) {
 											$cat = $import_cat_cache[$cat_cache_key];

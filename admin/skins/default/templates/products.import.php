@@ -61,7 +61,7 @@
 	<fieldset>
 	  {foreach from=$MAPS item=map}
 	  <div rel="{$map.offset}">
-		<label>{$map.example}</label>
+		<label>{$map.example|escape}</label>
 		<span>
 		  <select name="map[{$map.offset}]" class="unique textbox">
 			<option value="">{$LANG.catalogue.import_column_ignore}</option>
