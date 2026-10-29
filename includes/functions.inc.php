@@ -772,15 +772,29 @@ function ip_in_cidr($ip, $range)
     if ($range === '') {
         return false;
     }
+    // Normalise an IPv4-mapped IPv6 address (::ffff:1.2.3.4) to plain IPv4 so it matches v4 entries
+    $ip = preg_replace('/^::ffff:(\d{1,3}(?:\.\d{1,3}){3})$/i', '$1', (string)$ip);
     if (strpos($range, '/') === false) {
+        // Exact match: compare via inet_pton so equivalent IPv6 spellings match, else fall back to string
+        $range = preg_replace('/^::ffff:(\d{1,3}(?:\.\d{1,3}){3})$/i', '$1', $range);
+        $a = @inet_pton($ip);
+        $b = @inet_pton($range);
+        if ($a !== false && $b !== false) {
+            return $a === $b;
+        }
         return $ip === $range;
     }
     list($subnet, $bits) = explode('/', $range, 2);
+    // Fail closed on a malformed prefix (empty or non-numeric) instead of treating it as /0 (match-all)
+    if ($bits === '' || !ctype_digit($bits)) {
+        return false;
+    }
     $bits = (int)$bits;
+    $subnet = preg_replace('/^::ffff:(\d{1,3}(?:\.\d{1,3}){3})$/i', '$1', $subnet);
     $ip_b = @inet_pton($ip);
     $sub_b = @inet_pton($subnet);
     // Reject invalid input or a v4/v6 family mismatch
-    if ($ip_b === false || $sub_b === false || strlen($ip_b) !== strlen($sub_b) || $bits < 0 || $bits > strlen($ip_b) * 8) {
+    if ($ip_b === false || $sub_b === false || strlen($ip_b) !== strlen($sub_b) || $bits > strlen($ip_b) * 8) {
         return false;
     }
     $whole = intdiv($bits, 8);
