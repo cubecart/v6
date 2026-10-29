@@ -110,6 +110,7 @@ class Session
 
     const BLOCKER_FRONTEND	= 'F';
     const BLOCKER_BACKEND	= 'B';
+    const BLOCKER_TWOFA	= 'T';
 
     /**
      * Class instance

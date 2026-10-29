@@ -705,7 +705,7 @@ class Admin
 
         // Failed attempt, durable rate limiting via the DB blocker (survives re-login and concurrent requests)
         $twofa_user = isset($admin['username']) ? $admin['username'] : (string)$admin_id;
-        if ($GLOBALS['session']->blocker($twofa_user, $admin_id, false, Session::BLOCKER_BACKEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'))) {
+        if ($GLOBALS['session']->blocker($twofa_user, $admin_id, false, Session::BLOCKER_TWOFA, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'))) {
             $this->_clearPending2FA();
             $minutes = ceil($GLOBALS['config']->get('config', 'bftime') / 60);
             $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->account['error_twofa_locked'], $minutes));
