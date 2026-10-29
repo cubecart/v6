@@ -1147,7 +1147,14 @@ class Database_Contoller
                                     }
                                 }
                                 
-                                $val_ = preg_match('/CONCAT/', $val) ? $val : "`$val`";
+                                // Raw only for a real column or a developer CONCAT() of columns/literals; escape anything else (blocks ?id[]=CONCAT(...) SQLi).
+                                if (in_array($val, $allowed)) {
+                                    $val_ = "`$val`";
+                                } elseif (preg_match('/^CONCAT\(\s*(?:`?[a-z0-9_]+`?|\'[^\'\\\\]*\')(?:\s*,\s*(?:`?[a-z0-9_]+`?|\'[^\'\\\\]*\'))*\s*\)$/i', (string)$val)) {
+                                    $val_ = $val;
+                                } else {
+                                    $val_ = $this->sqlSafe((string)$val, true);
+                                }
 
                                 if (strtoupper((string)$key[0]) == 'NULL' || is_null($key[0])) {
                                     $symbol = 'IS NULL';
