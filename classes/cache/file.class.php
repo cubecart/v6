@@ -176,7 +176,7 @@ class Cache extends Cache_Controler
 
             //Split meta and data
             list($meta, $data) = explode($this->_file_data_split, $contents, 2);
-            $meta = unserialize($meta);
+            $meta = unserialize($meta, ['allowed_classes' => false]);
 
             //Check to see if the cache is past the experation date
             if (($meta['time'] + $meta['expire']) <= time()) {
