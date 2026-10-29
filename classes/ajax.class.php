@@ -49,9 +49,9 @@ class Ajax
         $ajax_perms = array(
             'rebuildElasticsearch' => array(array('maintenance'), CC_PERM_READ),
             'filesize'             => array(array('filemanager', 'maintenance'), CC_PERM_READ),
-            'fmSearch'             => array(array('filemanager', 'products', 'categories', 'settings'), CC_PERM_READ),
-            'fmFolder'             => array(array('filemanager', 'products', 'categories', 'settings'), CC_PERM_READ),
-            'fmCreateFolder'       => array(array('filemanager', 'products', 'categories', 'settings'), CC_PERM_EDIT),
+            'fmSearch'             => array(array('filemanager', 'products', 'categories', 'settings', 'documents'), CC_PERM_READ),
+            'fmFolder'             => array(array('filemanager', 'products', 'categories', 'settings', 'documents'), CC_PERM_READ),
+            'fmCreateFolder'       => array(array('filemanager', 'products', 'categories', 'settings', 'documents'), CC_PERM_EDIT),
             'productImages'        => array(array('products'), CC_PERM_READ),
             'doneToggle'           => array(array('settings'), CC_PERM_EDIT),
             'viewEmail'            => array(array('statistics'), CC_PERM_READ),
@@ -68,10 +68,10 @@ class Ajax
                 if (Admin::getInstance()->permissions($sec, $lvl, false, false)) { $ok = true; break; }
             }
             $denied = !$ok;
-        } elseif ($function === 'search') {
+        } else {
             // The generic search exposes customer PII (user/address) and file listings (files); gate those types.
             $search_type = strtolower(isset($_GET['type']) ? (string)$_GET['type'] : '');
-            $search_perms = array('user' => 'customers', 'address' => 'customers', 'files' => 'filemanager');
+            $search_perms = array('user' => 'customers', 'address' => 'customers', 'files' => 'filemanager', 'doc' => 'documents');
             if (isset($search_perms[$search_type]) && !Admin::getInstance()->permissions($search_perms[$search_type], CC_PERM_READ, false, false)) {
                 $denied = true;
             }
