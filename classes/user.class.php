@@ -488,9 +488,10 @@ class User
      */
     private function _customerWritable(array $data)
     {
-        $allowed = array('email', 'password', 'salt', 'verify', 'first_name', 'last_name',
-            'country', 'phone', 'mobile', 'registered', 'ip_address', 'language', 'currency',
-            'abandon_optout', 'verify_expires', 'activate', 'activate_expires');
+        // Token/activation columns are set by the server (requestActivation sets activate itself
+        // after this filter); a customer registration/checkout must never supply them.
+        $allowed = array('email', 'password', 'salt', 'first_name', 'last_name',
+            'country', 'phone', 'mobile', 'registered', 'ip_address', 'language', 'currency', 'abandon_optout');
         return array_intersect_key($data, array_flip($allowed));
     }
 
