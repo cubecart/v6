@@ -518,10 +518,20 @@ class Cubecart
                         }
                         break;
                     case 'cron':
-                        $method = preg_replace('/([^a-z]+)/i', '', $_GET['_m']);
+                        $method = preg_replace('/([^a-z]+)/i', '', $_GET['_m'] ?? '');
                         if(empty($method)) {
                             header('HTTP/1.0 403 Forbidden');
                             exit;
+                        }
+                        // Public cron route runs only the scheduler (run), which enforces the enabled
+                        // flag, due-check and lock; forcing a specific task needs the secret $glob['cron_key'].
+                        if ($method !== 'run') {
+                            $cron_key = isset($GLOBALS['glob']['cron_key']) ? (string)$GLOBALS['glob']['cron_key'] : '';
+                            $given = (isset($_GET['key']) && is_scalar($_GET['key'])) ? (string)$_GET['key'] : '';
+                            if ($cron_key === '' || !hash_equals($cron_key, $given)) {
+                                header('HTTP/1.0 403 Forbidden');
+                                exit;
+                            }
                         }
                         $GLOBALS['debug']->supress();
                         $cron = new Cron();
