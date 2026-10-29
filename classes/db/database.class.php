@@ -1173,7 +1173,13 @@ class Database_Contoller
                                         $modifier = '';
                                     }
                                     $safe_in = array();
-                                    foreach ($value as $v) { $safe_in[] = $this->sqlSafe($v, true); }
+                                    foreach ($value as $v) {
+                                        // Strip one matched pair of surrounding quotes so callers that pre-quote their IN values are not double-quoted
+                                        if (is_string($v) && strlen($v) >= 2 && $v[0] === "'" && substr($v, -1) === "'") {
+                                            $v = substr($v, 1, -1);
+                                        }
+                                        $safe_in[] = $this->sqlSafe($v, true);
+                                    }
                                     $or[] = "`$key` $modifier IN (".implode(',', $safe_in).')';
                                 }
                                 break;

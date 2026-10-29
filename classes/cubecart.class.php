@@ -450,7 +450,13 @@ class Cubecart
                         $subscribe = is_scalar($_POST['subscribe'] ?? null) ? $_POST['subscribe'] : '';
                         $result = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', 'subscriber_id', array('email' => $subscribe), false, 1, false, false);
                     } else {
-                        $email = isset($_POST['user']['email']) ? $_POST['user']['email'] : $_POST['email'];
+                        // email must be a scalar; an array would reach the raw where() branch (SQLi)
+                        $email = '';
+                        if (isset($_POST['user']['email']) && is_scalar($_POST['user']['email'])) {
+                            $email = (string)$_POST['user']['email'];
+                        } elseif (isset($_POST['email']) && is_scalar($_POST['email'])) {
+                            $email = (string)$_POST['email'];
+                        }
                         $result = $GLOBALS['db']->select('CubeCart_customer', 'customer_id', array('email' => $email, 'type' => 1), false, 1, false, false);
                     }
 
