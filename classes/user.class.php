@@ -424,6 +424,8 @@ class User
     public function createUser($data, $login = false, $type = 1)
     {
         if (!empty($data)) {
+            // Only persist columns a customer may set; blocks credit/status/type injection
+            $data = $this->_customerWritable($data);
             // Insert record(s)
             $data['ip_address']  = get_ip_address();
 
@@ -476,6 +478,20 @@ class User
             return $customer_id;
         }
         return false;
+    }
+
+    /**
+     * Restrict a customer-row write to the columns a customer may set (never credit/status/type/etc.)
+     *
+     * @param array $data
+     * @return array
+     */
+    private function _customerWritable(array $data)
+    {
+        $allowed = array('email', 'password', 'salt', 'verify', 'first_name', 'last_name',
+            'country', 'phone', 'mobile', 'registered', 'ip_address', 'language', 'currency',
+            'abandon_optout', 'verify_expires', 'activate', 'activate_expires');
+        return array_intersect_key($data, array_flip($allowed));
     }
 
     /**
@@ -834,7 +850,7 @@ class User
         }
 
         $token = bin2hex(random_bytes(32));
-        $record = $data;
+        $record = $this->_customerWritable($data);
         unset($record['type'], $record['customer_id'], $record['passconf']);
         $record['activate'] = $token;
         $record['activate_expires'] = date('Y-m-d H:i:s', time() + 3600);
@@ -1091,7 +1107,7 @@ class User
                 }
                 return true;
             } else {
-                $insert = $GLOBALS['db']->insert('CubeCart_customer', $_POST);
+                $insert = $GLOBALS['db']->insert('CubeCart_customer', $this->_customerWritable($_POST));
                 if (!$insert) {
                     // e.g. refused by the unique email key
                     $GLOBALS['gui']->setError($GLOBALS['language']->account['error_email_in_use']);
