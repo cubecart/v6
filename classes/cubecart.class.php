@@ -3325,11 +3325,16 @@ class Cubecart
         $errors = array();
 
         if (!empty($_POST['withdraw_submit'])) {
-            // Rate-limit per IP (5 / hour) via session
-            $rl_key = 'withdrawal_rl_'.md5(get_ip_address());
-            $rl = (array)$GLOBALS['session']->get($rl_key, 'rate_limit') ?: array();
-            $rl = array_values(array_filter($rl, function($t) { return $t > time() - 3600; }));
-            if (count($rl) >= 5) {
+            // Rate-limit per IP (5 / hour) from the durable request table, NOT the session: a request
+            // with no cc_browser cookie (or a bot UA) never persists a session, so a session-based limit
+            // never accumulates and is trivially bypassed for store-branded email bombing.
+            $rl_ip = get_ip_address();
+            $rl_count = 0;
+            if ($rl_ip !== false) {
+                $rl_rows = $GLOBALS['db']->select('CubeCart_withdrawal_requests', array('id'), array('ip' => $rl_ip, 'submitted_at' => '>'.(time() - 3600)), false, false, false, false);
+                $rl_count = ($rl_rows !== false) ? count($rl_rows) : 0;
+            }
+            if ($rl_count >= 5) {
                 $errors[] = $GLOBALS['language']->withdrawal['validation_rate_limit'];
             }
 
@@ -3378,9 +3383,7 @@ class Cubecart
                 if (($wid = $GLOBALS['db']->insert('CubeCart_withdrawal_requests', $row))) {
                     $reference = 'W-'.str_pad((string)$wid, 5, '0', STR_PAD_LEFT);
 
-                    // Rate-limit bump after success only
-                    $rl[] = time();
-                    $GLOBALS['session']->set($rl_key, $rl, 'rate_limit');
+                    // No session bump: the inserted request row above is the durable per-IP record.
 
                     $submitted_at_human = formatTime(time());
                     $mailer = new Mailer();
