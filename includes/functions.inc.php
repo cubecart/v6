@@ -198,7 +198,7 @@ function cc_unserialize($data)
         // Re-encode strings: html_entity_decode above reverses input sanitisation (stored XSS)
         foreach ($data as $cc_k => $cc_v) {
             if (is_string($cc_v)) {
-                $data[$cc_k] = htmlspecialchars($cc_v, ENT_QUOTES, 'UTF-8');
+                $data[$cc_k] = htmlspecialchars($cc_v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
             }
         }
     }
