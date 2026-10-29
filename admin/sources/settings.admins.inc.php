@@ -186,8 +186,9 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
 
     ## Update Permissions
     if (!empty($admin_id)) {
-    $GLOBALS['db']->delete('CubeCart_permissions', array('admin_id' => $admin_id));
     if (isset($_POST['permission']) && is_array($_POST['permission']) && Admin::getInstance()->superUser()) {
+        // Only rewrite permissions when a super user submits them; the unconditional delete here wiped a non-super's own permissions on self-edit (self-lockout)
+        $GLOBALS['db']->delete('CubeCart_permissions', array('admin_id' => $admin_id));
         foreach ($_POST['permission'] as $section => $mask) {
             $status = 0;
             foreach ($mask as $value) {
