@@ -219,14 +219,9 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
 
 
 ## Update status
-if (isset($_POST['status']) && is_array($_POST['status']) && Admin::getInstance()->permissions('users', CC_PERM_FULL)) {
+if (isset($_POST['status']) && is_array($_POST['status']) && Admin::getInstance()->superUser()) {
     $updated = false;
     foreach ($_POST['status'] as $admin_id => $status) {
-        // S7: a non-super may not change a super user's status
-        if (!Admin::getInstance()->superUser()) {
-            $s7_t = $GLOBALS['db']->select('CubeCart_admin_users', array('super_user'), array('admin_id' => (int)$admin_id), false, 1);
-            if ($s7_t !== false && !empty($s7_t[0]['super_user'])) { continue; }
-        }
         if ($GLOBALS['db']->update('CubeCart_admin_users', array('status' => (int)$status), array('admin_id' => (int)$admin_id))) {
             $updated = true;
         }
