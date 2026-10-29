@@ -41,6 +41,26 @@ class Ajax
         $type = (isset($_GET['type'])) ? $_GET['type'] : '';
         $string = isset($_GET['q']) ? $_GET['q'] : '';
         $function = (isset($_GET['function']) && !empty($_GET['function'])) ? $_GET['function'] : 'search';
+
+        // Per-section authz: the ?_g=xml AJAX path otherwise bypasses the permissions() gate on normal admin pages
+        $ajax_perms = array(
+            'rebuildElasticsearch' => 'maintenance',
+            'filesize'             => 'filemanager',
+            'fmSearch'             => 'filemanager',
+            'fmFolder'             => 'filemanager',
+            'fmCreateFolder'       => 'filemanager',
+            'productImages'        => 'products',
+            'doneToggle'           => 'settings',
+            'viewEmail'            => 'statistics',
+            'viewHookBackup'       => 'maintenance',
+            'SMTPTest'             => 'settings',
+            'previewOrderFormat'   => 'settings',
+            'subscriber_log'       => 'customers',
+        );
+        if (isset($ajax_perms[$function]) && !Admin::getInstance()->permissions($ajax_perms[$function], CC_PERM_READ, false, false)) {
+            return json_encode(array('error' => 'unauthorised'));
+        }
+
         switch ($function) {
             case 'rebuildElasticsearch':
                 $return_data = self::rebuildElasticsearch();

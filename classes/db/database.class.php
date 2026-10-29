@@ -1172,7 +1172,9 @@ class Database_Contoller
                                     } else {
                                         $modifier = '';
                                     }
-                                    $or[] = "`$key` $modifier IN (".implode(',', $value).')';
+                                    $safe_in = array();
+                                    foreach ($value as $v) { $safe_in[] = $this->sqlSafe($v, true); }
+                                    $or[] = "`$key` $modifier IN (".implode(',', $safe_in).')';
                                 }
                                 break;
                             }

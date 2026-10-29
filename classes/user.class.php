@@ -1216,18 +1216,14 @@ class User
                 return $this->_update();
             }
         } elseif (isset($_POST['update'])) {
-            $remove = array_diff_key($_POST, $this->_user_data);
-            $update = $_POST;
-            //Remove different keys
-            foreach ($remove as $k => $v) {
-                unset($update[$k]);
+            // Strict allowlist of customer-editable columns (never credit/status/type/etc.)
+            $editable = array('first_name', 'last_name', 'email', 'phone', 'mobile', 'country', 'language', 'currency', 'abandon_optout');
+            $update = array();
+            foreach ($editable as $field) {
+                if (array_key_exists($field, $_POST)) {
+                    $update[$field] = $_POST[$field];
+                }
             }
-            //Remove things that shouldn't be updated by post
-            unset($update['salt']);
-            unset($update['password']);
-            unset($update['customer_id']);
-            unset($update['status']);
-            unset($update['type']);
 
             //Check of any acutal changes
             $diff = arrayRecursiveDiff($update, $this->_user_data);

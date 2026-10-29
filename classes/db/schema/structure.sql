@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_admin_users` (
 	`failLevel` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`blockTime` INT UNSIGNED NOT NULL DEFAULT '0',
 	`lastTime` INT UNSIGNED NOT NULL DEFAULT '0',
-	`session_id` VARCHAR(32) DEFAULT NULL,
+	`session_id` VARCHAR(64) DEFAULT NULL,
 	`browser` TEXT NULL,
 	`ip_address` VARCHAR(45) DEFAULT NULL COMMENT 'Supports IPv6 addresses',
 	`language` VARCHAR(5) NOT NULL DEFAULT 'en-GB',

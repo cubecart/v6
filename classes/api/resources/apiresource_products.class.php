@@ -71,6 +71,9 @@ class ApiResource_Products extends ApiResource
         if (isset($_GET['featured'])) {
             $where['featured'] = (int)$_GET['featured'];
         }
+        if (isset($_GET['digital'])) {
+            $where['digital'] = (int)$_GET['digital'];
+        }
 
         // Search
         $search = $this->_buildSearch(array('name', 'product_code', 'description', 'description_short'));

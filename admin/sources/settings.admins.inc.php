@@ -116,6 +116,11 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
     $record   = $_POST['admin'];
     $record['name'] = ucwords($record['name']);
 
+    // Privilege-escalation guard: only an existing super user may set the super_user flag
+    if (!Admin::getInstance()->superUser()) {
+        unset($record['super_user']);
+    }
+
     ## Validate new password
     if (!empty($_POST['password']) && $_POST['password'] === $_POST['passconf']) {
         $record['password'] = $_POST['password'];
@@ -134,6 +139,7 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
             $logout = true;
             $record['password'] = Password::getInstance()->hashPassword($record['password']);
             $record['salt'] = '';
+            $record['session_id'] = ''; // strict single-session: revoke active sessions on password change
         }
 
         //If there only one super then don't allow demoting

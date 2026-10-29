@@ -447,7 +447,8 @@ class Cubecart
                     $GLOBALS['debug']->supress();
 
                     if (isset($_GET['source']) && $_GET['source']=='newsletter') {
-                        $result = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', 'subscriber_id', array('email' => $_POST['subscribe']), false, 1, false, false);
+                        $subscribe = is_scalar($_POST['subscribe'] ?? null) ? $_POST['subscribe'] : '';
+                        $result = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', 'subscriber_id', array('email' => $subscribe), false, 1, false, false);
                     } else {
                         $email = isset($_POST['user']['email']) ? $_POST['user']['email'] : $_POST['email'];
                         $result = $GLOBALS['db']->select('CubeCart_customer', 'customer_id', array('email' => $email, 'type' => 1), false, 1, false, false);
@@ -2013,12 +2014,12 @@ class Cubecart
                     */
                     $attach_dir = CC_FILES_DIR.'attachments/';
                     $attachment_prefix = time().'_';
-                    $allowed = array(
-                        'image/jpeg',
-                        'image/png',
-                        'image/gif',
-                        'application/zip',
-                        'application/pdf'
+                    $mime_ext = array(
+                        'image/jpeg' => 'jpg',
+                        'image/png'  => 'png',
+                        'image/gif'  => 'gif',
+                        'application/zip' => 'zip',
+                        'application/pdf' => 'pdf'
                     );
                     $total_files = 0;
                     $attachments = array();
@@ -2034,9 +2035,11 @@ class Cubecart
                                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                                 $detected_type = finfo_file($finfo, $_FILES['attachments']['tmp_name'][$i]);
                             }
-                            if($detected_type && in_array($detected_type, $allowed)) {
-                                $mailer->AddAttachment($_FILES['attachments']['tmp_name'][$i], $attachment_prefix.$_FILES['attachments']['name'][$i]);
-                                $attachments[] = array('tmp_name' => $_FILES['attachments']['tmp_name'][$i], 'name' => $attachment_prefix.$_FILES['attachments']['name'][$i]);
+                            if($detected_type && isset($mime_ext[$detected_type])) {
+                                // Server-generated name; never trust the client filename (path traversal / polyglot)
+                                $safe_name = $attachment_prefix.bin2hex(random_bytes(6)).'.'.$mime_ext[$detected_type];
+                                $mailer->AddAttachment($_FILES['attachments']['tmp_name'][$i], $safe_name);
+                                $attachments[] = array('tmp_name' => $_FILES['attachments']['tmp_name'][$i], 'name' => $safe_name);
                             } else {
                                 $error = true;
                                 $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->contact['type_not_allowed'], $_FILES['attachments']['type'][$i]));

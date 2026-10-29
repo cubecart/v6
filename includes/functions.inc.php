@@ -195,6 +195,12 @@ function cc_unserialize($data)
     // Options are text; an object here was smuggled in through a string value.
     if (is_array($data)) {
         $data = array_filter($data, function ($v) { return !is_object($v); });
+        // Re-encode strings: html_entity_decode above reverses input sanitisation (stored XSS)
+        foreach ($data as $cc_k => $cc_v) {
+            if (is_string($cc_v)) {
+                $data[$cc_k] = htmlspecialchars($cc_v, ENT_QUOTES, 'UTF-8');
+            }
+        }
     }
     return $data;
 }
@@ -760,12 +766,27 @@ function getCountryFormat($input, $match = 'numcode', $fetch = 'name')
  */
 function get_ip_address()
 {
-    $ip = getenv('HTTP_CLIENT_IP')?:
-    getenv('HTTP_X_FORWARDED_FOR')?:
-    getenv('HTTP_X_FORWARDED')?:
-    getenv('HTTP_FORWARDED_FOR')?:
-    getenv('HTTP_FORWARDED')?:
-    getenv('REMOTE_ADDR');
+    // REMOTE_ADDR is the only unforgeable value; trust forwarding headers only from a configured proxy
+    $remote = getenv('REMOTE_ADDR');
+    $trusted = isset($GLOBALS['glob']['trusted_proxies']) ? $GLOBALS['glob']['trusted_proxies'] : array();
+    if (!is_array($trusted)) {
+        $trusted = array_filter(array_map('trim', explode(',', (string)$trusted)));
+    }
+    $ip = $remote;
+    if (!empty($trusted) && $remote !== false && in_array($remote, $trusted, true)) {
+        $forwarded = getenv('HTTP_CLIENT_IP')?:
+        getenv('HTTP_X_FORWARDED_FOR')?:
+        getenv('HTTP_X_FORWARDED')?:
+        getenv('HTTP_FORWARDED_FOR')?:
+        getenv('HTTP_FORWARDED')?:
+        $remote;
+        // X-Forwarded-For may be "client, proxy1, ..."; the left-most entry is the client
+        if (strpos($forwarded, ',') !== false) {
+            $parts = explode(',', $forwarded);
+            $forwarded = trim($parts[0]);
+        }
+        $ip = $forwarded;
+    }
 
     //Try to validate the IP
     if ((filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) === false && (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) === false)

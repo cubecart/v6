@@ -246,7 +246,7 @@ class Session
 
         // Search for active blocks
         $where = array(
-            'user_agent'	=> $this->_http_user_agent(),
+            // user_agent excluded on purpose: client-controlled, rotating it must not reset the lockout (S4a)
             'ip_address'	=> get_ip_address(),
             'location'		=> $location,
         );
