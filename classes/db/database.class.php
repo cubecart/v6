@@ -658,7 +658,7 @@ class Database_Contoller
         $params = array();
         if ($total_pages > 1) {
             // Get the current query string variables
-            $url_elements = parse_url(html_entity_decode($_SERVER['REQUEST_URI']));
+            $url_elements = parse_url((string)($_SERVER['REQUEST_URI'] ?? ''));
             if (isset($url_elements['query']) && !empty($url_elements['query'])) {
                 parse_str($url_elements['query'], $params);
                 unset($params[$var_name], $params['print_hash']);
@@ -679,7 +679,7 @@ class Database_Contoller
 
             $data = array(
                 'anchor'  => $anchor,
-                'current'  => "{$url_elements['path']}?",
+                'current'  => htmlspecialchars(($url_elements['path'] ?? ''), ENT_QUOTES, 'UTF-8').'?',
                 'page'   => (int)$page,
                 'params'  => $params,
                 'http_params' => http_build_query($params),
