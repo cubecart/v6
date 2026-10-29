@@ -760,32 +760,86 @@ function getCountryFormat($input, $match = 'numcode', $fetch = 'name')
 }
 
 /**
+ * Check whether an IP falls within an exact address or a CIDR range (IPv4 or IPv6)
+ *
+ * @param string $ip
+ * @param string $range  exact IP, or CIDR such as 10.0.0.0/8 or 2400:cb00::/32
+ * @return bool
+ */
+function ip_in_cidr($ip, $range)
+{
+    $range = trim((string)$range);
+    if ($range === '') {
+        return false;
+    }
+    if (strpos($range, '/') === false) {
+        return $ip === $range;
+    }
+    list($subnet, $bits) = explode('/', $range, 2);
+    $bits = (int)$bits;
+    $ip_b = @inet_pton($ip);
+    $sub_b = @inet_pton($subnet);
+    // Reject invalid input or a v4/v6 family mismatch
+    if ($ip_b === false || $sub_b === false || strlen($ip_b) !== strlen($sub_b) || $bits < 0 || $bits > strlen($ip_b) * 8) {
+        return false;
+    }
+    $whole = intdiv($bits, 8);
+    $rem = $bits % 8;
+    if ($whole > 0 && substr($ip_b, 0, $whole) !== substr($sub_b, 0, $whole)) {
+        return false;
+    }
+    if ($rem > 0) {
+        $mask = chr((0xff << (8 - $rem)) & 0xff);
+        if ((ord($ip_b[$whole]) & ord($mask)) !== (ord($sub_b[$whole]) & ord($mask))) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
  * Get the user's IP address
  *
  * @return string
  */
 function get_ip_address()
 {
-    // REMOTE_ADDR is the only unforgeable value; trust forwarding headers only from a configured proxy
+    // REMOTE_ADDR is the only value a client cannot forge. Forwarding headers are honoured only
+    // when the peer is a configured trusted proxy ($glob['trusted_proxies'], exact IPs or CIDR);
+    // with none configured (the default) REMOTE_ADDR is used as-is.
     $remote = getenv('REMOTE_ADDR');
     $trusted = isset($GLOBALS['glob']['trusted_proxies']) ? $GLOBALS['glob']['trusted_proxies'] : array();
     if (!is_array($trusted)) {
         $trusted = array_filter(array_map('trim', explode(',', (string)$trusted)));
     }
-    $ip = $remote;
-    if (!empty($trusted) && $remote !== false && in_array($remote, $trusted, true)) {
-        $forwarded = getenv('HTTP_CLIENT_IP')?:
-        getenv('HTTP_X_FORWARDED_FOR')?:
-        getenv('HTTP_X_FORWARDED')?:
-        getenv('HTTP_FORWARDED_FOR')?:
-        getenv('HTTP_FORWARDED')?:
-        $remote;
-        // X-Forwarded-For may be "client, proxy1, ..."; the left-most entry is the client
-        if (strpos($forwarded, ',') !== false) {
-            $parts = explode(',', $forwarded);
-            $forwarded = trim($parts[0]);
+
+    $peer_trusted = false;
+    if (!empty($trusted) && $remote !== false) {
+        foreach ($trusted as $range) {
+            if (ip_in_cidr($remote, $range)) { $peer_trusted = true; break; }
         }
-        $ip = $forwarded;
+    }
+
+    $ip = $remote;
+    if ($peer_trusted) {
+        // Read only the configured header (default X-Forwarded-For); other client-settable headers
+        // are ignored. Walk a comma list from the right (what trusted proxies append), skipping
+        // further trusted hops, to the first address a trusted proxy did not set = the real client.
+        $header = isset($GLOBALS['glob']['forwarded_header']) ? (string)$GLOBALS['glob']['forwarded_header'] : 'X-Forwarded-For';
+        $fwd = getenv('HTTP_'.strtoupper(str_replace('-', '_', $header)));
+        if ($fwd !== false && $fwd !== '') {
+            $parts = array_map('trim', explode(',', $fwd));
+            for ($i = count($parts) - 1; $i >= 0; $i--) {
+                if ($parts[$i] === '') { continue; }
+                $hop_trusted = false;
+                foreach ($trusted as $range) {
+                    if (ip_in_cidr($parts[$i], $range)) { $hop_trusted = true; break; }
+                }
+                if ($hop_trusted) { continue; }
+                $ip = $parts[$i];
+                break;
+            }
+        }
     }
 
     //Try to validate the IP
