@@ -598,6 +598,11 @@ class Admin
             }
             if (!empty($data)) {
                 $this->_logged_in = true;
+                // S2: super_user/status are served from the cached session blob; refresh them from the
+                // live row (already fetched above) so a mid-session demotion or disable takes effect on
+                // the next request rather than only after re-login. Permissions are already loaded live.
+                $data['super_user'] = $live[0]['super_user'];
+                $data['status'] = $live[0]['status'];
                 $this->_admin_data = $data;
                 $GLOBALS['session']->set('user_language', (!empty($data['language'])) ? $data['language'] : $GLOBALS['config']->get('config', 'default_language'), 'admin');
                 // Load Permission Rules
