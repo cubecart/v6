@@ -113,17 +113,11 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
     $added    = false;
     $updated   = false;
 
-    // S7: a non-super admin must never modify a super user's account, and a non-super
-    // without users:FULL may only edit their own account (prevents admin takeover).
+    // S7: a non-super admin may edit ONLY their own account. Managing any other admin (or a super)
+    // is super-only, which blocks taking over a super (password reset) or another non-super admin.
     if (!Admin::getInstance()->superUser()) {
         $s7_target = (isset($_POST['admin_id']) && is_numeric($_POST['admin_id'])) ? (int)$_POST['admin_id'] : 0;
-        $s7_target_super = false;
-        if ($s7_target > 0) {
-            $s7_t = $GLOBALS['db']->select('CubeCart_admin_users', array('super_user'), array('admin_id' => $s7_target), false, 1);
-            $s7_target_super = ($s7_t !== false && !empty($s7_t[0]['super_user']));
-        }
-        // A non-super may never modify a super user's account (blocks password-reset takeover)
-        if ($s7_target_super) {
+        if ($s7_target !== (int)Admin::getInstance()->getId()) {
             $GLOBALS['main']->errorMessage($GLOBALS['language']->notification['error_privileges']);
             httpredir(currentPage(array('action', 'admin_id')));
         }
@@ -193,7 +187,7 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
     ## Update Permissions
     if (!empty($admin_id)) {
     $GLOBALS['db']->delete('CubeCart_permissions', array('admin_id' => $admin_id));
-    if (isset($_POST['permission']) && is_array($_POST['permission']) && Admin::getInstance()->permissions('users', CC_PERM_FULL)) {
+    if (isset($_POST['permission']) && is_array($_POST['permission']) && Admin::getInstance()->superUser()) {
         foreach ($_POST['permission'] as $section => $mask) {
             $status = 0;
             foreach ($mask as $value) {
@@ -246,7 +240,7 @@ if (isset($_POST['status']) && is_array($_POST['status']) && Admin::getInstance(
 
 $GLOBALS['gui']->addBreadcrumb($GLOBALS['lang']['admins']['title_administrators']);
 
-if (isset($_GET['action']) && (Admin::getInstance()->superUser() || ((int)$_GET['admin_id'] === (int)Admin::getInstance()->getId() || Admin::getInstance()->permissions('users', CC_PERM_FULL)))) {
+if (isset($_GET['action']) && (Admin::getInstance()->superUser() || (int)$_GET['admin_id'] === (int)Admin::getInstance()->getId())) {
     if ($_GET['action'] == 'delete' && is_numeric($_GET['admin_id'])) {
         //If there only one super then don't allow deleting
         if ($admin_user = $GLOBALS['db']->select('CubeCart_admin_users', false, array('admin_id' => (int)$_GET['admin_id']))) {
