@@ -29,8 +29,8 @@
       </div>
 
       {* One-time reset token + account, straight from the emailed link. *}
-      <input type="hidden" name="validate" value="{$VALIDATE}">
-      <input type="hidden" name="email" value="{$EMAIL}">
+      <input type="hidden" name="validate" value="{$DATA.validate}">
+      <input type="hidden" name="email" value="{$DATA.email}">
 
       <button type="submit" class="cc-btn cc-btn-primary w-full">{$LANG.common.submit}</button>
    </form>
