@@ -490,8 +490,10 @@ class Newsletter
         if (ctype_digit($customer_id) && $customer_id > 0) {
             $removed = $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('customer_id' => $customer_id));
         } else if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            if((defined('ADMIN_CP') && ADMIN_CP === true) || (isset($_GET['rt']) && !empty($_GET['rt']))) {
-                $where = isset($_GET['rt']) ? array('remove_token' => $_GET['rt']) : array('email' => $email);
+            // remove_token must be a scalar; an array value would reach the raw where() branch (SQLi)
+            $rt = (isset($_GET['rt']) && is_scalar($_GET['rt'])) ? (string)$_GET['rt'] : '';
+            if((defined('ADMIN_CP') && ADMIN_CP === true) || $rt !== '') {
+                $where = ($rt !== '') ? array('remove_token' => $rt) : array('email' => $email);
                 $removed = $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', $where);
             } else {
                 $remove_token = md5(uniqid((string)time(), true));
