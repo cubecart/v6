@@ -113,13 +113,32 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
     $added    = false;
     $updated   = false;
 
+    // S7: a non-super admin must never modify a super user's account, and a non-super
+    // without users:FULL may only edit their own account (prevents admin takeover).
+    if (!Admin::getInstance()->superUser()) {
+        $s7_target = (isset($_POST['admin_id']) && is_numeric($_POST['admin_id'])) ? (int)$_POST['admin_id'] : 0;
+        $s7_target_super = false;
+        if ($s7_target > 0) {
+            $s7_t = $GLOBALS['db']->select('CubeCart_admin_users', array('super_user'), array('admin_id' => $s7_target), false, 1);
+            $s7_target_super = ($s7_t !== false && !empty($s7_t[0]['super_user']));
+        }
+        // A non-super may never modify a super user's account (blocks password-reset takeover)
+        if ($s7_target_super) {
+            $GLOBALS['main']->errorMessage($GLOBALS['language']->notification['error_privileges']);
+            httpredir(currentPage(array('action', 'admin_id')));
+        }
+    }
+
     $record   = $_POST['admin'];
     $record['name'] = ucwords($record['name']);
 
-    // Privilege-escalation guard: only an existing super user may set the super_user flag
-    if (!Admin::getInstance()->superUser()) {
-        unset($record['super_user']);
+    // S7: allowlist the columns this form may set (blocks mass-assigning status/session_id/etc.);
+    // super_user only for an existing super user.
+    $s7_editable = array('name', 'email', 'username', 'language', 'notes', 'order_notify', 'customer_id', 'logins', 'tour_shown');
+    if (Admin::getInstance()->superUser()) {
+        $s7_editable[] = 'super_user';
     }
+    $record = array_intersect_key($record, array_flip($s7_editable));
 
     ## Validate new password
     if (!empty($_POST['password']) && $_POST['password'] === $_POST['passconf']) {
@@ -143,7 +162,7 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
         }
 
         //If there only one super then don't allow demoting
-        if ($record['super_user'] == '0' && $count <= 1 && Admin::getInstance()->superUser() && (int)$_POST['admin_id'] === (int)Admin::getInstance()->getId()) {
+        if (isset($record['super_user']) && $record['super_user'] == '0' && $count <= 1 && Admin::getInstance()->superUser() && (int)$_POST['admin_id'] === (int)Admin::getInstance()->getId()) {
             $record['super_user'] = '1';
         }
         if ($GLOBALS['db']->update('CubeCart_admin_users', $record, array('admin_id' => $_POST['admin_id']))) {
@@ -208,6 +227,11 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
 if (isset($_POST['status']) && is_array($_POST['status']) && Admin::getInstance()->permissions('users', CC_PERM_FULL)) {
     $updated = false;
     foreach ($_POST['status'] as $admin_id => $status) {
+        // S7: a non-super may not change a super user's status
+        if (!Admin::getInstance()->superUser()) {
+            $s7_t = $GLOBALS['db']->select('CubeCart_admin_users', array('super_user'), array('admin_id' => (int)$admin_id), false, 1);
+            if ($s7_t !== false && !empty($s7_t[0]['super_user'])) { continue; }
+        }
         if ($GLOBALS['db']->update('CubeCart_admin_users', array('status' => (int)$status), array('admin_id' => (int)$admin_id))) {
             $updated = true;
         }
@@ -226,6 +250,11 @@ if (isset($_GET['action']) && (Admin::getInstance()->superUser() || ((int)$_GET[
     if ($_GET['action'] == 'delete' && is_numeric($_GET['admin_id'])) {
         //If there only one super then don't allow deleting
         if ($admin_user = $GLOBALS['db']->select('CubeCart_admin_users', false, array('admin_id' => (int)$_GET['admin_id']))) {
+            // S7: never delete a super user unless you are a super user, and never the last super
+            if (!empty($admin_user[0]['super_user']) && (!Admin::getInstance()->superUser() || $count <= 1)) {
+                $GLOBALS['main']->errorMessage($GLOBALS['language']->notification['error_privileges']);
+                httpredir(currentPage(array('action', 'admin_id')));
+            }
             if ($GLOBALS['db']->delete('CubeCart_admin_users', array('admin_id' => (int)$admin_user[0]['admin_id']))) {
                 $GLOBALS['main']->successMessage(sprintf($lang['admins']['notify_admin_delete'], $admin_user[0]['username']));
             } else {
