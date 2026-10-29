@@ -655,7 +655,7 @@ class Session
     public function set_cookie($name, $value, $expires = false, $options = array())
     {
         $params = array(
-            'samesite' => 'None',
+            'samesite' => 'Lax',
             'httponly'  => true,
             'secure'   => true,
             'path'     => $this->_session_path,
