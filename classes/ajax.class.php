@@ -42,22 +42,41 @@ class Ajax
         $string = isset($_GET['q']) ? $_GET['q'] : '';
         $function = (isset($_GET['function']) && !empty($_GET['function'])) ? $_GET['function'] : 'search';
 
-        // Per-section authz: the ?_g=xml AJAX path otherwise bypasses the permissions() gate on normal admin pages
+        // Per-section authz: the ?_g=xml AJAX path otherwise bypasses the permissions() gate on normal admin
+        // pages. Each entry is array(sections, level); the admin needs ANY one section at that level (super
+        // users bypass inside permissions()). fm* back both the File Manager and the image picker embedded on
+        // the product/category/gift-certificate (settings) edit pages, so they allow those sections too.
         $ajax_perms = array(
-            'rebuildElasticsearch' => 'maintenance',
-            'filesize'             => 'filemanager',
-            'fmSearch'             => 'filemanager',
-            'fmFolder'             => 'filemanager',
-            'fmCreateFolder'       => 'filemanager',
-            'productImages'        => 'products',
-            'doneToggle'           => 'settings',
-            'viewEmail'            => 'statistics',
-            'viewHookBackup'       => 'maintenance',
-            'SMTPTest'             => 'settings',
-            'previewOrderFormat'   => 'settings',
-            'subscriber_log'       => 'customers',
+            'rebuildElasticsearch' => array(array('maintenance'), CC_PERM_READ),
+            'filesize'             => array(array('filemanager', 'maintenance'), CC_PERM_READ),
+            'fmSearch'             => array(array('filemanager', 'products', 'categories', 'settings'), CC_PERM_READ),
+            'fmFolder'             => array(array('filemanager', 'products', 'categories', 'settings'), CC_PERM_READ),
+            'fmCreateFolder'       => array(array('filemanager', 'products', 'categories', 'settings'), CC_PERM_EDIT),
+            'productImages'        => array(array('products'), CC_PERM_READ),
+            'doneToggle'           => array(array('settings'), CC_PERM_EDIT),
+            'viewEmail'            => array(array('statistics'), CC_PERM_READ),
+            'viewHookBackup'       => array(array('maintenance'), CC_PERM_READ),
+            'SMTPTest'             => array(array('settings'), CC_PERM_READ),
+            'previewOrderFormat'   => array(array('settings'), CC_PERM_READ),
+            'subscriber_log'       => array(array('customers'), CC_PERM_READ),
         );
-        if (isset($ajax_perms[$function]) && !Admin::getInstance()->permissions($ajax_perms[$function], CC_PERM_READ, false, false)) {
+        $denied = false;
+        if (isset($ajax_perms[$function])) {
+            list($secs, $lvl) = $ajax_perms[$function];
+            $ok = false;
+            foreach ($secs as $sec) {
+                if (Admin::getInstance()->permissions($sec, $lvl, false, false)) { $ok = true; break; }
+            }
+            $denied = !$ok;
+        } elseif ($function === 'search') {
+            // The generic search exposes customer PII (user/address) and file listings (files); gate those types.
+            $search_type = strtolower(isset($_GET['type']) ? (string)$_GET['type'] : '');
+            $search_perms = array('user' => 'customers', 'address' => 'customers', 'files' => 'filemanager');
+            if (isset($search_perms[$search_type]) && !Admin::getInstance()->permissions($search_perms[$search_type], CC_PERM_READ, false, false)) {
+                $denied = true;
+            }
+        }
+        if ($denied) {
             return json_encode(array('error' => 'unauthorised'));
         }
 
