@@ -74,7 +74,7 @@
 	<fieldset><legend>{$LANG.catalogue.title_import_options}</legend>
 	  <div><label for="opt_headers">{$LANG.catalogue.import_csv_headers}</label><span><input type="checkbox" name="option[headers]" id="opt_headers" value="1"></span></div>
 	  <div><label for="opt_truncate">{$LANG.catalogue.import_replace_existing}</label><span><input type="checkbox" name="option[truncate]" id="opt_truncate" value="1"></span></div>
-	  <input type="hidden" name="delimiter" value="{$IMPORT.delimiter}">
+	  <input type="hidden" name="delimiter" value="{$IMPORT.delimiter|escape}">
 	</fieldset>
 	{/if}
 

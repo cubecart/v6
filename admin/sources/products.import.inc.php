@@ -183,7 +183,18 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
                 }
                 // Insert if we have a product record with at minimum a value for the product name
                 if (isset($product_record) && !empty($product_record) && !empty($product_record['name'])) {
-                    $product_record['name'] = strip_tags($product_record['name']); // match the product editor (plain-text name)
+                    // Mirror the product editor's sanitiser so a CSV cannot store XSS the form path would strip (A3)
+                    $product_record['name'] = strip_tags($product_record['name']);
+                    foreach (array('description', 'description_short', 'spec_copy') as $a3_html) {
+                        if (isset($product_record[$a3_html])) {
+                            $product_record[$a3_html] = Sanitize::htmlClean($product_record[$a3_html]);
+                        }
+                    }
+                    foreach (array('product_code', 'seo_meta_title', 'seo_meta_description') as $a3_text) {
+                        if (isset($product_record[$a3_text])) {
+                            $product_record[$a3_text] = strip_tags($product_record[$a3_text]);
+                        }
+                    }
                     $product_record['date_added']	= $GLOBALS['session']->get('date_added', 'import');
                     // Insert product
                     if (!isset($product_record['product_code']) || empty($product_record['product_code'])) {
