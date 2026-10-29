@@ -394,7 +394,7 @@ if (isset($_GET['action'])) {
                 $GLOBALS['smarty']->assign('DISPLAY_DASHBOARD', true);
             }
             if (($customer_notes = $GLOBALS['db']->select('CubeCart_customer', array('notes'), array('customer_id' => $summary[0]['customer_id']))) !== false) {
-                $GLOBALS['smarty']->assign('CUSTOMER_NOTES', $customer_notes[0]['notes']);
+                $GLOBALS['smarty']->assign('CUSTOMER_NOTES', htmlspecialchars((string)$customer_notes[0]['notes'], ENT_QUOTES, 'UTF-8'));
             }
             $GLOBALS['gui']->addBreadcrumb(($GLOBALS['config']->get('config', 'oid_mode') == 'i' && !empty($summary[0][$GLOBALS['config']->get('config', 'oid_col')])) ? $summary[0][$GLOBALS['config']->get('config', 'oid_col')] : $summary[0]['cart_order_id'], currentPage(array('print_hash')));
             // Load order inventory
@@ -419,7 +419,7 @@ if (isset($_GET['action'])) {
 
                     $options_array = $order->unSerializeOptions($product['product_options']);
                     $product['options_array'] = $options_array;
-                    $product['options_text'] = implode('<br>', $options_array);
+                    $product['options_text'] = is_array($options_array) ? implode('<br>', array_map(function($o) { return htmlspecialchars((string)$o, ENT_QUOTES, 'UTF-8'); }, $options_array)) : htmlspecialchars((string)$options_array, ENT_QUOTES, 'UTF-8');
                     
                     $custom_data = array();
                     
@@ -439,7 +439,7 @@ if (isset($_GET['action'])) {
                                     } elseif ($key == 'value') {
                                         $value = $GLOBALS['tax']->priceFormat($value);
                                     }
-                                    $custom_data_string[$key] = $value;
+                                    $custom_data_string[$key] = htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
                                 }
                                 $product['custom'] = $custom_data_string;
                             }
@@ -466,6 +466,8 @@ if (isset($_GET['action'])) {
                         $product['accesskey'] = false;
                     }
                     
+                    $product['name'] = htmlspecialchars((string)$product['name'], ENT_QUOTES, 'UTF-8');
+                    $product['product_code'] = htmlspecialchars((string)$product['product_code'], ENT_QUOTES, 'UTF-8');
                     $smarty_data['products'][] = $product;
                 }
                 $GLOBALS['smarty']->assign('PRODUCTS', $smarty_data['products']);
@@ -538,8 +540,12 @@ if (isset($_GET['action'])) {
             $billing_address[] = $overview_summary['postcode'];
             $billing_address[] = $overview_summary['country'];
             
-            $GLOBALS['smarty']->assign('SHIPPING_ADDRESS', implode("\r\n",$shipping_address));
-            $GLOBALS['smarty']->assign('BILLING_ADDRESS', implode("\r\n",$billing_address));
+            $GLOBALS['smarty']->assign('SHIPPING_ADDRESS', htmlspecialchars(implode("\r\n",$shipping_address), ENT_QUOTES, 'UTF-8'));
+            $GLOBALS['smarty']->assign('BILLING_ADDRESS', htmlspecialchars(implode("\r\n",$billing_address), ENT_QUOTES, 'UTF-8'));
+            // Escape stored free-text fields for display (stored XSS); priced/linked fields are left intact.
+            foreach (array('first_name','last_name','name','name_d','company_name','company_name_d','line1','line1_d','line2','line2_d','town','town_d','state','state_d','postcode','postcode_d','country','country_d','email','phone','mobile','customer_comments','w3w','w3w_d','lang') as $esc_k) {
+                if (isset($overview_summary[$esc_k])) { $overview_summary[$esc_k] = htmlspecialchars((string)$overview_summary[$esc_k], ENT_QUOTES, 'UTF-8'); }
+            }
             $GLOBALS['smarty']->assign('OVERVIEW_SUMMARY', $overview_summary);
             // Show the customer comments
             if (!empty($overview_summary['customer_comments'])) {
@@ -691,10 +697,12 @@ if (isset($_GET['action'])) {
                         if (empty($value)) {
                             continue;
                         }
-                        $item['options'][] = $option;
+                        $item['options'][] = htmlspecialchars((string)$option, ENT_QUOTES, 'UTF-8');
                     }
 
 
+                    $item['name'] = htmlspecialchars((string)$item['name'], ENT_QUOTES, 'UTF-8');
+                    $item['product_code'] = htmlspecialchars((string)$item['product_code'], ENT_QUOTES, 'UTF-8');
                     $summary['items'][] = $item;
                 }
             }
@@ -736,10 +744,11 @@ if (isset($_GET['action'])) {
 
             if (($notes = $GLOBALS['db']->select('CubeCart_order_notes', false, array('cart_order_id' => $summary['cart_order_id'], 'print' => '1'))) !== false) {
                 foreach ($notes as $key => $note) {
-                    $summary['notes'][] = $note['content'].'<br />';
+                    $summary['notes'][] = htmlspecialchars((string)$note['content'], ENT_QUOTES, 'UTF-8').'<br />';
                 }
             }
 
+            foreach (array('name','name_d','first_name','last_name','first_name_d','last_name_d','company_name','company_name_d','line1','line1_d','line2','line2_d','town','town_d','state','state_d','postcode','postcode_d','country','country_d','email','phone','mobile','customer_comments','address') as $esc_k) { if (isset($summary[$esc_k])) { $summary[$esc_k] = htmlspecialchars((string)$summary[$esc_k], ENT_QUOTES, 'UTF-8'); } }
             $smarty_data['list_orders'][] = $summary;
             unset($summary, $address);
         }
@@ -1071,6 +1080,7 @@ if (isset($_GET['action'])) {
             $order['updated']   = formatTime(strtotime($order['updated']));
             $order['prod_total'] = Tax::getInstance()->priceFormat($order['total']);
 
+            foreach (array('name','first_name','last_name') as $esc_k) { if (isset($order[$esc_k])) { $order[$esc_k] = htmlspecialchars((string)$order[$esc_k], ENT_QUOTES, 'UTF-8'); } }
             $smarty_data['list_orders'][] = $order;
         }
         $GLOBALS['smarty']->assign('ORDER_LIST', $smarty_data['list_orders']);
