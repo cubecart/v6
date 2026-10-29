@@ -917,7 +917,7 @@ class User
                     // Send email
                     if (($user = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => (int)$check[0]['customer_id']), false, 1, false, false)) !== false) {
                         $mailer = new Mailer();
-                        $link['reset_link'] = CC_STORE_URL.'/index.php?_a=recovery&validate='.$validation;
+                        $link['reset_link'] = CC_STORE_URL.'/index.php?_a=recovery&validate='.$validation.'&email='.urlencode($user[0]['email']);
                         $data = array_merge($user[0], $link);
                         $content = $mailer->loadContent('account.password_recovery', $GLOBALS['language']->current(), $data);
                         $mailer->sendEmailAsync($user[0]['email'], $content);
