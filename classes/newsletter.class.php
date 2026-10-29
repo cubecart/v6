@@ -490,8 +490,12 @@ class Newsletter
         if (ctype_digit($customer_id) && $customer_id > 0) {
             $removed = $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('customer_id' => $customer_id));
         } else if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            // remove_token must be a scalar; an array value would reach the raw where() branch (SQLi)
+            // remove_token must be a scalar 32-char hex token; an array, or an operator/NULL
+            // smuggling value, would reach the raw/operator-parsing where() branch (SQLi / unqualified DELETE)
             $rt = (isset($_GET['rt']) && is_scalar($_GET['rt'])) ? (string)$_GET['rt'] : '';
+            if ($rt !== '' && !preg_match('/^[a-f0-9]{32}$/i', $rt)) {
+                $rt = '';
+            }
             if((defined('ADMIN_CP') && ADMIN_CP === true) || $rt !== '') {
                 $where = ($rt !== '') ? array('remove_token' => $rt) : array('email' => $email);
                 $removed = $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', $where);
