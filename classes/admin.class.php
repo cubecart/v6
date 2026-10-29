@@ -655,6 +655,15 @@ class Admin
         }
         $admin = $admin[0];
 
+        // S3: refuse 2FA verification outright while a 2FA brute-force ban is active (login=true checks
+        // the counter without incrementing); otherwise a correct guess during an active ban would pass.
+        if ($GLOBALS['session']->blocker(isset($admin['username']) ? $admin['username'] : (string)$admin_id, $admin_id, true, Session::BLOCKER_TWOFA, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'))) {
+            $this->_clearPending2FA();
+            $minutes = ceil($GLOBALS['config']->get('config', 'bftime') / 60);
+            $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->account['error_twofa_locked'], $minutes));
+            httpredir($GLOBALS['rootRel'].$GLOBALS['config']->get('config', 'adminFile'));
+        }
+
         $code     = trim((string)$code);
         $verified = false;
 
