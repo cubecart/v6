@@ -30,6 +30,7 @@
 
         var wrap = document.createElement('div');
         wrap.className = 'relative';
+        wrap.setAttribute('data-field', ''); // errors anchor after this wrapper, not inside it, so the absolute reveal button keeps the input's height (#4326)
         input.parentNode.insertBefore(wrap, input);
         wrap.appendChild(input);
         input.classList.add('pe-11');
