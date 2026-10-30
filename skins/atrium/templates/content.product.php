@@ -20,7 +20,7 @@
          </div>
 
          <div class="mt-8 lg:mt-0 lg:min-w-0 lg:flex-1">
-            <h1 class="text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl">{$PRODUCT.name}</h1>
+            <h1 class="text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl">{$PRODUCT.name|escape}</h1>
 
             {if !empty($PRODUCT.product_code)}
             <p class="mt-1 text-sm text-ink-500">{$LANG.catalogue.product_code}: {$PRODUCT.product_code}</p>

@@ -17,8 +17,8 @@
    <ul class="mt-3 space-y-3 text-sm">
       {foreach from=$SALE_PRODUCTS item=product}
       <li>
-         <a href="{$product.url}" title="{$product.name}{if $product.saving} ({$LANG.catalogue.saving} {$product.saving}){/if}"
-            class="text-ink-800 hover:underline">{$product.name}</a>
+         <a href="{$product.url}" title="{$product.name|escape}{if $product.saving} ({$LANG.catalogue.saving} {$product.saving}){/if}"
+            class="text-ink-800 hover:underline">{$product.name|escape}</a>
          <span class="mt-0.5 block">
             {if empty($product.sale_price_unformatted)}
             <span class="price text-xs text-ink-600">{$product.price}</span>

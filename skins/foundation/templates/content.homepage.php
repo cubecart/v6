@@ -29,9 +29,9 @@
          <form action="{$VAL_SELF}" method="post" class="panel add_to_basket">
             <div data-equalizer-watch>
                <div class="text-center">
-                  <a class="th" href="{$product.url}"><img src="{$product.image}" alt="{if isset($product.image_tags.alt) && !empty($product.image_tags.alt)}{$product.image_tags.alt}{else}{$product.name}{/if}"{if isset($product.image_tags.title)} title="{$product.image_tags.title}"{/if}></a>
+                  <a class="th" href="{$product.url}"><img src="{$product.image}" alt="{if isset($product.image_tags.alt) && !empty($product.image_tags.alt)}{$product.image_tags.alt}{else}{$product.name|escape}{/if}"{if isset($product.image_tags.title)} title="{$product.image_tags.title}"{/if}></a>
                </div>
-               <h3><a href="{$product.url}" title="{$product.name}">{$product.name|truncate:38:"&hellip;"}</a></h3>
+               <h3><a href="{$product.url}" title="{$product.name|escape}">{$product.name|truncate:38:"&hellip;"}</a></h3>
                {if $product.review_score && $CTRL_REVIEW}
                <div class="rating"> {for $i = 1; $i <= 5; $i++}
                   {if $product.review_score >= $i} <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star.png" alt=""> {elseif $product.review_score > ($i - 1) && $product.review_score < $i} <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star_half.png" alt=""> {else} <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star_off.png" alt=""> {/if}
@@ -46,12 +46,12 @@
             {/if}
 
             {* Remove comment if you want info button
-            <a href="{$product.url}" title="{$product.name}" class="button tiny secondary left">{$LANG.common.info}</a>
+            <a href="{$product.url}" title="{$product.name|escape}" class="button tiny secondary left">{$LANG.common.info}</a>
             *}
             {if $CTRL_HIDE_PRICES}
             <div class="row collapse marg-top">
                <div class="small-12 columns">
-                   <a href="{$product.url}" title="{$product.name}" class="button small postfix">{$LANG.common.info}</a>
+                   <a href="{$product.url}" title="{$product.name|escape}" class="button small postfix">{$LANG.common.info}</a>
                </div>
             </div>
             {elseif $product.available <= 0}

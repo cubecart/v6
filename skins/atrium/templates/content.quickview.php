@@ -31,7 +31,7 @@
 
       <div class="mt-4 min-w-0 sm:mt-0 sm:flex-1">
          <h2 class="text-lg font-semibold tracking-tight text-ink-900">
-            <a href="{$PRODUCT.url}" class="hover:underline">{$PRODUCT.name}</a>
+            <a href="{$PRODUCT.url}" class="hover:underline">{$PRODUCT.name|escape}</a>
          </h2>
          {if !empty($PRODUCT.product_code)}
          <p class="mt-1 text-sm text-ink-500">{$LANG.catalogue.product_code}: {$PRODUCT.product_code}</p>

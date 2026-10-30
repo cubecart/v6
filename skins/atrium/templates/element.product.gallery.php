@@ -20,7 +20,7 @@
            title="{$LANG.catalogue.click_enlarge}">
       <img id="img-preview"
            src="{$PRODUCT.medium}"
-           alt="{if isset($PRODUCT.image_tags.medium.alt) && !empty($PRODUCT.image_tags.medium.alt)}{$PRODUCT.image_tags.medium.alt}{else}{$PRODUCT.name}{/if}"
+           alt="{if isset($PRODUCT.image_tags.medium.alt) && !empty($PRODUCT.image_tags.medium.alt)}{$PRODUCT.image_tags.medium.alt}{else}{$PRODUCT.name|escape}{/if}"
            {if isset($PRODUCT.image_tags.medium.title)}title="{$PRODUCT.image_tags.medium.title}"{/if}
            {* The LCP element on every product page. Never lazy, and hinted, or
               the browser discovers it at normal priority behind the CSS. *}
@@ -76,7 +76,7 @@
         @keydown.arrow-right.window="open && step(1)"
         x-transition.opacity.duration.150ms
         class="cc-overlay fixed inset-0 flex items-center justify-center bg-ink-950/80 p-4"
-        role="dialog" aria-modal="true" aria-label="{$PRODUCT.name}">
+        role="dialog" aria-modal="true" aria-label="{$PRODUCT.name|escape}">
       <button type="button" @click="close()"
               class="absolute end-4 top-4 rounded-cc bg-ink-100 p-2 text-ink-800 hover:bg-ink-200">
          <span class="cc-sr-only">{$LANG.common.close|default:'Close'}</span>
@@ -94,7 +94,7 @@
 
       {* .cc-media, same white plate as every other catalogue image: a
          transparent PNG on the dark overlay would otherwise read as a hole. *}
-      <img :src="full" alt="{$PRODUCT.name}" class="cc-media max-h-full max-w-full rounded-cc-lg object-contain" @click.stop>
+      <img :src="full" alt="{$PRODUCT.name|escape}" class="cc-media max-h-full max-w-full rounded-cc-lg object-contain" @click.stop>
 
       <button type="button" x-show="images.length > 1" @click.stop="step(1)"
               class="absolute end-4 top-1/2 -translate-y-1/2 rounded-cc bg-ink-100 p-2 text-ink-800 hover:bg-ink-200">

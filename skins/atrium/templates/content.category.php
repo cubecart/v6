@@ -103,10 +103,10 @@
                   :class="isGrid() ? 'flex flex-col' : 'flex gap-5'">
 
                <div class="group relative shrink-0" :class="isGrid() ? '' : 'w-28 sm:w-40'">
-                  <a href="{$product.url}" title="{$product.name}"
+                  <a href="{$product.url}" title="{$product.name|escape}"
                      class="cc-media block overflow-hidden rounded-cc-lg border border-ink-200">
                      <img src="{$product.thumbnail}"
-                          alt="{if isset($product.image_tags.thumbnail.alt) && !empty($product.image_tags.thumbnail.alt)}{$product.image_tags.thumbnail.alt}{else}{$product.name}{/if}"
+                          alt="{if isset($product.image_tags.thumbnail.alt) && !empty($product.image_tags.thumbnail.alt)}{$product.image_tags.thumbnail.alt}{else}{$product.name|escape}{/if}"
                           {if isset($product.image_tags.thumbnail.title)}title="{$product.image_tags.thumbnail.title}"{/if}
                           {* See content.homepage.php: the first row is the LCP
                              candidate and must not be lazy. *}
@@ -132,7 +132,7 @@
                      product page. A <button> in that situation does nothing at
                      all, which is what a customer reports as broken. *}
                   {if !isset($SKIN_SETTINGS.show_quick_view) || $SKIN_SETTINGS.show_quick_view}
-                  <a x-data href="{$product.url}" title="{$product.name}"
+                  <a x-data href="{$product.url}" title="{$product.name|escape}"
                      class="cc-btn cc-btn-secondary absolute inset-x-2 bottom-2 hidden opacity-0 shadow transition-opacity focus-visible:opacity-100 group-hover:opacity-100 sm:flex"
                      @click.prevent="$store.quickView.show('{$product.product_id}', '{$product.name|escape:'javascript'}', '{$product.url}')">
                      {$LANG.catalogue.quick_view|default:'Quick View'}
@@ -142,7 +142,7 @@
 
                <div class="min-w-0 flex-1" :class="isGrid() ? 'mt-3 flex flex-col' : ''">
                   <h2 class="text-sm font-medium">
-                     <a href="{$product.url}" title="{$product.name}" class="text-ink-900 hover:underline">{$product.name}</a>
+                     <a href="{$product.url}" title="{$product.name|escape}" class="text-ink-900 hover:underline">{$product.name|escape}</a>
                   </h2>
 
                   {include file='templates/element.product.review_score.php' score=$product.review_score context='listing' uid=$product.product_id}

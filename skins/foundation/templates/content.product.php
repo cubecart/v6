@@ -14,7 +14,7 @@
    <form action="{$VAL_SELF}" method="post" class="add_to_basket">
       <div class="row">
          <div class="small-12 columns">
-            <h1>{$PRODUCT.name}</h1>
+            <h1>{$PRODUCT.name|escape}</h1>
          </div>
       </div>
       {*

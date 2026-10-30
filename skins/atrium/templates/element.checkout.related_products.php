@@ -16,11 +16,11 @@
    <ul role="list" class="mt-4 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
       {foreach from=$RELATED item=product}
       <li>
-         <a href="{$product.url}" title="{$product.name}" class="cc-media block overflow-hidden rounded-cc-lg border border-ink-200">
-            <img src="{$product.img_src}" alt="{$product.name}" loading="lazy" class="cc-media aspect-square w-full {$cc_media_fit}">
+         <a href="{$product.url}" title="{$product.name|escape}" class="cc-media block overflow-hidden rounded-cc-lg border border-ink-200">
+            <img src="{$product.img_src}" alt="{$product.name|escape}" loading="lazy" class="cc-media aspect-square w-full {$cc_media_fit}">
          </a>
          <h3 class="mt-2 text-sm font-medium">
-            <a href="{$product.url}" title="{$product.name}" class="text-ink-900 hover:underline">{$product.name}</a>
+            <a href="{$product.url}" title="{$product.name|escape}" class="text-ink-900 hover:underline">{$product.name|escape}</a>
          </h3>
          <p class="mt-1">
             {if $product.ctrl_sale}

@@ -7,9 +7,9 @@
             <div class="panel">
                 <div data-equalizer-watch>
                     <div class="text-center">
-                        <a href="{$product.url}" title="{$product.name}"><img src="{$product.img_src}" class="th" alt="{$product.name}"></a>
+                        <a href="{$product.url}" title="{$product.name|escape}"><img src="{$product.img_src}" class="th" alt="{$product.name|escape}"></a>
                     </div>
-                    <h3><a href="{$product.url}" title="{$product.name}">{$product.name}</a></h3>
+                    <h3><a href="{$product.url}" title="{$product.name|escape}">{$product.name|escape}</a></h3>
                 </div>
                 <p>
                 {if $product.ctrl_sale}

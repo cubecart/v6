@@ -133,7 +133,7 @@
     "sku": "{/literal}{$PRODUCT.product_code}{literal}",
     "mpn": "{/literal}{$PRODUCT.mpn}{literal}",
     "image": "{/literal}{$PRODUCT.source}{literal}",
-    "name": "{/literal}{$PRODUCT.name}{literal}",
+    "name": "{/literal}{$PRODUCT.name|escape}{literal}",
     {/literal}
 
     {if !empty($REVIEWS)}
