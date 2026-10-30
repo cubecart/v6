@@ -380,32 +380,29 @@ class Admin
                 $GLOBALS['gui']->setError($GLOBALS['language']->account['error_login']);
                 return false;
             }
-            $result = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'customer_id', 'logins', 'password', 'name', 'email', 'language', 'twofa_enabled', 'twofa_method', 'twofa_secret', 'ip_address', 'browser'), array('username' => $username, 'password' => $hash_password, 'status' => '1'));
-            $GLOBALS['session']->blocker($username, 0, (bool)$result, Session::BLOCKER_BACKEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'));
-            if ($result) {
+            $result = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'customer_id', 'logins', 'password', 'name', 'email', 'language', 'twofa_enabled', 'twofa_method', 'twofa_secret', 'ip_address', 'browser', 'blockTime'), array('username' => $username, 'password' => $hash_password, 'status' => '1'));
+            // An account locked by repeated failures stays locked for a correct password too, so
+            // guesses spread across many IPs cannot carry on past the per-IP blocker (GHSA-jx2m-ww56-f8m9)
+            $account_locked = $result && (int)$result[0]['blockTime'] > time();
+            $GLOBALS['session']->blocker($username, 0, ($result && !$account_locked), Session::BLOCKER_BACKEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'));
+            if ($account_locked) {
+                foreach ($GLOBALS['hooks']->load('admin.authenticate.failed_valid_admin') as $hook) {
+                    include $hook;
+                }
+                $minutes_blocked = ceil(((int)$result[0]['blockTime'] - time()) / 60);
+                $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->account['error_login_blocked'], $minutes_blocked));
+            } elseif ($result) {
                 if (!$GLOBALS['session']->blocked()) {
-                    $update = array(
-                        'blockTime'  => 0,
-                        'browser'  => htmlspecialchars($_SERVER['HTTP_USER_AGENT']),
-                        'failLevel'  => 0,
-                        'ip_address' => get_ip_address(),
-                        'verify'  => '',
-                        'lastTime'  => time(),
-                        'logins'  => $result[0]['logins'] +1,
-                    );
                     if (!Password::getInstance()->isBcrypt($result[0]['password'])) {
                         $pass = Password::getInstance()->hashPassword($password);
-                        $update = array_merge($update, array(
-                                'salt'   => '',
-                                'password'  => $pass,
-                            ));
+                        $GLOBALS['db']->update('CubeCart_admin_users', array('salt' => '', 'password' => $pass), array('admin_id' => (int)$result[0]['admin_id']));
                     }
-                    $GLOBALS['db']->update('CubeCart_admin_users', $update, array('admin_id' => (int)$result[0]['admin_id']));
-                    $this->_sendNewDeviceNotification($result[0]);
                     if (!empty($result[0]['twofa_enabled'])) {
-                        // 2FA required – store pending state and redirect to challenge page (exits)
+                        // 2FA required – store pending state and redirect to challenge page (exits).
+                        // The login is recorded only once the second factor passes (GHSA-fv5q-rvcx-rv3h).
                         $this->_initiate2FA($result[0]);
                     }
+                    $this->_recordLogin($result[0]);
                     // No 2FA – establish session directly (sets _logged_in, admin_id in session, calls _load)
                     $this->_establishSession((int)$result[0]['admin_id']);
                 } else {
@@ -655,6 +652,14 @@ class Admin
         }
         $admin = $admin[0];
 
+        // One verification at a time per admin, so parallel guesses cannot all read the same blocker
+        // count before any of them is recorded (GHSA-fv5q-rvcx-rv3h). Released when the request ends.
+        $lock = $GLOBALS['db']->query("SELECT GET_LOCK('cc_twofa_".$admin_id."', 10) AS `locked`", false, 0, false);
+        if (empty($lock[0]['locked'])) {
+            $GLOBALS['gui']->setError($GLOBALS['language']->account['error_twofa_invalid']);
+            return false;
+        }
+
         // S3: refuse 2FA verification outright while a 2FA brute-force ban is active (login=true checks
         // the counter without incrementing); otherwise a correct guess during an active ban would pass.
         if ($GLOBALS['session']->blocker(isset($admin['username']) ? $admin['username'] : (string)$admin_id, $admin_id, true, Session::BLOCKER_TWOFA, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'))) {
@@ -705,6 +710,7 @@ class Admin
         if ($verified) {
             $redir = (string)$GLOBALS['session']->get('twofa_pending_redir', 'client', '');
             $this->_clearPending2FA();
+            $this->_recordLogin($admin);
             $this->_establishSession($admin_id);
             if (!empty($redir) && $GLOBALS['ssl']->validRedirect($redir)) {
                 httpredir($redir);
@@ -752,6 +758,26 @@ class Admin
         $this->_send2FACode($admin);
         $GLOBALS['gui']->setNotify($GLOBALS['language']->account['notify_twofa_resent']);
         return true;
+    }
+
+    /**
+     * Record a completed login: reset the failure counters, store the device baseline and
+     * send the new-device notice. Called only once 2FA, where enabled, has passed.
+     *
+     * @param array $admin  admin record from DB (must include admin_id, logins, ip_address, browser, name, email, language)
+     */
+    private function _recordLogin($admin)
+    {
+        $GLOBALS['db']->update('CubeCart_admin_users', array(
+            'blockTime'  => 0,
+            'browser'    => htmlspecialchars($_SERVER['HTTP_USER_AGENT'] ?? ''),
+            'failLevel'  => 0,
+            'ip_address' => get_ip_address(),
+            'verify'     => '',
+            'lastTime'   => time(),
+            'logins'     => (int)$admin['logins'] + 1,
+        ), array('admin_id' => (int)$admin['admin_id']));
+        $this->_sendNewDeviceNotification($admin);
     }
 
     /**

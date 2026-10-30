@@ -26,9 +26,11 @@ class Sanitize
         if (ADMIN_CP) {
             global $glob;
             $csrf_path = CC_ROOT_DIR.'/'.$glob['adminFolder'].'/skins/default/csrf.inc.php';
+            $csrf_loaded = false;
             if (file_exists($csrf_path)) {
-                require_once($csrf_path);
+                require($csrf_path);
                 if (isset($csrf_maps) && is_array($csrf_maps)) {
+                    $csrf_loaded = true;
                     // All CRSF mappings are lowercase
                     $g = array();
                     if(is_array($_GET)) {
@@ -60,6 +62,11 @@ class Sanitize
                     }
                 }
             }
+            if (!$csrf_loaded) {
+                // Fail closed: without the map no state-changing GET can be recognised (GHSA-wmwq-93f9-q8cv)
+                trigger_error('CSRF map missing or invalid: '.$csrf_path, E_USER_WARNING);
+                die('The admin security file skins/default/csrf.inc.php is missing or damaged. Restore it from the CubeCart release package.');
+            }
         }
 
         if (!empty($_POST)) {
@@ -78,6 +85,18 @@ class Sanitize
                 self::_stopToken();
             }
         }
+    }
+
+    /**
+     * Whether the browser reports the request as started from another site.
+     * For state-changing GET links that carry no token, such as logout and
+     * empty basket (GHSA-wmwq-93f9-q8cv). Browsers that send no header are allowed.
+     *
+     * @return bool
+     */
+    public static function crossSite()
+    {
+        return isset($_SERVER['HTTP_SEC_FETCH_SITE']) && $_SERVER['HTTP_SEC_FETCH_SITE'] === 'cross-site';
     }
 
     /**

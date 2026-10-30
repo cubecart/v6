@@ -572,6 +572,8 @@ class Session
         $this->_session_id = $this->_generateSessionId();
         Database::getInstance()->update('CubeCart_sessions', array('session_id' => $this->_session_id), array('session_id' => $old_id), false);
         $this->set_cookie($this->_session_name, $this->_session_id, time()+$this->_session_timeout);
+        // Only called on login: a token issued before it must not stay valid after it (GHSA-wmwq-93f9-q8cv)
+        $this->getToken(true);
     }
 
     /**

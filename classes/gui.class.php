@@ -344,7 +344,10 @@ class GUI
         $this->_setCanonical();
         $GLOBALS['debug']->stream_into_session = false;
         if ($GLOBALS['config']->get('config', 'csrf')=='1' || CC_IN_ADMIN) {
-            die(preg_replace('#</form>#i', '<input type="hidden" name="token" class="cc_session_token" value="'.SESSION_TOKEN.'"></form>', $GLOBALS['smarty']->fetch($file)));
+            // Read the token again: a login during this request rotates it after SESSION_TOKEN was defined
+            $token = $GLOBALS['session']->getToken();
+            $GLOBALS['smarty']->assign('SESSION_TOKEN', $token);
+            die(preg_replace('#</form>#i', '<input type="hidden" name="token" class="cc_session_token" value="'.$token.'"></form>', $GLOBALS['smarty']->fetch($file)));
         } else {
             $GLOBALS['smarty']->display($file);
         }
@@ -1317,7 +1320,7 @@ class GUI
         if(!Admin::getInstance()->is()) return false;
 
         // Handle ACP widget actions
-        if (isset($_GET['acp_action'])) {
+        if (isset($_GET['acp_action']) && !Sanitize::crossSite()) {
             $action = $_GET['acp_action'];
             $redirect = CC_ROOT_REL;
             if (isset($_GET['acp_redirect']) && strpos($_GET['acp_redirect'], '/') === 0 && strpos($_GET['acp_redirect'], '//') !== 0) {

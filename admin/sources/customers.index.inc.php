@@ -445,7 +445,7 @@ if ((!empty($_GET['action'] ??= "") || isset($_POST['multi-action'])) && Admin::
 
             $customer = $customer[0];
             
-            $url = currentPage('', array('action' => 'signinas', 'customer_id' => $customer['customer_id']));
+            $url = currentPage('', array('action' => 'signinas', 'customer_id' => $customer['customer_id'], 'token' => SESSION_TOKEN));
             $onclick = '';
 
              $GLOBALS['main']->addTabControl('<i class="fa fa-sign-in"></i> '.sprintf($lang['customer']['signinas'], $customer['first_name'], $customer['last_name']), '', $url, null, false, '_blank',null, '');
@@ -634,7 +634,7 @@ if ((!empty($_GET['action'] ??= "") || isset($_POST['multi-action'])) && Admin::
             $customer['language'] = file_exists(CC_ROOT_DIR.'/language/flags/'.$customer['language'].'.png') ? $customer['language'] : 'unknown';
             $customer['order_count'] = ($orders) ? count($orders) : 0;
             $customer['registered'] = formatTime($customer['registered']);
-            $customer['signinas_url'] = currentPage(array('page'), array('action' => 'signinas', 'customer_id' => $customer['customer_id']));
+            $customer['signinas_url'] = currentPage(array('page'), array('action' => 'signinas', 'customer_id' => $customer['customer_id'], 'token' => SESSION_TOKEN));
             $customer['signinas_name'] = sprintf($lang['customer']['signinas'], $customer['first_name'], $customer['last_name']);
             $customer['edit'] = currentPage(array('page'), array('action' => 'edit', 'customer_id' => $customer['customer_id']));
             $customer['delete'] = currentPage(false, array('action' => 'delete', 'customer_id' => $customer['customer_id'],'token' => SESSION_TOKEN));

@@ -562,7 +562,9 @@ class Cubecart
         } elseif (isset($_GET['_a']) && !empty($_GET['_a'])) {
             //Clear cart
             if (isset($_GET['empty-basket'])) {
-                $GLOBALS['cart']->clear();
+                if (!Sanitize::crossSite()) {
+                    $GLOBALS['cart']->clear();
+                }
                 httpredir(currentPage(array('empty-basket'), array('_a' => 'basket')));
             }
             switch (strtolower($_GET['_a'])) {
@@ -3110,6 +3112,9 @@ class Cubecart
      */
     private function _logout()
     {
+        if (Sanitize::crossSite()) {
+            httpredir('index.php');
+        }
         foreach ($GLOBALS['hooks']->load('class.cubecart.construct.logout') as $hook) {
             include $hook;
         }
@@ -3340,7 +3345,7 @@ class Cubecart
                 $errors[] = $GLOBALS['language']->withdrawal['validation_rate_limit'];
             } else {
                 // Serialise same-IP submissions so a concurrent burst cannot out-race the count-then-insert (#4316); best-effort, auto-released at request end.
-                $GLOBALS['db']->query("SELECT GET_LOCK('cc_withdraw_".md5((string)$rl_ip)."', 5)");
+                $GLOBALS['db']->query("SELECT GET_LOCK('cc_withdraw_".md5((string)$rl_ip)."', 5)", false, 0, false);
                 $rl_rows = $GLOBALS['db']->select('CubeCart_withdrawal_requests', array('id'), array('ip' => $rl_ip, 'submitted_at' => '>'.(time() - 3600)), false, false, false, false);
                 if (($rl_rows !== false ? count($rl_rows) : 0) >= 5) {
                     $errors[] = $GLOBALS['language']->withdrawal['validation_rate_limit'];
