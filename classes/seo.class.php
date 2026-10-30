@@ -297,8 +297,11 @@ class SEO
      */
     public function displayMetaData()
     {
-        $GLOBALS['smarty']->assign('META_DESCRIPTION', $this->meta_description());
-        $GLOBALS['smarty']->assign('META_TITLE', $this->meta_title());
+        // Output-encode title/description for the <title>, og:* and twitter:* sinks (stored XSS + quoted-name breakage).
+        $meta_description = $this->meta_description();
+        $meta_title = $this->meta_title();
+        $GLOBALS['smarty']->assign('META_DESCRIPTION', is_string($meta_description) ? htmlspecialchars($meta_description, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') : $meta_description);
+        $GLOBALS['smarty']->assign('META_TITLE', is_string($meta_title) ? htmlspecialchars($meta_title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') : $meta_title);
     }
 
     /**

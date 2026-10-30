@@ -79,7 +79,7 @@
     {literal},{
       "@type": "ListItem",
       "position": {/literal}{$smarty.foreach.crumbposition.iteration+1}{literal},
-      "name": "{/literal}{$crumb.title}{literal}",
+      "name": "{/literal}{$crumb.title|escape}{literal}",
       "item": "{/literal}{$crumb.url}{literal}"
     }{/literal}
 {/foreach}
