@@ -148,7 +148,7 @@
             </select>
          </span></div>
          <div><label for="recaptcha_public_key">{$LANG.settings.recaptcha_public_key}</label><span><input name="config[recaptcha_public_key]" id="recaptcha_public_key" class="textbox" value="{$CONFIG.recaptcha_public_key}"></span></div>
-         <div><label for="recaptcha_secret_key">{$LANG.settings.recaptcha_secret_key}</label><span><input name="config[recaptcha_secret_key]" id="recaptcha_secret_key" class="textbox" value="{$CONFIG.recaptcha_secret_key}"></span></div>
+         <div><label for="recaptcha_secret_key">{$LANG.settings.recaptcha_secret_key}</label><span><input name="config[recaptcha_secret_key]" id="recaptcha_secret_key" class="textbox" type="password" autocomplete="off" value="{$CONFIG.recaptcha_secret_key}">{if $CONFIG.recaptcha_secret_key_set} <small>{$LANG.settings.secret_set}</small>{/if}</span></div>
          <div class="clear important"><strong>{$LANG.settings.new_recaptcha_note}</strong>
             {if !empty($unavailable_captchas)}
             {$LANG.settings.captcha_warning}
@@ -453,7 +453,7 @@
                   </select></span>
             </div>
             <div><label for="email_smtp_user">{$LANG.settings.smtp_user}</label><span><input name="config[email_smtp_user]" id="email_smtp_user" type="text" class="textbox preview_email" value="{$CONFIG.email_smtp_user}" autocomplete="off"></span></div>
-            <div><label for="email_smtp_password">{$LANG.settings.smtp_pass}</label><span><input name="config[email_smtp_password]" id="email_smtp_password" type="password" class="textbox preview_email" value="{$CONFIG.email_smtp_password|escape:'html'}" onfocus="this.removeAttribute('readonly');" readonly autocomplete="off"></span></div>
+            <div><label for="email_smtp_password">{$LANG.settings.smtp_pass}</label><span><input name="config[email_smtp_password]" id="email_smtp_password" type="password" class="textbox preview_email" value="{$CONFIG.email_smtp_password|escape:'html'}" onfocus="this.removeAttribute('readonly');" readonly autocomplete="off">{if $CONFIG.email_smtp_password_set} <small>{$LANG.settings.secret_set}</small>{/if}</span></div>
          </div>
          {$EMAIL_PLUGIN_FIELDS}
          <div class="nostripe"><label for="smtp_test_url">&nbsp;</label><span>

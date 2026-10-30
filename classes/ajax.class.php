@@ -669,7 +669,8 @@ class Ajax
                 if ($GLOBALS['RAW']['POST']['email_smtp']=='1') {
                     $test_mailer->SMTPAuth = true;
                     $test_mailer->Username= $GLOBALS['RAW']['POST']['email_smtp_user'];
-                    $test_mailer->Password = $GLOBALS['RAW']['POST']['email_smtp_password'];
+                    // Fall back to the stored password when the field is blank (it is no longer rendered into the form) (#4325).
+                    $test_mailer->Password = !empty($GLOBALS['RAW']['POST']['email_smtp_password']) ? $GLOBALS['RAW']['POST']['email_smtp_password'] : $GLOBALS['config']->get('config', 'email_smtp_password');
                 }
                 $test_mailer->AddAddress($GLOBALS['RAW']['POST']['email_address']);
                 $test_mailer->Subject = $email_test_subject;

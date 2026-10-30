@@ -2538,6 +2538,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="new_recaptcha_note" introduced="6.0.0"><![CDATA[Site &amp; secret keys are provided by <a href="https://www.google.com/recaptcha/admin" target="_blank">Google</a>, <a href="https://www.hcaptcha.com" target="_blank">hCaptcha</a> and <a href="https://www.cloudflare.com/en-gb/application-services/products/turnstile/" target="_blank">Cloudflare</a>.]]></string>
     <string name="recaptcha_public_key" introduced="6.0.0"><![CDATA[Site Key]]></string>
     <string name="recaptcha_secret_key" introduced="6.0.0"><![CDATA[Secret Key]]></string>
+    <string name="secret_set" introduced="6.8.6"><![CDATA[Saved. Leave blank to keep the current value.]]></string>
     <string name="repair" introduced="5.0.0"><![CDATA[Repair]]></string>
     <string name="sales_items_count" introduced="5.0.0"><![CDATA[Number of sale items to display]]></string>
     <string name="sales_mode" introduced="5.0.0"><![CDATA[Sales Mode]]></string>

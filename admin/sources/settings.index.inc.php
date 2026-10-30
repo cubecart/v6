@@ -16,6 +16,8 @@ if (!defined('CC_INI_SET')) {
 
 Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
 
+// Config values that are secrets: never rendered into the page source, kept on an empty save (#4325).
+$secret_config_keys = array('email_smtp_password', 'recaptcha_secret_key');
 
 if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_PERM_FULL)) {
     $config_old = $GLOBALS['config']->get('config');
@@ -216,6 +218,13 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 
     // Preserve current default_language (now managed in Settings > Languages)
     $config_new['default_language'] = $config_old['default_language'];
+
+    // A secret field comes back empty (it is never rendered); keep the stored value rather than wiping it.
+    foreach ($secret_config_keys as $secret_key) {
+        if (empty($config_new[$secret_key]) && !empty($config_old[$secret_key])) {
+            $config_new[$secret_key] = $config_old[$secret_key];
+        }
+    }
 
     $updated = ($GLOBALS['config']->set('config', '', $config_new)) ? true : false;
 
@@ -536,6 +545,11 @@ if ($active_coupons) {
 }
 
 $smarty_data['config'] = $GLOBALS['config']->get('config');
+// Blank secrets before they reach the template; expose only a *_set flag so the field can show "saved".
+foreach ($secret_config_keys as $secret_key) {
+    $smarty_data['config'][$secret_key.'_set'] = !empty($smarty_data['config'][$secret_key]);
+    $smarty_data['config'][$secret_key] = '';
+}
 $GLOBALS['smarty']->assign('FIXED_CONFIG', $glob);
 $GLOBALS['smarty']->assign('CONFIG', $smarty_data['config']);
 
