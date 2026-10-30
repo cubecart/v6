@@ -157,7 +157,9 @@ document.addEventListener('alpine:init', function () {
 
                 var delta = 0;
                 var deltaOriginal = 0;
-                var fields = this.$el.querySelectorAll('[name^=productOptions]');
+                // this.$el is unreliable here: ccProduct wraps the nested ccAddToBasket form, so a change event resolves $el to the select, not the form. Scope to the form via #ptp (#4327).
+                var form = ptpEl.closest('form');
+                var fields = (form || document).querySelectorAll('[name^=productOptions]');
 
                 fields.forEach(function (el) {
                     var price, priceOriginal, absolute;
@@ -202,7 +204,7 @@ document.addEventListener('alpine:init', function () {
                     query += '&price[1]=' + encodeURIComponent(baseOriginal + deltaOriginal);
                 }
 
-                var action = (this.$el.getAttribute('action') || window.location.href);
+                var action = (form && form.getAttribute('action')) || window.location.href;
                 var url = action + (action.indexOf('?') > -1 ? '&' : '?') + query;
 
                 var seq = ++this._seq;
