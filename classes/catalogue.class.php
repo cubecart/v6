@@ -1826,11 +1826,9 @@ class Catalogue
 
             // Retail tiers (group 0) apply to everyone. Without them a logged-in customer
             // who belongs to any group searches `group_id IN (n)`, which matches nothing,
-            // and the quantity discount silently disappears.
-            $search = array(
-                'product_id' => $product_id,
-                'group_id'   => is_array($group_id) ? array_merge(array(0), $group_id) : $group_id,
-            );
+            // and the quantity discount silently disappears. Written out because where()
+            // drops 0 from an IN list.
+            $search = 'product_id = '.$product_id.' AND group_id IN ('.implode(',', array_map('intval', array_merge(array(0), (array)$group_id))).')';
 
             // Same product is priced more than once per page.
             $tier_key = serialize($search);
@@ -2433,8 +2431,10 @@ class Catalogue
                     $group_id[] = $membership['group_id'];
                 }
             }
-            // Limit by membership
-            if (($prices = $GLOBALS['db']->select('CubeCart_pricing_quantity', false, array('product_id' => $product['product_id'], 'group_id' => $group_id), array('quantity' => 'ASC'))) !== false) {
+            // Limit by membership. Written out because where() drops 0 from an IN list,
+            // which would remove the group filter entirely for a guest.
+            $search = 'product_id = '.(int)$product['product_id'].' AND group_id IN ('.implode(',', array_map('intval', $group_id)).')';
+            if (($prices = $GLOBALS['db']->select('CubeCart_pricing_quantity', false, $search, array('quantity' => 'ASC'))) !== false) {
                 $tiers = array();
                 foreach ($prices as $price) {
                     $price['price'] = ($GLOBALS['config']->get('config', 'catalogue_sale_mode')==2) ? ($price['price'] - ($price['price'] / 100) * $GLOBALS['config']->get('config', 'catalogue_sale_percentage')) : $price['price'];
