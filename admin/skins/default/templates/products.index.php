@@ -84,7 +84,7 @@
             {foreach from=$PRODUCTS item=product}
             <tr>
                <td style="text-align:center" width="10"><input type="checkbox" name="delete[]" id="{$product.product_id}" value="{$product.product_id}" class="table"></td>
-               <td><a href="{$product.link_edit}">{$product.name|escape}</a>
+               <td><a href="{$product.link_edit}">{$product.name}</a>
                   {if isset($product.category)}
                   <br>
                   <span class="light-category">{$product.category}</span>
@@ -92,9 +92,9 @@
                </td>
                <td style="text-align:center">
                   {if !empty($product.image_path_tiny)}
-                  <a href="{$product.image_path_large}" class="colorbox" title="{$product.name|escape}" target="_blank"><img src="{$product.image_path_tiny}" style="max-width: 30px; max-height: 30px" alt="{$product.name|escape}"></a>
+                  <a href="{$product.image_path_large}" class="colorbox" title="{$product.name}" target="_blank"><img src="{$product.image_path_tiny}" style="max-width: 30px; max-height: 30px" alt="{$product.name}"></a>
                   {elseif !empty($product.image_path_large)}
-                  <a href="{$product.image_path_large}" class="colorbox" title="{$product.name|escape}" target="_blank"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/image.png" alt="{$product.name|escape}"></a>
+                  <a href="{$product.image_path_large}" class="colorbox" title="{$product.name}" target="_blank"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/image.png" alt="{$product.name}"></a>
                   {/if}
                </td>
                <td style="text-align:center">{$product.product_id}</td>
@@ -105,7 +105,7 @@
                   <i class="fa fa-archive" title="{$product.type_alt}"></i>
                   {/if}
                </td>
-               <td>{include file='templates/element.click_to_copy.php' value=$product.product_code|escape}{$product.product_code|escape}</td>
+               <td>{include file='templates/element.click_to_copy.php' value=$product.product_code}{$product.product_code}</td>
                <td nowrap="nowrap">{$product.price_display}</td>
                <td style="text-align:center">{$product.stock_level_display}</td>
                <td>
@@ -181,7 +181,7 @@
       <fieldset>
          <legend>{$LANG.catalogue.title_information_basic}</legend>
          <div><label for="">{$LANG.common.status}</label><span><input type="hidden" name="status" id="product_status" value="{$PRODUCT.status}" class="toggle"></span></div>
-         <div><label for="name">{$LANG.catalogue.product_name}</label><span><input name="name" id="name" class="textbox required" type="text" value="{$PRODUCT.name|escape}"></span></div>
+         <div><label for="name">{$LANG.catalogue.product_name}</label><span><input name="name" id="name" class="textbox required" type="text" value="{$PRODUCT.name}"></span></div>
          <div>
             <label for="manufacturer">{$LANG.catalogue.title_manufacturer}</label>
             <span>
@@ -202,7 +202,7 @@
             </select>
             </span>
          </div>
-         <div><label for="product_code">{$LANG.catalogue.product_code}</label><span><input name="product_code" id="product_code" class="textbox" type="text" value="{$PRODUCT.product_code|escape}"></span></div>
+         <div><label for="product_code">{$LANG.catalogue.product_code}</label><span><input name="product_code" id="product_code" class="textbox" type="text" value="{$PRODUCT.product_code}"></span></div>
          <div><label for="product_code_auto">{$LANG.catalogue.product_code_auto}</label><span><input name="product_code_auto" id="product_code_auto" type="hidden" class="toggle" value="{$PRODUCT.auto_code_checked}"> <input name="product_code_old" id="product_code_old" type="hidden" value=""></span></div>
          <div><label for="product_weight">{$LANG.catalogue.product_weight}</label><span><input name="product_weight" id="product_weight" class="textbox number" type="text" value="{$PRODUCT.product_weight}"></span></div>
          <div>
@@ -241,12 +241,12 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.catalogue.title_misc}</legend>
-         <div><label for="upc_code">{$LANG.catalogue.product_upc}</label><span><input name="upc" id="upc" class="textbox" type="text" value="{$PRODUCT.upc|escape}" maxlength="20"></span></div>
-         <div><label for="ean_code">{$LANG.catalogue.product_ean}</label><span><input name="ean" id="ean" class="textbox" type="text" value="{$PRODUCT.ean|escape}" maxlength="20"></span></div>
-         <div><label for="jan_code">{$LANG.catalogue.product_jan}</label><span><input name="jan" id="jan" class="textbox" type="text" value="{$PRODUCT.jan|escape}" maxlength="20"></span></div>
-         <div><label for="isbn_code">{$LANG.catalogue.product_isbn}</label><span><input name="isbn" id="isbn" class="textbox" type="text" value="{$PRODUCT.isbn|escape}" maxlength="20"></span></div>
-         <div><label for="gtin_code">{$LANG.catalogue.product_gtin}</label><span><input name="gtin" id="gtin" class="textbox" type="text" value="{$PRODUCT.gtin|escape}" maxlength="20"></span></div>
-         <div><label for="mpn_code">{$LANG.catalogue.product_mpn}</label><span><input name="mpn" id="mpn" class="textbox" type="text" value="{$PRODUCT.mpn|escape}" maxlength="70"></span></div>
+         <div><label for="upc_code">{$LANG.catalogue.product_upc}</label><span><input name="upc" id="upc" class="textbox" type="text" value="{$PRODUCT.upc}" maxlength="20"></span></div>
+         <div><label for="ean_code">{$LANG.catalogue.product_ean}</label><span><input name="ean" id="ean" class="textbox" type="text" value="{$PRODUCT.ean}" maxlength="20"></span></div>
+         <div><label for="jan_code">{$LANG.catalogue.product_jan}</label><span><input name="jan" id="jan" class="textbox" type="text" value="{$PRODUCT.jan}" maxlength="20"></span></div>
+         <div><label for="isbn_code">{$LANG.catalogue.product_isbn}</label><span><input name="isbn" id="isbn" class="textbox" type="text" value="{$PRODUCT.isbn}" maxlength="20"></span></div>
+         <div><label for="gtin_code">{$LANG.catalogue.product_gtin}</label><span><input name="gtin" id="gtin" class="textbox" type="text" value="{$PRODUCT.gtin}" maxlength="20"></span></div>
+         <div><label for="mpn_code">{$LANG.catalogue.product_mpn}</label><span><input name="mpn" id="mpn" class="textbox" type="text" value="{$PRODUCT.mpn}" maxlength="70"></span></div>
          <div>
             <label for="google_cat_code">{$LANG.catalogue.product_google_category}</label>
             <span>
@@ -256,7 +256,7 @@
                   {foreach from=$GOOGLE_CATS item=cat}<option value="{$cat}" {if ((htmlentities($cat, ENT_QUOTES, 'UTF-8', true) == $PRODUCT.google_category || $cat == $PRODUCT.google_category) && !empty($PRODUCT.google_category))}selected="selected"{/if}>{$cat}</option>{/foreach}
                </select>
                {else}
-               <input name="google_category" id="google_category" class="textbox" type="text" value="{$PRODUCT.google_category|escape}" maxlength="250">
+               <input name="google_category" id="google_category" class="textbox" type="text" value="{$PRODUCT.google_category}" maxlength="250">
                {/if}
             </span>
          </div>
@@ -705,9 +705,9 @@
       <h3>{$LANG.settings.tab_seo}</h3>
       <fieldset>
          <legend>{$LANG.settings.title_seo_meta_data}</legend>
-         <div><label for="seo_meta_title">{$LANG.settings.seo_meta_title}</label><span><input name="seo_meta_title" id="seo_meta_title" class="textbox strlen" rel="seo_meta_title_strlen" type="text" value="{$PRODUCT.seo_meta_title|escape}"></span> <span id="seo_meta_title_strlen">{if $PRODUCT.seo_meta_title}{strlen($PRODUCT.seo_meta_title)}{/if}</span></div>
+         <div><label for="seo_meta_title">{$LANG.settings.seo_meta_title}</label><span><input name="seo_meta_title" id="seo_meta_title" class="textbox strlen" rel="seo_meta_title_strlen" type="text" value="{$PRODUCT.seo_meta_title}"></span> <span id="seo_meta_title_strlen">{if $PRODUCT.seo_meta_title}{strlen($PRODUCT.seo_meta_title)}{/if}</span></div>
          <div><label for="seo_path">{$LANG.settings.seo_path} *</label><span><input name="seo_path" id="seo_path" class="textbox" type="text" value="{$PRODUCT.seo_path}"></span></div>
-         <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="seo_meta_description" id="seo_meta_description" class="textbox strlen" rel="seo_meta_description_strlen">{$PRODUCT.seo_meta_description|escape}</textarea></span> <span id="seo_meta_description_strlen">{if $PRODUCT.seo_meta_description}{strlen($PRODUCT.seo_meta_description)}{/if}</span></div>
+         <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="seo_meta_description" id="seo_meta_description" class="textbox strlen" rel="seo_meta_description_strlen">{$PRODUCT.seo_meta_description}</textarea></span> <span id="seo_meta_description_strlen">{if $PRODUCT.seo_meta_description}{strlen($PRODUCT.seo_meta_description)}{/if}</span></div>
       </fieldset>
       <p>* {$LANG.settings.seo_path_auto}</p>
       {include file='templates/element.redirects.php'}

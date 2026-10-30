@@ -23,7 +23,7 @@
       {foreach from=$CRUMBS item=crumb name=crumbposition}
       <li>
          <a href="{$crumb.url}">
-            <span>{$crumb.title|escape}</span>
+            <span>{$crumb.title}</span>
          </a>
       </li>
       {/foreach}

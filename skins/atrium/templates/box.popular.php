@@ -13,7 +13,7 @@
       <li class="flex gap-3 text-sm">
          <span class="shrink-0 tabular text-ink-400">{$smarty.foreach.pop.iteration}</span>
          <span class="min-w-0">
-            <a href="{$product.url}" title="{$product.name|escape}" class="text-ink-800 hover:underline">{$product.name|escape}</a>
+            <a href="{$product.url}" title="{$product.name}" class="text-ink-800 hover:underline">{$product.name}</a>
             <span class="mt-0.5 block">
                {if $product.ctrl_sale}
                <span class="price text-xs text-ink-500 line-through">{$product.price}</span>

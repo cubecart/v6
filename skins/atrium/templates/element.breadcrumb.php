@@ -26,9 +26,9 @@
             <path d="m9 5 7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
          </svg>
          {if $smarty.foreach.crumbposition.last}
-         <span aria-current="page">{$crumb.title|escape}</span>
+         <span aria-current="page">{$crumb.title}</span>
          {else}
-         <a href="{$crumb.url}" class="hover:text-ink-800">{$crumb.title|escape}</a>
+         <a href="{$crumb.url}" class="hover:text-ink-800">{$crumb.title}</a>
          {/if}
       </li>
       {/foreach}

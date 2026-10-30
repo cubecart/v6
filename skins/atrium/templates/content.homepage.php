@@ -77,7 +77,7 @@
             <div class="group relative">
                <a href="{$product.url}" class="cc-media block overflow-hidden rounded-cc-lg border border-ink-200">
                   <img src="{$product.image}"
-                       alt="{if isset($product.image_tags.alt) && !empty($product.image_tags.alt)}{$product.image_tags.alt}{else}{$product.name|escape}{/if}"
+                       alt="{if isset($product.image_tags.alt) && !empty($product.image_tags.alt)}{$product.image_tags.alt}{else}{$product.name}{/if}"
                        {if isset($product.image_tags.title)}title="{$product.image_tags.title}"{/if}
                        {* Above the fold: the first row must not be lazy. Chrome
                           deprioritises lazy images, so lazily loading the LCP
@@ -92,7 +92,7 @@
                   link, never inside it: a <button> inside an <a> is invalid
                   and browsers reparent it. *}
                {if !isset($SKIN_SETTINGS.show_quick_view) || $SKIN_SETTINGS.show_quick_view}
-               <a x-data href="{$product.url}" title="{$product.name|escape}"
+               <a x-data href="{$product.url}" title="{$product.name}"
                   class="cc-btn cc-btn-secondary absolute inset-x-2 bottom-2 hidden opacity-0 shadow transition-opacity focus-visible:opacity-100 group-hover:opacity-100 sm:flex"
                   @click.prevent="$store.quickView.show('{$product.product_id}', '{$product.name|escape:'javascript'}', '{$product.url}')">
                   {$LANG.catalogue.quick_view|default:'Quick View'}
@@ -103,7 +103,7 @@
             <h3 class="mt-3 text-sm font-medium">
                {* text-ink-900 must sit on the <a>, not the <h3>: the base layer styles
                   bare `a` with the brand colour, which beats an inherited colour. *}
-               <a href="{$product.url}" title="{$product.name|escape}" class="text-ink-900 hover:underline">{$product.name|escape}</a>
+               <a href="{$product.url}" title="{$product.name}" class="text-ink-900 hover:underline">{$product.name}</a>
             </h3>
 
             {include file='templates/element.product.review_score.php' score=$product.review_score context='listing' uid=$product.product_id wrapper_class='mt-1'}
@@ -120,7 +120,7 @@
             <div class="mt-3 flex-1"></div>
 
             {if $CTRL_HIDE_PRICES}
-            <a href="{$product.url}" title="{$product.name|escape}" class="cc-btn cc-btn-secondary mt-2 w-full">{$LANG.common.info}</a>
+            <a href="{$product.url}" title="{$product.name}" class="cc-btn cc-btn-secondary mt-2 w-full">{$LANG.common.info}</a>
 
             {elseif $product.available <= 0}
             <button type="submit" class="cc-btn cc-btn-secondary mt-2 w-full" disabled>{$LANG.common.unavailable}</button>

@@ -15,7 +15,7 @@
   <ul>
   {foreach from=$SALE_PRODUCTS item=product}
 	<li>
-	  <a href="{$product.url}" title="{$product.name|escape} ({if {$product.saving}}{$LANG.catalogue.saving} {$product.saving}{/if})">{$product.name|escape}</a><br>
+	  <a href="{$product.url}" title="{$product.name} ({if {$product.saving}}{$LANG.catalogue.saving} {$product.saving}{/if})">{$product.name}</a><br>
 	  {if empty($product.sale_price_unformatted)}
     {$product.price}
     {else}

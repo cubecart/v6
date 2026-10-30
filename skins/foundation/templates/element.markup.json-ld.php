@@ -61,7 +61,7 @@
     {literal},{
       "@type": "ListItem",
       "position": {/literal}{$smarty.foreach.crumbposition.iteration+1}{literal},
-      "name": "{/literal}{$crumb.title|escape}{literal}",
+      "name": "{/literal}{$crumb.title}{literal}",
       "item": "{/literal}{$crumb.url}{literal}"
     }{/literal}
 {/foreach}
@@ -115,7 +115,7 @@
     "sku": "{/literal}{$PRODUCT.product_code}{literal}",
     "mpn": "{/literal}{$PRODUCT.mpn}{literal}",
     "image": "{/literal}{$PRODUCT.source}{literal}",
-    "name": "{/literal}{$PRODUCT.name|escape}{literal}",
+    "name": "{/literal}{$PRODUCT.name}{literal}",
     {/literal}
 
     {if !empty($REVIEWS)}

@@ -70,13 +70,13 @@
          <form action="{$VAL_SELF}" method="post" class="panel add_to_basket">
             <div class="row product_list_view">
                <div class="small-3 columns">
-                  <a href="{$product.url}" class="th" title="{$product.name|escape}">
-                     <img src="{$product.thumbnail}" alt="{if isset($product.image_tags.thumbnail.alt) && !empty($product.image_tags.thumbnail.alt)}{$product.image_tags.thumbnail.alt}{else}{$product.name|escape}{/if}"{if isset($product.image_tags.thumbnail.title)} title="{$product.image_tags.thumbnail.title}"{/if}>
+                  <a href="{$product.url}" class="th" title="{$product.name}">
+                     <img src="{$product.thumbnail}" alt="{if isset($product.image_tags.thumbnail.alt) && !empty($product.image_tags.thumbnail.alt)}{$product.image_tags.thumbnail.alt}{else}{$product.name}{/if}"{if isset($product.image_tags.thumbnail.title)} title="{$product.image_tags.thumbnail.title}"{/if}>
                   </a>
                </div>
                <div class="small-6 columns">
                   <h3>
-                     <a href="{$product.url}" title="{$product.name|escape}">{$product.name|escape}</a> 
+                     <a href="{$product.url}" title="{$product.name}">{$product.name}</a> 
                   </h3>
                   {if $product.review_score}
                   <div>
@@ -132,9 +132,9 @@
             <div class="product_grid_view hide">
                <div data-equalizer-watch>
                   <div class="text-center">
-                     <a href="{$product.url}" title="{$product.name|escape}"><img src="{$product.thumbnail}" alt="{if isset($product.image_tags.thumbnail.alt) && !empty($product.image_tags.thumbnail.alt)}{$product.image_tags.thumbnail.alt}{else}{$product.name|escape}{/if}"{if isset($product.image_tags.thumbnail.alt)} title="{$product.image_tags.thumbnail.title}"{/if}></a>
+                     <a href="{$product.url}" title="{$product.name}"><img src="{$product.thumbnail}" alt="{if isset($product.image_tags.thumbnail.alt) && !empty($product.image_tags.thumbnail.alt)}{$product.image_tags.thumbnail.alt}{else}{$product.name}{/if}"{if isset($product.image_tags.thumbnail.alt)} title="{$product.image_tags.thumbnail.title}"{/if}></a>
                   </div>
-                  <h3><a href="{$product.url}" title="{$product.name|escape}">{$product.name|truncate:38:"&hellip;"}</a></h3>
+                  <h3><a href="{$product.url}" title="{$product.name}">{$product.name|truncate:38:"&hellip;"}</a></h3>
                   {if $product.review_score}
                   <div class="rating">
                      <div>
@@ -161,7 +161,7 @@
                   {/if}
                </h3>
                {* Uncomment this if you want to show a more info link
-               <a href="{$product.url}" title="{$product.name|escape}" class="button tiny secondary left">{$LANG.common.info}</a>
+               <a href="{$product.url}" title="{$product.name}" class="button tiny secondary left">{$LANG.common.info}</a>
                *}
                {if $product.available <= 0}
                <div class="row collapse marg-top">

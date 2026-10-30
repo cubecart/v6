@@ -2357,12 +2357,6 @@ class Catalogue
      */
     public function productAssign(&$product, $product_view = true)
     {
-        // Output-encode stored identifier/code fields at display (stored XSS); codes never hold markup, name is escaped per-sink in skins (it has JS sinks).
-        foreach (array('product_code','upc','ean','jan','isbn','gtin','mpn','brand','google_category','condition','manufacture_country') as $esc_k) {
-            if (isset($product[$esc_k]) && $product[$esc_k] !== '') {
-                $product[$esc_k] = htmlspecialchars((string)$product[$esc_k], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-            }
-        }
         $product['description_short'] = $this->descriptionShort($product);
 
         $product['price_unformatted']  = $product['price'];
