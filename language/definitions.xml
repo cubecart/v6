@@ -1190,6 +1190,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_mysql_root" introduced="5.0.0"><![CDATA[Your store is connected to the database using the root account, which is a security risk. Please create a dedicated database user with limited privileges.]]></string>
     <string name="error_caching_disabled" introduced="6.0.0"><![CDATA[Caching is disabled. Please enable it in the advanced tab of your store's <a href="?_g=settings#Advanced_Settings">settings</a>.]]></string>
     <string name="error_notes_save" introduced="5.0.0"><![CDATA[Failed to save notes.]]></string>
+    <string name="error_proxy_untrusted" introduced="6.8.5"><![CDATA[This store is behind a proxy at %1$s that is not trusted, so every visitor is recorded with the proxy's IP address. Add <code>$glob['trusted_proxies'] = array('%1$s');</code> to includes/global.inc.php, or ask your host to pass the visitor's IP address to the web server (mod_remoteip). See includes/global.inc.php-dist.]]></string>
     <string name="error_setup_folder" introduced="5.0.0"><![CDATA[The setup folder is still present in your store directory. Please delete it to prevent unauthorised access to the installer.]]></string>
     <string name="error_version_update" introduced="5.0.0"><![CDATA[Your store is not up-to-date. Version %1$s is available but you are running %2$s.]]></string>
     <string name="inv_customers" introduced="5.0.0"><![CDATA[Customers]]></string>

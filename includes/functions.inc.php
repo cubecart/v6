@@ -812,6 +812,22 @@ function ip_in_cidr($ip, $range)
 }
 
 /**
+ * Cloudflare's published edge ranges, from https://www.cloudflare.com/ips/
+ *
+ * @return array
+ */
+function cloudflare_ip_ranges()
+{
+    return array(
+        '173.245.48.0/20', '103.21.244.0/22', '103.22.200.0/22', '103.31.4.0/22', '141.101.64.0/18',
+        '108.162.192.0/18', '190.93.240.0/20', '188.114.96.0/20', '197.234.240.0/22', '198.41.128.0/17',
+        '162.158.0.0/15', '104.16.0.0/13', '104.24.0.0/14', '172.64.0.0/13', '131.0.72.0/22',
+        '2400:cb00::/32', '2606:4700::/32', '2803:f800::/32', '2405:b500::/32', '2405:8100::/32',
+        '2a06:98c0::/29', '2c0f:f248::/32',
+    );
+}
+
+/**
  * Get the user's IP address
  *
  * @return string
@@ -819,9 +835,24 @@ function ip_in_cidr($ip, $range)
 function get_ip_address()
 {
     // REMOTE_ADDR is the only value a client cannot forge. Forwarding headers are honoured only
-    // when the peer is a configured trusted proxy ($glob['trusted_proxies'], exact IPs or CIDR);
-    // with none configured (the default) REMOTE_ADDR is used as-is.
+    // when the peer is Cloudflare or a configured trusted proxy ($glob['trusted_proxies'], exact
+    // IPs or CIDR); otherwise REMOTE_ADDR is used as-is.
     $remote = getenv('REMOTE_ADDR');
+
+    // A peer inside Cloudflare's ranges really is Cloudflare, which always overwrites CF-Connecting-IP,
+    // so stores behind it need no setting. $glob['trust_cloudflare'] = false turns this off.
+    if ($remote !== false && ($GLOBALS['glob']['trust_cloudflare'] ?? true)) {
+        foreach (cloudflare_ip_ranges() as $range) {
+            if (ip_in_cidr($remote, $range)) {
+                $cf_ip = trim((string)getenv('HTTP_CF_CONNECTING_IP'));
+                if (filter_var($cf_ip, FILTER_VALIDATE_IP) !== false) {
+                    return $cf_ip;
+                }
+                break;
+            }
+        }
+    }
+
     $trusted = isset($GLOBALS['glob']['trusted_proxies']) ? $GLOBALS['glob']['trusted_proxies'] : array();
     if (!is_array($trusted)) {
         $trusted = array_filter(array_map('trim', explode(',', (string)$trusted)));

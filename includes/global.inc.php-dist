@@ -78,16 +78,21 @@ $glob['session_save_handler'] = '';
 //$glob['admin_idle_timeout'] = 900;
 
 // Reverse proxy / CDN
-// If your store is behind a reverse proxy or CDN (Cloudflare, Bunny, nginx, HAProxy, a
-// load balancer), list the proxy IPs or CIDR ranges here so get_ip_address() reads the
-// real visitor IP from the forwarding header. Leave empty (the default) for a direct or
-// self-hosted store, or when the web server already rewrites REMOTE_ADDR to the client
-// (e.g. mod_remoteip / mod_cloudflare). With it empty behind a proxy, the proxy's own IP
-// is used for every visitor, which breaks per-visitor rate limiting, geo and logging.
-//$glob['trusted_proxies'] = array('127.0.0.1', '10.0.0.0/8', '2400:cb00::/32');
+// Cloudflare is recognised automatically: a request from one of Cloudflare's published IP
+// ranges takes the visitor IP from CF-Connecting-IP. Set this to false to turn that off.
+//$glob['trust_cloudflare'] = false;
+// If your store is behind another reverse proxy or CDN (Bunny, nginx, HAProxy, a load
+// balancer, or a local proxy behind Cloudflare), list the proxy IPs or CIDR ranges here so
+// get_ip_address() reads the real visitor IP from the forwarding header. Leave empty (the
+// default) for a direct or self-hosted store, or when the web server already rewrites
+// REMOTE_ADDR to the client (e.g. mod_remoteip). With it empty behind a proxy, the proxy's
+// own IP is used for every visitor, which breaks per-visitor rate limiting, geo and logging.
+// The admin dashboard warns when it sees a local proxy that is not listed. On shared hosting,
+// trusting 127.0.0.1 lets other accounts on the server set their own IP; prefer mod_remoteip.
+//$glob['trusted_proxies'] = array('127.0.0.1', '10.0.0.0/8');
 // Header trusted for the client IP when the peer is a trusted proxy above. Defaults to
 // X-Forwarded-For (right-most entry). Set to the single header your proxy guarantees if
-// different, e.g. 'CF-Connecting-IP' for Cloudflare.
+// different.
 //$glob['forwarded_header'] = 'X-Forwarded-For';
 
 // Cron

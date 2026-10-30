@@ -133,6 +133,17 @@ if ($glob['dbusername'] == 'root' && !(bool)$GLOBALS['config']->get('config', 'd
 if (!(bool)$GLOBALS['config']->get('config', 'cache')) {
     $GLOBALS['main']->errorMessage($lang['dashboard']['error_caching_disabled']);
 }
+## Behind a local proxy that is not trusted? Every visitor would share its IP address.
+## Only a private or loopback peer counts: an office proxy also adds X-Forwarded-For but connects from a public IP.
+$proxy_peer = (string)getenv('REMOTE_ADDR');
+if (empty($glob['trusted_proxies']) && filter_var($proxy_peer, FILTER_VALIDATE_IP) !== false && filter_var($proxy_peer, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+    foreach (array('HTTP_X_FORWARDED_FOR', 'HTTP_X_REAL_IP', 'HTTP_FORWARDED', 'HTTP_CF_CONNECTING_IP') as $proxy_header) {
+        if ((string)getenv($proxy_header) !== '') {
+            $GLOBALS['main']->errorMessage(sprintf($lang['dashboard']['error_proxy_untrusted'], htmlspecialchars($proxy_peer, ENT_QUOTES, 'UTF-8')));
+            break;
+        }
+    }
+}
 ## Windows only - Is global.inc.php writable?
 if (substr(PHP_OS, 0, 3) !== 'WIN' && is_writable('includes/global.inc.php')) {
     if (!chmod('includes/global.inc.php', 0444)) {
