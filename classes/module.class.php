@@ -218,6 +218,23 @@ class Module
 		return $rawvars;
 	}
 
+	private function _getSecretVars()
+	{
+		$secretvars = array();
+		$config_file = $this->_path.'/config.xml';
+		if (file_exists($config_file)) {
+			try {
+				$xml = new SimpleXMLElement(file_get_contents($config_file, true));
+				foreach ((array)$xml->secretvars->var as $value) {
+					$secretvars[] = (string)$value;
+				}
+			} catch (Exception $e) {
+				trigger_error($e->getMessage(), E_USER_WARNING);
+			}
+		}
+		return $secretvars;
+	}
+
 	private function _handleSave()
 	{
 		$display_name = str_replace('_', ' ', $this->_folder_name);
@@ -225,6 +242,13 @@ class Module
 		// Substitute raw POST values for rawvar fields
 		foreach ($this->_getRawVars() as $key_name) {
 			$_POST['module'][$key_name] = $GLOBALS['RAW']['POST']['module'][$key_name];
+		}
+
+		// An empty secret field means keep the stored value; never overwrite it with blank (#4325).
+		foreach ($this->_getSecretVars() as $secret_key) {
+			if (empty($_POST['module'][$secret_key]) && !empty($this->_settings[$secret_key])) {
+				$_POST['module'][$secret_key] = $this->_settings[$secret_key];
+			}
 		}
 
 		if ($this->module_settings_save($_POST['module'])) {
@@ -328,6 +352,11 @@ class Module
 				} else {
 					$basesettings[$key] = $value;
 				}
+			}
+			// Never render stored secrets back into the page source; expose only whether one is set (#4325).
+			foreach ($this->_getSecretVars() as $secret_key) {
+				$basesettings[$secret_key.'_set'] = !empty($basesettings[$secret_key]);
+				$basesettings[$secret_key] = '';
 			}
 			$GLOBALS['smarty']->assign('MODULE', $basesettings);
 
