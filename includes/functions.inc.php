@@ -195,6 +195,12 @@ function cc_unserialize($data)
     // Options are text; an object here was smuggled in through a string value.
     if (is_array($data)) {
         $data = array_filter($data, function ($v) { return !is_object($v); });
+        // Re-encode strings: html_entity_decode above reverses input sanitisation (stored XSS)
+        foreach ($data as $cc_k => $cc_v) {
+            if (is_string($cc_v)) {
+                $data[$cc_k] = htmlspecialchars($cc_v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+            }
+        }
     }
     return $data;
 }
@@ -754,18 +760,101 @@ function getCountryFormat($input, $match = 'numcode', $fetch = 'name')
 }
 
 /**
+ * Check whether an IP falls within an exact address or a CIDR range (IPv4 or IPv6)
+ *
+ * @param string $ip
+ * @param string $range  exact IP, or CIDR such as 10.0.0.0/8 or 2400:cb00::/32
+ * @return bool
+ */
+function ip_in_cidr($ip, $range)
+{
+    $range = trim((string)$range);
+    if ($range === '') {
+        return false;
+    }
+    // Normalise an IPv4-mapped IPv6 address (::ffff:1.2.3.4) to plain IPv4 so it matches v4 entries
+    $ip = preg_replace('/^::ffff:(\d{1,3}(?:\.\d{1,3}){3})$/i', '$1', (string)$ip);
+    if (strpos($range, '/') === false) {
+        // Exact match: compare via inet_pton so equivalent IPv6 spellings match, else fall back to string
+        $range = preg_replace('/^::ffff:(\d{1,3}(?:\.\d{1,3}){3})$/i', '$1', $range);
+        $a = @inet_pton($ip);
+        $b = @inet_pton($range);
+        if ($a !== false && $b !== false) {
+            return $a === $b;
+        }
+        return $ip === $range;
+    }
+    list($subnet, $bits) = explode('/', $range, 2);
+    // Fail closed on a malformed prefix (empty or non-numeric) instead of treating it as /0 (match-all)
+    if ($bits === '' || !ctype_digit($bits)) {
+        return false;
+    }
+    $bits = (int)$bits;
+    $subnet = preg_replace('/^::ffff:(\d{1,3}(?:\.\d{1,3}){3})$/i', '$1', $subnet);
+    $ip_b = @inet_pton($ip);
+    $sub_b = @inet_pton($subnet);
+    // Reject invalid input or a v4/v6 family mismatch
+    if ($ip_b === false || $sub_b === false || strlen($ip_b) !== strlen($sub_b) || $bits > strlen($ip_b) * 8) {
+        return false;
+    }
+    $whole = intdiv($bits, 8);
+    $rem = $bits % 8;
+    if ($whole > 0 && substr($ip_b, 0, $whole) !== substr($sub_b, 0, $whole)) {
+        return false;
+    }
+    if ($rem > 0) {
+        $mask = chr((0xff << (8 - $rem)) & 0xff);
+        if ((ord($ip_b[$whole]) & ord($mask)) !== (ord($sub_b[$whole]) & ord($mask))) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
  * Get the user's IP address
  *
  * @return string
  */
 function get_ip_address()
 {
-    $ip = getenv('HTTP_CLIENT_IP')?:
-    getenv('HTTP_X_FORWARDED_FOR')?:
-    getenv('HTTP_X_FORWARDED')?:
-    getenv('HTTP_FORWARDED_FOR')?:
-    getenv('HTTP_FORWARDED')?:
-    getenv('REMOTE_ADDR');
+    // REMOTE_ADDR is the only value a client cannot forge. Forwarding headers are honoured only
+    // when the peer is a configured trusted proxy ($glob['trusted_proxies'], exact IPs or CIDR);
+    // with none configured (the default) REMOTE_ADDR is used as-is.
+    $remote = getenv('REMOTE_ADDR');
+    $trusted = isset($GLOBALS['glob']['trusted_proxies']) ? $GLOBALS['glob']['trusted_proxies'] : array();
+    if (!is_array($trusted)) {
+        $trusted = array_filter(array_map('trim', explode(',', (string)$trusted)));
+    }
+
+    $peer_trusted = false;
+    if (!empty($trusted) && $remote !== false) {
+        foreach ($trusted as $range) {
+            if (ip_in_cidr($remote, $range)) { $peer_trusted = true; break; }
+        }
+    }
+
+    $ip = $remote;
+    if ($peer_trusted) {
+        // Read only the configured header (default X-Forwarded-For); other client-settable headers
+        // are ignored. Walk a comma list from the right (what trusted proxies append), skipping
+        // further trusted hops, to the first address a trusted proxy did not set = the real client.
+        $header = isset($GLOBALS['glob']['forwarded_header']) ? (string)$GLOBALS['glob']['forwarded_header'] : 'X-Forwarded-For';
+        $fwd = getenv('HTTP_'.strtoupper(str_replace('-', '_', $header)));
+        if ($fwd !== false && $fwd !== '') {
+            $parts = array_map('trim', explode(',', $fwd));
+            for ($i = count($parts) - 1; $i >= 0; $i--) {
+                if ($parts[$i] === '') { continue; }
+                $hop_trusted = false;
+                foreach ($trusted as $range) {
+                    if (ip_in_cidr($parts[$i], $range)) { $hop_trusted = true; break; }
+                }
+                if ($hop_trusted) { continue; }
+                $ip = $parts[$i];
+                break;
+            }
+        }
+    }
 
     //Try to validate the IP
     if ((filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) === false && (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) === false)

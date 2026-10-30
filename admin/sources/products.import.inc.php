@@ -107,6 +107,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
                     if (in_array($field_name, array('price','sale_price','cost_price'))) {
                         $value = preg_replace("/[^0-9\.]/", "", $value);
                     } elseif ($field_name == 'manufacturer' && !empty($value) && !is_numeric($value)) {
+                        $value = htmlspecialchars(html_entity_decode($value)); // normalise like cleanGlobals (_safety) so a CSV name stores like form input (A3)
                         $manuf_key = strtolower(trim($value));
                         if (isset($import_manuf_cache[$manuf_key])) {
                             $value = $import_manuf_cache[$manuf_key];
@@ -182,6 +183,16 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
                 }
                 // Insert if we have a product record with at minimum a value for the product name
                 if (isset($product_record) && !empty($product_record) && !empty($product_record['name'])) {
+                    // Normalise like the form path (cleanGlobals): rich-text via htmlClean, every other field via _safety, so a CSV stores encoded values not raw (A3).
+                    $a3_rich = array();
+                    foreach (array('description', 'description_short', 'spec_copy') as $a3_html) {
+                        if (isset($product_record[$a3_html])) {
+                            $a3_rich[$a3_html] = Sanitize::htmlClean((string)$product_record[$a3_html]);
+                            unset($product_record[$a3_html]);
+                        }
+                    }
+                    $product_record = Sanitize::cleanStrings($product_record);
+                    if (!empty($a3_rich)) { $product_record = array_merge($product_record, $a3_rich); }
                     $product_record['date_added']	= $GLOBALS['session']->get('date_added', 'import');
                     // Insert product
                     if (!isset($product_record['product_code']) || empty($product_record['product_code'])) {
@@ -221,6 +232,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 								if(!empty($breadcrumbs[0])) {
 									foreach($breadcrumbs as $key => $breadcrumb) {
 										$breadcrumb = trim($breadcrumb);
+								$breadcrumb = htmlspecialchars(html_entity_decode($breadcrumb)); // normalise like cleanGlobals (_safety) (A3)
 										$cat_cache_key = $cat.'|'.$breadcrumb;
 										if (isset($import_cat_cache[$cat_cache_key])) {
 											$cat = $import_cat_cache[$cat_cache_key];

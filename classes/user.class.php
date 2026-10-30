@@ -424,6 +424,8 @@ class User
     public function createUser($data, $login = false, $type = 1)
     {
         if (!empty($data)) {
+            // Only persist columns a customer may set; blocks credit/status/type injection
+            $data = $this->_customerWritable($data);
             // Insert record(s)
             $data['ip_address']  = get_ip_address();
 
@@ -476,6 +478,21 @@ class User
             return $customer_id;
         }
         return false;
+    }
+
+    /**
+     * Restrict a customer-row write to the columns a customer may set (never credit/status/type/etc.)
+     *
+     * @param array $data
+     * @return array
+     */
+    private function _customerWritable(array $data)
+    {
+        // Token/activation columns are set by the server (requestActivation sets activate itself
+        // after this filter); a customer registration/checkout must never supply them.
+        $allowed = array('email', 'password', 'salt', 'first_name', 'last_name',
+            'country', 'phone', 'mobile', 'registered', 'ip_address', 'language', 'currency', 'abandon_optout');
+        return array_intersect_key($data, array_flip($allowed));
     }
 
     /**
@@ -834,7 +851,7 @@ class User
         }
 
         $token = bin2hex(random_bytes(32));
-        $record = $data;
+        $record = $this->_customerWritable($data);
         unset($record['type'], $record['customer_id'], $record['passconf']);
         $record['activate'] = $token;
         $record['activate_expires'] = date('Y-m-d H:i:s', time() + 3600);
@@ -1091,7 +1108,7 @@ class User
                 }
                 return true;
             } else {
-                $insert = $GLOBALS['db']->insert('CubeCart_customer', $_POST);
+                $insert = $GLOBALS['db']->insert('CubeCart_customer', $this->_customerWritable($_POST));
                 if (!$insert) {
                     // e.g. refused by the unique email key
                     $GLOBALS['gui']->setError($GLOBALS['language']->account['error_email_in_use']);
@@ -1216,18 +1233,14 @@ class User
                 return $this->_update();
             }
         } elseif (isset($_POST['update'])) {
-            $remove = array_diff_key($_POST, $this->_user_data);
-            $update = $_POST;
-            //Remove different keys
-            foreach ($remove as $k => $v) {
-                unset($update[$k]);
+            // Strict allowlist of customer-editable columns (never credit/status/type/etc.)
+            $editable = array('first_name', 'last_name', 'email', 'phone', 'mobile', 'country', 'language', 'currency', 'abandon_optout');
+            $update = array();
+            foreach ($editable as $field) {
+                if (array_key_exists($field, $_POST)) {
+                    $update[$field] = $_POST[$field];
+                }
             }
-            //Remove things that shouldn't be updated by post
-            unset($update['salt']);
-            unset($update['password']);
-            unset($update['customer_id']);
-            unset($update['status']);
-            unset($update['type']);
 
             //Check of any acutal changes
             $diff = arrayRecursiveDiff($update, $this->_user_data);

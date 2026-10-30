@@ -155,11 +155,17 @@ class ApiResource_Orders extends ApiResource
 
         $this->_db->insert('CubeCart_order_summary', $record);
 
-        // Insert line items
+        // Insert line items (allowlist columns; never mass-assign arbitrary ones)
         if (isset($data['items']) && is_array($data['items'])) {
+            $itemFields = array('product_id', 'product_code', 'name', 'quantity', 'price', 'cost_price', 'tax', 'tax_percent', 'product_options', 'options_array', 'digital', 'custom', 'coupon_id', 'hash', 'options_identifier');
             foreach ($data['items'] as $item) {
-                $item['cart_order_id'] = $orderId;
-                $this->_db->insert('CubeCart_order_inventory', $item);
+                $line = array('cart_order_id' => $orderId);
+                foreach ($itemFields as $f) {
+                    if (isset($item[$f])) {
+                        $line[$f] = $item[$f];
+                    }
+                }
+                $this->_db->insert('CubeCart_order_inventory', $line);
             }
         }
 

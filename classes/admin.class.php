@@ -562,10 +562,24 @@ class Admin
      */
     private function _load()
     {
+        // Already validated and loaded this request
+        if ($this->_logged_in && !empty($this->_admin_data)) {
+            return true;
+        }
         //Try to get the admin_id from the sessions
         $admin_id = $GLOBALS['session']->get('admin_id', 'client', 0);
         //If there is one
         if ($admin_id != 0) {
+            // Strict single-session: the live session must match the stored session_id and the
+            // account must still be enabled, so logout/password-change/disable/newer-login revoke it
+            $live = $GLOBALS['db']->select('CubeCart_admin_users', false, array('admin_id' => (int)$admin_id), false, 1, false, false);
+            if ($live === false || $live[0]['status'] != '1' || (string)$live[0]['session_id'] === '' || (string)$live[0]['session_id'] !== (string)$GLOBALS['session']->getId()) {
+                $GLOBALS['session']->delete('admin_id', 'client');
+                $GLOBALS['session']->delete('', 'admin_data');
+                $this->_logged_in = false;
+                $this->_admin_data = array();
+                return false;
+            }
             //Try to get the admin_data from the sessions
             if ($GLOBALS['session']->has('', 'admin_data')) {
                 $data = $GLOBALS['session']->get('', 'admin_data');
@@ -584,6 +598,11 @@ class Admin
             }
             if (!empty($data)) {
                 $this->_logged_in = true;
+                // S2: super_user/status are served from the cached session blob; refresh them from the
+                // live row (already fetched above) so a mid-session demotion or disable takes effect on
+                // the next request rather than only after re-login. Permissions are already loaded live.
+                $data['super_user'] = $live[0]['super_user'];
+                $data['status'] = $live[0]['status'];
                 $this->_admin_data = $data;
                 $GLOBALS['session']->set('user_language', (!empty($data['language'])) ? $data['language'] : $GLOBALS['config']->get('config', 'default_language'), 'admin');
                 // Load Permission Rules
@@ -636,6 +655,15 @@ class Admin
         }
         $admin = $admin[0];
 
+        // S3: refuse 2FA verification outright while a 2FA brute-force ban is active (login=true checks
+        // the counter without incrementing); otherwise a correct guess during an active ban would pass.
+        if ($GLOBALS['session']->blocker(isset($admin['username']) ? $admin['username'] : (string)$admin_id, $admin_id, true, Session::BLOCKER_TWOFA, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'))) {
+            $this->_clearPending2FA();
+            $minutes = ceil($GLOBALS['config']->get('config', 'bftime') / 60);
+            $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->account['error_twofa_locked'], $minutes));
+            httpredir($GLOBALS['rootRel'].$GLOBALS['config']->get('config', 'adminFile'));
+        }
+
         $code     = trim((string)$code);
         $verified = false;
 
@@ -684,16 +712,14 @@ class Admin
             httpredir($GLOBALS['rootRel'].$GLOBALS['config']->get('config', 'adminFile'));
         }
 
-        // Failed attempt – session-based rate limiting
-        $fail_count = (int)$GLOBALS['session']->get('twofa_fail_count', 'client', 0) + 1;
-        $max_attempts = (int)$GLOBALS['config']->get('config', 'bfattempts') ?: 5;
-        if ($fail_count >= $max_attempts) {
+        // Failed attempt, durable rate limiting via the DB blocker (survives re-login and concurrent requests)
+        $twofa_user = isset($admin['username']) ? $admin['username'] : (string)$admin_id;
+        if ($GLOBALS['session']->blocker($twofa_user, $admin_id, false, Session::BLOCKER_TWOFA, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'))) {
             $this->_clearPending2FA();
             $minutes = ceil($GLOBALS['config']->get('config', 'bftime') / 60);
             $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->account['error_twofa_locked'], $minutes));
             httpredir($GLOBALS['rootRel'].$GLOBALS['config']->get('config', 'adminFile'));
         }
-        $GLOBALS['session']->set('twofa_fail_count', $fail_count, 'client');
         $GLOBALS['gui']->setError($GLOBALS['language']->account['error_twofa_invalid']);
         return false;
     }

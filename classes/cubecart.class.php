@@ -447,9 +447,16 @@ class Cubecart
                     $GLOBALS['debug']->supress();
 
                     if (isset($_GET['source']) && $_GET['source']=='newsletter') {
-                        $result = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', 'subscriber_id', array('email' => $_POST['subscribe']), false, 1, false, false);
+                        $subscribe = is_scalar($_POST['subscribe'] ?? null) ? $_POST['subscribe'] : '';
+                        $result = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', 'subscriber_id', array('email' => $subscribe), false, 1, false, false);
                     } else {
-                        $email = isset($_POST['user']['email']) ? $_POST['user']['email'] : $_POST['email'];
+                        // email must be a scalar; an array would reach the raw where() branch (SQLi)
+                        $email = '';
+                        if (isset($_POST['user']['email']) && is_scalar($_POST['user']['email'])) {
+                            $email = (string)$_POST['user']['email'];
+                        } elseif (isset($_POST['email']) && is_scalar($_POST['email'])) {
+                            $email = (string)$_POST['email'];
+                        }
                         $result = $GLOBALS['db']->select('CubeCart_customer', 'customer_id', array('email' => $email, 'type' => 1), false, 1, false, false);
                     }
 
@@ -517,10 +524,20 @@ class Cubecart
                         }
                         break;
                     case 'cron':
-                        $method = preg_replace('/([^a-z]+)/i', '', $_GET['_m']);
+                        $method = preg_replace('/([^a-z]+)/i', '', $_GET['_m'] ?? '');
                         if(empty($method)) {
                             header('HTTP/1.0 403 Forbidden');
                             exit;
+                        }
+                        // Public cron route runs only the scheduler (run), which enforces the enabled
+                        // flag, due-check and lock; forcing a specific task needs the secret $glob['cron_key'].
+                        if ($method !== 'run') {
+                            $cron_key = isset($GLOBALS['glob']['cron_key']) ? (string)$GLOBALS['glob']['cron_key'] : '';
+                            $given = (isset($_GET['key']) && is_scalar($_GET['key'])) ? (string)$_GET['key'] : '';
+                            if ($cron_key === '' || !hash_equals($cron_key, $given)) {
+                                header('HTTP/1.0 403 Forbidden');
+                                exit;
+                            }
                         }
                         $GLOBALS['debug']->supress();
                         $cron = new Cron();
@@ -2013,12 +2030,12 @@ class Cubecart
                     */
                     $attach_dir = CC_FILES_DIR.'attachments/';
                     $attachment_prefix = time().'_';
-                    $allowed = array(
-                        'image/jpeg',
-                        'image/png',
-                        'image/gif',
-                        'application/zip',
-                        'application/pdf'
+                    $mime_ext = array(
+                        'image/jpeg' => 'jpg',
+                        'image/png'  => 'png',
+                        'image/gif'  => 'gif',
+                        'application/zip' => 'zip',
+                        'application/pdf' => 'pdf'
                     );
                     $total_files = 0;
                     $attachments = array();
@@ -2034,9 +2051,11 @@ class Cubecart
                                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                                 $detected_type = finfo_file($finfo, $_FILES['attachments']['tmp_name'][$i]);
                             }
-                            if($detected_type && in_array($detected_type, $allowed)) {
-                                $mailer->AddAttachment($_FILES['attachments']['tmp_name'][$i], $attachment_prefix.$_FILES['attachments']['name'][$i]);
-                                $attachments[] = array('tmp_name' => $_FILES['attachments']['tmp_name'][$i], 'name' => $attachment_prefix.$_FILES['attachments']['name'][$i]);
+                            if($detected_type && isset($mime_ext[$detected_type])) {
+                                // Server-generated name; never trust the client filename (path traversal / polyglot)
+                                $safe_name = $attachment_prefix.bin2hex(random_bytes(6)).'.'.$mime_ext[$detected_type];
+                                $mailer->AddAttachment($_FILES['attachments']['tmp_name'][$i], $safe_name);
+                                $attachments[] = array('tmp_name' => $_FILES['attachments']['tmp_name'][$i], 'name' => $safe_name);
                             } else {
                                 $error = true;
                                 $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->contact['type_not_allowed'], $_FILES['attachments']['type'][$i]));
@@ -3312,12 +3331,20 @@ class Cubecart
         $errors = array();
 
         if (!empty($_POST['withdraw_submit'])) {
-            // Rate-limit per IP (5 / hour) via session
-            $rl_key = 'withdrawal_rl_'.md5(get_ip_address());
-            $rl = (array)$GLOBALS['session']->get($rl_key, 'rate_limit') ?: array();
-            $rl = array_values(array_filter($rl, function($t) { return $t > time() - 3600; }));
-            if (count($rl) >= 5) {
+            // Rate-limit per IP (5 / hour) from the durable request table, NOT the session: a request
+            // with no cc_browser cookie (or a bot UA) never persists a session, so a session-based limit
+            // never accumulates and is trivially bypassed for store-branded email bombing.
+            $rl_ip = get_ip_address();
+            if ($rl_ip === false) {
+                // Fail closed: without a trustworthy client IP the per-IP throttle cannot be enforced.
                 $errors[] = $GLOBALS['language']->withdrawal['validation_rate_limit'];
+            } else {
+                // Serialise same-IP submissions so a concurrent burst cannot out-race the count-then-insert (#4316); best-effort, auto-released at request end.
+                $GLOBALS['db']->query("SELECT GET_LOCK('cc_withdraw_".md5((string)$rl_ip)."', 5)");
+                $rl_rows = $GLOBALS['db']->select('CubeCart_withdrawal_requests', array('id'), array('ip' => $rl_ip, 'submitted_at' => '>'.(time() - 3600)), false, false, false, false);
+                if (($rl_rows !== false ? count($rl_rows) : 0) >= 5) {
+                    $errors[] = $GLOBALS['language']->withdrawal['validation_rate_limit'];
+                }
             }
 
             $in = array(
@@ -3365,9 +3392,7 @@ class Cubecart
                 if (($wid = $GLOBALS['db']->insert('CubeCart_withdrawal_requests', $row))) {
                     $reference = 'W-'.str_pad((string)$wid, 5, '0', STR_PAD_LEFT);
 
-                    // Rate-limit bump after success only
-                    $rl[] = time();
-                    $GLOBALS['session']->set($rl_key, $rl, 'rate_limit');
+                    // No session bump: the inserted request row above is the durable per-IP record.
 
                     $submitted_at_human = formatTime(time());
                     $mailer = new Mailer();

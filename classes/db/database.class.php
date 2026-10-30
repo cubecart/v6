@@ -658,7 +658,7 @@ class Database_Contoller
         $params = array();
         if ($total_pages > 1) {
             // Get the current query string variables
-            $url_elements = parse_url(html_entity_decode($_SERVER['REQUEST_URI']));
+            $url_elements = parse_url((string)($_SERVER['REQUEST_URI'] ?? ''));
             if (isset($url_elements['query']) && !empty($url_elements['query'])) {
                 parse_str($url_elements['query'], $params);
                 unset($params[$var_name], $params['print_hash']);
@@ -679,7 +679,7 @@ class Database_Contoller
 
             $data = array(
                 'anchor'  => $anchor,
-                'current'  => "{$url_elements['path']}?",
+                'current'  => htmlspecialchars(($url_elements['path'] ?? ''), ENT_QUOTES, 'UTF-8').'?',
                 'page'   => (int)$page,
                 'params'  => $params,
                 'http_params' => http_build_query($params),
@@ -1147,7 +1147,14 @@ class Database_Contoller
                                     }
                                 }
                                 
-                                $val_ = preg_match('/CONCAT/', $val) ? $val : "`$val`";
+                                // Raw only for a real column or a developer CONCAT() of columns/literals; escape anything else (blocks ?id[]=CONCAT(...) SQLi).
+                                if (in_array($val, $allowed)) {
+                                    $val_ = "`$val`";
+                                } elseif (preg_match('/^CONCAT\(\s*(?:`?[a-z0-9_]+`?|\'[^\'\\\\]*\')(?:\s*,\s*(?:`?[a-z0-9_]+`?|\'[^\'\\\\]*\'))*\s*\)$/i', (string)$val)) {
+                                    $val_ = $val;
+                                } else {
+                                    $val_ = $this->sqlSafe((string)$val, true);
+                                }
 
                                 if (strtoupper((string)$key[0]) == 'NULL' || is_null($key[0])) {
                                     $symbol = 'IS NULL';
@@ -1172,7 +1179,15 @@ class Database_Contoller
                                     } else {
                                         $modifier = '';
                                     }
-                                    $or[] = "`$key` $modifier IN (".implode(',', $value).')';
+                                    $safe_in = array();
+                                    foreach ($value as $v) {
+                                        // Strip one matched pair of surrounding quotes so callers that pre-quote their IN values are not double-quoted
+                                        if (is_string($v) && strlen($v) >= 2 && $v[0] === "'" && substr($v, -1) === "'") {
+                                            $v = substr($v, 1, -1);
+                                        }
+                                        $safe_in[] = $this->sqlSafe($v, true);
+                                    }
+                                    $or[] = "`$key` $modifier IN (".implode(',', $safe_in).')';
                                 }
                                 break;
                             }

@@ -110,6 +110,7 @@ class Session
 
     const BLOCKER_FRONTEND	= 'F';
     const BLOCKER_BACKEND	= 'B';
+    const BLOCKER_TWOFA	= 'T';
 
     /**
      * Class instance
@@ -246,7 +247,7 @@ class Session
 
         // Search for active blocks
         $where = array(
-            'user_agent'	=> $this->_http_user_agent(),
+            // user_agent excluded on purpose: client-controlled, rotating it must not reset the lockout (S4a)
             'ip_address'	=> get_ip_address(),
             'location'		=> $location,
         );
@@ -299,11 +300,13 @@ class Session
      */
     public function checkToken($token)
     {
-        // Continue without error if no security token is set
-        if (!$this->get($this->_token_name)) {
-            return true;
+        // Fail closed: a state-changing request with no matching token is rejected (previously this
+        // returned true when no token was set), and the comparison is constant-time.
+        $stored = $this->get($this->_token_name);
+        if (!$stored || !is_string($token) || $token === '') {
+            return false;
         }
-        return ($this->get($this->_token_name) == $token);
+        return hash_equals((string)$stored, $token);
     }
 
     /**
@@ -652,7 +655,7 @@ class Session
     public function set_cookie($name, $value, $expires = false, $options = array())
     {
         $params = array(
-            'samesite' => 'None',
+            'samesite' => 'Lax',
             'httponly'  => true,
             'secure'   => true,
             'path'     => $this->_session_path,
