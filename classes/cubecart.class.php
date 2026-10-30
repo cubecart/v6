@@ -3335,13 +3335,16 @@ class Cubecart
             // with no cc_browser cookie (or a bot UA) never persists a session, so a session-based limit
             // never accumulates and is trivially bypassed for store-branded email bombing.
             $rl_ip = get_ip_address();
-            $rl_count = 0;
-            if ($rl_ip !== false) {
-                $rl_rows = $GLOBALS['db']->select('CubeCart_withdrawal_requests', array('id'), array('ip' => $rl_ip, 'submitted_at' => '>'.(time() - 3600)), false, false, false, false);
-                $rl_count = ($rl_rows !== false) ? count($rl_rows) : 0;
-            }
-            if ($rl_count >= 5) {
+            if ($rl_ip === false) {
+                // Fail closed: without a trustworthy client IP the per-IP throttle cannot be enforced.
                 $errors[] = $GLOBALS['language']->withdrawal['validation_rate_limit'];
+            } else {
+                // Serialise same-IP submissions so a concurrent burst cannot out-race the count-then-insert (#4316); best-effort, auto-released at request end.
+                $GLOBALS['db']->query("SELECT GET_LOCK('cc_withdraw_".md5((string)$rl_ip)."', 5)");
+                $rl_rows = $GLOBALS['db']->select('CubeCart_withdrawal_requests', array('id'), array('ip' => $rl_ip, 'submitted_at' => '>'.(time() - 3600)), false, false, false, false);
+                if (($rl_rows !== false ? count($rl_rows) : 0) >= 5) {
+                    $errors[] = $GLOBALS['language']->withdrawal['validation_rate_limit'];
+                }
             }
 
             $in = array(
