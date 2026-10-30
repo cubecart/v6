@@ -144,6 +144,20 @@ if (empty($glob['trusted_proxies']) && filter_var($proxy_peer, FILTER_VALIDATE_I
         }
     }
 }
+## Behind a known proxy service whose visitor IP header is not trusted (Sucuri by default)?
+if (empty($glob['trusted_proxies']) && filter_var($proxy_peer, FILTER_VALIDATE_IP) !== false) {
+    foreach (known_proxies() as $proxy_name => $proxy) {
+        if ($glob['trust_'.$proxy_name] ?? $proxy['trusted']) {
+            continue;
+        }
+        foreach ($proxy['ranges'] as $proxy_range) {
+            if (ip_in_cidr($proxy_peer, $proxy_range)) {
+                $GLOBALS['main']->errorMessage(sprintf($lang['dashboard']['error_proxy_known'], $proxy['label'], $proxy_name));
+                break 2;
+            }
+        }
+    }
+}
 ## Windows only - Is global.inc.php writable?
 if (substr(PHP_OS, 0, 3) !== 'WIN' && is_writable('includes/global.inc.php')) {
     if (!chmod('includes/global.inc.php', 0444)) {

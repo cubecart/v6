@@ -81,6 +81,10 @@ $glob['session_save_handler'] = '';
 // Cloudflare is recognised automatically: a request from one of Cloudflare's published IP
 // ranges takes the visitor IP from CF-Connecting-IP. Set this to false to turn that off.
 //$glob['trust_cloudflare'] = false;
+// Sucuri (GoDaddy Website Security) is recognised but not trusted by default, as Sucuri does
+// not document that it replaces a visitor-sent X-Sucuri-ClientIP. Set this to true to take
+// the visitor IP from that header. The admin dashboard says when the store is behind Sucuri.
+//$glob['trust_sucuri'] = true;
 // If your store is behind another reverse proxy or CDN (Bunny, nginx, HAProxy, a load
 // balancer, or a local proxy behind Cloudflare), list the proxy IPs or CIDR ranges here so
 // get_ip_address() reads the real visitor IP from the forwarding header. Leave empty (the

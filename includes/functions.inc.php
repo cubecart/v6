@@ -812,18 +812,37 @@ function ip_in_cidr($ip, $range)
 }
 
 /**
- * Cloudflare's published edge ranges, from https://www.cloudflare.com/ips/
+ * Proxy services recognised from their published IP ranges, with the header each one sets
+ * to the visitor IP. $glob['trust_<name>'] = true or false overrides 'trusted', the default.
  *
  * @return array
  */
-function cloudflare_ip_ranges()
+function known_proxies()
 {
     return array(
-        '173.245.48.0/20', '103.21.244.0/22', '103.22.200.0/22', '103.31.4.0/22', '141.101.64.0/18',
-        '108.162.192.0/18', '190.93.240.0/20', '188.114.96.0/20', '197.234.240.0/22', '198.41.128.0/17',
-        '162.158.0.0/15', '104.16.0.0/13', '104.24.0.0/14', '172.64.0.0/13', '131.0.72.0/22',
-        '2400:cb00::/32', '2606:4700::/32', '2803:f800::/32', '2405:b500::/32', '2405:8100::/32',
-        '2a06:98c0::/29', '2c0f:f248::/32',
+        // https://www.cloudflare.com/ips/
+        'cloudflare' => array(
+            'label'   => 'Cloudflare',
+            'trusted' => true,
+            'header' => 'CF-Connecting-IP',
+            'ranges' => array(
+                '173.245.48.0/20', '103.21.244.0/22', '103.22.200.0/22', '103.31.4.0/22', '141.101.64.0/18',
+                '108.162.192.0/18', '190.93.240.0/20', '188.114.96.0/20', '197.234.240.0/22', '198.41.128.0/17',
+                '162.158.0.0/15', '104.16.0.0/13', '104.24.0.0/14', '172.64.0.0/13', '131.0.72.0/22',
+                '2400:cb00::/32', '2606:4700::/32', '2803:f800::/32', '2405:b500::/32', '2405:8100::/32',
+                '2a06:98c0::/29', '2c0f:f248::/32',
+            ),
+        ),
+        // Sucuri / GoDaddy Website Security: https://docs.sucuri.net/website-firewall/troubleshooting/same-ip-for-all-users/
+        // Opt-in: Sucuri does not document that it replaces a visitor-sent X-Sucuri-ClientIP.
+        'sucuri' => array(
+            'label'   => 'Sucuri',
+            'trusted' => false,
+            'header' => 'X-Sucuri-ClientIP',
+            'ranges' => array(
+                '192.88.134.0/23', '185.93.228.0/22', '66.248.200.0/22', '208.109.0.0/22', '2a02:fe80::/29',
+            ),
+        ),
     );
 }
 
@@ -835,20 +854,25 @@ function cloudflare_ip_ranges()
 function get_ip_address()
 {
     // REMOTE_ADDR is the only value a client cannot forge. Forwarding headers are honoured only
-    // when the peer is Cloudflare or a configured trusted proxy ($glob['trusted_proxies'], exact
-    // IPs or CIDR); otherwise REMOTE_ADDR is used as-is.
+    // when the peer is a known proxy service or a configured trusted proxy ($glob['trusted_proxies'],
+    // exact IPs or CIDR); otherwise REMOTE_ADDR is used as-is.
     $remote = getenv('REMOTE_ADDR');
 
-    // A peer inside Cloudflare's ranges really is Cloudflare, which always overwrites CF-Connecting-IP,
-    // so stores behind it need no setting. $glob['trust_cloudflare'] = false turns this off.
-    if ($remote !== false && ($GLOBALS['glob']['trust_cloudflare'] ?? true)) {
-        foreach (cloudflare_ip_ranges() as $range) {
-            if (ip_in_cidr($remote, $range)) {
-                $cf_ip = trim((string)getenv('HTTP_CF_CONNECTING_IP'));
-                if (filter_var($cf_ip, FILTER_VALIDATE_IP) !== false) {
-                    return $cf_ip;
+    // A peer inside a known service's ranges really is that service, which sets its own visitor IP
+    // header, so stores behind a trusted one need no setting. $glob['trust_<name>'] overrides the default.
+    if ($remote !== false) {
+        foreach (known_proxies() as $name => $proxy) {
+            if (!($GLOBALS['glob']['trust_'.$name] ?? $proxy['trusted'])) {
+                continue;
+            }
+            foreach ($proxy['ranges'] as $range) {
+                if (ip_in_cidr($remote, $range)) {
+                    $client = trim((string)getenv('HTTP_'.strtoupper(str_replace('-', '_', $proxy['header']))));
+                    if (filter_var($client, FILTER_VALIDATE_IP) !== false) {
+                        return $client;
+                    }
+                    break 2;
                 }
-                break;
             }
         }
     }
