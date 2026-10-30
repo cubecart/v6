@@ -380,7 +380,7 @@ class ACP
                     $id = '#'.$id;
                 }
                 
-                $li .= "<tr><td class=\"text-left $security_class\" valign=\"top\"><a href=\"$url\" target=\"_blank\">$id</a></td><td valign=\"top\">$feature</td></tr>";
+                $li .= "<tr><td class=\"text-left $security_class\" valign=\"top\" nowrap=\"nowrap\"><a href=\"$url\" target=\"_blank\">$id</a></td><td valign=\"top\">$feature</td></tr>";
             }
         } else {
             $li = "<tr><td  colspan=\"2\">This is a maintenance release with no new features of any significance.</td></tr>";
