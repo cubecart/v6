@@ -341,10 +341,10 @@ class Cart
                         return false;
                     }
 
-                    $this->checkMinimumProductQuantity($product_id, $quantity, true);
-
                     // Add item to basket
                     $hash = md5($product['product_id'].json_encode($optionsArray));
+                    // Min/max apply to the line total, not just this addition
+                    $this->checkMinimumProductQuantity($product_id, $quantity + ($this->basket['contents'][$hash]['quantity'] ?? 0), true);
                     if (isset($this->basket['contents'][$hash])) {
                         // Update quantity
                         if (isset($max_stock)) {
@@ -1439,6 +1439,14 @@ class Cart
                 } elseif (($product = $GLOBALS['catalogue']->getProductData($this->basket['contents'][$hash]['id'])) !== false) {
 
                     $this->checkMinimumProductQuantity($product['product_id'], $quantity, false);
+                    // Hold the line within the product's min/max, not just warn
+                    $min_q = (int)$product['minimum_quantity'];
+                    $max_q = (int)$product['maximum_quantity'];
+                    if ($min_q && (int)$quantity < $min_q) {
+                        $quantity = $min_q;
+                    } elseif ($max_q && $max_q >= $min_q && (int)$quantity > $max_q) {
+                        $quantity = $max_q;
+                    }
 
                     $stock_level = $GLOBALS['catalogue']->getProductStock($product['product_id'], $this->basket['contents'][$hash]['options_identifier'] ?? null);
                     // Credit back what this basket's own pending order reserved, so
