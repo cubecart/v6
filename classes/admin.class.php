@@ -794,6 +794,9 @@ class Admin
             array('session_id' => $GLOBALS['session']->getId()),
             array('admin_id' => $admin_id));
         $GLOBALS['session']->set('admin_id', $admin_id, 'client');
+        // Drop admin data cached by an earlier sign-in in this browser, so the session and its row belong to this admin
+        $GLOBALS['session']->delete('', 'admin_data');
+        $this->_admin_data = $this->_permissions = array();
         $this->_logged_in = true;
         $this->_load();
     }
