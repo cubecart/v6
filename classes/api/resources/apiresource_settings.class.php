@@ -23,7 +23,7 @@ class ApiResource_Settings extends ApiResource
      */
     private $_sensitiveKeys = array(
         'dbhost', 'dbusername', 'dbpassword', 'dbdatabase', 'dbprefix',
-        'enc_key', 'admin_file', 'smtp_password',
+        'enc_key', 'csrf_key', 'admin_file', 'smtp_password',
     );
 
     /**

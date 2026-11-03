@@ -80,6 +80,18 @@ class Session
      */
     private $_user_blocked	= false;
     /**
+     * A real browser's first page, served before it has a session
+     *
+     * @var bool
+     */
+    private $_first_visit = false;
+    /**
+     * Form token of that first page, for the rest of the request
+     *
+     * @var string|false|null
+     */
+    private $_first_visit_token = null;
+    /**
      * Cookie-backed preference keys: namespace => array(name => cookie_name)
      *
      * @var array
@@ -112,6 +124,8 @@ class Session
     const BLOCKER_BACKEND	= 'B';
     const BLOCKER_TWOFA	= 'T';
 
+    const FIRST_VISIT_COOKIE	= '__Host-cc_ft';
+
     /**
      * Class instance
      *
@@ -141,7 +155,9 @@ class Session
         $this->_session_path = $GLOBALS['rootRel'] == '/' ? $GLOBALS['rootRel'] : substr($GLOBALS['rootRel'],0,-1);
 
         // Three-layer bot protection: skip session entirely for detected bots
-        if (!CC_IN_ADMIN && ($this->_isBot() || !isset($_COOKIE['cc_browser']))) {
+        if (!CC_IN_ADMIN && (($is_bot = $this->_isBot()) || !isset($_COOKIE['cc_browser']))) {
+            // A real browser's first page: its forms carry a signed first-visit token (getToken())
+            $this->_first_visit = !$is_bot;
             $this->_state = 'destroyed';
             return;
         }
@@ -302,11 +318,15 @@ class Session
     {
         // Fail closed: a state-changing request with no matching token is rejected (previously this
         // returned true when no token was set), and the comparison is constant-time.
-        $stored = $this->get($this->_token_name);
-        if (!$stored || !is_string($token) || $token === '') {
+        if (!is_string($token) || $token === '') {
             return false;
         }
-        return hash_equals((string)$stored, $token);
+        $stored = $this->get($this->_token_name);
+        if ($stored && hash_equals((string)$stored, $token)) {
+            return true;
+        }
+        // A form from the visitor's first page, served before they had a session
+        return $this->_checkFirstVisitToken($token);
     }
 
     /**
@@ -484,6 +504,9 @@ class Session
      */
     public function getToken($new = false)
     {
+        if ($this->_first_visit) {
+            return $this->_firstVisitToken();
+        }
         if ((($token = $this->get($this->_token_name)) === false) || $new) {
             $token = $this->_createToken();
             $this->set($this->_token_name, $token);
@@ -574,6 +597,9 @@ class Session
         $this->set_cookie($this->_session_name, $this->_session_id, time()+$this->_session_timeout);
         // Only called on login: a token issued before it must not stay valid after it (GHSA-wmwq-93f9-q8cv)
         $this->getToken(true);
+        if (isset($_COOKIE[self::FIRST_VISIT_COOKIE])) {
+            $this->_firstVisitCookie('', 1);
+        }
     }
 
     /**
@@ -726,6 +752,25 @@ class Session
     }
 
     /**
+     * Accept a form posted from the visitor's first page
+     *
+     * @param string $token
+     * @return bool
+     */
+    private function _checkFirstVisitToken($token)
+    {
+        if (CC_IN_ADMIN || $this->_state != 'active' || ($first = $this->_readFirstVisitToken()) === false || !hash_equals($first, $token)) {
+            return false;
+        }
+        // Adopt it as the session's token. If the session already has another, keep the cookie so the rest of that page still works.
+        if ($this->get($this->_token_name) === false) {
+            $this->set($this->_token_name, $first);
+            $this->_firstVisitCookie('', 1);
+        }
+        return true;
+    }
+
+    /**
      * Create a form token (CSPRNG)
      *
      * @return string
@@ -733,6 +778,74 @@ class Session
     private function _createToken()
     {
         return bin2hex(random_bytes(16));
+    }
+
+    /**
+     * Send the first-visit cookie. __Host- means no Domain, path / and secure only, so another subdomain cannot plant one.
+     *
+     * @param string $value
+     * @param int $expires
+     */
+    private function _firstVisitCookie($value, $expires)
+    {
+        if (!headers_sent()) {
+            header('Set-Cookie: '.self::FIRST_VISIT_COOKIE.'='.$value.';Expires='.gmdate('D, d M Y H:i:s', $expires).' GMT;Path=/;Secure;HttpOnly;SameSite=Lax', false);
+        }
+        if ($value === '') {
+            unset($_COOKIE[self::FIRST_VISIT_COOKIE]);
+        }
+    }
+
+    /**
+     * Form token for a page served without a session. Without one the token cannot be stored, so it is signed
+     * into a cookie and the first form post is checked against that (Sanitize::checkToken()).
+     *
+     * @return string
+     */
+    private function _firstVisitToken()
+    {
+        if ($this->_first_visit_token === null) {
+            $this->_first_visit_token = $this->_readFirstVisitToken();
+            if ($this->_first_visit_token === false) {
+                $this->_first_visit_token = $this->_createToken();
+                if ($GLOBALS['config']->get('config', 'csrf') == '1') {
+                    $expires = time() + 86400;
+                    $this->_firstVisitCookie($this->_first_visit_token.'.'.$expires.'.'.$this->_signFirstVisitToken($this->_first_visit_token, $expires), $expires);
+                }
+            }
+        }
+        return $this->_first_visit_token;
+    }
+
+    /**
+     * Token from a valid, unexpired first-visit cookie
+     *
+     * @return string|false
+     */
+    private function _readFirstVisitToken()
+    {
+        $parts = explode('.', (string)($_COOKIE[self::FIRST_VISIT_COOKIE] ?? ''));
+        if (count($parts) !== 3 || !preg_match('/^[a-f0-9]{32}$/', $parts[0]) || !ctype_digit($parts[1]) || (int)$parts[1] < time()) {
+            return false;
+        }
+        return hash_equals($this->_signFirstVisitToken($parts[0], $parts[1]), $parts[2]) ? $parts[0] : false;
+    }
+
+    /**
+     * HMAC of a first-visit token and its expiry, keyed with a per-store secret made on first use
+     *
+     * @param string $token
+     * @param int $expires
+     * @return string
+     */
+    private function _signFirstVisitToken($token, $expires)
+    {
+        $key = (string)$GLOBALS['config']->get('config', 'csrf_key');
+        if (strlen($key) < 64) {
+            $key = bin2hex(random_bytes(32));
+            $GLOBALS['config']->set('config', 'csrf_key', $key);
+        }
+        return hash_hmac('sha256', $token.'.'.$expires, $key);
     }
 
     /**

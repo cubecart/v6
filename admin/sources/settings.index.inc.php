@@ -17,7 +17,7 @@ if (!defined('CC_INI_SET')) {
 Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
 
 // Config values that are secrets: never rendered into the page source, kept on an empty save (#4325).
-$secret_config_keys = array('email_smtp_password', 'recaptcha_secret_key');
+$secret_config_keys = array('email_smtp_password', 'recaptcha_secret_key', 'csrf_key');
 
 if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_PERM_FULL)) {
     $config_old = $GLOBALS['config']->get('config');
