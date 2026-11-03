@@ -193,6 +193,8 @@ class Admin
                 $GLOBALS['session']->delete('recover_login');
 
                 if ($GLOBALS['db']->update('CubeCart_admin_users', $record, $where)) {
+                    // A new password signs the account out on every other device
+                    $GLOBALS['db']->delete('CubeCart_sessions', array('admin_id' => (int)$check[0]['admin_id'], 'session_id' => '!='.$GLOBALS['session']->getId()), false);
                     return $this->_authenticate($check[0]['username'], $password['new']);
                 }
             }
@@ -567,10 +569,10 @@ class Admin
         $admin_id = $GLOBALS['session']->get('admin_id', 'client', 0);
         //If there is one
         if ($admin_id != 0) {
-            // Strict single-session: the live session must match the stored session_id and the
-            // account must still be enabled, so logout/password-change/disable/newer-login revoke it
+            // The account must still exist and be enabled. Each device keeps its own session, so one login can be
+            // used on several devices; logout, the idle timeout and a password change end sessions by deleting them.
             $live = $GLOBALS['db']->select('CubeCart_admin_users', false, array('admin_id' => (int)$admin_id), false, 1, false, false);
-            if ($live === false || $live[0]['status'] != '1' || (string)$live[0]['session_id'] === '' || (string)$live[0]['session_id'] !== (string)$GLOBALS['session']->getId()) {
+            if ($live === false || $live[0]['status'] != '1') {
                 $GLOBALS['session']->delete('admin_id', 'client');
                 $GLOBALS['session']->delete('', 'admin_data');
                 $this->_logged_in = false;

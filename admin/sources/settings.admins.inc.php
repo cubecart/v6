@@ -152,7 +152,6 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
             $logout = true;
             $record['password'] = Password::getInstance()->hashPassword($record['password']);
             $record['salt'] = '';
-            $record['session_id'] = ''; // strict single-session: revoke active sessions on password change
         }
 
         //If there only one super then don't allow demoting
@@ -160,6 +159,10 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
             $record['super_user'] = '1';
         }
         if ($GLOBALS['db']->update('CubeCart_admin_users', $record, array('admin_id' => $_POST['admin_id']))) {
+            if (!empty($record['password'])) {
+                // A new password signs the account out on every other device; this one is logged out below
+                $GLOBALS['db']->delete('CubeCart_sessions', array('admin_id' => (int)$_POST['admin_id'], 'session_id' => '!='.$GLOBALS['session']->getId()), false);
+            }
             $admin_id = Admin::getInstance()->get('admin_id');
             if ($_POST['admin_id']==$admin_id) {
                 $GLOBALS['session']->set('user_language', $record['language'], 'admin');
