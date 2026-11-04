@@ -112,7 +112,7 @@ class Sanitize
             return (string)$html;
         }
         $allowed_tags = array(
-            'a','abbr','address','b','blockquote','br','caption','cite','code','col','colgroup',
+            'a','abbr','address','b','blockquote','br','caption','center','cite','code','col','colgroup',
             'dd','del','div','dl','dt','em','figcaption','figure','h1','h2','h3','h4','h5','h6',
             'hr','i','img','ins','li','mark','ol','p','pre','q','s','small','span','strike',
             'strong','sub','sup','table','tbody','td','tfoot','th','thead','tr','u','ul'
