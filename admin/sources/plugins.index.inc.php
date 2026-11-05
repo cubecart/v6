@@ -588,7 +588,8 @@ foreach ($api_extensions as $ext) {
         'edit_url' => $edit_url,
         'purchase_url' => !empty($ext['purchase_url']) ? $ext['purchase_url'] : '',
         'price' => !empty($ext['price']) ? $ext['price'] : '',
-        'third_party' => (empty($ext['creator']) || stripos($ext['creator'], 'cubecart') === false),
+        // The marketplace flags CubeCart's own extensions; a feed without the flag falls back to the creator's name
+        'third_party' => isset($ext['official']) ? empty($ext['official']) : (empty($ext['creator']) || stripos($ext['creator'], 'cubecart') === false),
         'ioncube' => !empty($ext['ioncube']) ? 1 : 0,
         'php_versions' => $ext_php_versions,
         'php_compatible' => $php_compatible,
