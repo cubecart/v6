@@ -148,7 +148,7 @@
             </select>
          </span></div>
          <div><label for="recaptcha_public_key">{$LANG.settings.recaptcha_public_key}</label><span><input name="config[recaptcha_public_key]" id="recaptcha_public_key" class="textbox" value="{$CONFIG.recaptcha_public_key}"></span></div>
-         <div><label for="recaptcha_secret_key">{$LANG.settings.recaptcha_secret_key}</label><span><input name="config[recaptcha_secret_key]" id="recaptcha_secret_key" class="textbox" type="password" autocomplete="off" value="{$CONFIG.recaptcha_secret_key}">{if $CONFIG.recaptcha_secret_key_set} <small>{$LANG.settings.secret_set}</small>{/if}</span></div>
+         <div><label for="recaptcha_secret_key">{$LANG.settings.recaptcha_secret_key}</label><span><input name="config[recaptcha_secret_key]" id="recaptcha_secret_key" class="textbox" type="password" value="{$CONFIG.recaptcha_secret_key}" onfocus="this.removeAttribute('readonly');" readonly autocomplete="off">{if $CONFIG.recaptcha_secret_key_set} <small>{$LANG.settings.secret_set}</small>{/if}</span></div>
          <div class="clear important"><strong>{$LANG.settings.new_recaptcha_note}</strong>
             {if !empty($unavailable_captchas)}
             {$LANG.settings.captcha_warning}
