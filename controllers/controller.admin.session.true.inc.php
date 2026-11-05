@@ -159,25 +159,16 @@ foreach ($GLOBALS['hooks']->load('admin.head_css') as $hook) {
 }
 $GLOBALS['smarty']->assign('HEAD_CSS', $head_css);
 
-## Support widget (Zendesk) — identify admin and tag with subscriber status.
-## Skip the Stripe proxy lookup entirely when chat is hidden.
+## Support widget (Zendesk): identify the admin. Whether they pay is looked up
+## from Stripe when their ticket arrives, not asked of cubecart.com from here.
 if (!$GLOBALS['config']->get('config', 'hide_chat')) {
     $_sw_admin = Admin::getInstance()->get('');
-    $_sw_emails = array();
-    if (!empty($_sw_admin['email'])) {
-        $_sw_emails[] = $_sw_admin['email'];
-    }
-    $_sw_store_email = $GLOBALS['config']->get('config', 'email_address');
-    if (!empty($_sw_store_email)) {
-        $_sw_emails[] = $_sw_store_email;
-    }
-    $_sw_status = SupportWidget::getInstance()->getStatus($_sw_emails);
-    $_sw_tags = array($_sw_status['subscriber'] ? 'cc-subscriber' : 'cc-no-sub');
+    $_sw_tags = array();
     if (isCubeCartHosting()) {
         $_sw_tags[] = 'cc-hosting';
     }
     $GLOBALS['smarty']->assign('SUPPORT_WIDGET_KEY', SupportWidget::WIDGET_KEY);
     $GLOBALS['smarty']->assign('SUPPORT_NAME', isset($_sw_admin['name']) ? $_sw_admin['name'] : '');
-    $GLOBALS['smarty']->assign('SUPPORT_EMAIL', $_sw_status['matched_email'] !== null ? $_sw_status['matched_email'] : (!empty($_sw_admin['email']) ? $_sw_admin['email'] : ''));
+    $GLOBALS['smarty']->assign('SUPPORT_EMAIL', !empty($_sw_admin['email']) ? $_sw_admin['email'] : '');
     $GLOBALS['smarty']->assign('SUPPORT_TAGS_JSON', json_encode($_sw_tags));
 }
