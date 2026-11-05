@@ -83,6 +83,7 @@ if (isset($_POST['review']) && is_array($_POST['review']) && Admin::getInstance(
     } else {
         $record['ip_address'] = get_ip_address();
         $record['customer_id'] = 0;
+        $record['time'] = time();
         $record['product_id'] = $_POST['review']['product_id'];
 
         if (!empty($_POST['review']['product_id']) && is_numeric($_POST['review']['product_id'])) {
