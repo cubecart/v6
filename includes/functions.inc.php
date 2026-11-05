@@ -1287,6 +1287,63 @@ function isCubeCartHosting()
 }
 
 /**
+ * Whether an extension in the marketplace feed is this installed module or skin.
+ * Matched by the uid in config.xml, the folder it installs into and its type, never
+ * by display name: a name can be copied, and the marketplace keeps each uid to one
+ * developer. Feeds from before 6.8.6 carry no uid or folder, so nothing matches.
+ *
+ * @param array $ext  Feed entry (uid, folder, type)
+ * @param array $inst Installed module or skin (uid, basename, dir_type)
+ * @return bool
+ */
+function marketplaceMatch(array $ext, array $inst)
+{
+    if (empty($ext['uid']) || empty($ext['folder']) || empty($inst['uid']) || $ext['folder'] !== ($inst['basename'] ?? '')) {
+        return false;
+    }
+    $type = ($ext['type'] ?? '') === 'skin' ? 'skins' : ($ext['type'] ?? '');
+    return $type === ($inst['dir_type'] ?? '') && strcasecmp($ext['uid'], $inst['uid']) === 0;
+}
+
+/**
+ * Whether the dashboard updates a marketplace extension by itself: CubeCart's own
+ * unless the admin turned that off, other developers' only when the admin turned it on.
+ *
+ * @param bool $official From the feed
+ * @param string $basename Installed folder
+ * @return bool
+ */
+function marketplaceAutoUpdate($official, $basename)
+{
+    if ((string)$GLOBALS['config']->get($basename, 'autoupdate_disabled') === '1') {
+        return false;
+    }
+    return $official || (string)$GLOBALS['config']->get($basename, 'autoupdate_enabled') === '1';
+}
+
+/**
+ * Whether every file in a zip has a safe relative path, and when $prefix is
+ * given, sits under it. Checked before an extension is extracted, so a package
+ * can only write where it is meant to.
+ *
+ * @param ZipArchive $zip
+ * @param string $prefix e.g. 'my_plugin/' or 'skins/'
+ * @return bool
+ */
+function zipEntriesSafe(ZipArchive $zip, $prefix = '')
+{
+    for ($i = 0; $i < $zip->numFiles; $i++) {
+        $name = (string)$zip->getNameIndex($i);
+        if ($name === '' || $name[0] === '/' || strpbrk($name, "\\:\0") !== false
+            || in_array('..', explode('/', $name), true)
+            || ($prefix !== '' && strpos($name, $prefix) !== 0)) {
+            return false;
+        }
+    }
+    return $zip->numFiles > 0;
+}
+
+/**
  * Sanitize SEO allowed path (Deprecated since 6.0.7)
  * Use static function SEO::sanitizeSEOPath instead
  *

@@ -190,22 +190,17 @@ if (!$GLOBALS['session']->has('version_check') && $request = new Request('versio
 ## Check for extension updates — auto-install unless the admin has opted that extension out
 if (!function_exists('cc_dashboard_auto_install_extension')) {
     /**
-     * Download an extension zip from extensions.cubecart.com and extract it in place.
-     * Mirrors the install_extension AJAX handler in plugins.index.inc.php but tuned
-     * for non-interactive use: returns true/false instead of emitting JSON. Skin
-     * auto-updates aren't reachable here (the dashboard only enumerates modules/*).
+     * Download an extension update from extensions.cubecart.com and extract it over
+     * the installed module. Mirrors the install_extension AJAX handler in
+     * plugins.index.inc.php, but only ever writes inside that module's own folder
+     * under modules/: never the store root, and never a skin.
      */
-    function cc_dashboard_auto_install_extension($download_url, $ext_type) {
+    function cc_dashboard_auto_install_extension($download_url, $dir_type, $folder) {
         if (empty($download_url) || !filter_var($download_url, FILTER_VALIDATE_URL)) return false;
         $parsed = parse_url($download_url);
         if (!isset($parsed['host']) || $parsed['host'] !== 'extensions.cubecart.com') return false;
-        if ($ext_type === 'skin') {
-            $destination = CC_ROOT_DIR;
-        } elseif (!empty($ext_type) && preg_match('/^[a-z0-9_]+$/i', $ext_type)) {
-            $destination = CC_ROOT_DIR.'/modules/'.$ext_type;
-        } else {
-            $destination = CC_ROOT_DIR.'/modules/plugins';
-        }
+        if (!preg_match('/^[a-z0-9_]+$/i', (string)$dir_type) || !preg_match('/^[A-Za-z0-9_\-]+$/', (string)$folder)) return false;
+        $destination = CC_ROOT_DIR.'/modules/'.$dir_type;
         if (!is_dir($destination) || !is_writable($destination)) return false;
         $tmp_path = CC_BACKUP_DIR.basename($download_url);
         $req = new Request('extensions.cubecart.com', $parsed['path'], 443, false, true, 30);
@@ -218,6 +213,8 @@ if (!function_exists('cc_dashboard_auto_install_extension')) {
         fwrite($fp, $data); fclose($fp);
         $zip = new ZipArchive();
         if ($zip->open($tmp_path) !== true) { @unlink($tmp_path); return false; }
+        // Every file must sit inside the module's own folder
+        if (!zipEntriesSafe($zip, $folder.'/')) { $zip->close(); @unlink($tmp_path); return false; }
         // Reject the zip if it would overwrite a write-protected file (matches install_extension)
         for ($i = 0; $i < $zip->numFiles; $i++) {
             $file = $zip->statIndex($i);
@@ -262,6 +259,8 @@ if (!$GLOBALS['session']->has('extension_update_check')) {
                             'version' => (string)$ext_xml->info->version,
                             'basename' => $ext_bn,
                             'type' => $ext_type_dir,
+                            'dir_type' => $ext_type_dir,
+                            'uid' => (string)$ext_xml->info->uid,
                         );
                         unset($ext_xml);
                     }
@@ -274,25 +273,22 @@ if (!$GLOBALS['session']->has('extension_update_check')) {
             $ext_skipped       = array();    // opted out; needs manual update
             foreach ($ext_data['extensions'] as $ext_api) {
                 $ext_latest = end($ext_api['versions']);
-                $ext_api_name_lower = strtolower($ext_api['name']);
                 foreach ($ext_installed as $ext_key => $ext_inst) {
-                    $ext_inst_name_lower = strtolower($ext_inst['name']);
-                    if ($ext_inst_name_lower === $ext_api_name_lower || $ext_key === strtolower(str_replace(array(' ', '-'), '_', $ext_api['name']))) {
-                        if (!version_compare($ext_latest['version'], $ext_inst['version'], '>')) break;
+                    if (!marketplaceMatch($ext_api, $ext_inst)) continue;
+                    if (!version_compare($ext_latest['version'], $ext_inst['version'], '>')) break;
 
-                        $label = $ext_inst['name'].' ('.$ext_inst['version'].' &rarr; '.$ext_latest['version'].')';
-                        $opt_out = (string)$GLOBALS['config']->get($ext_inst['basename'], 'autoupdate_disabled') === '1';
-                        if ($opt_out) {
-                            $ext_skipped[] = $label;
-                            break;
-                        }
-                        if (cc_dashboard_auto_install_extension($ext_latest['download'], $ext_api['type'])) {
-                            $ext_auto_installed[] = $label;
-                        } else {
-                            $ext_auto_failed[] = $label;
-                        }
+                    $label = $ext_inst['name'].' ('.$ext_inst['version'].' &rarr; '.$ext_latest['version'].')';
+                    // CubeCart's own update by themselves; other developers' only when the admin turned that on
+                    if (!marketplaceAutoUpdate(!empty($ext_api['official']), $ext_inst['basename'])) {
+                        $ext_skipped[] = $label;
                         break;
                     }
+                    if (cc_dashboard_auto_install_extension($ext_latest['download'], $ext_inst['dir_type'], $ext_inst['basename'])) {
+                        $ext_auto_installed[] = $label;
+                    } else {
+                        $ext_auto_failed[] = $label;
+                    }
+                    break;
                 }
             }
 

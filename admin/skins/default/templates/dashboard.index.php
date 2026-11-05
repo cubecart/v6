@@ -543,15 +543,15 @@
             <td nowrap="nowrap" style="text-align:center"><a href="?_g=dashboard&amp;ack=extension&amp;name={$ext.name|escape:'url'}#extensions_recent" title="{$LANG.common.hide|default:'Hide'}"><i class="fa fa-times"></i></a></td>
             <td>
                {if $ext.recommended}<i class="fa fa-star" style="color:#e88e22" title="{$LANG.common.recommended|default:'Recommended'}"></i> {/if}
-               <strong>{$ext.name}</strong>
-               {if $ext.category} <small style="color:#888">&middot; {$ext.category}</small>{/if}
+               <strong>{$ext.name|escape}</strong>
+               {if $ext.category} <small style="color:#888">&middot; {$ext.category|escape}</small>{/if}
                {if $ext.is_installed} <span class="ext-badge ext-badge-installed" style="margin-left:4px"><i class="fa fa-check"></i> {$LANG.module.ext_installed|default:'Installed'}</span>{/if}
             </td>
-            <td>{if $ext.description}{$ext.description|truncate:140:"&hellip;"}{/if}</td>
-            <td nowrap="nowrap">{$ext.creator}</td>
-            <td nowrap="nowrap">v{$ext.version}</td>
-            <td nowrap="nowrap">{if $ext.price}{$ext.price}{else}{$LANG.common.free}{/if}</td>
-            <td nowrap="nowrap">{$ext.date}</td>
+            <td>{if $ext.description}{$ext.description|truncate:140:"…"|escape}{/if}</td>
+            <td nowrap="nowrap">{$ext.creator|escape}</td>
+            <td nowrap="nowrap">v{$ext.version|escape}</td>
+            <td nowrap="nowrap">{if $ext.price}{$ext.price|escape}{else}{$LANG.common.free}{/if}</td>
+            <td nowrap="nowrap">{$ext.date|escape}</td>
          </tr>
       {/foreach}
       </tbody>

@@ -99,6 +99,13 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
         _ajax_respond(array('success' => false, 'message' => sprintf($lang['module']['read_fail'], basename($download_url))));
     }
 
+    // Every file must have a safe relative path, so the package can only write under $destination
+    if (!zipEntriesSafe($zip)) {
+        $zip->close();
+        @unlink($tmp_path);
+        _ajax_respond(array('success' => false, 'message' => 'This extension package contains an unsafe file path and was not installed.'));
+    }
+
     $import_language = false;
     $install_dir = '';
 
@@ -117,11 +124,16 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
         }
     }
 
-    // For skins, check if zip already contains skins/ prefix
+    // For skins, check if zip already contains skins/ prefix. If it does, it is
+    // extracted at the store root, so every file must stay inside skins/.
     if ($ext_type === 'skin') {
         $first_entry = $zip->getNameIndex(0);
         if (strpos($first_entry, 'skins/') !== 0) {
             $destination = CC_ROOT_DIR.'/skins';
+        } elseif (!zipEntriesSafe($zip, 'skins/')) {
+            $zip->close();
+            @unlink($tmp_path);
+            _ajax_respond(array('success' => false, 'message' => 'This skin package has files outside skins/ and was not installed.'));
         }
     }
 
@@ -268,12 +280,10 @@ if ($is_ajax && $_POST['ajax_action'] === 'toggle_autoupdate') {
     if (empty($ext_module) || !preg_match('/^[A-Za-z0-9_\-]+$/', $ext_module)) {
         _ajax_respond(array('success' => false, 'message' => 'Invalid module.'));
     }
-    if ($disabled) {
-        $GLOBALS['config']->set($ext_module, 'autoupdate_disabled', '1', true);
-    } else {
-        // Clear the flag; persist as empty so existing rows are updated rather than left stale
-        $GLOBALS['config']->set($ext_module, 'autoupdate_disabled', '', true);
-    }
+    // Both flags are kept, persisted as empty rather than removed so existing rows are
+    // updated: other developers' extensions only update by themselves once turned on here
+    $GLOBALS['config']->set($ext_module, 'autoupdate_disabled', $disabled ? '1' : '', true);
+    $GLOBALS['config']->set($ext_module, 'autoupdate_enabled', $disabled ? '' : '1', true);
     _ajax_respond(array('success' => true, 'disabled' => $disabled));
 }
 
@@ -444,6 +454,7 @@ foreach ($skin_paths as $skin_path) {
     if (is_object($xml)) {
         $basename = (string)basename(str_replace('/config.xml', '', $skin_path));
         $installed['skin_'.$basename] = array(
+            'uid' => (string)$xml->info->uid,
             'type' => 'skin',
             'dir_type' => 'skins',
             'name' => (string)$xml->info->display,
@@ -490,9 +501,8 @@ $marketplace = array();
 $matched_installed = array(); // Track which installed modules matched an API extension
 foreach ($api_extensions as $ext) {
     $latest = end($ext['versions']);
-    $ext_name_lower = strtolower($ext['name']);
 
-    // Try to match with installed modules
+    // Try to match with installed modules: by uid, folder and type, never by name
     $is_installed = false;
     $installed_version = '';
     $installed_basename = '';
@@ -503,9 +513,9 @@ foreach ($api_extensions as $ext) {
     $edit_url = '';
 
     $autoupdate_disabled = false;
+    $matched_key = null;
     foreach ($installed as $key => $inst) {
-        $inst_name_lower = strtolower($inst['name']);
-        if ($inst_name_lower === $ext_name_lower || $key === strtolower(str_replace(array(' ', '-'), '_', $ext['name']))) {
+        if (marketplaceMatch($ext, $inst)) {
             $is_installed = true;
             $installed_version = $inst['version'];
             $installed_basename = $inst['basename'];
@@ -513,13 +523,14 @@ foreach ($api_extensions as $ext) {
             $configured = !empty($inst['configured']);
             $is_enabled = !empty($inst['config']['status']) || ($inst['dir_type'] === 'skins' && in_array($inst['basename'], $active_skins));
             $edit_url = !empty($inst['edit_url']) ? $inst['edit_url'] : '';
-            // Read from CubeCart_config — $inst['config'] only carries the
-            // CubeCart_modules columns (status/position), not the full config blob.
-            $autoupdate_disabled = (string)$GLOBALS['config']->get($installed_basename, 'autoupdate_disabled') === '1';
+            // The switch shows whether the dashboard will update it by itself: CubeCart's
+            // own unless turned off, other developers' only once turned on
+            $autoupdate_disabled = !marketplaceAutoUpdate(!empty($ext['official']), $installed_basename);
             if (version_compare($latest['version'], $installed_version, '>')) {
                 $has_upgrade = true;
             }
             $matched_installed[$key] = true;
+            $matched_key = $key;
             break;
         }
     }
@@ -533,17 +544,12 @@ foreach ($api_extensions as $ext) {
     // If installed locally, prefer name and description from config.xml
     $display_name = $ext['name'];
     $display_desc = !empty($ext['description']) ? $ext['description'] : '';
-    if ($is_installed) {
-        foreach ($installed as $key => $inst) {
-            if (!empty($matched_installed[$key]) && (strtolower($inst['name']) === $ext_name_lower || $key === strtolower(str_replace(array(' ', '-'), '_', $ext['name'])))) {
-                if (!empty($inst['name'])) {
-                    $display_name = $inst['name'];
-                }
-                if (!empty($inst['description'])) {
-                    $display_desc = $inst['description'];
-                }
-                break;
-            }
+    if ($matched_key !== null) {
+        if (!empty($installed[$matched_key]['name'])) {
+            $display_name = $installed[$matched_key]['name'];
+        }
+        if (!empty($installed[$matched_key]['description'])) {
+            $display_desc = $installed[$matched_key]['description'];
         }
     }
 
@@ -586,7 +592,7 @@ foreach ($api_extensions as $ext) {
         'is_enabled' => $is_enabled,
         'autoupdate_disabled' => $autoupdate_disabled,
         'edit_url' => $edit_url,
-        'purchase_url' => !empty($ext['purchase_url']) ? $ext['purchase_url'] : '',
+        'purchase_url' => (!empty($ext['purchase_url']) && stripos($ext['purchase_url'], 'https://') === 0) ? $ext['purchase_url'] : '',
         'price' => !empty($ext['price']) ? $ext['price'] : '',
         // The marketplace flags CubeCart's own extensions; a feed without the flag falls back to the creator's name
         'third_party' => isset($ext['official']) ? empty($ext['official']) : (empty($ext['creator']) || stripos($ext['creator'], 'cubecart') === false),
