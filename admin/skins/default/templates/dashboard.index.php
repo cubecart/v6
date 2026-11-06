@@ -10,31 +10,6 @@
 * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
 *}
 <div id="dashboard" class="tab_content">
-   {if !empty($NEWS.items) && $NEWS_TOP_HASH != $NEWS_DISMISSED_LINK}
-   <div id="news-banner" class="news-banner" data-link="{$NEWS.items[0].link}" data-token="{$SESSION_TOKEN}">
-      <span class="news-banner__label">{$NEWS.title|default:"News"}</span>
-      <a href="{$NEWS.items[0].link}" target="_blank" class="news-banner__link">{$NEWS.items[0].title}</a>
-      <button type="button" class="news-banner__close" aria-label="Dismiss">&times;</button>
-   </div>
-   {literal}
-   <script>
-   (function() {
-      var banner = document.getElementById('news-banner');
-      if (!banner) return;
-      var btn = banner.querySelector('.news-banner__close');
-      if (!btn) return;
-      btn.addEventListener('click', function() {
-         var fd = new FormData();
-         fd.append('dismiss_news', '1');
-         fd.append('news_link', banner.getAttribute('data-link') || '');
-         fd.append('token', banner.getAttribute('data-token') || '');
-         fetch('?_g=dashboard', { method: 'POST', body: fd, credentials: 'same-origin' });
-         banner.parentNode.removeChild(banner);
-      });
-   })();
-   </script>
-   {/literal}
-   {/if}
    <h3>{$LANG.dashboard.title_dashboard}</h3>
    <div class="dashboard_content">
       {if isset($QUICK_STATS)}

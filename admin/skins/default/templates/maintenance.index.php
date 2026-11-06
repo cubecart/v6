@@ -332,8 +332,15 @@ document.querySelectorAll('input[type="submit"][name="backup"]').forEach(functio
     $(window).off('beforeunload');
 
     var msg = document.createElement('div');
+    var msgText = msg.appendChild(document.createElement('span'));
+    var msgClose = msg.appendChild(document.createElement('button'));
     msg.className = 'success';
-    msg.textContent = '{$LANG.maintain.backup_background}';
+    msgText.textContent = '{$LANG.maintain.backup_background}';
+    msgClose.type = 'button';
+    msgClose.className = 'gui_message_close';
+    msgClose.title = '{$LANG.common.close}';
+    msgClose.setAttribute('aria-label', '{$LANG.common.close}');
+    msgClose.textContent = '\u00d7';
     var container = document.getElementById('gui_message');
     if (container) container.appendChild(msg);
 
@@ -344,7 +351,7 @@ document.querySelectorAll('input[type="submit"][name="backup"]').forEach(functio
     }).then(function(r) { return r.json(); }).then(function(data) {
       if (data.status === 'error') {
         msg.className = 'error';
-        msg.textContent = data.message;
+        msgText.textContent = data.message;
       }
       btn.disabled = false;
       btn.value = '{$LANG.maintain.tab_backup}';

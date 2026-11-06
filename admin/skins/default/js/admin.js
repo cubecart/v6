@@ -1269,8 +1269,9 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
     var t = $("input#product_code_old").val(),
         e = $("input#product_code").val();
     e.length > 0 ? ($("input#product_code_old").val(e), $("input#product_code").val("")) : $("input#product_code").val(t)
-}), $("#gui_message").on("click", function() {
-    $(this).slideUp()
+}), $("#gui_message").on("click", ".gui_message_close", function() {
+    var t = $(this).parent();
+    t.siblings("div:visible").length ? t.slideUp() : $("#gui_message").slideUp()
 }), $("#cat_general").on("change", "#cat_name", function() {
     $("#cat_general").on("click", "#cat_save", function() {
         return $("#dialog-seo").dialog({
