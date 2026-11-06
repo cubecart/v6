@@ -129,7 +129,7 @@
             "reviewRating": { "@type": "Rating", "ratingValue": "{/literal}{$review.rating}{literal}", "bestRating": "5" },
             "author": { "@type": "Person", "name": "{/literal}{$review.name}{literal}" },
             "datePublished": "{/literal}{$review.date_schema}{literal}",
-            "reviewBody": "{/literal}{textformat wrap_char=" "}{strip_tags(trim(str_replace($review.review,'"','\"')))}{/textformat}{literal}"
+            "reviewBody": {/literal}{$review.review|strip_tags|html_entity_decode|trim|json_encode}{literal}
           }
           {/literal}
           {if !$review@last},{/if}
