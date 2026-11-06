@@ -1,0 +1,48 @@
+name: Bug report
+description: Something in CubeCart is not working as it should
+type: Bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. For help with your own store, ask on the [community forum](https://community.cubecart.com) or contact the [helpdesk](https://www.cubecart.com/contact). Report security issues privately as described in our [security policy](https://github.com/cubecart/v6/security/policy).
+  - type: input
+    id: version
+    attributes:
+      label: CubeCart version
+      placeholder: "6.8.5"
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you expect to happen, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to ...
+        2. Click ...
+        3. See ...
+    validations:
+      required: true
+  - type: input
+    id: php
+    attributes:
+      label: PHP version
+      placeholder: "8.3"
+  - type: input
+    id: skin
+    attributes:
+      label: Skin
+      placeholder: Atrium, Foundation, Basix ...
+  - type: textarea
+    id: errors
+    attributes:
+      label: Error messages
+      description: Anything from the admin error log, the PHP error log or the browser console.
+      render: text

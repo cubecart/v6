@@ -1,0 +1,19 @@
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please search the existing ideas first. If one already covers what you need, upvote it instead so the votes stay in one place.
+  - type: textarea
+    id: need
+    attributes:
+      label: What would this help you do?
+      description: The problem or need behind the idea, and who it would help.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: How could it work?
+      description: Describe the feature as you imagine it. Screenshots, mockups or examples from other platforms are welcome.
+    validations:
+      required: true

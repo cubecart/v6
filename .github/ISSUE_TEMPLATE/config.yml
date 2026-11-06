@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "Suggest a feature"
+    url: "https://github.com/cubecart/v6/discussions/categories/ideas"
+    about: "Post an idea or upvote an existing one. Ideas we take on become issues."
+  - name: "Need a feature built?"
+    url: "https://www.cubecart.com/contact"
+    about: "Contact us for a quote to have it built as a sponsored feature."
+  - name: "Help with your store"
+    url: "https://community.cubecart.com"
+    about: "Ask the community, or contact our helpdesk if you have a support plan. This tracker is not for support."
+  - name: "Report a security issue"
+    url: "https://github.com/cubecart/v6/security/policy"
+    about: "Please report it privately, never in a public issue."

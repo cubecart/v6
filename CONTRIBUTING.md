@@ -1,12 +1,21 @@
 # Contributing
 
-First of all THANK YOU! All contributions be it bug fix, reporting an issue or features request; we greatly appreciate your time which helps make CubeCart even better. 
+Thank you for helping make CubeCart better. Here is where each kind of contribution goes.
 
-## Sponsored Feature Requests
-If you need specific feature which isn't currently included with CubeCart please contact our sales department via our [helpdesk](https://www.cubecart.com/contact) to arrange a quote.
+## Feature ideas
+Post feature ideas in [Discussions, under Ideas](https://github.com/cubecart/v6/discussions/categories/ideas), not as issues. Search first, and if someone has already suggested it, upvote theirs instead so the votes stay in one place.
 
-## Bug Reports
-Please provide an overview of the issue with steps to reproduce. If you have forked CubeCart we appreciate pull requests to review. The GitHub issue tracker is NOT a source to seek technical support. Instead please contact our support staff via the [helpdesk](https://www.cubecart.com/contact).
+We look at the most upvoted ideas when we plan each release. When we take one on, we open an issue for it and link it from the idea, so everyone who voted can follow it. If we decide against an idea, we close it with the reason.
 
-## Security Issues
-Please don't post security issues on GitHub publicly. Report them privately as described in [SECURITY.md](SECURITY.md).
+Pull requests for new features are welcome, but please post the idea first so we can agree the approach before you start.
+
+## Sponsored features
+If you need a feature sooner, or one specific to your store, contact us through the [helpdesk](https://www.cubecart.com/contact) for a quote to have it built.
+
+## Bug reports
+[Open an issue](https://github.com/cubecart/v6/issues/new/choose) with the bug report form and include the steps to reproduce it. If you have forked CubeCart, pull requests with a fix are very welcome.
+
+The issue tracker is not for help with your own store. Ask on the [community forum](https://community.cubecart.com) or contact our support staff through the [helpdesk](https://www.cubecart.com/contact).
+
+## Security issues
+Please don't post security issues publicly. Report them privately as described in [SECURITY.md](SECURITY.md).
