@@ -124,7 +124,20 @@ class GUI
                         $GLOBALS['session']->set('skin', $skin, 'client');
                         $GLOBALS['session']->set('style', $style, 'client');
                     }
-                    httpredir(currentPage(array('select_skin')));
+                    // Return to the pretty URL, as the language switch does. This runs before the SEO
+                    // path is resolved, and currentPage() would rebuild the address from $_GET, which
+                    // still holds select_skin, so the redirect pointed back at itself.
+                    if (!empty($_GET['seo_path'])) {
+                        $query = $_GET;
+                        unset($query['select_skin'], $query['seo_path'], $query['token']);
+                        $destination = $GLOBALS['storeURL'].'/'.ltrim(str_replace(array("\r", "\n"), '', (string)$_GET['seo_path']), '/');
+                        if (!empty($query)) {
+                            $destination .= '?'.http_build_query($query);
+                        }
+                    } else {
+                        $destination = currentPage(array('select_skin'));
+                    }
+                    httpredir($destination);
                 }
             }
 
