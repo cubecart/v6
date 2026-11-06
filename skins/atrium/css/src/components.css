@@ -574,6 +574,8 @@
   .prose-cc li + li { margin-top: 0.35em; }
   .prose-cc a { text-decoration: underline; text-underline-offset: 2px; }
   .prose-cc img { border-radius: var(--radius-cc); }
+  /* Descriptions saved before 6.7.0 carry an inline width and height: let the height follow the width the screen allows. */
+  .prose-cc img[style*="height"]:not([style*="object-fit"]) { height: auto !important; }
   .prose-cc blockquote {
     border-inline-start: 3px solid var(--color-ink-300);
     padding-inline-start: 1rem;

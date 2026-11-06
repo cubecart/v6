@@ -17,7 +17,7 @@
 {/if}
 {if !empty($category.cat_desc)}
 <div class="row">
-   <div class="small-12 columns">{$category.cat_desc}</div>
+   <div class="small-12 columns cat-desc">{$category.cat_desc}</div>
 </div>
 {/if}
 {if isset($SUBCATS) && $SUBCATS}

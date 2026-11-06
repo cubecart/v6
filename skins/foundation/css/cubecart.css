@@ -545,3 +545,11 @@ ul.pagination .arrow:last-child a {
 @media only screen and (max-width: 40em) {
     .cc-hero-arrow { display: none; }
 }
+
+/* Descriptions saved before 6.7.0 carry an inline width and height: let the height follow the width the screen allows. */
+#product_info img[style*="height"]:not([style*="object-fit"]),
+#content_homepage img[style*="height"]:not([style*="object-fit"]),
+.cat-desc img[style*="height"]:not([style*="object-fit"]),
+.doc-content img[style*="height"]:not([style*="object-fit"]) {
+  height: auto !important;
+}

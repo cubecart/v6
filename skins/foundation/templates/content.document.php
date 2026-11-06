@@ -17,7 +17,7 @@
 </div>
 {/if}
 <div class="row">
-   <div class="small-12 columns">{$DOCUMENT.doc_content}</div>
+   <div class="small-12 columns doc-content">{$DOCUMENT.doc_content}</div>
 </div>
 {if $SHARE}
 <hr>
