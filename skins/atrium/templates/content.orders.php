@@ -46,10 +46,10 @@
          <div class="mt-4 flex flex-wrap gap-2">
             <a href="{$VAL_SELF}&cart_order_id={$order.cart_order_id}" class="cc-btn cc-btn-secondary">{$LANG.common.view_details}</a>
             {if $order.make_payment}
-            <a href="{$STORE_URL}/index.php?_a=basket&resume={$order.cart_order_id}" class="cc-btn cc-btn-primary">{$LANG.basket.complete_payment}</a>
+            <a href="{$STORE_URL}/index.php?_a=gateway&cart_order_id={$order.cart_order_id}&retrieve=1" class="cc-btn cc-btn-primary">{$LANG.basket.complete_payment}</a>
             {/if}
             {if !$order.make_payment && !empty($order.basket)}
-            <a href="{$STORE_URL}/index.php?_a=basket&reorder={$order.cart_order_id}" class="cc-btn cc-btn-secondary">{$LANG.common.reorder}</a>
+            <a href="{$STORE_URL}/index.php?_a=vieworder&reorder={$order.cart_order_id}" class="cc-btn cc-btn-secondary">{$LANG.common.reorder}</a>
             {/if}
             {if $order.cancel}
             <a href="{$VAL_SELF}&cancel={$order.cart_order_id}" class="cc-btn cc-btn-secondary !text-danger-600">{$LANG.basket.cancel_order}</a>
