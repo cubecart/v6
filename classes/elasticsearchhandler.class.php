@@ -43,7 +43,7 @@ class ElasticsearchHandler
         'es_i',  // index name
         'es_v',  // validate SSL (1/0)
         'es_c',  // CA bundle path
-        'es_is', // include out-of-stock (1/0)
+        'es_is', // 1 = leave out-of-stock products out of the index
     );
 
     public function __construct($config = array())

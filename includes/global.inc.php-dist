@@ -67,6 +67,15 @@ $glob['redis_db'] 		= 0;
 // Largest item the cache will store, in bytes. 0 disables.
 $glob['cache_max_item_size'] = 1048576;
 
+// Thumbnails
+// Set to 1 to stop CubeCart writing resized images to images/cache. Use it only with
+// cf-thumbs.php, which resizes images on request and lets Cloudflare cache the result.
+// The thumbnail addresses stay the same but nothing is written, so without
+// cf-thumbs.php and its images/.cf-thumbs.htaccess rules every thumbnail returns 404.
+// See the notes at the top of cf-thumbs.php. Leave commented out to keep the normal
+// on-disk thumbnail cache.
+//$glob['block_thumbs'] = 1;
+
 // Sessions
 // Set your own session save path e.g. 127.0.0.1:11211
 $glob['session_save_path'] = '';
@@ -142,7 +151,8 @@ $glob['es_i'] 		= '';
 $glob['es_v'] 		= '';
 // Certificate path
 $glob['es_c'] 		= '';
-// Include out-of-stock products in the index (1 or 0)
+// Leave out-of-stock products out of the index (1 = index only products in stock, 0 = index everything).
+// Only products that track stock and have none left count as out of stock; digital products are always indexed.
 $glob['es_is'] 		= '0';
 
 // Bot detection
