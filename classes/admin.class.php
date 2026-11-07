@@ -19,6 +19,24 @@ class Admin
     const OTP_LIFETIME = 600;
 
     /**
+     * Ids of the core admin sections, by name. The REST API caps each key with these too.
+     */
+    const SECTION_IDS = array(
+        'categories' => 3,
+        'customers'  => 5,
+        'documents'  => 4,
+        'filemanager' => 7,
+        'offers'  => 11,
+        'orders'  => 10,
+        'products'  => 2,
+        'users'   => 1,
+        'shipping'  => 6,
+        'statistics' => 8,
+        'settings'  => 9,
+        'reviews'  => 12,
+    );
+
+    /**
      * Admin's data
      *
      * @var array
@@ -527,20 +545,7 @@ class Admin
             foreach ($GLOBALS['hooks']->load('class.admin.get_section_id') as $hook) {
                 include $hook;
             }
-            $sections = array(
-                'categories' => 3,
-                'customers'  => 5,
-                'documents'  => 4,
-                'filemanager' => 7,
-                'offers'  => 11,
-                'orders'  => 10,
-                'products'  => 2,
-                'users'   => 1,
-                'shipping'  => 6,
-                'statistics' => 8,
-                'settings'  => 9,
-                'reviews'  => 12,
-            );
+            $sections = self::SECTION_IDS;
             if (isset($sections[$name])) {
                 return (int)$sections[$name];
             }

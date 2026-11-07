@@ -36,6 +36,51 @@ $api_resources = array(
 
 $max_api_keys = 20;
 
+$is_super    = Admin::getInstance()->superUser();
+$my_admin_id = (int)Admin::getInstance()->getId();
+
+// A key never carries more than the admin creating or editing it holds on the same data
+$apikey_permissions = function ($posted) use ($api_resources) {
+    $admin = Admin::getInstance();
+    $permissions = array();
+    if (!is_array($posted)) {
+        return $permissions;
+    }
+    foreach ($posted as $resource => $level) {
+        if (!isset($api_resources[$resource], ApiAuth::$resourceSections[$resource]) || !in_array($level, array('r', 'rw', 'rwd'), true)) {
+            continue;
+        }
+        $section = ApiAuth::$resourceSections[$resource];
+        $granted = '';
+        if ($admin->permissions($section, CC_PERM_READ, false, false)) {
+            $granted = 'r';
+            if (strpos($level, 'w') !== false && $admin->permissions($section, CC_PERM_EDIT, false, false)) {
+                $granted = 'rw';
+                if (strpos($level, 'd') !== false && $admin->permissions($section, CC_PERM_DELETE, false, false)) {
+                    $granted = 'rwd';
+                }
+            }
+        }
+        if ($granted !== '') {
+            $permissions[$resource] = $granted;
+        }
+    }
+    return $permissions;
+};
+
+// Only a superuser manages keys that belong to another admin
+$apikey_can_manage = function ($keyId) use ($db, $is_super, $my_admin_id) {
+    if ($is_super) {
+        return true;
+    }
+    $key = $db->select('CubeCart_api_keys', array('admin_id'), array('key_id' => (int)$keyId), false, false, false, false);
+    return $key && (int)$key[0]['admin_id'] === $my_admin_id;
+};
+$apikey_refuse = function () {
+    $GLOBALS['main']->errorMessage($GLOBALS['language']->notification['error_privileges']);
+    httpredir('?_g=settings&node=apikeys');
+};
+
 ## Handle POST actions
 if (isset($_POST['create_key']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
     // Enforce maximum key limit
@@ -46,19 +91,12 @@ if (isset($_POST['create_key']) && Admin::getInstance()->permissions('settings',
     }
 
     $label    = isset($_POST['label']) ? trim($_POST['label']) : '';
-    $adminId  = isset($_POST['admin_id']) ? (int)$_POST['admin_id'] : (int)Admin::getInstance()->getId();
+    // Only a superuser can create a key for another admin
+    $adminId  = ($is_super && isset($_POST['admin_id'])) ? (int)$_POST['admin_id'] : $my_admin_id;
     $rateLimit = isset($_POST['rate_limit']) ? max(1, (int)$_POST['rate_limit']) : 60;
     $expires  = (!empty($_POST['expires'])) ? strtotime($_POST['expires']) : 0;
 
-    // Build permissions
-    $permissions = array();
-    if (isset($_POST['perms']) && is_array($_POST['perms'])) {
-        foreach ($_POST['perms'] as $resource => $level) {
-            if (isset($api_resources[$resource]) && in_array($level, array('r', 'rw', 'rwd'))) {
-                $permissions[$resource] = $level;
-            }
-        }
-    }
+    $permissions = $apikey_permissions(isset($_POST['perms']) ? $_POST['perms'] : array());
 
     // IP whitelist
     $ipWhitelist = null;
@@ -95,15 +133,11 @@ if (isset($_POST['create_key']) && Admin::getInstance()->permissions('settings',
 
 if (isset($_POST['update_key']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
     $keyId = (int)$_POST['key_id'];
-
-    $permissions = array();
-    if (isset($_POST['perms']) && is_array($_POST['perms'])) {
-        foreach ($_POST['perms'] as $resource => $level) {
-            if (isset($api_resources[$resource]) && in_array($level, array('r', 'rw', 'rwd'))) {
-                $permissions[$resource] = $level;
-            }
-        }
+    if (!$apikey_can_manage($keyId)) {
+        $apikey_refuse();
     }
+
+    $permissions = $apikey_permissions(isset($_POST['perms']) ? $_POST['perms'] : array());
 
     $ipWhitelist = null;
     if (!empty($_POST['ip_whitelist'])) {
@@ -128,12 +162,18 @@ if (isset($_POST['update_key']) && Admin::getInstance()->permissions('settings',
 }
 
 if (isset($_GET['delete_key']) && is_numeric($_GET['delete_key']) && Admin::getInstance()->permissions('settings', CC_PERM_DELETE)) {
+    if (!$apikey_can_manage($_GET['delete_key'])) {
+        $apikey_refuse();
+    }
     $db->delete('CubeCart_api_keys', array('key_id' => (int)$_GET['delete_key']));
     $GLOBALS['main']->successMessage('API key deleted.');
     httpredir('?_g=settings&node=apikeys');
 }
 
 if (isset($_GET['regenerate_key']) && is_numeric($_GET['regenerate_key']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
+    if (!$apikey_can_manage($_GET['regenerate_key'])) {
+        $apikey_refuse();
+    }
     $keyPair = ApiAuth::generateKeyPair();
     $db->update('CubeCart_api_keys', array(
         'api_key'         => $keyPair['api_key'],
@@ -157,8 +197,9 @@ if ($newKey) {
     $GLOBALS['smarty']->assign('NEW_API_SECRET', $newSecret);
 }
 
-## Load admin list for owner dropdown (needed for both add and edit forms)
-$admins = $db->select('CubeCart_admin_users', array('admin_id', 'name', 'username'), array('status' => 1));
+## Load admin list for owner dropdown (needed for both add and edit forms). Other admins only for a superuser.
+$owner_where = $is_super ? array('status' => 1) : array('status' => 1, 'admin_id' => $my_admin_id);
+$admins = $db->select('CubeCart_admin_users', array('admin_id', 'name', 'username'), $owner_where);
 $GLOBALS['smarty']->assign('ADMIN_LIST', $admins ?: array());
 $GLOBALS['smarty']->assign('API_RESOURCES', $api_resources);
 $GLOBALS['smarty']->assign('API_URL', CC_STORE_URL . '/api/v1/');
@@ -167,6 +208,9 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
 
 if ($action === 'edit' && isset($_GET['key_id']) && is_numeric($_GET['key_id'])) {
     ## Edit mode
+    if (!$apikey_can_manage($_GET['key_id'])) {
+        $apikey_refuse();
+    }
     $keyData = $db->select('CubeCart_api_keys', false, array('key_id' => (int)$_GET['key_id']));
     if ($keyData) {
         $key = $keyData[0];
@@ -205,6 +249,7 @@ if ($action === 'edit' && isset($_GET['key_id']) && is_numeric($_GET['key_id']))
             $key['last_used_date'] = $key['last_used'] > 0 ? date('Y-m-d H:i', $key['last_used']) : 'Never';
             $key['expires_date'] = $key['expires'] > 0 ? date('Y-m-d', $key['expires']) : 'Never';
             $key['permissions_array'] = json_decode($key['permissions'], true) ?: array();
+            $key['can_manage'] = $is_super || (int)$key['admin_id'] === $my_admin_id;
         }
         unset($key);
     }

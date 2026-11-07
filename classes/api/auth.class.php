@@ -20,6 +20,24 @@ class ApiAuth
     private $_keyData   = null;
     private $_adminData = null;
     private $_permissions = array();
+    private $_ownerPermissions = null;
+
+    /**
+     * Admin section behind each API resource, matching the checks on the admin screens for
+     * the same data. Keys are created and checked against these, so a key never reaches
+     * further than its owner could in the admin.
+     */
+    public static $resourceSections = array(
+        'products'   => 'products',
+        'categories' => 'categories',
+        'orders'     => 'orders',
+        'customers'  => 'customers',
+        'coupons'    => 'settings',
+        'tax'        => 'settings',
+        'settings'   => 'settings',
+        'reviews'    => 'reviews',
+        'files'      => 'filemanager',
+    );
 
     public function __construct()
     {
@@ -85,7 +103,7 @@ class ApiAuth
         }
 
         // Load admin user data to use as permission ceiling
-        $adminData = $this->_db->select('CubeCart_admin_users', false, array('admin_id' => $this->_keyData['admin_id'], 'status' => 1));
+        $adminData = $this->_db->select('CubeCart_admin_users', false, array('admin_id' => $this->_keyData['admin_id'], 'status' => 1), false, false, false, false);
         if (!$adminData || empty($adminData[0])) {
             ApiResponse::error('API key owner account is disabled', 'AUTH_ADMIN_DISABLED', 403);
         }
@@ -118,7 +136,49 @@ class ApiAuth
             ApiResponse::error('API key does not have delete access to this resource', 'FORBIDDEN', 403);
         }
 
+        // The key is also capped at what its owner holds now, which covers keys created with
+        // more than their creator had and owners who have since lost a section
+        if (!$this->_ownerAllows($resource, $level)) {
+            ApiResponse::error('API key owner does not have access to this resource', 'FORBIDDEN', 403);
+        }
+
         return true;
+    }
+
+    /**
+     * Whether the key's owner holds the admin permission behind a resource at this level
+     * @param string $resource
+     * @param string $level 'r', 'w' or 'd'
+     * @return bool
+     */
+    private function _ownerAllows($resource, $level)
+    {
+        if (!empty($this->_adminData['super_user'])) {
+            return true;
+        }
+        if (!isset(self::$resourceSections[$resource])) {
+            return false;
+        }
+        $bits = array('r' => CC_PERM_READ, 'w' => CC_PERM_EDIT, 'd' => CC_PERM_DELETE);
+        $bit  = isset($bits[$level]) ? $bits[$level] : CC_PERM_FULL;
+
+        if ($this->_ownerPermissions === null) {
+            $this->_ownerPermissions = array();
+            $rows = $this->_db->select('CubeCart_permissions', array('section_id', 'level'), array('admin_id' => (int)$this->_adminData['admin_id']), false, false, false, false);
+            if ($rows) {
+                foreach ($rows as $row) {
+                    $this->_ownerPermissions[(int)$row['section_id']] = (int)$row['level'];
+                }
+            }
+        }
+        // Same lookup as Admin::permissions(): the section's own row, otherwise the global row (0)
+        $sectionId = Admin::SECTION_IDS[self::$resourceSections[$resource]];
+        if (isset($this->_ownerPermissions[$sectionId])) {
+            $held = $this->_ownerPermissions[$sectionId];
+        } else {
+            $held = isset($this->_ownerPermissions[0]) ? $this->_ownerPermissions[0] : 0;
+        }
+        return ($held & $bit) === $bit;
     }
 
     /**

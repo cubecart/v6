@@ -125,9 +125,11 @@
         <td>{$key.created_date}</td>
         <td>{$key.expires_date}</td>
         <td>
+          {if $key.can_manage}
           <a href="?_g=settings&node=apikeys&action=edit&key_id={$key.key_id}" class="edit" title="Edit"><i class="fa fa-pencil-square-o" title="Edit"></i></a>
           <a href="?_g=settings&node=apikeys&regenerate_key={$key.key_id}" title="Regenerate" onclick="return confirm('Regenerate this API key? The old key will stop working immediately.');"><i class="fa fa-refresh" title="Regenerate"></i></a>
           <a href="?_g=settings&node=apikeys&delete_key={$key.key_id}" class="delete" title="Delete"><i class="fa fa-trash" title="Delete"></i></a>
+          {/if}
         </td>
       </tr>
     {/foreach}
