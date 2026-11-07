@@ -14,7 +14,7 @@ $GLOBALS['main']->addTabControl($lang['settings']['release_notes'], 'general');
 $GLOBALS['gui']->addBreadcrumb($lang['settings']['release_notes'], currentPage(array('node')), true);
 
 $notes = <<<END
-    <p>CubeCart 6.8.6 follows <a href="?_g=release_notes&amp;node=6.8.5">6.8.5</a>. It fixes two security vulnerabilities in the REST API and the problems found since 6.8.5, including a visitor's first Add to Basket failing with a security alert. <strong>Every store should upgrade.</strong></p>
+    <p>CubeCart 6.8.6 follows <a href="?_g=release_notes&amp;node=6.8.5">6.8.5</a>. It fixes two security vulnerabilities in the REST API and the problems found since 6.8.5, including a visitor's first Add to Basket potentially failing with a security alert on older skins. <strong>Every store should upgrade.</strong></p>
 END;
 
 $features = array(
