@@ -210,14 +210,8 @@ class ApiAuth
      */
     public function getClientIp()
     {
-        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-            return trim($ips[0]);
-        }
-        if (!empty($_SERVER['HTTP_X_REAL_IP'])) {
-            return $_SERVER['HTTP_X_REAL_IP'];
-        }
-        return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';
+        // The store's own rules: forwarding headers only count when they come from a trusted proxy
+        return get_ip_address();
     }
 
     /**

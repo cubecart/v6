@@ -19,12 +19,23 @@ class ApiResource_Settings extends ApiResource
     protected $_resourceName = 'settings';
 
     /**
-     * Sensitive config keys that must not be exposed
+     * Config keys the API never reads or writes: credentials, keys and the admin path.
+     * _isSensitive() also covers any key with "password" or "secret" in its name.
      */
     private $_sensitiveKeys = array(
         'dbhost', 'dbusername', 'dbpassword', 'dbdatabase', 'dbprefix',
-        'enc_key', 'csrf_key', 'admin_file', 'smtp_password',
+        'enc_key', 'csrf_key', 'adminFile', 'adminFolder', 'email_smtp_password',
+        'recaptcha_secret_key', 'feed_access_key', 'w3w_user_key',
     );
+
+    /**
+     * @param string $key
+     * @return bool
+     */
+    private function _isSensitive($key)
+    {
+        return in_array((string)$key, $this->_sensitiveKeys, true) || preg_match('/password|secret/i', (string)$key);
+    }
 
     /**
      * GET /settings
@@ -35,8 +46,10 @@ class ApiResource_Settings extends ApiResource
 
         $config = $GLOBALS['config']->get('config');
         if (is_array($config)) {
-            foreach ($this->_sensitiveKeys as $key) {
-                unset($config[$key]);
+            foreach (array_keys($config) as $key) {
+                if ($this->_isSensitive($key)) {
+                    unset($config[$key]);
+                }
             }
         }
 
@@ -85,7 +98,7 @@ class ApiResource_Settings extends ApiResource
         }
 
         // Single config key lookup
-        if (in_array($id, $this->_sensitiveKeys)) {
+        if ($this->_isSensitive($id)) {
             ApiResponse::error('Access denied to this setting', 'FORBIDDEN', 403);
         }
 
@@ -111,7 +124,7 @@ class ApiResource_Settings extends ApiResource
 
         $updated = array();
         foreach ($data as $key => $value) {
-            if (in_array($key, $this->_sensitiveKeys)) {
+            if ($this->_isSensitive($key)) {
                 continue; // silently skip sensitive keys
             }
             $GLOBALS['config']->set('config', $key, $value);

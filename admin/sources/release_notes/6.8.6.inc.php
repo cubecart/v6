@@ -21,6 +21,9 @@ $features = array(
     // Security fixes: high
     'GHSA-9r66-r93r-w356' => 'An API key can no longer do more than the admin who owns it. Its permissions are capped at its creator\'s own, every API request is checked against what the owner holds now, and only a super user can create, edit, regenerate or delete another admin\'s keys',
 
+    // Security fixes: medium
+    'GHSA-fc6p-gcvx-cqfc' => 'The REST API\'s Settings endpoint no longer returns the SMTP password, the reCAPTCHA secret key, the feed access key or the admin folder name, and a key\'s IP allow-list can no longer be passed with a forged X-Forwarded-For header',
+
     // Fixes and improvements
     '4333' => 'A visitor\'s first Add to Basket, or any other form on their first page, no longer fails with a CSRF security alert',
     '4332' => 'Signing in to the admin on a second device no longer signs the first one out. Changing the password still signs out every other session',
