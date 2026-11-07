@@ -572,6 +572,9 @@ foreach ($api_extensions as $ext) {
         // Folder name as used by the release-notes API path; derived from the
         // download URL: /files/{category}/{folder_name}/{folder_name}-{ver}.zip
         'folder_name' => !empty($latest['download']) ? basename(dirname($latest['download'])) : '',
+        // The extension's page on cubecart.com: /extensions/ plus its install folder, lower case,
+        // other characters as hyphens (the marketplace feed's folder, as cubecart.com builds it)
+        'page_url' => !empty($ext['folder']) ? 'https://www.cubecart.com/extensions/'.trim(preg_replace('/[^a-z0-9]+/', '-', strtolower((string)$ext['folder'])), '-') : '',
         'versions' => array_reverse($ext['versions']),
         // Pre-computed so the template doesn't have to scan $versions itself
         'current_version' => $is_installed ? $installed_version : $latest['version'],

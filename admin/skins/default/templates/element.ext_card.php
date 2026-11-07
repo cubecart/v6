@@ -1,6 +1,6 @@
 <div class="ext-card{if $ext.has_upgrade} ext-card-has-upgrade{elseif $ext.is_enabled} ext-card-installed ext-card-enabled{elseif $ext.is_installed} ext-card-installed ext-card-disabled{/if}" data-category="{$ext.category|escape}" data-name="{$ext.name|lower|escape}" data-type="{$ext.type|escape}" data-installed="{if $ext.is_installed}1{else}0{/if}" data-installed-version="{$ext.installed_version|escape}" data-installed-basename="{$ext.installed_basename|escape}" data-paid="{if $ext.purchase_url}1{else}0{/if}">
    <div class="ext-card-header">
-      <h4 class="ext-card-name">{if $ext.recommended}<i class="fa fa-star ext-recommended" title="{$LANG.common.recommended|default:'Recommended'}"></i> {/if}{$ext.name|escape}</h4>
+      <h4 class="ext-card-name">{if $ext.recommended}<i class="fa fa-star ext-recommended" title="{$LANG.common.recommended|default:'Recommended'}"></i> {/if}{if $ext.page_url}<a href="{$ext.page_url|escape}" target="_blank" rel="noopener" title="{$LANG.module.ext_view_page|default:'View on CubeCart.com'}">{$ext.name|escape}</a>{else}{$ext.name|escape}{/if}</h4>
       {if count($ext.versions) > 1 || $ext.is_installed}
       <div class="ext-version-dropdown" data-card-version data-value="{$ext.current_url|escape}">
          <button type="button" class="ext-version-trigger">

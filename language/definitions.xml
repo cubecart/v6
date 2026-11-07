@@ -1883,6 +1883,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="available_plugins" introduced="6.0.0"><![CDATA[Installed Extensions]]></string>
     <string name="extensions_available_desc" introduced="6.1.0"><![CDATA[Updates are available for the following extensions.]]></string>
     <string name="ext_marketplace" introduced="6.6.0"><![CDATA[Extension Marketplace]]></string>
+    <string name="ext_view_page" introduced="6.8.6"><![CDATA[View on CubeCart.com]]></string>
     <string name="ext_marketplace_desc" introduced="6.6.0"><![CDATA[Browse, install and configure CubeCart extensions directly from the marketplace.]]></string>
     <string name="ext_available" introduced="6.6.0"><![CDATA[extensions available]]></string>
     <string name="ext_installed" introduced="6.6.0"><![CDATA[Installed]]></string>

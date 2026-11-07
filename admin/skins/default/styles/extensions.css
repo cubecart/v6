@@ -19,6 +19,9 @@
 .ext-card-has-upgrade { background:#fdf8ec; border-color:#f0d78c; }
 .ext-card-header { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:8px; }
 .ext-card-name { font-size:14px; font-weight:700; color:#333; margin:0; line-height:1.3; flex:1 1 auto; min-width:0; }
+/* The title links to the extension's page on cubecart.com but keeps the heading's colour; !important because dark mode forces every link blue */
+.ext-card .ext-card-header .ext-card-name a { color:inherit !important; text-decoration:none; }
+.ext-card .ext-card-header .ext-card-name a:hover, .ext-card .ext-card-header .ext-card-name a:focus { color:inherit !important; text-decoration:underline; }
 .ext-card-version { font-size:11px; color:#888; white-space:nowrap; }
 .ext-card-desc { font-size:12px; color:#666; margin:0 0 8px; line-height:1.4; }
 .ext-card-meta { display:flex; gap:8px; margin-bottom:0; padding-top:10px; flex-wrap:wrap; margin-top:auto; }

@@ -32,6 +32,7 @@ $features = array(
     '4718' => 'Marketplace updates match extensions by id, folder and type rather than by name, so renaming an extension no longer strands older installs, and extensions from other developers update automatically only when that is switched on',
     '4719' => 'Extensions are marked 3rd party from the marketplace\'s official flag rather than the creator\'s name',
     '4720' => 'The support chat no longer sends the admin\'s email address to cubecart.com to check for a paid support plan',
+    '4722' => 'Each extension in the Extension Marketplace links to its page on cubecart.com, with the full description, screenshots and release notes',
     '4335' => 'Saving a product keeps &lt;center&gt; in its description, so centred text and video trailers stay centred',
     '4338' => 'Reviews added in the admin are dated, so they show a date and sort with the rest',
     '4339' => 'Upgrading adds the Japan, India, Brazil and Argentina zones missing from stores first installed before 6.2.1',
