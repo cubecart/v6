@@ -64,6 +64,8 @@
          </div>
       </footer>
 
+      {include file='templates/element.validation_messages.php'}
+
       {include file='templates/element.ui_strings.php'}
 
       {include file='templates/element.js_foot.php'}
