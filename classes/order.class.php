@@ -1394,7 +1394,7 @@ class Order
     private function _createDownload($product_id, $order_inv_id)
     {
         // Create a reference for a download
-        $accesskey = md5($this->_order_id.$product_id.date('cZ@u').mt_rand());
+        $accesskey = bin2hex(random_bytes(16));
 
         $expire = ($GLOBALS['config']->get('config', 'download_expire')>0) ? time() + $GLOBALS['config']->get('config', 'download_expire') : 0;
 
