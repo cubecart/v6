@@ -12,6 +12,7 @@
       <li id="help_menu"><a href="#"><i class="fa fa-life-ring" aria-hidden="true"></i> {$LANG.common.help}</a>
          <ul>
             {if $HELP_URL}<li><a href="{$HELP_URL}" id="wikihelp" class="help-panel-trigger"><i class="fa fa-book" aria-hidden="true"></i>{$LANG.common.this_page}</a></li>{/if}
+            <li><a href="https://kb.cubecart.com" target="_blank" rel="noopener"><i class="fa fa-question-circle" aria-hidden="true"></i>{$LANG.common.knowledge_base}</a></li>
             <li><a href="https://www.cubecart.com/technical-support" target="_blank"><i class="fa fa-comments-o" aria-hidden="true"></i>{$LANG.common.tech_support}</a></li>
             <li><a href="https://community.cubecart.com" target="_blank"><i class="fa fa-users" aria-hidden="true"></i>{$LANG.common.community}</a></li>
          </ul>

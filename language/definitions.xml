@@ -1033,6 +1033,7 @@
     <string name="attachment_types" introduced="6.6.0"><![CDATA[Image, Zip, PDF]]></string>
 
     <string name="community" introduced="6.6.0"><![CDATA[CubeCart Community]]></string>
+    <string name="knowledge_base" introduced="6.8.7"><![CDATA[Knowledge Base]]></string>
     <string name="click_to_edit" introduced="6.7.0"><![CDATA[Click to edit]]></string>
     <string name="open_page" introduced="6.7.0"><![CDATA[Open page]]></string>
     <string name="length_short" introduced="6.7.0"><![CDATA[L]]></string>
