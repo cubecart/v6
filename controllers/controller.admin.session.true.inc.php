@@ -158,17 +158,3 @@ foreach ($GLOBALS['hooks']->load('admin.head_css') as $hook) {
     include $hook;
 }
 $GLOBALS['smarty']->assign('HEAD_CSS', $head_css);
-
-## Support widget (Zendesk): identify the admin. Whether they pay is looked up
-## from Stripe when their ticket arrives, not asked of cubecart.com from here.
-if (!$GLOBALS['config']->get('config', 'hide_chat')) {
-    $_sw_admin = Admin::getInstance()->get('');
-    $_sw_tags = array();
-    if (isCubeCartHosting()) {
-        $_sw_tags[] = 'cc-hosting';
-    }
-    $GLOBALS['smarty']->assign('SUPPORT_WIDGET_KEY', SupportWidget::WIDGET_KEY);
-    $GLOBALS['smarty']->assign('SUPPORT_NAME', isset($_sw_admin['name']) ? $_sw_admin['name'] : '');
-    $GLOBALS['smarty']->assign('SUPPORT_EMAIL', !empty($_sw_admin['email']) ? $_sw_admin['email'] : '');
-    $GLOBALS['smarty']->assign('SUPPORT_TAGS_JSON', json_encode($_sw_tags));
-}

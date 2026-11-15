@@ -14,58 +14,9 @@
       {foreach from=$HEAD_JS item=js_src}
       <script type="text/javascript" src="{$js_src}?{$VERSION_HASH}"></script>
       {/foreach}
-      {if empty($CONFIG.hide_chat)}
-      {literal}
-      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-KK9N36X3');</script>
-      {/literal}
-      {if isset($SUPPORT_WIDGET_KEY) && $SUPPORT_WIDGET_KEY}
-      <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key={$SUPPORT_WIDGET_KEY|escape:'url'}"></script>
-      <script>
-         window.zE && zE(function () {
-            var name = '{$SUPPORT_NAME|escape:'javascript'}';
-            var email = '{$SUPPORT_EMAIL|escape:'javascript'}';
-            var tags = {$SUPPORT_TAGS_JSON};
-            try { zE('webWidget', 'identify', { name: name, email: email }); } catch (e) {}
-            try { zE('webWidget', 'prefill', { name: { value: name }, email: { value: email } }); } catch (e) {}
-            try { zE('webWidget', 'updateSettings', {
-               webWidget: {
-                  chat: {
-                     title: { '*': 'CubeCart Support' },
-                     tags: tags
-                  },
-                  contactForm: {
-                     title: { '*': 'CubeCart Support' }
-                  }
-               }
-            }); } catch (e) {}
-            try { zE('messenger:set', 'conversationTags', tags); } catch (e) {}
-            function applyOnlineVisibility(status) {
-               try {
-                  if (status === 'offline') { zE('webWidget', 'hide'); }
-                  else { zE('webWidget', 'show'); }
-               } catch (e) {}
-            }
-            try { zE('webWidget:on', 'chat:connected', function () {
-               try { applyOnlineVisibility(zE('webWidget:get', 'chat:status')); } catch (e) {}
-            }); } catch (e) {}
-            try { zE('webWidget:on', 'chat:status', applyOnlineVisibility); } catch (e) {}
-         });
-      </script>
-      {/if}
-      {/if}
       <meta name="robots" content="noindex,nofollow">
    </head>
    <body{if isset($HIDE_NAVIGATION) && $HIDE_NAVIGATION} class="chromeless"{/if}>
-      {if empty($CONFIG.hide_chat)}
-      {literal}
-      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KK9N36X3"
-      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-      {/literal}
-      {/if}
       {if !isset($HIDE_NAVIGATION) || !$HIDE_NAVIGATION}
       <div id="header">
          <a href="?"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/logo.cubecart.svg" width="158" height="30" id="logo"></a>
