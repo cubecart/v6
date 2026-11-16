@@ -351,7 +351,8 @@ class ElasticsearchHandler
      * Create search query to execute later
      */
     public function query($search, $sort = array()) {
-        if(!isset($search['keywords'])) return false;
+        // No keywords means nothing to rank; searchCatalogue() then uses the MySQL path, which applies the filters.
+        if(!isset($search['keywords']) || trim((string)$search['keywords']) === '') return false;
         $q = $search['keywords'];
         $must = [];
         $should =

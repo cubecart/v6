@@ -2584,7 +2584,11 @@ class Catalogue
                 if($GLOBALS['config']->get('config', 'elasticsearch')=='1') {
                     $es = new ElasticsearchHandler;
                     $sort = isset($_REQUEST['sort']) ? $_REQUEST['sort'] : array();
-                    $es->query($search_data, $sort);
+                    // Without keywords query() builds no body, and an empty search would match the
+                    // whole catalogue and ignore filters such as manufacturer. The MySQL path applies them.
+                    if ($es->query($search_data, $sort) === false) {
+                        return $this->searchCatalogue($original_search_data, $page, $per_page, 'fulltext');
+                    }
                     // Match the MySQL path's "view all" cap so both return the same set.
                     $es_size = (strtolower($page) == 'all') ? 100 : $per_page;
                     $result = $es->search($page, $es_size);
@@ -2843,7 +2847,7 @@ class Catalogue
             }
 
             $manufacturer_or = '';
-            if(!isset($search_data['manufacturer']) && $manufacturers  = $GLOBALS['db']->select('CubeCart_manufacturers', array('id'), "`name` LIKE '%".$GLOBALS['db']->sqlSafe($search_data['keywords'])."%'")) {
+            if(!isset($search_data['manufacturer']) && !empty($search_data['keywords']) && $manufacturers  = $GLOBALS['db']->select('CubeCart_manufacturers', array('id'), "`name` LIKE '%".$GLOBALS['db']->sqlSafe($search_data['keywords'])."%'")) {
                 $ids = array();
                 foreach($manufacturers as $manufacturer) {
                     $ids[] = (int)$manufacturer['id'];
@@ -2862,8 +2866,11 @@ class Catalogue
 
             $indexes = $GLOBALS['db']->getFulltextIndex('CubeCart_inventory', 'I');
 
-            if (!empty($joins) || (isset($search_data['keywords']) && is_array($indexes) && !empty($search_data['keywords']))) {
-                if ($search_mode == 'fulltext') {
+            // Filters without keywords (shop by manufacturer, a price range, featured) list the matching
+            // products through the LIKE branch below, which then adds no keyword clause.
+            $filter_only = empty($search_data['keywords']) && (!empty($search_data['manufacturer']) || !empty($search_data['priceMin']) || !empty($search_data['priceMax']) || !empty($search_data['featured']));
+            if ($filter_only || !empty($joins) || (isset($search_data['keywords']) && is_array($indexes) && !empty($search_data['keywords']))) {
+                if ($search_mode == 'fulltext' && !$filter_only) {
                     $fulltext_min_word_len = $GLOBALS['db']->getSearchWordLen();
                     $words = preg_split('/[\s,]+/', $search_data['keywords']);
                     if (is_array($words)) {
@@ -2876,7 +2883,7 @@ class Catalogue
                     }
                 }
 
-                if ($search_mode == 'fulltext') {
+                if ($search_mode == 'fulltext' && !$filter_only) {
                     if ($longest_search_word_len < $fulltext_min_word_len) {
                         return $this->searchCatalogue($original_search_data, $page, $per_page, 'rlike');
                     }
@@ -2999,7 +3006,8 @@ class Catalogue
                         $like[$i] = "(".implode(' OR ', $cq).")";
                     }
                   }
-                  $likeString = ' AND ('.implode(' OR ',$like).' '.$manufacturer_or.')';
+                  // No keywords leaves $like empty, and "AND ( )" is invalid SQL: then the filters alone apply.
+                  $likeString = !empty($like) ? ' AND ('.implode(' OR ',$like).' '.$manufacturer_or.')' : '';
 
                   $q2 = "SELECT I.* FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory AS I".$pg_join.$joinString." WHERE I.product_id IN (SELECT product_id FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category_index` as CI INNER JOIN ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 ".$whereString.$likeString;
                     
