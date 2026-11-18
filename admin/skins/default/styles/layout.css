@@ -2706,6 +2706,16 @@ ul.fmsearch_images img {
     align-items: center;
     gap: 6px;
 }
+input.textbox.email-line-field {
+    width: 640px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+.email-field-help {
+    display: block;
+    color: var(--text-light);
+    font-size: 12px;
+}
 .email-tools__status {
     flex: 1 1 200px;
 }

@@ -120,10 +120,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                 }
                 $this->_email_content_id = $contents[0]['content_id'];
                 $this->_content_type = $content_type;
-                $elements = array(
-                    'subject'  => $contents[0]['subject'],
-                    'content_html' => $contents[0]['content_html'],
-                );
+                $elements = $this->_contentElements($contents[0]);
                 if ($data) {
                     $GLOBALS['smarty']->assign('DATA', $data);
                 }
@@ -144,10 +141,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                             $GLOBALS['smarty']->assign('DATA', $data);
                         }
                         if (!empty($contents[0]['content_html'])) {
-                            return array(
-                                'subject'  => $contents[0]['subject'],
-                                'content_html' => $contents[0]['content_html'],
-                            );
+                            return $this->_contentElements($contents[0]);
                         }
                     }
                     trigger_error('Email content for '.$content_type.' doesn\'t exist in default language.');
@@ -183,10 +177,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                             $GLOBALS['smarty']->assign('DATA', $data);
                         }
                         if (!empty($contents[0]['content_html'])) {
-                            return array(
-                                'subject'  => $contents[0]['subject'],
-                                'content_html' => $contents[0]['content_html'],
-                            );
+                            return $this->_contentElements($contents[0]);
                         }
                     }
                     // Try loading the default language content
@@ -370,6 +361,10 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
             $this->Subject = html_entity_decode((string)$contents['subject'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
             $this->_html = $contents['content_html'];
             $this->_text = $this->_htmlToText($this->_html);
+        }
+        // The preview text goes in after the plain text part is made, so that part is unchanged
+        if (isset($contents['preheader']) && !empty($this->_html)) {
+            $this->_html = $this->_insertPreheader($this->_html, $contents['preheader']);
         }
         $composed['where']     = $where;
         $composed['templates'] = $templates;
@@ -567,6 +562,48 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
     }
 
     //=====[ Private ]=======================================
+
+    /**
+     * The parts of a stored email that sendEmail() works with
+     *
+     * @param array $row A row of CubeCart_email_content
+     * @return array
+     */
+    private function _contentElements($row)
+    {
+        $elements = array(
+            'subject'  => $row['subject'],
+            'content_html' => $row['content_html'],
+        );
+        // Preview text is optional, and the column is new in 6.9.0
+        if (isset($row['preheader']) && trim((string)$row['preheader']) !== '') {
+            $elements['preheader'] = $row['preheader'];
+        }
+        return $elements;
+    }
+
+    /**
+     * Put the preview text at the very start of the email body, hidden. An inbox
+     * lists the first text it finds in an email after the subject; this decides
+     * what that is. It is added to the HTML part only.
+     *
+     * @param string $html
+     * @param string $preheader
+     * @return string
+     */
+    private function _insertPreheader($html, $preheader)
+    {
+        $text = trim(preg_replace('/\s+/', ' ', strip_tags(html_entity_decode((string)$preheader, ENT_QUOTES | ENT_HTML5, 'UTF-8'))));
+        if ($text === '') {
+            return $html;
+        }
+        $block = '<div style="display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">'.htmlspecialchars($text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'</div>';
+        if (preg_match('/<body\b[^>]*>/i', $html, $match, PREG_OFFSET_CAPTURE)) {
+            $at = $match[0][1] + strlen($match[0][0]);
+            return substr($html, 0, $at).$block.substr($html, $at);
+        }
+        return $block.$html;
+    }
 
     /**
      * Parse contents though Smarty

@@ -392,6 +392,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_email_content` (
 	`content_type` VARCHAR(70) NOT NULL,
 	`language` VARCHAR(5) NOT NULL,
 	`subject` VARCHAR(250) NOT NULL,
+	`preheader` VARCHAR(255) NOT NULL DEFAULT '',
 	`content_html` TEXT NOT NULL,
 	`enabled` TINYINT(1) UNSIGNED NOT NULL DEFAULT 1,
 	PRIMARY KEY (`content_id`),

@@ -60,6 +60,7 @@
             fields.content_id = $tools.attr('data-content-id') || '';
             fields.content_type = $tools.attr('data-content-type') || '';
             fields.subject = $('#content_subject').val();
+            fields.preheader = $('#content_preheader').val();
             fields.content_html = readers.content_html();
         }
         fields.sample = $('#email_sample').val() || 'latest';

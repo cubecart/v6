@@ -1500,6 +1500,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="sample_example_order" introduced="6.9.0"><![CDATA[An example order]]></string>
     <string name="notify_test_sent" introduced="6.9.0"><![CDATA[Test email sent to %s.]]></string>
     <string name="error_test_send" introduced="6.9.0"><![CDATA[The test email could not be sent.]]></string>
+    <string name="preview_text" introduced="6.9.0"><![CDATA[Preview text]]></string>
+    <string name="preview_text_help" introduced="6.9.0"><![CDATA[Shown after the subject in the inbox. Leave it empty to let the inbox show the start of the email.]]></string>
     <string name="error_smarty_line" introduced="6.9.0"><![CDATA[Line %1$d: %2$s]]></string>
     <string name="preview_failed" introduced="6.9.0"><![CDATA[The preview could not be built. Please try again.]]></string>
     <string name="preview_desktop" introduced="6.9.0"><![CDATA[Desktop]]></string>

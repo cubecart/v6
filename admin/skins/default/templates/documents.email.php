@@ -94,7 +94,11 @@
 	<table class="nostripe">
 	  <tr>
 		<td><label for="content_subject">{$LANG.common.subject}</label></td>
-		<td><input type="text" name="content[subject]" id="content_subject" value="{$CONTENT.subject}" class="textbox"></td>
+		<td><input type="text" name="content[subject]" id="content_subject" value="{$CONTENT.subject|escape:'html'}" class="textbox email-line-field" maxlength="250"></td>
+	  </tr>
+	  <tr>
+		<td><label for="content_preheader">{$LANG.email.preview_text}</label></td>
+		<td><input type="text" name="content[preheader]" id="content_preheader" value="{$CONTENT.preheader|escape:'html'}" class="textbox email-line-field" maxlength="255" aria-describedby="content_preheader_help"><span id="content_preheader_help" class="email-field-help">{$LANG.email.preview_text_help}</span></td>
 	  </tr>
 		<tr>
 			<td colspan="2">

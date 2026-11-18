@@ -485,6 +485,17 @@ $smarty_error = function ($e, $sources = array()) use ($lang) {
     return sprintf($lang['email']['error_smarty_line'], $line, trim($reason, " -\t"));
 };
 
+## A subject or preview text as typed: one line of plain text that may hold Smarty.
+## These are not taken from the sanitised $_POST, because that turns the quotes in
+## {if $DATA.status == 'accepted'} into entities, and the email then cannot be sent.
+$plain_line = function ($text, $limit = 0) {
+    $text = trim(preg_replace('/\s+/', ' ', (string)$text));
+    if ($limit > 0) {
+        $text = function_exists('mb_substr') ? mb_substr($text, 0, $limit, 'UTF-8') : substr($text, 0, $limit);
+    }
+    return $text;
+};
+
 ## Preview and test send, answered as JSON. Both are built by the mailer exactly as a
 ## real send is, with sample data standing in for the order or the customer.
 if (isset($_POST['email_preview']) && is_array($_POST['email_preview'])) {
@@ -525,8 +536,12 @@ if (isset($_POST['email_preview']) && is_array($_POST['email_preview'])) {
             $content['content_type'] = (string)$request['content_type'];
         }
         if ($can_edit) {
-            if (isset($request['subject'])) {
-                $content['subject'] = (string)$request['subject'];
+            // As typed: the subject and preview text are saved unsanitised too (see the save below)
+            if (isset($raw['subject'])) {
+                $content['subject'] = $plain_line($raw['subject']);
+            }
+            if (isset($raw['preheader'])) {
+                $content['preheader'] = $plain_line($raw['preheader']);
             }
             if (isset($raw['content_html'])) {
                 $content['content_html'] = $no_script($raw['content_html']);
@@ -535,6 +550,9 @@ if (isset($_POST['email_preview']) && is_array($_POST['email_preview'])) {
     }
     $macros   = isset($email_types[$content['content_type']]['macros']) ? $email_types[$content['content_type']]['macros'] : array();
     $contents = array('subject' => (string)$content['subject'], 'content_html' => (string)$content['content_html']);
+    if (isset($content['preheader']) && $content['preheader'] !== '') {
+        $contents['preheader'] = (string)$content['preheader'];
+    }
 
     ob_start();
     try {
@@ -649,6 +667,12 @@ if (isset($_POST['template'])) {
 
 if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
     $_POST['content']['content_html'] = preg_replace('/<script\b[^>]*>.*?<\/script>/is', '', $GLOBALS['RAW']['POST']['content']['content_html']);
+    if (isset($GLOBALS['RAW']['POST']['content']['subject'])) {
+        $_POST['content']['subject'] = $plain_line($GLOBALS['RAW']['POST']['content']['subject'], 250);
+    }
+    if (isset($GLOBALS['RAW']['POST']['content']['preheader'])) {
+        $_POST['content']['preheader'] = $plain_line($GLOBALS['RAW']['POST']['content']['preheader'], 255);
+    }
 
     $proceed = true;
     $redirect = true;
@@ -662,6 +686,25 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
         $redirect = false;
         $html_error = true;
     }
+    // The subject and the preview text go through Smarty when the email is sent as well
+    foreach (array('subject' => $lang['common']['subject'], 'preheader' => $lang['email']['preview_text']) as $text_field => $text_label) {
+        if (isset($_POST['content'][$text_field]) && $_POST['content'][$text_field] !== '') {
+            try {
+                $GLOBALS['smarty']->fetch('string:'.$_POST['content'][$text_field]);
+            } catch (Exception $e) {
+                $GLOBALS['main']->errorMessage($text_label.': '.htmlentities($smarty_error($e, array($_POST['content'][$text_field])), ENT_QUOTES));
+                $redirect = false;
+                $html_error = true;
+            }
+        }
+    }
+    // The database layer strips backslashes from what it is given, so shield the email's own
+    $content_record = $_POST['content'];
+    foreach (array('subject', 'preheader', 'content_html') as $text_field) {
+        if (isset($content_record[$text_field])) {
+            $content_record[$text_field] = addslashes($content_record[$text_field]);
+        }
+    }
 
     if (empty($_POST['content']['content_html'])) {
         $GLOBALS['main']->errorMessage($lang['email']['error_html_empty']);
@@ -672,7 +715,7 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
         ## Save/Update Content
         if (isset($_POST['content']['content_id']) && !empty($_POST['content']['content_id'])) {
             ## remove double encoding in repeat regions required to show them in FCK
-            if ($GLOBALS['db']->update('CubeCart_email_content', $_POST['content'], array('content_id' => (int)$_POST['content']['content_id']))) {
+            if ($GLOBALS['db']->update('CubeCart_email_content', $content_record, array('content_id' => (int)$_POST['content']['content_id']), true, array('subject', 'preheader', 'content_html'))) {
                 $GLOBALS['main']->successMessage($lang['email']['notify_content_update']);
                 if ($redirect) {
                     httpredir('?_g=documents&node=email&type=content');
@@ -687,7 +730,7 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
                     $GLOBALS['main']->errorMessage($lang['email']['error_content_create_exists']);
                     httpredir('?_g=documents&node=email&type=content&action=edit&content_id='.$check[0]['content_id']);
                 } else {
-                    if ($GLOBALS['db']->insert('CubeCart_email_content', $_POST['content'])) {
+                    if ($GLOBALS['db']->insert('CubeCart_email_content', $content_record)) {
                         $GLOBALS['main']->successMessage('Email content saved.');
                         if ($redirect) {
                             httpredir('?_g=documents&node=email&type=content');
@@ -791,6 +834,8 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
             $GLOBALS['smarty']->assign('ADD_EDIT_CONTENT', $page_title);
             // See GitHub #1511
             $data['content_html'] = str_replace(array('empty({$','})}'), array('empty($',')}'), $data['content_html']);
+            // Subjects saved before 6.9.0 were stored with their quotes and ampersands as entities
+            $data['subject'] = html_entity_decode((string)$data['subject'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
             $GLOBALS['smarty']->assign('CONTENT', $data);
 
             if (is_array($email_types[$data['content_type']]['macros'])) {
