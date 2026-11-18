@@ -82,7 +82,7 @@ class Sanitize
             if (!$csrf_exception && (!isset($_POST['token']) || !$GLOBALS['session']->checkToken($_POST['token']))) {
                 //Make a new token just to insure that it doesn't get used again
                 $GLOBALS['session']->getToken(true);
-                self::_stopToken();
+                self::_stopToken(self::_postTruncated());
             }
         }
     }
@@ -428,15 +428,51 @@ class Sanitize
     }
 
     /**
+     * Whether PHP dropped POST fields because the form had more than max_input_vars
+     *
+     * PHP drops them silently while starting the request, before CubeCart runs, and
+     * the security token is the last field of every form, so it is among the first to
+     * go (#4736). PHP's own start-up warning is the clearest sign; it can be replaced by
+     * a later error, so the number of fields that arrived is checked as well.
+     *
+     * @return bool
+     */
+    private static function _postTruncated()
+    {
+        $limit = (int)ini_get('max_input_vars');
+        if ($limit <= 0) {
+            return false;
+        }
+        $last = error_get_last();
+        if (is_array($last) && strpos((string)$last['message'], 'Input variables exceeded') !== false) {
+            return true;
+        }
+        $count = 0;
+        array_walk_recursive($_POST, function () use (&$count) {
+            $count++;
+        });
+        return $count >= $limit;
+    }
+
+    /**
      * Clears POST and triggers error
      * Used when the POST token is not valid
+     *
+     * @param bool $truncated The post was cut short by max_input_vars, not forged
      */
-    private static function _stopToken()
+    private static function _stopToken($truncated = false)
     {
         $_POST = $_GET = $_REQUEST = array();
-        $message = 'Security Alert: Possible Cross-Site Request Forgery (CSRF). <a href="https://kb.cubecart.com/administration/security/understanding-cubecart-s-csrf-protection">Learn more</a>.';
+        if ($truncated) {
+            $limit = (int)ini_get('max_input_vars');
+            $message = 'This form has more fields than your server allows (max_input_vars = '.$limit.'), so nothing was saved. Ask your host to raise max_input_vars.';
+            $log = 'POST exceeded max_input_vars ('.$limit.')';
+        } else {
+            $message = 'Security Alert: Possible Cross-Site Request Forgery (CSRF). <a href="https://kb.cubecart.com/administration/security/understanding-cubecart-s-csrf-protection">Learn more</a>.';
+            $log = 'Invalid Security Token';
+        }
         $gui_message['error'][md5($message)] = $message;
         $GLOBALS['session']->set('GUI_MESSAGE', $gui_message);
-        trigger_error('Invalid Security Token', E_USER_WARNING);
+        trigger_error($log, E_USER_WARNING);
     }
 }

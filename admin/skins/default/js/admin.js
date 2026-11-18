@@ -937,7 +937,9 @@ $(document).ready(function() {
             $helper.width(tr.closest("table").outerWidth());
             return $helper;
         },
-        stop: function() {}
+        update: function() {
+            ccWriteOrder(this);
+        }
     }), $(".revert").each(function() {
         var t = $(this).attr("rel");
         "0" == $("#defined_" + t).val() ? $("#row_" + t).addClass("list-changed") : $("#string_" + t).val() != $("#default_" + t).val() ? $("#row_" + t + " td").addClass("custom-phrase") : $(this).hide()
@@ -2053,3 +2055,71 @@ $(document).on('change', '.custom-checkbox > input[type="checkbox"]', function()
 });
 // "Check all" and similar controls tick boxes without firing change.
 $(document).on('click', '.check-all, .check-primary, .check_cat', ccLegacyCheckboxSync);
+
+/* Forms that post less (cubecart/v6#4736). PHP silently drops every field after
+   max_input_vars, the security token (always last) goes with them, and the whole
+   save is thrown away.
+
+   A .reorder-list with data-order-field="name" posts its order as one field of
+   comma-separated row IDs (each row's data-id), written only when it is dragged,
+   instead of a hidden field in every row. */
+function ccWriteOrder(list) {
+    var field = list.getAttribute('data-order-field');
+    var form = $(list).closest('form').get(0);
+    if (!field || !form) return;
+    var ids = $(list).children('[data-id]').map(function() {
+        return this.getAttribute('data-id');
+    }).get().join(',');
+    var input = $(form).find('input[type="hidden"]').filter(function() {
+        return this.name === field;
+    }).get(0);
+    if (!input) {
+        input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = field;
+        form.appendChild(input);
+    }
+    input.value = ids;
+}
+// jQuery UI 1.12.1 sortable adds its handle class one row at a time, and every call
+// re-sorts all the handles so far, so a list of 1,000 option values took seconds to
+// set up and 5,000 took minutes. Same result, added to every handle in one call.
+if ($.widget && $.ui && $.ui.sortable) {
+    $.widget('ui.sortable', $.ui.sortable, {
+        _setHandleClassName: function() {
+            var handles = [];
+            this._removeClass(this.element.find('.ui-sortable-handle'), 'ui-sortable-handle');
+            $.each(this.items, function() {
+                var handle = this.instance.options.handle;
+                handles.push.apply(handles, (handle ? this.item.find(handle) : this.item).get());
+            });
+            this._addClass($(handles), 'ui-sortable-handle');
+        }
+    });
+}
+// Runs after the form's other submit handlers, and only if none of them stopped it.
+$(document).on('submit', 'form', function(e) {
+    if (e.isDefaultPrevented() || (this.method || '').toLowerCase() !== 'post') return;
+    // <input class="post-if-changed" data-original="..."> posts only when its value changed.
+    var held = $(this).find('input.post-if-changed').filter(function() {
+        return !this.disabled && this.value === this.getAttribute('data-original');
+    }).prop('disabled', true);
+    var limit = parseInt($('#val_max_input_vars').text(), 10);
+    if (!limit || !window.FormData) return;
+    var count = 0;
+    new FormData(this).forEach(function() { count++; });
+    var submitter = e.originalEvent && e.originalEvent.submitter;
+    if (submitter && submitter.name) count++;
+    if (count > limit) {
+        e.preventDefault();
+        held.prop('disabled', false);
+        var msg = $('#val_lang_max_input_vars').text() || 'This form has more fields than your server allows (max_input_vars = %s), so it was not sent and nothing was saved. Ask your host to raise max_input_vars.';
+        alert(msg.replace('%s', limit) + ' (' + count + ')');
+    }
+});
+// Coming back to a page from the browser's back/forward cache must not leave fields disabled.
+$(window).on('pageshow', function(e) {
+    if (e.originalEvent && e.originalEvent.persisted) {
+        $('input.post-if-changed:disabled').prop('disabled', false);
+    }
+});

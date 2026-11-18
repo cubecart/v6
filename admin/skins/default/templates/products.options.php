@@ -24,13 +24,11 @@
                   <td width="50">&nbsp;</td>
                </tr>
             </thead>
-            <tbody class="reorder-list">
+            <tbody class="reorder-list" data-order-field="group_order">
                {foreach from=$GROUPS item=group}
-               <tr style="white-space: nowrap;">
-                  <td style="text-align:center"><a href="#" class="handle"><i class="fa fa-sort" title="{$LANG.ui.drag_reorder}"></i></a>
-                     <input type="hidden" name="group_priority[]" value="{$group.id}">
-                  </td>
-                  <td style="text-align:center"><input type="hidden" name="edit_group[{$group.id}][option_required]" id="status_{$group.id}" value="{$group.required}" class="toggle"></td>
+               <tr style="white-space: nowrap;" data-id="{$group.id}">
+                  <td style="text-align:center"><a href="#" class="handle"><i class="fa fa-sort" title="{$LANG.ui.drag_reorder}"></i></a></td>
+                  <td style="text-align:center"><input type="hidden" name="edit_group[{$group.id}][option_required]" id="status_{$group.id}" value="{$group.required}" data-original="{$group.required}" class="toggle post-if-changed"></td>
                   <td><span class="editable" name="edit_group[{$group.id}][option_name]">{$group.name}</span></td>
                   <td><span class="editable select" name="edit_group[{$group.id}][option_type]">{$group.type_name}</span></td>
                   <td><span class="editable" name="edit_group[{$group.id}][option_description]">{$group.description}</span></td>
@@ -104,12 +102,10 @@
          <fieldset id="group_{$group.id}" class="field_select_target">
             <legend>{$group.name}</legend>
             <table width="100%">
-               <tbody class="reorder-list">
+               <tbody class="reorder-list" data-order-field="attr_order[{$group.id}]">
                   {foreach from=$group.options key=key item=option}
-                  <tr>
-                     <td width="10"><a href="#" class="handle"><i class="fa fa-sort" title="{$LANG.ui.drag_reorder}"></i></a>
-                        <input type="hidden" name="attr_priority[]" value="{$key}">
-                     </td>
+                  <tr data-id="{$key}">
+                     <td width="10"><a href="#" class="handle"><i class="fa fa-sort" title="{$LANG.ui.drag_reorder}"></i></a></td>
                      <td><span class="editable" name="edit_attribute[{$key}][value_name]">{$option}</span></td>
                      <td width="10" class="actions">
                         <a href="?_g=products&node=options&delete=attribute&id={$key}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>

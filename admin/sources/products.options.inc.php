@@ -147,7 +147,37 @@ if (!empty($_POST) && Admin::getInstance()->permissions('products', CC_PERM_EDIT
             $GLOBALS['main']->errorMessage($lang['catalogue']['error_option_set_create']);
         }
     }
-    // Set/Update option priority
+    // Reordering (#4736): each list that was dragged posts its new order as one
+    // comma-separated field of IDs, so a save no longer posts a field for every group
+    // and value. Lists that weren't reordered post nothing and aren't rewritten.
+    if (isset($_POST['group_order']) && is_string($_POST['group_order']) && $_POST['group_order'] !== '') {
+        $ids = array_values(array_filter(array_map('intval', explode(',', $_POST['group_order']))));
+        foreach ($ids as $offset => $id) {
+            $GLOBALS['db']->update('CubeCart_option_group', array('priority' => $offset + 1), array('option_id' => $id));
+        }
+        if (!empty($ids)) {
+            $GLOBALS['main']->successMessage($lang['catalogue']['notify_option_group_update']);
+            $changes = true;
+        }
+    }
+    if (isset($_POST['attr_order']) && is_array($_POST['attr_order'])) {
+        $reordered = false;
+        foreach ($_POST['attr_order'] as $option_id => $list) {
+            if (!is_string($list) || $list === '') {
+                continue;
+            }
+            $ids = array_values(array_filter(array_map('intval', explode(',', $list))));
+            foreach ($ids as $offset => $id) {
+                $GLOBALS['db']->update('CubeCart_option_value', array('priority' => $offset + 1), array('value_id' => $id, 'option_id' => (int)$option_id));
+                $reordered = true;
+            }
+        }
+        if ($reordered) {
+            $GLOBALS['main']->successMessage($lang['catalogue']['notify_option_attrib_update']);
+            $changes = true;
+        }
+    }
+    // The old one-field-per-row arrays are still accepted, for code that posts them.
     $priority_target = array(
         'group_priority' => array('CubeCart_option_group', 'option_id'),
         'attr_priority'  => array('CubeCart_option_value', 'value_id'),

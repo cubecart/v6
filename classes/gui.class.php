@@ -257,6 +257,7 @@ class GUI
             $skin_data['admin_file']   = $admin_file;
             $skin_data['skin_folder']   = $skin_folder;
             $skin_data['clear_cache_link']   = currentPage(null, array('clear_cache' => 'true'));
+            $skin_data['max_input_vars'] = (int)ini_get('max_input_vars');
             $GLOBALS['smarty']->assign('SKIN_VARS', $skin_data);
             $GLOBALS['smarty']->template_dir = $this->_template_dir = $skindir;
         }
