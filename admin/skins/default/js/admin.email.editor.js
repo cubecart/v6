@@ -31,6 +31,7 @@
     var lastTarget = null;  // where a placeholder goes: null for the email, or a line field
     var everFocused = false;
     var lastRange = null;
+    var crlf = false;       // whether the email's own line endings are CRLF, which a text box does not keep
     var saving = false;     // a save is on its way to the server
 
     // CKEditor is loaded on every admin page and turns anything with contenteditable into
@@ -515,9 +516,16 @@
     /** The email as it stands in the editor, as source */
     function currentSource() {
         if (codeMode || !editor) {
-            return ace_editor ? ace_editor.getValue() : $('#content_html').val();
+            var code = ace_editor ? ace_editor.getValue() : $('#content_html').val();
+            // A text box hands back LF whatever it was given: the email keeps its own line endings
+            return crlf ? String(code).replace(/\r\n?/g, '\n').replace(/\n/g, '\r\n') : code;
         }
         return collect(body(), 'top').source;
+    }
+
+    /** Whether two pieces of code are the same but for their line endings */
+    function sameCode(a, b) {
+        return String(a).replace(/\r\n?/g, '\n') === String(b).replace(/\r\n?/g, '\n');
     }
 
     //=====[ Placeholders ]=================================
@@ -1111,7 +1119,7 @@
         ace_editor.setValue($source.val(), -1);
         ace_editor.getSession().on('change', function () {
             $source.val(ace_editor.getValue());
-            if (codeMode && ace_editor.getValue() !== codeAtEntry) {
+            if (codeMode && !sameCode(ace_editor.getValue(), codeAtEntry)) {
                 setDirty();
             }
         });
@@ -1139,13 +1147,14 @@
         }
         if (!codeMode) {
             codeAtEntry = collect(body(), 'top').source;
+            crlf = codeAtEntry.indexOf('\r\n') !== -1;
             setCodeValue(codeAtEntry);
             startAce();
             showCode(true);
             return;
         }
         var source = currentSource();
-        if (source === codeAtEntry) {
+        if (sameCode(source, codeAtEntry)) {
             showCode(false);
             return;
         }
@@ -1302,6 +1311,7 @@
         // By reference only where what was described is what is stored: a body the page had
         // to show differently, or a refused save shown again, is sent back whole
         refs = !!(state.base && state.refs);
+        crlf = JSON.stringify(state.units || []).indexOf('\\r\\n') !== -1;
         startEditor(function () {
             if (!loadUnits(state.units)) {
                 return; // the editor could not show it as it is: the code is shown instead
