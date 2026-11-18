@@ -110,7 +110,8 @@ class EmailSample
         $store_url  = $GLOBALS['storeURL'];
         $store_name = $GLOBALS['config']->get('config', 'store_name');
         $admin_url  = $store_url.'/'.$GLOBALS['config']->get('config', 'adminFile');
-        $admin_name = Admin::getInstance()->get('name');
+        // Only the admin has someone signed in to name
+        $admin_name = (defined('ADMIN_CP') && ADMIN_CP) ? Admin::getInstance()->get('name') : '';
         $admin_name = !empty($admin_name) ? $admin_name : 'Sam Taylor';
         $order_number = $order['order_summary'][self::_orderNumberField()];
         $now = time();

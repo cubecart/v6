@@ -1505,6 +1505,51 @@ This email is sent from the store's master email address but it is possible to r
     <string name="confirm_content_reset" introduced="6.9.0"><![CDATA[Replace the subject and wording of this email, in this language only, with the version that came with CubeCart? Your changes to it will be lost.]]></string>
     <string name="notify_content_reset" introduced="6.9.0"><![CDATA[The email has been reset to its default wording.]]></string>
     <string name="error_content_reset" introduced="6.9.0"><![CDATA[No default version of this email was found for this language.]]></string>
+    <string name="label_first_name" introduced="6.9.0"><![CDATA[First name]]></string>
+    <string name="label_last_name" introduced="6.9.0"><![CDATA[Last name]]></string>
+    <string name="label_order_number" introduced="6.9.0"><![CDATA[Order number]]></string>
+    <string name="label_order_number_i" introduced="6.9.0"><![CDATA[Order number (incremental)]]></string>
+    <string name="label_customer_name" introduced="6.9.0"><![CDATA[Customer's name]]></string>
+    <string name="label_customer_email" introduced="6.9.0"><![CDATA[Customer's email]]></string>
+    <string name="label_decision" introduced="6.9.0"><![CDATA[Decision]]></string>
+    <string name="label_note_to_customer" introduced="6.9.0"><![CDATA[Note to the customer]]></string>
+    <string name="macro_note_to_customer" introduced="6.9.0"><![CDATA[The note to the customer added to the order.]]></string>
+    <string name="macro_coupon_code" introduced="6.9.0"><![CDATA[The discount code offered to bring the customer back.]]></string>
+    <string name="macro_coupon_description" introduced="6.9.0"><![CDATA[What the discount code gives.]]></string>
+    <string name="editor_island_title" introduced="6.9.0"><![CDATA[This part changes from one email to the next. It can be moved or deleted here, and edited in the code view.]]></string>
+    <string name="editor_island_empty" introduced="6.9.0"><![CDATA[optional text]]></string>
+    <string name="editor_cond_value" introduced="6.9.0"><![CDATA[Only shown when there is a value for: %s]]></string>
+    <string name="editor_cond_code" introduced="6.9.0"><![CDATA[Only shown when: %s]]></string>
+    <string name="editor_locked" introduced="6.9.0"><![CDATA[Built automatically]]></string>
+    <string name="editor_locked_products" introduced="6.9.0"><![CDATA[List of products]]></string>
+    <string name="editor_locked_downloads" introduced="6.9.0"><![CDATA[List of downloads]]></string>
+    <string name="editor_locked_addresses" introduced="6.9.0"><![CDATA[Billing and delivery addresses]]></string>
+    <string name="editor_locked_note" introduced="6.9.0"><![CDATA[Shown with sample data. Select it to move it, remove it or edit its code.]]></string>
+    <string name="editor_edit_code" introduced="6.9.0"><![CDATA[Edit code]]></string>
+    <string name="editor_move_up" introduced="6.9.0"><![CDATA[Move up]]></string>
+    <string name="editor_move_down" introduced="6.9.0"><![CDATA[Move down]]></string>
+    <string name="editor_remove" introduced="6.9.0"><![CDATA[Remove]]></string>
+    <string name="editor_placeholders" introduced="6.9.0"><![CDATA[Placeholders]]></string>
+    <string name="editor_placeholders_help" introduced="6.9.0"><![CDATA[Click in the email, the subject or the preview text, then choose one. Each is filled in for the customer when the email is sent.]]></string>
+    <string name="editor_placeholders_first" introduced="6.9.0"><![CDATA[Click where you want it first, then choose a placeholder.]]></string>
+    <string name="editor_view_names" introduced="6.9.0"><![CDATA[Placeholder names]]></string>
+    <string name="editor_view_sample" introduced="6.9.0"><![CDATA[Sample data]]></string>
+    <string name="editor_code_view" introduced="6.9.0"><![CDATA[Code view]]></string>
+    <string name="editor_code_help" introduced="6.9.0"><![CDATA[The whole email as it is stored: HTML with Smarty tags.]]></string>
+    <string name="editor_locked_code_help" introduced="6.9.0"><![CDATA[This section holds logic, so it is edited as code. It is checked before it is used, and nothing outside it is touched.]]></string>
+    <string name="editor_apply" introduced="6.9.0"><![CDATA[Apply]]></string>
+    <string name="editor_saved" introduced="6.9.0"><![CDATA[Saved. %1$d of %2$d parts were changed; everything else is stored exactly as it was.]]></string>
+    <string name="editor_saved_same" introduced="6.9.0"><![CDATA[Saved. The wording was not changed, so it is stored exactly as it was.]]></string>
+    <string name="editor_changed_elsewhere" introduced="6.9.0"><![CDATA[This email has been changed since you opened it. Reload the page to edit the current version.]]></string>
+    <string name="editor_unsaved" introduced="6.9.0"><![CDATA[There are unsaved changes.]]></string>
+    <string name="editor_code_only" introduced="6.9.0"><![CDATA[This email could not be divided into wording and logic, so it is shown as code.]]></string>
+    <string name="editor_design_note" introduced="6.9.0"><![CDATA[The logo, colours and footer around the wording come from the email template.]]></string>
+    <string name="editor_new_paragraph" introduced="6.9.0"><![CDATA[New paragraph]]></string>
+    <string name="editor_group_data" introduced="6.9.0"><![CDATA[This email]]></string>
+    <string name="editor_group_billing" introduced="6.9.0"><![CDATA[Billing address]]></string>
+    <string name="editor_group_shipping" introduced="6.9.0"><![CDATA[Delivery address]]></string>
+    <string name="editor_too_long" introduced="6.9.0"><![CDATA[This email is too long to store. Shorten it, or move repeated styling into the email template.]]></string>
+    <string name="editor_not_stored" introduced="6.9.0"><![CDATA[The email was saved, but the database did not keep it exactly as written. Check it before relying on it.]]></string>
     <string name="preview_text" introduced="6.9.0"><![CDATA[Preview text]]></string>
     <string name="preview_text_help" introduced="6.9.0"><![CDATA[Shown after the subject in the inbox. Leave it empty to let the inbox show the start of the email.]]></string>
     <string name="error_smarty_line" introduced="6.9.0"><![CDATA[Line %1$d: %2$s]]></string>

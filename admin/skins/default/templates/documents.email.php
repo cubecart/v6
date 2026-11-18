@@ -91,51 +91,85 @@
   <div id="general" class="tab_content">
 	<h3>{$ADD_EDIT_CONTENT}</h3>
 	{if $LANGUAGES}
-	<table class="nostripe">
-	  <tr>
-		<td><label for="content_subject">{$LANG.common.subject}</label></td>
-		<td><input type="text" name="content[subject]" id="content_subject" value="{$CONTENT.subject|escape:'html'}" class="textbox email-line-field" maxlength="250"></td>
-	  </tr>
-	  <tr>
-		<td><label for="content_preheader">{$LANG.email.preview_text}</label></td>
-		<td><input type="text" name="content[preheader]" id="content_preheader" value="{$CONTENT.preheader|escape:'html'}" class="textbox email-line-field" maxlength="255" aria-describedby="content_preheader_help"><span id="content_preheader_help" class="email-field-help">{$LANG.email.preview_text_help}</span></td>
-	  </tr>
-		<tr>
-			<td colspan="2">
-				<textarea name="content[content_html]" id="content_html" class="textbox fck fck-keep-image-size" data-fck-height="500">{$CONTENT.content_html|escape:'html'}</textarea>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<div class="email-tools" id="email_tools" data-scope="content" data-content-id="{$CONTENT.content_id}" data-content-type="{$CONTENT.content_type}" data-label-desktop="{$LANG.email.preview_desktop}" data-label-mobile="{$LANG.email.preview_mobile}" data-label-text="{$LANG.email.preview_plain_text}" data-label-loading="{$LANG.common.loading}&hellip;" data-label-failed="{$LANG.email.preview_failed}">
-					<button type="button" class="button" id="email_preview_button">{$LANG.common.preview}</button>
-					{if $EMAIL_PREVIEW.latest_order}
-					<span class="email-tools__group">
-						<label for="email_sample">{$LANG.email.sample_data}</label>
-						<select id="email_sample" class="textbox">
-							<option value="latest">{$LANG.email.sample_latest_order|sprintf:$EMAIL_PREVIEW.latest_order}</option>
-							<option value="example">{$LANG.email.sample_example_order}</option>
-						</select>
-					</span>
-					{/if}
-					{if $EMAIL_PREVIEW.can_edit}
-					<span class="email-tools__group">
-						<label for="email_test_to">{$LANG.email.title_send_test}</label>
-						<input type="text" inputmode="email" autocomplete="email" id="email_test_to" class="textbox" value="{$EMAIL_PREVIEW.test_to}">
-						<button type="button" class="button" id="email_test_button">{$LANG.common.send}</button>
-					</span>
-					{/if}
-					<span class="email-tools__status" id="email_tools_status" role="status"></span>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2" class="text-right">
-				{if $EMAIL_PREVIEW.can_edit && $CONTENT.content_id}<button type="submit" name="email_reset" value="{$CONTENT.content_id}" class="button submit_confirm" title="{$LANG.email.confirm_content_reset}">{$LANG.common.restore_default}</button> {/if}<input type="submit" value="{$LANG.common.save}">{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="button delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
-			</td>
-		</tr>
-	</table>
+	{* Without its scripts this is a plain form: the subject, the preview text and the body as code.
+	   admin.email.editor.js turns it into the visual editor and saves it unit by unit (#4738). *}
+	<div class="email-editor" id="email_editor">
+	  <div class="email-editor__main">
+		<div class="email-editor__bar" id="email_editor_bar" hidden>
+		  <span class="email-editor__group" role="group">
+			<button type="button" class="button is-on" data-view="names" aria-pressed="true">{$LANG.email.editor_view_names}</button><button type="button" class="button" data-view="sample" aria-pressed="false">{$LANG.email.editor_view_sample}</button>
+		  </span>
+		  <span class="email-editor__group" role="group">
+			<button type="button" class="button is-on" data-width="100%" aria-pressed="true">{$LANG.email.preview_desktop}</button><button type="button" class="button" data-width="375px" aria-pressed="false">{$LANG.email.preview_mobile}</button>
+		  </span>
+		  <button type="button" class="button" id="email_code_toggle" aria-pressed="false">{$LANG.email.editor_code_view}</button>
+		</div>
+		<div class="email-editor__visual" id="email_visual_wrap" hidden>
+		  <textarea id="email_visual" aria-label="{$LANG.email.title_content_html}"></textarea>
+		  <p class="email-field-help">{$LANG.email.editor_design_note}</p>
+		</div>
+		<div class="email-editor__code" id="email_code_wrap">
+		  <p class="email-field-help">{$LANG.email.editor_code_help}</p>
+		  <div id="email_code_ace" class="ace_email_editor" hidden></div>
+		  <textarea name="content[content_html]" id="content_html" class="textbox email-template__source" spellcheck="false" aria-label="{$LANG.email.title_content_html}">{$CONTENT.content_html|escape:'html'}</textarea>
+		</div>
+	  </div>
+	  <div class="email-editor__side">
+		<div class="email-editor__field">
+		  <label for="content_language">{$LANG.common.language}</label>
+		  {if empty($CONTENT.content_id)}
+		  <select name="content[language]" id="content_language" class="textbox">
+			{foreach from=$LANGUAGES item=language}<option value="{$language.code}"{$language.selected}>{$language.title}</option>{/foreach}
+		  </select>
+		  {else}
+		  <span id="content_language_name">{if isset($ASSIGNED_LANG)}<img src="language/flags/{$ASSIGNED_LANG.code}.png" alt="" class="flag"> {$ASSIGNED_LANG.name}{else}{$CONTENT.language}{/if}</span>
+		  {/if}
+		</div>
+		<div class="email-editor__field">
+		  <label for="content_subject">{$LANG.common.subject}</label>
+		  <input type="text" name="content[subject]" id="content_subject" value="{$CONTENT.subject|escape:'html'}" class="textbox email-line-field" maxlength="250">
+		</div>
+		<div class="email-editor__field">
+		  <label for="content_preheader">{$LANG.email.preview_text}</label>
+		  <input type="text" name="content[preheader]" id="content_preheader" value="{$CONTENT.preheader|escape:'html'}" class="textbox email-line-field" maxlength="255" aria-describedby="content_preheader_help">
+		  <span id="content_preheader_help" class="email-field-help">{$LANG.email.preview_text_help}</span>
+		</div>
+		<div class="email-editor__field" id="email_placeholders" hidden>
+		  <h4>{$LANG.email.editor_placeholders}</h4>
+		  <p class="email-field-help">{$LANG.email.editor_placeholders_help}</p>
+		  <div id="email_placeholders_list"></div>
+		</div>
+	  </div>
+	</div>
+	<div class="email-tools" id="email_tools" data-scope="content" data-content-id="{$CONTENT.content_id}" data-content-type="{$CONTENT.content_type}" data-label-desktop="{$LANG.email.preview_desktop}" data-label-mobile="{$LANG.email.preview_mobile}" data-label-text="{$LANG.email.preview_plain_text}" data-label-loading="{$LANG.common.loading}&hellip;" data-label-failed="{$LANG.email.preview_failed}">
+		<button type="button" class="button" id="email_preview_button">{$LANG.common.preview}</button>
+		{if $EMAIL_PREVIEW.latest_order}
+		<span class="email-tools__group">
+			<label for="email_sample">{$LANG.email.sample_data}</label>
+			<select id="email_sample" class="textbox">
+				<option value="latest"{if $EMAIL_PREVIEW.sample == 'latest'} selected="selected"{/if}>{$LANG.email.sample_latest_order|sprintf:$EMAIL_PREVIEW.latest_order}</option>
+				<option value="example"{if $EMAIL_PREVIEW.sample == 'example'} selected="selected"{/if}>{$LANG.email.sample_example_order}</option>
+			</select>
+		</span>
+		{/if}
+		{if $EMAIL_PREVIEW.can_edit}
+		<span class="email-tools__group">
+			<label for="email_test_to">{$LANG.email.title_send_test}</label>
+			<input type="text" inputmode="email" autocomplete="email" id="email_test_to" class="textbox" value="{$EMAIL_PREVIEW.test_to}">
+			<button type="button" class="button" id="email_test_button">{$LANG.common.send}</button>
+		</span>
+		{/if}
+		<span class="email-tools__status" id="email_tools_status" role="status"></span>
+		<span class="email-tools__group">
+			{if $EMAIL_PREVIEW.can_edit && $CONTENT.content_id}<button type="submit" name="email_reset" value="{$CONTENT.content_id}" class="button submit_confirm" title="{$LANG.email.confirm_content_reset}">{$LANG.common.restore_default}</button>{/if}
+			<input type="submit" value="{$LANG.common.save}">{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="button delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
+		</span>
+	</div>
+	{if isset($EMAIL_EDITOR_JSON)}<script type="application/json" id="email_editor_data">{$EMAIL_EDITOR_JSON}</script>{/if}
+	<script type="text/javascript" defer src="includes/ace/src-min-noconflict/ace.js?{$VERSION_HASH}" charset="utf-8"></script>
+	<script type="text/javascript" defer src="includes/tinymce/tinymce.min.js?{$VERSION_HASH}"></script>
 	<script type="text/javascript" defer src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.email.js?{$VERSION_HASH}"></script>
+	<script type="text/javascript" defer src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.email.editor.js?{$VERSION_HASH}"></script>
 	{else}
 	<p>{$LANG.email.install_master_lang}</p>
 	{/if}

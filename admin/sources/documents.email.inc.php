@@ -84,6 +84,8 @@ $email_types = array(
             '{$DATA.link}'    => $lang['email']['macro_link_order'],
             '{$DATA.gateway}'   => $lang['email']['macro_gateway'],
             '{$DATA.customer_comments}' => $lang['email']['customer_comments'],
+            '{$DATA.first_name}' => $lang['email']['macro_first_name'],
+            '{$DATA.last_name}' => $lang['email']['macro_last_name'],
             '{$product.name}'   => $lang['email']['macro_product_name'],
             '{$product.product_code}' => $lang['email']['macro_product_code'],
             '{$product.quantity}'  => $lang['email']['macro_product_quantity'],
@@ -238,6 +240,9 @@ $email_types = array(
             '{$DATA.link}'  => $lang['email']['macro_link_order'],
             '{$DATA.gateway}' => $lang['email']['macro_gateway'],
             '{$DATA.customer_comments}' => $lang['email']['customer_comments'],
+            '{$DATA.first_name}' => $lang['email']['macro_first_name'],
+            '{$DATA.last_name}' => $lang['email']['macro_last_name'],
+            '{$DATA.note_to_customer}' => $lang['email']['macro_note_to_customer'],
             '{$product.name}'  => $lang['email']['macro_product_name'],
             '{$product.product_code}' => $lang['email']['macro_product_code'],
             '{$product.quantity}' => $lang['email']['macro_product_quantity'],
@@ -408,6 +413,8 @@ $email_types = array(
             '{$DATA.store_name}' => $lang['email']['macro_store_name'],
             '{$DATA.recovery_link}' => $lang['email']['macro_recovery_link'],
             '{$DATA.optout_link}' => $lang['email']['macro_optout_link'],
+            '{$DATA.coupon_code}' => $lang['email']['macro_coupon_code'],
+            '{$DATA.coupon_description}' => $lang['email']['macro_coupon_description'],
             '{$product.name}' => $lang['email']['macro_product_name'],
             '{$product.quantity}' => $lang['email']['macro_product_quantity'],
             '{$product.price}' => $lang['email']['macro_product_price'],
@@ -504,6 +511,135 @@ $plain_line = function ($text, $limit = 0) {
     return $text;
 };
 
+## Saving strips scripts from an email, so everything that shows one does too
+$no_script = function ($html) {
+    return preg_replace('/<script\b[^>]*>.*?<\/script>/is', '', (string)$html);
+};
+
+## The visual editor (admin.email.editor.js). 'units' divides a body into wording and
+## logic for it to show; 'save' takes back what it holds. Both answer as JSON.
+if (isset($_POST['email_editor']) && is_array($_POST['email_editor'])) {
+    $request  = $_POST['email_editor'];
+    $raw      = (isset($GLOBALS['RAW']['POST']['email_editor']) && is_array($GLOBALS['RAW']['POST']['email_editor'])) ? $GLOBALS['RAW']['POST']['email_editor'] : array();
+    $action   = isset($request['action']) ? (string)$request['action'] : '';
+    $sample   = (isset($request['sample']) && $request['sample'] === EmailSample::SOURCE_EXAMPLE) ? EmailSample::SOURCE_EXAMPLE : EmailSample::SOURCE_LATEST;
+    $response = array('status' => 'error', 'message' => $GLOBALS['language']->notification['error_privileges']);
+    $checking = array();
+
+    ob_start();
+    try {
+        if (!Admin::getInstance()->permissions('documents', CC_PERM_EDIT, false, false)) {
+            // Nothing: only someone who may edit emails can have text rendered or saved
+        } elseif ($action === 'units') {
+            $type     = isset($request['content_type']) ? (string)$request['content_type'] : '';
+            $macros   = isset($email_types[$type]['macros']) ? $email_types[$type]['macros'] : array();
+            $source   = isset($raw['content_html']) ? (string)$raw['content_html'] : '';
+            $checking = array($source);
+            // It has to compile before it is worth showing
+            $GLOBALS['smarty']->fetch('eval:'.$source);
+            $response = array_merge(array('status' => 'ok'), EmailEditor::describe($source, $type, $macros, $sample));
+        } elseif ($action === 'save') {
+            $content_id = !empty($request['content_id']) ? (int)$request['content_id'] : 0;
+            $row    = $content_id ? $GLOBALS['db']->select('CubeCart_email_content', false, array('content_id' => $content_id), false, 1, false, false) : false;
+            $row    = $row ? $row[0] : false;
+            $type   = $row ? $row['content_type'] : (isset($request['content_type']) ? (string)$request['content_type'] : '');
+            $code   = $row ? $row['language'] : (isset($request['language']) ? (string)$request['language'] : '');
+            $macros = isset($email_types[$type]['macros']) ? $email_types[$type]['macros'] : array();
+            $error  = '';
+            $body   = false;
+
+            if ($content_id && !$row) {
+                $error = $lang['email']['error_content_update'];
+            } elseif (!$row && (!isset($email_types[$type]) || !preg_match(Language::LANG_REGEX, $code))) {
+                $error = $lang['email']['error_content_create'];
+            } elseif (!$row && $GLOBALS['db']->select('CubeCart_email_content', array('content_id'), array('content_type' => $type, 'language' => $code), false, 1, false, false)) {
+                $error = $lang['email']['error_content_create_exists'];
+            } elseif ($row && !empty($request['base']) && !hash_equals(md5($row['content_html']), (string)$request['base'])) {
+                // Saved by someone else, or in another tab, since this editor was opened
+                $error = $lang['email']['editor_changed_elsewhere'];
+            } elseif (isset($raw['items'])) {
+                // Unit by unit: what was not touched is taken from the stored bytes
+                $items = json_decode((string)$raw['items'], true);
+                $body  = ($row && is_array($items)) ? EmailEditor::rebuild($row['content_html'], $items) : false;
+            } elseif (isset($raw['content_html'])) {
+                $body = (string)$raw['content_html'];
+                // Where only the line endings differ, nothing was changed
+                if ($row && preg_replace('/\r\n?/', "\n", $body) === preg_replace('/\r\n?/', "\n", $row['content_html'])) {
+                    $body = $row['content_html'];
+                }
+            }
+            if ($error === '' && $body === false) {
+                $error = $lang['email'][$row ? 'error_content_update' : 'error_content_create'];
+            }
+            if ($error === '') {
+                $body      = $no_script($body);
+                $subject   = $plain_line(isset($raw['subject']) ? $raw['subject'] : '', 250);
+                $preheader = $plain_line(isset($raw['preheader']) ? $raw['preheader'] : '', 255);
+                if (trim($body) === '') {
+                    $error = $lang['email']['error_html_empty'];
+                } elseif (strlen($body) > 65535) {
+                    $error = $lang['email']['editor_too_long'];
+                }
+            }
+            if ($error === '') {
+                // Each of these goes through Smarty when the email is sent, so each has to compile
+                foreach (array(array($lang['email']['title_content_html'], $body), array($lang['common']['subject'], $subject), array($lang['email']['preview_text'], $preheader)) as $part) {
+                    if ($part[1] === '') {
+                        continue;
+                    }
+                    try {
+                        $GLOBALS['smarty']->fetch('eval:'.$part[1]);
+                    } catch (Throwable $e) {
+                        $error = $part[0].': '.$smarty_error($e, array($part[1]));
+                        break;
+                    }
+                }
+            }
+            if ($error === '') {
+                // The database layer strips backslashes from what it is given, so shield the email's own
+                $record  = array('subject' => addslashes($subject), 'preheader' => addslashes($preheader));
+                $changed = (!$row || $body !== $row['content_html']);
+                if ($changed) {
+                    $record['content_html'] = addslashes($body);
+                }
+                if ($row) {
+                    $GLOBALS['db']->update('CubeCart_email_content', $record, array('content_id' => $content_id), true, array('subject', 'preheader', 'content_html'));
+                } else {
+                    $record['content_type'] = $type;
+                    $record['language']     = $code;
+                    $content_id = (int)$GLOBALS['db']->insert('CubeCart_email_content', $record);
+                }
+                $kept = $content_id ? $GLOBALS['db']->select('CubeCart_email_content', array('content_html'), array('content_id' => $content_id), false, 1, false, false) : false;
+                if (!$kept) {
+                    $error = $lang['email'][$row ? 'error_content_update' : 'error_content_create'];
+                } elseif ($kept[0]['content_html'] !== $body) {
+                    $error = $lang['email']['editor_not_stored'];
+                }
+            }
+            if ($error === '') {
+                $described = EmailEditor::describe($body, $type, $macros, $sample);
+                $response  = array_merge(array(
+                    'status'     => 'ok',
+                    'message'    => $lang['email'][$row ? 'notify_content_update' : 'notify_content_create'],
+                    'content_id' => $content_id,
+                    'base'       => md5($body),
+                    'source'     => $body,
+                    'changed'    => $changed,
+                    'edit_url'   => $row ? '' : '?_g=documents&node=email&type=content&action=edit&content_id='.$content_id,
+                ), $described);
+            } else {
+                $response = array('status' => 'error', 'message' => $error);
+            }
+        }
+    } catch (Throwable $e) {
+        $response = array('status' => 'error', 'message' => $smarty_error($e, $checking));
+    }
+    ob_end_clean();
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($response, JSON_INVALID_UTF8_SUBSTITUTE);
+    exit;
+}
+
 ## Preview and test send, answered as JSON. Both are built by the mailer exactly as a
 ## real send is, with sample data standing in for the order or the customer.
 if (isset($_POST['email_preview']) && is_array($_POST['email_preview'])) {
@@ -514,10 +650,6 @@ if (isset($_POST['email_preview']) && is_array($_POST['email_preview'])) {
     $scope    = (isset($request['scope']) && $request['scope'] === 'template') ? 'template' : 'content';
     $source   = (isset($request['sample']) && $request['sample'] === EmailSample::SOURCE_EXAMPLE) ? EmailSample::SOURCE_EXAMPLE : EmailSample::SOURCE_LATEST;
     $response = array('status' => 'error', 'message' => '');
-    // Saving strips scripts, so the preview does too
-    $no_script = function ($html) {
-        return preg_replace('/<script\b[^>]*>.*?<\/script>/is', '', (string)$html);
-    };
 
     $content     = false;
     $template    = false;
@@ -857,6 +989,7 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                 $page_title = $lang['email']['title_content_create'];
             }
             $GLOBALS['smarty']->assign('ADD_EDIT_CONTENT', $page_title);
+            $stored_body = (string)$data['content_html'];
             // See GitHub #1511
             $data['content_html'] = str_replace(array('empty({$','})}'), array('empty($',')}'), $data['content_html']);
             // Subjects saved before 6.9.0 were stored with their quotes and ampersands as entities
@@ -877,12 +1010,75 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                 $GLOBALS['smarty']->assign('CONTENT_MACROS', $smarty_data['macros']);
             }
             $GLOBALS['smarty']->assign('DISPLAY_CONTENT_FORM', true);
+            $can_edit     = Admin::getInstance()->permissions('documents', CC_PERM_EDIT, false, false);
             $latest_order = EmailSample::usesOrder($data['content_type']) ? EmailSample::latestOrder() : false;
+            $sample       = (isset($_GET['sample']) && $_GET['sample'] === EmailSample::SOURCE_EXAMPLE) ? EmailSample::SOURCE_EXAMPLE : EmailSample::SOURCE_LATEST;
             $GLOBALS['smarty']->assign('EMAIL_PREVIEW', array(
                 'latest_order' => $latest_order ? $latest_order['number'] : '',
+                'sample'       => $sample,
                 'test_to'      => Admin::getInstance()->get('email'),
-                'can_edit'     => Admin::getInstance()->permissions('documents', CC_PERM_EDIT, false, false),
+                'can_edit'     => $can_edit,
             ));
+
+            // What the visual editor starts from. Describing the email assigns sample data to
+            // Smarty, which this page's own template must not inherit, so that is put back after.
+            $page_vars   = $GLOBALS['smarty']->getTemplateVars();
+            $type_macros = isset($email_types[$data['content_type']]['macros']) ? $email_types[$data['content_type']]['macros'] : array();
+            $existing_id = !empty($data['content_id']) ? (int)$data['content_id'] : 0;
+            try {
+                $described = EmailEditor::describe($data['content_html'], $data['content_type'], $type_macros, $sample);
+                $editor = array(
+                    'contentId'    => $existing_id,
+                    'contentType'  => $data['content_type'],
+                    'language'     => $existing_id ? $data['language'] : '',
+                    // The stored bytes the editor was opened on, and whether its units are those bytes
+                    'base'         => $existing_id ? md5($stored_body) : '',
+                    'refs'         => ($existing_id && $stored_body === $data['content_html']),
+                    'units'        => $described['units'],
+                    'placeholders' => $described['placeholders'],
+                    'sample'       => $described['sample'],
+                    'subject'      => EmailEditor::describeLine($data['subject'], $type_macros),
+                    'preheader'    => EmailEditor::describeLine(isset($data['preheader']) ? $data['preheader'] : '', $type_macros),
+                    'visual'       => false,
+                    'canEdit'      => $can_edit,
+                    'storeUrl'     => $GLOBALS['storeURL'].'/',
+                    'tinymce'      => $GLOBALS['storeURL'].'/includes/tinymce',
+                    'groups'       => array(
+                        'DATA'     => $lang['email']['editor_group_data'],
+                        'BILLING'  => $lang['email']['editor_group_billing'],
+                        'SHIPPING' => $lang['email']['editor_group_shipping'],
+                    ),
+                    'strings'      => array(),
+                );
+                // Worth showing visually when there is wording to type in
+                foreach ($described['units'] as $unit) {
+                    if (in_array($unit['kind'], array(EmailSplitter::EDITABLE, EmailSplitter::INLINE, EmailSplitter::COND), true)) {
+                        $editor['visual'] = true;
+                        break;
+                    }
+                }
+                foreach ($lang['email'] as $name => $string) {
+                    if (strpos($name, 'editor_') === 0) {
+                        $editor['strings'][$name] = $string;
+                    }
+                }
+                // Last, because it assigns the template's own values over the sample data
+                $editor['frame'] = EmailEditor::frame($data['content_type']);
+                $editor_json = json_encode($editor, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_INVALID_UTF8_SUBSTITUTE);
+            } catch (Throwable $e) {
+                // The page still works as a plain form
+                $editor_json = false;
+                trigger_error('Email editor: '.$e->getMessage(), E_USER_WARNING);
+            }
+            foreach (array_diff_key($GLOBALS['smarty']->getTemplateVars(), $page_vars) as $name => $value) {
+                $GLOBALS['smarty']->clearAssign($name);
+            }
+            foreach ($page_vars as $name => $value) {
+                $GLOBALS['smarty']->assign($name, $value);
+            }
+            if (!empty($editor_json)) {
+                $GLOBALS['smarty']->assign('EMAIL_EDITOR_JSON', $editor_json);
+            }
             if (!empty($data['content_type']) && isset($email_types[$data['content_type']]['description'])) {
                 $tab_label = $email_types[$data['content_type']]['description'].(!empty($data['language']) ? ' ('.$data['language'].')' : '');
             }
