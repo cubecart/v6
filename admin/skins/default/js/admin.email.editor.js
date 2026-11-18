@@ -1119,13 +1119,20 @@
 
     /** Leave the visual editor: the code is the editor from here on */
     function codeOnly() {
-        if (editor) {
-            editor.remove();
-            editor = null;
+        var gone = editor;
+        editor = null;
+        if (gone) {
+            // Taken down once whatever called this has finished with it
+            setTimeout(function () {
+                try {
+                    gone.remove();
+                } catch (e) { /* already gone */ }
+            }, 0);
         }
         codeMode = false;
         $('#email_editor_bar, #email_visual_wrap, #email_placeholders').prop('hidden', true);
         $('#email_code_wrap').prop('hidden', false);
+        codeAtEntry = $('#content_html').val();
         startAce();
         if (ace_editor) {
             ace_editor.resize();
@@ -1159,7 +1166,7 @@
         ace_editor.setValue($source.val(), -1);
         ace_editor.getSession().on('change', function () {
             $source.val(ace_editor.getValue());
-            if (codeMode && !sameCode(ace_editor.getValue(), codeAtEntry)) {
+            if ((codeMode || !editor) && !sameCode(ace_editor.getValue(), codeAtEntry)) {
                 setDirty();
             }
         });
@@ -1359,6 +1366,7 @@
         var visual = state.visual && window.tinymce && state.units && state.units.length;
         if (!visual) {
             // No visual editor: the code is the editor
+            codeAtEntry = $('#content_html').val();
             startAce();
             if (state.units && state.units.length && !state.visual) {
                 ccEmail.setStatus(T('editor_code_only'), null);
@@ -1424,6 +1432,7 @@
         },
         save: save,
         setView: setView,
-        toggleCode: toggleCode
+        toggleCode: toggleCode,
+        codeOnly: codeOnly
     };
 })(jQuery);
