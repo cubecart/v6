@@ -148,6 +148,9 @@ $method_labels = array(
 
 if ($email_logs!==false) {
     foreach ($email_logs as $row) {
+        // A subject is plain text. The mailer logs it encoded and other code has logged it
+        // as it was typed, so it is brought to one form here: encoded once, to print as text.
+        $row['subject'] = htmlspecialchars(html_entity_decode((string)$row['subject'], ENT_QUOTES | ENT_HTML5, 'UTF-8'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         $row['to_email'] = array();
         $row['email_method_label'] = isset($method_labels[$row['email_method']])
             ? $method_labels[$row['email_method']]
