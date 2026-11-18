@@ -184,15 +184,16 @@ class EmailEditor
             if (!is_array($item)) {
                 return false;
             }
-            if (isset($item['s'])) {
-                $body .= (string)$item['s'];
-            } elseif (isset($item['k'])) {
+            // Each item is exactly one of the three shapes, with values of the right kind
+            if (isset($item['s']) && is_string($item['s'])) {
+                $body .= $item['s'];
+            } elseif (isset($item['k']) && is_scalar($item['k'])) {
                 $unit = EmailSplitter::unit($units, $item['k']);
                 if ($unit === false) {
                     return false;
                 }
                 $body .= $unit['source'];
-            } elseif (isset($item['c']) && isset($item['inner']) && $depth === 0) {
+            } elseif (isset($item['c'], $item['inner']) && is_scalar($item['c']) && is_array($item['inner']) && $depth === 0) {
                 $unit = EmailSplitter::unit($units, $item['c']);
                 if ($unit === false || $unit['kind'] !== EmailSplitter::COND) {
                     return false;
