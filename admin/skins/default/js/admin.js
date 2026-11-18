@@ -2106,6 +2106,17 @@ if ($.widget && $.ui && $.ui.sortable) {
         }
     });
 }
+// In a multi-select list, clicking a group's name selects all of its values, and
+// clicking it again when they are all selected clears them. Other groups keep
+// their selection (Product Options > Option Sets: add values to a set).
+$(document).on('mousedown', 'select[multiple] optgroup', function(e) {
+    if (e.target !== this) return;
+    e.preventDefault();
+    var $options = $(this).children('option:not(:disabled)');
+    var all = $options.length > 0 && $options.filter(':selected').length === $options.length;
+    $options.prop('selected', !all);
+    $(this).closest('select').trigger('change').focus();
+});
 // Runs after the form's other submit handlers, and only if none of them stopped it.
 $(document).on('submit', 'form', function(e) {
     if (e.isDefaultPrevented() || (this.method || '').toLowerCase() !== 'post') return;
