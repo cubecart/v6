@@ -107,7 +107,7 @@
             '<div class="email-preview__stage">' + frameHtml(result) + '<pre class="email-preview__text" hidden></pre></div>' +
         '</div>';
         $.colorbox({
-            title: escapeText(title || result.subject),
+            title: title || result.subject, // the dialog shows it as text
             width: '90%',
             height: '90%',
             html: html,

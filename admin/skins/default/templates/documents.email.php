@@ -70,7 +70,7 @@
 					<input type="radio" name="template_default" id="template_default_{$template.template_id}" value="{$template.template_id}"{if $template.template_default==1} checked="checked"{/if}>
 				</td>
 				<td><a href="{$template.edit}">{$template.title}</a>{if $template.managed} <span class="email-field-help">{$LANG.email.design_title}</span>{/if}</td>
-				<td width="10"><a href="#" class="preview-template" data-template-id="{$template.template_id}" data-template-title="{$template.title|escape:'html'}" title="{$LANG.common.preview}"><i class="fa fa-search"></i></a></td>
+				<td width="10"><a href="#" class="preview-template" data-template-id="{$template.template_id}" data-template-title="{$template.title}" title="{$LANG.common.preview}"><i class="fa fa-search"></i></a></td>
 				<td width="10"><a href="{$template.clone}"><i class="fa fa-files-o" title="{$LANG.common.clone}"></i></a></td>
 				<td width="10"><a href="{$template.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a></td>
 				<td width="10"><a href="{$template.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
