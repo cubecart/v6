@@ -309,6 +309,9 @@
                         item = kept ? keep(record) : {s: text};
                     }
                 } else if (!item) {
+                    if (!node.getAttribute('data-cc-u') && node.textContent.replace(/[\s ﻿]+/g, '') === '' && !node.querySelector('img, hr, [data-cc-s]')) {
+                        continue; // a new paragraph nobody typed in
+                    }
                     item = {s: toSource(node)};
                 }
             }
@@ -783,11 +786,28 @@
                         }
                     }
                 });
+                instance.ui.registry.addButton('ccParagraph', {
+                    text: T('editor_new_paragraph'),
+                    onAction: function () {
+                        // Somewhere to type straight after a section that cannot be typed in
+                        var element = selectedUnit(), paragraph;
+                        if (element) {
+                            paragraph = instance.getDoc().createElement('p');
+                            paragraph.innerHTML = '<br data-mce-bogus="1">';
+                            instance.undoManager.transact(function () {
+                                element.parentNode.insertBefore(paragraph, element.nextSibling);
+                            });
+                            instance.selection.setCursorLocation(paragraph, 0);
+                            instance.focus();
+                            instance.nodeChanged();
+                        }
+                    }
+                });
                 instance.ui.registry.addContextToolbar('ccUnit', {
                     predicate: function (node) {
                         return node.nodeType === 1 && (node.classList.contains('cc-locked') || node.classList.contains('cc-cond'));
                     },
-                    items: 'ccEditCode | ccMoveUp ccMoveDown | ccRemove',
+                    items: 'ccEditCode | ccMoveUp ccMoveDown | ccParagraph | ccRemove',
                     position: 'node',
                     scope: 'node'
                 });
