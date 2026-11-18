@@ -64,3 +64,43 @@ if (is_array($email_templates)) {
     }
 }
 unset($email_templates, $email_template, $repaired);
+
+/**
+ * #4738 - In 6.7.x the email content editor saved each email as a whole HTML document:
+ * <html><head><title></title></head><body> around the wording, which then sat inside
+ * the template's own <body>. #4238 stopped the editor doing it, but emails saved that
+ * way are still stored that way. This takes the wrapper off.
+ *
+ * Only that exact wrapper is removed: an empty title, a bare <body>, nothing after.
+ *
+ * @param string $html
+ * @return string|false The email without the wrapper, or false when it has none
+ */
+if (!function_exists('cc_unwrap_email_content')) {
+    function cc_unwrap_email_content($html)
+    {
+        if (!preg_match('#^\s*<html>\s*<head>\s*<title>\s*</title>\s*</head>\s*<body>(.*)</body>\s*</html>\s*$#is', (string)$html, $document)) {
+            return false;
+        }
+        $content = trim($document[1]);
+        if ($content === '' || preg_match('#</?(?:html|head|body)\b#i', $content)) {
+            return false;
+        }
+        return $content;
+    }
+}
+
+$email_contents = $db->select('CubeCart_email_content', array('content_id', 'content_html'), "`content_html` LIKE '%<html>%'");
+if (is_array($email_contents)) {
+    foreach ($email_contents as $email_content) {
+        $unwrapped = cc_unwrap_email_content($email_content['content_html']);
+        if ($unwrapped !== false) {
+            // update() strips backslashes from every value it is given, so shield any the email has
+            $db->update('CubeCart_email_content', array('content_html' => addslashes($unwrapped)), array('content_id' => (int)$email_content['content_id']), true, array('content_html'));
+        }
+    }
+    if (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) {
+        $GLOBALS['cache']->clear();
+    }
+}
+unset($email_contents, $email_content, $unwrapped);
