@@ -29,7 +29,9 @@ if (isset($_GET['resend']) && $_GET['resend']>0 && isset($_GET['token']) && $_GE
         // string-fetch would choke on. Manual mailer path, but with a freshly generated
         // open-tracking token so the new log row tracks independently of the original.
         $mailer = new Mailer();
-        $mailer->Subject = $email_data[0]['subject'];
+        // The log keeps subjects encoded for display; an email subject is plain text
+        $resend_subject = html_entity_decode((string)$email_data[0]['subject'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $mailer->Subject = $resend_subject;
 
         $body_html = $email_data[0]['content_html'];
         $new_token = null;
@@ -86,7 +88,7 @@ if (isset($_GET['resend']) && $_GET['resend']>0 && isset($_GET['token']) && $_GE
         $GLOBALS['db']->insert('CubeCart_email_log', $new_row);
 
         if ($send_result) {
-            $GLOBALS['main']->successMessage(sprintf($lang['statistics']['email_resent'], htmlspecialchars($email_data[0]['subject']), htmlspecialchars($email_data[0]['to'])));
+            $GLOBALS['main']->successMessage(sprintf($lang['statistics']['email_resent'], htmlspecialchars($resend_subject), htmlspecialchars($email_data[0]['to'])));
         } else {
             $GLOBALS['main']->errorMessage($lang['statistics']['email_not_resent']);
         }

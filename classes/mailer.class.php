@@ -287,7 +287,8 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
 
             // Log email
             $email_data = array(
-                'subject' => $this->Subject,
+                // The email log prints subjects as HTML, so it keeps the encoded form
+                'subject' => htmlspecialchars($this->Subject, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
                 'content_html' => $this->_html,
                 'content_text' => $this->_text,
                 'to' => $email,
@@ -344,7 +345,9 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
             $this->_template_title = $templates[0]['title'];
             foreach ($contents as $key => $string) {
                 if (strtolower($key) == 'subject') {
-                    $this->Subject = strip_tags($string);
+                    // A subject is plain text. Anything saved through a form arrives entity
+                    // encoded, and was being sent that way: "Don&#039;t miss it".
+                    $this->Subject = html_entity_decode(strip_tags($string), ENT_QUOTES | ENT_HTML5, 'UTF-8');
                     continue;
                 } elseif ($key === 'content_html') {
                     // define macros
@@ -364,7 +367,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                 }
             }
         } else {
-            $this->Subject = $contents['subject'];
+            $this->Subject = html_entity_decode((string)$contents['subject'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
             $this->_html = $contents['content_html'];
             $this->_text = $this->_htmlToText($this->_html);
         }
