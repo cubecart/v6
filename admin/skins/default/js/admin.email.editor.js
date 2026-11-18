@@ -33,6 +33,7 @@
     var lastRange = null;
     var crlf = false;       // whether the email's own line endings are CRLF, which a text box does not keep
     var saving = false;     // a save is on its way to the server
+    var checkTimer = null;
 
     // CKEditor is loaded on every admin page and turns anything with contenteditable into
     // one of its inline editors when the page is ready. The subject and preview text lines
@@ -528,6 +529,11 @@
         return String(a).replace(/\r\n?/g, '\n') === String(b).replace(/\r\n?/g, '\n');
     }
 
+    /** Whether the wording in the editor differs from what is stored */
+    function wordingChanged() {
+        return !!editor && !codeMode && !collect(body(), 'top').same;
+    }
+
     //=====[ Placeholders ]=================================
 
     function chipHtml(placeholder) {
@@ -727,7 +733,7 @@
     }
 
     $(window).on('beforeunload', function (event) {
-        if (dirty || (editor && editor.isDirty())) {
+        if (dirty || wordingChanged()) {
             event.preventDefault();
             event.returnValue = T('editor_unsaved');
             return T('editor_unsaved');
@@ -1038,10 +1044,21 @@
                     });
                     instance.selection.setCursorLocation(holder.firstChild, 0);
                 });
-                instance.on('input change undo redo', function () {
-                    if (instance.isDirty()) {
-                        setDirty();
+                // Something happened in the editor. Whether it is an unsaved change is decided by
+                // looking at the wording, because the editor also reports its own redrawing
+                // (a switch between names and sample data) as a change.
+                instance.on('input change undo redo', function (event) {
+                    if (event.type === 'undo' || event.type === 'redo') {
+                        instance.undoManager.ignore(function () {
+                            paintChips(instance.getBody());
+                        });
                     }
+                    clearTimeout(checkTimer);
+                    checkTimer = setTimeout(function () {
+                        if (!dirty && wordingChanged()) {
+                            setDirty();
+                        }
+                    }, 250);
                 });
                 instance.on('init', function () {
                     editor = instance;
@@ -1268,6 +1285,23 @@
             return; // the plain form still works
         }
         var $form = $root.closest('form');
+        // The admin's unsaved-changes check watches every field of the form, and looks again
+        // whenever one of them is used. The sample chooser and the test address are tools, and
+        // the editor keeps a copy of itself in the text box it was started on: none of the three
+        // is part of what is saved, so each one's starting value is kept in step with it. This
+        // runs first, on the way down to the field.
+        if ($form.length) {
+            ['change', 'click', 'keyup', 'keydown', 'blur'].forEach(function (type) {
+                $form[0].addEventListener(type, function () {
+                    ['email_sample', 'email_test_to', 'email_visual'].forEach(function (id) {
+                        var field = document.getElementById(id);
+                        if (field) {
+                            $(field).data('dirtyInitialValue', $(field).val() || '');
+                        }
+                    });
+                }, true);
+            });
+        }
 
         // Preview and test send read the email as it stands, saved or not
         ccEmail.readers.content_html = currentSource;
@@ -1341,7 +1375,7 @@
         $('#email_code_toggle').on('click', toggleCode);
         // A different sample means different renders: look at the saved email again with it
         $('#email_sample').on('change', function () {
-            if (dirty || (editor && editor.isDirty())) {
+            if (dirty || wordingChanged()) {
                 return; // previews and tests use it straight away; the editor picks it up after a save
             }
             var url = new URL(window.location.href);
