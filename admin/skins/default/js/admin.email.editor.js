@@ -741,7 +741,24 @@
                     return;
                 }
                 var number = CKEDITOR.tools.addFunction(function (url) {
-                    callback(url, {});
+                    // It answers with a path on this site; a mail client needs the whole address
+                    var address = url, probe = new Image();
+                    try {
+                        address = new URL(url, state.storeUrl).href;
+                    } catch (e) {}
+                    probe.onload = function () {
+                        // No wider than the email: a photo straight from a camera would push the layout out
+                        var room = (body() && body().clientWidth) || 560, width = probe.naturalWidth, height = probe.naturalHeight;
+                        if (width > room) {
+                            height = Math.round(height * room / width);
+                            width = room;
+                        }
+                        callback(address, width && height ? {width: String(width), height: String(height)} : {});
+                    };
+                    probe.onerror = function () {
+                        callback(address, {});
+                    };
+                    probe.src = address;
                 });
                 window.open(window.location.pathname + '?_g=filemanager&mode=fck&CKEditorFuncNum=' + number, 'cc_filemanager', 'width=650,height=500,resizable=yes,scrollbars=yes');
             },
