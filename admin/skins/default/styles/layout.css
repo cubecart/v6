@@ -2120,6 +2120,14 @@ div#content .powered ul li img {
     cursor: pointer;
     white-space: nowrap
 }
+/* Product Options > Option Sets: members under their option group's name */
+div.tab_content fieldset > div.option-set-group {
+    font-weight: 600;
+    padding-top: 4px
+}
+div.tab_content fieldset > div.option-set-member {
+    text-indent: 21px
+}
 .stats-status-option input[type=checkbox] {
     vertical-align: middle;
     margin: 0 4px 0 0

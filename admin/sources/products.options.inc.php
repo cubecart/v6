@@ -374,6 +374,46 @@ if (($optionsets = $GLOBALS['db']->select('CubeCart_options_set')) !== false) {
             unset($set['members'][$oid]['priority']);
         }
         $set['delete'] = currentPage(null, array('delete' => 'set', 'id' => (int)$set['set_id'], 'token' => SESSION_TOKEN));
+        // Members under their option group's name, in the same order as the Option Groups
+        // and Option Attributes tabs. 'members' above is kept for code that reads it.
+        $set['groups'] = array();
+        if (!isset($value_names)) {
+            $value_names = array();
+            foreach ((is_array($values ?? null) ? $values : array()) as $value) {
+                $value_names[$value['value_id']] = $value['value_name'];
+            }
+        }
+        if (!empty($set['members']) && isset($optionArray)) {
+            foreach ($optionArray as $option_id => $group) {
+                if (empty($set['members'][$option_id])) {
+                    continue;
+                }
+                $in_set = $set['members'][$option_id];
+                $entry = array('option_id' => $option_id, 'name' => $group['name'], 'members' => array(), 'whole_group' => false);
+                if (isset($in_set[0])) {
+                    // The whole group, for types without values (text and so on)
+                    $entry['whole_group'] = true;
+                    $entry['members'][] = $in_set[0];
+                }
+                $placed = array();
+                if (!empty($group['options'])) {
+                    foreach ($group['options'] as $value_id => $value_name) {
+                        if (isset($in_set[$value_id])) {
+                            $entry['members'][] = $in_set[$value_id];
+                            $placed[$value_id] = true;
+                        }
+                    }
+                }
+                // A member whose value belongs to another group (old data) still shows, so it can be removed
+                foreach ($in_set as $value_id => $member) {
+                    if ($value_id > 0 && !isset($placed[$value_id]) && is_array($member)) {
+                        $member['display'] = isset($value_names[$value_id]) ? $value_names[$value_id] : '#'.$value_id;
+                        $entry['members'][] = $member;
+                    }
+                }
+                $set['groups'][] = $entry;
+            }
+        }
         $smarty_data['list_sets'][$set_id] = $set;
     }
     $GLOBALS['smarty']->assign('SETS', $smarty_data['list_sets']);

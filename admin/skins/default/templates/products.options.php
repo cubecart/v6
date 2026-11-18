@@ -143,15 +143,25 @@
          {foreach from=$SETS item=set}
          <fieldset class="field_select_target" style="display:none" id="set_{$set.set_id}" rel="add_options">
             <legend>{$set.set_name} <a href="{$set.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></legend>
-               {foreach from=$set.members key=set_id item=members}
-               {foreach from=$members item=member}
-               <div>
+               {foreach from=$set.groups item=group}
+               {if $group.whole_group}
+               <div class="option-set-group">
+                  <span class="actions">
+                  <a href="#" class="remove" name="member_delete" rel="{$group.members[0].set_member_id}" title=""><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+                  </span>
+                  {$group.name}
+               </div>
+               {else}
+               <div class="option-set-group">{$group.name}</div>
+               {foreach from=$group.members item=member}
+               <div class="option-set-member">
                   <span class="actions">
                   <a href="#" class="remove" name="member_delete" rel="{$member.set_member_id}" title=""><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
                   </span>
                   {$member.display}
                </div>
                {/foreach}
+               {/if}
                {foreachelse}
                <div>{$LANG.catalogue.no_option_set_attributes}</div>
                {/foreach}
