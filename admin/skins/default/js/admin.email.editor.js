@@ -681,7 +681,10 @@
             document.execCommand('insertText', false, text.replace(/\s+/g, ' '));
         }).on('drop', function (event) {
             event.preventDefault();
-        }).on('focus keyup mouseup', function () {
+        }).on('input keyup mouseup', function (event) {
+            if (event.type === 'keyup' && (event.which === 9 || event.which === 16)) {
+                return; // Tab, on its way through
+            }
             lastTarget = $line[0];
             var selection = window.getSelection();
             if (selection.rangeCount && $line[0].contains(selection.anchorNode)) {
@@ -898,6 +901,9 @@
             valid_elements: '*[*]',
             convert_fonts_to_spans: false,
             remove_trailing_brs: false,
+            // Tab leaves the email, as it leaves any other field: the template's layout is a table,
+            // and TinyMCE would otherwise keep Tab for moving between its cells
+            table_tab_navigation: false,
             valid_children: '+body[style]',
             invalid_elements: 'script,iframe,object,embed,applet,form,meta,link,base',
             verify_html: false,
