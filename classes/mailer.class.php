@@ -338,7 +338,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                 if (strtolower($key) == 'subject') {
                     // A subject is plain text. Anything saved through a form arrives entity
                     // encoded, and was being sent that way: "Don&#039;t miss it".
-                    $this->Subject = html_entity_decode(strip_tags($string), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                    $this->Subject = $this->_plainText($string);
                     continue;
                 } elseif ($key === 'content_html') {
                     // define macros
@@ -583,6 +583,21 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
     }
 
     /**
+     * A subject or preview text as plain text: without any HTML it was given, and with
+     * character codes such as &#039; as the characters they stand for. Only real tags
+     * are taken out, so "Spend <£50" and "We <3 our customers" keep what follows the "<".
+     *
+     * @param string $string
+     * @return string
+     */
+    private function _plainText($string)
+    {
+        $tags = 'a|abbr|b|big|blockquote|body|br|center|code|div|em|font|h[1-6]|head|hr|html|i|img|li|link|meta|ol|p|pre|s|script|small|span|strike|strong|style|sub|sup|table|tbody|td|th|thead|title|tr|u|ul';
+        $string = preg_replace('~</?(?:'.$tags.')\b[^<>]*>~i', '', (string)$string);
+        return html_entity_decode((string)$string, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    }
+
+    /**
      * Put the preview text at the very start of the email body, hidden. An inbox
      * lists the first text it finds in an email after the subject; this decides
      * what that is. It is added to the HTML part only.
@@ -593,7 +608,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
      */
     private function _insertPreheader($html, $preheader)
     {
-        $text = trim(preg_replace('/\s+/', ' ', strip_tags(html_entity_decode((string)$preheader, ENT_QUOTES | ENT_HTML5, 'UTF-8'))));
+        $text = trim(preg_replace('/\s+/', ' ', $this->_plainText($preheader)));
         if ($text === '') {
             return $html;
         }
