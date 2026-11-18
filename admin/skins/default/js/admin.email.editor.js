@@ -1232,7 +1232,9 @@
             }
             return;
         }
-        refs = !!state.base;
+        // By reference only where what was described is what is stored: a body the page had
+        // to show differently, or a refused save shown again, is sent back whole
+        refs = !!(state.base && state.refs);
         startEditor(function () {
             if (!loadUnits(state.units)) {
                 return; // the editor could not show it as it is: the code is shown instead
