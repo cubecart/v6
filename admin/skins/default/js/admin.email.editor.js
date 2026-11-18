@@ -763,6 +763,17 @@
                 window.open(window.location.pathname + '?_g=filemanager&mode=fck&CKEditorFuncNum=' + number, 'cc_filemanager', 'width=650,height=500,resizable=yes,scrollbars=yes');
             },
             setup: function (instance) {
+                // Nothing gets into the editor without being made safe first. What is pasted
+                // or dropped was written by another page, and TinyMCE is told above to keep
+                // every element and attribute, handlers included. These run before TinyMCE's
+                // own listeners, which build elements out of this HTML in the admin page itself.
+                var makeSafe = function (event) {
+                    if (typeof event.content === 'string' && event.content !== '') {
+                        event.content = cleanBody(event.content).innerHTML;
+                    }
+                };
+                instance.on('BeforeSetContent', makeSafe, true);
+                instance.on('PastePreProcess', makeSafe, true);
                 instance.ui.registry.addButton('ccEditCode', {
                     text: T('editor_edit_code'),
                     onAction: function () {
