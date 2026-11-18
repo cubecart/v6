@@ -87,8 +87,9 @@ class EmailDesign
                 $design[$name] = strtolower($input[$name]);
             }
         }
-        if (isset($input['footer'])) {
-            $footer = trim(strip_tags(html_entity_decode((string)$input['footer'], ENT_QUOTES | ENT_HTML5, 'UTF-8')));
+        if (isset($input['footer']) && is_scalar($input['footer'])) {
+            // Plain text, kept as typed: render() is what makes it safe to put in the template
+            $footer = trim(html_entity_decode((string)$input['footer'], ENT_QUOTES | ENT_HTML5, 'UTF-8'));
             $design['footer'] = function_exists('mb_substr') ? mb_substr($footer, 0, 500, 'UTF-8') : substr($footer, 0, 500);
         }
         return $design;
