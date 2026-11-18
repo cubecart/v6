@@ -84,6 +84,20 @@ CKEDITOR.plugins.add( 'showprotected', {
 							return null;
 						}
 
+						// The same trap in full page mode: an <img> is not allowed in <head>, so the
+						// browser ends the head at the first one and moves it, and everything after
+						// it, into the body. CKEditor protects <meta> tags itself in this mode, so
+						// every document with one was affected, with or without Smarty in its head
+						// (#4738). Anything outside the body stays the comment it is.
+						if ( parentName == 'html' ) {
+							return null;
+						}
+						for ( var ancestor = commentElement.parent; ancestor; ancestor = ancestor.parent ) {
+							if ( ancestor.name == 'head' ) {
+								return null;
+							}
+						}
+
 						commentElement.attributes = [];
 						var fakeElement = editor.createFakeParserElement( commentElement, 'cke_protected', 'protected' );
 
