@@ -163,8 +163,9 @@
 		{/if}
 		<span class="email-tools__status" id="email_tools_status" role="status"></span>
 		<span class="email-tools__group">
-			{if $EMAIL_PREVIEW.can_edit && $CONTENT.content_id}<button type="submit" name="email_reset" value="{$CONTENT.content_id}" class="button submit_confirm" title="{$LANG.email.confirm_content_reset}">{$LANG.common.restore_default}</button>{/if}
-			{if $EMAIL_PREVIEW.can_edit}<input type="submit" value="{$LANG.common.save}">{/if}{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="button delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
+			{* Save comes first: the first submit button of a form is the one Enter presses *}
+			{if $EMAIL_PREVIEW.can_edit}<input type="submit" value="{$LANG.common.save}">{/if}
+			{if $EMAIL_PREVIEW.can_edit && $CONTENT.content_id}<button type="submit" name="email_reset" value="{$CONTENT.content_id}" class="button submit_confirm" title="{$LANG.email.confirm_content_reset}">{$LANG.common.restore_default}</button>{/if}{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="button delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
 		</span>
 	</div>
 	{if isset($EMAIL_EDITOR_JSON)}<script type="application/json" id="email_editor_data">{$EMAIL_EDITOR_JSON}</script>{/if}
