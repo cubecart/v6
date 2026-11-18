@@ -116,6 +116,21 @@
         })(doc.body.childNodes);
     }
 
+    /**
+     * A unit's HTML made safe, and without any of the editor's own marks it arrived with:
+     * an email that carries them (saved by something else, or written to confuse) is not
+     * allowed to pass one of its elements off as a unit.
+     */
+    function cleanUnit(html) {
+        var body = cleanBody(html), marked = body.querySelectorAll('[data-cc-u], [data-cc-bare], [data-cc-wrap]'), i;
+        for (i = 0; i < marked.length; i++) {
+            marked[i].removeAttribute('data-cc-u');
+            marked[i].removeAttribute('data-cc-bare');
+            marked[i].removeAttribute('data-cc-wrap');
+        }
+        return body;
+    }
+
     //=====[ Units ]========================================
 
     function register(unit, list) {
@@ -145,7 +160,7 @@
 
     /** The HTML for one unit of wording, marked with its key */
     function wordingHtml(unit, record) {
-        var body = cleanBody(unit.html), nodes = body.childNodes, elements = 0, loose = false, inline = true, i, node;
+        var body = cleanUnit(unit.html), nodes = body.childNodes, elements = 0, loose = false, inline = true, i, node;
         for (i = 0; i < nodes.length; i++) {
             node = nodes[i];
             if (node.nodeType === 1) {
@@ -180,7 +195,7 @@
         var note = (unit.note !== undefined) ? unit.note : T('editor_locked_note');
         return '<div class="cc-locked mceNonEditable" contenteditable="false" data-cc-u="' + record.key + '">' +
             '<div class="cc-bar"><strong>' + esc(unit.title || T('editor_locked')) + '</strong>' + (state.canEdit && note ? ' <span>' + esc(note) + '</span>' : '') + '</div>' +
-            '<div class="cc-locked__body">' + cleanBody(unit.render || '').innerHTML + '</div>' +
+            '<div class="cc-locked__body">' + cleanUnit(unit.render || '').innerHTML + '</div>' +
         '</div>';
     }
 
