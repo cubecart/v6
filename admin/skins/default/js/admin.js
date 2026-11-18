@@ -968,7 +968,8 @@ $(document).ready(function() {
         // (Product Options reopens the group you were editing); otherwise start on the first.
         var $targets = $(this).parent().parent().find(".field_select_target");
         if ($(this).find("option[selected]").length && "" != $(this).val() && $("#" + $(this).attr("rel") + $(this).val()).length) {
-            $targets.hide(), $("#" + $(this).attr("rel") + $(this).val()).show();
+            var $picked = $("#" + $(this).attr("rel") + $(this).val());
+            $targets.hide(), $picked.show(), $picked.attr("rel") && $("#" + $picked.attr("rel")).show();
         } else {
             $(this).find("option:first").prop("selected", true), $targets.not(":first").hide();
         }

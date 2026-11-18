@@ -136,7 +136,7 @@
             <select name="set_id" id="" rel="set_" class="field_select textbox">
                <option value="0">{$LANG.form.please_select}</option>
                {foreach from=$SETS item=set}
-               <option value="{$set.set_id}">{$set.set_name}</option>
+               <option value="{$set.set_id}"{if isset($SELECTED_SET) && $SELECTED_SET == $set.set_id} selected="selected"{/if}>{$set.set_name}</option>
                {/foreach}
             </select>
          </div>

@@ -140,7 +140,7 @@ if (!empty($_POST) && Admin::getInstance()->permissions('products', CC_PERM_EDIT
     }
     ## Create Set
     if (isset($_POST['set_create']) && !empty($_POST['set_create']['set_name'])) {
-        if ($GLOBALS['db']->insert('CubeCart_options_set', $_POST['set_create'])) {
+        if ($new_set_id = $GLOBALS['db']->insert('CubeCart_options_set', $_POST['set_create'])) {
             $GLOBALS['main']->successMessage($lang['catalogue']['notify_option_set_create']);
             $changes = true;
         } else {
@@ -199,10 +199,16 @@ if (!empty($_POST) && Admin::getInstance()->permissions('products', CC_PERM_EDIT
     if (!$changes) {
         $GLOBALS['main']->errorMessage($lang['catalogue']['error_option_no_change']);
     }
-    // Reopen the group that was showing on the Attributes tab instead of the first one.
+    // Reopen the group that was showing on the Attributes tab, and the set that was
+    // showing on the Option Sets tab (or the one just created), instead of the first.
     $keep = array();
     if (isset($_POST['add-value']['option_id']) && (int)$_POST['add-value']['option_id'] > 0) {
         $keep['option_group'] = (int)$_POST['add-value']['option_id'];
+    }
+    if (!empty($new_set_id)) {
+        $keep['option_set'] = (int)$new_set_id;
+    } elseif (!empty($_POST['set_id']) && (int)$_POST['set_id'] > 0) {
+        $keep['option_set'] = (int)$_POST['set_id'];
     }
     httpredir(currentPage(null, $keep));
 }
@@ -329,6 +335,9 @@ foreach ($GLOBALS['hooks']->load('admin.products.options.types') as $hook) {
 $GLOBALS['smarty']->assign('OPTION_TYPES', $optionTypes);
 if (isset($_GET['option_group'])) {
     $GLOBALS['smarty']->assign('SELECTED_GROUP', (int)$_GET['option_group']);
+}
+if (isset($_GET['option_set'])) {
+    $GLOBALS['smarty']->assign('SELECTED_SET', (int)$_GET['option_set']);
 }
 $GLOBALS['smarty']->assign('OPTION_TYPE_JSON', json_encode($optionTypes));
 
