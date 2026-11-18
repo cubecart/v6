@@ -389,19 +389,44 @@
             result.source += source;
         }
 
+        // What is typed where there is no paragraph arrives as loose text, placeholders and
+        // inline elements. Each unbroken run of those is one line, and is stored as one paragraph.
+        var entries = [], run = null, line, filled;
         for (i = 0; i < nodes.length; i++) {
             node = nodes[i];
+            if (node.nodeType === 1 && node.getAttribute('data-mce-bogus')) {
+                continue;
+            }
+            if (node.nodeType === 3 || (node.nodeType === 1 && !node.hasAttribute('data-cc-u') && INLINE.test(node.nodeName.toLowerCase()))) {
+                if (!run) {
+                    run = [];
+                    entries.push(run);
+                }
+                run.push(node);
+            } else if (node.nodeType === 1) {
+                run = null;
+                entries.push(node);
+            }
+        }
+        for (i = 0; i < entries.length; i++) {
+            node = entries[i];
             item = null;
             record = null;
             kept = false;
-            if (node.nodeType === 3) {
-                text = node.nodeValue.replace(/\s+/g, ' ').replace(/^ | $/g, '');
-                if (text === '') {
+            if (Array.isArray(node)) {
+                line = container.ownerDocument.createElement('p');
+                filled = false;
+                node.forEach(function (part) {
+                    if (part.nodeType === 3 ? part.nodeValue.replace(/[\s\u00a0\u200b\ufeff]+/g, '') !== '' : (part.hasAttribute('data-cc-s') || part.nodeName === 'IMG' || part.textContent.replace(/[\s\u00a0\u200b\ufeff]+/g, '') !== '' || part.querySelector('img, [data-cc-s]'))) {
+                        filled = true;
+                    }
+                    line.appendChild(part.cloneNode(true));
+                });
+                if (!filled) {
                     continue;
                 }
-                item = {s: '<p>' + esc(text).replace(/&quot;/g, '"') + '</p>'}; // text typed straight into the email
-            } else if (node.nodeType !== 1 || node.getAttribute('data-mce-bogus')) {
-                continue;
+                item = {s: toSource(line)};
+                node = line;
             } else {
                 record = records[node.getAttribute('data-cc-u')] || null;
                 if (record && (seen[record.key] || record.list !== list)) {
@@ -985,6 +1010,25 @@
                 instance.on('focus', function () {
                     lastTarget = null;
                     everFocused = true;
+                });
+                // An emptied email keeps one empty paragraph. Without it the wording has no
+                // height and no place for the caret, which lands in the template, where
+                // nothing can be typed.
+                instance.on('keyup input cut undo redo ExecCommand', function () {
+                    var holder = body(), kids, i;
+                    if (!holder || !state.canEdit || instance.mode.get() !== 'design') {
+                        return;
+                    }
+                    kids = holder.childNodes;
+                    for (i = 0; i < kids.length; i++) {
+                        if (kids[i].nodeType === 3 ? kids[i].nodeValue.replace(/[\s\ufeff]+/g, '') !== '' : kids[i].nodeName !== 'BR') {
+                            return;
+                        }
+                    }
+                    instance.undoManager.ignore(function () {
+                        holder.innerHTML = '<p><br data-mce-bogus="1"></p>';
+                    });
+                    instance.selection.setCursorLocation(holder.firstChild, 0);
                 });
                 instance.on('input change undo redo', function () {
                     if (instance.isDirty()) {
