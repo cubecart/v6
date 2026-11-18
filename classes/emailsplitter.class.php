@@ -62,6 +62,8 @@ class EmailSplitter
     private static $_middles  = array('else', 'elseif', 'foreachelse', 'sectionelse', 'forelse');
     /** Never shown in the visual editor, whatever is in them */
     private static $_opaque   = array('script', 'style', 'iframe', 'object', 'embed', 'form', 'svg', 'math', 'video', 'audio');
+    /** Belong to a whole document: a browser moves or drops them when they turn up in a body */
+    private static $_document = array('html', 'head', 'body', 'meta', 'title', 'link', 'base');
 
     //=====[ Public ]=======================================
 
@@ -323,12 +325,26 @@ class EmailSplitter
         $unit = array('kind' => self::LOCKED, 'source' => $source);
         $has_logic = false;
         $has_table = false;
-        foreach ($tokens as $token) {
+        $tables    = 0; // tables open inside this unit
+        foreach ($tokens as $at => $token) {
             list($type, $text) = $token;
             if ($type === 'scomment' || $type === 'hcomment') {
                 return $unit;
             }
+            if ($type === 'text') {
+                // A '<' or a '{' that is not text to a browser or to Smarty, yet was not read
+                // as a tag either: something here was not understood, so none of it is offered
+                $next = isset($tokens[$at + 1]) ? $tokens[$at + 1][1] : '';
+                if (($text === '<' && preg_match('~^[a-zA-Z/!?]~', $next)) || ($text === '{' && preg_match('~^\S~', $next))) {
+                    return $unit;
+                }
+                continue;
+            }
             if ($type === 'smarty') {
+                // A quote left open: the tag was cut short at a '}' inside a string
+                if (preg_match('~["\']~', preg_replace('~"(?:[^"\\\\]|\\\\.)*"|\'(?:[^\'\\\\]|\\\\.)*\'~s', '', $text))) {
+                    return $unit;
+                }
                 $kind = self::_smarty($text);
                 if ($kind[0] === 'logic') {
                     return $unit;
@@ -338,11 +354,17 @@ class EmailSplitter
                 }
             } elseif ($type === 'tag') {
                 $name = self::_name($text);
-                if (in_array($name, self::$_opaque, true)) {
+                if (in_array($name, self::$_opaque, true) || in_array($name, self::$_document, true)) {
                     return $unit;
                 }
                 if (in_array($name, self::$_table, true)) {
                     $has_table = true;
+                    if ($name === 'table') {
+                        $tables += ($text[1] === '/') ? -1 : 1;
+                    } elseif ($tables < 1) {
+                        // A row or a cell with no table of its own around it: a browser will not keep it there
+                        return $unit;
+                    }
                 }
                 if (!self::_plainTag($text, $name)) {
                     return $unit;
