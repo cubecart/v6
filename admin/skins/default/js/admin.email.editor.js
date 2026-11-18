@@ -63,7 +63,7 @@
      * nothing, and stripped of what could run: the template and the emails are written
      * by other admins, and this page is the admin's own origin.
      */
-    var UNSAFE = 'script,iframe,frame,frameset,object,embed,applet,link,meta,base,form,input,button,select,textarea,audio,video,source,track,svg,math,style,title,noscript';
+    var UNSAFE = 'script,iframe,frame,frameset,object,embed,applet,link,meta,base,form,input,button,select,textarea,audio,video,svg,math,style,title,noscript';
     var URL_ATTRIBUTES = ['href', 'src', 'action', 'formaction', 'xlink:href', 'background', 'poster', 'data', 'srcdoc'];
 
     function cleanBody(html) {
