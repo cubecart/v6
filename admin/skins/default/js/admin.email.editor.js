@@ -87,6 +87,31 @@
         return doc.body;
     }
 
+    /**
+     * The structure of some HTML as one string: its elements in order, the names of their
+     * attributes, and its text with the white space left out. Two pieces of HTML with the
+     * same shape differ only in ways that do not change the email.
+     */
+    function shapeOf(html) {
+        var doc = new DOMParser().parseFromString('<!doctype html><html><body>' + html + '</body></html>', 'text/html');
+        return (function walk(nodes) {
+            var out = '', i, j, node, names;
+            for (i = 0; i < nodes.length; i++) {
+                node = nodes[i];
+                if (node.nodeType === 3) {
+                    out += node.nodeValue.replace(/[\s\u00a0\u200b\ufeff]+/g, '');
+                } else if (node.nodeType === 1) {
+                    names = [];
+                    for (j = 0; j < node.attributes.length; j++) {
+                        names.push(node.attributes[j].name.toLowerCase());
+                    }
+                    out += '<' + node.nodeName.toLowerCase() + ' ' + names.sort().join(' ') + '>' + walk(node.childNodes) + '</>';
+                }
+            }
+            return out;
+        })(doc.body.childNodes);
+    }
+
     //=====[ Units ]========================================
 
     function register(unit, list) {
@@ -98,7 +123,10 @@
             list: list,
             open: unit.open || '',
             close: unit.close || '',
-            snapshot: null
+            snapshot: null,
+            unit: unit,     // as the server described it
+            wrap: '',       // how its wording is held: 'self', 'bare' (a <p> put round a loose line) or 'wrap' (a <div> put round several things)
+            forced: false   // wording shown locked because the editor could not hand it back as it is
         };
         records[record.key] = record;
         if (!lists[list]) {
@@ -109,6 +137,7 @@
     }
 
     var INLINE = /^(a|abbr|b|bdi|bdo|big|br|cite|code|del|dfn|em|font|i|img|ins|kbd|mark|q|s|samp|small|span|strike|strong|sub|sup|time|tt|u|var|wbr)$/;
+    var BLOCKS = 'address,article,aside,blockquote,center,dd,details,div,dl,dt,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hr,li,main,nav,ol,p,pre,section,table,ul';
 
     /** The HTML for one unit of wording, marked with its key */
     function wordingHtml(unit, record) {
@@ -131,27 +160,46 @@
                     nodes[i].setAttribute('data-cc-u', record.key);
                 }
             }
+            record.wrap = 'self';
             return body.innerHTML;
         }
-        if (inline) {
+        if (inline && !body.querySelector(BLOCKS)) {
             // A line of text that was never put in a paragraph
+            record.wrap = 'bare';
             return '<p data-cc-u="' + record.key + '" data-cc-bare="1">' + body.innerHTML + '</p>';
         }
+        record.wrap = 'wrap';
         return '<div data-cc-u="' + record.key + '" data-cc-wrap="1">' + body.innerHTML + '</div>';
     }
 
     function lockedHtml(unit, record) {
-        return '<div class="cc-locked mceNonEditable" data-cc-u="' + record.key + '">' +
-            '<div class="cc-bar"><strong>' + esc(unit.title || T('editor_locked')) + '</strong>' + (state.canEdit ? ' <span>' + esc(T('editor_locked_note')) + '</span>' : '') + '</div>' +
+        var note = (unit.note !== undefined) ? unit.note : T('editor_locked_note');
+        return '<div class="cc-locked mceNonEditable" contenteditable="false" data-cc-u="' + record.key + '">' +
+            '<div class="cc-bar"><strong>' + esc(unit.title || T('editor_locked')) + '</strong>' + (state.canEdit && note ? ' <span>' + esc(note) + '</span>' : '') + '</div>' +
             '<div class="cc-locked__body">' + cleanBody(unit.render || '').innerHTML + '</div>' +
         '</div>';
     }
 
     function condHtml(unit, record) {
-        return '<div class="cc-cond mceNonEditable' + (unit.shown ? '' : ' cc-cond--off') + '" data-cc-u="' + record.key + '">' +
+        return '<div class="cc-cond mceNonEditable' + (unit.shown ? '' : ' cc-cond--off') + '" contenteditable="false" data-cc-u="' + record.key + '">' +
             '<div class="cc-bar"><strong>' + esc(unit.label) + '</strong></div>' +
-            '<div class="cc-cond__body mceEditable">' + unitsHtml(unit.inner || [], record.key) + '</div>' +
+            '<div class="cc-cond__body mceEditable" contenteditable="true">' + unitsHtml(unit.inner || [], record.key) + '</div>' +
         '</div>';
+    }
+
+    /** What a unit looks like when it is only there to be looked at */
+    function showAs(unit) {
+        if (unit.kind === 'cond') {
+            return (unit.inner || []).map(showAs).join('');
+        }
+        return unit.html || unit.render || '';
+    }
+
+    /** A unit of wording, or a condition, drawn locked: kept as it is and edited as code */
+    function forcedHtml(unit, record) {
+        record.kind = 'locked';
+        record.forced = true;
+        return lockedHtml({title: T('editor_locked_markup'), note: T('editor_locked_markup_note'), render: showAs(unit)}, record);
     }
 
     function unitsHtml(units, list) {
@@ -159,7 +207,9 @@
         for (i = 0; i < units.length; i++) {
             unit = units[i];
             record = register(unit, list);
-            if (unit.kind === 'editable' || unit.kind === 'inline') {
+            if (unit.asLocked && (unit.kind === 'editable' || unit.kind === 'inline' || unit.kind === 'cond')) {
+                html += forcedHtml(unit, record);
+            } else if (unit.kind === 'editable' || unit.kind === 'inline') {
                 html += wordingHtml(unit, record);
             } else if (unit.kind === 'locked') {
                 html += lockedHtml(unit, record);
@@ -192,21 +242,39 @@
      * for, and nothing of the editor's left in it.
      */
     function toSource(element) {
-        var clone = element.cloneNode(true), sources = [], holders = clone.querySelectorAll('[data-cc-s]'), i, token;
-        for (i = 0; i < holders.length; i++) {
-            token = '' + sources.length + '';
-            sources.push(holders[i].getAttribute('data-cc-s'));
-            holders[i].parentNode.replaceChild(clone.ownerDocument.createTextNode(token), holders[i]);
+        var clone = element.cloneNode(true), sources = [], found, i, record;
+        var swap = function (node, source) {
+            var token = '\uE000' + sources.length + '\uE001';
+            sources.push(source);
+            node.parentNode.replaceChild(clone.ownerDocument.createTextNode(token), node);
+        };
+        // A locked section or a condition that has ended up inside this wording, dragged or
+        // pasted there, goes back as its own source and never as the sample it was showing
+        found = clone.querySelectorAll('.cc-locked, .cc-cond');
+        for (i = 0; i < found.length; i++) {
+            if (clone.contains(found[i])) {
+                record = records[found[i].getAttribute('data-cc-u')];
+                swap(found[i], record ? record.source : '');
+            }
+        }
+        found = clone.querySelectorAll('[data-cc-s]');
+        for (i = 0; i < found.length; i++) {
+            swap(found[i], found[i].getAttribute('data-cc-s'));
         }
         var wrapped = clone.hasAttribute('data-cc-wrap');
-        clone.removeAttribute('data-cc-u');
-        clone.removeAttribute('data-cc-bare');
-        clone.removeAttribute('data-cc-wrap');
+        // The editor's own marks stay behind, on this element and on anything pasted into it
+        found = clone.querySelectorAll('[data-cc-u], [data-cc-bare], [data-cc-wrap]');
+        for (i = -1; i < found.length; i++) {
+            record = (i < 0) ? clone : found[i];
+            record.removeAttribute('data-cc-u');
+            record.removeAttribute('data-cc-bare');
+            record.removeAttribute('data-cc-wrap');
+        }
         var html = editor.serializer.serialize(clone, {});
         if (wrapped) {
             html = html.replace(/^<div[^>]*>\s*/, '').replace(/\s*<\/div>$/, '');
         }
-        return html.replace(/(\d+)/g, function (match, n) {
+        return html.replace(/\uE000(\d+)\uE001/g, function (match, n) {
             return sources[parseInt(n, 10)];
         });
     }
@@ -227,6 +295,63 @@
 
     function keep(record) {
         return record.id !== null ? {k: record.id} : {s: record.source};
+    }
+
+    /**
+     * The units the editor cannot hand back as they are
+     *
+     * TinyMCE has its own idea of what may sit inside what. A link wrapped round a block,
+     * the usual way to make a button in an email, is turned inside out when it is loaded;
+     * a heading round a block loses the heading. Saving such a unit, even untouched, would
+     * store something else, or store it twice. So what TinyMCE would write for each unit of
+     * wording is compared with what is stored, and a unit whose structure differs is not
+     * offered for typing in at all.
+     */
+    function unfaithful() {
+        var doc = editor.getDoc(), bad = [];
+        Object.keys(records).forEach(function (key) {
+            var record = records[key], found, written;
+            if (record.kind === 'gap') {
+                return;
+            }
+            found = doc.querySelectorAll('[data-cc-u="' + key + '"]');
+            if (found.length !== 1) {
+                bad.push(record);
+                return;
+            }
+            if (record.kind !== 'editable' && record.kind !== 'inline') {
+                return;
+            }
+            written = (record.snapshot === null) ? toSource(found[0]) : record.snapshot;
+            if (record.wrap === 'bare') {
+                written = written.replace(/^\s*<p>/, '').replace(/<\/p>\s*$/, '');
+            }
+            if (shapeOf(record.source) !== shapeOf(written)) {
+                bad.push(record);
+            }
+        });
+        return bad;
+    }
+
+    /** Whether anything lies between the units that belongs to none of them */
+    function strays() {
+        var doc = editor.getDoc(), stray = false;
+        Object.keys(lists).forEach(function (list) {
+            var holder = (list === 'top') ? body() : doc.querySelector('[data-cc-u="' + list + '"] > .cc-cond__body'), nodes, i, node;
+            if (!holder) {
+                return; // a condition that was drawn locked has no parts of its own on show
+            }
+            nodes = holder.childNodes;
+            for (i = 0; i < nodes.length; i++) {
+                node = nodes[i];
+                if (node.nodeType === 3 && node.nodeValue.replace(/[\s\u00a0\u200b\ufeff]+/g, '') !== '') {
+                    stray = true;
+                } else if (node.nodeType === 1 && !node.getAttribute('data-mce-bogus') && !records[node.getAttribute('data-cc-u')] && (node.textContent.replace(/[\s\u00a0\u200b\ufeff]+/g, '') !== '' || node.querySelector('img, hr, table, [data-cc-s]'))) {
+                    stray = true;
+                }
+            }
+        });
+        return stray;
     }
 
     /** The stored white space between two units that still sit side by side */
@@ -677,14 +802,26 @@
                     var html = unitsHtml(result.units, record.list);
                     refs = wasRefs;
                     editor.undoManager.transact(function () {
-                        var holder = editor.getDoc().createElement('div');
+                        var holder = editor.getDoc().createElement('div'), doc = editor.getDoc();
                         holder.innerHTML = html;
+                        // TinyMCE's parser does this for what it is given; this goes in directly
+                        $(holder).find('.mceNonEditable').attr('contenteditable', 'false');
+                        $(holder).find('.mceEditable').attr('contenteditable', 'true');
                         while (holder.firstChild) {
                             element.parentNode.insertBefore(holder.firstChild, element);
                         }
                         element.parentNode.removeChild(element);
+                        snapshotAll();
+                        // Anything in it the editor would hand back changed is locked where it stands
+                        unfaithful().forEach(function (bad) {
+                            var at = doc.querySelectorAll('[data-cc-u="' + bad.key + '"]'), drawn = doc.createElement('div');
+                            if (at.length === 1 && bad.unit && bad.kind !== 'locked') {
+                                bad.unit.asLocked = true;
+                                drawn.innerHTML = forcedHtml(bad.unit, bad);
+                                at[0].parentNode.replaceChild(drawn.firstChild, at[0]);
+                            }
+                        });
                     });
-                    snapshotAll();
                     paintChips(editor.getBody());
                     setDirty();
                     api.close();
@@ -719,6 +856,8 @@
             forced_root_block: 'p',
             // Leave the email's own markup alone
             valid_elements: '*[*]',
+            convert_fonts_to_spans: false,
+            remove_trailing_brs: false,
             valid_children: '+body[style]',
             invalid_elements: 'script,iframe,object,embed,applet,form,meta,link,base',
             verify_html: false,
@@ -859,12 +998,46 @@
         });
     }
 
+    /**
+     * Put an email in the editor
+     *
+     * @return {boolean} false when the editor cannot show it without changing it, and the
+     *                   code is all there is to edit
+     */
     function loadUnits(units) {
-        editor.setContent(documentHtml(units));
+        var tries = 0, bad;
+        do {
+            editor.setContent(documentHtml(units));
+            snapshotAll();
+            bad = unfaithful();
+            bad.forEach(function (record) {
+                record.unit.asLocked = true;
+            });
+        } while (bad.length && ++tries < 3);
+        if (bad.length || strays()) {
+            codeOnly();
+            return false;
+        }
         editor.undoManager.clear();
-        snapshotAll();
         setView(view);
         editor.setDirty(false);
+        return true;
+    }
+
+    /** Leave the visual editor: the code is the editor from here on */
+    function codeOnly() {
+        if (editor) {
+            editor.remove();
+            editor = null;
+        }
+        codeMode = false;
+        $('#email_editor_bar, #email_visual_wrap, #email_placeholders').prop('hidden', true);
+        $('#email_code_wrap').prop('hidden', false);
+        startAce();
+        if (ace_editor) {
+            ace_editor.resize();
+        }
+        ccEmail.setStatus(T('editor_code_only'), null);
     }
 
     //=====[ Code view ]====================================
@@ -941,8 +1114,11 @@
             refs = false; // the body is now what was typed, not the stored units
             state.placeholders = result.placeholders || state.placeholders;
             showCode(false);
-            loadUnits(result.units);
+            var shown = loadUnits(result.units);
             setDirty();
+            if (!shown) {
+                ccEmail.setStatus(T('editor_code_only'), null);
+            }
         });
     }
 
@@ -1058,7 +1234,9 @@
         }
         refs = !!state.base;
         startEditor(function () {
-            loadUnits(state.units);
+            if (!loadUnits(state.units)) {
+                return; // the editor could not show it as it is: the code is shown instead
+            }
             if (state.canEdit) {
                 buildPlaceholderList();
             } else {

@@ -1525,6 +1525,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="editor_locked_downloads" introduced="6.9.0"><![CDATA[List of downloads]]></string>
     <string name="editor_locked_addresses" introduced="6.9.0"><![CDATA[Billing and delivery addresses]]></string>
     <string name="editor_locked_note" introduced="6.9.0"><![CDATA[Shown with sample data. Select it to move it, remove it or edit its code.]]></string>
+    <string name="editor_locked_markup" introduced="6.9.0"><![CDATA[Edited as code]]></string>
+    <string name="editor_locked_markup_note" introduced="6.9.0"><![CDATA[Its HTML is arranged in a way the visual editor would change, so it is kept exactly as it is. Select it to move it, remove it or edit its code.]]></string>
     <string name="editor_edit_code" introduced="6.9.0"><![CDATA[Edit code]]></string>
     <string name="editor_move_up" introduced="6.9.0"><![CDATA[Move up]]></string>
     <string name="editor_move_down" introduced="6.9.0"><![CDATA[Move down]]></string>
