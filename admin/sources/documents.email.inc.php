@@ -961,7 +961,9 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                 if ($content) {
                     $data = $content[0];
                     $breadcrumb = (isset($email_types[$data['content_type']]['description']) ? $email_types[$data['content_type']]['description'] : $data['subject']).(!empty($data['language']) ? ' ('.$data['language'].')' : '');
-                    $delete = (bool)$GLOBALS['smarty']->assign('LINK_DELETE', currentPage(null, array('action' => 'delete')));
+                    if (Admin::getInstance()->permissions('documents', CC_PERM_DELETE, false, false)) {
+                        $delete = (bool)$GLOBALS['smarty']->assign('LINK_DELETE', currentPage(null, array('action' => 'delete')));
+                    }
                 } else {
                     ## redirect
                     httpredir(currentPage(array('action', 'content_id', 'type')));
@@ -1138,7 +1140,9 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                         unset($data['template_id']);
                     } else {
                         $breadcrumb = $data['title'];
-                        $delete = (bool)$GLOBALS['smarty']->assign('LINK_DELETE', currentPage(null, array('action' => 'delete')));
+                        if (Admin::getInstance()->permissions('documents', CC_PERM_DELETE, false, false)) {
+                            $delete = (bool)$GLOBALS['smarty']->assign('LINK_DELETE', currentPage(null, array('action' => 'delete')));
+                        }
                     }
                     if (isset($_POST['template'])) {
                         $data = array_merge($data, $_POST['template']);

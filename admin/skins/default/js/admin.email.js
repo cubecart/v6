@@ -194,6 +194,7 @@
                     editor.setTheme(event.matches ? 'ace/theme/tomorrow_night' : 'ace/theme/github');
                 });
             }
+            editor.setReadOnly($source.prop('readOnly'));
             editor.setValue($source.val(), -1);
             editor.getSession().on('change', function () {
                 $source.val(editor.getSession().getValue()).trigger('change');

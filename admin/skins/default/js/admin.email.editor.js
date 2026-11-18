@@ -142,7 +142,7 @@
 
     function lockedHtml(unit, record) {
         return '<div class="cc-locked mceNonEditable" data-cc-u="' + record.key + '">' +
-            '<div class="cc-bar"><strong>' + esc(unit.title || T('editor_locked')) + '</strong> <span>' + esc(T('editor_locked_note')) + '</span></div>' +
+            '<div class="cc-bar"><strong>' + esc(unit.title || T('editor_locked')) + '</strong>' + (state.canEdit ? ' <span>' + esc(T('editor_locked_note')) + '</span>' : '') + '</div>' +
             '<div class="cc-locked__body">' + cleanBody(unit.render || '').innerHTML + '</div>' +
         '</div>';
     }
@@ -490,7 +490,9 @@
         if (!description || description.code) {
             return; // logic in the line: it stays a plain text box
         }
-        var $line = $('<div class="cc-line textbox" contenteditable="true" role="textbox" spellcheck="true"></div>').attr('aria-label', label);
+        var $line = $('<div class="cc-line textbox" role="textbox" spellcheck="true"></div>').attr('aria-label', label);
+        // Someone who may only look gets the same line, with nothing in it to type
+        $line.attr('contenteditable', state.canEdit ? 'true' : 'false').attr('aria-readonly', state.canEdit ? 'false' : 'true');
         (description.parts || []).forEach(function (part) {
             if (part.kind === 'value') {
                 $line.append(chipHtml(part));
@@ -710,7 +712,8 @@
             contextmenu: false,
             visual: false, // no dashed guides round the tables an email is laid out with
             plugins: 'link lists autolink image',
-            toolbar: 'undo redo | bold italic underline | link image | bullist numlist | alignleft aligncenter alignright | removeformat',
+            // Nothing to format for someone who may only look
+            toolbar: state.canEdit ? 'undo redo | bold italic underline | link image | bullist numlist | alignleft aligncenter alignright | removeformat' : false,
             // Only the wording can be typed in; the template around it is there to be seen
             editable_root: false,
             forced_root_block: 'p',
@@ -805,7 +808,7 @@
                 });
                 instance.ui.registry.addContextToolbar('ccUnit', {
                     predicate: function (node) {
-                        return node.nodeType === 1 && (node.classList.contains('cc-locked') || node.classList.contains('cc-cond'));
+                        return state.canEdit && node.nodeType === 1 && (node.classList.contains('cc-locked') || node.classList.contains('cc-cond'));
                     },
                     items: 'ccEditCode | ccMoveUp ccMoveDown | ccParagraph | ccRemove',
                     position: 'node',
@@ -858,6 +861,7 @@
             theme: (dark && dark.matches) ? 'ace/theme/tomorrow_night' : 'ace/theme/github',
             mode: 'ace/mode/smarty'
         });
+        ace_editor.setReadOnly(!state.canEdit);
         ace_editor.setValue($source.val(), -1);
         ace_editor.getSession().on('change', function () {
             $source.val(ace_editor.getValue());
@@ -1027,12 +1031,12 @@
         refs = !!state.base;
         startEditor(function () {
             loadUnits(state.units);
-            if (!state.canEdit) {
+            if (state.canEdit) {
+                buildPlaceholderList();
+            } else {
+                // May look but not change: the same email, with nothing in it to type in
                 editor.mode.set('readonly');
-                $('.cc-line').attr('contenteditable', 'false');
-                return;
             }
-            buildPlaceholderList();
             $('#email_editor_bar').prop('hidden', false);
             showCode(false);
             setClean();

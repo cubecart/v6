@@ -113,7 +113,7 @@
 		<div class="email-editor__code" id="email_code_wrap">
 		  <p class="email-field-help">{$LANG.email.editor_code_help}</p>
 		  <div id="email_code_ace" class="ace_email_editor" hidden></div>
-		  <textarea name="content[content_html]" id="content_html" class="textbox email-template__source" spellcheck="false" aria-label="{$LANG.email.title_content_html}">{$CONTENT.content_html|escape:'html'}</textarea>
+		  <textarea name="content[content_html]" id="content_html" class="textbox email-template__source" spellcheck="false" aria-label="{$LANG.email.title_content_html}"{if !$EMAIL_PREVIEW.can_edit} readonly{/if}>{$CONTENT.content_html|escape:'html'}</textarea>
 		</div>
 	  </div>
 	  <div class="email-editor__side">
@@ -129,11 +129,11 @@
 		</div>
 		<div class="email-editor__field">
 		  <label for="content_subject">{$LANG.common.subject}</label>
-		  <input type="text" name="content[subject]" id="content_subject" value="{$CONTENT.subject|escape:'html'}" class="textbox email-line-field" maxlength="250">
+		  <input type="text" name="content[subject]" id="content_subject" value="{$CONTENT.subject|escape:'html'}" class="textbox email-line-field" maxlength="250"{if !$EMAIL_PREVIEW.can_edit} readonly{/if}>
 		</div>
 		<div class="email-editor__field">
 		  <label for="content_preheader">{$LANG.email.preview_text}</label>
-		  <input type="text" name="content[preheader]" id="content_preheader" value="{$CONTENT.preheader|escape:'html'}" class="textbox email-line-field" maxlength="255" aria-describedby="content_preheader_help">
+		  <input type="text" name="content[preheader]" id="content_preheader" value="{$CONTENT.preheader|escape:'html'}" class="textbox email-line-field" maxlength="255" aria-describedby="content_preheader_help"{if !$EMAIL_PREVIEW.can_edit} readonly{/if}>
 		  <span id="content_preheader_help" class="email-field-help">{$LANG.email.preview_text_help}</span>
 		</div>
 		<div class="email-editor__field" id="email_placeholders" hidden>
@@ -164,7 +164,7 @@
 		<span class="email-tools__status" id="email_tools_status" role="status"></span>
 		<span class="email-tools__group">
 			{if $EMAIL_PREVIEW.can_edit && $CONTENT.content_id}<button type="submit" name="email_reset" value="{$CONTENT.content_id}" class="button submit_confirm" title="{$LANG.email.confirm_content_reset}">{$LANG.common.restore_default}</button>{/if}
-			<input type="submit" value="{$LANG.common.save}">{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="button delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
+			{if $EMAIL_PREVIEW.can_edit}<input type="submit" value="{$LANG.common.save}">{/if}{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="button delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
 		</span>
 	</div>
 	{if isset($EMAIL_EDITOR_JSON)}<script type="application/json" id="email_editor_data">{$EMAIL_EDITOR_JSON}</script>{/if}
@@ -208,7 +208,7 @@
 	<table class="nostripe">
 	  <tr>
 		<td><label for="template_desc">{$LANG.email.template_name}</label></td>
-		<td><input type="text" name="template[title]" id="template_desc" value="{$TEMPLATE.title}" class="textbox required"></td>
+		<td><input type="text" name="template[title]" id="template_desc" value="{$TEMPLATE.title}" class="textbox required"{if !$EMAIL_PREVIEW.can_edit} readonly{/if}></td>
 	  </tr>
 	</table>
 	{if $TEMPLATE_MANAGED}<p class="email-note">{$LANG.email.design_managed}</p>{/if}
@@ -217,7 +217,7 @@
 	<div class="email-template">
 		<div class="email-template__code">
 			<div id="template_ace" class="ace_email_editor" hidden></div>
-			<textarea name="template[content_html]" id="template_content_html" class="textbox email-template__source" spellcheck="false" aria-label="{$LANG.email.title_content_html}">{$TEMPLATE.content_html|escape:'html'}</textarea>
+			<textarea name="template[content_html]" id="template_content_html" class="textbox email-template__source" spellcheck="false" aria-label="{$LANG.email.title_content_html}"{if !$EMAIL_PREVIEW.can_edit} readonly{/if}>{$TEMPLATE.content_html|escape:'html'}</textarea>
 		</div>
 		<div class="email-template__preview">
 			<div class="email-preview__bar">
@@ -239,7 +239,7 @@
 	<div class="email-tools" id="email_tools" data-scope="template" data-live="1" data-template-id="{$TEMPLATE.template_id}" data-label-desktop="{$LANG.email.preview_desktop}" data-label-mobile="{$LANG.email.preview_mobile}" data-label-text="{$LANG.email.preview_plain_text}" data-label-loading="{$LANG.common.loading}&hellip;" data-label-failed="{$LANG.email.preview_failed}">
 		<span class="email-tools__status" id="email_tools_status" role="status"></span>
 		<span class="email-tools__group">
-			<input type="submit" value="{$LANG.common.save}">{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="button delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
+			{if $EMAIL_PREVIEW.can_edit}<input type="submit" value="{$LANG.common.save}">{/if}{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="button delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
 		</span>
 	</div>
 	<script type="text/javascript" defer src="includes/ace/src-min-noconflict/ace.js?{$VERSION_HASH}" charset="utf-8"></script>
@@ -277,7 +277,7 @@
 	<p>{$LANG.email.design_intro}</p>
 	<div class="email-template">
 		<div class="email-design">
-			<fieldset>
+			<fieldset{if !$EMAIL_PREVIEW.can_edit} disabled{/if}>
 				<legend>{$LANG.email.design_logo}</legend>
 				<div class="email-design__choice">
 					<label><input type="radio" name="design[logo]" value="image"{if $DESIGN.logo == 'image'} checked="checked"{/if}> {$LANG.email.design_logo_image}</label>
@@ -289,14 +289,14 @@
 				</div>
 				<span class="email-field-help">{$LANG.email.design_logo_help}</span>
 			</fieldset>
-			<fieldset>
+			<fieldset{if !$EMAIL_PREVIEW.can_edit} disabled{/if}>
 				<legend>{$LANG.email.design_colours}</legend>
 				<div class="email-design__colour"><input type="color" name="design[accent]" id="design_accent" value="{$DESIGN.accent}"> <label for="design_accent">{$LANG.email.design_accent}</label></div>
 				<div class="email-design__colour"><input type="color" name="design[background]" id="design_background" value="{$DESIGN.background}"> <label for="design_background">{$LANG.email.design_background}</label></div>
 				<div class="email-design__colour"><input type="color" name="design[panel]" id="design_panel" value="{$DESIGN.panel}"> <label for="design_panel">{$LANG.email.design_panel}</label></div>
 				<div class="email-design__colour"><input type="color" name="design[text]" id="design_text" value="{$DESIGN.text}"> <label for="design_text">{$LANG.email.design_text}</label></div>
 			</fieldset>
-			<fieldset>
+			<fieldset{if !$EMAIL_PREVIEW.can_edit} disabled{/if}>
 				<legend>{$LANG.email.design_shape}</legend>
 				<div class="email-design__choice">
 					<label><input type="radio" name="design[corners]" value="rounded"{if $DESIGN.corners == 'rounded'} checked="checked"{/if}> {$LANG.email.design_rounded}</label>
@@ -307,12 +307,12 @@
 					<label><input type="radio" name="design[font]" value="serif"{if $DESIGN.font == 'serif'} checked="checked"{/if}> {$LANG.email.design_serif}</label>
 				</div>
 			</fieldset>
-			<fieldset>
+			<fieldset{if !$EMAIL_PREVIEW.can_edit} disabled{/if}>
 				<legend><label for="design_footer">{$LANG.email.design_footer}</label></legend>
 				<textarea name="design[footer]" id="design_footer" class="textbox" rows="3" maxlength="500">{$DESIGN.footer|escape:'html'}</textarea>
 				<span class="email-field-help">{$LANG.email.design_footer_help}</span>
 			</fieldset>
-			<fieldset>
+			<fieldset{if !$EMAIL_PREVIEW.can_edit} disabled{/if}>
 				<legend>{$LANG.email.design_use}</legend>
 				<div class="email-design__choice">
 					<input type="hidden" name="design[active]" id="design_active" class="toggle" value="{if $DESIGN_ACTIVE}1{else}0{/if}">
@@ -340,9 +340,11 @@
 	</div>
 	<div class="email-tools" id="email_tools" data-scope="design" data-label-desktop="{$LANG.email.preview_desktop}" data-label-mobile="{$LANG.email.preview_mobile}" data-label-text="{$LANG.email.preview_plain_text}" data-label-loading="{$LANG.common.loading}&hellip;" data-label-failed="{$LANG.email.preview_failed}">
 		<span class="email-tools__status" id="email_tools_status" role="status"></span>
+		{if $EMAIL_PREVIEW.can_edit}
 		<span class="email-tools__group">
 			<input type="submit" value="{$LANG.common.save}">
 		</span>
+		{/if}
 	</div>
 	<script type="text/javascript" defer src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.email.js?{$VERSION_HASH}"></script>
   </div>
