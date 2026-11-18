@@ -24,6 +24,14 @@ $email_types = array(
             '{$DATA.reset_link}'  => $lang['email']['macro_link_password'],
         ),
     ),
+    'account.activate' => array(
+        'description' => $lang['email']['title_macro_user_activate'],
+        'macros' => array(
+            '{$DATA.first_name}' => $lang['email']['macro_first_name'],
+            '{$DATA.last_name}'  => $lang['email']['macro_last_name'],
+            '{$DATA.activate_link}'  => $lang['email']['macro_link_activate'],
+        ),
+    ),
     'newsletter.verify_email' => array(
         'description' => $lang['email']['title_macro_user_newsletter'],
         'macros' => array(
@@ -52,7 +60,7 @@ $email_types = array(
             '{$SHIPPING.country}'   => $lang['email']['macro_country_d'],
             '{$SHIPPING.w3w}'   => $lang['email']['macro_w3w_d'],
             '{$BILLING.first_name}'  => $lang['email']['macro_first_name'],
-            '{$BILLING.last_name}'  => $lang['email']['macro_first_name'],
+            '{$BILLING.last_name}'  => $lang['email']['macro_last_name'],
             '{$BILLING.company_name}'  => $lang['email']['macro_company_name'],
             '{$BILLING.line1}'    => $lang['email']['macro_line1'],
             '{$BILLING.line2}'    => $lang['email']['macro_line2'],
@@ -67,7 +75,7 @@ $email_types = array(
             '{$DATA.custom_oid}'  => $lang['email']['macro_order_number_i'],
             '{$DATA.order_date}'   => $lang['email']['macro_order_date'],
             '{$DATA.ship_method}'  => $lang['email']['macro_order_shipping_method'],
-            '{$DATA.ship_product'  => $lang['email']['macro_order_shipping_product'],
+            '{$DATA.ship_product}'  => $lang['email']['macro_order_shipping_product'],
             '{$DATA.shipping}'   => $lang['email']['macro_order_shipping'],
             '{$DATA.discount}'   => $lang['email']['macro_order_discount'],
             '{$DATA.credit_used}' => $lang['email']['macro_order_credit_used'],
@@ -206,7 +214,7 @@ $email_types = array(
             '{$SHIPPING.country}' => $lang['email']['macro_country_d'],
             '{$SHIPPING.w3w}'   => $lang['email']['macro_w3w_d'],
             '{$BILLING.first_name}' => $lang['email']['macro_first_name'],
-            '{$BILLING.last_name}' => $lang['email']['macro_first_name'],
+            '{$BILLING.last_name}' => $lang['email']['macro_last_name'],
             '{$BILLING.company_name}' => $lang['email']['macro_company_name'],
             '{$BILLING.line1}' => $lang['email']['macro_line1'],
             '{$BILLING.line2}' => $lang['email']['macro_line2'],
@@ -221,7 +229,7 @@ $email_types = array(
             '{$DATA.custom_oid}'  => $lang['email']['macro_order_number_i'],
             '{$DATA.order_date}' => $lang['email']['macro_order_date'],
             '{$DATA.ship_method}'=> $lang['email']['macro_order_shipping_method'],
-            '{$DATA.ship_product'  => $lang['email']['macro_order_shipping_product'],
+            '{$DATA.ship_product}'  => $lang['email']['macro_order_shipping_product'],
             '{$DATA.shipping}' => $lang['email']['macro_order_shipping'],
             '{$DATA.discount}' => $lang['email']['macro_order_discount'],
             '{$DATA.credit_used}' => $lang['email']['macro_order_credit_used'],
@@ -254,7 +262,7 @@ $email_types = array(
             '{$SHIPPING.country}' => $lang['email']['macro_country_d'],
             '{$SHIPPING.w3w}'   => $lang['email']['macro_w3w_d'],
             '{$BILLING.first_name}' => $lang['email']['macro_first_name'],
-            '{$BILLING.last_name}' => $lang['email']['macro_first_name'],
+            '{$BILLING.last_name}' => $lang['email']['macro_last_name'],
             '{$BILLING.company_name}' => $lang['email']['macro_company_name'],
             '{$BILLING.line1}' => $lang['email']['macro_line1'],
             '{$BILLING.line2}' => $lang['email']['macro_line2'],
@@ -269,7 +277,7 @@ $email_types = array(
             '{$DATA.custom_oid}'  => $lang['email']['macro_order_number_i'],
             '{$DATA.order_date}' => $lang['email']['macro_order_date'],
             '{$DATA.ship_method}'=> $lang['email']['macro_order_shipping_method'],
-            '{$DATA.ship_product'  => $lang['email']['macro_order_shipping_product'],
+            '{$DATA.ship_product}'  => $lang['email']['macro_order_shipping_product'],
             '{$DATA.shipping}' => $lang['email']['macro_order_shipping'],
             '{$DATA.discount}' => $lang['email']['macro_order_discount'],
             '{$DATA.credit_used}' => $lang['email']['macro_order_credit_used'],
@@ -280,7 +288,7 @@ $email_types = array(
             '{$DATA.ship_tracking}'  => $lang['email']['macro_ship_tracking'],
             '{$DATA.ship_date}'  => $lang['email']['macro_ship_date'],
             '{$DATA.first_name}' => $lang['email']['macro_first_name'], // back compatibility help
-            '{$DATA.last_name}' => $lang['email']['macro_first_name'], // back compatibility help
+            '{$DATA.last_name}' => $lang['email']['macro_last_name'], // back compatibility help
             '{$DATA.customer_comments}' => $lang['email']['customer_comments'],
             '{$product.name}'  => $lang['email']['macro_product_name'],
             '{$product.product_code}' => $lang['email']['macro_product_code'],
@@ -663,6 +671,23 @@ if (isset($_POST['template'])) {
             httpredir(currentPage(null));
         }
     }
+}
+
+## Put one email, in one language, back to the wording it came with
+if (isset($_POST['email_reset']) && ctype_digit((string)$_POST['email_reset']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
+    $reset = $GLOBALS['db']->select('CubeCart_email_content', array('content_id', 'content_type', 'language'), array('content_id' => (int)$_POST['email_reset']), false, 1, false, false);
+    $stock = $reset ? $GLOBALS['language']->stockEmail($reset[0]['content_type'], $reset[0]['language']) : false;
+    if ($stock) {
+        $GLOBALS['db']->update('CubeCart_email_content', array(
+            'subject'      => addslashes($stock['subject']),
+            'preheader'    => '',
+            'content_html' => addslashes($stock['content_html']),
+        ), array('content_id' => (int)$reset[0]['content_id']), true, array('subject', 'preheader', 'content_html'));
+        $GLOBALS['main']->successMessage($lang['email']['notify_content_reset']);
+    } else {
+        $GLOBALS['main']->errorMessage($lang['email']['error_content_reset']);
+    }
+    httpredir(currentPage());
 }
 
 if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {

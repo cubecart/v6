@@ -131,7 +131,7 @@
 		</tr>
 		<tr>
 			<td colspan="2" class="text-right">
-				<input type="submit" value="{$LANG.common.save}">{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="button delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
+				{if $EMAIL_PREVIEW.can_edit && $CONTENT.content_id}<button type="submit" name="email_reset" value="{$CONTENT.content_id}" class="button submit_confirm" title="{$LANG.email.confirm_content_reset}">{$LANG.common.restore_default}</button> {/if}<input type="submit" value="{$LANG.common.save}">{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="button delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
 			</td>
 		</tr>
 	</table>

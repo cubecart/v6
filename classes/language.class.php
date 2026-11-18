@@ -660,17 +660,7 @@ class Language
                                 continue;
                             }
                             if ($email->content) {
-                                $record['content_type'] = (string)$email->attributes()->name;
-                                $record['language']  = (string)$xml->attributes()->language;
-                                $record['subject']  = str_replace('DATA.'.$traditional_oid_col, 'DATA.'.$oid_col, (string)$email->subject);
-                                foreach ($email->content as $content) {
-                                    // Plain text is auto-generated from HTML; skip legacy text entries
-                                    if ((string)$content->attributes()->type === 'text') {
-                                        continue;
-                                    }
-                                    // See GitHub #1511
-                                    $record['content_'.(string)$content->attributes()->type] = str_replace(array('empty({$','})}','DATA.'.$traditional_oid_col), array('empty($',')}','DATA.'.$oid_col), trim((string)$content));
-                                }
+                                $record = $this->_emailRecord($email, (string)$xml->attributes()->language, $oid_col);
                                 // Only insert rows that don't yet exist. Existing rows are preserved
                                 // because merchants may have intentionally edited them; we don't want
                                 // a language-pack upgrade or self-heal to silently overwrite their copy.
@@ -689,6 +679,78 @@ class Language
             }
         }
         return false;
+    }
+
+    /**
+     * The wording an email came with, read from the language pack on disk. This is
+     * what importEmail() would insert for a store that did not have the email yet.
+     *
+     * @param string $content_type e.g. cart.order_confirmation
+     * @param string $language e.g. en-GB
+     * @return array|false 'subject' and 'content_html', or false when the pack has no such email
+     */
+    public function stockEmail($content_type, $language)
+    {
+        if (empty($content_type) || !preg_match(self::LANG_REGEX, (string)$language)) {
+            return false;
+        }
+        $files = array(CC_LANGUAGE_DIR.'email_'.$language.'.xml');
+        // English is what the definitions are written in
+        if (strpos($language, 'en-') === 0) {
+            $files[] = CC_LANGUAGE_DIR.'email_definitions.xml';
+        }
+        $config_oid_col = $GLOBALS['config']->get('config', 'oid_col');
+        $oid_col = empty($config_oid_col) ? 'cart_order_id' : $config_oid_col;
+        foreach ($files as $file) {
+            if (!file_exists($file)) {
+                continue;
+            }
+            $data = file_get_contents($file);
+            if (($gz = @gzuncompress($data)) !== false) {
+                $data = $gz;
+            }
+            try {
+                $xml = new simpleXMLElement($data);
+            } catch (Exception $e) {
+                trigger_error($e->getMessage());
+                continue;
+            }
+            foreach ($xml->email as $email) {
+                if ($content_type === (string)$email->attributes()->name && $email->content) {
+                    $record = $this->_emailRecord($email, $language, $oid_col);
+                    if (!empty($record['content_html'])) {
+                        return array('subject' => $record['subject'], 'content_html' => $record['content_html']);
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Turn one <email> of a language pack into a row for CubeCart_email_content
+     *
+     * @param SimpleXMLElement $email
+     * @param string $language
+     * @param string $oid_col The order number column this store shows its customers
+     * @return array
+     */
+    private function _emailRecord($email, $language, $oid_col)
+    {
+        $traditional_oid_col = 'cart_order_id';
+        $record = array();
+        $record['content_type'] = (string)$email->attributes()->name;
+        $record['language']  = $language;
+        $record['subject']  = str_replace('DATA.'.$traditional_oid_col, 'DATA.'.$oid_col, (string)$email->subject);
+        foreach ($email->content as $content) {
+            // Plain text is auto-generated from HTML; skip legacy text entries
+            if ((string)$content->attributes()->type === 'text') {
+                continue;
+            }
+            // See GitHub #1511
+            $record['content_'.(string)$content->attributes()->type] = str_replace(array('empty({$','})}','DATA.'.$traditional_oid_col), array('empty($',')}','DATA.'.$oid_col), trim((string)$content));
+        }
+        return $record;
     }
 
     /**
