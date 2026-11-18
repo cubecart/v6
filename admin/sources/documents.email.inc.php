@@ -542,6 +542,10 @@ if (isset($_POST['email_editor']) && is_array($_POST['email_editor'])) {
             $macros   = isset($email_types[$type]['macros']) ? $email_types[$type]['macros'] : array();
             $source   = isset($raw['content_html']) ? (string)$raw['content_html'] : '';
             $checking = array($source);
+            if (strlen($source) > 65535) {
+                // Longer than can be stored, so there is nothing to be gained by reading it
+                throw new Exception($lang['email']['editor_too_long']);
+            }
             // It has to compile before it is worth showing
             $compile_check($source);
             $response = array_merge(array('status' => 'ok'), EmailEditor::describe($source, $type, $macros, $sample));
@@ -711,6 +715,10 @@ if (isset($_POST['email_preview']) && is_array($_POST['email_preview'])) {
 
     ob_start();
     try {
+        if (strlen($contents['content_html']) > 65535 || (is_array($template) && strlen((string)$template['content_html']) > 65535)) {
+            // Longer than can be stored, so it is not rendered either
+            throw new Exception($lang['email'][is_array($template) && strlen((string)$template['content_html']) > 65535 ? 'template_too_long' : 'editor_too_long']);
+        }
         $used   = EmailSample::assign($content['content_type'], $source, $macros);
         $mailer = new Mailer();
         if ($action === 'preview') {
@@ -794,6 +802,11 @@ if (isset($_POST['template']) && is_array($_POST['template']) && Admin::getInsta
 
     if (!$html_error && strpos($_POST['template']['content_html'], '$EMAIL_CONTENT') === false) {
         $GLOBALS['main']->errorMessage($lang['email']['error_macro_content']);
+        $proceed = false;
+    }
+    if (strlen($_POST['template']['content_html']) > 65535) {
+        // The database would cut it off at that length without a word, and every email with it
+        $GLOBALS['main']->errorMessage($lang['email']['template_too_long']);
         $proceed = false;
     }
     
@@ -899,6 +912,11 @@ if (isset($_POST['content']) && is_array($_POST['content']) && Admin::getInstanc
     if (empty($_POST['content']['content_html'])) {
         $GLOBALS['main']->errorMessage($lang['email']['error_html_empty']);
         $proceed = false;
+    } elseif (strlen($_POST['content']['content_html']) > 65535) {
+        // The database would cut it off at that length without a word
+        $GLOBALS['main']->errorMessage($lang['email']['editor_too_long']);
+        $proceed = false;
+        $redirect = false;
     }
 
     if ($proceed) {

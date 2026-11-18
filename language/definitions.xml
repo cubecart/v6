@@ -1549,6 +1549,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="editor_group_billing" introduced="6.9.0"><![CDATA[Billing address]]></string>
     <string name="editor_group_shipping" introduced="6.9.0"><![CDATA[Delivery address]]></string>
     <string name="editor_too_long" introduced="6.9.0"><![CDATA[This email is too long to store. Shorten it, or move repeated styling into the email template.]]></string>
+    <string name="template_too_long" introduced="6.9.0"><![CDATA[This template is too long to store. Shorten it: an image placed in it as data, rather than as a link, is the usual cause.]]></string>
     <string name="editor_not_stored" introduced="6.9.0"><![CDATA[The email was saved, but the database did not keep it exactly as written. Check it before relying on it.]]></string>
     <string name="design_title" introduced="6.9.0"><![CDATA[Email design]]></string>
     <string name="design_intro" introduced="6.9.0"><![CDATA[Choose the logo, colours and footer for the emails your store sends, without touching any HTML.]]></string>
