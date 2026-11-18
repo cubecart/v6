@@ -516,6 +516,13 @@ $no_script = function ($html) {
     return preg_replace('/<script\b[^>]*>.*?<\/script>/is', '', (string)$html);
 };
 
+## Whether a body, a subject or a template compiles. It is compiled and not run: nothing
+## that was posted is executed by being checked, and logic that needs the email's data
+## to run (a count of the products, say) is not taken for a mistake.
+$compile_check = function ($source) {
+    $GLOBALS['smarty']->createTemplate('eval:'.$source)->compileTemplateSource();
+};
+
 ## The visual editor (admin.email.editor.js). 'units' divides a body into wording and
 ## logic for it to show; 'save' takes back what it holds. Both answer as JSON.
 if (isset($_POST['email_editor']) && is_array($_POST['email_editor'])) {
@@ -536,7 +543,7 @@ if (isset($_POST['email_editor']) && is_array($_POST['email_editor'])) {
             $source   = isset($raw['content_html']) ? (string)$raw['content_html'] : '';
             $checking = array($source);
             // It has to compile before it is worth showing
-            $GLOBALS['smarty']->fetch('eval:'.$source);
+            $compile_check($source);
             $response = array_merge(array('status' => 'ok'), EmailEditor::describe($source, $type, $macros, $sample));
         } elseif ($action === 'save') {
             $content_id = !empty($request['content_id']) ? (int)$request['content_id'] : 0;
@@ -588,7 +595,7 @@ if (isset($_POST['email_editor']) && is_array($_POST['email_editor'])) {
                         continue;
                     }
                     try {
-                        $GLOBALS['smarty']->fetch('eval:'.$part[1]);
+                        $compile_check($part[1]);
                     } catch (Throwable $e) {
                         $error = $part[0].': '.$smarty_error($e, array($part[1]));
                         break;
@@ -760,8 +767,8 @@ if (isset($_POST['template_default']) && ctype_digit($_POST['template_default'])
     httpredir(currentPage());
 }
 
-if (isset($_POST['template']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
-    $_POST['template']['content_html'] = preg_replace('/<script\b[^>]*>.*?<\/script>/is', '', $GLOBALS['RAW']['POST']['template']['content_html']);
+if (isset($_POST['template']) && is_array($_POST['template']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
+    $_POST['template']['content_html'] = $no_script(isset($GLOBALS['RAW']['POST']['template']['content_html']) ? $GLOBALS['RAW']['POST']['template']['content_html'] : '');
 
     ## Save/Update Template
     $proceed = true;
@@ -769,8 +776,8 @@ if (isset($_POST['template']) && Admin::getInstance()->permissions('documents', 
     $html_error = false;
 
     try {
-        $GLOBALS['smarty']->fetch('string:'.$_POST['template']['content_html']);
-    } catch (Exception $e) {
+        $compile_check($_POST['template']['content_html']);
+    } catch (Throwable $e) {
         $error_message = htmlentities($smarty_error($e, array($_POST['template']['content_html'])), ENT_QUOTES);
         $GLOBALS['main']->errorMessage($lang['email']['title_content_html'].': '.$error_message);
         $redirect = false;
@@ -790,6 +797,10 @@ if (isset($_POST['template']) && Admin::getInstance()->permissions('documents', 
         $proceed = false;
     }
     
+    if (!$proceed) {
+        // Shown again as it was typed
+        $template_retry = $_POST['template'];
+    }
     if ($proceed) {
         $record = $_POST['template'];
         // The database layer strips backslashes from what it is given, so shield the template's own
@@ -840,8 +851,8 @@ if (isset($_POST['email_reset']) && ctype_digit((string)$_POST['email_reset']) &
     httpredir(currentPage());
 }
 
-if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
-    $_POST['content']['content_html'] = preg_replace('/<script\b[^>]*>.*?<\/script>/is', '', $GLOBALS['RAW']['POST']['content']['content_html']);
+if (isset($_POST['content']) && is_array($_POST['content']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
+    $_POST['content']['content_html'] = $no_script(isset($GLOBALS['RAW']['POST']['content']['content_html']) ? $GLOBALS['RAW']['POST']['content']['content_html'] : '');
     if (isset($GLOBALS['RAW']['POST']['content']['subject'])) {
         $_POST['content']['subject'] = $plain_line($GLOBALS['RAW']['POST']['content']['subject'], 250);
     }
@@ -853,23 +864,27 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
     $redirect = true;
     $html_error = false;
 
+    // An email that cannot be compiled cannot be sent, so it is not saved. The form is shown
+    // again with what was typed, so nothing is lost.
     try {
-        $GLOBALS['smarty']->fetch('string:'.$_POST['content']['content_html']);
-    } catch (Exception $e) {
+        $compile_check($_POST['content']['content_html']);
+    } catch (Throwable $e) {
         $error_message = htmlentities($smarty_error($e, array($_POST['content']['content_html'])), ENT_QUOTES);
         $GLOBALS['main']->errorMessage($lang['email']['title_content_html'].': '.$error_message);
         $redirect = false;
         $html_error = true;
+        $proceed = false;
     }
     // The subject and the preview text go through Smarty when the email is sent as well
     foreach (array('subject' => $lang['common']['subject'], 'preheader' => $lang['email']['preview_text']) as $text_field => $text_label) {
         if (isset($_POST['content'][$text_field]) && $_POST['content'][$text_field] !== '') {
             try {
-                $GLOBALS['smarty']->fetch('string:'.$_POST['content'][$text_field]);
-            } catch (Exception $e) {
+                $compile_check($_POST['content'][$text_field]);
+            } catch (Throwable $e) {
                 $GLOBALS['main']->errorMessage($text_label.': '.htmlentities($smarty_error($e, array($_POST['content'][$text_field])), ENT_QUOTES));
                 $redirect = false;
                 $html_error = true;
+                $proceed = false;
             }
         }
     }
@@ -923,6 +938,7 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
         if ($redirect) {
             httpredir(currentPage());
         }
+        $content_retry = array_intersect_key($_POST['content'], array('subject' => 1, 'preheader' => 1, 'content_html' => 1));
     }
 }
 
@@ -960,6 +976,7 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                 $content = $GLOBALS['db']->select('CubeCart_email_content', false, array('content_id' => (int)$_GET['content_id']));
                 if ($content) {
                     $data = $content[0];
+                    $stored_body = (string)$data['content_html'];
                     $breadcrumb = (isset($email_types[$data['content_type']]['description']) ? $email_types[$data['content_type']]['description'] : $data['subject']).(!empty($data['language']) ? ' ('.$data['language'].')' : '');
                     if (Admin::getInstance()->permissions('documents', CC_PERM_DELETE, false, false)) {
                         $delete = (bool)$GLOBALS['smarty']->assign('LINK_DELETE', currentPage(null, array('action' => 'delete')));
@@ -1009,7 +1026,13 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                 $page_title = $lang['email']['title_content_create'];
             }
             $GLOBALS['smarty']->assign('ADD_EDIT_CONTENT', $page_title);
-            $stored_body = (string)$data['content_html'];
+            if (!isset($stored_body)) {
+                $stored_body = (string)$data['content_html'];
+            }
+            if (isset($content_retry)) {
+                // A save that was refused: the form comes back as it was typed
+                $data = array_merge($data, $content_retry);
+            }
             // See GitHub #1511
             $data['content_html'] = str_replace(array('empty({$','})}'), array('empty($',')}'), $data['content_html']);
             // Subjects saved before 6.9.0 were stored with their quotes and ampersands as entities
@@ -1144,14 +1167,14 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                             $delete = (bool)$GLOBALS['smarty']->assign('LINK_DELETE', currentPage(null, array('action' => 'delete')));
                         }
                     }
-                    if (isset($_POST['template'])) {
-                        $data = array_merge($data, $_POST['template']);
+                    if (isset($template_retry)) {
+                        $data = array_merge($data, $template_retry);
                     }
                 }
             } else {
                 ## Create Template
                 $breadcrumb = $lang['common']['create'].': '.$lang['email']['email_template'];
-                $data  = (isset($_POST['template'])) ? $_POST['template'] : array();
+                $data  = isset($template_retry) ? $template_retry : array();
             }
             if ($_GET['action'] == 'edit') {
                 $page_title = $lang['email']['title_template_update'];
