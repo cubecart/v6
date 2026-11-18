@@ -760,7 +760,7 @@ if (isset($_POST['template_default']) && ctype_digit($_POST['template_default'])
     httpredir(currentPage());
 }
 
-if (isset($_POST['template'])) {
+if (isset($_POST['template']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
     $_POST['template']['content_html'] = preg_replace('/<script\b[^>]*>.*?<\/script>/is', '', $GLOBALS['RAW']['POST']['template']['content_html']);
 
     ## Save/Update Template
@@ -790,7 +790,7 @@ if (isset($_POST['template'])) {
         $proceed = false;
     }
     
-    if ($proceed && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
+    if ($proceed) {
         $record = $_POST['template'];
         // The database layer strips backslashes from what it is given, so shield the template's own
         $record['content_html'] = addslashes($_POST['template']['content_html']);
