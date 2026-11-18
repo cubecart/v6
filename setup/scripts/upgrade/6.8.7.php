@@ -50,7 +50,16 @@ if (!function_exists('cc_repair_email_template_head')) {
     }
 }
 
-$email_templates = $db->select('CubeCart_email_template', array('template_id', 'content_html'));
+// The two repairs below read text and write it back, so the connection has to carry every
+// character. The installer leaves it on the server's default, and where that is latin1
+// anything outside it (Greek, Cyrillic, Japanese, an emoji) is read as a question mark and
+// would be stored as one. So they run on utf8mb4, and do not run at all without it.
+$email_names_before = $db->misc('SELECT @@character_set_client AS `client`, @@character_set_results AS `results`, @@character_set_connection AS `connection`', false);
+$db->misc('SET NAMES utf8mb4', false);
+$email_names_now = $db->misc('SELECT @@character_set_client AS `client`, @@character_set_results AS `results`', false);
+$email_repairs   = (is_array($email_names_now) && $email_names_now[0]['client'] === 'utf8mb4' && $email_names_now[0]['results'] === 'utf8mb4');
+
+$email_templates = $email_repairs ? $db->select('CubeCart_email_template', array('template_id', 'content_html')) : false;
 if (is_array($email_templates)) {
     foreach ($email_templates as $email_template) {
         $repaired = cc_repair_email_template_head($email_template['content_html']);
@@ -90,7 +99,7 @@ if (!function_exists('cc_unwrap_email_content')) {
     }
 }
 
-$email_contents = $db->select('CubeCart_email_content', array('content_id', 'content_html'), "`content_html` LIKE '%<html>%'");
+$email_contents = $email_repairs ? $db->select('CubeCart_email_content', array('content_id', 'content_html'), "`content_html` LIKE '%<html>%'") : false;
 if (is_array($email_contents)) {
     foreach ($email_contents as $email_content) {
         $unwrapped = cc_unwrap_email_content($email_content['content_html']);
@@ -104,3 +113,14 @@ if (is_array($email_contents)) {
     }
 }
 unset($email_contents, $email_content, $unwrapped);
+
+// The connection goes back to how the rest of the upgrade found it
+if (is_array($email_names_before) && isset($email_names_before[0]['client'], $email_names_before[0]['results'], $email_names_before[0]['connection'])) {
+    $email_names = array_map(function ($name) {
+        return preg_replace('/[^a-z0-9_]/i', '', (string)$name);
+    }, $email_names_before[0]);
+    if ($email_names['client'] !== '' && $email_names['results'] !== '' && $email_names['connection'] !== '') {
+        $db->misc("SET character_set_client = '".$email_names['client']."', character_set_results = '".$email_names['results']."', character_set_connection = '".$email_names['connection']."'", false);
+    }
+}
+unset($email_names_before, $email_names_now, $email_names, $email_repairs);
