@@ -34,6 +34,7 @@
     var crlf = false;       // whether the email's own line endings are CRLF, which a text box does not keep
     var saving = false;     // a save is on its way to the server
     var checkTimer = null;
+    var roomWide = 0;       // the width of the wording at full size, kept while the narrow view is on
 
     // CKEditor is loaded on every admin page and turns anything with contenteditable into
     // one of its inline editors when the page is ready. The subject and preview text lines
@@ -933,7 +934,8 @@
                     } catch (e) {}
                     probe.onload = function () {
                         // No wider than the email: a photo straight from a camera would push the layout out
-                        var room = (body() && body().clientWidth) || 560, width = probe.naturalWidth, height = probe.naturalHeight;
+                        var narrow = !!document.getElementById('email_visual_wrap').style.maxWidth;
+                        var room = (narrow ? roomWide : (body() && body().clientWidth)) || 560, width = probe.naturalWidth, height = probe.naturalHeight;
                         if (width > room) {
                             height = Math.round(height * room / width);
                             width = room;
@@ -1372,6 +1374,9 @@
         });
         $root.on('click', '[data-width]', function () {
             var width = $(this).attr('data-width');
+            if (!document.getElementById('email_visual_wrap').style.maxWidth && body()) {
+                roomWide = body().clientWidth; // measured at full width, before the view narrows
+            }
             $root.find('[data-width]').each(function () {
                 var on = $(this).attr('data-width') === width;
                 $(this).toggleClass('is-on', on).attr('aria-pressed', on ? 'true' : 'false');
