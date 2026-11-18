@@ -693,9 +693,7 @@ class Order
                     }
                     $already_sent = false;
                     $cart_is_phantom = false;
-                    if(!empty($order_summary['gateway']) && file_exists(CC_ROOT_DIR.'/modules/gateway/'.$order_summary['gateway'].'/gateway.class.php')) {
-                        require_once(CC_ROOT_DIR.'/modules/gateway/'.$order_summary['gateway'].'/gateway.class.php');
-                        $gateway = new Gateway($GLOBALS['config']->get($order_summary['gateway']));
+                    if(!empty($order_summary['gateway']) && ($gateway = $this->_processingEmailGateway($order_summary['gateway'])) !== false) {
                         if(method_exists($gateway, 'processingEmail')) {
                             if (!isset($GLOBALS['cart'])) {
                                 $GLOBALS['cart'] = (object) array('basket' => array()); // phantom object to prevent PHP 8 getting upset about calls in the gateway construct to $GLOBALS['cart']
@@ -2134,6 +2132,43 @@ class Order
         if($record['credit_used']>0) {
             $this->addNote($this->_basket['cart_order_id'], sprintf($GLOBALS['language']->orders['credit_note_usage'], Tax::getInstance()->priceFormat($record['credit_used'])));
         }
+    }
+
+    /**
+     * Load an order's gateway so orderStatus() can call its optional processingEmail()
+     *
+     * Every gateway declares a class called Gateway, so only one can be loaded per
+     * request, and a bulk status change covers orders from several gateways (#4737).
+     * A gateway whose source never mentions processingEmail() is not loaded, which keeps
+     * the one slot free for gateways that have it. Encoded files can't be read, so they
+     * are loaded as before. If another gateway's class is already loaded, false is
+     * returned and the caller sends the standard confirmation email.
+     *
+     * @param string $folder Gateway folder name
+     * @return object|false
+     */
+    private function _processingEmailGateway($folder)
+    {
+        $file = CC_ROOT_DIR.'/modules/gateway/'.$folder.'/gateway.class.php';
+        if (!is_file($file)) {
+            return false;
+        }
+        if (!class_exists('Gateway', false)) {
+            $source = (string)file_get_contents($file);
+            $encoded = (stripos($source, 'ioncube') !== false || stripos($source, 'sg_load') !== false);
+            if (!$encoded && stripos($source, 'processingEmail') === false) {
+                return false;
+            }
+            require_once $file;
+        }
+        if (!class_exists('Gateway', false)) {
+            return false;
+        }
+        $loaded = new ReflectionClass('Gateway');
+        if (realpath((string)$loaded->getFileName()) !== realpath($file)) {
+            return false;
+        }
+        return new Gateway($GLOBALS['config']->get($folder));
     }
 
     /**
