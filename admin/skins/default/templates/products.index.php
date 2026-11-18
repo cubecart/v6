@@ -586,8 +586,8 @@
                   <td style="text-align:center"><a href="#" class="remove dynamic"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                <tr id="option_template" class="dynamic">
-                  <td style="text-align:center" class="set_enabled"><input type="checkbox" class="set_enabled" name="option_add[set_enabled][]" value="1"></td>
-                  <td style="text-align:center" class="matrix_include"><input type="checkbox" name="option_add[matrix_include][]" value="1"></td>
+                  <td style="text-align:center" class="set_enabled"><input type="hidden" name="option_add[set_enabled][]" value="1" class="toggle" disabled="disabled"></td>
+                  <td style="text-align:center" class="matrix_include"><input type="hidden" name="option_add[matrix_include][]" value="0" class="toggle" disabled="disabled"></td>
                   <td class="name"><input type="hidden" name="option_add[value][]" value="" disabled="disabled"></td>
                   <td class="set_name">{$LANG.common.none}</td>
                   <td class="default" align="center"><input type="checkbox" name="option_add[default][]" value="1" disabled="disabled"></td>

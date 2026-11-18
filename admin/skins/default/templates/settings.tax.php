@@ -140,7 +140,7 @@
             <input type="checkbox" name="addrule[eu]" id="rule-eu" value="1" />
             </span>
          </div>
-         <div><label for="rule-eu">{$LANG.country.assign_to_rest}</label><span>
+         <div><label for="rule-rest">{$LANG.country.assign_to_rest}</label><span>
             <input type="checkbox" name="addrule[rest]" id="rule-rest" value="1" />
             </span>
          </div>

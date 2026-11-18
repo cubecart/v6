@@ -173,7 +173,7 @@
             <input name="config[dbl_opt]" id="dbl_opt" type="hidden" class="toggle" value="{$CONFIG.dbl_opt}">
          {else}
             <input name="config[dbl_opt]" id="dbl_opt" type="hidden" value="1">
-            <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/1_checkbox.png">
+            <input type="checkbox" class="cc-switch" role="switch" checked disabled aria-label="{$LANG.settings.dbl_opt}">
          {/if}
          </span></div>
       </fieldset>

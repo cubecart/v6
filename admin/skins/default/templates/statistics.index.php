@@ -275,18 +275,6 @@ function statsFetchInto(div, url) {
                 }
                 oldS.parentNode.replaceChild(newS, oldS);
             }
-            // admin.js wraps native checkboxes in .custom-checkbox at document.ready;
-            // it doesn't see ones we inject post-load, so wrap them here.
-            var cbs = div.querySelectorAll('input[type="checkbox"]');
-            for (var j = 0; j < cbs.length; j++) {
-                var cb = cbs[j];
-                if (cb.parentNode && cb.parentNode.classList && cb.parentNode.classList.contains('custom-checkbox')) continue;
-                var wrap = document.createElement('div');
-                wrap.className = 'custom-checkbox';
-                if (cb.checked) wrap.classList.add('selected');
-                cb.parentNode.insertBefore(wrap, cb);
-                wrap.appendChild(cb);
-            }
         })
         .catch(function() {
             div.removeAttribute('data-loading');

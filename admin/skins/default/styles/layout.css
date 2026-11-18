@@ -352,12 +352,53 @@ img.border {
 input[type=checkbox] {
     margin: 0;
     padding: 0;
-    z-index: 2;
     cursor: pointer;
-    outline: 0;
-    opacity: 0;
     width: 16px;
-    height: 16px
+    height: 16px;
+    vertical-align: middle;
+    accent-color: var(--primary-accent)
+}
+input[type=checkbox]:focus-visible {
+    outline: 2px solid var(--primary-accent);
+    outline-offset: 2px
+}
+/* On/off switch drawn by admin.js next to each <input type="hidden" class="toggle">
+   (cubecart/v6#4735). It is a real checkbox, so it can be focused and switched with
+   the keyboard; the hidden input still holds the posted 0 or 1. */
+input[type=checkbox].cc-switch {
+    -webkit-appearance: none;
+    appearance: none;
+    position: relative;
+    width: 32px;
+    height: 18px;
+    margin: 0;
+    border-radius: 9px;
+    background: var(--switch-off);
+    vertical-align: middle;
+    cursor: pointer;
+    transition: background-color .15s
+}
+input[type=checkbox].cc-switch::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,.25);
+    transition: transform .15s
+}
+input[type=checkbox].cc-switch:checked {
+    background: var(--switch-on)
+}
+input[type=checkbox].cc-switch:checked::before {
+    transform: translateX(14px)
+}
+input[type=checkbox].cc-switch:disabled {
+    opacity: .6;
+    cursor: default
 }
 .capitalize {
     text-transform: capitalize;
@@ -368,18 +409,10 @@ input[type=checkbox] {
 .uppercase {
     text-transform: uppercase;
 }
+/* DEPRECATED (cubecart/v6#4734): admin.js still wraps checkboxes in this for
+   extensions that select it. It has no visual effect. Remove in the next major release. */
 .custom-checkbox {
-    background: url(../images/0.png);
-    width: 16px;
-    height: 16px;
-    display: inline-block
-}
-fieldset .custom-checkbox {
-    line-height: 24px;
-    margin-top: 5px
-}
-.custom-checkbox.selected {
-    background: url(../images/1.png)
+    display: contents
 }
 .fm-refresh, .remove_option_img, .choose_option_img {
     cursor: pointer;
@@ -2087,7 +2120,7 @@ div#content .powered ul li img {
     cursor: pointer;
     white-space: nowrap
 }
-.stats-status-option .custom-checkbox {
+.stats-status-option input[type=checkbox] {
     vertical-align: middle;
     margin: 0 4px 0 0
 }
@@ -2676,9 +2709,6 @@ ul.char_filter li {
     flex: 0 1 auto; 
     list-style-type: none;
 }
-.cke_dialog_ui_checkbox_input {
-    opacity: 1!important;
-}
 .parse_content {
     border-bottom: 1px solid #d1d1d1;
     border-left: 1px solid #d1d1d1;
@@ -2687,7 +2717,7 @@ ul.char_filter li {
     background-color: var(--panel-subtle);
     text-indent: 5px;
 }
-.parse_content span img.checkbox {
+.parse_content span .cc-switch {
     float: left;
 }
 .copy_text {
@@ -2777,6 +2807,8 @@ textarea#query {
   /* Ticked row in a picker list. Must stay distinct from both --bg and
      --highlight, since --highlight is already the zebra stripe. */
   --rowSelected: #d7e9f0;
+  --switch-off: #c4c4c4;
+  --switch-on: #5cb85c;
 }
 
 /* ===== DARK THEME OVERRIDES ===== */
@@ -2796,6 +2828,8 @@ textarea#query {
   :root {
     /* Native controls (select lists, checkboxes, scrollbars) follow this. */
     color-scheme: dark;
+    --switch-off: #4a535b;
+    --switch-on: #4cae4c;
     --bg: #0f1214;
     --panel: #171b1f;
     --panel-subtle: #15191d;
@@ -2939,8 +2973,7 @@ textarea#query {
     color: var(--text-muted) !important;
     opacity: 1;
   }
-  /* The checkbox sprites are light images; invert them so they are not white blocks. */
-  .custom-checkbox,
+  /* The file manager's image picker sprites are light images; invert them so they are not white blocks. */
   img.checkbox {
     filter: invert(0.88);
   }
@@ -4003,9 +4036,8 @@ body.chromeless #content_body { border-left: 0; }
 .wd-detail-table td.wd-label { font-weight:700; vertical-align:top; white-space:nowrap; }
 
 /* Product > Categories tab (cubecart/v6#4209). Stores with many categories get
-   an unscannable list, and because input[type=checkbox] is opacity:0 (the tick
-   is the .custom-checkbox sprite) an already-assigned category is easy to miss
-   — worse in dark mode. Filter box + whole-row highlight fixes both. */
+   an unscannable list, and a small ticked checkbox is easy to miss in a long
+   list. Filter box + whole-row highlight fixes both. */
 .cat-filter { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin:0 0 8px; }
 .cat-filter__input { flex:1 1 240px; max-width:420px; }
 .cat-filter__toggle { display:flex; align-items:center; gap:6px; white-space:nowrap; cursor:pointer; }

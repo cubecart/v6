@@ -164,24 +164,8 @@ $(document).ready(function() {
         $("input#product_code").val().length > 0 ? $("input#product_code_auto").val('0') : $("input#product_code_auto").val('1'); $("input#product_code_auto").change();
     }
 
-    $("input.toggle:hidden").each(function() {
-        var c = ($(this).val() == "1") ? "1" : "0";
-        var d = document.createElement("img");
-        var s = $(this).attr("style");
-        d.src = IMG_PATH + c + "_checkbox.png";
-        if (c == "1") {
-            d.alt = d.title = lang.enabled
-        } else {
-            d.alt = d.title = lang.disabled
-        }
-        $(d).addClass("checkbox");
-        $(d).addClass("cbs");
-        $(d).attr("rel", "#" + $(this).attr("id"));
-        if (typeof s !== 'undefined' && s !== false) {
-            $(d).attr("style", s);
-        }
-        $(this).after(d)
-    });
+    ccInitToggles(document);
+    ccWatchToggles();
 
     $('#submit_multi').on("click",function() {
         if($('select[name="multi-action"]').val() == 'delete') {
@@ -197,24 +181,6 @@ $(document).ready(function() {
         $("#es_count").html('-');
         $("#es_size").html('-');
         ajaxElasticSearch(1);
-    });
-    
-    $("#content_body").on("click", "img.cbs", function() {
-        var e = $(this).attr("rel");
-        switch ($(e).val()) {
-            case "1":
-                var value_old = '0';
-                var value_new = '1';
-                break;
-            default:
-                var value_old = '1';
-                var value_new = '0';
-                break
-        }
-        var new_src = $(this).attr('src').replace(value_old+'_checkbox.png',value_new+'_checkbox.png');
-        var new_label = (value_new == '1') ? lang.enabled : lang.disabled;
-        $(this).attr({src: new_src, alt: new_label, title: new_label});
-        $(e).val(value_new)
     });
 
     $('.chzn-select').chosen({width:"500px",search_contains:true});
@@ -483,8 +449,7 @@ $(document).ready(function() {
             $("#bulk_update_categories").hide();
             $("#bulk_update_products").show();
         }
-        $('input:checkbox').prop("checked", false);
-        $('.custom-checkbox').removeClass('selected');
+        $('input:checkbox').not('.cc-switch').prop("checked", false);
     });
     if ($("div.dropzone").length) {
         Dropzone.autoDiscover = false;
@@ -773,21 +738,21 @@ $(document).ready(function() {
             }), !1
         }), $("#content_body").on("click", ".check-primary, .check-default", function() {
             var t = $(this).attr("rel");
-            $("#" + t).parent().addClass("selected"), $("#" + t + ":checkbox").prop("checked", true)
+            $("#" + t + ":checkbox").prop("checked", true).trigger("change")
         }), $("#content_body").on("click", ".check-default-currency", function() {
             var t = $(this).attr("rel");
             var h = $("#" + t);
             if (h.val() !== "1") {
-                h.val("1");
-                $("img.cbs[rel='#" + t + "']").attr("src", IMG_PATH + "1_checkbox.png").attr("alt", lang.enabled).attr("title", lang.enabled)
+                h.val("1").trigger("change");
             }
         }), $("#quickTour").on("click", function() {
             $("#navigation .submenu").show(), $("#joyrideTour").joyride()
         }), $("#rule-eu, #rule-rest").click(function(e) {
-            if($('#rule-rest').closest('div').hasClass('selected') || $('#rule-eu').closest('div').hasClass('selected')) {
-                $("#country-region").show();
-            } else {
+            // A rule assigned to the EU or the rest of the world needs no country.
+            if($('#rule-rest').is(':checked') || $('#rule-eu').is(':checked')) {
                 $("#country-region").hide();
+            } else {
+                $("#country-region").show();
             }
             
         }), $(document).on("click", "a.help-panel-trigger", function(e) {
@@ -1023,13 +988,8 @@ $(document).ready(function() {
     }), $("input.date").datepicker(), window.scrollTo(0, 0);
     var s = $("#navigation").height(),
         r = $("#page_content").height();
-    s > r && $("#page_content").css('min-height',s + 100 +'px'), $('input[type="checkbox"]').each(function() {
-        $(this).parent().hasClass("custom-checkbox") || $(this).wrap("<div class='custom-checkbox'></div>"), $(this).is(":checked") ? $(this).parent().addClass("selected") : $(this).parent().removeClass("selected")
-    }), $("body").on("click", "img.checkbox, .check-primary, .check_cat, .check-all, .custom-checkbox", function() {
-        $('input[type="checkbox"]').each(function() {
-            $(this).is(":checked") ? $(this).parent().addClass("selected") : $(this).parent().removeClass("selected")
-        })
-    });
+    s > r && $("#page_content").css('min-height',s + 100 +'px');
+    ccLegacyCheckboxWrap();
     
     if($(".fm-item-list").length>0) {
         $("#filemanager .list-filesize").show();
@@ -1256,15 +1216,8 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
 }), $(".fa-trash.disabled, .title_alert").on("click", function() {
     alert($(this).attr("title"))
 }), $("input#product_code").on("keyup", function() {
-    var n = '1';
-    var o = '0';
-    if($("input#product_code").val().length > 0) { 
-        n = '0';
-        o = '1';
-    }
-    $("input#product_code_auto").val(n);
-    var new_src = $("img[rel$='product_code_auto']").attr('src').replace(o + '_checkbox.png', n + '_checkbox.png');
-    $("img[rel$='product_code_auto']").attr({src: new_src});
+    var n = $("input#product_code").val().length > 0 ? '0' : '1';
+    $("input#product_code_auto").val(n).trigger("change");
 }), $("input#product_code_auto").on("click", function() {
     var t = $("input#product_code_old").val(),
         e = $("input#product_code").val();
@@ -1633,7 +1586,7 @@ function optionAdd(t, e) {
             var c = $(l[i]).attr("rel"),
                 d = "" == $(l[i]).val() ? "0" : $(l[i]).val(),
                 h = $(o).find("." + c).find("input").first();
-            "matrix_include" == c ? h.attr("name", "option_add[" + c + "][" + options_added + "]") : "set_enabled" == c ? (h.prop('disabled', false), h.prop("checked", true), h.parent().addClass("selected"), h.val(1), 1 == d && (h.parent().addClass("selected"), h.prop("checked", true)), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : "default" == c || "negative" == c || "absolute_price" == c ? (h.prop('disabled', false), $(l[i]).is(":checked") && (h.parent().addClass("selected"), h.prop("checked", true), $(l[i]).prop('checked', false).parent().removeClass("selected")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : "image_id" == c ? (h.val(d).prop('disabled', false).attr("name", "option_add[" + c + "][" + options_added + "]"), parseInt(d, 10) > 0 && $(o).find("." + c).append('<img src="' + ($("#opt_image_preview").attr("src") || "") + '" style="max-width:60px;max-height:60px;">')) : (d = parseFloat(d, 10).toFixed(2), $(o).find("." + c).append(d).find("input").first().val(parseFloat(d)).prop('disabled', false)), $(l[i]).val("")
+            "matrix_include" == c ? h.prop('disabled', false).trigger("change").attr("name", "option_add[" + c + "][" + options_added + "]") : "set_enabled" == c ? h.prop('disabled', false).val(1).trigger("change").attr("name", "option_add[" + c + "][" + options_added + "]") : "default" == c || "negative" == c || "absolute_price" == c ? (h.prop('disabled', false), $(l[i]).is(":checked") && (h.prop("checked", true), $(l[i]).prop('checked', false)), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : "image_id" == c ? (h.val(d).prop('disabled', false).attr("name", "option_add[" + c + "][" + options_added + "]"), parseInt(d, 10) > 0 && $(o).find("." + c).append('<img src="' + ($("#opt_image_preview").attr("src") || "") + '" style="max-width:60px;max-height:60px;">')) : (d = parseFloat(d, 10).toFixed(2), $(o).find("." + c).append(d).find("input").first().val(parseFloat(d)).prop('disabled', false)), $(l[i]).val("")
         }
         $(document).on("click", "a.remove", function (e) {
             e.preventDefault();
@@ -1937,8 +1890,8 @@ $(document).on('blur', 'input[type="number"]', function() {
 
 /* Product > Categories tab: client-side filter and selected-row highlighting.
    See cubecart/v6#4209 — the list is one row per category (hundreds on some
-   stores), and because input[type=checkbox] is opacity:0 the tick is easy to
-   miss, so make selections obvious and let the list be narrowed by name.
+   stores), and a small ticked checkbox is easy to miss in a long list, so
+   make selections obvious and let the list be narrowed by name.
    Rows are hidden, never removed, so the checkboxes of filtered-out categories
    still submit and no assignment is lost on save. */
 function ccCategoryPickerInit() {
@@ -1991,9 +1944,7 @@ function ccCategoryPickerInit() {
     // a trap. Hence its own handler rather than the generic .check-all one.
     $('#cat_check_all').on('change', function() {
         var on = this.checked;
-        $rows.not('.is-hidden').find('input.check_cat').prop('checked', on).each(function() {
-            $(this).parent('.custom-checkbox').toggleClass('selected', on);
-        });
+        $rows.not('.is-hidden').find('input.check_cat').prop('checked', on);
         refreshState();
     });
 
@@ -2009,3 +1960,96 @@ function ccCategoryPickerInit() {
     refreshVisibility();
 }
 $(document).ready(ccCategoryPickerInit);
+
+/* On/off settings (cubecart/v6#4735). Each one is <input type="hidden" class="toggle">
+   holding 0 or 1, and that hidden input stays the value the form posts, so templates
+   and extensions need no change. Next to it goes a native checkbox drawn as a switch.
+   The switch has no name, so it never posts; it works with the mouse, the keyboard
+   and screen readers, and the row's <label for> is pointed at it. Lookups go by DOM
+   position (the switch always follows its hidden input), so cloned rows keep working. */
+function ccEscapeId(id) {
+    return (window.CSS && CSS.escape) ? CSS.escape(id) : String(id).replace(/(["\\])/g, '\\$1');
+}
+function ccInitToggles(context) {
+    $(context).find('input.toggle[type="hidden"]').addBack('input.toggle[type="hidden"]').each(function() {
+        var next = this.nextElementSibling;
+        if (next && next.classList.contains('cc-switch')) {
+            // Already has one (a cloned row): match it to the hidden input, which
+            // may have been changed while the row was not yet in the page.
+            next.checked = this.value == '1';
+            next.disabled = this.disabled;
+            return;
+        }
+        var sw = document.createElement('input');
+        sw.type = 'checkbox';
+        sw.className = 'cc-switch';
+        sw.setAttribute('role', 'switch');
+        sw.checked = this.value == '1';
+        sw.disabled = this.disabled;
+        var style = this.getAttribute('style');
+        if (style) sw.setAttribute('style', style);
+        if (this.id) {
+            sw.id = this.id + '_switch';
+            var labels = document.querySelectorAll('label[for="' + ccEscapeId(this.id) + '"]');
+            for (var i = 0; i < labels.length; i++) {
+                labels[i].htmlFor = sw.id;
+            }
+        }
+        this.parentNode.insertBefore(sw, this.nextSibling);
+    });
+}
+// Toggles added after page load (AJAX content, cloned rows) get a switch too.
+function ccWatchToggles() {
+    if (!window.MutationObserver || !document.body) return;
+    var sel = 'input.toggle[type="hidden"]';
+    new MutationObserver(function(mutations) {
+        for (var i = 0; i < mutations.length; i++) {
+            var added = mutations[i].addedNodes;
+            for (var j = 0; j < added.length; j++) {
+                var n = added[j];
+                if (n.nodeType === 1 && (n.matches(sel) || n.querySelector(sel))) {
+                    ccInitToggles(n);
+                }
+            }
+        }
+    }).observe(document.body, {childList: true, subtree: true});
+}
+$(document).on('change', 'input.cc-switch', function() {
+    var hidden = this.previousElementSibling;
+    if (hidden && $(hidden).is('input.toggle')) {
+        $(hidden).val(this.checked ? '1' : '0').trigger('change');
+    }
+});
+// Code that sets a toggle should call .val(x).trigger('change'); this keeps the switch in step.
+$(document).on('change', 'input.toggle[type="hidden"]', function() {
+    var sw = this.nextElementSibling;
+    if (sw && sw.classList.contains('cc-switch')) {
+        sw.checked = this.value == '1';
+        sw.disabled = this.disabled;
+    }
+});
+
+/* DEPRECATED compatibility shim (cubecart/v6#4734). Remove in the next major release.
+   Admin checkboxes used to be invisible and drawn as an image on a
+   <div class="custom-checkbox"> wrapper, ticked by a "selected" class. They are native
+   now and core no longer uses the wrapper. It is still added, with no visual effect
+   (display: contents), only so extension code that selects ".custom-checkbox input"
+   or reads the "selected" class keeps working. Do not rely on it in new code. */
+function ccLegacyCheckboxWrap() {
+    $('input[type="checkbox"]').not('.cc-switch').each(function() {
+        if (!$(this).parent().hasClass('custom-checkbox')) {
+            $(this).wrap('<div class="custom-checkbox"></div>');
+        }
+        $(this).parent().toggleClass('selected', this.checked);
+    });
+}
+function ccLegacyCheckboxSync() {
+    $('.custom-checkbox > input[type="checkbox"]').each(function() {
+        $(this).parent().toggleClass('selected', this.checked);
+    });
+}
+$(document).on('change', '.custom-checkbox > input[type="checkbox"]', function() {
+    $(this).parent().toggleClass('selected', this.checked);
+});
+// "Check all" and similar controls tick boxes without firing change.
+$(document).on('click', '.check-all, .check-primary, .check_cat', ccLegacyCheckboxSync);

@@ -41,7 +41,6 @@
 .ext-card-actions .ext-toggle { margin-right:auto; }
 .ext-card-actions-right { display:flex; gap:6px; }
 .ext-toggle { position:relative; display:inline-block; width:40px; height:20px; cursor:pointer; vertical-align:middle; flex-shrink:0; }
-.ext-toggle .custom-checkbox { position:absolute; inset:0; width:100%; height:100%; background:none; opacity:0; pointer-events:none; }
 .ext-toggle-input { opacity:0; width:0; height:0; position:absolute; }
 .ext-toggle-slider { position:absolute; inset:0; background:#ccc; border-radius:20px; transition:background .2s; }
 .ext-toggle-slider:before { content:''; position:absolute; left:2px; top:2px; width:16px; height:16px; background:#fff; border-radius:50%; transition:transform .2s; box-shadow:0 1px 2px rgba(0,0,0,.25); }
