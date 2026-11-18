@@ -2830,6 +2830,59 @@ div.cc-line.textbox {
     white-space: pre;
 }
 
+/* Email design: the settings beside what they make */
+.email-design {
+    flex: 1 1 320px;
+    min-width: 0;
+    max-width: 460px;
+}
+.email-design fieldset {
+    margin: 0 0 12px;
+}
+.email-design__choice {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 18px;
+    padding: 3px 0;
+}
+div.tab_content .email-design fieldset label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    float: none;
+    width: auto;
+    margin: 0;
+}
+div.tab_content .email-design fieldset > div {
+    text-indent: 0;
+    padding: 3px 5px;
+}
+.email-design__colour {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 0;
+}
+.email-design__colour input[type=color] {
+    width: 44px;
+    height: 28px;
+    padding: 1px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    cursor: pointer;
+}
+.email-design textarea.textbox {
+    width: 100%;
+    min-height: 60px;
+    box-sizing: border-box;
+}
+.email-note {
+    padding: 8px 10px;
+    border: 1px solid var(--note-border);
+    background: var(--note-bg);
+}
+
 /* Email Templates: preview and test send */
 .email-tools {
     display: flex;

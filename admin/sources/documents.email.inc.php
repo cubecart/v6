@@ -647,14 +647,22 @@ if (isset($_POST['email_preview']) && is_array($_POST['email_preview'])) {
     $raw      = (isset($GLOBALS['RAW']['POST']['email_preview']) && is_array($GLOBALS['RAW']['POST']['email_preview'])) ? $GLOBALS['RAW']['POST']['email_preview'] : array();
     $can_edit = Admin::getInstance()->permissions('documents', CC_PERM_EDIT, false, false);
     $action   = (isset($request['action']) && $request['action'] === 'test') ? 'test' : 'preview';
-    $scope    = (isset($request['scope']) && $request['scope'] === 'template') ? 'template' : 'content';
+    $scope    = (isset($request['scope']) && in_array($request['scope'], array('template', 'design'), true)) ? $request['scope'] : 'content';
     $source   = (isset($request['sample']) && $request['sample'] === EmailSample::SOURCE_EXAMPLE) ? EmailSample::SOURCE_EXAMPLE : EmailSample::SOURCE_LATEST;
     $response = array('status' => 'error', 'message' => '');
 
     $content     = false;
     $template    = false;
     $template_id = !empty($request['template_id']) ? (int)$request['template_id'] : false;
-    if ($scope === 'template') {
+    if ($scope === 'design') {
+        // The email design as it stands on screen, around the order confirmation
+        $content  = $GLOBALS['db']->select('CubeCart_email_content', false, array('content_type' => 'cart.order_confirmation', 'language' => $GLOBALS['language']->current()), false, 1, false, false);
+        if (!$content) {
+            $content = $GLOBALS['db']->select('CubeCart_email_content', false, array('content_type' => 'cart.order_confirmation'), false, 1, false, false);
+        }
+        $design   = ($can_edit && isset($request['design']) && is_array($request['design'])) ? EmailDesign::clean($request['design']) : EmailDesign::settings();
+        $template = array('title' => $lang['email']['design_template_title'], 'content_html' => EmailDesign::render($design));
+    } elseif ($scope === 'template') {
         // A template is shown wrapped around the order confirmation, the email most stores send most
         $content = $GLOBALS['db']->select('CubeCart_email_content', false, array('content_type' => 'cart.order_confirmation', 'language' => $GLOBALS['language']->current()), false, 1, false, false);
         if (!$content) {
@@ -803,6 +811,16 @@ if (isset($_POST['template'])) {
             httpredir(currentPage(null));
         }
     }
+}
+
+## The email design: a few settings that make the template emails are wrapped in
+if (isset($_POST['design']) && is_array($_POST['design']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
+    EmailDesign::save($_POST['design']);
+    if (isset($_POST['design']['active'])) {
+        EmailDesign::activate($_POST['design']['active'] == '1');
+    }
+    $GLOBALS['main']->successMessage($lang['email']['design_saved']);
+    httpredir(currentPage());
 }
 
 ## Put one email, in one language, back to the wording it came with
@@ -1084,6 +1102,22 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
             }
         }
         break;
+    case 'design':
+        ## EMAIL DESIGN
+        $design  = EmailDesign::settings();
+        $default = $GLOBALS['db']->select('CubeCart_email_template', array('template_id', 'title'), array('template_default' => '1'), false, 1, false, false);
+        $latest_order = EmailSample::latestOrder();
+        $GLOBALS['smarty']->assign('DESIGN', $design);
+        $GLOBALS['smarty']->assign('DESIGN_ACTIVE', EmailDesign::isActive());
+        $GLOBALS['smarty']->assign('DESIGN_CURRENT', $default ? $default[0]['title'] : '');
+        $GLOBALS['smarty']->assign('EMAIL_PREVIEW', array(
+            'latest_order' => $latest_order ? $latest_order['number'] : '',
+            'can_edit'     => Admin::getInstance()->permissions('documents', CC_PERM_EDIT, false, false),
+        ));
+        $GLOBALS['smarty']->assign('DISPLAY_DESIGN_FORM', true);
+        $breadcrumb = $lang['email']['design_title'];
+        $tab_label  = $lang['email']['design_title'];
+        break;
     case 'template':
         ## EMAIL TEMPLATES
         switch (strtolower($_GET['action'])) {
@@ -1124,6 +1158,8 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
             }
             $GLOBALS['smarty']->assign('ADD_EDIT_TEMPLATE', $page_title);
             $GLOBALS['smarty']->assign('TEMPLATE', $data);
+            // A template the email design makes is rewritten whenever the design is saved
+            $GLOBALS['smarty']->assign('TEMPLATE_MANAGED', (strtolower($_GET['action']) == 'edit' && !empty($data['template_id']) && in_array((int)$data['template_id'], EmailDesign::managed(), true)));
 
             $macros = array(
                 array('name' => '{$EMAIL_CONTENT}', 'description' => $lang['email']['macro_template_content'], 'required' => 'Yes'),
@@ -1150,7 +1186,9 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
     }
     ## Tabs
     $GLOBALS['main']->addTabControl($tab_label, 'general');
-    $GLOBALS['main']->addTabControl($lang['email']['title_macros'], 'macros');
+    if (strtolower($_GET['type']) !== 'design') {
+        $GLOBALS['main']->addTabControl($lang['email']['title_macros'], 'macros');
+    }
     ## Breadcrumbs
     $GLOBALS['gui']->addBreadcrumb($breadcrumb, currentPage());
     // Delete link
@@ -1199,7 +1237,9 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
     }
     // List Templates
     if (($templates = $GLOBALS['db']->select('CubeCart_email_template')) !== false) {
+        $managed_templates = EmailDesign::managed();
         foreach ($templates as $template) {
+            $template['managed'] = in_array((int)$template['template_id'], $managed_templates, true);
             $template['clone'] = currentPage(null, array('action' => 'clone', 'type' => 'template', 'template_id' => $template['template_id']));
             $template['delete'] = currentPage(null, array('action' => 'delete', 'type' => 'template', 'template_id' => $template['template_id'], 'token' => SESSION_TOKEN));
             $template['edit'] = currentPage(null, array('action' => 'edit', 'type' => 'template', 'template_id' => $template['template_id']));
@@ -1208,6 +1248,7 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
         $GLOBALS['smarty']->assign('EMAIL_TEMPLATES', $smarty_data['e_templates']);
     }
     $GLOBALS['smarty']->assign('TEMPLATE_CREATE', currentPage(null, array('action' => 'create', 'type' => 'template')));
+    $GLOBALS['smarty']->assign('DESIGN_LINK', currentPage(null, array('action' => 'edit', 'type' => 'design')));
     $GLOBALS['smarty']->assign('DISPLAY_EMAIL_LIST', true);
 }
 $page_content = $GLOBALS['smarty']->fetch('templates/documents.email.php');

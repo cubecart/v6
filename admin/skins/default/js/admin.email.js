@@ -38,6 +38,12 @@
     function request(fields, done) {
         var data = {token: $('.cc_session_token').val()};
         $.each(fields, function (key, value) {
+            if ($.isPlainObject(value)) {
+                $.each(value, function (name, inner) {
+                    data['email_preview[' + key + '][' + name + ']'] = inner;
+                });
+                return;
+            }
             data['email_preview[' + key + ']'] = (value === undefined || value === null) ? '' : value;
         });
         $.ajax({type: 'post', url: window.location.href.split('#')[0], data: data, dataType: 'json'})
@@ -52,7 +58,16 @@
     // What is on screen now, whether or not it has been saved
     function current() {
         var fields = {scope: $tools.attr('data-scope') || 'content'};
-        if (fields.scope === 'template') {
+        if (fields.scope === 'design') {
+            // The design as it stands on screen: design[accent] and the rest
+            fields.design = {};
+            $('[name^="design["]').each(function () {
+                if ((this.type === 'radio' || this.type === 'checkbox') && !this.checked) {
+                    return;
+                }
+                fields.design[this.name.replace(/^design\[|\]$/g, '')] = $(this).val();
+            });
+        } else if (fields.scope === 'template') {
             fields.template_id = $tools.attr('data-template-id') || '';
             fields.template_title = $('#template_desc').val();
             fields.template_html = readers.template_html();
@@ -231,6 +246,11 @@
             return;
         }
         templateEditor();
+        if ($tools.attr('data-scope') === 'design') {
+            // Every setting shows in the preview as it is changed
+            $(document).on('input change', '[name^="design["], #email_sample', scheduleLive);
+            refreshLive();
+        }
         $('#email_preview_button').on('click', preview);
         $('#email_test_button').on('click', sendTest);
         // Enter in the address box sends the test; it must not save the form around it

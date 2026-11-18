@@ -1550,6 +1550,35 @@ This email is sent from the store's master email address but it is possible to r
     <string name="editor_group_shipping" introduced="6.9.0"><![CDATA[Delivery address]]></string>
     <string name="editor_too_long" introduced="6.9.0"><![CDATA[This email is too long to store. Shorten it, or move repeated styling into the email template.]]></string>
     <string name="editor_not_stored" introduced="6.9.0"><![CDATA[The email was saved, but the database did not keep it exactly as written. Check it before relying on it.]]></string>
+    <string name="design_title" introduced="6.9.0"><![CDATA[Email design]]></string>
+    <string name="design_intro" introduced="6.9.0"><![CDATA[Choose the logo, colours and footer for the emails your store sends, without touching any HTML.]]></string>
+    <string name="design_logo" introduced="6.9.0"><![CDATA[Logo]]></string>
+    <string name="design_logo_image" introduced="6.9.0"><![CDATA[Logo image]]></string>
+    <string name="design_logo_text" introduced="6.9.0"><![CDATA[Store name as text]]></string>
+    <string name="design_left" introduced="6.9.0"><![CDATA[On the left]]></string>
+    <string name="design_centre" introduced="6.9.0"><![CDATA[In the centre]]></string>
+    <string name="design_logo_help" introduced="6.9.0"><![CDATA[The image is the logo your store already uses for emails.]]></string>
+    <string name="design_colours" introduced="6.9.0"><![CDATA[Colours]]></string>
+    <string name="design_accent" introduced="6.9.0"><![CDATA[Links and the top edge]]></string>
+    <string name="design_background" introduced="6.9.0"><![CDATA[Around the email]]></string>
+    <string name="design_panel" introduced="6.9.0"><![CDATA[Behind the wording]]></string>
+    <string name="design_text" introduced="6.9.0"><![CDATA[Text]]></string>
+    <string name="design_shape" introduced="6.9.0"><![CDATA[Shape and typeface]]></string>
+    <string name="design_rounded" introduced="6.9.0"><![CDATA[Rounded corners]]></string>
+    <string name="design_square" introduced="6.9.0"><![CDATA[Square corners]]></string>
+    <string name="design_sans" introduced="6.9.0"><![CDATA[Sans serif]]></string>
+    <string name="design_serif" introduced="6.9.0"><![CDATA[Serif]]></string>
+    <string name="design_footer" introduced="6.9.0"><![CDATA[Footer note]]></string>
+    <string name="design_footer_help" introduced="6.9.0"><![CDATA[Shown under your store name at the bottom of every email, for example a company number or a returns address. Newsletters also get the unsubscribe link.]]></string>
+    <string name="design_use" introduced="6.9.0"><![CDATA[Use it]]></string>
+    <string name="design_active" introduced="6.9.0"><![CDATA[Send my store's emails in this design]]></string>
+    <string name="design_active_on" introduced="6.9.0"><![CDATA[Your emails are sent in this design. Switch it off to go back to the template used before.]]></string>
+    <string name="design_active_off" introduced="6.9.0"><![CDATA[Your emails are sent in the template "%s" for now. Nothing changes for customers until you switch this on.]]></string>
+    <string name="design_saved" introduced="6.9.0"><![CDATA[Email design saved.]]></string>
+    <string name="design_template_title" introduced="6.9.0"><![CDATA[Store design]]></string>
+    <string name="design_template_title_news" introduced="6.9.0"><![CDATA[Store design (newsletters)]]></string>
+    <string name="design_unsubscribe" introduced="6.9.0"><![CDATA[To unsubscribe please follow the link below:]]></string>
+    <string name="design_managed" introduced="6.9.0"><![CDATA[This template is made by Email design. Changes made here are replaced the next time the design is saved. Clone it to keep a version of your own.]]></string>
     <string name="preview_text" introduced="6.9.0"><![CDATA[Preview text]]></string>
     <string name="preview_text_help" introduced="6.9.0"><![CDATA[Shown after the subject in the inbox. Leave it empty to let the inbox show the start of the email.]]></string>
     <string name="error_smarty_line" introduced="6.9.0"><![CDATA[Line %1$d: %2$s]]></string>

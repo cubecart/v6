@@ -50,6 +50,8 @@
   </div>
 
   <div id="email_templates" class="tab_content">
+	<h3>{$LANG.email.design_title}</h3>
+	<p>{$LANG.email.design_intro} <a href="{$DESIGN_LINK}" class="button">{$LANG.email.design_title}</a></p>
 	<h3>{$LANG.email.title_templates}</h3>
 	  <fieldset>
 	  {if isset($EMAIL_TEMPLATES)}
@@ -67,7 +69,7 @@
 				<td style="text-align:center">
 					<input type="radio" name="template_default" id="template_default_{$template.template_id}" value="{$template.template_id}"{if $template.template_default==1} checked="checked"{/if}>
 				</td>
-				<td><a href="{$template.edit}">{$template.title}</a></td>
+				<td><a href="{$template.edit}">{$template.title}</a>{if $template.managed} <span class="email-field-help">{$LANG.email.design_title}</span>{/if}</td>
 				<td width="10"><a href="#" class="preview-template" data-template-id="{$template.template_id}" data-template-title="{$template.title|escape:'html'}" title="{$LANG.common.preview}"><i class="fa fa-search"></i></a></td>
 				<td width="10"><a href="{$template.clone}"><i class="fa fa-files-o" title="{$LANG.common.clone}"></i></a></td>
 				<td width="10"><a href="{$template.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a></td>
@@ -209,6 +211,7 @@
 		<td><input type="text" name="template[title]" id="template_desc" value="{$TEMPLATE.title}" class="textbox required"></td>
 	  </tr>
 	</table>
+	{if $TEMPLATE_MANAGED}<p class="email-note">{$LANG.email.design_managed}</p>{/if}
 	{* A whole HTML document with Smarty in it is edited as code. A visual editor cannot show
 	   its <head> and has to rebuild the document to display it, which is how #4738 happened. *}
 	<div class="email-template">
@@ -268,6 +271,83 @@
   <input type="hidden" name="template[template_id]" value="{$TEMPLATE.template_id}">
   {/if}
   
+  {if isset($DISPLAY_DESIGN_FORM)}
+  <div id="general" class="tab_content">
+	<h3>{$LANG.email.design_title}</h3>
+	<p>{$LANG.email.design_intro}</p>
+	<div class="email-template">
+		<div class="email-design">
+			<fieldset>
+				<legend>{$LANG.email.design_logo}</legend>
+				<div class="email-design__choice">
+					<label><input type="radio" name="design[logo]" value="image"{if $DESIGN.logo == 'image'} checked="checked"{/if}> {$LANG.email.design_logo_image}</label>
+					<label><input type="radio" name="design[logo]" value="text"{if $DESIGN.logo == 'text'} checked="checked"{/if}> {$LANG.email.design_logo_text}</label>
+				</div>
+				<div class="email-design__choice">
+					<label><input type="radio" name="design[align]" value="left"{if $DESIGN.align == 'left'} checked="checked"{/if}> {$LANG.email.design_left}</label>
+					<label><input type="radio" name="design[align]" value="center"{if $DESIGN.align == 'center'} checked="checked"{/if}> {$LANG.email.design_centre}</label>
+				</div>
+				<span class="email-field-help">{$LANG.email.design_logo_help}</span>
+			</fieldset>
+			<fieldset>
+				<legend>{$LANG.email.design_colours}</legend>
+				<div class="email-design__colour"><input type="color" name="design[accent]" id="design_accent" value="{$DESIGN.accent}"> <label for="design_accent">{$LANG.email.design_accent}</label></div>
+				<div class="email-design__colour"><input type="color" name="design[background]" id="design_background" value="{$DESIGN.background}"> <label for="design_background">{$LANG.email.design_background}</label></div>
+				<div class="email-design__colour"><input type="color" name="design[panel]" id="design_panel" value="{$DESIGN.panel}"> <label for="design_panel">{$LANG.email.design_panel}</label></div>
+				<div class="email-design__colour"><input type="color" name="design[text]" id="design_text" value="{$DESIGN.text}"> <label for="design_text">{$LANG.email.design_text}</label></div>
+			</fieldset>
+			<fieldset>
+				<legend>{$LANG.email.design_shape}</legend>
+				<div class="email-design__choice">
+					<label><input type="radio" name="design[corners]" value="rounded"{if $DESIGN.corners == 'rounded'} checked="checked"{/if}> {$LANG.email.design_rounded}</label>
+					<label><input type="radio" name="design[corners]" value="square"{if $DESIGN.corners == 'square'} checked="checked"{/if}> {$LANG.email.design_square}</label>
+				</div>
+				<div class="email-design__choice">
+					<label><input type="radio" name="design[font]" value="sans"{if $DESIGN.font == 'sans'} checked="checked"{/if}> {$LANG.email.design_sans}</label>
+					<label><input type="radio" name="design[font]" value="serif"{if $DESIGN.font == 'serif'} checked="checked"{/if}> {$LANG.email.design_serif}</label>
+				</div>
+			</fieldset>
+			<fieldset>
+				<legend><label for="design_footer">{$LANG.email.design_footer}</label></legend>
+				<textarea name="design[footer]" id="design_footer" class="textbox" rows="3" maxlength="500">{$DESIGN.footer|escape:'html'}</textarea>
+				<span class="email-field-help">{$LANG.email.design_footer_help}</span>
+			</fieldset>
+			<fieldset>
+				<legend>{$LANG.email.design_use}</legend>
+				<div class="email-design__choice">
+					<input type="hidden" name="design[active]" id="design_active" class="toggle" value="{if $DESIGN_ACTIVE}1{else}0{/if}">
+					<label for="design_active">{$LANG.email.design_active}</label>
+				</div>
+				<span class="email-field-help">{if $DESIGN_ACTIVE}{$LANG.email.design_active_on}{else}{$LANG.email.design_active_off|sprintf:$DESIGN_CURRENT}{/if}</span>
+			</fieldset>
+		</div>
+		<div class="email-template__preview">
+			<div class="email-preview__bar">
+				<button type="button" class="button email-preview__size is-on" data-width="100%" aria-pressed="true">{$LANG.email.preview_desktop}</button>
+				<button type="button" class="button email-preview__size" data-width="375px" aria-pressed="false">{$LANG.email.preview_mobile}</button>
+				{if $EMAIL_PREVIEW.latest_order}
+				<span class="email-tools__group">
+					<label for="email_sample">{$LANG.email.sample_data}</label>
+					<select id="email_sample" class="textbox">
+						<option value="latest">{$LANG.email.sample_latest_order|sprintf:$EMAIL_PREVIEW.latest_order}</option>
+						<option value="example">{$LANG.email.sample_example_order}</option>
+					</select>
+				</span>
+				{/if}
+			</div>
+			<div class="email-preview__stage" id="email_template_preview"></div>
+		</div>
+	</div>
+	<div class="email-tools" id="email_tools" data-scope="design" data-label-desktop="{$LANG.email.preview_desktop}" data-label-mobile="{$LANG.email.preview_mobile}" data-label-text="{$LANG.email.preview_plain_text}" data-label-loading="{$LANG.common.loading}&hellip;" data-label-failed="{$LANG.email.preview_failed}">
+		<span class="email-tools__status" id="email_tools_status" role="status"></span>
+		<span class="email-tools__group">
+			<input type="submit" value="{$LANG.common.save}">
+		</span>
+	</div>
+	<script type="text/javascript" defer src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.email.js?{$VERSION_HASH}"></script>
+  </div>
+  {/if}
+
     {if isset($PLUGIN_TABS)}
   {foreach from=$PLUGIN_TABS item=tab}
   {$tab}
@@ -277,7 +357,7 @@
 
   <div class="form_control">
 	<input id="previous-tab" type="hidden" value="" name="previous-tab">
-	{if !isset($DISPLAY_CONTENT_FORM) && !isset($DISPLAY_TEMPLATE_FORM)}
+	{if !isset($DISPLAY_CONTENT_FORM) && !isset($DISPLAY_TEMPLATE_FORM) && !isset($DISPLAY_DESIGN_FORM)}
 	<input type="submit" value="{$LANG.common.save}">{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
 	{/if}
   </div>
