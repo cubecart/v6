@@ -463,7 +463,7 @@
                         item = kept ? keep(record) : {s: text};
                     }
                 } else if (!item) {
-                    if (!node.getAttribute('data-cc-u') && node.textContent.replace(/[\s ﻿]+/g, '') === '' && !node.querySelector('img, hr, [data-cc-s]')) {
+                    if (!node.getAttribute('data-cc-u') && node.textContent.replace(/[\s\u00a0\ufeff]+/g, '') === '' && !node.querySelector('img, hr, [data-cc-s]')) {
                         continue; // a new paragraph nobody typed in
                     }
                     item = {s: toSource(node)};
@@ -649,7 +649,7 @@
                 text += node.textContent;
             }
         }
-        return text.replace(/[\r\n ]+/g, ' ');
+        return text.replace(/[\r\n\u00a0]+/g, ' ');
     }
 
     function buildLine(description, $input, label) {
