@@ -54,10 +54,16 @@ class EmailSample
      * The store's most recent order worth showing: the latest one that is Processing
      * or Complete, or failing that the latest of any status.
      *
+     * Someone signed in to the admin who may not look at orders is not shown one here
+     * either: for them every email is filled in with the built-in example.
+     *
      * @return array|false 'cart_order_id' and the order number as the store displays it
      */
     public static function latestOrder()
     {
+        if (defined('ADMIN_CP') && ADMIN_CP && !Admin::getInstance()->permissions('orders', CC_PERM_READ, false, false)) {
+            return false;
+        }
         $columns = array('cart_order_id', 'custom_oid', 'id');
         $order   = $GLOBALS['db']->select('CubeCart_order_summary', $columns, array('status' => array(Order::ORDER_PROCESS, Order::ORDER_COMPLETE)), array('order_date' => 'DESC'), 1, false, false);
         if (!$order) {
