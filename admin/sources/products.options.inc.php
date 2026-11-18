@@ -199,7 +199,12 @@ if (!empty($_POST) && Admin::getInstance()->permissions('products', CC_PERM_EDIT
     if (!$changes) {
         $GLOBALS['main']->errorMessage($lang['catalogue']['error_option_no_change']);
     }
-    httpredir(currentPage());
+    // Reopen the group that was showing on the Attributes tab instead of the first one.
+    $keep = array();
+    if (isset($_POST['add-value']['option_id']) && (int)$_POST['add-value']['option_id'] > 0) {
+        $keep['option_group'] = (int)$_POST['add-value']['option_id'];
+    }
+    httpredir(currentPage(null, $keep));
 }
 
 ## Delete group/value/set
@@ -322,6 +327,9 @@ foreach ($GLOBALS['hooks']->load('admin.products.options.types') as $hook) {
 }
 
 $GLOBALS['smarty']->assign('OPTION_TYPES', $optionTypes);
+if (isset($_GET['option_group'])) {
+    $GLOBALS['smarty']->assign('SELECTED_GROUP', (int)$_GET['option_group']);
+}
 $GLOBALS['smarty']->assign('OPTION_TYPE_JSON', json_encode($optionTypes));
 
 $selectableTypes = $GLOBALS['catalogue']->getSelectableTypes();

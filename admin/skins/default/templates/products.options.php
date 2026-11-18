@@ -68,7 +68,7 @@
             <select name="add-value[option_id]" id="select_group_id" rel="group_" class="field_select textbox">
                {foreach from=$GROUPS item=group}{if $group.selectable}
                {assign var=attribute_groups value=$attribute_groups+1}
-               <option value="{$group.id}">{$group.name}</option>
+               <option value="{$group.id}"{if isset($SELECTED_GROUP) && $SELECTED_GROUP == $group.id} selected="selected"{/if}>{$group.name}</option>
                {/if}{/foreach}
             </select>
          </div>

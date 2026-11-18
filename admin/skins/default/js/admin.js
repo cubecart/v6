@@ -964,7 +964,15 @@ $(document).ready(function() {
         ajax_get: ajaxSuggest,
         callback: ajaxSelected
     }), $("select.field_select").each(function() {
-        if ($(this).find("option:first").prop("selected", true), $(this).parent().parent().find(".field_select_target:not(:first)").hide(), "select_group_id" == $(this).attr("id")) {
+        // An option the page marked as selected stays selected and its section shows
+        // (Product Options reopens the group you were editing); otherwise start on the first.
+        var $targets = $(this).parent().parent().find(".field_select_target");
+        if ($(this).find("option[selected]").length && "" != $(this).val() && $("#" + $(this).attr("rel") + $(this).val()).length) {
+            $targets.hide(), $("#" + $(this).attr("rel") + $(this).val()).show();
+        } else {
+            $(this).find("option:first").prop("selected", true), $targets.not(":first").hide();
+        }
+        if ("select_group_id" == $(this).attr("id")) {
             var t = $("option:selected", $(this)).val();
             $("#attr_source").attr("name", "add_attr[" + t + "]"), $("#group_target").attr("target", "group_" + t)
         }
