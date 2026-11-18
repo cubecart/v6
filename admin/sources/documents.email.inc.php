@@ -747,7 +747,7 @@ if (isset($_POST['email_enabled']) && isset($_POST['email_types']) && is_array($
         $enabled = isset($_POST['email_enabled'][$i]) ? (int)$_POST['email_enabled'][$i] : 1;
         $GLOBALS['db']->update('CubeCart_email_content', array('enabled' => $enabled), array('content_type' => (string)$content_type));
     }
-    $GLOBALS['main']->successMessage($lang['common']['save_success']);
+    $GLOBALS['main']->successMessage($lang['email']['notify_content_update']);
     httpredir(currentPage());
 }
 
