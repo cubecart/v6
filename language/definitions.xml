@@ -1495,6 +1495,15 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_newsletters" introduced="5.0.0"><![CDATA[Newsletters]]></string>
     <string name="title_overview" introduced="5.0.0"><![CDATA[Overview]]></string>
     <string name="title_send_test" introduced="5.0.0"><![CDATA[Send Test Email]]></string>
+    <string name="sample_data" introduced="6.9.0"><![CDATA[Sample data]]></string>
+    <string name="sample_latest_order" introduced="6.9.0"><![CDATA[Your latest order (%s)]]></string>
+    <string name="sample_example_order" introduced="6.9.0"><![CDATA[An example order]]></string>
+    <string name="notify_test_sent" introduced="6.9.0"><![CDATA[Test email sent to %s.]]></string>
+    <string name="error_test_send" introduced="6.9.0"><![CDATA[The test email could not be sent.]]></string>
+    <string name="preview_failed" introduced="6.9.0"><![CDATA[The preview could not be built. Please try again.]]></string>
+    <string name="preview_desktop" introduced="6.9.0"><![CDATA[Desktop]]></string>
+    <string name="preview_mobile" introduced="6.9.0"><![CDATA[Mobile]]></string>
+    <string name="preview_plain_text" introduced="6.9.0"><![CDATA[Plain text]]></string>
     <string name="title_sending" introduced="5.0.0"><![CDATA[Sending&hellip;]]></string>
     <string name="title_template_clone" introduced="5.0.0"><![CDATA[Clone Template]]></string>
     <string name="title_template_create" introduced="5.0.0"><![CDATA[Add Template]]></string>

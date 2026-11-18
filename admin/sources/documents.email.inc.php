@@ -462,6 +462,95 @@ foreach ($GLOBALS['hooks']->load('admin.documents.email.macros') as $hook) {
     include $hook;
 }
 
+## Preview and test send, answered as JSON. Both are built by the mailer exactly as a
+## real send is, with sample data standing in for the order or the customer.
+if (isset($_POST['email_preview']) && is_array($_POST['email_preview'])) {
+    $request  = $_POST['email_preview'];
+    $raw      = (isset($GLOBALS['RAW']['POST']['email_preview']) && is_array($GLOBALS['RAW']['POST']['email_preview'])) ? $GLOBALS['RAW']['POST']['email_preview'] : array();
+    $can_edit = Admin::getInstance()->permissions('documents', CC_PERM_EDIT, false, false);
+    $action   = (isset($request['action']) && $request['action'] === 'test') ? 'test' : 'preview';
+    $scope    = (isset($request['scope']) && $request['scope'] === 'template') ? 'template' : 'content';
+    $source   = (isset($request['sample']) && $request['sample'] === EmailSample::SOURCE_EXAMPLE) ? EmailSample::SOURCE_EXAMPLE : EmailSample::SOURCE_LATEST;
+    $response = array('status' => 'error', 'message' => '');
+    // Saving strips scripts, so the preview does too
+    $no_script = function ($html) {
+        return preg_replace('/<script\b[^>]*>.*?<\/script>/is', '', (string)$html);
+    };
+
+    $content     = false;
+    $template    = false;
+    $template_id = !empty($request['template_id']) ? (int)$request['template_id'] : false;
+    if ($scope === 'template') {
+        // A template is shown wrapped around the order confirmation, the email most stores send most
+        $content = $GLOBALS['db']->select('CubeCart_email_content', false, array('content_type' => 'cart.order_confirmation', 'language' => $GLOBALS['language']->current()), false, 1, false, false);
+        if (!$content) {
+            $content = $GLOBALS['db']->select('CubeCart_email_content', false, array('content_type' => 'cart.order_confirmation'), false, 1, false, false);
+        }
+        // Without permission to edit, only what is saved can be looked at
+        if ($can_edit && isset($raw['template_html'])) {
+            $template = array(
+                'title'        => isset($request['template_title']) ? (string)$request['template_title'] : '',
+                'content_html' => $no_script($raw['template_html']),
+            );
+        }
+    } elseif (!empty($request['content_id'])) {
+        $content = $GLOBALS['db']->select('CubeCart_email_content', false, array('content_id' => (int)$request['content_id']), false, 1, false, false);
+    }
+    $content = $content ? $content[0] : array('content_type' => '', 'subject' => '', 'content_html' => '');
+    if ($scope === 'content') {
+        if (empty($content['content_type']) && isset($request['content_type'])) {
+            $content['content_type'] = (string)$request['content_type'];
+        }
+        if ($can_edit) {
+            if (isset($request['subject'])) {
+                $content['subject'] = (string)$request['subject'];
+            }
+            if (isset($raw['content_html'])) {
+                $content['content_html'] = $no_script($raw['content_html']);
+            }
+        }
+    }
+    $macros   = isset($email_types[$content['content_type']]['macros']) ? $email_types[$content['content_type']]['macros'] : array();
+    $contents = array('subject' => (string)$content['subject'], 'content_html' => (string)$content['content_html']);
+
+    ob_start();
+    try {
+        $used   = EmailSample::assign($content['content_type'], $source, $macros);
+        $mailer = new Mailer();
+        if ($action === 'preview') {
+            $composed = $mailer->previewEmail($content['content_type'], $contents, $template_id, $template);
+            $response = array(
+                'status'  => 'ok',
+                'subject' => (string)$composed['subject'],
+                'html'    => (string)$composed['html'],
+                'text'    => (string)$composed['text'],
+                'sample'  => $used['source'],
+                'order'   => (string)$used['order'],
+            );
+        } else {
+            $to = isset($request['to']) ? trim((string)$request['to']) : '';
+            if (!$can_edit) {
+                $response['message'] = $GLOBALS['language']->notification['error_privileges'];
+            } elseif (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
+                $response['message'] = $lang['common']['error_email_invalid'];
+            } else {
+                $mailer->setContentType($content['content_type']);
+                if ($mailer->sendEmail($to, $contents, $template_id)) {
+                    $response = array('status' => 'ok', 'message' => sprintf($lang['email']['notify_test_sent'], $to));
+                } else {
+                    $response['message'] = trim($lang['email']['error_test_send'].' '.strip_tags((string)$mailer->ErrorInfo));
+                }
+            }
+        }
+    } catch (Throwable $e) {
+        $response = array('status' => 'error', 'message' => str_replace(array('string:', 'eval:'), '', strip_tags($e->getMessage())));
+    }
+    ob_end_clean();
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($response, JSON_INVALID_UTF8_SUBSTITUTE);
+    exit;
+}
+
 $GLOBALS['gui']->addBreadcrumb($lang['email']['title_email'], currentPage(array('action', 'content_id', 'content_type', 'template_id')));
 
 if (isset($_POST['email_enabled']) && isset($_POST['email_types']) && is_array($_POST['email_enabled']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
@@ -672,32 +761,23 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
             if (is_array($email_types[$data['content_type']]['macros'])) {
                 foreach ($email_types[$data['content_type']]['macros'] as $macro => $desc) {
                     $macro_data['name'] = htmlspecialchars($macro);
+                    // An entry is its description, or an array that also carries a label and a sample value
+                    if (is_array($desc)) {
+                        $desc = isset($desc['description']) ? $desc['description'] : (isset($desc['label']) ? $desc['label'] : '');
+                    }
                     $macro_data['description'] = $desc;
 
                     $smarty_data['macros'][] = $macro_data;
                 }
                 $GLOBALS['smarty']->assign('CONTENT_MACROS', $smarty_data['macros']);
             }
-            $default_template = $GLOBALS['db']->select('CubeCart_email_template', array('content_html'), array('template_default' => '1'));
-            if (is_array($default_template) && !empty($default_template[0]['content_html'])) {
-                $tmpl_json = json_encode($default_template[0]['content_html'], JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
-                if ($tmpl_json !== false) {
-                    $GLOBALS['smarty']->assign('DEFAULT_TEMPLATE_JSON', $tmpl_json);
-                }
-            }
-            $preview_macros = array(
-                'logoURL'        => $GLOBALS['gui']->getLogo(true, 'emails'),
-                'store_name'     => $GLOBALS['config']->get('config', 'store_name'),
-                'storeName'      => $GLOBALS['config']->get('config', 'store_name'),
-                'storeURL'       => $GLOBALS['storeURL'],
-                'unsubscribeURL' => $GLOBALS['storeURL'].'/index.php?_a=unsubscribe',
-                'jsonLd'         => '',
-            );
-            $macros_json = json_encode($preview_macros, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
-            if ($macros_json !== false) {
-                $GLOBALS['smarty']->assign('PREVIEW_MACROS_JSON', $macros_json);
-            }
             $GLOBALS['smarty']->assign('DISPLAY_CONTENT_FORM', true);
+            $latest_order = EmailSample::usesOrder($data['content_type']) ? EmailSample::latestOrder() : false;
+            $GLOBALS['smarty']->assign('EMAIL_PREVIEW', array(
+                'latest_order' => $latest_order ? $latest_order['number'] : '',
+                'test_to'      => Admin::getInstance()->get('email'),
+                'can_edit'     => Admin::getInstance()->permissions('documents', CC_PERM_EDIT, false, false),
+            ));
             if (!empty($data['content_type']) && isset($email_types[$data['content_type']]['description'])) {
                 $tab_label = $email_types[$data['content_type']]['description'].(!empty($data['language']) ? ' ('.$data['language'].')' : '');
             }

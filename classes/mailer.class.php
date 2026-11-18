@@ -32,6 +32,8 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
     private $_import_new = false;
     private $_method = '';
     private $_async_queue = array();
+    // 'string:' keeps a compiled copy of each template, 'eval:' does not (used for previews)
+    private $_smarty_resource = 'string:';
     private $_shutdown_registered = false;
 
     protected static $_instance;
@@ -234,32 +236,14 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
             $contents = $this->_parseContents($contents);
         }
         if (is_array($contents)) {
-            // Load template from specified id or default if not set
-            $where = (!$template_id) ? array('template_default' => 1) : array('template_id' => (int)$template_id);
-            if (($templates = $GLOBALS['db']->select('CubeCart_email_template', array('title', 'content_html'), $where)) !== false) {
-                $this->_template_title = $templates[0]['title'];
-                foreach ($contents as $key => $string) {
-                    if (strtolower($key) == 'subject') {
-                        $this->Subject = strip_tags($string);
-                        continue;
-                    } elseif ($key === 'content_html') {
-                        // define macros
-                        $data['logoURL']  = $GLOBALS['gui']->getLogo(true, 'emails');
-                        $data['store_name'] = $GLOBALS['config']->get('config', 'store_name');
-                        $data['storeName']  = $GLOBALS['config']->get('config', 'store_name');
-                        $data['storeURL']  = $GLOBALS['storeURL'];
-                        $data['unsubscribeURL'] = $GLOBALS['storeURL'].'/index.php?_a=unsubscribe'.$email_param;
-                        $data['jsonLd'] = $this->_buildJsonLd();
-
-                        $template = $this->_parseTemplate($templates[0], $data, $string);
-                        $this->_html = $template['content_html'];
-                        $this->_text = $this->_htmlToText($this->_html);
-                    }
-                }
-            } else {
-                $this->Subject = $contents['subject'];
-                $this->_html = $contents['content_html'];
-                $this->_text = $this->_htmlToText($this->_html);
+            // A class.mailer.send hook may have prepared $data to add its own template macros
+            $composed = $this->composeEmail($contents, $template_id, $email_param, false, (isset($data) && is_array($data)) ? $data : array());
+            // Hooks included further down have always been able to read these
+            $where     = $composed['where'];
+            $templates = $composed['templates'];
+            if (isset($composed['data'])) {
+                $data     = $composed['data'];
+                $template = $composed['template'];
             }
 
             // Open tracking: stamp a 1x1 pixel with a unique token onto the HTML body
@@ -329,6 +313,104 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
         }
 
         return false;
+    }
+
+    /**
+     * Build the subject, HTML and plain text of an email from contents that have
+     * already been through Smarty, wrapped in the chosen (or the default) template.
+     *
+     * sendEmail() sends exactly what this builds and the admin preview shows it, so
+     * a preview cannot differ from the email. The results are left on the instance
+     * as they always were; the return value is for callers that only want to look.
+     *
+     * @param array $contents Parsed 'subject' and 'content_html'
+     * @param int|false $template_id
+     * @param string $email_param Query string that ties the unsubscribe link to a recipient
+     * @param array|false $template An unsaved template ('title', 'content_html') to use in place of a stored one
+     * @param array $data Extra template macros, added to the standard ones
+     * @return array subject, html, text, and the template values used to build them
+     */
+    public function composeEmail($contents, $template_id = false, $email_param = '', $template = false, $data = array())
+    {
+        $composed = array();
+        // Load template from specified id or default if not set
+        $where = (!$template_id) ? array('template_default' => 1) : array('template_id' => (int)$template_id);
+        if (is_array($template) && isset($template['content_html'])) {
+            $templates = array(array('title' => isset($template['title']) ? (string)$template['title'] : '', 'content_html' => (string)$template['content_html']));
+        } else {
+            $templates = $GLOBALS['db']->select('CubeCart_email_template', array('title', 'content_html'), $where);
+        }
+        if ($templates !== false) {
+            $this->_template_title = $templates[0]['title'];
+            foreach ($contents as $key => $string) {
+                if (strtolower($key) == 'subject') {
+                    $this->Subject = strip_tags($string);
+                    continue;
+                } elseif ($key === 'content_html') {
+                    // define macros
+                    $data = is_array($data) ? $data : array();
+                    $data['logoURL']  = $GLOBALS['gui']->getLogo(true, 'emails');
+                    $data['store_name'] = $GLOBALS['config']->get('config', 'store_name');
+                    $data['storeName']  = $GLOBALS['config']->get('config', 'store_name');
+                    $data['storeURL']  = $GLOBALS['storeURL'];
+                    $data['unsubscribeURL'] = $GLOBALS['storeURL'].'/index.php?_a=unsubscribe'.$email_param;
+                    $data['jsonLd'] = $this->_buildJsonLd();
+
+                    $parsed = $this->_parseTemplate($templates[0], $data, $string);
+                    $this->_html = $parsed['content_html'];
+                    $this->_text = $this->_htmlToText($this->_html);
+                    $composed['data'] = $data;
+                    $composed['template'] = $parsed;
+                }
+            }
+        } else {
+            $this->Subject = $contents['subject'];
+            $this->_html = $contents['content_html'];
+            $this->_text = $this->_htmlToText($this->_html);
+        }
+        $composed['where']     = $where;
+        $composed['templates'] = $templates;
+        $composed['subject']   = $this->Subject;
+        $composed['html']      = $this->_html;
+        $composed['text']      = $this->_text;
+        return $composed;
+    }
+
+    /**
+     * Build an email for the admin to look at, without sending it. The contents are
+     * raw Smarty, as stored, and are rendered with whatever has been assigned to
+     * Smarty (see EmailSample). Nothing is written to the compile directory, so a
+     * preview that changes on every keystroke leaves no files behind.
+     *
+     * @param string $content_type e.g. cart.order_confirmation
+     * @param array $contents 'subject' and 'content_html' as stored
+     * @param int|false $template_id
+     * @param array|false $template An unsaved template to use in place of a stored one
+     * @return array As composeEmail()
+     * @throws Exception when the contents or the template are not valid Smarty
+     */
+    public function previewEmail($content_type, $contents, $template_id = false, $template = false)
+    {
+        $this->setContentType($content_type);
+        $resource = $this->_smarty_resource;
+        $this->_smarty_resource = 'eval:';
+        try {
+            $composed = $this->composeEmail($this->_parseContents($contents), $template_id, '', $template);
+        } finally {
+            $this->_smarty_resource = $resource;
+        }
+        return $composed;
+    }
+
+    /**
+     * Say which email is being sent when the contents did not come from loadContent(),
+     * so the structured data that goes with that type of email is still included.
+     *
+     * @param string $content_type
+     */
+    public function setContentType($content_type)
+    {
+        $this->_content_type = (string)$content_type;
     }
 
     /**
@@ -492,11 +574,11 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
     private function _parseContents($contents)
     {
         if (is_string($contents)) {
-            return $this->_cleanseContents($GLOBALS['smarty']->fetch('string:'.$contents));
+            return $this->_cleanseContents($GLOBALS['smarty']->fetch($this->_smarty_resource.$contents));
         } elseif (is_array($contents)) {
             $out = array();
             foreach ($contents as $key => $content) {
-                $out[$key] = $this->_cleanseContents($GLOBALS['smarty']->fetch('string:'.$content));
+                $out[$key] = $this->_cleanseContents($GLOBALS['smarty']->fetch($this->_smarty_resource.$content));
             }
             return $out;
         }
@@ -517,7 +599,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
         $GLOBALS['smarty']->assign('EMAIL_CONTENT', $email_content);
         if (is_array($templates)) {
             foreach ($templates as $key => $template) {
-                $out[$key] = $GLOBALS['smarty']->fetch('string:'.$template);
+                $out[$key] = $GLOBALS['smarty']->fetch($this->_smarty_resource.$template);
             }
         }
         return $out;

@@ -130,42 +130,36 @@
 			</td>
 		</tr>
 		<tr>
-			<td>
-				<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.preview}</button>
+			<td colspan="2">
+				<div class="email-tools" id="email_tools" data-scope="content" data-content-id="{$CONTENT.content_id}" data-content-type="{$CONTENT.content_type}" data-label-desktop="{$LANG.email.preview_desktop}" data-label-mobile="{$LANG.email.preview_mobile}" data-label-text="{$LANG.email.preview_plain_text}" data-label-loading="{$LANG.common.loading}&hellip;" data-label-failed="{$LANG.email.preview_failed}">
+					<button type="button" class="button" id="email_preview_button">{$LANG.common.preview}</button>
+					{if $EMAIL_PREVIEW.latest_order}
+					<span class="email-tools__group">
+						<label for="email_sample">{$LANG.email.sample_data}</label>
+						<select id="email_sample" class="textbox">
+							<option value="latest">{$LANG.email.sample_latest_order|sprintf:$EMAIL_PREVIEW.latest_order}</option>
+							<option value="example">{$LANG.email.sample_example_order}</option>
+						</select>
+					</span>
+					{/if}
+					{if $EMAIL_PREVIEW.can_edit}
+					<span class="email-tools__group">
+						<label for="email_test_to">{$LANG.email.title_send_test}</label>
+						<input type="text" inputmode="email" autocomplete="email" id="email_test_to" class="textbox" value="{$EMAIL_PREVIEW.test_to}">
+						<button type="button" class="button" id="email_test_button">{$LANG.common.send}</button>
+					</span>
+					{/if}
+					<span class="email-tools__status" id="email_tools_status" role="status"></span>
+				</div>
 			</td>
-			<td class="text-right">
-				<input type="submit" value="{$LANG.common.save}">{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="button delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}	
+		</tr>
+		<tr>
+			<td colspan="2" class="text-right">
+				<input type="submit" value="{$LANG.common.save}">{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="button delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
 			</td>
 		</tr>
 	</table>
-	{if isset($DEFAULT_TEMPLATE_JSON)}
-	<script>var EMAIL_DEFAULT_TEMPLATE = {$DEFAULT_TEMPLATE_JSON};</script>
-	{else}
-	<script>var EMAIL_DEFAULT_TEMPLATE = null;</script>
-	{/if}
-	{if isset($PREVIEW_MACROS_JSON)}
-	<script>var EMAIL_PREVIEW_MACROS = {$PREVIEW_MACROS_JSON};</script>
-	{else}
-	<script>var EMAIL_PREVIEW_MACROS = {};</script>
-	{/if}
-	<script>{literal}
-		function previewEmailTemplate() {
-			var content = CKEDITOR.instances.content_html.getData();
-			var rendered = EMAIL_DEFAULT_TEMPLATE ? EMAIL_DEFAULT_TEMPLATE.replace(/\{\$EMAIL_CONTENT\}/g, content) : content;
-			Object.keys(EMAIL_PREVIEW_MACROS).forEach(function(key) {
-				var pattern = new RegExp('\\{\\$DATA\\.' + key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\}', 'g');
-				rendered = rendered.replace(pattern, EMAIL_PREVIEW_MACROS[key]);
-			});
-			$.colorbox({
-				title: document.getElementById('content_subject').value,
-				width: '90%',
-				height: '90%',
-				html: function(){
-					return '<iframe width="100%" height="95%" frameBorder="0" srcdoc="<div style=&quot;margin:auto;width:50%;&quot;>'+rendered.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'</div>"></iframe>';
-				}
-			});
-		};
-	{/literal}</script>
+	<script type="text/javascript" defer src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.email.js?{$VERSION_HASH}"></script>
 	{else}
 	<p>{$LANG.email.install_master_lang}</p>
 	{/if}
