@@ -31,6 +31,7 @@
     var lastTarget = null;  // where a placeholder goes: null for the email, or a line field
     var everFocused = false;
     var lastRange = null;
+    var saving = false;     // a save is on its way to the server
 
     // CKEditor is loaded on every admin page and turns anything with contenteditable into
     // one of its inline editors when the page is ready. The subject and preview text lines
@@ -1124,7 +1125,26 @@
 
     //=====[ Saving ]=======================================
 
+    /** While a save is on its way nothing more is typed, and Save does nothing */
+    function busy(on) {
+        saving = on;
+        $('#email_tools input[type=submit]').prop('disabled', on);
+        if (state.canEdit) {
+            $('.cc-line').attr('contenteditable', on ? 'false' : 'true');
+            $('#content_subject, #content_preheader').prop('readOnly', on);
+            if (editor) {
+                editor.mode.set(on ? 'readonly' : 'design');
+            }
+            if (ace_editor) {
+                ace_editor.setReadOnly(on);
+            }
+        }
+    }
+
     function save() {
+        if (saving) {
+            return;
+        }
         var fields = {
             token: $('.cc_session_token').val(),
             'email_editor[action]': 'save',
@@ -1148,7 +1168,10 @@
             fields['email_editor[content_html]'] = currentSource();
         }
         ccEmail.setStatus(ccEmail.label('loading'), null);
-        $.ajax({type: 'post', url: window.location.href.split('#')[0], dataType: 'json', data: fields}).done(function (result) {
+        busy(true);
+        $.ajax({type: 'post', url: window.location.href.split('#')[0], dataType: 'json', data: fields}).always(function () {
+            busy(false);
+        }).done(function (result) {
             if (!result || result.status !== 'ok') {
                 ccEmail.setStatus((result && result.message) || ccEmail.label('failed'), false);
                 return;
