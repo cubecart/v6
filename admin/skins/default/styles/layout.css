@@ -2657,6 +2657,39 @@ ul.fmsearch_images img {
     border: 1px solid var(--input-border);
 }
 
+/* Email template: the code beside its rendered result */
+.email-template {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 10px 0;
+}
+.email-template__code {
+    flex: 1 1 480px;
+    min-width: 0;
+}
+.email-template__code .ace_email_editor,
+.email-template__source {
+    height: 620px;
+    box-sizing: border-box;
+}
+.email-template__source {
+    width: 100%;
+    font-family: "Courier New", Courier, monospace;
+    white-space: pre;
+}
+.email-template__source[hidden],
+.email-template__code .ace_email_editor[hidden] {
+    display: none;
+}
+.email-template__preview {
+    flex: 1 1 420px;
+    min-width: 0;
+    height: 620px;
+    display: flex;
+    flex-direction: column;
+}
+
 /* Email Templates: preview and test send */
 .email-tools {
     display: flex;

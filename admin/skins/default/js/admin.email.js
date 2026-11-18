@@ -81,7 +81,7 @@
         return '<iframe class="email-preview__frame" sandbox="" title="' + escapeAttribute(result.subject) + '" srcdoc="' + escapeAttribute(result.html) + '"></iframe>';
     }
 
-    function showPreview(result) {
+    function showPreview(result, title) {
         var html = '<div class="email-preview">' +
             '<div class="email-preview__bar">' +
                 '<button type="button" class="button email-preview__size is-on" data-width="100%" aria-pressed="true">' + escapeText(label('desktop')) + '</button>' +
@@ -91,7 +91,7 @@
             '<div class="email-preview__stage">' + frameHtml(result) + '<pre class="email-preview__text" hidden></pre></div>' +
         '</div>';
         $.colorbox({
-            title: escapeText(result.subject),
+            title: escapeText(title || result.subject),
             width: '90%',
             height: '90%',
             html: html,
@@ -125,10 +125,95 @@
         });
     }
 
+    /**
+     * The main template is a whole HTML document, so it is edited as code (ACE) with the
+     * rendered result beside it. The textarea stays the form field: ACE writes into it,
+     * and it is all there is if ACE cannot load.
+     */
+    var liveTimer = null, liveRequest = 0, liveWidth = '100%';
+
+    function refreshLive() {
+        var $stage = $('#email_template_preview');
+        if (!$stage.length) {
+            return;
+        }
+        var fields = current(), mine = ++liveRequest;
+        fields.action = 'preview';
+        request(fields, function (result) {
+            if (mine !== liveRequest) {
+                return; // an answer to something typed over since
+            }
+            if (result.status !== 'ok') {
+                // Keep the last good preview on screen while the code is mid-edit
+                setStatus(result.message || label('failed'), false);
+                return;
+            }
+            setStatus('', null);
+            $stage.html(frameHtml(result)).find('.email-preview__frame').css('width', liveWidth);
+        });
+    }
+
+    function scheduleLive() {
+        window.clearTimeout(liveTimer);
+        liveTimer = window.setTimeout(refreshLive, 900);
+    }
+
+    function templateEditor() {
+        var $source = $('#template_content_html'), $holder = $('#template_ace');
+        if (!$source.length) {
+            return;
+        }
+        if ($holder.length && window.ace) {
+            var dark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+            var editor = ace.edit('template_ace');
+            editor.session.setUseWrapMode(true);
+            editor.setOptions({
+                highlightActiveLine: true,
+                showPrintMargin: false,
+                theme: (dark && dark.matches) ? 'ace/theme/tomorrow_night' : 'ace/theme/github',
+                mode: 'ace/mode/smarty'
+            });
+            if (dark && dark.addEventListener) {
+                dark.addEventListener('change', function (event) {
+                    editor.setTheme(event.matches ? 'ace/theme/tomorrow_night' : 'ace/theme/github');
+                });
+            }
+            editor.setValue($source.val(), -1);
+            editor.getSession().on('change', function () {
+                $source.val(editor.getSession().getValue()).trigger('change');
+                scheduleLive();
+            });
+            $source.prop('hidden', true);
+            $holder.prop('hidden', false);
+            editor.resize();
+        } else {
+            $source.on('input', scheduleLive);
+        }
+        $('#template_desc, #email_sample').on('change', scheduleLive);
+        refreshLive();
+    }
+
     $(document).on('click', '.email-preview__size', function () {
-        $('.email-preview__size').removeClass('is-on').attr('aria-pressed', 'false');
+        var $bar = $(this).closest('.email-preview__bar'), $frames = $bar.parent().find('.email-preview__frame');
+        $bar.find('.email-preview__size').removeClass('is-on').attr('aria-pressed', 'false');
         $(this).addClass('is-on').attr('aria-pressed', 'true');
-        $('.email-preview__frame').css('width', $(this).attr('data-width'));
+        $frames.css('width', $(this).attr('data-width'));
+        if ($bar.parent().is('.email-template__preview')) {
+            liveWidth = $(this).attr('data-width');
+        }
+    });
+
+    // Email Templates list: look at a saved template around a real email
+    $(document).on('click', '.preview-template', function (event) {
+        event.preventDefault();
+        var title = $(this).attr('data-template-title') || '';
+        request({action: 'preview', scope: 'template', template_id: $(this).attr('data-template-id')}, function (result) {
+            if (result.status !== 'ok') {
+                window.alert(result.message || label('failed'));
+                return;
+            }
+            showPreview(result, title);
+        });
     });
 
     $(document).on('click', '.email-preview__as-text', function () {
@@ -144,6 +229,7 @@
         if (!$tools.length) {
             return;
         }
+        templateEditor();
         $('#email_preview_button').on('click', preview);
         $('#email_test_button').on('click', sendTest);
         // Enter in the address box sends the test; it must not save the form around it

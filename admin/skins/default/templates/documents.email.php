@@ -76,36 +76,8 @@
 			{/foreach}
 		</tbody>
 	  </table>
-	  {if isset($EMAIL_TEMPLATE_HTML_JSON)}
-	  <script>
-		var EMAIL_TEMPLATE_HTML = {$EMAIL_TEMPLATE_HTML_JSON};
-		var EMAIL_PREVIEW_MACROS = {if isset($PREVIEW_MACROS_JSON)}{$PREVIEW_MACROS_JSON}{else}{ldelim}{rdelim}{/if};
-	  </script>
-	  <script>{literal}
-		document.addEventListener('DOMContentLoaded', function() {
-			$(document).on('click', '.preview-template', function(e) {
-				e.preventDefault();
-				var $btn = $(this);
-				var id = parseInt($btn.attr('data-template-id'), 10);
-				var title = $btn.attr('data-template-title') || '';
-				var rendered = (EMAIL_TEMPLATE_HTML && EMAIL_TEMPLATE_HTML[id]) ? EMAIL_TEMPLATE_HTML[id] : '';
-				rendered = rendered.replace(/\{\$EMAIL_CONTENT\}/g, '<p style="padding:24px;text-align:center;color:#888;font-style:italic;">[Email body preview]</p>');
-				Object.keys(EMAIL_PREVIEW_MACROS).forEach(function(key) {
-					var pattern = new RegExp('\\{\\$DATA\\.' + key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\}', 'g');
-					rendered = rendered.replace(pattern, EMAIL_PREVIEW_MACROS[key]);
-				});
-				$.colorbox({
-					title: title,
-					width: '90%',
-					height: '90%',
-					html: function(){
-						return '<iframe width="100%" height="95%" frameBorder="0" srcdoc="<div style=&quot;margin:auto;width:50%;&quot;>'+rendered.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'</div>"></iframe>';
-					}
-				});
-			});
-		});
-	  {/literal}</script>
-	  {/if}
+	  <div id="email_tools" data-scope="template" data-label-desktop="{$LANG.email.preview_desktop}" data-label-mobile="{$LANG.email.preview_mobile}" data-label-text="{$LANG.email.preview_plain_text}" data-label-loading="{$LANG.common.loading}&hellip;" data-label-failed="{$LANG.email.preview_failed}" hidden></div>
+	  <script type="text/javascript" defer src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.email.js?{$VERSION_HASH}"></script>
 	  {else}
 	  <div>{$EMAIL.email.templates_none}</div>
 	  {/if}
@@ -198,43 +170,39 @@
 		<td><label for="template_desc">{$LANG.email.template_name}</label></td>
 		<td><input type="text" name="template[title]" id="template_desc" value="{$TEMPLATE.title}" class="textbox required"></td>
 	  </tr>
-		<tr>
-			<td colspan="2">
-				<textarea name="template[content_html]" id="template_content_html" class="textbox fck fck-full fck-keep-image-size" data-fck-height="500">{$TEMPLATE.content_html|escape:'html'}</textarea>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.preview}</button>
-			</td>
-			<td class="text-right">
-				<input type="submit" value="{$LANG.common.save}">{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="button delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
-			</td>
-		</tr>
 	</table>
-	{if isset($PREVIEW_MACROS_JSON)}
-	<script>var EMAIL_PREVIEW_MACROS = {$PREVIEW_MACROS_JSON};</script>
-	{else}
-	<script>var EMAIL_PREVIEW_MACROS = {};</script>
-	{/if}
-	<script>{literal}
-		function previewEmailTemplate() {
-			var rendered = CKEDITOR.instances.template_content_html.getData();
-			rendered = rendered.replace(/\{\$EMAIL_CONTENT\}/g, '<p style="padding:1em;border:2px dashed #999;color:#666;text-align:center;">[ Email content will appear here ]</p>');
-			Object.keys(EMAIL_PREVIEW_MACROS).forEach(function(key) {
-				var pattern = new RegExp('\\{\\$DATA\\.' + key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\}', 'g');
-				rendered = rendered.replace(pattern, EMAIL_PREVIEW_MACROS[key]);
-			});
-			$.colorbox({
-				title: document.getElementById('template_desc').value,
-				width: '90%',
-				height: '90%',
-				html: function(){
-					return '<iframe width="100%" height="95%" frameBorder="0" srcdoc="<div style=&quot;margin:auto;width:50%;&quot;>'+rendered.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'</div>"></iframe>';
-				}
-			});
-		};
-	{/literal}</script>
+	{* A whole HTML document with Smarty in it is edited as code. A visual editor cannot show
+	   its <head> and has to rebuild the document to display it, which is how #4738 happened. *}
+	<div class="email-template">
+		<div class="email-template__code">
+			<div id="template_ace" class="ace_email_editor" hidden></div>
+			<textarea name="template[content_html]" id="template_content_html" class="textbox email-template__source" spellcheck="false" aria-label="{$LANG.email.title_content_html}">{$TEMPLATE.content_html|escape:'html'}</textarea>
+		</div>
+		<div class="email-template__preview">
+			<div class="email-preview__bar">
+				<button type="button" class="button email-preview__size is-on" data-width="100%" aria-pressed="true">{$LANG.email.preview_desktop}</button>
+				<button type="button" class="button email-preview__size" data-width="375px" aria-pressed="false">{$LANG.email.preview_mobile}</button>
+				{if $EMAIL_PREVIEW.latest_order}
+				<span class="email-tools__group">
+					<label for="email_sample">{$LANG.email.sample_data}</label>
+					<select id="email_sample" class="textbox">
+						<option value="latest">{$LANG.email.sample_latest_order|sprintf:$EMAIL_PREVIEW.latest_order}</option>
+						<option value="example">{$LANG.email.sample_example_order}</option>
+					</select>
+				</span>
+				{/if}
+			</div>
+			<div class="email-preview__stage" id="email_template_preview"></div>
+		</div>
+	</div>
+	<div class="email-tools" id="email_tools" data-scope="template" data-live="1" data-template-id="{$TEMPLATE.template_id}" data-label-desktop="{$LANG.email.preview_desktop}" data-label-mobile="{$LANG.email.preview_mobile}" data-label-text="{$LANG.email.preview_plain_text}" data-label-loading="{$LANG.common.loading}&hellip;" data-label-failed="{$LANG.email.preview_failed}">
+		<span class="email-tools__status" id="email_tools_status" role="status"></span>
+		<span class="email-tools__group">
+			<input type="submit" value="{$LANG.common.save}">{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="button delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
+		</span>
+	</div>
+	<script type="text/javascript" defer src="includes/ace/src-min-noconflict/ace.js?{$VERSION_HASH}" charset="utf-8"></script>
+	<script type="text/javascript" defer src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.email.js?{$VERSION_HASH}"></script>
   </div>
   {if isset($TEMPLATE_MACROS)}
   <div id="macros" class="tab_content">

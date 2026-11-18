@@ -462,6 +462,29 @@ foreach ($GLOBALS['hooks']->load('admin.documents.email.macros') as $hook) {
     include $hook;
 }
 
+## Smarty names a template held in a string by its whole source, and quotes the line at
+## fault after it. This says only which line it is and what is wrong with it.
+$smarty_error = function ($e, $sources = array()) use ($lang) {
+    $message = (string)$e->getMessage();
+    if (!preg_match_all('/"\s+on line (\d+) "/', $message, $found, PREG_OFFSET_CAPTURE | PREG_SET_ORDER)) {
+        return str_replace(array('string:', 'eval:'), '', strip_tags($message));
+    }
+    $last   = end($found);
+    $line   = (int)$last[1][0];
+    $reason = substr($message, $last[0][1] + strlen($last[0][0]));
+    foreach ($sources as $source) {
+        $lines = preg_split('/\r\n|\r|\n/', (string)$source);
+        if (isset($lines[$line - 1])) {
+            $quoted = trim(preg_replace('![\t\r\n]+!', ' ', $lines[$line - 1])).'"';
+            if (strpos($reason, $quoted) === 0) {
+                $reason = substr($reason, strlen($quoted));
+                break;
+            }
+        }
+    }
+    return sprintf($lang['email']['error_smarty_line'], $line, trim($reason, " -\t"));
+};
+
 ## Preview and test send, answered as JSON. Both are built by the mailer exactly as a
 ## real send is, with sample data standing in for the order or the customer.
 if (isset($_POST['email_preview']) && is_array($_POST['email_preview'])) {
@@ -543,7 +566,7 @@ if (isset($_POST['email_preview']) && is_array($_POST['email_preview'])) {
             }
         }
     } catch (Throwable $e) {
-        $response = array('status' => 'error', 'message' => str_replace(array('string:', 'eval:'), '', strip_tags($e->getMessage())));
+        $response = array('status' => 'error', 'message' => $smarty_error($e, array($contents['content_html'], $contents['subject'], is_array($template) ? $template['content_html'] : '')));
     }
     ob_end_clean();
     header('Content-Type: application/json; charset=utf-8');
@@ -582,10 +605,13 @@ if (isset($_POST['template'])) {
     try {
         $GLOBALS['smarty']->fetch('string:'.$_POST['template']['content_html']);
     } catch (Exception $e) {
-        $error_message = str_replace('string:', '', htmlentities($e->getMessage(), ENT_QUOTES));
+        $error_message = htmlentities($smarty_error($e, array($_POST['template']['content_html'])), ENT_QUOTES);
         $GLOBALS['main']->errorMessage($lang['email']['title_content_html'].': '.$error_message);
         $redirect = false;
         $html_error = true;
+        // Every email is wrapped in this, so one that cannot be compiled is not saved.
+        // The form is shown again with what was typed, so nothing is lost.
+        $proceed = false;
     }
 
     if (empty($_POST['template']['content_html'])) {
@@ -599,11 +625,20 @@ if (isset($_POST['template'])) {
     }
     
     if ($proceed && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
+        $record = $_POST['template'];
+        // The database layer strips backslashes from what it is given, so shield the template's own
+        $record['content_html'] = addslashes($_POST['template']['content_html']);
         if (isset($_POST['template']['template_id']) && is_numeric($_POST['template']['template_id'])) {
-            $GLOBALS['db']->update('CubeCart_email_template', $_POST['template'], array('template_id' => (int)$_POST['template']['template_id']));
+            // A form sends every line ending as CRLF. Where that is all that differs from the
+            // saved template, keep the saved bytes: opening a template and saving it changes nothing.
+            $saved = $GLOBALS['db']->select('CubeCart_email_template', array('content_html'), array('template_id' => (int)$_POST['template']['template_id']), false, 1, false, false);
+            if ($saved && preg_replace('/\r\n?/', "\n", $saved[0]['content_html']) === preg_replace('/\r\n?/', "\n", $_POST['template']['content_html'])) {
+                unset($record['content_html']);
+            }
+            $GLOBALS['db']->update('CubeCart_email_template', $record, array('template_id' => (int)$_POST['template']['template_id']));
             $GLOBALS['main']->successMessage($lang['email']['notify_template_update']);
         } else {
-            $template_id  = $GLOBALS['db']->insert('CubeCart_email_template', $_POST['template']);
+            $template_id  = $GLOBALS['db']->insert('CubeCart_email_template', $record);
             $GLOBALS['main']->successMessage($lang['email']['notify_template_create']);
         }
         if ($redirect) {
@@ -622,7 +657,7 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
     try {
         $GLOBALS['smarty']->fetch('string:'.$_POST['content']['content_html']);
     } catch (Exception $e) {
-        $error_message = str_replace('string:', '', strip_tags($e->getMessage()));
+        $error_message = htmlentities($smarty_error($e, array($_POST['content']['content_html'])), ENT_QUOTES);
         $GLOBALS['main']->errorMessage($lang['email']['title_content_html'].': '.$error_message);
         $redirect = false;
         $html_error = true;
@@ -832,18 +867,12 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                 array('name' => '{$DATA.unsubscribeURL}', 'description' => $lang['email']['macro_template_unsubscribe'], 'required' => 'No'),
             );
             $GLOBALS['smarty']->assign('TEMPLATE_MACROS', $macros);
-            $preview_macros = array(
-                'logoURL'        => $GLOBALS['gui']->getLogo(true, 'emails'),
-                'store_name'     => $GLOBALS['config']->get('config', 'store_name'),
-                'storeName'      => $GLOBALS['config']->get('config', 'store_name'),
-                'storeURL'       => $GLOBALS['storeURL'],
-                'unsubscribeURL' => $GLOBALS['storeURL'].'/index.php?_a=unsubscribe',
-                'jsonLd'         => '',
-            );
-            $macros_json = json_encode($preview_macros, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
-            if ($macros_json !== false) {
-                $GLOBALS['smarty']->assign('PREVIEW_MACROS_JSON', $macros_json);
-            }
+            // The template is previewed around the order confirmation, which can use a real order
+            $latest_order = EmailSample::latestOrder();
+            $GLOBALS['smarty']->assign('EMAIL_PREVIEW', array(
+                'latest_order' => $latest_order ? $latest_order['number'] : '',
+                'can_edit'     => Admin::getInstance()->permissions('documents', CC_PERM_EDIT, false, false),
+            ));
             $GLOBALS['smarty']->assign('DISPLAY_TEMPLATE_FORM', true);
             if (!empty($data['title'])) {
                 $tab_label = $data['title'];
@@ -904,25 +933,13 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
     }
     // List Templates
     if (($templates = $GLOBALS['db']->select('CubeCart_email_template')) !== false) {
-        $template_html_map = array();
         foreach ($templates as $template) {
             $template['clone'] = currentPage(null, array('action' => 'clone', 'type' => 'template', 'template_id' => $template['template_id']));
             $template['delete'] = currentPage(null, array('action' => 'delete', 'type' => 'template', 'template_id' => $template['template_id'], 'token' => SESSION_TOKEN));
             $template['edit'] = currentPage(null, array('action' => 'edit', 'type' => 'template', 'template_id' => $template['template_id']));
-            $template_html_map[(int)$template['template_id']] = (string)$template['content_html'];
             $smarty_data['e_templates'][] = $template;
         }
         $GLOBALS['smarty']->assign('EMAIL_TEMPLATES', $smarty_data['e_templates']);
-        $GLOBALS['smarty']->assign('EMAIL_TEMPLATE_HTML_JSON', json_encode($template_html_map, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE));
-        $list_preview_macros = array(
-            'logoURL'        => $GLOBALS['gui']->getLogo(true, 'emails'),
-            'store_name'     => $GLOBALS['config']->get('config', 'store_name'),
-            'storeName'      => $GLOBALS['config']->get('config', 'store_name'),
-            'storeURL'       => $GLOBALS['storeURL'],
-            'unsubscribeURL' => $GLOBALS['storeURL'].'/index.php?_a=unsubscribe',
-            'jsonLd'         => '',
-        );
-        $GLOBALS['smarty']->assign('PREVIEW_MACROS_JSON', json_encode($list_preview_macros, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE));
     }
     $GLOBALS['smarty']->assign('TEMPLATE_CREATE', currentPage(null, array('action' => 'create', 'type' => 'template')));
     $GLOBALS['smarty']->assign('DISPLAY_EMAIL_LIST', true);
