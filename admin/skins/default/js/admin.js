@@ -783,9 +783,17 @@ $(document).ready(function() {
             namePattern: "$name$i",
             remove: '<i class="fa fa-trash-o"></i>'
         }), $("textarea.fck").each(function() {
-            // CKEditor is only on the page where the server saw one of these (#4742)
+            // DEPRECATED (#4742). class="fck" is CKEditor 4, which has had no free security
+            // fixes since 4.22.1. Core no longer uses it: its editor is <textarea class="cc-editor">
+            // (admin.editor.js), and code is <textarea class="cc-code">. This is kept so that
+            // extensions carry on working, and will be removed in a future major release.
+            // CKEditor is only on the page where the server saw one of these.
             if (!$.fn.ckeditor) {
                 return;
+            }
+            if (!window.ccFckWarned && window.console && console.warn) {
+                window.ccFckWarned = true;
+                console.warn('CubeCart: <textarea class="fck"> (CKEditor 4) is deprecated and will be removed in a future major release. Use class="cc-editor" instead: https://github.com/cubecart/v6/issues/4742');
             }
             var fck_lang = 'en';
             if($("#val_admin_lang").length) {
