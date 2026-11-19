@@ -2783,7 +2783,7 @@ class Catalogue
                     if (strtolower($field) == 'relevance' && $search_mode !== 'fulltext') {
                         break;
                     }
-                    $order['field'] = $field;
+                    $order['field'] = preg_match('/^[a-zA-Z0-9_]+$/', (string)$field) ? $field : 'product_id';
                     if ($field == 'price') {
                         if($pg) {
                             if ($sale_mode == 1) {
