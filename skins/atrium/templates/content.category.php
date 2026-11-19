@@ -132,9 +132,12 @@
                      product page. A <button> in that situation does nothing at
                      all, which is what a customer reports as broken. *}
                   {if !isset($SKIN_SETTINGS.show_quick_view) || $SKIN_SETTINGS.show_quick_view}
-                  <a x-data href="{$product.url}" title="{$product.name}"
+                  {* The name and address are read from this link's own attributes, never written
+                     into the script: a name with an apostrophe in it would end the string it was
+                     written into, and the button did nothing. *}
+                  <a x-data href="{$product.url}" title="{$product.name}" data-product-id="{$product.product_id}"
                      class="cc-btn cc-btn-secondary absolute inset-x-2 bottom-2 hidden opacity-0 shadow transition-opacity focus-visible:opacity-100 group-hover:opacity-100 sm:flex"
-                     @click.prevent="$store.quickView.show('{$product.product_id}', '{$product.name|escape:'javascript'}', '{$product.url}')">
+                     @click.prevent="$store.quickView.show($el.dataset.productId, $el.title, $el.href)">
                      {$LANG.catalogue.quick_view|default:'Quick View'}
                   </a>
                   {/if}

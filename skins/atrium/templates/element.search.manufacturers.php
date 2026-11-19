@@ -14,7 +14,9 @@
    <input type="search" id="manufacturer_filter" x-model="q" placeholder="{$LANG.common.search}&hellip;" autocomplete="off">
    <ul role="list" class="mt-2 max-h-64 space-y-1 overflow-y-auto rounded-cc border border-ink-200 p-3">
       {foreach from=$MANUFACTURERS item=manufacturer}
-      <li class="flex items-center gap-2" x-show="match('{$manufacturer.name|escape:'javascript'}')">
+      {* The name is read from an attribute, never written into the script: "Levi's" would
+         end the string it was written into. *}
+      <li class="flex items-center gap-2" data-name="{$manufacturer.name}" x-show="match($el.dataset.name)">
          <input type="checkbox" value="{$manufacturer.id}" id="manufacturer_{$manufacturer.id}" name="search[manufacturer][]" {$manufacturer.selected}>
          <label for="manufacturer_{$manufacturer.id}" class="text-sm text-ink-800">{$manufacturer.name}</label>
       </li>
