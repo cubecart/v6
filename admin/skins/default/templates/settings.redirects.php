@@ -255,7 +255,7 @@
       var $picker = $('#destination_picker');
 
       function showSearch(){
-         $in.show().val('').focus();
+         $in.show().val('').trigger('focus');
          $lab.hide().text('');
       }
       function showLabel(text){
@@ -283,7 +283,7 @@
       // validator that scans every .required input in the visible tab.
       $('#filter_go').on('click', function(){
          var params = { _g: 'settings', node: 'redirects' };
-         var p = $.trim($('#filter_path').val());
+         var p = String($('#filter_path').val() || '').trim();
          var r = $('#filter_redirect').val();
          var t = $('#filter_type').val();
          if (p) params.filter_path = p;
@@ -292,7 +292,7 @@
          window.location = '?' + $.param(params) + '#redirects';
       });
       $('#filter_path, #filter_redirect, #filter_type').on('keydown', function(e){
-         if (e.which === 13) { e.preventDefault(); $('#filter_go').click(); }
+         if (e.which === 13) { e.preventDefault(); $('#filter_go').trigger('click'); }
       });
       $('#filter_clear').on('click', function(){
          window.location = '?_g=settings&node=redirects#redirects';

@@ -286,7 +286,7 @@
         if (self.$valSubdir.length) self.$valSubdir.text(trimPath(self.currentPath));
         try { localStorage.setItem(self.storageKey, self.currentPath); } catch (e) {}
 
-        self.$loading.removeAttr('hidden');
+        self.$loading.prop('hidden', false);
         self.$grid.attr('aria-busy', 'true').empty();
         jQuery.getJSON('./' + adminFile(), { _g: 'xml', 'function': 'fmFolder', path: self.currentPath, mode: self.mode }, function(data){
             if (!data) data = { folders: [], images: [] };

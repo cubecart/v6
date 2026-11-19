@@ -771,7 +771,7 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
       $search.val('');
       clearSearchFilter();
-      $search.focus();
+      $search.trigger('focus');
    });
    $tabBar.append($pseudoTab);
 

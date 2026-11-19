@@ -134,7 +134,7 @@
     function sendTest() {
         var fields = current();
         fields.action = 'test';
-        fields.to = $.trim($('#email_test_to').val());
+        fields.to = String($('#email_test_to').val() || '').trim();
         setStatus(label('loading'), null);
         request(fields, function (result) {
             setStatus(result.message || (result.status === 'ok' ? '' : label('failed')), result.status === 'ok');
