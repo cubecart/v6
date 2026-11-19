@@ -185,13 +185,15 @@
 		<thead>
 		  <tr>
 			<td>{$LANG.email.email_macro}</td>
+			<td>{$LANG.email.email_macro_code}</td>
 			<td>{$LANG.common.description}</td>
 		  </tr>
 		</thead>
 		<tbody>
 		  {foreach from=$CONTENT_MACROS item=macro}
 		  <tr>
-			<td>{$macro.name}</td>
+			<td>{if $macro.label}<span class="email-macro-name">{$macro.label}</span>{/if}</td>
+			<td><code>{$macro.name}</code></td>
 			<td>{$macro.description}</td>
 		  </tr>
 		  {/foreach}

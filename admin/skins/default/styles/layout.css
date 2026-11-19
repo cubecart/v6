@@ -2775,19 +2775,21 @@ div.cc-line.textbox {
     cursor: text;
 }
 .cc-line .cc-ph,
-.email-ph-button {
+.email-ph-button,
+.email-macro-name {
     display: inline-block;
     max-width: 32ch;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     vertical-align: bottom;
-    padding: 0 7px;
+    padding: 0 5px;
     border: 1px solid #a9cfdb;
-    border-radius: 10px;
+    border-radius: 4px;
     background: #e3f0f4;
     color: #1e3d45;
-    font: 600 12px/18px 'Open Sans', sans-serif;
+    font: 600 11px/18px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    letter-spacing: .02em;
     cursor: default;
 }
 .cc-line.cc-view-sample .cc-ph {

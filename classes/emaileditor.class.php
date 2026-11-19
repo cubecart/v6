@@ -330,6 +330,22 @@ class EmailEditor
     }
 
     /**
+     * How a macro is shown: its short name as one word in capitals, in brackets, so
+     * that nobody takes it for wording. "Order Number" is shown as [ORDER_NUMBER].
+     *
+     * @param string $label
+     * @return string
+     */
+    public static function macroName($label)
+    {
+        $name = trim((string)preg_replace('/[^\p{L}\p{M}\p{N}]+/u', '_', (string)$label), '_');
+        if ($name === '') {
+            return (string)$label;
+        }
+        return '['.(function_exists('mb_strtoupper') ? mb_strtoupper($name, 'UTF-8') : strtoupper($name)).']';
+    }
+
+    /**
      * What a value is called, what it is, and what it comes to for the sample data
      *
      * @param string $tag e.g. {$DATA.first_name|capitalize}
@@ -338,7 +354,6 @@ class EmailEditor
      */
     private static function _placeholder($tag, $macros)
     {
-        $lang  = $GLOBALS['language']->email;
         $plain = preg_replace('/\|[^{}]*\}$/', '}', $tag); // without its modifiers
         $entry = (is_array($macros) && isset($macros[$plain])) ? $macros[$plain] : null;
         $label = '';
@@ -349,35 +364,13 @@ class EmailEditor
         } elseif (is_string($entry)) {
             $description = $entry;
         }
-        if ($label === '' && $description !== '') {
-            // A few descriptions are sentences. Those values get a short name of their own.
-            $short = array(
-                'macro_order_number_t' => 'label_order_number',
-                'macro_order_number_i' => 'label_order_number_i',
-                'macro_wd_cart_order_id' => 'label_order_number',
-                'macro_wd_name' => 'label_customer_name',
-                'macro_wd_email' => 'label_customer_email',
-                'macro_wd_status' => 'label_decision',
-                'macro_wd_note' => 'label_note_to_customer',
-                'macro_note_to_customer' => 'label_note_to_customer',
-            );
-            foreach ($short as $long => $name) {
-                if (isset($lang[$long], $lang[$name]) && $description === $lang[$long]) {
-                    $label = $lang[$name];
-                    break;
-                }
-            }
-            // The customer's own name is described as part of the billing address
-            if ($label === '' && preg_match('/^\{\$DATA\.(first|last)_name\}$/', $plain, $name) && isset($lang['macro_'.$name[1].'_name'], $lang['label_'.$name[1].'_name']) && $description === $lang['macro_'.$name[1].'_name']) {
-                $label = $lang['label_'.$name[1].'_name'];
-            }
-            if ($label === '') {
-                $label = self::_ucfirst(preg_replace('/^the\s+/i', '', rtrim(trim($description), '.')));
-            }
+        if ($label === '' && !is_null($entry) && preg_match('/^\{\$([A-Za-z_]\w*)((?:\.\w+)*)\}$/', $plain, $name)) {
+            // An extension that gives only a description, which may be a sentence: the
+            // name is made from the tag, so {$REWARDS.points} is [REWARDS_POINTS]
+            $label = trim((($name[1] === 'DATA') ? '' : $name[1]).str_replace('.', ' ', $name[2]));
         }
-        if ($label === '') {
-            $label = $tag; // nothing is known about it, so it shows as itself
-        }
+        // Nothing known about it: it shows as itself
+        $label = ($label === '') ? $tag : self::macroName($label);
         $sample = trim(preg_replace('/\s+/', ' ', html_entity_decode(strip_tags(self::_render($tag)), ENT_QUOTES | ENT_HTML5, 'UTF-8')));
         if (function_exists('mb_strlen') && mb_strlen($sample, 'UTF-8') > 120) {
             $sample = mb_substr($sample, 0, 117, 'UTF-8').'...';
@@ -430,17 +423,5 @@ class EmailEditor
     private static function _attribute($text)
     {
         return htmlspecialchars((string)$text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-    }
-
-    /**
-     * @param string $text
-     * @return string
-     */
-    private static function _ucfirst($text)
-    {
-        if (function_exists('mb_substr')) {
-            return mb_strtoupper(mb_substr($text, 0, 1, 'UTF-8'), 'UTF-8').mb_substr($text, 1, null, 'UTF-8');
-        }
-        return ucfirst($text);
     }
 }

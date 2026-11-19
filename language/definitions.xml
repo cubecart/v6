@@ -1505,14 +1505,122 @@ This email is sent from the store's master email address but it is possible to r
     <string name="confirm_content_reset" introduced="6.9.0"><![CDATA[Replace the subject and wording of this email, in this language only, with the version that came with CubeCart? Your changes to it will be lost.]]></string>
     <string name="notify_content_reset" introduced="6.9.0"><![CDATA[The email has been reset to its default wording.]]></string>
     <string name="error_content_reset" introduced="6.9.0"><![CDATA[No default version of this email was found for this language.]]></string>
-    <string name="label_first_name" introduced="6.9.0"><![CDATA[First name]]></string>
-    <string name="label_last_name" introduced="6.9.0"><![CDATA[Last name]]></string>
-    <string name="label_order_number" introduced="6.9.0"><![CDATA[Order number]]></string>
-    <string name="label_order_number_i" introduced="6.9.0"><![CDATA[Order number (incremental)]]></string>
-    <string name="label_customer_name" introduced="6.9.0"><![CDATA[Customer's name]]></string>
-    <string name="label_customer_email" introduced="6.9.0"><![CDATA[Customer's email]]></string>
-    <string name="label_decision" introduced="6.9.0"><![CDATA[Decision]]></string>
-    <string name="label_note_to_customer" introduced="6.9.0"><![CDATA[Note to the customer]]></string>
+    <string name="email_macro_code" introduced="6.9.0"><![CDATA[In the code]]></string>
+    <string name="label_admin_name" introduced="6.9.0"><![CDATA[Admin Name]]></string>
+    <string name="label_cert_code" introduced="6.9.0"><![CDATA[Gift Card Code]]></string>
+    <string name="label_cert_recipient" introduced="6.9.0"><![CDATA[Recipient Name]]></string>
+    <string name="label_cert_value" introduced="6.9.0"><![CDATA[Gift Card Value]]></string>
+    <string name="label_company_name" introduced="6.9.0"><![CDATA[Billing Company]]></string>
+    <string name="label_company_name_d" introduced="6.9.0"><![CDATA[Shipping Company]]></string>
+    <string name="label_country" introduced="6.9.0"><![CDATA[Billing Country]]></string>
+    <string name="label_country_d" introduced="6.9.0"><![CDATA[Shipping Country]]></string>
+    <string name="label_coupon_code" introduced="6.9.0"><![CDATA[Discount Code]]></string>
+    <string name="label_coupon_description" introduced="6.9.0"><![CDATA[Discount Details]]></string>
+    <string name="label_download_expire" introduced="6.9.0"><![CDATA[Link Expiry]]></string>
+    <string name="label_email" introduced="6.9.0"><![CDATA[Billing Email]]></string>
+    <string name="label_first_name" introduced="6.9.0"><![CDATA[Billing First Name]]></string>
+    <string name="label_first_name_d" introduced="6.9.0"><![CDATA[Shipping First Name]]></string>
+    <string name="label_gateway" introduced="6.9.0"><![CDATA[Payment Method]]></string>
+    <string name="label_last_name" introduced="6.9.0"><![CDATA[Billing Last Name]]></string>
+    <string name="label_last_name_d" introduced="6.9.0"><![CDATA[Shipping Last Name]]></string>
+    <string name="label_line1" introduced="6.9.0"><![CDATA[Billing Address 1]]></string>
+    <string name="label_line1_d" introduced="6.9.0"><![CDATA[Shipping Address 1]]></string>
+    <string name="label_line2" introduced="6.9.0"><![CDATA[Billing Address 2]]></string>
+    <string name="label_line2_d" introduced="6.9.0"><![CDATA[Shipping Address 2]]></string>
+    <string name="label_link_activate" introduced="6.9.0"><![CDATA[Confirm Link]]></string>
+    <string name="label_link_download" introduced="6.9.0"><![CDATA[Download Link]]></string>
+    <string name="label_link_order" introduced="6.9.0"><![CDATA[Order Link]]></string>
+    <string name="label_link_password" introduced="6.9.0"><![CDATA[Password Link]]></string>
+    <string name="label_link_product" introduced="6.9.0"><![CDATA[Product Link]]></string>
+    <string name="label_link_review" introduced="6.9.0"><![CDATA[Review Link]]></string>
+    <string name="label_link_verify" introduced="6.9.0"><![CDATA[Confirm Link]]></string>
+    <string name="label_login_time" introduced="6.9.0"><![CDATA[Login Time]]></string>
+    <string name="label_new_browser" introduced="6.9.0"><![CDATA[New Browser]]></string>
+    <string name="label_new_ip" introduced="6.9.0"><![CDATA[New IP Address]]></string>
+    <string name="label_note_to_customer" introduced="6.9.0"><![CDATA[Note To Customer]]></string>
+    <string name="label_optout_link" introduced="6.9.0"><![CDATA[Opt Out Link]]></string>
+    <string name="label_order_credit_used" introduced="6.9.0"><![CDATA[Credit Used]]></string>
+    <string name="label_order_date" introduced="6.9.0"><![CDATA[Order Date]]></string>
+    <string name="label_order_discount" introduced="6.9.0"><![CDATA[Discount]]></string>
+    <string name="label_order_number_i" introduced="6.9.0"><![CDATA[Incremental Order Number]]></string>
+    <string name="label_order_number_t" introduced="6.9.0"><![CDATA[Order Number]]></string>
+    <string name="label_order_shipping" introduced="6.9.0"><![CDATA[Shipping Cost]]></string>
+    <string name="label_order_shipping_method" introduced="6.9.0"><![CDATA[Shipping Method]]></string>
+    <string name="label_order_shipping_product" introduced="6.9.0"><![CDATA[Shipping Service]]></string>
+    <string name="label_order_subtotal" introduced="6.9.0"><![CDATA[Subtotal]]></string>
+    <string name="label_order_total" introduced="6.9.0"><![CDATA[Order Total]]></string>
+    <string name="label_payment_amount" introduced="6.9.0"><![CDATA[Amount Paid]]></string>
+    <string name="label_phone" introduced="6.9.0"><![CDATA[Billing Phone]]></string>
+    <string name="label_postcode" introduced="6.9.0"><![CDATA[Billing Postcode]]></string>
+    <string name="label_postcode_d" introduced="6.9.0"><![CDATA[Shipping Postcode]]></string>
+    <string name="label_previous_ip" introduced="6.9.0"><![CDATA[Previous IP Address]]></string>
+    <string name="label_product_code" introduced="6.9.0"><![CDATA[Product Code]]></string>
+    <string name="label_product_image" introduced="6.9.0"><![CDATA[Product Image]]></string>
+    <string name="label_product_name" introduced="6.9.0"><![CDATA[Product Name]]></string>
+    <string name="label_product_options" introduced="6.9.0"><![CDATA[Product Options]]></string>
+    <string name="label_product_price" introduced="6.9.0"><![CDATA[Product Price]]></string>
+    <string name="label_product_quantity" introduced="6.9.0"><![CDATA[Quantity]]></string>
+    <string name="label_recovery_link" introduced="6.9.0"><![CDATA[Basket Link]]></string>
+    <string name="label_review_copy" introduced="6.9.0"><![CDATA[Review Text]]></string>
+    <string name="label_review_name" introduced="6.9.0"><![CDATA[Reviewer Name]]></string>
+    <string name="label_sender_message" introduced="6.9.0"><![CDATA[Gift Message]]></string>
+    <string name="label_sender_name" introduced="6.9.0"><![CDATA[Sender Name]]></string>
+    <string name="label_sender_name_first" introduced="6.9.0"><![CDATA[Sender First Name]]></string>
+    <string name="label_sender_name_last" introduced="6.9.0"><![CDATA[Sender Last Name]]></string>
+    <string name="label_ship_date" introduced="6.9.0"><![CDATA[Dispatch Date]]></string>
+    <string name="label_ship_tracking" introduced="6.9.0"><![CDATA[Tracking Details]]></string>
+    <string name="label_state" introduced="6.9.0"><![CDATA[Billing State]]></string>
+    <string name="label_state_d" introduced="6.9.0"><![CDATA[Shipping State]]></string>
+    <string name="label_store_name" introduced="6.9.0"><![CDATA[Store Name]]></string>
+    <string name="label_stream" introduced="6.9.0"><![CDATA[Streamed File]]></string>
+    <string name="label_tax_amount" introduced="6.9.0"><![CDATA[Tax Amount]]></string>
+    <string name="label_tax_name" introduced="6.9.0"><![CDATA[Tax Name]]></string>
+    <string name="label_tax_rate" introduced="6.9.0"><![CDATA[Tax Rate]]></string>
+    <string name="label_tell_friend" introduced="6.9.0"><![CDATA[Friend Name]]></string>
+    <string name="label_tell_message" introduced="6.9.0"><![CDATA[Message]]></string>
+    <string name="label_town" introduced="6.9.0"><![CDATA[Billing Town]]></string>
+    <string name="label_town_d" introduced="6.9.0"><![CDATA[Shipping Town]]></string>
+    <string name="label_twofa_code" introduced="6.9.0"><![CDATA[Verification Code]]></string>
+    <string name="label_w3w" introduced="6.9.0"><![CDATA[Billing what3words]]></string>
+    <string name="label_w3w_d" introduced="6.9.0"><![CDATA[Shipping what3words]]></string>
+    <string name="label_wd_admin_link" introduced="6.9.0"><![CDATA[Admin Link]]></string>
+    <string name="label_wd_cart_order_id" introduced="6.9.0"><![CDATA[Order Number]]></string>
+    <string name="label_wd_decision_at" introduced="6.9.0"><![CDATA[Decision Date]]></string>
+    <string name="label_wd_email" introduced="6.9.0"><![CDATA[Customer Email]]></string>
+    <string name="label_wd_name" introduced="6.9.0"><![CDATA[Customer Name]]></string>
+    <string name="label_wd_note" introduced="6.9.0"><![CDATA[Decision Note]]></string>
+    <string name="label_wd_reason" introduced="6.9.0"><![CDATA[Reason]]></string>
+    <string name="label_wd_reference" introduced="6.9.0"><![CDATA[Reference]]></string>
+    <string name="label_wd_reported_delivery" introduced="6.9.0"><![CDATA[Delivery Date]]></string>
+    <string name="label_wd_statement" introduced="6.9.0"><![CDATA[Statement]]></string>
+    <string name="label_wd_status" introduced="6.9.0"><![CDATA[Decision]]></string>
+    <string name="label_wd_submitted_at" introduced="6.9.0"><![CDATA[Date Submitted]]></string>
+    <string name="label_customer_first_name" introduced="6.9.0"><![CDATA[First Name]]></string>
+    <string name="label_customer_last_name" introduced="6.9.0"><![CDATA[Last Name]]></string>
+    <string name="label_customer_email" introduced="6.9.0"><![CDATA[Email Address]]></string>
+    <string name="label_customer_comments" introduced="6.9.0"><![CDATA[Customer Comments]]></string>
+    <string name="label_store_url" introduced="6.9.0"><![CDATA[Store URL]]></string>
+    <string name="label_previous_browser" introduced="6.9.0"><![CDATA[Previous Browser]]></string>
+    <string name="label_review_rating" introduced="6.9.0"><![CDATA[Rating]]></string>
+    <string name="label_review_title" introduced="6.9.0"><![CDATA[Review Title]]></string>
+    <string name="label_review_email" introduced="6.9.0"><![CDATA[Reviewer Email]]></string>
+    <string name="label_item_count" introduced="6.9.0"><![CDATA[Item Count]]></string>
+    <string name="label_product_item_price" introduced="6.9.0"><![CDATA[Unit Price]]></string>
+    <string name="label_product_line_price" introduced="6.9.0"><![CDATA[Line Total]]></string>
+    <string name="label_ip_address" introduced="6.9.0"><![CDATA[IP Address]]></string>
+    <string name="macro_customer_first_name" introduced="6.9.0"><![CDATA[The customer's first name.]]></string>
+    <string name="macro_customer_last_name" introduced="6.9.0"><![CDATA[The customer's last name.]]></string>
+    <string name="macro_customer_email" introduced="6.9.0"><![CDATA[The customer's email address.]]></string>
+    <string name="macro_customer_comments" introduced="6.9.0"><![CDATA[Comments the customer left with the order.]]></string>
+    <string name="macro_store_url" introduced="6.9.0"><![CDATA[The store's web address.]]></string>
+    <string name="macro_previous_browser" introduced="6.9.0"><![CDATA[The previous browser/device.]]></string>
+    <string name="macro_review_rating" introduced="6.9.0"><![CDATA[The star rating given, out of five.]]></string>
+    <string name="macro_review_title" introduced="6.9.0"><![CDATA[The review's title.]]></string>
+    <string name="macro_review_email" introduced="6.9.0"><![CDATA[The reviewer's email address.]]></string>
+    <string name="macro_item_count" introduced="6.9.0"><![CDATA[The number of items in the basket.]]></string>
+    <string name="macro_product_item_price" introduced="6.9.0"><![CDATA[The price of one of the product.]]></string>
+    <string name="macro_product_line_price" introduced="6.9.0"><![CDATA[The price for the quantity ordered.]]></string>
+    <string name="macro_ip_address" introduced="6.9.0"><![CDATA[The IP address the order was placed from.]]></string>
     <string name="macro_note_to_customer" introduced="6.9.0"><![CDATA[The note to the customer added to the order.]]></string>
     <string name="macro_coupon_code" introduced="6.9.0"><![CDATA[The discount code offered to bring the customer back.]]></string>
     <string name="macro_coupon_description" introduced="6.9.0"><![CDATA[What the discount code gives.]]></string>
@@ -1531,10 +1639,10 @@ This email is sent from the store's master email address but it is possible to r
     <string name="editor_move_up" introduced="6.9.0"><![CDATA[Move up]]></string>
     <string name="editor_move_down" introduced="6.9.0"><![CDATA[Move down]]></string>
     <string name="editor_remove" introduced="6.9.0"><![CDATA[Remove]]></string>
-    <string name="editor_placeholders" introduced="6.9.0"><![CDATA[Placeholders]]></string>
+    <string name="editor_placeholders" introduced="6.9.0"><![CDATA[Macros]]></string>
     <string name="editor_placeholders_help" introduced="6.9.0"><![CDATA[Click in the email, the subject or the preview text, then choose one. Each is filled in for the customer when the email is sent.]]></string>
-    <string name="editor_placeholders_first" introduced="6.9.0"><![CDATA[Click where you want it first, then choose a placeholder.]]></string>
-    <string name="editor_view_names" introduced="6.9.0"><![CDATA[Placeholder names]]></string>
+    <string name="editor_placeholders_first" introduced="6.9.0"><![CDATA[Click where you want it first, then choose a macro.]]></string>
+    <string name="editor_view_names" introduced="6.9.0"><![CDATA[Macro names]]></string>
     <string name="editor_view_sample" introduced="6.9.0"><![CDATA[Sample data]]></string>
     <string name="editor_code_view" introduced="6.9.0"><![CDATA[Code view]]></string>
     <string name="editor_code_help" introduced="6.9.0"><![CDATA[The whole email as it is stored: HTML with Smarty tags.]]></string>
