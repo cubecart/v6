@@ -318,10 +318,20 @@ class EmailEditor
                 $placeholder = self::_placeholder($text, $macros);
                 $html .= '<span class="cc-ph mceNonEditable" data-cc-s="'.self::_attribute($text).'" data-cc-l="'.self::_attribute($placeholder['label']).'" data-cc-v="'.self::_attribute($placeholder['sample']).'" title="'.self::_attribute($placeholder['description']).'">'.htmlspecialchars($placeholder['label'], ENT_QUOTES, 'UTF-8').'</span>';
             } elseif ($kind === 'island') {
-                // Logic inside a sentence: shown as what it comes to for the sample data
-                $shown = trim(self::_render($text));
-                $empty = (trim(strip_tags($shown)) === '');
-                $html .= '<span class="cc-ph cc-ph--logic mceNonEditable'.($empty ? ' cc-ph--empty' : '').'" data-cc-s="'.self::_attribute($text).'" title="'.self::_attribute($lang['editor_island_title']).'">'.($empty ? htmlspecialchars($lang['editor_island_empty'], ENT_QUOTES, 'UTF-8') : $shown).'</span>';
+                // Logic inside a sentence. Shown with the sample data in the sample view; in
+                // the macro view a simple "only when there is a value" part shows what it holds
+                // by name, so an empty one is not a mystery
+                $shown  = trim(self::_render($text));
+                $empty  = (trim(strip_tags($shown)) === '');
+                $sample = $empty ? htmlspecialchars($lang['editor_island_empty'], ENT_QUOTES, 'UTF-8') : $shown;
+                $named  = self::_islandNames($text, $macros);
+                if ($named !== false) {
+                    $html .= '<span class="cc-ph cc-ph--logic mceNonEditable" data-cc-s="'.self::_attribute($text).'" title="'.self::_attribute($named['title']).'">'
+                        .'<span class="cc-island-names">'.$named['html'].'</span>'
+                        .'<span class="cc-island-sample'.($empty ? ' cc-ph--empty' : '').'">'.$sample.'</span></span>';
+                } else {
+                    $html .= '<span class="cc-ph cc-ph--logic mceNonEditable'.($empty ? ' cc-ph--empty' : '').'" data-cc-s="'.self::_attribute($text).'" title="'.self::_attribute($lang['editor_island_title']).'">'.$sample.'</span>';
+                }
             } else {
                 $html .= $text;
             }
@@ -376,6 +386,35 @@ class EmailEditor
             $sample = mb_substr($sample, 0, 117, 'UTF-8').'...';
         }
         return array('tag' => $tag, 'label' => $label, 'description' => ($description !== '') ? $description : $tag, 'sample' => $sample);
+    }
+
+    /**
+     * A part of a sentence shown only when a value is there, {if !empty($X)} ... {/if},
+     * as what it holds with each value by its macro name: " ([BILLING_COMPANY])"
+     *
+     * @param string $source
+     * @param array $macros
+     * @return array|false 'html' and 'title', or false for any other kind of logic
+     */
+    private static function _islandNames($source, $macros)
+    {
+        if (!preg_match('/^\{if\s+!\s*empty\(\s*\$([A-Za-z_][\w.]*)\s*\)\s*\}(.*)\{\/if\}$/s', $source, $match)) {
+            return false;
+        }
+        $inner = $match[2];
+        // Anything but plain values inside (another condition, a loop, an else) is left as it was
+        if (preg_match('/\{(?!\$[A-Za-z_][\w.]*(?:\|[^{}]*)?\})/', $inner)) {
+            return false;
+        }
+        $html = preg_replace_callback('/\{\$[A-Za-z_][\w.]*(?:\|[^{}]*)?\}/', function ($tag) use ($macros) {
+            $placeholder = self::_placeholder($tag[0], $macros);
+            return '<span class="cc-island-name">'.htmlspecialchars($placeholder['label'], ENT_QUOTES, 'UTF-8').'</span>';
+        }, $inner);
+        $condition = self::_placeholder('{$'.$match[1].'}', $macros);
+        return array(
+            'html'  => $html,
+            'title' => sprintf($GLOBALS['language']->email['editor_cond_value'], $condition['label']),
+        );
     }
 
     /**

@@ -1621,7 +1621,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="macro_coupon_code" introduced="6.9.0"><![CDATA[The discount code offered to bring the customer back.]]></string>
     <string name="macro_coupon_description" introduced="6.9.0"><![CDATA[What the discount code gives.]]></string>
     <string name="editor_island_title" introduced="6.9.0"><![CDATA[This part changes from one email to the next. It can be moved or deleted here, and edited in the code view.]]></string>
-    <string name="editor_island_empty" introduced="6.9.0"><![CDATA[optional text]]></string>
+    <string name="editor_island_empty" introduced="6.9.0"><![CDATA[not in this sample]]></string>
     <string name="editor_cond_value" introduced="6.9.0"><![CDATA[Only shown when there is a value for: %s]]></string>
     <string name="editor_cond_code" introduced="6.9.0"><![CDATA[Only shown when: %s]]></string>
     <string name="editor_locked" introduced="6.9.0"><![CDATA[Built automatically]]></string>
