@@ -28,6 +28,8 @@
     var codeMode = false;
     var codeAtEntry = '';
     var ace_editor = null;
+    // The editor's own labels read the way the admin does, whichever way the email reads
+    var ADMIN_DIR = (document.documentElement.getAttribute('dir') === 'rtl') ? 'rtl' : 'ltr';
     var lastTarget = null;  // where a placeholder goes: null for the email, or a line field
     var everFocused = false;
     var lastRange = null;
@@ -194,14 +196,14 @@
     function lockedHtml(unit, record) {
         var note = (unit.note !== undefined) ? unit.note : T('editor_locked_note');
         return '<div class="cc-locked mceNonEditable" contenteditable="false" data-cc-u="' + record.key + '">' +
-            '<div class="cc-bar"><strong>' + esc(unit.title || T('editor_locked')) + '</strong>' + (state.canEdit && note ? ' <span>' + esc(note) + '</span>' : '') + '</div>' +
+            '<div class="cc-bar" dir="' + ADMIN_DIR + '"><strong>' + esc(unit.title || T('editor_locked')) + '</strong>' + (state.canEdit && note ? ' <span>' + esc(note) + '</span>' : '') + '</div>' +
             '<div class="cc-locked__body">' + cleanUnit(unit.render || '').innerHTML + '</div>' +
         '</div>';
     }
 
     function condHtml(unit, record) {
         return '<div class="cc-cond mceNonEditable' + (unit.shown ? '' : ' cc-cond--off') + '" contenteditable="false" data-cc-u="' + record.key + '">' +
-            '<div class="cc-bar"><strong>' + esc(unit.label) + '</strong></div>' +
+            '<div class="cc-bar" dir="' + ADMIN_DIR + '"><strong>' + esc(unit.label) + '</strong></div>' +
             '<div class="cc-cond__body mceEditable" contenteditable="true">' + unitsHtml(unit.inner || [], record.key) + '</div>' +
         '</div>';
     }
@@ -783,7 +785,7 @@
         '.cc-view-sample .cc-ph--blank{color:#8a6d00;font-style:italic;border-bottom-style:dashed;}',
         '.cc-locked,.cc-cond{margin:12px 0;border:1px dashed #98a3a8;border-radius:5px;}',
         '.cc-cond{border-color:#b98900;}',
-        '.cc-bar{padding:5px 10px;background:#eef0f1;border-bottom:1px dashed #98a3a8;border-radius:5px 5px 0 0;font:12px/1.5 Arial,Helvetica,sans-serif;color:#3c474c;cursor:default;}',
+        '.cc-bar{text-align:start;padding:5px 10px;background:#eef0f1;border-bottom:1px dashed #98a3a8;border-radius:5px 5px 0 0;font:12px/1.5 Arial,Helvetica,sans-serif;color:#3c474c;cursor:default;}',
         '.cc-cond>.cc-bar{background:#fff6dd;border-bottom-color:#b98900;color:#5c4400;}',
         '.cc-locked__body{padding:10px;cursor:default;}',
         '.cc-cond__body{padding:10px;min-height:24px;}',

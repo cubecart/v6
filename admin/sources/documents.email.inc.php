@@ -520,6 +520,9 @@ if (isset($_POST['email_preview']) && is_array($_POST['email_preview'])) {
         }
         $used   = EmailSample::assign($content['content_type'], $source, $macros);
         $mailer = new Mailer();
+        if (!empty($content['language'])) {
+            $mailer->setEmailLanguage($content['language']);
+        }
         if ($action === 'preview') {
             $composed = $mailer->previewEmail($content['content_type'], $contents, $template_id, $template);
             $response = array(
@@ -921,7 +924,7 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                     }
                 }
                 // Last, because it assigns the template's own values over the sample data
-                $editor['frame'] = EmailEditor::frame($data['content_type']);
+                $editor['frame'] = EmailEditor::frame($data['content_type'], false, !empty($data['language']) ? $data['language'] : '');
                 $editor_json = json_encode($editor, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_INVALID_UTF8_SUBSTITUTE);
             } catch (Throwable $e) {
                 // The page still works as a plain form

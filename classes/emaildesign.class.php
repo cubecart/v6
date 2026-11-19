@@ -112,7 +112,9 @@ class EmailDesign
         $lang   = $GLOBALS['language']->email;
         $font   = ($design['font'] === 'serif') ? "Georgia, 'Times New Roman', Times, serif" : 'Arial, Helvetica, sans-serif';
         $radius = ($design['corners'] === 'rounded') ? '8px' : '0';
-        $align  = $design['align'];
+        // "On the left" is the side a line starts on: the right, in a language read right to left.
+        // The mailer gives every email its direction as {$DATA.textDirection} and {$DATA.textAlign}.
+        $align  = ($design['align'] === 'center') ? 'center' : '{$DATA.textAlign}';
         $accent = $design['accent'];
         $text   = $design['text'];
 
@@ -133,7 +135,7 @@ class EmailDesign
 
         $lines = array(
             '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',
-            '<html xmlns="http://www.w3.org/1999/xhtml">',
+            '<html xmlns="http://www.w3.org/1999/xhtml" dir="{$DATA.textDirection}">',
             '<head>',
             '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />',
             '<meta name="viewport" content="width=device-width, initial-scale=1.0" />',
@@ -173,7 +175,7 @@ class EmailDesign
             '<base href="{$DATA.storeURL}" />',
             '{$DATA.jsonLd}',
             '</head>',
-            '<body bgcolor="'.$design['background'].'" style="margin:0;padding:0;background-color:'.$design['background'].';">',
+            '<body dir="{$DATA.textDirection}" bgcolor="'.$design['background'].'" style="margin:0;padding:0;background-color:'.$design['background'].';">',
             '<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="'.$design['background'].'" style="background-color:'.$design['background'].';">',
             '  <tr>',
             '    <td align="center" style="padding:24px 12px;">',
@@ -182,10 +184,10 @@ class EmailDesign
             '          <td class="cc-email-cell" align="'.$align.'" style="padding:24px 32px 12px 32px;text-align:'.$align.';">'.$logo.'</td>',
             '        </tr>',
             '        <tr>',
-            '          <td class="cc-email-cell" align="left" style="padding:12px 32px 24px 32px;font-family:'.$font.';font-size:14px;line-height:1.6;color:'.$text.';text-align:left;">{$EMAIL_CONTENT}</td>',
+            '          <td class="cc-email-cell" align="{$DATA.textAlign}" style="padding:12px 32px 24px 32px;font-family:'.$font.';font-size:14px;line-height:1.6;color:'.$text.';text-align:{$DATA.textAlign};">{$EMAIL_CONTENT}</td>',
             '        </tr>',
             '        <tr>',
-            '          <td class="cc-email-cell" align="left" style="padding:16px 32px 24px 32px;border-top:1px solid #e3e6e8;font-family:'.$font.';font-size:12px;line-height:1.6;color:#6b7479;text-align:left;">'.$footer.'</td>',
+            '          <td class="cc-email-cell" align="{$DATA.textAlign}" style="padding:16px 32px 24px 32px;border-top:1px solid #e3e6e8;font-family:'.$font.';font-size:12px;line-height:1.6;color:#6b7479;text-align:{$DATA.textAlign};">'.$footer.'</td>',
             '        </tr>',
             '      </table>',
             '    </td>',

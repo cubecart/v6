@@ -29,6 +29,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
     private $_template_title;
     private $_email_content_id;
     private $_content_type = '';
+    private $_language = '';
     private $_import_new = false;
     private $_method = '';
     private $_async_queue = array();
@@ -108,6 +109,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
     {
         $language = preg_match(Language::LANG_REGEX, (string)$language) ? $language : $GLOBALS['language']->current();
         $language = ($language == 'en') ? 'en-GB' : $language;
+        $this->_language = $language;
 
         if (!empty($content_type)) {
             $where = array('content_type' => (string)$content_type, 'language' => $language);
@@ -349,6 +351,15 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                     $data['storeURL']  = $GLOBALS['storeURL'];
                     $data['unsubscribeURL'] = $GLOBALS['storeURL'].'/index.php?_a=unsubscribe'.$email_param;
                     $data['jsonLd'] = $this->_buildJsonLd();
+                    // Which way the email's language reads. A template can use these; for a
+                    // right to left language the wording is also wrapped so that any template,
+                    // however old, shows it the right way round.
+                    $direction = $this->textDirection();
+                    $data['textDirection'] = $direction;
+                    $data['textAlign']     = ($direction === 'rtl') ? 'right' : 'left';
+                    if ($direction === 'rtl') {
+                        $string = '<div dir="rtl" style="direction:rtl;text-align:right;">'.$string.'</div>';
+                    }
 
                     $parsed = $this->_parseTemplate($templates[0], $data, $string);
                     $this->_html = $parsed['content_html'];
@@ -398,6 +409,26 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
             $this->_smarty_resource = $resource;
         }
         return $composed;
+    }
+
+    /**
+     * Say which language an email is in when the contents did not come from loadContent()
+     *
+     * @param string $language e.g. he-IL
+     */
+    public function setEmailLanguage($language)
+    {
+        $this->_language = preg_match(Language::LANG_REGEX, (string)$language) ? (string)$language : '';
+    }
+
+    /**
+     * @return string 'rtl' when the email's language reads right to left, otherwise 'ltr'
+     */
+    public function textDirection()
+    {
+        $language = ($this->_language !== '') ? $this->_language : $GLOBALS['language']->current();
+        $info = $GLOBALS['language']->getLanguageInfo($language);
+        return (is_array($info) && isset($info['text-direction']) && strtolower(trim((string)$info['text-direction'])) === 'rtl') ? 'rtl' : 'ltr';
     }
 
     /**

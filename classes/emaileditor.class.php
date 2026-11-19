@@ -138,12 +138,14 @@ class EmailEditor
      *
      * @param string $content_type
      * @param int|false $template_id
+     * @param string $language The email's language, which says which way it reads
      * @return array 'html' (what goes in <body>), 'css', 'body' (its attributes), or an empty array
      */
-    public static function frame($content_type, $template_id = false)
+    public static function frame($content_type, $template_id = false, $language = '')
     {
         try {
             $mailer   = new Mailer();
+            $mailer->setEmailLanguage($language);
             $composed = $mailer->previewEmail($content_type, array('subject' => '', 'content_html' => self::SLOT), $template_id);
         } catch (Throwable $e) {
             return array();
