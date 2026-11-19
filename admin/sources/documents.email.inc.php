@@ -139,6 +139,7 @@ $email_types = array(
         'macros' => array(
             '{$DATA.name}' => $macro('admin_name'),
             '{$DATA.code}' => $macro('twofa_code'),
+            '{$DATA.expires_minutes}' => $macro('twofa_expires_minutes'),
         ),
     ),
     'admin.new_device_login' => array(
@@ -256,16 +257,6 @@ $email_types = array(
             '{$DATA.statement}'         => $macro('wd_statement'),
             '{$DATA.reason}'            => $macro('wd_reason'),
             '{$DATA.admin_link}'        => $macro('wd_admin_link'),
-        ),
-    ),
-    'catalogue.tell_friend' => array(
-        'description' => $lang['email']['title_macro_tell_friend'],
-        'macros'  => array(
-            '{$DATA.to}'      => $macro('tell_friend'),
-            '{$DATA.from}'    => $macro('sender_name'),
-            '{$DATA.name}'    => $macro('product_name'),
-            '{$DATA.link}'    => $macro('link_product'),
-            '{$DATA.message}' => $macro('tell_message'),
         ),
     ),
 );

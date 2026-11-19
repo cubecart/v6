@@ -853,7 +853,9 @@ class Admin
         $data   = array(
             'code'    => $code,
             'name'    => isset($admin['name']) ? $admin['name'] : '',
-            'expires' => '10 minutes',
+            // The email's own wording says "minutes" in its language; 'expires' is kept for emails written before 6.9.0
+            'expires' => sprintf($GLOBALS['language']->email['twofa_expires'], (int)(self::OTP_LIFETIME / 60)),
+            'expires_minutes' => (int)(self::OTP_LIFETIME / 60),
         );
         $content = $mailer->loadContent('admin.two_factor_code', $admin['language'], $data);
         if ($content) {

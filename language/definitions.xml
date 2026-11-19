@@ -1368,7 +1368,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="macro_review_copy" introduced="5.0.0"><![CDATA[The content of the review.]]></string>
     <string name="macro_review_name" introduced="5.0.0"><![CDATA[Reviewer's name.]]></string>
     <string name="macro_sender_message" introduced="5.0.0"><![CDATA[The sender's message.]]></string>
-    <string name="macro_sender_name" introduced="5.0.0"><![CDATA[The sender's name.]]></string>
     <string name="macro_sender_first_name" introduced="5.0.0"><![CDATA[The sender's first name.]]></string>
     <string name="macro_sender_last_name" introduced="5.0.0"><![CDATA[The sender's last name.]]></string>
     <string name="macro_recovery_link" introduced="6.6.0"><![CDATA[Link to recover the abandoned cart.]]></string>
@@ -1395,8 +1394,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="macro_tax_amount" introduced="5.0.0"><![CDATA[Tax Amount]]></string>
     <string name="macro_tax_name" introduced="5.0.0"><![CDATA[Tax Name]]></string>
     <string name="macro_tax_rate" introduced="5.0.0"><![CDATA[Tax Percentage]]></string>
-    <string name="macro_tell_friend" introduced="5.0.0"><![CDATA[The friend's name.]]></string>
-    <string name="macro_tell_message" introduced="5.0.0"><![CDATA[Message from the sender to the friend.]]></string>
     <string name="macro_template_content" introduced="5.0.0"><![CDATA[This is required to display any contents]]></string>
     <string name="macro_template_store_logo" introduced="5.0.0"><![CDATA[The logo for your store]]></string>
     <string name="macro_template_store_name" introduced="5.0.0"><![CDATA[The name of your store]]></string>
@@ -1487,7 +1484,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_macro_order_dispatched" introduced="5.0.0"><![CDATA[Cart: Order Complete]]></string>
     <string name="title_macro_order_fraud" introduced="5.0.0"><![CDATA[Cart: Fraud Review]]></string>
     <string name="title_macro_order_payment" introduced="5.0.0"><![CDATA[Cart: Payment Received]]></string>
-    <string name="title_macro_tell_friend" introduced="5.0.0"><![CDATA[Catalogue: Tell a Friend]]></string>
     <string name="title_macro_user_password" introduced="5.0.0"><![CDATA[User: Recover Password]]></string>
     <string name="title_macro_user_newsletter" introduced="6.1.0"><![CDATA[User: Verify Newsletter Subscription]]></string>
     <string name="title_macros" introduced="5.0.0"><![CDATA[Available Macros]]></string>
@@ -1505,6 +1501,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="confirm_content_reset" introduced="6.9.0"><![CDATA[Replace the subject and wording of this email, in this language only, with the version that came with CubeCart? Your changes to it will be lost.]]></string>
     <string name="notify_content_reset" introduced="6.9.0"><![CDATA[The email has been reset to its default wording.]]></string>
     <string name="error_content_reset" introduced="6.9.0"><![CDATA[No default version of this email was found for this language.]]></string>
+    <string name="twofa_expires" introduced="6.9.0"><![CDATA[%d minutes]]></string>
+    <string name="macro_twofa_expires_minutes" introduced="6.9.0"><![CDATA[How many minutes the verification code lasts.]]></string>
+    <string name="label_twofa_expires_minutes" introduced="6.9.0"><![CDATA[Expiry Minutes]]></string>
     <string name="email_macro_code" introduced="6.9.0"><![CDATA[In the code]]></string>
     <string name="label_admin_name" introduced="6.9.0"><![CDATA[Admin Name]]></string>
     <string name="label_cert_code" introduced="6.9.0"><![CDATA[Gift Card Code]]></string>
@@ -1564,7 +1563,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="label_review_copy" introduced="6.9.0"><![CDATA[Review Text]]></string>
     <string name="label_review_name" introduced="6.9.0"><![CDATA[Reviewer Name]]></string>
     <string name="label_sender_message" introduced="6.9.0"><![CDATA[Gift Message]]></string>
-    <string name="label_sender_name" introduced="6.9.0"><![CDATA[Sender Name]]></string>
     <string name="label_sender_name_first" introduced="6.9.0"><![CDATA[Sender First Name]]></string>
     <string name="label_sender_name_last" introduced="6.9.0"><![CDATA[Sender Last Name]]></string>
     <string name="label_ship_date" introduced="6.9.0"><![CDATA[Dispatch Date]]></string>
@@ -1576,8 +1574,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="label_tax_amount" introduced="6.9.0"><![CDATA[Tax Amount]]></string>
     <string name="label_tax_name" introduced="6.9.0"><![CDATA[Tax Name]]></string>
     <string name="label_tax_rate" introduced="6.9.0"><![CDATA[Tax Rate]]></string>
-    <string name="label_tell_friend" introduced="6.9.0"><![CDATA[Friend Name]]></string>
-    <string name="label_tell_message" introduced="6.9.0"><![CDATA[Message]]></string>
     <string name="label_town" introduced="6.9.0"><![CDATA[Billing Town]]></string>
     <string name="label_town_d" introduced="6.9.0"><![CDATA[Shipping Town]]></string>
     <string name="label_twofa_code" introduced="6.9.0"><![CDATA[Verification Code]]></string>

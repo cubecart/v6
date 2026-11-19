@@ -263,14 +263,6 @@ If you need any further help, please contact us.</p>]]></content>
 <p>Why not spend it now?</p>]]></content>
 
   </email>
-  <email name="catalogue.tell_friend">
-    <subject><![CDATA[{$DATA.from} has recommended a product for you]]></subject>
-    <content type="html"><![CDATA[Dear {$DATA.to},
-<p>Your friend <strong>{$DATA.from}</strong> thought you might be interested in <strong>{$DATA.name}</strong>.</p>
-<p><strong>Product Link:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
-<p>{$DATA.message}</p>]]></content>
-
-  </email>
   <email name="cart.payment_received">
     <subject><![CDATA[Thank you for your payment]]></subject>
     <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>

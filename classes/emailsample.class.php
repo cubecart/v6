@@ -245,7 +245,8 @@ class EmailSample
                 $GLOBALS['smarty']->assign('DATA', array(
                     'name'    => $admin_name,
                     'code'    => '123456',
-                    'expires' => '10 minutes',
+                    'expires' => sprintf($GLOBALS['language']->email['twofa_expires'], 10),
+                    'expires_minutes' => 10,
                 ));
                 break;
 
@@ -286,16 +287,6 @@ class EmailSample
                 $GLOBALS['smarty']->assign('DATA', array(
                     'email' => 'sam.taylor@example.com',
                     'link'  => $store_url.'/index.php?_a=unsubscribe&unsubscribe=sam.taylor%40example.com&rt=EXAMPLE',
-                ));
-                break;
-
-            case 'catalogue.tell_friend':
-                $GLOBALS['smarty']->assign('DATA', array(
-                    'to'      => 'Alex',
-                    'from'    => 'Sam Taylor',
-                    'name'    => $order['products'][0]['name'],
-                    'link'    => $store_url,
-                    'message' => 'I thought you might like this.',
                 ));
                 break;
 
