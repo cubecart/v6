@@ -1,6 +1,6 @@
 # TinyMCE
 
-Version 8.10.1, from the official package: https://registry.npmjs.org/tinymce/-/tinymce-8.10.1.tgz
+Version 8.10.2, from the official package: https://registry.npmjs.org/tinymce/-/tinymce-8.10.2.tgz
 Licensed under the GNU General Public License version 2 or later (see license.md), used here with `license_key: 'gpl'`.
 Source code: https://github.com/tinymce/tinymce
 
