@@ -21,14 +21,17 @@ use Elastic\Elasticsearch\Endpoints\Autoscaling;
 use Elastic\Elasticsearch\Endpoints\Cat;
 use Elastic\Elasticsearch\Endpoints\Ccr;
 use Elastic\Elasticsearch\Endpoints\Cluster;
+use Elastic\Elasticsearch\Endpoints\Connector;
 use Elastic\Elasticsearch\Endpoints\DanglingIndices;
 use Elastic\Elasticsearch\Endpoints\Enrich;
 use Elastic\Elasticsearch\Endpoints\Eql;
+use Elastic\Elasticsearch\Endpoints\Esql;
 use Elastic\Elasticsearch\Endpoints\Features;
 use Elastic\Elasticsearch\Endpoints\Fleet;
 use Elastic\Elasticsearch\Endpoints\Graph;
 use Elastic\Elasticsearch\Endpoints\Ilm;
 use Elastic\Elasticsearch\Endpoints\Indices;
+use Elastic\Elasticsearch\Endpoints\Inference;
 use Elastic\Elasticsearch\Endpoints\Ingest;
 use Elastic\Elasticsearch\Endpoints\License;
 use Elastic\Elasticsearch\Endpoints\Logstash;
@@ -36,14 +39,20 @@ use Elastic\Elasticsearch\Endpoints\Migration;
 use Elastic\Elasticsearch\Endpoints\Ml;
 use Elastic\Elasticsearch\Endpoints\Monitoring;
 use Elastic\Elasticsearch\Endpoints\Nodes;
+use Elastic\Elasticsearch\Endpoints\Profiling;
+use Elastic\Elasticsearch\Endpoints\QueryRules;
 use Elastic\Elasticsearch\Endpoints\Rollup;
+use Elastic\Elasticsearch\Endpoints\SearchApplication;
 use Elastic\Elasticsearch\Endpoints\SearchableSnapshots;
 use Elastic\Elasticsearch\Endpoints\Security;
 use Elastic\Elasticsearch\Endpoints\Shutdown;
+use Elastic\Elasticsearch\Endpoints\Simulate;
 use Elastic\Elasticsearch\Endpoints\Slm;
 use Elastic\Elasticsearch\Endpoints\Snapshot;
 use Elastic\Elasticsearch\Endpoints\Sql;
 use Elastic\Elasticsearch\Endpoints\Ssl;
+use Elastic\Elasticsearch\Endpoints\Streams;
+use Elastic\Elasticsearch\Endpoints\Synonyms;
 use Elastic\Elasticsearch\Endpoints\Tasks;
 use Elastic\Elasticsearch\Endpoints\TextStructure;
 use Elastic\Elasticsearch\Endpoints\Transform;
@@ -104,6 +113,15 @@ trait NamespaceTrait
 	}
 
 
+	public function connector(): Connector
+	{
+		if (!isset($this->namespace['Connector'])) {
+			$this->namespace['Connector'] = new Connector($this);
+		}
+		return $this->namespace['Connector'];
+	}
+
+
 	public function danglingIndices(): DanglingIndices
 	{
 		if (!isset($this->namespace['DanglingIndices'])) {
@@ -128,6 +146,15 @@ trait NamespaceTrait
 			$this->namespace['Eql'] = new Eql($this);
 		}
 		return $this->namespace['Eql'];
+	}
+
+
+	public function esql(): Esql
+	{
+		if (!isset($this->namespace['Esql'])) {
+			$this->namespace['Esql'] = new Esql($this);
+		}
+		return $this->namespace['Esql'];
 	}
 
 
@@ -173,6 +200,15 @@ trait NamespaceTrait
 			$this->namespace['Indices'] = new Indices($this);
 		}
 		return $this->namespace['Indices'];
+	}
+
+
+	public function inference(): Inference
+	{
+		if (!isset($this->namespace['Inference'])) {
+			$this->namespace['Inference'] = new Inference($this);
+		}
+		return $this->namespace['Inference'];
 	}
 
 
@@ -239,12 +275,39 @@ trait NamespaceTrait
 	}
 
 
+	public function profiling(): Profiling
+	{
+		if (!isset($this->namespace['Profiling'])) {
+			$this->namespace['Profiling'] = new Profiling($this);
+		}
+		return $this->namespace['Profiling'];
+	}
+
+
+	public function queryRules(): QueryRules
+	{
+		if (!isset($this->namespace['QueryRules'])) {
+			$this->namespace['QueryRules'] = new QueryRules($this);
+		}
+		return $this->namespace['QueryRules'];
+	}
+
+
 	public function rollup(): Rollup
 	{
 		if (!isset($this->namespace['Rollup'])) {
 			$this->namespace['Rollup'] = new Rollup($this);
 		}
 		return $this->namespace['Rollup'];
+	}
+
+
+	public function searchApplication(): SearchApplication
+	{
+		if (!isset($this->namespace['SearchApplication'])) {
+			$this->namespace['SearchApplication'] = new SearchApplication($this);
+		}
+		return $this->namespace['SearchApplication'];
 	}
 
 
@@ -272,6 +335,15 @@ trait NamespaceTrait
 			$this->namespace['Shutdown'] = new Shutdown($this);
 		}
 		return $this->namespace['Shutdown'];
+	}
+
+
+	public function simulate(): Simulate
+	{
+		if (!isset($this->namespace['Simulate'])) {
+			$this->namespace['Simulate'] = new Simulate($this);
+		}
+		return $this->namespace['Simulate'];
 	}
 
 
@@ -308,6 +380,24 @@ trait NamespaceTrait
 			$this->namespace['Ssl'] = new Ssl($this);
 		}
 		return $this->namespace['Ssl'];
+	}
+
+
+	public function streams(): Streams
+	{
+		if (!isset($this->namespace['Streams'])) {
+			$this->namespace['Streams'] = new Streams($this);
+		}
+		return $this->namespace['Streams'];
+	}
+
+
+	public function synonyms(): Synonyms
+	{
+		if (!isset($this->namespace['Synonyms'])) {
+			$this->namespace['Synonyms'] = new Synonyms($this);
+		}
+		return $this->namespace['Synonyms'];
 	}
 
 

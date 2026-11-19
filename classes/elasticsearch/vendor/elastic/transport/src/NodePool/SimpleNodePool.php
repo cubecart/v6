@@ -25,7 +25,7 @@ use function sprintf;
 class SimpleNodePool implements NodePoolInterface
 {
     /**
-     * @var array
+     * @var array<Node>
      */
     protected $nodes = [];
     

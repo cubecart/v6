@@ -1,5 +1,46 @@
 # Changelog
 
+## 8.11.1 (2026-10-22)
+
+- Fix deprecation about str_getcsv() escape parameter
+  [#44](https://github.com/elastic/elastic-transport-php/pull/44)
+
+## 8.11.0 (2025-04-02)
+
+- Added Node::getLastPing and Node::getFailedPings for custom NodePool implementations with ping backoffs
+  [#35](https://github.com/elastic/elastic-transport-php/pull/35)
+- Add HTTP network exception as previous exception to NoNodeAvailableException for debugging
+  [#34](https://github.com/elastic/elastic-transport-php/pull/34)
+- Fixed PHP 7.4+ issue - "must not be accessed before initialization" in getLastRequest() & getLastResponse()
+  [#33](https://github.com/elastic/elastic-transport-php/pull/33)
+- Fixed missing response body with guzzle psr7 streams
+  [#30](https://github.com/elastic/elastic-transport-php/pull/30)
+
+## 8.10.0 (2024-08-14)
+
+- Added the OpenTelemetry support
+  [#27](https://github.com/elastic/elastic-transport-php/pull/27)
+- Refactored the OpenTelemetry using PSR-7 attributes
+  [2be33cd](https://github.com/elastic/elastic-transport-php/commit/2be33cdc8be161fc7dc9a1989da5d550ffc4a230)
+
+## 8.8.0 (2023-11-08)
+
+- Support path in host connection URI
+  [#21](https://github.com/elastic/elastic-transport-php/pull/21)
+
+- Support userInfo in host connection URI
+  [#22](https://github.com/elastic/elastic-transport-php/pull/22)
+
+## 8.7.0 (2023-05-23)
+
+- Allow installation of psr/http-message v2.0
+  [#17](https://github.com/elastic/elastic-transport-php/pull/17)
+
+## 8.6.0 (2023-01-12)
+
+- Add full request and response to the log message context for better integration using [Clockwork](https://underground.works/clockwork/)
+  [#13](https://github.com/elastic/elastic-transport-php/pull/13)
+
 ## 8.5.0 (2022-10-14)
 
 - Release created to be compatible with 8.5 Elastic clients

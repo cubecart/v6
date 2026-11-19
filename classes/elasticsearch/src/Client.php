@@ -28,7 +28,9 @@ use Psr\Log\LoggerInterface;
 final class Client implements ClientInterface
 {
     const CLIENT_NAME = 'es';
-    const VERSION = '8.6.1';
+    const VERSION = '8.19.0';
+    const API_COMPATIBILITY_HEADER = '%s/vnd.elasticsearch+%s; compatible-with=8';
+    // CubeCart (#3866): Searchly is a fork that speaks the version 7 API
     const API_COMPATIBILITY_HEADER_7 = '%s/vnd.elasticsearch+%s; compatible-with=7';
     const API_COMPATIBILITY_HEADER_8 = '%s/vnd.elasticsearch+%s; compatible-with=8';
 
@@ -36,7 +38,20 @@ final class Client implements ClientInterface
      * Flag to indicate if the client is connected to Searchly
      */
     public static bool $isSearchly = false;
-
+    
+    const SEARCH_ENDPOINTS = [
+        'search',
+        'async_search.submit',
+        'msearch',
+        'eql.search',
+        'terms_enum',
+        'search_template',
+        'msearch_template',
+        'render_search_template',
+        'esql.query',
+        'knnSearch'
+    ];
+    
     use ClientEndpointsTrait;
     use EndpointTrait;
     use NamespaceTrait;

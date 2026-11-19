@@ -20,7 +20,7 @@ use Psr\Http\Message\RequestInterface;
 
 class OnFailureDefault implements OnFailureInterface
 {
-    public function failure(Exception $e, RequestInterface $request, int $count, Node $node = null): void
+    public function failure(Exception $e, RequestInterface $request, int $count, ?Node $node = null): void
     {
     }
 }

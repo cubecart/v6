@@ -35,11 +35,11 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     model_id: string, // (REQUIRED) The unique identifier of the trained model.
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -49,8 +49,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function clearTrainedModelDeploymentCache(array $params = [])
+	public function clearTrainedModelDeploymentCache(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['model_id'], $params);
 		$url = '/_ml/trained_models/' . $this->encode($params['model_id']) . '/deployment/cache/_clear';
 		$method = 'POST';
@@ -60,7 +61,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['model_id'], $request, 'ml.clear_trained_model_deployment_cache');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -71,15 +74,15 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The name of the job to close
-	 *     allow_no_match: boolean, // Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)
-	 *     force: boolean, // True if the job should be forcefully closed
-	 *     timeout: time, // Controls the time to wait until a job has closed. Default to 30 minutes
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  The URL params optionally sent in the body
+	 *     allow_no_match?: bool, // Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)
+	 *     force?: bool, // True if the job should be forcefully closed
+	 *     timeout?: int|string, // Controls the time to wait until a job has closed. Default to 30 minutes
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // The URL params optionally sent in the body. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -89,8 +92,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function closeJob(array $params = [])
+	public function closeJob(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id'], $params);
 		$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/_close';
 		$method = 'POST';
@@ -100,7 +104,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id'], $request, 'ml.close_job');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -111,11 +117,11 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     calendar_id: string, // (REQUIRED) The ID of the calendar to delete
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -125,8 +131,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function deleteCalendar(array $params = [])
+	public function deleteCalendar(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['calendar_id'], $params);
 		$url = '/_ml/calendars/' . $this->encode($params['calendar_id']);
 		$method = 'DELETE';
@@ -135,7 +142,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['calendar_id'], $request, 'ml.delete_calendar');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -147,11 +156,11 @@ class Ml extends AbstractEndpoint
 	 * @param array{
 	 *     calendar_id: string, // (REQUIRED) The ID of the calendar to modify
 	 *     event_id: string, // (REQUIRED) The ID of the event to remove from the calendar
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -161,8 +170,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function deleteCalendarEvent(array $params = [])
+	public function deleteCalendarEvent(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['calendar_id','event_id'], $params);
 		$url = '/_ml/calendars/' . $this->encode($params['calendar_id']) . '/events/' . $this->encode($params['event_id']);
 		$method = 'DELETE';
@@ -171,7 +181,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['calendar_id', 'event_id'], $request, 'ml.delete_calendar_event');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -183,11 +195,11 @@ class Ml extends AbstractEndpoint
 	 * @param array{
 	 *     calendar_id: string, // (REQUIRED) The ID of the calendar to modify
 	 *     job_id: string, // (REQUIRED) The ID of the job to remove from the calendar
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -197,8 +209,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function deleteCalendarJob(array $params = [])
+	public function deleteCalendarJob(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['calendar_id','job_id'], $params);
 		$url = '/_ml/calendars/' . $this->encode($params['calendar_id']) . '/jobs/' . $this->encode($params['job_id']);
 		$method = 'DELETE';
@@ -207,7 +220,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['calendar_id', 'job_id'], $request, 'ml.delete_calendar_job');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -218,13 +233,13 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     id: string, // (REQUIRED) The ID of the data frame analytics to delete
-	 *     force: boolean, // True if the job should be forcefully deleted
-	 *     timeout: time, // Controls the time to wait until a job is deleted. Defaults to 1 minute
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     force?: bool, // True if the job should be forcefully deleted
+	 *     timeout?: int|string, // Controls the time to wait until a job is deleted. Defaults to 1 minute
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -234,8 +249,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function deleteDataFrameAnalytics(array $params = [])
+	public function deleteDataFrameAnalytics(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['id'], $params);
 		$url = '/_ml/data_frame/analytics/' . $this->encode($params['id']);
 		$method = 'DELETE';
@@ -244,7 +260,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['id'], $request, 'ml.delete_data_frame_analytics');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -255,12 +273,12 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     datafeed_id: string, // (REQUIRED) The ID of the datafeed to delete
-	 *     force: boolean, // True if the datafeed should be forcefully deleted
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     force?: bool, // True if the datafeed should be forcefully deleted
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -270,8 +288,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function deleteDatafeed(array $params = [])
+	public function deleteDatafeed(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['datafeed_id'], $params);
 		$url = '/_ml/datafeeds/' . $this->encode($params['datafeed_id']);
 		$method = 'DELETE';
@@ -280,7 +299,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['datafeed_id'], $request, 'ml.delete_datafeed');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -290,15 +311,15 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-expired-data.html
 	 *
 	 * @param array{
-	 *     job_id: string, //  The ID of the job(s) to perform expired data hygiene for
-	 *     requests_per_second: number, // The desired requests per second for the deletion processes.
-	 *     timeout: time, // How long can the underlying delete processes run until they are canceled
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  deleting expired data parameters
+	 *     job_id?: string, // The ID of the job(s) to perform expired data hygiene for
+	 *     requests_per_second?: int, // The desired requests per second for the deletion processes.
+	 *     timeout?: int|string, // How long can the underlying delete processes run until they are canceled
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // deleting expired data parameters. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -307,8 +328,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function deleteExpiredData(array $params = [])
+	public function deleteExpiredData(?array $params = null)
 	{
+		$params = $params ?? [];
 		if (isset($params['job_id'])) {
 			$url = '/_ml/_delete_expired_data/' . $this->encode($params['job_id']);
 			$method = 'DELETE';
@@ -321,7 +343,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id'], $request, 'ml.delete_expired_data');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -332,11 +356,11 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     filter_id: string, // (REQUIRED) The ID of the filter to delete
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -346,8 +370,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function deleteFilter(array $params = [])
+	public function deleteFilter(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['filter_id'], $params);
 		$url = '/_ml/filters/' . $this->encode($params['filter_id']);
 		$method = 'DELETE';
@@ -356,7 +381,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['filter_id'], $request, 'ml.delete_filter');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -367,14 +394,14 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The ID of the job from which to delete forecasts
-	 *     forecast_id: string, //  The ID of the forecast to delete, can be comma delimited list. Leaving blank implies `_all`
-	 *     allow_no_forecasts: boolean, // Whether to ignore if `_all` matches no forecasts
-	 *     timeout: time, // Controls the time to wait until the forecast(s) are deleted. Default to 30 seconds
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     forecast_id?: string, // The ID of the forecast to delete, can be comma delimited list. Leaving blank implies `_all`
+	 *     allow_no_forecasts?: bool, // Whether to ignore if `_all` matches no forecasts
+	 *     timeout?: int|string, // Controls the time to wait until the forecast(s) are deleted. Default to 30 seconds
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -384,8 +411,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function deleteForecast(array $params = [])
+	public function deleteForecast(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id'], $params);
 		if (isset($params['forecast_id'])) {
 			$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/_forecast/' . $this->encode($params['forecast_id']);
@@ -398,7 +426,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id', 'forecast_id'], $request, 'ml.delete_forecast');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -409,13 +439,14 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The ID of the job to delete
-	 *     force: boolean, // True if the job should be forcefully deleted
-	 *     wait_for_completion: boolean, // Should this request wait until the operation has completed before returning
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     force?: bool, // True if the job should be forcefully deleted
+	 *     wait_for_completion?: bool, // Should this request wait until the operation has completed before returning
+	 *     delete_user_annotations?: bool, // Should annotations added by the user be deleted
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -425,17 +456,20 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function deleteJob(array $params = [])
+	public function deleteJob(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id'], $params);
 		$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']);
 		$method = 'DELETE';
 
-		$url = $this->addQueryString($url, $params, ['force','wait_for_completion','pretty','human','error_trace','source','filter_path']);
+		$url = $this->addQueryString($url, $params, ['force','wait_for_completion','delete_user_annotations','pretty','human','error_trace','source','filter_path']);
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id'], $request, 'ml.delete_job');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -447,11 +481,11 @@ class Ml extends AbstractEndpoint
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The ID of the job to fetch
 	 *     snapshot_id: string, // (REQUIRED) The ID of the snapshot to delete
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -461,8 +495,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function deleteModelSnapshot(array $params = [])
+	public function deleteModelSnapshot(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id','snapshot_id'], $params);
 		$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/model_snapshots/' . $this->encode($params['snapshot_id']);
 		$method = 'DELETE';
@@ -471,7 +506,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id', 'snapshot_id'], $request, 'ml.delete_model_snapshot');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -482,13 +519,13 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     model_id: string, // (REQUIRED) The ID of the trained model to delete
-	 *     timeout: time, // Controls the amount of time to wait for the model to be deleted.
-	 *     force: boolean, // True if the model should be forcefully deleted
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     timeout?: int|string, // Controls the amount of time to wait for the model to be deleted.
+	 *     force?: bool, // True if the model should be forcefully deleted
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -498,8 +535,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function deleteTrainedModel(array $params = [])
+	public function deleteTrainedModel(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['model_id'], $params);
 		$url = '/_ml/trained_models/' . $this->encode($params['model_id']);
 		$method = 'DELETE';
@@ -508,7 +546,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['model_id'], $request, 'ml.delete_trained_model');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -520,11 +560,11 @@ class Ml extends AbstractEndpoint
 	 * @param array{
 	 *     model_alias: string, // (REQUIRED) The trained model alias to delete
 	 *     model_id: string, // (REQUIRED) The trained model where the model alias is assigned
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -534,8 +574,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function deleteTrainedModelAlias(array $params = [])
+	public function deleteTrainedModelAlias(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['model_alias','model_id'], $params);
 		$url = '/_ml/trained_models/' . $this->encode($params['model_id']) . '/model_aliases/' . $this->encode($params['model_alias']);
 		$method = 'DELETE';
@@ -545,7 +586,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['model_alias', 'model_id'], $request, 'ml.delete_trained_model_alias');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -555,12 +598,12 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/ml-apis.html
 	 *
 	 * @param array{
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The analysis config, plus cardinality estimates for fields it references
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The analysis config, plus cardinality estimates for fields it references. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -569,8 +612,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function estimateModelMemory(array $params = [])
+	public function estimateModelMemory(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['body'], $params);
 		$url = '/_ml/anomaly_detectors/_estimate_model_memory';
 		$method = 'POST';
@@ -580,7 +624,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, [], $request, 'ml.estimate_model_memory');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -590,12 +636,12 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/evaluate-dfanalytics.html
 	 *
 	 * @param array{
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The evaluation definition
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The evaluation definition. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -604,8 +650,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function evaluateDataFrame(array $params = [])
+	public function evaluateDataFrame(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['body'], $params);
 		$url = '/_ml/data_frame/_evaluate';
 		$method = 'POST';
@@ -615,7 +662,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, [], $request, 'ml.evaluate_data_frame');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -625,13 +674,13 @@ class Ml extends AbstractEndpoint
 	 * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/explain-dfanalytics.html
 	 *
 	 * @param array{
-	 *     id: string, //  The ID of the data frame analytics to explain
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  The data frame analytics config to explain
+	 *     id?: string, // The ID of the data frame analytics to explain
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // The data frame analytics config to explain. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -640,8 +689,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function explainDataFrameAnalytics(array $params = [])
+	public function explainDataFrameAnalytics(?array $params = null)
 	{
+		$params = $params ?? [];
 		if (isset($params['id'])) {
 			$url = '/_ml/data_frame/analytics/' . $this->encode($params['id']) . '/_explain';
 			$method = empty($params['body']) ? 'GET' : 'POST';
@@ -654,7 +704,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['id'], $request, 'ml.explain_data_frame_analytics');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -665,17 +717,17 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The name of the job to flush
-	 *     calc_interim: boolean, // Calculates interim results for the most recent bucket or all buckets within the latency period
-	 *     start: string, // When used in conjunction with calc_interim, specifies the range of buckets on which to calculate interim results
-	 *     end: string, // When used in conjunction with calc_interim, specifies the range of buckets on which to calculate interim results
-	 *     advance_time: string, // Advances time to the given value generating results and updating the model for the advanced interval
-	 *     skip_time: string, // Skips time to the given value without generating results or updating the model for the skipped interval
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  Flush parameters
+	 *     calc_interim?: bool, // Calculates interim results for the most recent bucket or all buckets within the latency period
+	 *     start?: string, // When used in conjunction with calc_interim, specifies the range of buckets on which to calculate interim results
+	 *     end?: string, // When used in conjunction with calc_interim, specifies the range of buckets on which to calculate interim results
+	 *     advance_time?: string, // Advances time to the given value generating results and updating the model for the advanced interval
+	 *     skip_time?: string, // Skips time to the given value without generating results or updating the model for the skipped interval
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // Flush parameters. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -685,8 +737,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function flushJob(array $params = [])
+	public function flushJob(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id'], $params);
 		$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/_flush';
 		$method = 'POST';
@@ -696,7 +749,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id'], $request, 'ml.flush_job');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -707,15 +762,15 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The ID of the job to forecast for
-	 *     duration: time, // The duration of the forecast
-	 *     expires_in: time, // The time interval after which the forecast expires. Expired forecasts will be deleted at the first opportunity.
-	 *     max_model_memory: string, // The max memory able to be used by the forecast. Default is 20mb.
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  Query parameters can be specified in the body
+	 *     duration?: int|string, // The duration of the forecast
+	 *     expires_in?: int|string, // The time interval after which the forecast expires. Expired forecasts will be deleted at the first opportunity.
+	 *     max_model_memory?: string, // The max memory able to be used by the forecast. Default is 20mb.
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // Query parameters can be specified in the body. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -725,8 +780,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function forecast(array $params = [])
+	public function forecast(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id'], $params);
 		$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/_forecast';
 		$method = 'POST';
@@ -736,7 +792,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id'], $request, 'ml.forecast');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -747,22 +805,22 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) ID of the job to get bucket results from
-	 *     timestamp: string, //  The timestamp of the desired single bucket result
-	 *     expand: boolean, // Include anomaly records
-	 *     exclude_interim: boolean, // Exclude interim results
-	 *     from: int, // skips a number of buckets
-	 *     size: int, // specifies a max number of buckets to get
-	 *     start: string, // Start time filter for buckets
-	 *     end: string, // End time filter for buckets
-	 *     anomaly_score: double, // Filter for the most anomalous buckets
-	 *     sort: string, // Sort buckets by a particular field
-	 *     desc: boolean, // Set the sort direction
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  Bucket selection details if not provided in URI
+	 *     timestamp?: string, // The timestamp of the desired single bucket result
+	 *     expand?: bool, // Include anomaly records
+	 *     exclude_interim?: bool, // Exclude interim results
+	 *     from?: int, // skips a number of buckets
+	 *     size?: int, // specifies a max number of buckets to get
+	 *     start?: string, // Start time filter for buckets
+	 *     end?: string, // End time filter for buckets
+	 *     anomaly_score?: float, // Filter for the most anomalous buckets
+	 *     sort?: string, // Sort buckets by a particular field
+	 *     desc?: bool, // Set the sort direction
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // Bucket selection details if not provided in URI. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -772,8 +830,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getBuckets(array $params = [])
+	public function getBuckets(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id'], $params);
 		if (isset($params['timestamp'])) {
 			$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/results/buckets/' . $this->encode($params['timestamp']);
@@ -787,7 +846,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id', 'timestamp'], $request, 'ml.get_buckets');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -798,16 +859,16 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     calendar_id: string, // (REQUIRED) The ID of the calendar containing the events
-	 *     job_id: string, // Get events for the job. When this option is used calendar_id must be '_all'
-	 *     start: string, // Get events after this time
-	 *     end: date, // Get events before this time
-	 *     from: int, // Skips a number of events
-	 *     size: int, // Specifies a max number of events to get
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     job_id?: string, // Get events for the job. When this option is used calendar_id must be '_all'
+	 *     start?: string, // Get events after this time
+	 *     end?: string, // Get events before this time
+	 *     from?: int, // Skips a number of events
+	 *     size?: int, // Specifies a max number of events to get
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -817,8 +878,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getCalendarEvents(array $params = [])
+	public function getCalendarEvents(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['calendar_id'], $params);
 		$url = '/_ml/calendars/' . $this->encode($params['calendar_id']) . '/events';
 		$method = 'GET';
@@ -827,7 +889,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['calendar_id'], $request, 'ml.get_calendar_events');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -837,15 +901,15 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-calendar.html
 	 *
 	 * @param array{
-	 *     calendar_id: string, //  The ID of the calendar to fetch
-	 *     from: int, // skips a number of calendars
-	 *     size: int, // specifies a max number of calendars to get
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  The from and size parameters optionally sent in the body
+	 *     calendar_id?: string, // The ID of the calendar to fetch
+	 *     from?: int, // skips a number of calendars
+	 *     size?: int, // specifies a max number of calendars to get
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // The from and size parameters optionally sent in the body. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -854,8 +918,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getCalendars(array $params = [])
+	public function getCalendars(?array $params = null)
 	{
+		$params = $params ?? [];
 		if (isset($params['calendar_id'])) {
 			$url = '/_ml/calendars/' . $this->encode($params['calendar_id']);
 			$method = empty($params['body']) ? 'GET' : 'POST';
@@ -868,7 +933,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['calendar_id'], $request, 'ml.get_calendars');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -879,16 +946,16 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The name of the job
-	 *     category_id: long, //  The identifier of the category definition of interest
-	 *     from: int, // skips a number of categories
-	 *     size: int, // specifies a max number of categories to get
-	 *     partition_field_value: string, // Specifies the partition to retrieve categories for. This is optional, and should never be used for jobs where per-partition categorization is disabled.
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  Category selection details if not provided in URI
+	 *     category_id?: int, // The identifier of the category definition of interest
+	 *     from?: int, // skips a number of categories
+	 *     size?: int, // specifies a max number of categories to get
+	 *     partition_field_value?: string, // Specifies the partition to retrieve categories for. This is optional, and should never be used for jobs where per-partition categorization is disabled.
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // Category selection details if not provided in URI. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -898,14 +965,15 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getCategories(array $params = [])
+	public function getCategories(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id'], $params);
 		if (isset($params['category_id'])) {
 			$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/results/categories/' . $this->encode($params['category_id']);
 			$method = empty($params['body']) ? 'GET' : 'POST';
 		} else {
-			$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/results/categories/';
+			$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/results/categories';
 			$method = empty($params['body']) ? 'GET' : 'POST';
 		}
 		$url = $this->addQueryString($url, $params, ['from','size','partition_field_value','pretty','human','error_trace','source','filter_path']);
@@ -913,7 +981,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id', 'category_id'], $request, 'ml.get_categories');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -923,16 +993,16 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/get-dfanalytics.html
 	 *
 	 * @param array{
-	 *     id: string, //  The ID of the data frame analytics to fetch
-	 *     allow_no_match: boolean, // Whether to ignore if a wildcard expression matches no data frame analytics. (This includes `_all` string or when no data frame analytics have been specified)
-	 *     from: int, // skips a number of analytics
-	 *     size: int, // specifies a max number of analytics to get
-	 *     exclude_generated: boolean, // Omits fields that are illegal to set on data frame analytics PUT
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     id?: string, // The ID of the data frame analytics to fetch
+	 *     allow_no_match?: bool, // Whether to ignore if a wildcard expression matches no data frame analytics. (This includes `_all` string or when no data frame analytics have been specified)
+	 *     from?: int, // skips a number of analytics
+	 *     size?: int, // specifies a max number of analytics to get
+	 *     exclude_generated?: bool, // Omits fields that are illegal to set on data frame analytics PUT
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -941,8 +1011,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getDataFrameAnalytics(array $params = [])
+	public function getDataFrameAnalytics(?array $params = null)
 	{
+		$params = $params ?? [];
 		if (isset($params['id'])) {
 			$url = '/_ml/data_frame/analytics/' . $this->encode($params['id']);
 			$method = 'GET';
@@ -954,7 +1025,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['id'], $request, 'ml.get_data_frame_analytics');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -964,16 +1037,16 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/get-dfanalytics-stats.html
 	 *
 	 * @param array{
-	 *     id: string, //  The ID of the data frame analytics stats to fetch
-	 *     allow_no_match: boolean, // Whether to ignore if a wildcard expression matches no data frame analytics. (This includes `_all` string or when no data frame analytics have been specified)
-	 *     from: int, // skips a number of analytics
-	 *     size: int, // specifies a max number of analytics to get
-	 *     verbose: boolean, // whether the stats response should be verbose
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     id?: string, // The ID of the data frame analytics stats to fetch
+	 *     allow_no_match?: bool, // Whether to ignore if a wildcard expression matches no data frame analytics. (This includes `_all` string or when no data frame analytics have been specified)
+	 *     from?: int, // skips a number of analytics
+	 *     size?: int, // specifies a max number of analytics to get
+	 *     verbose?: bool, // whether the stats response should be verbose
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -982,8 +1055,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getDataFrameAnalyticsStats(array $params = [])
+	public function getDataFrameAnalyticsStats(?array $params = null)
 	{
+		$params = $params ?? [];
 		if (isset($params['id'])) {
 			$url = '/_ml/data_frame/analytics/' . $this->encode($params['id']) . '/_stats';
 			$method = 'GET';
@@ -995,7 +1069,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['id'], $request, 'ml.get_data_frame_analytics_stats');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1005,13 +1081,13 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-datafeed-stats.html
 	 *
 	 * @param array{
-	 *     datafeed_id: string, //  The ID of the datafeeds stats to fetch
-	 *     allow_no_match: boolean, // Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     datafeed_id?: string, // The ID of the datafeeds stats to fetch
+	 *     allow_no_match?: bool, // Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -1020,8 +1096,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getDatafeedStats(array $params = [])
+	public function getDatafeedStats(?array $params = null)
 	{
+		$params = $params ?? [];
 		if (isset($params['datafeed_id'])) {
 			$url = '/_ml/datafeeds/' . $this->encode($params['datafeed_id']) . '/_stats';
 			$method = 'GET';
@@ -1033,7 +1110,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['datafeed_id'], $request, 'ml.get_datafeed_stats');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1043,14 +1122,14 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-datafeed.html
 	 *
 	 * @param array{
-	 *     datafeed_id: string, //  The ID of the datafeeds to fetch
-	 *     allow_no_match: boolean, // Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)
-	 *     exclude_generated: boolean, // Omits fields that are illegal to set on datafeed PUT
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     datafeed_id?: string, // The ID of the datafeeds to fetch
+	 *     allow_no_match?: bool, // Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)
+	 *     exclude_generated?: bool, // Omits fields that are illegal to set on datafeed PUT
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -1059,8 +1138,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getDatafeeds(array $params = [])
+	public function getDatafeeds(?array $params = null)
 	{
+		$params = $params ?? [];
 		if (isset($params['datafeed_id'])) {
 			$url = '/_ml/datafeeds/' . $this->encode($params['datafeed_id']);
 			$method = 'GET';
@@ -1072,7 +1152,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['datafeed_id'], $request, 'ml.get_datafeeds');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1082,14 +1164,14 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-filter.html
 	 *
 	 * @param array{
-	 *     filter_id: string, //  The ID of the filter to fetch
-	 *     from: int, // skips a number of filters
-	 *     size: int, // specifies a max number of filters to get
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     filter_id?: string, // The ID of the filter to fetch
+	 *     from?: int, // skips a number of filters
+	 *     size?: int, // specifies a max number of filters to get
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -1098,8 +1180,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getFilters(array $params = [])
+	public function getFilters(?array $params = null)
 	{
+		$params = $params ?? [];
 		if (isset($params['filter_id'])) {
 			$url = '/_ml/filters/' . $this->encode($params['filter_id']);
 			$method = 'GET';
@@ -1111,7 +1194,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['filter_id'], $request, 'ml.get_filters');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1122,20 +1207,20 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) Identifier for the anomaly detection job
-	 *     exclude_interim: boolean, // Exclude interim results
-	 *     from: int, // skips a number of influencers
-	 *     size: int, // specifies a max number of influencers to get
-	 *     start: string, // start timestamp for the requested influencers
-	 *     end: string, // end timestamp for the requested influencers
-	 *     influencer_score: double, // influencer score threshold for the requested influencers
-	 *     sort: string, // sort field for the requested influencers
-	 *     desc: boolean, // whether the results should be sorted in decending order
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  Influencer selection criteria
+	 *     exclude_interim?: bool, // Exclude interim results
+	 *     from?: int, // skips a number of influencers
+	 *     size?: int, // specifies a max number of influencers to get
+	 *     start?: string, // start timestamp for the requested influencers
+	 *     end?: string, // end timestamp for the requested influencers
+	 *     influencer_score?: float, // influencer score threshold for the requested influencers
+	 *     sort?: string, // sort field for the requested influencers
+	 *     desc?: bool, // whether the results should be sorted in decending order
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // Influencer selection criteria. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -1145,8 +1230,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getInfluencers(array $params = [])
+	public function getInfluencers(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id'], $params);
 		$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/results/influencers';
 		$method = empty($params['body']) ? 'GET' : 'POST';
@@ -1156,7 +1242,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id'], $request, 'ml.get_influencers');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1166,13 +1254,13 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job-stats.html
 	 *
 	 * @param array{
-	 *     job_id: string, //  The ID of the jobs stats to fetch
-	 *     allow_no_match: boolean, // Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     job_id?: string, // The ID of the jobs stats to fetch
+	 *     allow_no_match?: bool, // Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -1181,8 +1269,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getJobStats(array $params = [])
+	public function getJobStats(?array $params = null)
 	{
+		$params = $params ?? [];
 		if (isset($params['job_id'])) {
 			$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/_stats';
 			$method = 'GET';
@@ -1194,7 +1283,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id'], $request, 'ml.get_job_stats');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1204,14 +1295,14 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job.html
 	 *
 	 * @param array{
-	 *     job_id: string, //  The ID of the jobs to fetch
-	 *     allow_no_match: boolean, // Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)
-	 *     exclude_generated: boolean, // Omits fields that are illegal to set on job PUT
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     job_id?: string, // The ID of the jobs to fetch
+	 *     allow_no_match?: bool, // Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)
+	 *     exclude_generated?: bool, // Omits fields that are illegal to set on job PUT
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -1220,8 +1311,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getJobs(array $params = [])
+	public function getJobs(?array $params = null)
 	{
+		$params = $params ?? [];
 		if (isset($params['job_id'])) {
 			$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']);
 			$method = 'GET';
@@ -1233,7 +1325,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id'], $request, 'ml.get_jobs');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1243,14 +1337,14 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/get-ml-memory.html
 	 *
 	 * @param array{
-	 *     node_id: string, //  Specifies the node or nodes to retrieve stats for.
-	 *     master_timeout: time, // Explicit operation timeout for connection to master node
-	 *     timeout: time, // Explicit operation timeout
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     node_id?: string, // Specifies the node or nodes to retrieve stats for.
+	 *     master_timeout?: int|string, // Explicit operation timeout for connection to master node
+	 *     timeout?: int|string, // Explicit operation timeout
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -1259,8 +1353,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getMemoryStats(array $params = [])
+	public function getMemoryStats(?array $params = null)
 	{
+		$params = $params ?? [];
 		if (isset($params['node_id'])) {
 			$url = '/_ml/memory/' . $this->encode($params['node_id']) . '/_stats';
 			$method = 'GET';
@@ -1272,7 +1367,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['node_id'], $request, 'ml.get_memory_stats');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1284,12 +1381,12 @@ class Ml extends AbstractEndpoint
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The ID of the job. May be a wildcard, comma separated list or `_all`.
 	 *     snapshot_id: string, // (REQUIRED) The ID of the snapshot. May be a wildcard, comma separated list or `_all`.
-	 *     allow_no_match: boolean, // Whether to ignore if a wildcard expression matches no jobs or no snapshots. (This includes the `_all` string.)
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     allow_no_match?: bool, // Whether to ignore if a wildcard expression matches no jobs or no snapshots. (This includes the `_all` string.)
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -1299,8 +1396,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getModelSnapshotUpgradeStats(array $params = [])
+	public function getModelSnapshotUpgradeStats(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id','snapshot_id'], $params);
 		$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/model_snapshots/' . $this->encode($params['snapshot_id']) . '/_upgrade/_stats';
 		$method = 'GET';
@@ -1309,7 +1407,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id', 'snapshot_id'], $request, 'ml.get_model_snapshot_upgrade_stats');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1320,19 +1420,19 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The ID of the job to fetch
-	 *     snapshot_id: string, //  The ID of the snapshot to fetch
-	 *     from: int, // Skips a number of documents
-	 *     size: int, // The default number of documents returned in queries as a string.
-	 *     start: date, // The filter 'start' query parameter
-	 *     end: date, // The filter 'end' query parameter
-	 *     sort: string, // Name of the field to sort on
-	 *     desc: boolean, // True if the results should be sorted in descending order
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  Model snapshot selection criteria
+	 *     snapshot_id?: string, // The ID of the snapshot to fetch
+	 *     from?: int, // Skips a number of documents
+	 *     size?: int, // The default number of documents returned in queries as a string.
+	 *     start?: string, // The filter 'start' query parameter
+	 *     end?: string, // The filter 'end' query parameter
+	 *     sort?: string, // Name of the field to sort on
+	 *     desc?: bool, // True if the results should be sorted in descending order
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // Model snapshot selection criteria. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -1342,8 +1442,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getModelSnapshots(array $params = [])
+	public function getModelSnapshots(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id'], $params);
 		if (isset($params['snapshot_id'])) {
 			$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/model_snapshots/' . $this->encode($params['snapshot_id']);
@@ -1357,7 +1458,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id', 'snapshot_id'], $request, 'ml.get_model_snapshots');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1368,19 +1471,19 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The job IDs for which to calculate overall bucket results
-	 *     top_n: int, // The number of top job bucket scores to be used in the overall_score calculation
-	 *     bucket_span: string, // The span of the overall buckets. Defaults to the longest job bucket_span
-	 *     overall_score: double, // Returns overall buckets with overall scores higher than this value
-	 *     exclude_interim: boolean, // If true overall buckets that include interim buckets will be excluded
-	 *     start: string, // Returns overall buckets with timestamps after this time
-	 *     end: string, // Returns overall buckets with timestamps earlier than this time
-	 *     allow_no_match: boolean, // Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  Overall bucket selection details if not provided in URI
+	 *     top_n?: int, // The number of top job bucket scores to be used in the overall_score calculation
+	 *     bucket_span?: string, // The span of the overall buckets. Defaults to the longest job bucket_span
+	 *     overall_score?: float, // Returns overall buckets with overall scores higher than this value
+	 *     exclude_interim?: bool, // If true overall buckets that include interim buckets will be excluded
+	 *     start?: string, // Returns overall buckets with timestamps after this time
+	 *     end?: string, // Returns overall buckets with timestamps earlier than this time
+	 *     allow_no_match?: bool, // Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // Overall bucket selection details if not provided in URI. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -1390,8 +1493,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getOverallBuckets(array $params = [])
+	public function getOverallBuckets(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id'], $params);
 		$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/results/overall_buckets';
 		$method = empty($params['body']) ? 'GET' : 'POST';
@@ -1401,7 +1505,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id'], $request, 'ml.get_overall_buckets');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1412,20 +1518,20 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The ID of the job
-	 *     exclude_interim: boolean, // Exclude interim results
-	 *     from: int, // skips a number of records
-	 *     size: int, // specifies a max number of records to get
-	 *     start: string, // Start time filter for records
-	 *     end: string, // End time filter for records
-	 *     record_score: double, // Returns records with anomaly scores greater or equal than this value
-	 *     sort: string, // Sort records by a particular field
-	 *     desc: boolean, // Set the sort direction
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  Record selection criteria
+	 *     exclude_interim?: bool, // Exclude interim results
+	 *     from?: int, // skips a number of records
+	 *     size?: int, // specifies a max number of records to get
+	 *     start?: string, // Start time filter for records
+	 *     end?: string, // End time filter for records
+	 *     record_score?: float, // Returns records with anomaly scores greater or equal than this value
+	 *     sort?: string, // Sort records by a particular field
+	 *     desc?: bool, // Set the sort direction
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // Record selection criteria. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -1435,8 +1541,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getRecords(array $params = [])
+	public function getRecords(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id'], $params);
 		$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/results/records';
 		$method = empty($params['body']) ? 'GET' : 'POST';
@@ -1446,7 +1553,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id'], $request, 'ml.get_records');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1456,20 +1565,20 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/get-trained-models.html
 	 *
 	 * @param array{
-	 *     model_id: string, //  The ID of the trained models to fetch
-	 *     allow_no_match: boolean, // Whether to ignore if a wildcard expression matches no trained models. (This includes `_all` string or when no trained models have been specified)
-	 *     include: string, // A comma-separate list of fields to optionally include. Valid options are 'definition' and 'total_feature_importance'. Default is none.
-	 *     include_model_definition: boolean, // Should the full model definition be included in the results. These definitions can be large. So be cautious when including them. Defaults to false.
-	 *     decompress_definition: boolean, // Should the model definition be decompressed into valid JSON or returned in a custom compressed format. Defaults to true.
-	 *     from: int, // skips a number of trained models
-	 *     size: int, // specifies a max number of trained models to get
-	 *     tags: list, // A comma-separated list of tags that the model must have.
-	 *     exclude_generated: boolean, // Omits fields that are illegal to set on model PUT
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     model_id?: string, // The ID of the trained models to fetch
+	 *     allow_no_match?: bool, // Whether to ignore if a wildcard expression matches no trained models. (This includes `_all` string or when no trained models have been specified)
+	 *     include?: string, // A comma-separate list of fields to optionally include. Valid options are 'definition' and 'total_feature_importance'. Default is none.
+	 *     include_model_definition?: bool, // Should the full model definition be included in the results. These definitions can be large. So be cautious when including them. Defaults to false.
+	 *     decompress_definition?: bool, // Should the model definition be decompressed into valid JSON or returned in a custom compressed format. Defaults to true.
+	 *     from?: int, // skips a number of trained models
+	 *     size?: int, // specifies a max number of trained models to get
+	 *     tags?: string|array<string>, // A comma-separated list of tags that the model must have.
+	 *     exclude_generated?: bool, // Omits fields that are illegal to set on model PUT
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -1478,8 +1587,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getTrainedModels(array $params = [])
+	public function getTrainedModels(?array $params = null)
 	{
+		$params = $params ?? [];
 		if (isset($params['model_id'])) {
 			$url = '/_ml/trained_models/' . $this->encode($params['model_id']);
 			$method = 'GET';
@@ -1491,7 +1601,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['model_id'], $request, 'ml.get_trained_models');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1501,15 +1613,15 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/get-trained-models-stats.html
 	 *
 	 * @param array{
-	 *     model_id: string, //  The ID of the trained models stats to fetch
-	 *     allow_no_match: boolean, // Whether to ignore if a wildcard expression matches no trained models. (This includes `_all` string or when no trained models have been specified)
-	 *     from: int, // skips a number of trained models
-	 *     size: int, // specifies a max number of trained models to get
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     model_id?: string, // The ID of the trained models stats to fetch
+	 *     allow_no_match?: bool, // Whether to ignore if a wildcard expression matches no trained models. (This includes `_all` string or when no trained models have been specified)
+	 *     from?: int, // skips a number of trained models
+	 *     size?: int, // specifies a max number of trained models to get
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -1518,8 +1630,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getTrainedModelsStats(array $params = [])
+	public function getTrainedModelsStats(?array $params = null)
 	{
+		$params = $params ?? [];
 		if (isset($params['model_id'])) {
 			$url = '/_ml/trained_models/' . $this->encode($params['model_id']) . '/_stats';
 			$method = 'GET';
@@ -1531,7 +1644,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['model_id'], $request, 'ml.get_trained_models_stats');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1542,13 +1657,13 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     model_id: string, // (REQUIRED) The unique identifier of the trained model.
-	 *     timeout: time, // Controls the amount of time to wait for inference results.
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The docs to apply inference on and inference configuration overrides
+	 *     timeout?: int|string, // Controls the amount of time to wait for inference results.
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The docs to apply inference on and inference configuration overrides. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -1558,8 +1673,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function inferTrainedModel(array $params = [])
+	public function inferTrainedModel(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['model_id','body'], $params);
 		$url = '/_ml/trained_models/' . $this->encode($params['model_id']) . '/_infer';
 		$method = 'POST';
@@ -1569,7 +1685,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['model_id'], $request, 'ml.infer_trained_model');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1579,11 +1697,11 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/get-ml-info.html
 	 *
 	 * @param array{
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -1592,8 +1710,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function info(array $params = [])
+	public function info(?array $params = null)
 	{
+		$params = $params ?? [];
 		$url = '/_ml/info';
 		$method = 'GET';
 
@@ -1601,7 +1720,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, [], $request, 'ml.info');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1612,12 +1733,12 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The ID of the job to open
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  Query parameters can be specified in the body
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // Query parameters can be specified in the body. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -1627,8 +1748,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function openJob(array $params = [])
+	public function openJob(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id'], $params);
 		$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/_open';
 		$method = 'POST';
@@ -1638,7 +1760,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id'], $request, 'ml.open_job');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1649,12 +1773,12 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     calendar_id: string, // (REQUIRED) The ID of the calendar to modify
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) A list of events
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) A list of events. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -1664,8 +1788,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function postCalendarEvents(array $params = [])
+	public function postCalendarEvents(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['calendar_id','body'], $params);
 		$url = '/_ml/calendars/' . $this->encode($params['calendar_id']) . '/events';
 		$method = 'POST';
@@ -1675,7 +1800,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['calendar_id'], $request, 'ml.post_calendar_events');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1686,14 +1813,14 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The name of the job receiving the data
-	 *     reset_start: string, // Optional parameter to specify the start of the bucket resetting range
-	 *     reset_end: string, // Optional parameter to specify the end of the bucket resetting range
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The data to process
+	 *     reset_start?: string, // Optional parameter to specify the start of the bucket resetting range
+	 *     reset_end?: string, // Optional parameter to specify the end of the bucket resetting range
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The data to process. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -1703,8 +1830,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function postData(array $params = [])
+	public function postData(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id','body'], $params);
 		$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/_data';
 		$method = 'POST';
@@ -1712,9 +1840,11 @@ class Ml extends AbstractEndpoint
 		$url = $this->addQueryString($url, $params, ['reset_start','reset_end','pretty','human','error_trace','source','filter_path']);
 		$headers = [
 			'Accept' => 'application/json',
-			'Content-Type' => isset($params['body']) && (is_string($params['body']) || $this->isAssociativeArray($params['body'])) ? 'application/json' : 'application/x-ndjson',
+			'Content-Type' => is_string($params['body']) || $this->isAssociativeArray($params['body']) ? 'application/json' : 'application/x-ndjson',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id'], $request, 'ml.post_data');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1724,13 +1854,13 @@ class Ml extends AbstractEndpoint
 	 * @see http://www.elastic.co/guide/en/elasticsearch/reference/current/preview-dfanalytics.html
 	 *
 	 * @param array{
-	 *     id: string, //  The ID of the data frame analytics to preview
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  The data frame analytics config to preview
+	 *     id?: string, // The ID of the data frame analytics to preview
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // The data frame analytics config to preview. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -1739,8 +1869,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function previewDataFrameAnalytics(array $params = [])
+	public function previewDataFrameAnalytics(?array $params = null)
 	{
+		$params = $params ?? [];
 		if (isset($params['id'])) {
 			$url = '/_ml/data_frame/analytics/' . $this->encode($params['id']) . '/_preview';
 			$method = empty($params['body']) ? 'GET' : 'POST';
@@ -1753,7 +1884,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['id'], $request, 'ml.preview_data_frame_analytics');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1763,15 +1896,15 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/ml-preview-datafeed.html
 	 *
 	 * @param array{
-	 *     datafeed_id: string, //  The ID of the datafeed to preview
-	 *     start: string, // The start time from where the datafeed preview should begin
-	 *     end: string, // The end time when the datafeed preview should stop
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  The datafeed config and job config with which to execute the preview
+	 *     datafeed_id?: string, // The ID of the datafeed to preview
+	 *     start?: string, // The start time from where the datafeed preview should begin
+	 *     end?: string, // The end time when the datafeed preview should stop
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // The datafeed config and job config with which to execute the preview. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -1780,8 +1913,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function previewDatafeed(array $params = [])
+	public function previewDatafeed(?array $params = null)
 	{
+		$params = $params ?? [];
 		if (isset($params['datafeed_id'])) {
 			$url = '/_ml/datafeeds/' . $this->encode($params['datafeed_id']) . '/_preview';
 			$method = empty($params['body']) ? 'GET' : 'POST';
@@ -1794,7 +1928,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['datafeed_id'], $request, 'ml.preview_datafeed');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1805,12 +1941,12 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     calendar_id: string, // (REQUIRED) The ID of the calendar to create
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  The calendar details
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // The calendar details. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -1820,8 +1956,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function putCalendar(array $params = [])
+	public function putCalendar(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['calendar_id'], $params);
 		$url = '/_ml/calendars/' . $this->encode($params['calendar_id']);
 		$method = 'PUT';
@@ -1831,7 +1968,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['calendar_id'], $request, 'ml.put_calendar');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1843,11 +1982,11 @@ class Ml extends AbstractEndpoint
 	 * @param array{
 	 *     calendar_id: string, // (REQUIRED) The ID of the calendar to modify
 	 *     job_id: string, // (REQUIRED) The ID of the job to add to the calendar
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -1857,8 +1996,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function putCalendarJob(array $params = [])
+	public function putCalendarJob(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['calendar_id','job_id'], $params);
 		$url = '/_ml/calendars/' . $this->encode($params['calendar_id']) . '/jobs/' . $this->encode($params['job_id']);
 		$method = 'PUT';
@@ -1867,7 +2007,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['calendar_id', 'job_id'], $request, 'ml.put_calendar_job');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1878,12 +2020,12 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     id: string, // (REQUIRED) The ID of the data frame analytics to create
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The data frame analytics configuration
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The data frame analytics configuration. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -1893,8 +2035,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function putDataFrameAnalytics(array $params = [])
+	public function putDataFrameAnalytics(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['id','body'], $params);
 		$url = '/_ml/data_frame/analytics/' . $this->encode($params['id']);
 		$method = 'PUT';
@@ -1904,7 +2047,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['id'], $request, 'ml.put_data_frame_analytics');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1915,16 +2060,16 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     datafeed_id: string, // (REQUIRED) The ID of the datafeed to create
-	 *     ignore_unavailable: boolean, // Ignore unavailable indexes (default: false)
-	 *     allow_no_indices: boolean, // Ignore if the source indices expressions resolves to no concrete indices (default: true)
-	 *     ignore_throttled: boolean, // Ignore indices that are marked as throttled (default: true)
-	 *     expand_wildcards: enum, // Whether source index expressions should get expanded to open or closed indices (default: open)
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The datafeed config
+	 *     ignore_unavailable?: bool, // Ignore unavailable indexes (default: false)
+	 *     allow_no_indices?: bool, // Ignore if the source indices expressions resolves to no concrete indices (default: true)
+	 *     ignore_throttled?: bool, // Ignore indices that are marked as throttled (default: true)
+	 *     expand_wildcards?: string, // Whether source index expressions should get expanded to open or closed indices (default: open)
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The datafeed config. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -1934,8 +2079,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function putDatafeed(array $params = [])
+	public function putDatafeed(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['datafeed_id','body'], $params);
 		$url = '/_ml/datafeeds/' . $this->encode($params['datafeed_id']);
 		$method = 'PUT';
@@ -1945,7 +2091,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['datafeed_id'], $request, 'ml.put_datafeed');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1956,12 +2104,12 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     filter_id: string, // (REQUIRED) The ID of the filter to create
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The filter details
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The filter details. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -1971,8 +2119,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function putFilter(array $params = [])
+	public function putFilter(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['filter_id','body'], $params);
 		$url = '/_ml/filters/' . $this->encode($params['filter_id']);
 		$method = 'PUT';
@@ -1982,7 +2131,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['filter_id'], $request, 'ml.put_filter');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -1993,16 +2144,16 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The ID of the job to create
-	 *     ignore_unavailable: boolean, // Ignore unavailable indexes (default: false). Only set if datafeed_config is provided.
-	 *     allow_no_indices: boolean, // Ignore if the source indices expressions resolves to no concrete indices (default: true). Only set if datafeed_config is provided.
-	 *     ignore_throttled: boolean, // Ignore indices that are marked as throttled (default: true). Only set if datafeed_config is provided.
-	 *     expand_wildcards: enum, // Whether source index expressions should get expanded to open or closed indices (default: open). Only set if datafeed_config is provided.
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The job
+	 *     ignore_unavailable?: bool, // Ignore unavailable indexes (default: false). Only set if datafeed_config is provided.
+	 *     allow_no_indices?: bool, // Ignore if the source indices expressions resolves to no concrete indices (default: true). Only set if datafeed_config is provided.
+	 *     ignore_throttled?: bool, // Ignore indices that are marked as throttled (default: true). Only set if datafeed_config is provided.
+	 *     expand_wildcards?: string, // Whether source index expressions should get expanded to open or closed indices (default: open). Only set if datafeed_config is provided.
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The job. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2012,8 +2163,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function putJob(array $params = [])
+	public function putJob(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id','body'], $params);
 		$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']);
 		$method = 'PUT';
@@ -2023,7 +2175,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id'], $request, 'ml.put_job');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2034,13 +2188,14 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     model_id: string, // (REQUIRED) The ID of the trained models to store
-	 *     defer_definition_decompression: boolean, // If set to `true` and a `compressed_definition` is provided, the request defers definition decompression and skips relevant validations.
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The trained model configuration
+	 *     defer_definition_decompression?: bool, // If set to `true` and a `compressed_definition` is provided, the request defers definition decompression and skips relevant validations.
+	 *     wait_for_completion?: bool, // Whether to wait for all child operations(e.g. model download) to complete, before returning or not. Default to false
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The trained model configuration. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2050,18 +2205,21 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function putTrainedModel(array $params = [])
+	public function putTrainedModel(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['model_id','body'], $params);
 		$url = '/_ml/trained_models/' . $this->encode($params['model_id']);
 		$method = 'PUT';
 
-		$url = $this->addQueryString($url, $params, ['defer_definition_decompression','pretty','human','error_trace','source','filter_path']);
+		$url = $this->addQueryString($url, $params, ['defer_definition_decompression','wait_for_completion','pretty','human','error_trace','source','filter_path']);
 		$headers = [
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['model_id'], $request, 'ml.put_trained_model');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2073,12 +2231,12 @@ class Ml extends AbstractEndpoint
 	 * @param array{
 	 *     model_alias: string, // (REQUIRED) The trained model alias to update
 	 *     model_id: string, // (REQUIRED) The trained model where the model alias should be assigned
-	 *     reassign: boolean, // If the model_alias already exists and points to a separate model_id, this parameter must be true. Defaults to false.
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     reassign?: bool, // If the model_alias already exists and points to a separate model_id, this parameter must be true. Defaults to false.
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2088,8 +2246,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function putTrainedModelAlias(array $params = [])
+	public function putTrainedModelAlias(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['model_alias','model_id'], $params);
 		$url = '/_ml/trained_models/' . $this->encode($params['model_id']) . '/model_aliases/' . $this->encode($params['model_alias']);
 		$method = 'PUT';
@@ -2099,7 +2258,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['model_alias', 'model_id'], $request, 'ml.put_trained_model_alias');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2111,12 +2272,12 @@ class Ml extends AbstractEndpoint
 	 * @param array{
 	 *     model_id: string, // (REQUIRED) The ID of the trained model for this definition part
 	 *     part: int, // (REQUIRED) The part number
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The trained model definition part
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The trained model definition part. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2126,8 +2287,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function putTrainedModelDefinitionPart(array $params = [])
+	public function putTrainedModelDefinitionPart(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['model_id','part','body'], $params);
 		$url = '/_ml/trained_models/' . $this->encode($params['model_id']) . '/definition/' . $this->encode($params['part']);
 		$method = 'PUT';
@@ -2137,7 +2299,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['model_id', 'part'], $request, 'ml.put_trained_model_definition_part');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2148,12 +2312,12 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     model_id: string, // (REQUIRED) The ID of the trained model for this vocabulary
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The trained model vocabulary
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The trained model vocabulary. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2163,8 +2327,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function putTrainedModelVocabulary(array $params = [])
+	public function putTrainedModelVocabulary(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['model_id','body'], $params);
 		$url = '/_ml/trained_models/' . $this->encode($params['model_id']) . '/vocabulary';
 		$method = 'PUT';
@@ -2174,7 +2339,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['model_id'], $request, 'ml.put_trained_model_vocabulary');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2185,12 +2352,13 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The ID of the job to reset
-	 *     wait_for_completion: boolean, // Should this request wait until the operation has completed before returning
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     wait_for_completion?: bool, // Should this request wait until the operation has completed before returning
+	 *     delete_user_annotations?: bool, // Should annotations added by the user be deleted
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2200,17 +2368,20 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function resetJob(array $params = [])
+	public function resetJob(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id'], $params);
 		$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/_reset';
 		$method = 'POST';
 
-		$url = $this->addQueryString($url, $params, ['wait_for_completion','pretty','human','error_trace','source','filter_path']);
+		$url = $this->addQueryString($url, $params, ['wait_for_completion','delete_user_annotations','pretty','human','error_trace','source','filter_path']);
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id'], $request, 'ml.reset_job');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2222,13 +2393,13 @@ class Ml extends AbstractEndpoint
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The ID of the job to fetch
 	 *     snapshot_id: string, // (REQUIRED) The ID of the snapshot to revert to
-	 *     delete_intervening_results: boolean, // Should we reset the results back to the time of the snapshot?
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  Reversion options
+	 *     delete_intervening_results?: bool, // Should we reset the results back to the time of the snapshot?
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // Reversion options. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2238,8 +2409,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function revertModelSnapshot(array $params = [])
+	public function revertModelSnapshot(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id','snapshot_id'], $params);
 		$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/model_snapshots/' . $this->encode($params['snapshot_id']) . '/_revert';
 		$method = 'POST';
@@ -2249,7 +2421,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id', 'snapshot_id'], $request, 'ml.revert_model_snapshot');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2259,13 +2433,13 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/ml-set-upgrade-mode.html
 	 *
 	 * @param array{
-	 *     enabled: boolean, // Whether to enable upgrade_mode ML setting or not. Defaults to false.
-	 *     timeout: time, // Controls the time to wait before action times out. Defaults to 30 seconds
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     enabled?: bool, // Whether to enable upgrade_mode ML setting or not. Defaults to false.
+	 *     timeout?: int|string, // Controls the time to wait before action times out. Defaults to 30 seconds
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -2274,8 +2448,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function setUpgradeMode(array $params = [])
+	public function setUpgradeMode(?array $params = null)
 	{
+		$params = $params ?? [];
 		$url = '/_ml/set_upgrade_mode';
 		$method = 'POST';
 
@@ -2283,7 +2458,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, [], $request, 'ml.set_upgrade_mode');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2294,13 +2471,13 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     id: string, // (REQUIRED) The ID of the data frame analytics to start
-	 *     timeout: time, // Controls the time to wait until the task has started. Defaults to 20 seconds
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  The start data frame analytics parameters
+	 *     timeout?: int|string, // Controls the time to wait until the task has started. Defaults to 20 seconds
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // The start data frame analytics parameters. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2310,8 +2487,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function startDataFrameAnalytics(array $params = [])
+	public function startDataFrameAnalytics(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['id'], $params);
 		$url = '/_ml/data_frame/analytics/' . $this->encode($params['id']) . '/_start';
 		$method = 'POST';
@@ -2321,7 +2499,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['id'], $request, 'ml.start_data_frame_analytics');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2332,15 +2512,15 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     datafeed_id: string, // (REQUIRED) The ID of the datafeed to start
-	 *     start: string, // The start time from where the datafeed should begin
-	 *     end: string, // The end time when the datafeed should stop. When not set, the datafeed continues in real time
-	 *     timeout: time, // Controls the time to wait until a datafeed has started. Default to 20 seconds
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  The start datafeed parameters
+	 *     start?: string, // The start time from where the datafeed should begin
+	 *     end?: string, // The end time when the datafeed should stop. When not set, the datafeed continues in real time
+	 *     timeout?: int|string, // Controls the time to wait until a datafeed has started. Default to 20 seconds
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // The start datafeed parameters. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2350,8 +2530,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function startDatafeed(array $params = [])
+	public function startDatafeed(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['datafeed_id'], $params);
 		$url = '/_ml/datafeeds/' . $this->encode($params['datafeed_id']) . '/_start';
 		$method = 'POST';
@@ -2361,7 +2542,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['datafeed_id'], $request, 'ml.start_datafeed');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2372,18 +2555,20 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     model_id: string, // (REQUIRED) The unique identifier of the trained model.
-	 *     cache_size: string, // A byte-size value for configuring the inference cache size. For example, 20mb.
-	 *     number_of_allocations: int, // The total number of allocations this model is assigned across machine learning nodes.
-	 *     threads_per_allocation: int, // The number of threads used by each model allocation during inference.
-	 *     priority: string, // The deployment priority.
-	 *     queue_capacity: int, // Controls how many inference requests are allowed in the queue at a time.
-	 *     timeout: time, // Controls the amount of time to wait for the model to deploy.
-	 *     wait_for: string, // The allocation status for which to wait
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     cache_size?: string, // A byte-size value for configuring the inference cache size. For example, 20mb.
+	 *     deployment_id?: string, // The Id of the new deployment. Defaults to the model_id if not set.
+	 *     number_of_allocations?: int, // The total number of allocations this model is assigned across machine learning nodes.
+	 *     threads_per_allocation?: int, // The number of threads used by each model allocation during inference.
+	 *     priority?: string, // The deployment priority.
+	 *     queue_capacity?: int, // Controls how many inference requests are allowed in the queue at a time.
+	 *     timeout?: int|string, // Controls the amount of time to wait for the model to deploy.
+	 *     wait_for?: string, // The allocation status for which to wait
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // The settings for the trained model deployment. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2393,18 +2578,21 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function startTrainedModelDeployment(array $params = [])
+	public function startTrainedModelDeployment(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['model_id'], $params);
 		$url = '/_ml/trained_models/' . $this->encode($params['model_id']) . '/deployment/_start';
 		$method = 'POST';
 
-		$url = $this->addQueryString($url, $params, ['cache_size','number_of_allocations','threads_per_allocation','priority','queue_capacity','timeout','wait_for','pretty','human','error_trace','source','filter_path']);
+		$url = $this->addQueryString($url, $params, ['cache_size','deployment_id','number_of_allocations','threads_per_allocation','priority','queue_capacity','timeout','wait_for','pretty','human','error_trace','source','filter_path']);
 		$headers = [
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['model_id'], $request, 'ml.start_trained_model_deployment');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2415,15 +2603,15 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     id: string, // (REQUIRED) The ID of the data frame analytics to stop
-	 *     allow_no_match: boolean, // Whether to ignore if a wildcard expression matches no data frame analytics. (This includes `_all` string or when no data frame analytics have been specified)
-	 *     force: boolean, // True if the data frame analytics should be forcefully stopped
-	 *     timeout: time, // Controls the time to wait until the task has stopped. Defaults to 20 seconds
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  The stop data frame analytics parameters
+	 *     allow_no_match?: bool, // Whether to ignore if a wildcard expression matches no data frame analytics. (This includes `_all` string or when no data frame analytics have been specified)
+	 *     force?: bool, // True if the data frame analytics should be forcefully stopped
+	 *     timeout?: int|string, // Controls the time to wait until the task has stopped. Defaults to 20 seconds
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // The stop data frame analytics parameters. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2433,8 +2621,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function stopDataFrameAnalytics(array $params = [])
+	public function stopDataFrameAnalytics(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['id'], $params);
 		$url = '/_ml/data_frame/analytics/' . $this->encode($params['id']) . '/_stop';
 		$method = 'POST';
@@ -2444,7 +2633,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['id'], $request, 'ml.stop_data_frame_analytics');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2455,16 +2646,15 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     datafeed_id: string, // (REQUIRED) The ID of the datafeed to stop
-	 *     allow_no_match: boolean, // Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)
-	 *     allow_no_datafeeds: boolean, // Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)
-	 *     force: boolean, // True if the datafeed should be forcefully stopped.
-	 *     timeout: time, // Controls the time to wait until a datafeed has stopped. Default to 20 seconds
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  The URL params optionally sent in the body
+	 *     allow_no_match?: bool, // Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)
+	 *     force?: bool, // True if the datafeed should be forcefully stopped.
+	 *     timeout?: int|string, // Controls the time to wait until a datafeed has stopped. Default to 20 seconds
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // The URL params optionally sent in the body. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2474,18 +2664,21 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function stopDatafeed(array $params = [])
+	public function stopDatafeed(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['datafeed_id'], $params);
 		$url = '/_ml/datafeeds/' . $this->encode($params['datafeed_id']) . '/_stop';
 		$method = 'POST';
 
-		$url = $this->addQueryString($url, $params, ['allow_no_match','allow_no_datafeeds','force','timeout','pretty','human','error_trace','source','filter_path']);
+		$url = $this->addQueryString($url, $params, ['allow_no_match','force','timeout','pretty','human','error_trace','source','filter_path']);
 		$headers = [
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['datafeed_id'], $request, 'ml.stop_datafeed');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2496,14 +2689,14 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     model_id: string, // (REQUIRED) The unique identifier of the trained model.
-	 *     allow_no_match: boolean, // Whether to ignore if a wildcard expression matches no deployments. (This includes `_all` string or when no deployments have been specified)
-	 *     force: boolean, // True if the deployment should be forcefully stopped
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, //  The stop deployment parameters
+	 *     allow_no_match?: bool, // Whether to ignore if a wildcard expression matches no deployments. (This includes `_all` string or when no deployments have been specified)
+	 *     force?: bool, // True if the deployment should be forcefully stopped
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // The stop deployment parameters. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2513,8 +2706,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function stopTrainedModelDeployment(array $params = [])
+	public function stopTrainedModelDeployment(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['model_id'], $params);
 		$url = '/_ml/trained_models/' . $this->encode($params['model_id']) . '/deployment/_stop';
 		$method = 'POST';
@@ -2524,7 +2718,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['model_id'], $request, 'ml.stop_trained_model_deployment');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2535,12 +2731,12 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     id: string, // (REQUIRED) The ID of the data frame analytics to update
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The data frame analytics settings to update
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The data frame analytics settings to update. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2550,8 +2746,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function updateDataFrameAnalytics(array $params = [])
+	public function updateDataFrameAnalytics(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['id','body'], $params);
 		$url = '/_ml/data_frame/analytics/' . $this->encode($params['id']) . '/_update';
 		$method = 'POST';
@@ -2561,7 +2758,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['id'], $request, 'ml.update_data_frame_analytics');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2572,16 +2771,16 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     datafeed_id: string, // (REQUIRED) The ID of the datafeed to update
-	 *     ignore_unavailable: boolean, // Ignore unavailable indexes (default: false)
-	 *     allow_no_indices: boolean, // Ignore if the source indices expressions resolves to no concrete indices (default: true)
-	 *     ignore_throttled: boolean, // Ignore indices that are marked as throttled (default: true)
-	 *     expand_wildcards: enum, // Whether source index expressions should get expanded to open or closed indices (default: open)
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The datafeed update settings
+	 *     ignore_unavailable?: bool, // Ignore unavailable indexes (default: false)
+	 *     allow_no_indices?: bool, // Ignore if the source indices expressions resolves to no concrete indices (default: true)
+	 *     ignore_throttled?: bool, // Ignore indices that are marked as throttled (default: true)
+	 *     expand_wildcards?: string, // Whether source index expressions should get expanded to open or closed indices (default: open)
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The datafeed update settings. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2591,8 +2790,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function updateDatafeed(array $params = [])
+	public function updateDatafeed(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['datafeed_id','body'], $params);
 		$url = '/_ml/datafeeds/' . $this->encode($params['datafeed_id']) . '/_update';
 		$method = 'POST';
@@ -2602,7 +2802,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['datafeed_id'], $request, 'ml.update_datafeed');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2613,12 +2815,12 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     filter_id: string, // (REQUIRED) The ID of the filter to update
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The filter update
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The filter update. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2628,8 +2830,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function updateFilter(array $params = [])
+	public function updateFilter(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['filter_id','body'], $params);
 		$url = '/_ml/filters/' . $this->encode($params['filter_id']) . '/_update';
 		$method = 'POST';
@@ -2639,7 +2842,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['filter_id'], $request, 'ml.update_filter');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2650,12 +2855,12 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The ID of the job to create
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The job update settings
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The job update settings. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2665,8 +2870,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function updateJob(array $params = [])
+	public function updateJob(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id','body'], $params);
 		$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/_update';
 		$method = 'POST';
@@ -2676,7 +2882,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id'], $request, 'ml.update_job');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2688,12 +2896,12 @@ class Ml extends AbstractEndpoint
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The ID of the job to fetch
 	 *     snapshot_id: string, // (REQUIRED) The ID of the snapshot to update
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The model snapshot properties to update
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The model snapshot properties to update. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2703,8 +2911,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function updateModelSnapshot(array $params = [])
+	public function updateModelSnapshot(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id','snapshot_id','body'], $params);
 		$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/model_snapshots/' . $this->encode($params['snapshot_id']) . '/_update';
 		$method = 'POST';
@@ -2714,23 +2923,26 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id', 'snapshot_id'], $request, 'ml.update_model_snapshot');
+		return $this->client->sendRequest($request);
 	}
 
 
 	/**
 	 * Updates certain properties of trained model deployment.
 	 *
-	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-trained-model-deployment.html
+	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/update-trained-model-deployment.html
 	 *
 	 * @param array{
 	 *     model_id: string, // (REQUIRED) The unique identifier of the trained model.
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The updated trained model deployment settings
+	 *     number_of_allocations?: int, // Update the model deployment to this number of allocations.
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body?: string|array<mixed>, // The updated trained model deployment settings. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2740,18 +2952,21 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function updateTrainedModelDeployment(array $params = [])
+	public function updateTrainedModelDeployment(?array $params = null)
 	{
-		$this->checkRequiredParameters(['model_id','body'], $params);
+		$params = $params ?? [];
+		$this->checkRequiredParameters(['model_id'], $params);
 		$url = '/_ml/trained_models/' . $this->encode($params['model_id']) . '/deployment/_update';
 		$method = 'POST';
 
-		$url = $this->addQueryString($url, $params, ['pretty','human','error_trace','source','filter_path']);
+		$url = $this->addQueryString($url, $params, ['number_of_allocations','pretty','human','error_trace','source','filter_path']);
 		$headers = [
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['model_id'], $request, 'ml.update_trained_model_deployment');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2763,13 +2978,13 @@ class Ml extends AbstractEndpoint
 	 * @param array{
 	 *     job_id: string, // (REQUIRED) The ID of the job
 	 *     snapshot_id: string, // (REQUIRED) The ID of the snapshot
-	 *     timeout: time, // How long should the API wait for the job to be opened and the old snapshot to be loaded.
-	 *     wait_for_completion: boolean, // Should the request wait until the task is complete before responding to the caller. Default is false.
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     timeout?: int|string, // How long should the API wait for the job to be opened and the old snapshot to be loaded.
+	 *     wait_for_completion?: bool, // Should the request wait until the task is complete before responding to the caller. Default is false.
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -2779,8 +2994,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function upgradeJobSnapshot(array $params = [])
+	public function upgradeJobSnapshot(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['job_id','snapshot_id'], $params);
 		$url = '/_ml/anomaly_detectors/' . $this->encode($params['job_id']) . '/model_snapshots/' . $this->encode($params['snapshot_id']) . '/_upgrade';
 		$method = 'POST';
@@ -2789,7 +3005,9 @@ class Ml extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['job_id', 'snapshot_id'], $request, 'ml.upgrade_job_snapshot');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2799,12 +3017,12 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/machine-learning/current/ml-jobs.html
 	 *
 	 * @param array{
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The job config
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The job config. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -2813,8 +3031,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function validate(array $params = [])
+	public function validate(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['body'], $params);
 		$url = '/_ml/anomaly_detectors/_validate';
 		$method = 'POST';
@@ -2824,7 +3043,9 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, [], $request, 'ml.validate');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -2834,12 +3055,12 @@ class Ml extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/machine-learning/current/ml-jobs.html
 	 *
 	 * @param array{
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The detector
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The detector. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws NoNodeAvailableException if all the hosts are offline
@@ -2848,8 +3069,9 @@ class Ml extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function validateDetector(array $params = [])
+	public function validateDetector(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['body'], $params);
 		$url = '/_ml/anomaly_detectors/_validate/detector';
 		$method = 'POST';
@@ -2859,6 +3081,8 @@ class Ml extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, [], $request, 'ml.validate_detector');
+		return $this->client->sendRequest($request);
 	}
 }

@@ -20,6 +20,7 @@ use Elastic\Transport\Exception;
 use Elastic\Transport\NodePool\Resurrect\NoResurrect;
 use Elastic\Transport\NodePool\Selector\RoundRobin;
 use Http\Discovery\Psr18ClientDiscovery;
+use OpenTelemetry\API\Trace\TracerInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -30,7 +31,11 @@ class TransportBuilder
     protected ClientInterface $client;
     protected NodePoolInterface $nodePool;
     protected LoggerInterface $logger;
+    /**
+     * @var array<string>
+     */
     protected array $hosts = [];
+    protected TracerInterface $OTelTracer;
 
     final public function __construct()
     {
@@ -86,12 +91,18 @@ class TransportBuilder
         return $this->logger;
     }
 
+    /**
+     * @param array<string> $hosts
+     */
     public function setHosts(array $hosts): self
     {
         $this->hosts = $hosts;
         return $this;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getHosts(): array
     {
         return $this->hosts;

@@ -250,6 +250,30 @@ a [PSR-18](https://www.php-fig.org/psr/psr-18/) client for the syncronous reques
 a different [HttpAsyncClient](https://github.com/php-http/httplug/blob/master/src/HttpAsyncClient.php)
 client for the asyncronous requests.
 
+## OpenTelemetry
+
+Starting from v8.9.0 we introduced the support of OpenTelemetry for the HTTP send request.
+Right now the support is only for syncronous HTTP call.
+
+In order to enable the OpenTelemetry you need to set the ENV variable
+`OTEL_PHP_INSTRUMENTATION_ELASTICSEARCH_ENABLED` to true.
+
+We added the support of OpenTelemetry natively in the `Transport:sendRequest()` function.
+By default, the Transport create a span from a Tracer provider (e.g. Global) with the
+following attributes:
+
+```
+http.request.method
+url.full
+server.address
+server.port
+```
+
+We also added a `$opts` array as second optional parameter for the `Transport:sendRequest()`
+to pass additional attributes for OTel instrumentation.
+
+We created an [OpenTelemetry](src/OpenTelemetry.php) class to provide all the configuration.
+
 ## Copyright and License
 
 Copyright (c) [Elasticsearch B.V](https://www.elastic.co).

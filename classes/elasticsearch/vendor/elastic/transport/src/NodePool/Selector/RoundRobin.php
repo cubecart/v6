@@ -23,7 +23,7 @@ class RoundRobin implements SelectorInterface
 
     public function nextNode(): Node
     {
-        if (empty($this->getNodes())) {
+        if (empty($this->nodes)) {
             $className = substr(__CLASS__, strrpos(__CLASS__, '\\') + 1);
             throw new NoNodeAvailableException(sprintf(
                 "No node available. Please use %s::setNodes() before calling %s::nextNode().",
@@ -31,9 +31,9 @@ class RoundRobin implements SelectorInterface
                 $className
             ));
         }
-        $node = current($this->nodes);
-        if (false === next($this->nodes)) {
-            reset($this->nodes);
+        $node = next($this->nodes);
+        if (false === $node) {
+            return reset($this->nodes);
         }
         return $node;
     }   

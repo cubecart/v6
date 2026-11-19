@@ -30,7 +30,7 @@ trait ProductCheckTrait
         if (Client::$isSearchly) {
             return;
         }
-        $statusCode = $response->getStatusCode();
+        $statusCode = (int) $response->getStatusCode();
         if ($statusCode >= 200 && $statusCode < 300) {
             $product = $response->getHeaderLine(Elasticsearch::HEADER_CHECK);
             if (empty($product) || $product !== Elasticsearch::PRODUCT_NAME) {

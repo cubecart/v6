@@ -28,12 +28,15 @@ use Exception;
 use Http\Client\HttpAsyncClient;
 use Http\Discovery\HttpAsyncClientDiscovery;
 use Http\Promise\Promise;
+use OpenTelemetry\API\Globals;
+use OpenTelemetry\API\Trace\TracerInterface;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Client\NetworkExceptionInterface;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 
 use function get_class;
@@ -48,22 +51,26 @@ use function strtolower;
 
 final class Transport implements ClientInterface, HttpAsyncClient
 {
-    const VERSION = "8.6.0";
+    const VERSION = "8.11.1";
 
     private ClientInterface $client;
     private LoggerInterface $logger;
     private NodePoolInterface $nodePool;
+    /**
+     * @var array<mixed>
+     */
     private array $headers = [];
     private string $user;
     private string $password;
-    private RequestInterface $lastRequest;
-    private ResponseInterface $lastResponse;
+    private ?RequestInterface $lastRequest = null;
+    private ?ResponseInterface $lastResponse = null;
     private string $OSVersion;
     private int $retries = 0;
     private HttpAsyncClient $asyncClient;
     private OnSuccessInterface $onAsyncSuccess;
     private OnFailureInterface $onAsyncFailure;
-
+    private TracerInterface $otelTracer;
+    
     public function __construct(
         ClientInterface $client,
         NodePoolInterface $nodePool,
@@ -89,6 +96,22 @@ final class Transport implements ClientInterface, HttpAsyncClient
         return $this->logger;
     }
 
+    public function getOTelTracer(): TracerInterface
+    {
+        if (empty($this->otelTracer)) {
+            $this->otelTracer = OpenTelemetry::getTracer(
+                Globals::tracerProvider()
+            );
+        }
+        return $this->otelTracer;
+    }
+
+    public function setOTelTracer(TracerInterface $tracer): self
+    {
+        $this->otelTracer = $tracer;
+        return $this;
+    }
+
     public function setHeader(string $name, string $value): self
     {
         $this->headers[$name] = $value;
@@ -112,6 +135,9 @@ final class Transport implements ClientInterface, HttpAsyncClient
         return $this->retries;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getHeaders(): array
     {
         return $this->headers;
@@ -170,12 +196,12 @@ final class Transport implements ClientInterface, HttpAsyncClient
         return str_replace(['alpha', 'beta', 'snapshot', 'rc', 'pre'], 'p', strtolower($version)); 
     }
 
-    public function getLastRequest(): RequestInterface
+    public function getLastRequest(): ?RequestInterface
     {
         return $this->lastRequest;
     }
 
-    public function getLastResponse(): ResponseInterface
+    public function getLastResponse(): ?ResponseInterface
     {
         return $this->lastResponse;
     }
@@ -213,12 +239,29 @@ final class Transport implements ClientInterface, HttpAsyncClient
     private function setupConnectionUri(Node $node, RequestInterface $request): RequestInterface
     {
         $uri = $node->getUri();
+        $path = $request->getUri()->getPath();
         
+        $nodePath = $uri->getPath();
+        // If the node has a path we need to use it as prefix for the existing path
+        // @see https://github.com/elastic/elastic-transport-php/pull/20
+        if (!empty($nodePath)) {
+            $path = sprintf("%s/%s", rtrim($nodePath, '/'), ltrim($path,'/'));
+        }
+        // If the user information is not in the request, we check if it is present in the node uri
+        // @see https://github.com/elastic/elastic-transport-php/issues/18
+        if (empty($request->getUri()->getUserInfo()) && !empty($uri->getUserInfo())) {
+            $userInfo = explode(':', $uri->getUserInfo());
+            $request = $request->withUri(
+                $request->getUri()
+                    ->withUserInfo($userInfo[0], $userInfo[1] ?? null)
+            );
+        }
         return $request->withUri(
             $request->getUri()
                 ->withHost($uri->getHost())
                 ->withPort($uri->getPort())
                 ->withScheme($uri->getScheme())
+                ->withPath($path)
         );
     }
 
@@ -235,6 +278,8 @@ final class Transport implements ClientInterface, HttpAsyncClient
             json_encode($message->getHeaders()),
             (string) $message->getBody()
         ));
+
+        $message->getBody()->rewind();
     }
 
     private function logRequest(string $title, RequestInterface $request): void
@@ -277,11 +322,32 @@ final class Transport implements ClientInterface, HttpAsyncClient
         $request = $this->decorateRequest($request);
         $this->lastRequest = $request;
         $this->logRequest("Request", $request);
-        
+
+        // OpenTelemetry get tracer
+        if (getenv(OpenTelemetry::ENV_VARIABLE_ENABLED)) {
+            $tracer = $this->getOTelTracer();
+        }
+
+        $lastNetworkException = null;
         $count = -1;
         while ($count < $this->getRetries()) {
             try {
                 $count++;
+                // OpenTelemetry span start
+                if (!empty($tracer)) {
+                    if ($request instanceof ServerRequestInterface) {
+                        $opts = $request->getAttribute(OpenTelemetry::PSR7_OTEL_ATTRIBUTE_NAME, []);
+                    }
+                    $spanName = $opts['db.operation.name'] ?? $request->getUri()->getPath();
+                    $span = $tracer->spanBuilder($spanName)->startSpan();
+                    $span->setAttribute('http.request.method', $request->getMethod());
+                    $span->setAttribute('url.full', $this->getFullUrl($request));
+                    $span->setAttribute('server.address', $request->getUri()->getHost());
+                    $span->setAttribute('server.port', $request->getUri()->getPort());
+                    if (!empty($opts)) {
+                        $span->setAttributes($opts);
+                    }
+                }
                 $response = $this->client->sendRequest($request);
 
                 $this->lastResponse = $response;
@@ -289,7 +355,11 @@ final class Transport implements ClientInterface, HttpAsyncClient
 
                 return $response;
             } catch (NetworkExceptionInterface $e) {
+                $lastNetworkException = $e;
                 $this->logger->error(sprintf("Retry %d: %s", $count, $e->getMessage()));
+                if (!empty($span)) {
+                    $span->setAttribute('error.type', $e->getMessage());
+                }
                 if (isset($node)) {
                     $node->markAlive(false);
                     $node = $this->nodePool->nextNode();
@@ -297,12 +367,20 @@ final class Transport implements ClientInterface, HttpAsyncClient
                 }
             } catch (ClientExceptionInterface $e) {
                 $this->logger->error(sprintf("Retry %d: %s", $count, $e->getMessage()));
+                if (!empty($span)) {
+                    $span->setAttribute('error.type', $e->getMessage());
+                }
                 throw $e;
+            } finally {
+                 // OpenTelemetry span end
+                if (!empty($span)) {
+                    $span->end();
+                }
             }
         }
         $exceededMsg = sprintf("Exceeded maximum number of retries (%d)", $this->getRetries());
         $this->logger->error($exceededMsg);
-        throw new NoNodeAvailableException($exceededMsg);
+        throw new NoNodeAvailableException($exceededMsg, 0, $lastNetworkException);
     }
 
     public function setAsyncClient(HttpAsyncClient $asyncClient): self
@@ -435,16 +513,38 @@ final class Transport implements ClientInterface, HttpAsyncClient
      * Here a list of supported libraries:
      * gu => guzzlehttp/guzzle
      * sy => symfony/http-client
+     * 
+     * @return array<mixed>
      */
     private function getClientLibraryInfo(): array
     {
         $clientClass = get_class($this->client);
-        if ($clientClass === 'GuzzleHttp\Client') {
-            return ['gu', InstalledVersions::getPrettyVersion('guzzlehttp/guzzle')];
+        if (false !== strpos($clientClass, 'GuzzleHttp\Client')) {
+            return ['gu', InstalledVersions::getPrettyVersion('guzzlehttp/guzzle')]; 
         }
         if (false !== strpos($clientClass, 'Symfony\Component\HttpClient')) {
             return ['sy', InstalledVersions::getPrettyVersion('symfony/http-client')];
         }
         return [];
+    }
+
+    /**
+     * Return the full URL in the format
+     * scheme://host:port/path?query_string
+     */
+    private function getFullUrl(RequestInterface $request): string
+    {
+        $fullUrl = sprintf(
+            "%s://%s:%s%s", 
+            $request->getUri()->getScheme(),
+            $request->getUri()->getHost(),
+            $request->getUri()->getPort(),
+            $request->getUri()->getPath()
+        );
+        $queryString = $request->getUri()->getQuery();
+        if (!empty($queryString)) {
+            $fullUrl .= '?' . $queryString;
+        }
+        return $fullUrl;
     }
 }

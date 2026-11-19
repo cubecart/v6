@@ -21,6 +21,7 @@ use Elastic\Elasticsearch\Exception\InvalidArgumentException;
 use Elastic\Elasticsearch\Transport\Adapter\AdapterInterface;
 use Elastic\Elasticsearch\Transport\Adapter\AdapterOptions;
 use Elastic\Elasticsearch\Transport\RequestOptions;
+use Elastic\Transport\Exception\NoAsyncClientException;
 use Elastic\Transport\NodePool\NodePoolInterface;
 use Elastic\Transport\Transport;
 use Elastic\Transport\TransportBuilder;
@@ -225,7 +226,7 @@ class ClientBuilder
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-create-api-key.html
      */
-    public function setApiKey(string $apiKey, string $id = null): ClientBuilder
+    public function setApiKey(string $apiKey, ?string $id = null): ClientBuilder
     {
         if (empty($id)) {
             $this->apiKey = $apiKey;
@@ -271,7 +272,7 @@ class ClientBuilder
      * @param string $cert The name of a file containing a PEM formatted certificate
      * @param string $password if the certificate requires a password
      */
-    public function setSSLCert(string $cert, string $password = null): ClientBuilder
+    public function setSSLCert(string $cert, ?string $password = null): ClientBuilder
     {
         $this->sslCert = [$cert, $password];
         return $this;
@@ -294,7 +295,7 @@ class ClientBuilder
      * @param string $key The name of a file containing a private SSL key
      * @param string $password if the private key requires a password
      */
-    public function setSSLKey(string $key, string $password = null): ClientBuilder
+    public function setSSLKey(string $key, ?string $password = null): ClientBuilder
     {
         $this->sslKey = [$key, $password];
         return $this;
@@ -411,8 +412,12 @@ class ClientBuilder
         if (false !== strpos(get_class($transport->getClient()), 'Symfony\Component\HttpClient')) {
             return true;
         }
-        if (false !== strpos(get_class($transport->getAsyncClient()), 'Symfony\Component\HttpClient')) {
-            return true;
+        try {
+            if (false !== strpos(get_class($transport->getAsyncClient()), 'Symfony\Component\HttpClient')) {
+                return true;
+            }
+        } catch (NoAsyncClientException $e) {
+            return false;
         }
         return false;
     }

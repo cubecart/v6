@@ -35,11 +35,11 @@ class Logstash extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     id: string, // (REQUIRED) The ID of the Pipeline
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -49,8 +49,9 @@ class Logstash extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function deletePipeline(array $params = [])
+	public function deletePipeline(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['id'], $params);
 		$url = '/_logstash/pipeline/' . $this->encode($params['id']);
 		$method = 'DELETE';
@@ -59,7 +60,9 @@ class Logstash extends AbstractEndpoint
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['id'], $request, 'logstash.delete_pipeline');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -69,32 +72,37 @@ class Logstash extends AbstractEndpoint
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/logstash-api-get-pipeline.html
 	 *
 	 * @param array{
-	 *     id: string, // (REQUIRED) A comma-separated list of Pipeline IDs
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
+	 *     id?: string, // A comma-separated list of Pipeline IDs
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
 	 * } $params
 	 *
-	 * @throws MissingParameterException if a required parameter is missing
 	 * @throws NoNodeAvailableException if all the hosts are offline
 	 * @throws ClientResponseException if the status code of response is 4xx
 	 * @throws ServerResponseException if the status code of response is 5xx
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function getPipeline(array $params = [])
+	public function getPipeline(?array $params = null)
 	{
-		$this->checkRequiredParameters(['id'], $params);
-		$url = '/_logstash/pipeline/' . $this->encode($params['id']);
-		$method = 'GET';
-
+		$params = $params ?? [];
+		if (isset($params['id'])) {
+			$url = '/_logstash/pipeline/' . $this->encode($params['id']);
+			$method = 'GET';
+		} else {
+			$url = '/_logstash/pipeline';
+			$method = 'GET';
+		}
 		$url = $this->addQueryString($url, $params, ['pretty','human','error_trace','source','filter_path']);
 		$headers = [
 			'Accept' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['id'], $request, 'logstash.get_pipeline');
+		return $this->client->sendRequest($request);
 	}
 
 
@@ -105,12 +113,12 @@ class Logstash extends AbstractEndpoint
 	 *
 	 * @param array{
 	 *     id: string, // (REQUIRED) The ID of the Pipeline
-	 *     pretty: boolean, // Pretty format the returned JSON response. (DEFAULT: false)
-	 *     human: boolean, // Return human readable values for statistics. (DEFAULT: true)
-	 *     error_trace: boolean, // Include the stack trace of returned errors. (DEFAULT: false)
-	 *     source: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
-	 *     filter_path: list, // A comma-separated list of filters used to reduce the response.
-	 *     body: array, // (REQUIRED) The Pipeline to add or update
+	 *     pretty?: bool, // Pretty format the returned JSON response. (DEFAULT: false)
+	 *     human?: bool, // Return human readable values for statistics. (DEFAULT: true)
+	 *     error_trace?: bool, // Include the stack trace of returned errors. (DEFAULT: false)
+	 *     source?: string, // The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests.
+	 *     filter_path?: string|array<string>, // A comma-separated list of filters used to reduce the response.
+	 *     body: string|array<mixed>, // (REQUIRED) The Pipeline to add or update. If body is a string must be a valid JSON.
 	 * } $params
 	 *
 	 * @throws MissingParameterException if a required parameter is missing
@@ -120,8 +128,9 @@ class Logstash extends AbstractEndpoint
 	 *
 	 * @return Elasticsearch|Promise
 	 */
-	public function putPipeline(array $params = [])
+	public function putPipeline(?array $params = null)
 	{
+		$params = $params ?? [];
 		$this->checkRequiredParameters(['id','body'], $params);
 		$url = '/_logstash/pipeline/' . $this->encode($params['id']);
 		$method = 'PUT';
@@ -131,6 +140,8 @@ class Logstash extends AbstractEndpoint
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/json',
 		];
-		return $this->client->sendRequest($this->createRequest($method, $url, $headers, $params['body'] ?? null));
+		$request = $this->createRequest($method, $url, $headers, $params['body'] ?? null);
+		$request = $this->addOtelAttributes($params, ['id'], $request, 'logstash.put_pipeline');
+		return $this->client->sendRequest($request);
 	}
 }
