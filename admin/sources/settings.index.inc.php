@@ -179,6 +179,10 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
                 $logo_update = true;
             }
         }
+    }
+    // The first logo uploaded is switched on as it arrives, with no row in the form to
+    // post. Without this the store, its emails and its invoices kept the skin's own logo.
+    if (isset($_POST['logo']) || !empty($logo_update)) {
         $GLOBALS['gui']->rebuildLogos();
     }
 
