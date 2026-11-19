@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'sendgrid/sendgrid',
-        'pretty_version' => '8.1.2',
-        'version' => '8.1.2.0',
-        'reference' => '6700d2cf50df38915fa2d9a03affbca58c48599f',
+        'pretty_version' => '8.1.11',
+        'version' => '8.1.11.0',
+        'reference' => '1ed29bffffaec0216dc1330bb437d3b305428a11',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'sendgrid/sendgrid' => array(
-            'pretty_version' => '8.1.2',
-            'version' => '8.1.2.0',
-            'reference' => '6700d2cf50df38915fa2d9a03affbca58c48599f',
+            'pretty_version' => '8.1.11',
+            'version' => '8.1.11.0',
+            'reference' => '1ed29bffffaec0216dc1330bb437d3b305428a11',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -35,9 +35,9 @@
             ),
         ),
         'starkbank/ecdsa' => array(
-            'pretty_version' => '0.0.5',
-            'version' => '0.0.5.0',
-            'reference' => '484bedac47bac4012dc73df91da221f0a66845cb',
+            'pretty_version' => '2.1.0',
+            'version' => '2.1.0.0',
+            'reference' => '4a227c48b179544abb73b20f17440b4654e07041',
             'type' => 'library',
             'install_path' => __DIR__ . '/../starkbank/ecdsa',
             'aliases' => array(),

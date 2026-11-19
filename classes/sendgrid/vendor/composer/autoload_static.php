@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitb8cdbfd36fe8771e1ec1488c63934b81
+class ComposerStaticInit6f061c095ef247475b080997ad11517a
 {
     public static $files = array (
         '79f66bc0a1900f77abe4a9a299057a0a' => __DIR__ . '/..' . '/starkbank/ecdsa/src/ellipticcurve.php',
@@ -19,6 +19,10 @@ class ComposerStaticInitb8cdbfd36fe8771e1ec1488c63934b81
             'SendGrid\\EventWebhook\\' => 22,
             'SendGrid\\Contacts\\' => 18,
             'SendGrid\\' => 9,
+        ),
+        'E' => 
+        array (
+            'EllipticCurve\\' => 14,
         ),
     );
 
@@ -47,11 +51,31 @@ class ComposerStaticInitb8cdbfd36fe8771e1ec1488c63934b81
         array (
             0 => __DIR__ . '/..' . '/sendgrid/php-http-client/lib',
         ),
+        'EllipticCurve\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/starkbank/ecdsa/src',
+        ),
     );
 
     public static $classMap = array (
         'BaseSendGridClientInterface' => __DIR__ . '/../..' . '/lib/BaseSendGridClientInterface.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'EllipticCurve\\Curve' => __DIR__ . '/..' . '/starkbank/ecdsa/src/curve.php',
+        'EllipticCurve\\Ecdsa' => __DIR__ . '/..' . '/starkbank/ecdsa/src/ecdsa.php',
+        'EllipticCurve\\Math' => __DIR__ . '/..' . '/starkbank/ecdsa/src/math.php',
+        'EllipticCurve\\Point' => __DIR__ . '/..' . '/starkbank/ecdsa/src/point.php',
+        'EllipticCurve\\PrivateKey' => __DIR__ . '/..' . '/starkbank/ecdsa/src/privatekey.php',
+        'EllipticCurve\\PublicKey' => __DIR__ . '/..' . '/starkbank/ecdsa/src/publickey.php',
+        'EllipticCurve\\Signature' => __DIR__ . '/..' . '/starkbank/ecdsa/src/signature.php',
+        'EllipticCurve\\Utils\\Binary' => __DIR__ . '/..' . '/starkbank/ecdsa/src/utils/binary.php',
+        'EllipticCurve\\Utils\\Der' => __DIR__ . '/..' . '/starkbank/ecdsa/src/utils/der.php',
+        'EllipticCurve\\Utils\\DerFieldType' => __DIR__ . '/..' . '/starkbank/ecdsa/src/utils/der.php',
+        'EllipticCurve\\Utils\\File' => __DIR__ . '/..' . '/starkbank/ecdsa/src/utils/file.php',
+        'EllipticCurve\\Utils\\Integer' => __DIR__ . '/..' . '/starkbank/ecdsa/src/utils/integer.php',
+        'EllipticCurve\\Utils\\Oid' => __DIR__ . '/..' . '/starkbank/ecdsa/src/utils/oid.php',
+        'EllipticCurve\\Utils\\Parser' => __DIR__ . '/..' . '/starkbank/ecdsa/src/utils/der.php',
+        'EllipticCurve\\Utils\\Pem' => __DIR__ . '/..' . '/starkbank/ecdsa/src/utils/pem.php',
+        'EllipticCurve\\Utils\\TagCode' => __DIR__ . '/..' . '/starkbank/ecdsa/src/utils/der.php',
         'SendGrid' => __DIR__ . '/../..' . '/lib/SendGrid.php',
         'TwilioEmail' => __DIR__ . '/../..' . '/lib/TwilioEmail.php',
     );
@@ -59,9 +83,9 @@ class ComposerStaticInitb8cdbfd36fe8771e1ec1488c63934b81
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitb8cdbfd36fe8771e1ec1488c63934b81::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitb8cdbfd36fe8771e1ec1488c63934b81::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitb8cdbfd36fe8771e1ec1488c63934b81::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit6f061c095ef247475b080997ad11517a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit6f061c095ef247475b080997ad11517a::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit6f061c095ef247475b080997ad11517a::$classMap;
 
         }, null, ClassLoader::class);
     }
