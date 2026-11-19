@@ -35,6 +35,7 @@
             <td class="actions">
                {if $language.upgrade_available}<a href="{$language.upgrade_url}" title="{$LANG.maintain.upgrade_now}"><i class="fa fa-arrow-up" title="{$LANG.maintain.upgrade_now}"></i></a>{/if}
                <a href="{$language.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+               {if !empty($language.revert_url)}<a href="{$language.revert_url}" class="confirm" title="{$language.revert_confirm|escape:'html'}"><i class="fa fa-undo" title="{$LANG.translate.revert_language}"></i></a>{/if}
                <a href="{$language.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
             </td>
          </tr>

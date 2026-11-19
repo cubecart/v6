@@ -624,6 +624,56 @@ class Language
     }
 
     /**
+     * Put every email in a language back to the wording its pack came with. The subject,
+     * preview text and body are replaced; whether each email is switched on is kept. An
+     * email the pack does not have (one added by an extension) is left alone.
+     *
+     * @param string $language e.g. de-DE
+     * @return int How many emails were replaced or added
+     */
+    public function resetEmails($language)
+    {
+        $file = CC_LANGUAGE_DIR.'email_'.$language.'.xml';
+        if (!preg_match(self::LANG_REGEX, (string)$language) || !file_exists($file)) {
+            return 0;
+        }
+        $data = file_get_contents($file);
+        if (($gz = @gzuncompress($data)) !== false) {
+            $data = $gz;
+        }
+        try {
+            $xml = new SimpleXMLElement($data);
+        } catch (Exception $e) {
+            trigger_error($e->getMessage());
+            return 0;
+        }
+        $count = 0;
+        foreach ($xml->email as $email) {
+            $type  = (string)$email->attributes()->name;
+            $stock = $this->stockEmail($type, $language);
+            if ($type === '' || !$stock) {
+                continue;
+            }
+            // The database layer strips backslashes from every value, so shield any the wording has
+            $record = array('subject' => addslashes($stock['subject']), 'preheader' => '', 'content_html' => addslashes($stock['content_html']));
+            if ($GLOBALS['db']->select('CubeCart_email_content', array('content_id'), array('content_type' => $type, 'language' => $language), false, 1, false, false)) {
+                $GLOBALS['db']->update('CubeCart_email_content', $record, array('content_type' => $type, 'language' => $language), true, array('subject', 'preheader', 'content_html'));
+            } else {
+                // Switched on or off as the same email is in the store's other languages
+                $other = $GLOBALS['db']->select('CubeCart_email_content', array('enabled'), array('content_type' => $type), false, 1, false, false);
+                $GLOBALS['db']->insert('CubeCart_email_content', $record + array(
+                    'content_type' => $type,
+                    'language'     => $language,
+                    'description'  => $type,
+                    'enabled'      => $other ? (int)$other[0]['enabled'] : 1,
+                ));
+            }
+            $count++;
+        }
+        return $count;
+    }
+
+    /**
      * Import email language
      *
      * @param string $source

@@ -3230,6 +3230,9 @@ This email was sent automatically by the CubeCart setup tool.]]></string>
     <string name="language_updates_available" introduced="6.6.3"><![CDATA[Language updates available:]]></string>
     <string name="error_language_install" introduced="6.6.0"><![CDATA[Failed to install language. Please check your internet connection and try again.]]></string>
     <string name="error_language_install_write" introduced="6.6.0"><![CDATA[Cannot install language: %s is not writable.]]></string>
+    <string name="revert_language" introduced="6.9.0"><![CDATA[Revert to default]]></string>
+    <string name="confirm_language_revert" introduced="6.9.0"><![CDATA[Revert %s to the official language pack? The strings you have edited for it are deleted, every email in it is replaced with the pack's wording, and its language files are downloaded again. This cannot be undone.]]></string>
+    <string name="notify_language_reverted" introduced="6.9.0"><![CDATA[%1$s has been reverted to the official language pack: its edited strings were removed and %2$d emails were replaced.]]></string>
     <string name="error_language_install_version" introduced="6.8.0"><![CDATA[Cannot install language %1$s: version %2$s requires a newer version of CubeCart than %3$s.]]></string>
   </group>
   <group name="ui">

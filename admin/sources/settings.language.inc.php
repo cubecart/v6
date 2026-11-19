@@ -91,8 +91,16 @@ if (isset($_POST['export']) && Admin::getInstance()->permissions('settings', CC_
     httpredir(currentPage(array('export'), array('language' => $_GET['export'])));
 }
 
-if (isset($_GET['install']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT) && isset($_GET['token']) && $_GET['token'] == SESSION_TOKEN) {
-    $install_code = $_GET['install'];
+/**
+ * Download the official pack for a language from the marketplace and put its files in
+ * place: the language file, its emails and its flag. Nothing is changed unless the
+ * download works and every file it would replace can be written.
+ *
+ * @param string $install_code e.g. de-DE
+ * @param bool $version_blocked Set when the pack is for a newer CubeCart than this one
+ * @return bool
+ */
+$install_language_pack = function ($install_code, &$version_blocked) use ($lang) {
     $installed = false;
     $version_blocked = false;
 
@@ -177,12 +185,6 @@ if (isset($_GET['install']) && Admin::getInstance()->permissions('settings', CC_
                             }
                         }
 
-                        // Import email content if available
-                        $email_file = 'email_'.$install_code.'.xml';
-                        if (file_exists(CC_LANGUAGE_DIR.$email_file)) {
-                            $GLOBALS['language']->importEmail($email_file);
-                        }
-
                         // Preserve existing enabled/disabled status on upgrade; only
                         // default to disabled when the language wasn't already installed.
                         $existing_languages_cfg = $GLOBALS['config']->get('languages');
@@ -201,6 +203,16 @@ if (isset($_GET['install']) && Admin::getInstance()->permissions('settings', CC_
             }
         }
     }
+    return $installed;
+};
+
+if (isset($_GET['install']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT) && isset($_GET['token']) && $_GET['token'] == SESSION_TOKEN) {
+    $install_code = (string)$_GET['install'];
+    $installed = $install_language_pack($install_code, $version_blocked);
+    // Import email content if available
+    if ($installed && file_exists(CC_LANGUAGE_DIR.'email_'.$install_code.'.xml')) {
+        $GLOBALS['language']->importEmail('email_'.$install_code.'.xml');
+    }
 
     if ($installed) {
         $GLOBALS['main']->successMessage(sprintf($lang['translate']['notify_language_installed'], $install_code));
@@ -208,6 +220,25 @@ if (isset($_GET['install']) && Admin::getInstance()->permissions('settings', CC_
         $GLOBALS['main']->errorMessage($lang['translate']['error_language_install']);
     }
     httpredir(currentPage(array('install', 'token')));
+}
+
+## Revert a language to its official pack: the language file and its emails are downloaded
+## again, the strings edited on this page for it are deleted, and every email in it is put
+## back to the pack's wording. Nothing is deleted unless the download works.
+if (isset($_GET['revert']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT) && Admin::getInstance()->permissions('settings', CC_PERM_DELETE) && isset($_GET['token']) && $_GET['token'] == SESSION_TOKEN) {
+    $revert_code = (string)$_GET['revert'];
+    $installed_languages = $GLOBALS['language']->listLanguages(false);
+    if (preg_match('#^[a-z]{2}\-[A-Z]{2}$#', $revert_code) && is_array($installed_languages) && isset($installed_languages[$revert_code])) {
+        if ($install_language_pack($revert_code, $version_blocked)) {
+            $GLOBALS['db']->delete('CubeCart_lang_strings', array('language' => $revert_code));
+            $replaced = $GLOBALS['language']->resetEmails($revert_code);
+            $GLOBALS['cache']->clear();
+            $GLOBALS['main']->successMessage(sprintf($lang['translate']['notify_language_reverted'], $installed_languages[$revert_code]['title'], $replaced));
+        } elseif (!$version_blocked) {
+            $GLOBALS['main']->errorMessage($lang['translate']['error_language_install']);
+        }
+    }
+    httpredir(currentPage(array('revert', 'token')));
 }
 
 $GLOBALS['gui']->addBreadcrumb($lang['translate']['title_languages']);
@@ -458,6 +489,7 @@ if (isset($_GET['export'])) {
     $url_parts = parse_url(CC_STORE_URL);
     $domain = ltrim($url_parts['host'],'www.');
     $current_default = $GLOBALS['config']->get('config', 'default_language');
+    $can_revert = Admin::getInstance()->permissions('settings', CC_PERM_EDIT, false, false) && Admin::getInstance()->permissions('settings', CC_PERM_DELETE, false, false);
     if (($languageList = $GLOBALS['language']->listLanguages()) !== false) {
         foreach ($languageList as $code => $info) {
             $info['status'] = (isset($enabled[$code])) ? (int)$enabled[$code] : 1;
@@ -477,6 +509,11 @@ if (isset($_GET['export'])) {
             $info['upgrade_available'] = (!empty($info['api_version']) && !empty($info['version']) && version_compare($info['api_version'], $info['version'], '>') && version_compare($info['api_version'], CC_VERSION, '<='));
             if ($info['upgrade_available']) {
                 $info['upgrade_url'] = currentPage(null, array('install' => $code, 'token' => SESSION_TOKEN)).'#lang_list';
+            }
+            // Only a language with an official pack for this release can be put back to it
+            if (!empty($info['api_version']) && version_compare($info['api_version'], CC_VERSION, '<=') && $can_revert) {
+                $info['revert_url'] = currentPage(null, array('revert' => $code, 'token' => SESSION_TOKEN)).'#lang_list';
+                $info['revert_confirm'] = sprintf($lang['translate']['confirm_language_revert'], $info['title']);
             }
             $smarty_data['languages'][] = $info;
         }
