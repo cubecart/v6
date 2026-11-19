@@ -950,11 +950,11 @@
             image_description: true,
             file_picker_types: 'image',
             file_picker_callback: function (callback) {
-                // The store's own file manager, the way it answers CKEditor
-                if (!window.CKEDITOR || !CKEDITOR.tools) {
+                // The store's own image picker, the one the rest of the admin uses
+                if (typeof window.ccOpenImagePickerDialog !== 'function') {
                     return;
                 }
-                var number = CKEDITOR.tools.addFunction(function (url) {
+                var picked = function (url) {
                     // It answers with a path on this site; a mail client needs the whole address
                     var address = url, probe = new Image();
                     try {
@@ -974,8 +974,14 @@
                         callback(address, {});
                     };
                     probe.src = address;
+                };
+                window.ccOpenImagePickerDialog({
+                    storageKey: 'editor_dialog',
+                    onPick: function (file) {
+                        $.colorbox.close();
+                        picked('images/source/' + (file.filepath || '') + (file.filename || ''));
+                    }
                 });
-                window.open(window.location.pathname + '?_g=filemanager&mode=fck&CKEditorFuncNum=' + number, 'cc_filemanager', 'width=650,height=500,resizable=yes,scrollbars=yes');
             },
             setup: function (instance) {
                 // Nothing gets into the editor without being made safe first. What is pasted
