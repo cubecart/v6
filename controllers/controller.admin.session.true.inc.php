@@ -158,3 +158,9 @@ foreach ($GLOBALS['hooks']->load('admin.head_css') as $hook) {
     include $hook;
 }
 $GLOBALS['smarty']->assign('HEAD_CSS', $head_css);
+
+// CKEditor is kept for extensions that use class="fck", and is only loaded on a page
+// that needs it (#4742). A page says so by having a textarea of that class or by naming
+// CKEDITOR in its own script; a hook above can also set $load_ckeditor = true.
+$GLOBALS['smarty']->assign('LOAD_CKEDITOR', !empty($load_ckeditor)
+    || (!empty($page_content) && preg_match('/\bfck\b|ckeditor/i', (string)$page_content) === 1));

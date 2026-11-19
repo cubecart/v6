@@ -70,6 +70,9 @@
       <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery.min.js?{$VERSION_HASH}"></script>
       <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery-ui.min.js?{$VERSION_HASH}"></script>
       <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/plugins.php?{$VERSION_HASH}"></script>
+      {* CKEditor is for extensions that still use class="fck"; core uses TinyMCE. It is
+         only loaded where the page has such a box (see the admin controller). *}
+      {if !empty($LOAD_CKEDITOR)}
       <!-- Include CKEditor -->
       <script type="text/javascript" src="includes/ckeditor/ckeditor.js?{$VERSION_HASH}"></script>
       {* CKEditor stamps its own resources (config.js, plugins, skins, lang) with
@@ -79,6 +82,7 @@
          version hash so a core update invalidates them. *}
       <script type="text/javascript">if (typeof CKEDITOR !== 'undefined') { CKEDITOR.timestamp = '{$VERSION_HASH}'; }</script>
       <script type="text/javascript" src="includes/ckeditor/adapters/jquery.js?{$VERSION_HASH}"></script>
+      {/if}
       <script src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/dropzone.js?{$VERSION_HASH}"></script>
       <script>
          {literal}

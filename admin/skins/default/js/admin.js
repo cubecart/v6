@@ -783,6 +783,10 @@ $(document).ready(function() {
             namePattern: "$name$i",
             remove: '<i class="fa fa-trash-o"></i>'
         }), $("textarea.fck").each(function() {
+            // CKEditor is only on the page where the server saw one of these (#4742)
+            if (!$.fn.ckeditor) {
+                return;
+            }
             var fck_lang = 'en';
             if($("#val_admin_lang").length) {
                 fck_lang = $("#val_admin_lang").text().substr(0,2);
