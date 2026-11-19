@@ -213,7 +213,7 @@
 {else}
 <p>We have reviewed your withdrawal request <strong>{$DATA.reference}</strong>{if !empty($DATA.cart_order_id)} for order <strong>{$DATA.cart_order_id}</strong>{/if} and unfortunately we are unable to accept it.</p>
 {/if}
-<p><strong>Reference:</strong> {$DATA.reference}<br><strong>Decision made:</strong> {$DATA.decision_at}<br><strong>Status:</strong> {$DATA.status|capitalize}</p>
+<p><strong>Reference:</strong> {$DATA.reference}<br><strong>Decision made:</strong> {$DATA.decision_at}<br><strong>Status:</strong> {if $DATA.status == 'accepted'}Accepted{elseif $DATA.status == 'refunded'}Refunded{elseif $DATA.status == 'rejected'}Rejected{else}{$DATA.status|capitalize}{/if}</p>
 {if !empty($DATA.note)}<p><strong>A note from us:</strong></p>
 <blockquote style="border-left:3px solid #e3e6e8;color:#555555;margin:8px 0;padding:8px 12px;white-space:pre-wrap;">{$DATA.note|escape}</blockquote>{/if}
 <p>If you have questions about this decision, reply to this email quoting reference <strong>{$DATA.reference}</strong>.</p>
