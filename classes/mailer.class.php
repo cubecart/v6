@@ -621,6 +621,27 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
     }
 
     /**
+     * Give the wording of an email the store's name and address, as {$DATA.store_name}
+     * and {$DATA.storeURL}: the names the template around it already uses. Whatever
+     * sent the email keeps any value of its own.
+     */
+    public static function assignStoreValues()
+    {
+        $data = $GLOBALS['smarty']->getTemplateVars('DATA');
+        if (is_null($data)) {
+            $data = array();
+        }
+        if (!is_array($data)) {
+            return;
+        }
+        $data += array(
+            'store_name' => $GLOBALS['config']->get('config', 'store_name'),
+            'storeURL'   => $GLOBALS['storeURL'],
+        );
+        $GLOBALS['smarty']->assign('DATA', $data);
+    }
+
+    /**
      * Parse contents though Smarty
      *
      * @param string $contents
@@ -628,6 +649,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
      */
     private function _parseContents($contents)
     {
+        self::assignStoreValues();
         if (is_string($contents)) {
             return $this->_cleanseContents($GLOBALS['smarty']->fetch($this->_smarty_resource.$contents));
         } elseif (is_array($contents)) {

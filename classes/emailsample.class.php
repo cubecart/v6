@@ -308,6 +308,8 @@ class EmailSample
                     $GLOBALS['smarty']->assign($name, $value);
                 }
         }
+        // As every email is when it is sent
+        Mailer::assignStoreValues();
         return $used;
     }
 
@@ -400,7 +402,8 @@ class EmailSample
             'ship_product'      => '',
             'ship_tracking'     => 'AB123456789GB',
             'ship_date'         => formatDispatchDate(date('Y-m-d', $now)),
-            'customer_comments' => '',
+            'customer_comments' => 'Comments left by the customer are shown here.',
+            'ip_address'        => '203.0.113.24',
             'note_to_customer'  => 'A note you add to the order is shown here.',
             'subtotal'          => $tax->priceFormat(59, true),
             'raw_subtotal'      => 59,
