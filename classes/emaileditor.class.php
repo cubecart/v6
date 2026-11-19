@@ -31,6 +31,13 @@ class EmailEditor
     const SLOT = '<div id="cc-email-slot"></div>';
 
     /**
+     * Whether what is described is rendered with sample data. An email is: its values
+     * are known. A product, category or document description is not (#4742): what it
+     * can use depends on the page it is shown on, so its logic is shown as code.
+     */
+    private static $_sample = true;
+
+    /**
      * Describe a body for the editor
      *
      * @param string $source The body as stored
@@ -53,6 +60,87 @@ class EmailEditor
             'placeholders' => self::placeholders($macros),
             'sample'       => $used,
         );
+    }
+
+    /**
+     * Describe content that is not an email (a product, category or document description
+     * with "Parse Smarty Tags" on) for the editor. Nothing is rendered: a value is shown
+     * as its own tag, and logic as its code.
+     *
+     * @param string $source
+     * @return array 'units'
+     */
+    public static function describeContent($source)
+    {
+        self::$_sample = false;
+        try {
+            $described = array();
+            foreach (EmailSplitter::split((string)$source) as $i => $unit) {
+                $described[] = self::_unit((string)$i, $unit, array(), '');
+            }
+        } finally {
+            self::$_sample = true;
+        }
+        return array('units' => $described);
+    }
+
+    /**
+     * Compile some Smarty without running it: nothing in it is executed by being checked,
+     * and logic that needs real data to run is not taken for a mistake.
+     *
+     * @param string $source
+     * @throws Throwable When it is not valid Smarty
+     */
+    public static function compile($source)
+    {
+        $GLOBALS['smarty']->createTemplate('eval:'.$source)->compileTemplateSource();
+    }
+
+    /**
+     * Whether some content is valid Smarty
+     *
+     * @param string $source
+     * @return string What is wrong with it, or an empty string
+     */
+    public static function smartyProblem($source)
+    {
+        try {
+            self::compile((string)$source);
+        } catch (Throwable $e) {
+            return self::smartyError($e, array((string)$source));
+        }
+        return '';
+    }
+
+    /**
+     * What is wrong with some Smarty, in a sentence. Smarty names a template held in a
+     * string by its whole source, and quotes the line at fault after it: this says only
+     * which line it is and what is wrong with it.
+     *
+     * @param Throwable $e
+     * @param array $sources What was being compiled, to find the quoted line in
+     * @return string
+     */
+    public static function smartyError($e, $sources = array())
+    {
+        $message = (string)$e->getMessage();
+        if (!preg_match_all('/"\s+on line (\d+) "/', $message, $found, PREG_OFFSET_CAPTURE | PREG_SET_ORDER)) {
+            return str_replace(array('string:', 'eval:'), '', strip_tags($message));
+        }
+        $last   = end($found);
+        $line   = (int)$last[1][0];
+        $reason = substr($message, $last[0][1] + strlen($last[0][0]));
+        foreach ($sources as $source) {
+            $lines = preg_split('/\r\n|\r|\n/', (string)$source);
+            if (isset($lines[$line - 1])) {
+                $quoted = trim(preg_replace('![\t\r\n]+!', ' ', $lines[$line - 1])).'"';
+                if (strpos($reason, $quoted) === 0) {
+                    $reason = substr($reason, strlen($quoted));
+                    break;
+                }
+            }
+        }
+        return sprintf($GLOBALS['language']->email['error_smarty_line'], $line, trim($reason, " -\t"));
     }
 
     /**
@@ -222,6 +310,9 @@ class EmailEditor
      */
     private static function _render($template)
     {
+        if (!self::$_sample) {
+            return '';
+        }
         try {
             return (string)$GLOBALS['smarty']->fetch('eval:'.$template);
         } catch (Throwable $e) {
@@ -289,7 +380,7 @@ class EmailEditor
                 $described['open']  = $unit['open'];
                 $described['close'] = $unit['close'];
                 $described['label'] = self::_condition($unit['open'], $macros);
-                $described['shown'] = (trim($render) !== '');
+                $described['shown'] = (!self::$_sample || trim($render) !== '');
                 $described['inner'] = array();
                 foreach ($unit['inner'] as $n => $inner) {
                     $described['inner'][] = self::_unit($id.'.'.$n, $inner, $macros, '');
@@ -298,6 +389,12 @@ class EmailEditor
             case EmailSplitter::LOCKED:
                 $described['title']  = self::_title($unit['source']);
                 $described['render'] = $render;
+                if (!self::$_sample) {
+                    // There is no sample data to show it with: it is shown as what it is
+                    $described['title']  = $GLOBALS['language']->email['editor_logic'];
+                    $described['note']   = $GLOBALS['language']->email['editor_logic_note'];
+                    $described['render'] = '<pre class="cc-code">'.htmlspecialchars($unit['source'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'</pre>';
+                }
                 break;
         }
         return $described;
@@ -319,6 +416,9 @@ class EmailEditor
             if ($kind === 'value') {
                 $placeholder = self::_placeholder($text, $macros);
                 $html .= '<span class="cc-ph mceNonEditable" data-cc-s="'.self::_attribute($text).'" data-cc-l="'.self::_attribute($placeholder['label']).'" data-cc-v="'.self::_attribute($placeholder['sample']).'" title="'.self::_attribute($placeholder['description']).'">'.htmlspecialchars($placeholder['label'], ENT_QUOTES, 'UTF-8').'</span>';
+            } elseif ($kind === 'island' && !self::$_sample) {
+                // Logic inside a sentence, with no sample data to show it with: its code
+                $html .= '<span class="cc-ph cc-ph--logic cc-ph--code mceNonEditable" data-cc-s="'.self::_attribute($text).'" title="'.self::_attribute($lang['editor_island_code']).'">'.htmlspecialchars($text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'</span>';
             } elseif ($kind === 'island') {
                 // Logic inside a sentence. Shown with the sample data in the sample view; in
                 // the macro view a simple "only when there is a value" part shows what it holds

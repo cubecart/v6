@@ -1622,6 +1622,15 @@ This email is sent from the store's master email address but it is possible to r
     <string name="macro_coupon_description" introduced="6.9.0"><![CDATA[What the discount code gives.]]></string>
     <string name="editor_island_title" introduced="6.9.0"><![CDATA[This part changes from one email to the next. It can be moved or deleted here, and edited in the code view.]]></string>
     <string name="editor_island_empty" introduced="6.9.0"><![CDATA[not in this sample]]></string>
+    <string name="editor_island_code" introduced="6.9.0"><![CDATA[Logic inside a sentence. It can be moved or deleted here, and edited in the code view.]]></string>
+    <string name="editor_logic" introduced="6.9.0"><![CDATA[Smarty logic]]></string>
+    <string name="editor_logic_note" introduced="6.9.0"><![CDATA[Kept exactly as it is. Select it to move it, remove it or edit its code.]]></string>
+    <string name="editor_parked" introduced="6.9.0"><![CDATA[Kept exactly as it is. It can be moved or deleted here, and edited in the code view.]]></string>
+    <string name="editor_content_code_only" introduced="6.9.0"><![CDATA[This could not be divided into wording and logic, so it is shown as code.]]></string>
+    <string name="editor_source_help" introduced="6.9.0"><![CDATA[The content as it is stored.]]></string>
+    <string name="editor_source_help_smarty" introduced="6.9.0"><![CDATA[The content as it is stored: HTML with Smarty tags. It is checked before it is used.]]></string>
+    <string name="editor_smarty_refused" introduced="6.9.0"><![CDATA[This is not valid Smarty, so nothing was saved. %s]]></string>
+    <string name="editor_smarty_saved_invalid" introduced="6.9.0"><![CDATA[%1$s is not valid Smarty (%2$s). Its page will not load until this is put right, or "Parse Smarty Tags" is switched off.]]></string>
     <string name="editor_cond_value" introduced="6.9.0"><![CDATA[Only shown when there is a value for: %s]]></string>
     <string name="editor_cond_code" introduced="6.9.0"><![CDATA[Only shown when: %s]]></string>
     <string name="editor_locked" introduced="6.9.0"><![CDATA[Built automatically]]></string>

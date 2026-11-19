@@ -83,6 +83,17 @@
       <script type="text/javascript">if (typeof CKEDITOR !== 'undefined') { CKEDITOR.timestamp = '{$VERSION_HASH}'; }</script>
       <script type="text/javascript" src="includes/ckeditor/adapters/jquery.js?{$VERSION_HASH}"></script>
       {/if}
+      {* Core's editors (#4742): TinyMCE on textarea.cc-editor, Ace on textarea.cc-code.
+         Each is loaded only where the page has such a box. *}
+      {if !empty($EDITOR_DATA)}
+      <script type="application/json" id="cc_editor_data">{$EDITOR_DATA}</script>
+      <script type="text/javascript" src="includes/tinymce/tinymce.min.js?{$VERSION_HASH}"></script>
+      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.editor.units.js?{$VERSION_HASH}"></script>
+      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.editor.js?{$VERSION_HASH}"></script>
+      {/if}
+      {if !empty($LOAD_CODE_EDITOR)}
+      <script type="text/javascript" src="includes/ace/src-min-noconflict/ace.js?{$VERSION_HASH}" charset="utf-8"></script>
+      {/if}
       <script src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/dropzone.js?{$VERSION_HASH}"></script>
       <script>
          {literal}

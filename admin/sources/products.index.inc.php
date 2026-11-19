@@ -53,7 +53,12 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
     $record = $_POST;
     // CKEditor fields: keep safe formatting + <img> but strip scripts, event
     // handlers and unsafe URI schemes via an allowlist sanitiser (GHSA-43f6-gfcf-wj9c).
-    $record['description'] = Sanitize::htmlClean($GLOBALS['RAW']['POST']['description']);
+    // With "Parse Smarty Tags" on the description is a template: its tags are kept as they are (#4742)
+    $record['description'] = Sanitize::htmlClean($GLOBALS['RAW']['POST']['description'], !empty($_POST['product_parse']));
+    if (!empty($_POST['product_parse']) && ($smarty_problem = EmailEditor::smartyProblem($record['description'])) !== '') {
+        // The editor refuses this before the form is sent; this is for a save that did not come through it
+        $GLOBALS['main']->errorMessage(sprintf($GLOBALS['language']->email['editor_smarty_saved_invalid'], $lang['common']['description'], htmlspecialchars($smarty_problem, ENT_QUOTES, 'UTF-8')));
+    }
     $record['description_short'] = Sanitize::htmlClean($GLOBALS['RAW']['POST']['description_short']);
     $record['spec_copy'] = Sanitize::htmlClean($GLOBALS['RAW']['POST']['spec_copy']);
     if (!empty($record['name'])) {
@@ -468,6 +473,11 @@ if (isset($_GET['delete_review']) && is_numeric($_GET['delete_review']) && Admin
 if (isset($_POST['translate']) && isset($_POST['product_id']) && is_numeric($_POST['product_id']) && Admin::getInstance()->permissions('products', CC_PERM_EDIT)) {
     $_POST['translate']['description'] = $GLOBALS['RAW']['POST']['translate']['description'];
     $_POST['translate']['description_short'] = $GLOBALS['RAW']['POST']['translate']['description_short'];
+    // A translated description is parsed for Smarty when its product's is (#4742)
+    $smarty_parent = $GLOBALS['db']->select('CubeCart_inventory', array('product_parse'), array('product_id' => (int)$_POST['product_id']));
+    if ($smarty_parent && !empty($smarty_parent[0]['product_parse']) && ($smarty_problem = EmailEditor::smartyProblem($_POST['translate']['description'])) !== '') {
+        $GLOBALS['main']->errorMessage(sprintf($GLOBALS['language']->email['editor_smarty_saved_invalid'], $lang['common']['description'], htmlspecialchars($smarty_problem, ENT_QUOTES, 'UTF-8')));
+    }
     foreach ($GLOBALS['hooks']->load('admin.product.translate.save.pre_process') as $hook) {
         include $hook;
     }
@@ -779,8 +789,10 @@ if (isset($_GET['action'])) {
             httpredir('?_g=products');
         }
 
-        if (($product = $GLOBALS['db']->select('CubeCart_inventory', array('name'), array('product_id' => (int)$_GET['product_id']))) !== false) {
+        if (($product = $GLOBALS['db']->select('CubeCart_inventory', array('name', 'product_parse'), array('product_id' => (int)$_GET['product_id']))) !== false) {
             $GLOBALS['gui']->addBreadcrumb($product[0]['name'], currentPage(array('translate_id'), array('action' => 'edit')));
+            // The translation is parsed for Smarty when the product is, and its editor shows it that way
+            $GLOBALS['smarty']->assign('TRANS_PARSE', !empty($product[0]['product_parse']));
         }
         $GLOBALS['gui']->addBreadcrumb($lang['translate']['title_translate'], currentPage());
         $GLOBALS['main']->addTabControl($lang['settings']['tab_seo'], 'seo');

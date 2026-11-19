@@ -20,6 +20,7 @@
  *       dirty: function () {},           // something was changed
  *       clean: function (html) {},       // optional: html made safe, as a <body>
  *       ignore: function (tag, attribute) {}, // optional: an attribute the editor is allowed to drop
+ *       chips: {selector: '', source: function (node) {}}, // optional: more things that stand for source, as a value does
  *       restore: function (html) {}      // optional: last word on a unit's serialised HTML
  *   });
  *   units.attach(tinymceInstance);
@@ -43,9 +44,9 @@
     var UNSAFE = 'script,iframe,frame,frameset,object,embed,applet,link,meta,base,form,input,button,select,textarea,audio,video,svg,math,style,title,noscript';
     var URL_ATTRIBUTES = ['href', 'src', 'action', 'formaction', 'xlink:href', 'background', 'poster', 'data', 'srcdoc'];
 
-    function cleanBody(html) {
+    function cleanBody(html, unsafe) {
         var doc = new DOMParser().parseFromString('<!doctype html><html><body>' + html + '</body></html>', 'text/html');
-        var bad = doc.querySelectorAll(UNSAFE), i, j, all, attrs, name, value;
+        var bad = doc.querySelectorAll(unsafe || UNSAFE), i, j, all, attrs, name, value;
         for (i = 0; i < bad.length; i++) {
             if (bad[i].parentNode) {
                 bad[i].parentNode.removeChild(bad[i]);
@@ -269,9 +270,11 @@
                 swap(found[i], record ? record.source : '');
             }
         }
-        found = clone.querySelectorAll('[data-cc-s]');
+        found = clone.querySelectorAll('[data-cc-s]' + (host.chips ? ', ' + host.chips.selector : ''));
         for (i = 0; i < found.length; i++) {
-            swap(found[i], found[i].getAttribute('data-cc-s'));
+            if (clone.contains(found[i])) {
+                swap(found[i], found[i].hasAttribute('data-cc-s') ? found[i].getAttribute('data-cc-s') : host.chips.source(found[i]));
+            }
         }
         var wrapped = clone.hasAttribute('data-cc-wrap');
         // The editor's own marks stay behind, on this element and on anything pasted into it

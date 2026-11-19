@@ -104,12 +104,31 @@ class Sanitize
      * removing script-bearing tags, event handlers and unsafe URI schemes while
      * keeping safe formatting markup (GHSA-43f6-gfcf-wj9c).
      * @param string $html
+     * @param bool $smarty The HTML is a Smarty template ("Parse Smarty Tags" is on for it)
      * @return string
      */
-    public static function htmlClean($html)
+    public static function htmlClean($html, $smarty = false)
     {
         if ($html === null || $html === '' || strpos($html, '<') === false) {
             return (string)$html;
+        }
+        if ($smarty && strpos($html, '{') !== false) {
+            // The HTML is parsed and written out again below, which is no way to treat a
+            // Smarty tag: {if $a > 1} comes back as {if $a &gt; 1}, and href="{$URL}" as
+            // href="%7B%24URL%7D", neither of which compiles (#4742). Each tag stands aside
+            // as a plain word while the HTML around it is cleaned, and is then put back.
+            // A tag is found the way Smarty finds one: a brace followed by white space is text.
+            $tags   = array();
+            $marker = 'ccsmarty'.bin2hex(random_bytes(6));
+            $held   = preg_replace_callback('~\{\*.*?\*\}|\{(?=[^\s{}])[^{}]*\}~s', function ($tag) use (&$tags, $marker) {
+                $tags[] = $tag[0];
+                return $marker.'x'.(count($tags) - 1).'x';
+            }, $html);
+            if (is_string($held) && !empty($tags)) {
+                return preg_replace_callback('~'.$marker.'x(\d+)x~', function ($found) use ($tags) {
+                    return isset($tags[(int)$found[1]]) ? $tags[(int)$found[1]] : '';
+                }, self::htmlClean($held));
+            }
         }
         $allowed_tags = array(
             'a','abbr','address','b','blockquote','br','caption','center','cite','code','col','colgroup',

@@ -278,14 +278,14 @@
    <div id="description" class="tab_content">
       <h3>{$LANG.common.description}</h3>
       
-      <textarea name="description" class="textbox fck">{if $PRODUCT.description}{$PRODUCT.description|escape:"htmlall"}{/if}</textarea>
+      <textarea name="description" class="textbox cc-editor" data-cc-smarty="#product_parse">{if $PRODUCT.description}{$PRODUCT.description|escape:"htmlall"}{/if}</textarea>
       <div class="parse_content">
          <label for="product_parse">{$LANG.catalogue.parse_content}</label><span><input type="hidden" name="product_parse" id="product_parse" class="toggle" value="{$PRODUCT.product_parse}"></span>
       </div>
       <br>
       <h3>{$LANG.common.description_short} {$LANG.common.optional}</h3>
       <p>{$LANG.common.description_short_desc}</p>
-      <textarea name="description_short" id="description_short" class="textbox fck">{if $PRODUCT.description_short}{$PRODUCT.description_short|escape:"htmlall"}{/if}</textarea>
+      <textarea name="description_short" id="description_short" class="textbox cc-editor" data-cc-height="260">{if $PRODUCT.description_short}{$PRODUCT.description_short|escape:"htmlall"}{/if}</textarea>
    </div>
    <div id="specification" class="tab_content">
       <h3>{$LANG.common.specification}</h3>
@@ -313,7 +313,7 @@
       <div id="lang_value" class="inline-source">{$LANG.common.value}</div>
       <input type="hidden" id="spec_array" name="spec_array" value="{$PRODUCT.spec_array_b64}" />
       <hr>
-      <textarea name="spec_copy" class="textbox fck">{if $PRODUCT.spec_copy}{$PRODUCT.spec_copy|escape:"htmlall"}{/if}</textarea>
+      <textarea name="spec_copy" class="textbox cc-editor">{if $PRODUCT.spec_copy}{$PRODUCT.spec_copy|escape:"htmlall"}{/if}</textarea>
    </div>
    <div id="pricing" class="tab_content">
       <h3>{$LANG.catalogue.title_pricing}</h3>
@@ -783,10 +783,10 @@
    </div>
    <div id="description" class="tab_content">
       <h3>{$LANG.translate.title_translate}</h3>
-      <textarea name="translate[description]" class="textbox fck">{if $TRANS.description}{$TRANS.description|escape:"htmlall"}{/if}</textarea>
+      <textarea name="translate[description]" class="textbox cc-editor"{if !empty($TRANS_PARSE)} data-cc-smarty="1"{/if}>{if $TRANS.description}{$TRANS.description|escape:"htmlall"}{/if}</textarea>
       <br>
       <h3>{$LANG.translate.title_translate_short}</h3>
-      <textarea name="translate[description_short]" class="textbox fck">{if $TRANS.description}{$TRANS.description_short|escape:"htmlall"}{/if}</textarea>
+      <textarea name="translate[description_short]" class="textbox cc-editor" data-cc-height="260">{if $TRANS.description}{$TRANS.description_short|escape:"htmlall"}{/if}</textarea>
    </div>
    <div id="seo" class="tab_content">
       <h3>{$LANG.settings.title_seo}</h3>

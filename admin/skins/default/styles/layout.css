@@ -2650,6 +2650,35 @@ ul.fmsearch_images img {
   -moz-appearance: textfield;
 }
 
+/* The rich text editor (admin.editor.js, #4742): what it has to say goes under it */
+.cc-editor-note {
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+.cc-editor-note.is-error {
+    color: var(--error);
+    font-weight: 600;
+}
+.cc-editor-note[hidden] {
+    display: none;
+}
+/* A whole document or a template, edited as code (textarea.cc-code, admin.js) */
+.cc-code-editor {
+    text-indent: 0!important;
+    width: 100%;
+    height: 450px;
+    box-sizing: border-box;
+    border: 1px solid var(--input-border);
+}
+textarea.cc-code {
+    width: 100%;
+    min-height: 300px;
+    box-sizing: border-box;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Courier New", monospace;
+    white-space: pre;
+}
+
 .ace_email_editor {
     text-indent: 0!important;
     width: 100%;

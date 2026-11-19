@@ -59,6 +59,7 @@ class Ajax
             'SMTPTest'             => array(array('settings'), CC_PERM_READ),
             'previewOrderFormat'   => array(array('settings'), CC_PERM_READ),
             'subscriber_log'       => array(array('customers'), CC_PERM_READ),
+            'editorUnits'          => array(array('products', 'categories', 'documents'), CC_PERM_EDIT),
         );
         $denied = false;
         if (isset($ajax_perms[$function])) {
@@ -120,6 +121,9 @@ class Ajax
             case 'subscriber_log':
                 $return_data = self::subscriberLog();
             break;
+            case 'editorUnits':
+                $return_data = self::editorUnits();
+            break;
             case 'seopath':
                 $return_data = self::seopath($_GET['type'], $_GET['item_id']);
             break;
@@ -129,6 +133,32 @@ class Ajax
             break;
         }
         return $return_data;
+    }
+
+    /**
+     * The editor on a description with "Parse Smarty Tags" on (admin.editor.js, #4742):
+     * check that what is in it is valid Smarty, and divide it into wording and logic.
+     * The source is compiled, never run, and nothing is stored.
+     *
+     * @return string JSON: status 'ok' with 'units' (unless only a check was asked for), or 'error' with 'message'
+     */
+    public static function editorUnits()
+    {
+        // The token was checked with the rest of the post; without one there is no post left
+        if (!isset($_POST['source']) || !isset($GLOBALS['RAW']['POST']['source']) || !is_string($GLOBALS['RAW']['POST']['source'])) {
+            return json_encode(array('status' => 'error', 'message' => $GLOBALS['language']->notification['error_privileges']));
+        }
+        $source = $GLOBALS['RAW']['POST']['source'];
+        try {
+            EmailEditor::compile($source);
+            $response = array('status' => 'ok');
+            if (empty($_POST['check'])) {
+                $response += EmailEditor::describeContent($source);
+            }
+        } catch (Throwable $e) {
+            $response = array('status' => 'error', 'message' => EmailEditor::smartyError($e, array($source)));
+        }
+        return json_encode($response, JSON_INVALID_UTF8_SUBSTITUTE);
     }
 
     public static function doneToggle() {

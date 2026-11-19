@@ -128,7 +128,7 @@
 	  </div>
 	</fieldset>
 	{/if}
-		<textarea name="document[doc_content]" id="doc-content" class="textbox fck">{$DOCUMENT.doc_content|escape:"html"}</textarea>
+		<textarea name="document[doc_content]" id="doc-content" class="textbox cc-editor" data-cc-height="520" data-cc-smarty="#doc_parse">{$DOCUMENT.doc_content|escape:"html"}</textarea>
 		<div class="parse_content"><label for="doc_parse">{$LANG.catalogue.parse_content}</label><span><input type="hidden" id="doc_parse" name="document[doc_parse]" value="{if !isset($DOCUMENT.doc_parse)}0{else}{$DOCUMENT.doc_parse}{/if}" class="toggle"></span></div>
   </div>
 

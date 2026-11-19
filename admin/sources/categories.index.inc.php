@@ -44,6 +44,10 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
     $_POST['cat']['hide'] = (int)$_POST['cat']['visible'] && (int)$_POST['cat']['status'] ? 0 : 1;
 
     $_POST['cat']['cat_desc'] = $GLOBALS['RAW']['POST']['cat']['cat_desc'];
+    if (!empty($_POST['cat']['cat_parse']) && ($smarty_problem = EmailEditor::smartyProblem($_POST['cat']['cat_desc'])) !== '') {
+        // The editor refuses this before the form is sent; this is for a save that did not come through it (#4742)
+        $GLOBALS['main']->errorMessage(sprintf($GLOBALS['language']->email['editor_smarty_saved_invalid'], $lang['common']['description'], htmlspecialchars($smarty_problem, ENT_QUOTES, 'UTF-8')));
+    }
     $_POST['cat']['updated'] = date('Y-m-d H:i:s');
 
     if (is_numeric($_POST['cat']['cat_id'])) {
@@ -214,6 +218,11 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete']) && Admin::getInstance(
 
 if (isset($_POST['translate']) && isset($_POST['cat_id']) && is_numeric($_POST['cat_id']) && Admin::getInstance()->permissions('categories', CC_PERM_EDIT)) {
     $_POST['translate']['cat_desc'] = $GLOBALS['RAW']['POST']['translate']['cat_desc'];
+    // A translated description is parsed for Smarty when its category's is (#4742)
+    $smarty_parent = $GLOBALS['db']->select('CubeCart_category', array('cat_parse'), array('cat_id' => (int)$_POST['cat_id']));
+    if ($smarty_parent && !empty($smarty_parent[0]['cat_parse']) && ($smarty_problem = EmailEditor::smartyProblem($_POST['translate']['cat_desc'])) !== '') {
+        $GLOBALS['main']->errorMessage(sprintf($GLOBALS['language']->email['editor_smarty_saved_invalid'], $lang['common']['description'], htmlspecialchars($smarty_problem, ENT_QUOTES, 'UTF-8')));
+    }
 
     foreach ($GLOBALS['hooks']->load('admin.category.translate.save.pre_process') as $hook) {
         include $hook;
@@ -338,8 +347,10 @@ if (isset($_GET['action'])) {
         }
 
 
-        if (($category = $GLOBALS['db']->select('CubeCart_category', array('cat_name'), array('cat_id' => (int)$_GET['cat_id']))) !== false) {
+        if (($category = $GLOBALS['db']->select('CubeCart_category', array('cat_name', 'cat_parse'), array('cat_id' => (int)$_GET['cat_id']))) !== false) {
             $GLOBALS['gui']->addBreadcrumb($category[0]['cat_name'], currentPage(array('translate_id'), array('action' => 'edit')));
+            // The translation is parsed for Smarty when the category is, and its editor shows it that way
+            $GLOBALS['smarty']->assign('TRANS_PARSE', !empty($category[0]['cat_parse']));
         }
         $GLOBALS['gui']->addBreadcrumb($lang['translate']['title_translate'], currentPage());
         $GLOBALS['main']->addTabControl($lang['common']['general'], 'general');

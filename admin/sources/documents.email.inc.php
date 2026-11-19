@@ -278,25 +278,8 @@ unset($email_type, $email_type_data, $email_type_macros);
 
 ## Smarty names a template held in a string by its whole source, and quotes the line at
 ## fault after it. This says only which line it is and what is wrong with it.
-$smarty_error = function ($e, $sources = array()) use ($lang) {
-    $message = (string)$e->getMessage();
-    if (!preg_match_all('/"\s+on line (\d+) "/', $message, $found, PREG_OFFSET_CAPTURE | PREG_SET_ORDER)) {
-        return str_replace(array('string:', 'eval:'), '', strip_tags($message));
-    }
-    $last   = end($found);
-    $line   = (int)$last[1][0];
-    $reason = substr($message, $last[0][1] + strlen($last[0][0]));
-    foreach ($sources as $source) {
-        $lines = preg_split('/\r\n|\r|\n/', (string)$source);
-        if (isset($lines[$line - 1])) {
-            $quoted = trim(preg_replace('![\t\r\n]+!', ' ', $lines[$line - 1])).'"';
-            if (strpos($reason, $quoted) === 0) {
-                $reason = substr($reason, strlen($quoted));
-                break;
-            }
-        }
-    }
-    return sprintf($lang['email']['error_smarty_line'], $line, trim($reason, " -\t"));
+$smarty_error = function ($e, $sources = array()) {
+    return EmailEditor::smartyError($e, $sources);
 };
 
 ## A subject or preview text as typed: one line of plain text that may hold Smarty.
@@ -319,7 +302,7 @@ $no_script = function ($html) {
 ## that was posted is executed by being checked, and logic that needs the email's data
 ## to run (a count of the products, say) is not taken for a mistake.
 $compile_check = function ($source) {
-    $GLOBALS['smarty']->createTemplate('eval:'.$source)->compileTemplateSource();
+    EmailEditor::compile($source);
 };
 
 ## The visual editor (admin.email.editor.js). 'units' divides a body into wording and

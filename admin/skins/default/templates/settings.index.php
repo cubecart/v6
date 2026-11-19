@@ -405,7 +405,7 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_copyright}</legend>
-         <div><span><textarea name="config[store_copyright]" id="copyright_content" class="textbox fck">{$CONFIG.store_copyright|escape:"html"}</textarea></span></div>
+         <div><span><textarea name="config[store_copyright]" id="copyright_content" class="textbox cc-editor" data-cc-height="240">{$CONFIG.store_copyright|escape:"html"}</textarea></span></div>
       </fieldset>
    </div>
    <div id="Search_Engines" class="tab_content">

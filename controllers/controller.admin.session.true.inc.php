@@ -164,3 +164,52 @@ $GLOBALS['smarty']->assign('HEAD_CSS', $head_css);
 // CKEDITOR in its own script; a hook above can also set $load_ckeditor = true.
 $GLOBALS['smarty']->assign('LOAD_CKEDITOR', !empty($load_ckeditor)
     || (!empty($page_content) && preg_match('/\bfck\b|ckeditor/i', (string)$page_content) === 1));
+
+// A whole document or a template is edited as code, on <textarea class="cc-code"> (admin.js),
+// with Ace where the page has one
+$GLOBALS['smarty']->assign('LOAD_CODE_EDITOR', !empty($load_code_editor)
+    || (!empty($page_content) && preg_match('/\bcc-code\b/', (string)$page_content) === 1));
+
+// Core's own editor is TinyMCE, on <textarea class="cc-editor"> (admin.editor.js). The same
+// rule: it is loaded where the page has one, or where a hook above set $load_editor = true.
+if (!empty($load_editor) || (!empty($page_content) && preg_match('/\bcc-editor\b/', (string)$page_content) === 1)) {
+    // TinyMCE's language packs are named by language, and by country only where they differ
+    $editor_language = '';
+    $admin_language  = (string)$GLOBALS['language']->current();
+    $short           = strtolower(substr($admin_language, 0, 2));
+    $short           = ($short === 'dk') ? 'da' : $short; // the Danish pack is dk-DK here
+    if ($short !== 'en' && preg_match('/^[a-z]{2}$/', $short)) {
+        $packs = glob(CC_ROOT_DIR.'/includes/tinymce/langs/'.$short.'*.js');
+        $names = is_array($packs) ? array_map(function ($pack) {
+            return basename($pack, '.js');
+        }, $packs) : array();
+        foreach (array(str_replace('_', '-', $admin_language), $short) as $wanted) {
+            if (in_array($wanted, $names, true)) {
+                $editor_language = $wanted;
+                break;
+            }
+        }
+        if ($editor_language === '' && !empty($names)) {
+            $editor_language = $names[0];
+        }
+    }
+    $editor_lang    = $GLOBALS['language']->email;
+    $editor_strings = array(
+        'loading' => $GLOBALS['language']->common['loading'].'...',
+        'failed'  => $editor_lang['preview_failed'],
+    );
+    foreach (array('editor_locked', 'editor_locked_note', 'editor_locked_markup', 'editor_locked_markup_note', 'editor_logic_note',
+        'editor_edit_code', 'editor_move_up', 'editor_move_down', 'editor_remove', 'editor_new_paragraph', 'editor_locked_code_help',
+        'editor_apply', 'editor_code_view', 'editor_parked', 'editor_content_code_only', 'editor_source_help',
+        'editor_source_help_smarty', 'editor_smarty_refused') as $editor_string) {
+        $editor_strings[$editor_string] = isset($editor_lang[$editor_string]) ? $editor_lang[$editor_string] : '';
+    }
+    $GLOBALS['smarty']->assign('EDITOR_DATA', json_encode(array(
+        'tinymce'  => 'includes/tinymce',
+        'endpoint' => $glob['adminFile'].'?_g=xml&function=editorUnits',
+        'storeUrl' => rtrim((string)$GLOBALS['storeURL'], '/').'/',
+        'language' => $editor_language,
+        'strings'  => $editor_strings,
+    ), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_INVALID_UTF8_SUBSTITUTE));
+    unset($editor_language, $admin_language, $short, $packs, $names, $wanted, $editor_lang, $editor_strings, $editor_string);
+}

@@ -28,6 +28,10 @@ if (isset($_POST['document']) && Admin::getInstance()->permissions('documents', 
     ## Do the database magic
     $rem_array = array();
     $_POST['document']['doc_content'] = $GLOBALS['RAW']['POST']['document']['doc_content'];
+    if (!empty($_POST['document']['doc_parse']) && ($smarty_problem = EmailEditor::smartyProblem($_POST['document']['doc_content'])) !== '') {
+        // The editor refuses this before the form is sent; this is for a save that did not come through it (#4742)
+        $GLOBALS['main']->errorMessage(sprintf($GLOBALS['language']->email['editor_smarty_saved_invalid'], $lang['documents']['document_content'], htmlspecialchars($smarty_problem, ENT_QUOTES, 'UTF-8')));
+    }
     if (isset($_POST['document']['doc_id']) && is_numeric($_POST['document']['doc_id'])) {
         $doc_id = (int)$_POST['document']['doc_id'];
         $GLOBALS['db']->update('CubeCart_documents', $_POST['document'], array('doc_id' => $doc_id), true);
