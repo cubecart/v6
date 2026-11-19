@@ -720,6 +720,14 @@
             range.selectNodeContents(line);
             range.collapse(false);
         }
+        // A click on a macro leaves the caret inside it: the new one goes after it, not into it
+        var at = (range.startContainer.nodeType === 1) ? range.startContainer : range.startContainer.parentNode;
+        at = (at && at.closest) ? at.closest('.cc-ph') : null;
+        if (at && line.contains(at)) {
+            range = document.createRange();
+            range.setStartAfter(at);
+            range.collapse(true);
+        }
         range.deleteContents();
         range.insertNode(chip);
         range.setStartAfter(chip);
