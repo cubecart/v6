@@ -118,9 +118,14 @@ class Sanitize
             // href="%7B%24URL%7D", neither of which compiles (#4742). Each tag stands aside
             // as a plain word while the HTML around it is cleaned, and is then put back.
             // A tag is found the way Smarty finds one: a brace followed by white space is text.
+            // A tag that holds HTML of its own ({$x|default:"<b>none</b>"}) does not stand
+            // aside: what is inside it is cleaned like the rest, as it always was.
             $tags   = array();
             $marker = 'ccsmarty'.bin2hex(random_bytes(6));
             $held   = preg_replace_callback('~\{\*.*?\*\}|\{(?=[^\s{}])[^{}]*\}~s', function ($tag) use (&$tags, $marker) {
+                if (preg_match('~<[a-zA-Z/!?]~', $tag[0])) {
+                    return $tag[0];
+                }
                 $tags[] = $tag[0];
                 return $marker.'x'.(count($tags) - 1).'x';
             }, $html);

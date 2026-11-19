@@ -59,7 +59,7 @@ class Ajax
             'SMTPTest'             => array(array('settings'), CC_PERM_READ),
             'previewOrderFormat'   => array(array('settings'), CC_PERM_READ),
             'subscriber_log'       => array(array('customers'), CC_PERM_READ),
-            'editorUnits'          => array(array('products', 'categories', 'documents'), CC_PERM_EDIT),
+            'editorUnits'          => array(array('products', 'categories', 'documents', 'customers'), CC_PERM_EDIT),
         );
         $denied = false;
         if (isset($ajax_perms[$function])) {

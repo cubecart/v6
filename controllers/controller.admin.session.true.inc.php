@@ -196,7 +196,7 @@ if (!empty($load_editor) || (!empty($page_content) && preg_match('/\bcc-editor\b
     $editor_lang    = $GLOBALS['language']->email;
     $editor_strings = array(
         'loading' => $GLOBALS['language']->common['loading'].'...',
-        'failed'  => $editor_lang['preview_failed'],
+        'failed'  => isset($editor_lang['editor_failed']) ? $editor_lang['editor_failed'] : '',
     );
     foreach (array('editor_locked', 'editor_locked_note', 'editor_locked_markup', 'editor_locked_markup_note', 'editor_logic_note',
         'editor_edit_code', 'editor_move_up', 'editor_move_down', 'editor_remove', 'editor_new_paragraph', 'editor_locked_code_help',

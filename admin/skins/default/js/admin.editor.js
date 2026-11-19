@@ -27,6 +27,11 @@
  *                                   values to offer in a Macros menu, and to show by name
  *
  * class="fck" is still CKEditor, for extensions, and is deprecated.
+ *
+ * For other scripts on the page (an extension that used to reach for CKEDITOR.instances):
+ *   ccEditor.get(textarea)          the content as it would be stored
+ *   ccEditor.set(textarea, html)    replace the content
+ *   ccEditor.of(textarea)           the editor itself, or null; .editor is the TinyMCE instance
  */
 (function ($) {
     'use strict';
@@ -162,6 +167,11 @@
             post.check = 1;
         }
         $.ajax({type: 'post', url: data.endpoint, dataType: 'json', data: post}).done(function (result) {
+            if (result && result.error === 'unauthorised') {
+                // Someone who may look but not edit: the content is shown as it is, and that is not a fault
+                done({status: 'error', message: '', denied: true});
+                return;
+            }
             done(result && result.status ? result : {status: 'error', message: T('failed')});
         }).fail(function () {
             done({status: 'error', message: T('failed')});
@@ -388,7 +398,7 @@
         this.original = source;
         editor.mode.set('readonly');
         describe(source, false, function (result) {
-            var good = (result.status === 'ok' && Array.isArray(result.units)), message = good ? '' : (result.message || T('failed'));
+            var good = (result.status === 'ok' && Array.isArray(result.units)), message = good ? '' : (result.message || (result.denied ? '' : T('failed')));
             if (turn !== self.turn || !self.editor) {
                 return; // something else has been shown since
             }
@@ -401,7 +411,7 @@
                 if (!good || !self.core.load(result.units, build)) {
                     // Not something that can be divided, or not something the editor can hand back unchanged
                     self.core.load(self.asCode(source), build);
-                    message = message || T('editor_content_code_only');
+                    message = message || (result.denied ? '' : T('editor_content_code_only'));
                 }
             } finally {
                 self.trusted = false;
@@ -476,6 +486,23 @@
                 });
             }
         });
+    };
+
+    /** Replace the content, from outside: it is shown the way the box is set, and counts as a change to save */
+    Field.prototype.put = function (source) {
+        var self = this;
+        source = String(source === undefined || source === null ? '' : source);
+        if (!this.editor) {
+            this.original = source; // not up yet: it starts with this
+            this.textarea.value = source;
+        } else if (this.smarty) {
+            this.showSmarty(source, function () {
+                self.tell();
+            });
+        } else {
+            this.showPlain(source);
+            this.tell();
+        }
     };
 
     /** "Parse Smarty Tags" was switched */
@@ -724,7 +751,8 @@
                 var source = field.textarea.value;
                 field.say(T('loading'), null);
                 describe(source, true, function (result) {
-                    if (result.status === 'ok') {
+                    if (result.status === 'ok' || result.denied) {
+                        // Checked; or not this admin's to have checked, and the server has its own say when it saves
                         field.checked = lf(source);
                         field.say('', null);
                     } else {
@@ -796,6 +824,20 @@
                 }
             }
             return null;
+        },
+        /** The content of a text box as it would be stored, whether or not an editor is on it */
+        get: function (textarea) {
+            var field = this.of(textarea);
+            return field ? field.source() : textarea.value;
+        },
+        /** Replace the content of a text box, whether or not an editor is on it */
+        set: function (textarea, source) {
+            var field = this.of(textarea);
+            if (field) {
+                field.put(source);
+            } else {
+                textarea.value = source;
+            }
         }
     };
 })(jQuery);
