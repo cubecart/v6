@@ -10,329 +10,202 @@
  * Email:  hello@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
 -->
-<emails version="6.8.0" language="en">
+<emails version="6.9.0" language="en">
   <email name="account.activate">
     <subject><![CDATA[Confirm your email address]]></subject>
-    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
-<p>Someone asked to create an account with this email address, which we already have on file from a previous order. To finish setting the account up, please confirm the address by following the link below:</p>
-<p><a href="{$DATA.activate_link}">{$DATA.activate_link}</a></p>
-<p>If the link above doesn't work, please copy and paste it into your browser address bar. The link expires in 1 hour.</p>
-<p>If this wasn't you, no action is needed and no account has been created. Your previous orders are not accessible until the address is confirmed.</p>]]></content>
-
-  </email>
-  <email name="admin.password_recovery">
-    <subject><![CDATA[Admin Password Recovery]]></subject>
-    <content type="html"><![CDATA[<p>Dear {$DATA.name},</p>
-<p>To regain access to the store's administration panel, please follow the link below:</p>
-<p><a href="{$DATA.link}">{$DATA.link}</a></p>
-<p>If the link above doesn't work, please copy and paste it into your browser address bar.</p>]]></content>
-
-  </email>
-  <email name="cart.order_complete">
-    <subject><![CDATA[Order Complete]]></subject>
-    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
-<p>We're pleased to let you know that order number {$DATA.cart_order_id} is now complete. If you ordered physical goods, they should be with you soon.</p>{if !empty($DATA.ship_tracking)}<p>Track your order:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
-
-  </email>
-  <email name="cart.order_cancelled">
-    <subject><![CDATA[Order Cancelled]]></subject>
-    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
-<p>Order number {$DATA.cart_order_id} has been cancelled. If you have any questions, please don't hesitate to contact us.</p>]]></content>
-
-  </email>
-  <email name="cart.order_confirmation">
-    <subject><![CDATA[Order Confirmation #{$DATA.cart_order_id}]]></subject>
-    <content type="html"><![CDATA[<p>Thank you for your order, {$DATA.first_name|capitalize}.</p>
-<p>We've received your order {$DATA.cart_order_id}, placed on {$DATA.order_date}. Please keep this email for your records. You can view your order status online at any time.</p> 
-<p><a href="{$DATA.link}">{$DATA.link}</a></p>
-<table width="100%">
-<tr>
-<td valign="top" width="50%"><strong>Billing address:</strong><br>
-{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
-{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
-{/if}
-{$BILLING.line1|capitalize}<br>
-{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
-{/if}
-{$BILLING.town|upper}<br>
-{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
-{$BILLING.postcode}<br>
-{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
-{$BILLING.phone}<br>
-<br>
-<strong>Email:</strong><br>
-{$BILLING.email}</td>
-<td valign="top" width="50%"><strong>Shipping address:</strong><br>
-{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
-{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
-{/if}{$SHIPPING.line1|capitalize}<br>
-{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>
-{/if}{$SHIPPING.town|upper}<br>
-{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
-{$SHIPPING.postcode}<br>
-{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
-</tr>
-</table>
-<table border="0" cellpadding="3" cellspacing="0" width="100%">
-<tbody>
-<tr>
-<td><strong>Item</strong></td>
-<td><strong>Quantity</strong></td>
-<td><strong>Cost</strong></td>
-</tr>
-{foreach from=$PRODUCTS item=product}
-<tr>
-<td>{$product.name} <br>{$product.product_options}</td>
-<td>{$product.quantity}</td>
-<td>{$product.price}</td>
-</tr>
-{/foreach}
-<tr>
-<td>&nbsp;</td>
-<td>{if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Shipping:{/if}</td>
-<td> {$DATA.shipping}</td>
-</tr>
-<tr>
-<td>&nbsp;</td>
-<td> Discount:</td>
-<td> {$DATA.discount}</td>
-</tr>
-<tr>
-<td>&nbsp;</td>
-<td> Subtotal:</td>
-<td> {$DATA.subtotal}</td>
-</tr>
-{foreach from=$TAXES item=tax}
-<tr>
-<td>&nbsp;</td>
-<td> {$tax.tax_name}: ({$tax.tax_percent}%)</td>
-<td> {$tax.tax_amount}</td>
-</tr>
-{/foreach}
-{if $DATA.show_credit}
-<tr>
-<td>&nbsp;</td>
-<td>Credit:</td>
-<td>({$DATA.credit_used})</td>
-</tr>
-{/if}
-<tr>
-<td>&nbsp;</td>
-<td><strong>Order Total: </strong></td>
-<td><strong>{$DATA.total}</strong></td>
-</tr>
-</tbody>
-</table>
-{if !empty($DATA.note_to_customer)}
-<p>&quot;{$DATA.note_to_customer}&quot;</p>
-{/if}]]></content>
-
-  </email>
-  <email name="cart.payment_fraud">
-    <subject><![CDATA[Order Problem]]></subject>
-    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
-<p>We're sorry, but we were unable to process the payment for order {$DATA.cart_order_id}. If you have any questions, please don't hesitate to contact us.</p>]]></content>
-
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">Confirm your email address</h1>
+<p>Hi {$DATA.first_name|capitalize},</p>
+<p>Someone asked to create an account at {$DATA.store_name} with this email address, which we already have from a previous order. Confirm the address to finish setting the account up.</p>
+<p style="margin:24px 0;"><a class="cc-button" href="{$DATA.activate_link}" style="background-color:#333333;border-color:#333333;border-radius:6px;border-style:solid;border-width:12px 24px;color:#ffffff;display:inline-block;font-weight:bold;line-height:1.2;text-decoration:none;">Confirm my email</a></p>
+<p>The link expires in 1 hour.</p>
+<p>If the button doesn't work, copy and paste this address into your browser:<br><a href="{$DATA.activate_link}" style="word-break:break-all;">{$DATA.activate_link}</a></p>
+<p>If this wasn't you, you can ignore this email. No account has been created, and your previous orders can't be seen until the address is confirmed.</p>
+<p>Thanks,<br>{$DATA.store_name}</p>]]></content>
   </email>
   <email name="account.password_recovery">
-    <subject><![CDATA[Password Recovery]]></subject>
-    <content type="html"><![CDATA[<p>Dear {$DATA.first_name|capitalize} {$DATA.last_name|capitalize},<br>
-<br>
-To reset your password, please click on the link below or copy and paste the address into your browser's address bar. Once you're on the web page, you'll be asked to enter and confirm your new password.<br> 
-<br>
-<a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br>
-<br>
-If you need any further help, please contact us.</p>]]></content>
-
-  </email>
-  <email name="admin.order_received">
-    <subject><![CDATA[New Order #{$DATA.cart_order_id}]]></subject>
-    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} just placed order number {$DATA.cart_order_id} on {$DATA.order_date}.</p>
-<p>You can manage this order using the link below.</p>
-<p><a href="{$DATA.link}">{$DATA.link}</a></p>
-<table width="100%">
-<tr>
-<td valign="top" width="50%"><strong>Billing address:</strong><br>
-{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
-{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
-{/if}
-{$BILLING.line1|capitalize}<br>
-{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
-{/if}
-{$BILLING.town|upper}<br>
-{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
-{$BILLING.postcode}<br>
-{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
-{$BILLING.phone}<br>
-<br>
-<strong>Email:</strong><br>
-{$BILLING.email}</td>
-<td valign="top" width="50%"><strong>Shipping address:</strong><br>
-{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
-{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
-{/if}{$SHIPPING.line1|capitalize}<br>
-{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>
-{/if}{$SHIPPING.town|upper}<br>
-{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
-{$SHIPPING.postcode}<br>
-{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
-</tr>
-</table>
-<table border="0" cellpadding="3" cellspacing="0" width="100%">
-<tbody>
-<tr>
-<td><strong>Item</strong></td>
-<td><strong>Quantity</strong></td>
-<td><strong>Cost</strong></td>
-</tr>
-{foreach from=$PRODUCTS item=product}
-<tr>
-<td>{$product.name} <br>{$product.product_options}</td>
-<td>{$product.quantity}</td>
-<td>{$product.price}</td>
-</tr>
-{/foreach}
-<tr>
-<td>&nbsp;</td>
-<td> {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Shipping:{/if}</td>
-<td> {$DATA.shipping}</td>
-</tr>
-<tr>
-<td>&nbsp;</td>
-<td> Discount:</td>
-<td> {$DATA.discount}</td>
-</tr>
-<tr>
-<td>&nbsp;</td>
-<td> Subtotal:</td>
-<td> {$DATA.subtotal}</td>
-</tr>
-{foreach from=$TAXES item=tax}
-<tr>
-<td>&nbsp;</td>
-<td> {$tax.tax_name}: ({$tax.tax_percent}%)</td>
-<td> {$tax.tax_amount}</td>
-</tr>
-{/foreach}
-{if $DATA.show_credit}
-<tr>
-<td>&nbsp;</td>
-<td>Credit:</td>
-<td>({$DATA.credit_used})</td>
-</tr>
-{/if}
-<tr>
-<td>&nbsp;</td>
-<td><strong>Order Total: </strong></td>
-<td><strong>{$DATA.total}</strong></td>
-</tr>
-</tbody>
-
-</table>]]></content>
-
-  </email>
-  <email name="admin.review_added">
-    <subject><![CDATA[New Product Review]]></subject>
-    <content type="html"><![CDATA[{$DATA.name} has left a new review for '{$DATA.product_name}'. You can moderate this using the link below.
-        <p><strong>Moderation Link:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
-        <p><strong>Review Text:</strong><br>{$DATA.review}</p>]]></content>
-
-  </email>
-  <email name="cart.digital_download">
-    <subject><![CDATA[Your Downloads Are Ready]]></subject>
-    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
-<p>Your digital files are ready to download. You can access them using the links below:</p>
-{foreach from=$DOWNLOADS item=download}
-<p><strong>{$download.name}:</strong> (Link expires on {$download.expire}<strong>)</strong><br>
-<a href="{$download.url}">{$download.url}</a></p>
-{/foreach}
-<p>If the links above don't work, try copying and pasting them into your browser's address bar. You can also access these files from your account on our website.</p> 
-<p>&nbsp;</p>]]></content>
-
-  </email>
-  <email name="cart.gift_certificate">
-    <subject><![CDATA[Your Gift Card]]></subject>
-    <content type="html"><![CDATA[<p>Dear {$DATA.name},</p>
-<p>You've received a gift card that can be used towards any purchase on our website.</p>
-<p><strong>From: </strong>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize}<br>
-<strong>Amount: </strong>{$DATA.value}<br>
-<strong>Claim Code:</strong> {$DATA.code}<br>
-<strong>Gift Message:</strong> {$DATA.message}</p>
-<p>-------------------</p>
-<p>To redeem this gift card please enter the &quot;Claim Code&quot; above into the text field labelled &quot;Promotional code or gift card&quot; during checkout.</p>
-<p>Why not spend it now?</p>]]></content>
-
-  </email>
-  <email name="cart.payment_received">
-    <subject><![CDATA[Thank you for your payment]]></subject>
-    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
-<p>We've received your payment of {$DATA.total} for order number {$DATA.cart_order_id}.</p>]]></content>
-
+    <subject><![CDATA[Reset your password]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">Reset your password</h1>
+<p>Hi {$DATA.first_name|capitalize},</p>
+<p>We received a request to reset the password for your {$DATA.store_name} account. Use the button below to choose a new one.</p>
+<p style="margin:24px 0;"><a class="cc-button" href="{$DATA.reset_link}" style="background-color:#333333;border-color:#333333;border-radius:6px;border-style:solid;border-width:12px 24px;color:#ffffff;display:inline-block;font-weight:bold;line-height:1.2;text-decoration:none;">Reset my password</a></p>
+<p>The link expires in 1 hour.</p>
+<p>If the button doesn't work, copy and paste this address into your browser:<br><a href="{$DATA.reset_link}" style="word-break:break-all;">{$DATA.reset_link}</a></p>
+<p>If you didn't ask for this, you can ignore this email and your password will stay the same.</p>
+<p>Thanks,<br>{$DATA.store_name}</p>]]></content>
   </email>
   <email name="newsletter.verify_email">
     <subject><![CDATA[Confirm your subscription]]></subject>
-    <content type="html"><![CDATA[<p>{$DATA.email} was used to subscribe to our newsletter. To confirm your subscription, please click the link below:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
-
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">Confirm your subscription</h1>
+<p><strong>{$DATA.email}</strong> was used to subscribe to the {$DATA.store_name} newsletter. Confirm it's yours and we'll add you to the list.</p>
+<p style="margin:24px 0;"><a class="cc-button" href="{$DATA.link}" style="background-color:#333333;border-color:#333333;border-radius:6px;border-style:solid;border-width:12px 24px;color:#ffffff;display:inline-block;font-weight:bold;line-height:1.2;text-decoration:none;">Confirm my subscription</a></p>
+<p>If the button doesn't work, copy and paste this address into your browser:<br><a href="{$DATA.link}" style="word-break:break-all;">{$DATA.link}</a></p>
+<p>If you didn't ask to subscribe, you can ignore this email.</p>
+<p>Thanks,<br>{$DATA.store_name}</p>]]></content>
   </email>
   <email name="newsletter.remove_request">
-    <subject><![CDATA[Confirm Newsletter Unsubscribe]]></subject>
-    <content type="html"><![CDATA[<p>A request was made to unsubscribe <strong>{$DATA.email}</strong> from our newsletter. To confirm, please click the link below.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
-
+    <subject><![CDATA[Confirm you want to unsubscribe]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">Confirm you want to unsubscribe</h1>
+<p>We received a request to unsubscribe <strong>{$DATA.email}</strong> from the {$DATA.store_name} newsletter.</p>
+<p style="margin:24px 0;"><a class="cc-button" href="{$DATA.link}" style="background-color:#333333;border-color:#333333;border-radius:6px;border-style:solid;border-width:12px 24px;color:#ffffff;display:inline-block;font-weight:bold;line-height:1.2;text-decoration:none;">Unsubscribe me</a></p>
+<p>If the button doesn't work, copy and paste this address into your browser:<br><a href="{$DATA.link}" style="word-break:break-all;">{$DATA.link}</a></p>
+<p>If you didn't ask for this, you can ignore this email and you'll stay subscribed.</p>
+<p>Thanks,<br>{$DATA.store_name}</p>]]></content>
   </email>
-  <email name="admin.two_factor_code">
-    <subject><![CDATA[Your back-office login verification code]]></subject>
-    <content type="html"><![CDATA[<p>Hello {$DATA.name},</p><p>Your login verification code is:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>This code will expire in 10 minutes. If you did not attempt to log in, please contact your store administrator immediately.</p>]]></content>
-  </email>
-  <email name="admin.new_device_login">
-    <subject><![CDATA[New login to your back-office account]]></subject>
-    <content type="html"><![CDATA[<p>Hello {$DATA.name},</p>
-<p>Your back-office account was just accessed from a new {if $DATA.ip_changed && $DATA.browser_changed}location and device{elseif $DATA.ip_changed}location{else}device{/if}.</p>
-<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
-<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Time:</td><td>{$DATA.login_time}</td></tr>
-<tr><td style="padding:4px 12px 4px 0;font-weight:bold">IP Address:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (previously {$DATA.previous_ip}){/if}</td></tr>
-<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Browser:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+  <email name="cart.order_confirmation">
+    <subject><![CDATA[Order confirmation #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">Thanks for your order</h1>
+<p>Hi {$DATA.first_name|capitalize},</p>
+<p>We've received order {$DATA.cart_order_id}, placed on {$DATA.order_date}. You can check its status at any time.</p>
+<p style="margin:24px 0;"><a class="cc-button" href="{$DATA.link}" style="background-color:#333333;border-color:#333333;border-radius:6px;border-style:solid;border-width:12px 24px;color:#ffffff;display:inline-block;font-weight:bold;line-height:1.2;text-decoration:none;">View your order</a></p>
+{if !empty($DATA.note_to_customer)}<p><strong>A note from us:</strong><br>{$DATA.note_to_customer}</p>{/if}
+<table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="margin:24px 0;">
+<tr>
+<td valign="top" width="50%" style="padding:0 12px 0 0;"><strong>Billing address</strong><br>{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>{/if}{$BILLING.line1|capitalize}<br>{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>{/if}{$BILLING.town|upper}<br>{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}{$BILLING.postcode}<br>{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}{if !empty($BILLING.phone)}<br>{$BILLING.phone}{/if}<br>{$BILLING.email}</td>
+<td valign="top" width="50%" style="padding:0 0 0 12px;"><strong>Shipping address</strong><br>{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}<br>{/if}{$SHIPPING.line1|capitalize}<br>{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize}<br>{/if}{$SHIPPING.town|upper}<br>{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}{$SHIPPING.postcode}<br>{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
 </table>
-<p>If this was you, no action is needed. If you do not recognise this activity, please change your password immediately and review your account security settings.</p>]]></content>
-  </email>
-  <email name="cart.abandoned">
-    <subject><![CDATA[You left items in your cart at {$DATA.store_name}]]></subject>
-    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
-<p>You recently added items to your cart at {$DATA.store_name} but didn't complete your purchase. Your items are still waiting for you:</p>
-<table width="100%" border="0" cellpadding="5" cellspacing="0">
-<tr><td colspan="2"><strong>Item</strong></td><td align="right"><strong>Qty</strong></td><td align="right"><strong>Price</strong></td></tr>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:24px 0;">
+<tr>
+<th align="left" style="border-bottom:2px solid #e3e6e8;padding:8px 8px 8px 0;text-align:left;">Item</th>
+<th align="center" style="border-bottom:2px solid #e3e6e8;padding:8px 8px;text-align:center;">Qty</th>
+<th align="right" style="border-bottom:2px solid #e3e6e8;padding:8px 0 8px 8px;text-align:right;">Price</th>
+</tr>
 {foreach from=$PRODUCTS item=product}
 <tr>
-<td width="60" valign="top">{if !empty($product.image)}<img src="{$product.image}" width="50" height="50" style="object-fit:cover;border-radius:4px" alt="{$product.name}">{/if}</td>
-<td>{$product.name}{if !empty($product.options)}<br><small>{$product.options}</small>{/if}</td>
-<td align="right" valign="top">{$product.quantity}</td>
-<td align="right" valign="top">{$product.price}</td>
+<td valign="top" style="border-bottom:1px solid #e3e6e8;padding:10px 8px 10px 0;">{$product.name}{if !empty($product.product_options)}<br><span style="color:#6b7479;font-size:12px;">{$product.product_options}</span>{/if}</td>
+<td align="center" valign="top" style="border-bottom:1px solid #e3e6e8;padding:10px 8px;text-align:center;">{$product.quantity}</td>
+<td align="right" valign="top" style="border-bottom:1px solid #e3e6e8;padding:10px 0 10px 8px;text-align:right;white-space:nowrap;">{$product.price}</td>
+</tr>
+{/foreach}
+<tr>
+<td colspan="2" align="right" style="padding:10px 8px 4px 0;text-align:right;">Subtotal</td>
+<td align="right" style="padding:10px 0 4px 8px;text-align:right;white-space:nowrap;">{$DATA.subtotal}</td>
+</tr>
+{if !empty($DATA.raw_discount) && $DATA.raw_discount > 0}
+<tr>
+<td colspan="2" align="right" style="padding:4px 8px 4px 0;text-align:right;">Discount</td>
+<td align="right" style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap;">-{$DATA.discount}</td>
+</tr>
+{/if}
+<tr>
+<td colspan="2" align="right" style="padding:4px 8px 4px 0;text-align:right;">{if !empty($DATA.ship_method)}{$DATA.ship_method}{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Shipping{/if}</td>
+<td align="right" style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap;">{$DATA.shipping}</td>
+</tr>
+{foreach from=$TAXES item=tax}
+<tr>
+<td colspan="2" align="right" style="padding:4px 8px 4px 0;text-align:right;">{$tax.tax_name} ({$tax.tax_percent}%)</td>
+<td align="right" style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap;">{$tax.tax_amount}</td>
+</tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr>
+<td colspan="2" align="right" style="padding:4px 8px 4px 0;text-align:right;">Credit</td>
+<td align="right" style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap;">-{$DATA.credit_used}</td>
+</tr>
+{/if}
+<tr>
+<td colspan="2" align="right" style="border-top:2px solid #e3e6e8;padding:10px 8px 10px 0;text-align:right;"><strong>Order total</strong></td>
+<td align="right" style="border-top:2px solid #e3e6e8;padding:10px 0 10px 8px;text-align:right;white-space:nowrap;"><strong>{$DATA.total}</strong></td>
+</tr>
+</table>
+<p>Thanks,<br>{$DATA.store_name}</p>]]></content>
+  </email>
+  <email name="cart.payment_received">
+    <subject><![CDATA[We've received your payment]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">Payment received</h1>
+<p>Hi {$DATA.first_name|capitalize},</p>
+<p>Thank you. We've received your payment of {$DATA.total} for order {$DATA.cart_order_id}.</p>
+<p style="margin:24px 0;"><a class="cc-button" href="{$DATA.link}" style="background-color:#333333;border-color:#333333;border-radius:6px;border-style:solid;border-width:12px 24px;color:#ffffff;display:inline-block;font-weight:bold;line-height:1.2;text-decoration:none;">View your order</a></p>
+<p>Thanks,<br>{$DATA.store_name}</p>]]></content>
+  </email>
+  <email name="cart.order_complete">
+    <subject><![CDATA[Your order is complete]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">Your order is complete</h1>
+<p>Hi {$DATA.first_name|capitalize},</p>
+<p>Order {$DATA.cart_order_id} is now complete. Anything we're sending you should be with you soon.</p>
+{if !empty($DATA.ship_tracking)}<p><strong>Track your order:</strong><br>{$DATA.ship_tracking}</p>{/if}
+<p style="margin:24px 0;"><a class="cc-button" href="{$DATA.link}" style="background-color:#333333;border-color:#333333;border-radius:6px;border-style:solid;border-width:12px 24px;color:#ffffff;display:inline-block;font-weight:bold;line-height:1.2;text-decoration:none;">View your order</a></p>
+<p>Thanks,<br>{$DATA.store_name}</p>]]></content>
+  </email>
+  <email name="cart.order_cancelled">
+    <subject><![CDATA[Your order has been cancelled]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">Your order has been cancelled</h1>
+<p>Hi {$DATA.first_name|capitalize},</p>
+<p>Order {$DATA.cart_order_id} has been cancelled. If you have any questions, please contact us.</p>
+<p style="margin:24px 0;"><a class="cc-button" href="{$DATA.link}" style="background-color:#333333;border-color:#333333;border-radius:6px;border-style:solid;border-width:12px 24px;color:#ffffff;display:inline-block;font-weight:bold;line-height:1.2;text-decoration:none;">View your order</a></p>
+<p>Thanks,<br>{$DATA.store_name}</p>]]></content>
+  </email>
+  <email name="cart.payment_fraud">
+    <subject><![CDATA[There's a problem with your order]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">There's a problem with your order</h1>
+<p>Hi {$DATA.first_name|capitalize},</p>
+<p>We're sorry, but we were unable to process the payment for order {$DATA.cart_order_id}. If you have any questions, please contact us.</p>
+<p>Thanks,<br>{$DATA.store_name}</p>]]></content>
+  </email>
+  <email name="cart.digital_download">
+    <subject><![CDATA[Your downloads are ready]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">Your downloads are ready</h1>
+<p>Hi {$DATA.first_name|capitalize},</p>
+<p>The files from order {$DATA.cart_order_id} are ready to download:</p>
+{foreach from=$DOWNLOADS item=download}
+<p><strong>{$download.name}</strong><br><a href="{$download.url}">Download now</a><br><span style="color:#6b7479;font-size:12px;">Link expires: {$download.expire}</span></p>
+{/foreach}
+<p>You can also download your files at any time from your account on our website.</p>
+<p>Thanks,<br>{$DATA.store_name}</p>]]></content>
+  </email>
+  <email name="cart.gift_certificate">
+    <subject><![CDATA[You've received a gift card]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">You've received a gift card</h1>
+<p>Hi {$DATA.name},</p>
+<p>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} has sent you a {$DATA.value} gift card to spend at {$DATA.store_name}.</p>
+{if !empty($DATA.message)}<p><strong>Their message:</strong><br>{$DATA.message}</p>{/if}
+<p style="font-size:24px;font-weight:bold;letter-spacing:2px;margin:24px 0;text-align:center;">{$DATA.code}</p>
+<p>To use it, enter the code above in the &quot;Promotional code or gift card&quot; box at checkout.</p>
+<p style="margin:24px 0;"><a class="cc-button" href="{$DATA.storeURL}" style="background-color:#333333;border-color:#333333;border-radius:6px;border-style:solid;border-width:12px 24px;color:#ffffff;display:inline-block;font-weight:bold;line-height:1.2;text-decoration:none;">Start shopping</a></p>
+<p>Thanks,<br>{$DATA.store_name}</p>]]></content>
+  </email>
+  <email name="cart.abandoned">
+    <subject><![CDATA[You left something in your basket]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">You left something in your basket</h1>
+<p>Hi {$DATA.first_name|capitalize},</p>
+<p>You added these to your basket at {$DATA.store_name} but didn't finish checking out. We've saved them for you:</p>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:24px 0;">
+<tr>
+<th colspan="2" align="left" style="border-bottom:2px solid #e3e6e8;padding:8px 8px 8px 0;text-align:left;">Item</th>
+<th align="center" style="border-bottom:2px solid #e3e6e8;padding:8px 8px;text-align:center;">Qty</th>
+<th align="right" style="border-bottom:2px solid #e3e6e8;padding:8px 0 8px 8px;text-align:right;">Price</th>
+</tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td width="58" valign="top" style="border-bottom:1px solid #e3e6e8;padding:10px 8px 10px 0;">{if !empty($product.image)}<img src="{$product.image}" width="50" height="50" alt="" style="border-radius:4px;display:block;object-fit:cover;">{/if}</td>
+<td valign="top" style="border-bottom:1px solid #e3e6e8;padding:10px 8px 10px 0;">{$product.name}{if !empty($product.options)}<br><span style="color:#6b7479;font-size:12px;">{$product.options}</span>{/if}</td>
+<td align="center" valign="top" style="border-bottom:1px solid #e3e6e8;padding:10px 8px;text-align:center;">{$product.quantity}</td>
+<td align="right" valign="top" style="border-bottom:1px solid #e3e6e8;padding:10px 0 10px 8px;text-align:right;white-space:nowrap;">{$product.price}</td>
 </tr>
 {/foreach}
 </table>
-{if !empty($DATA.coupon_code)}<div style="text-align:center;margin:20px 0;padding:15px;background-color:#fff8e1;border:2px dashed #f9a825;border-radius:6px"><p style="margin:0 0 5px 0;font-size:16px;font-weight:bold">Use discount code:</p><p style="margin:0;font-size:22px;font-weight:bold;letter-spacing:2px;color:#e65100">{$DATA.coupon_code}</p><p style="margin:5px 0 0 0;font-size:13px;color:#666">{$DATA.coupon_description}</p></div>{/if}
-<p style="text-align:center;margin:20px 0"><a href="{$DATA.recovery_link}" style="background-color:#4CAF50;color:#fff;padding:12px 30px;text-decoration:none;border-radius:4px;font-weight:bold;display:inline-block">Complete Your Order</a></p>
-<p style="font-size:12px;color:#999">Don't want these reminders? <a href="{$DATA.optout_link}">Unsubscribe from cart reminders</a></p>]]></content>
+{if !empty($DATA.coupon_code)}<p style="background-color:#f7f7f7;border-radius:6px;padding:16px;text-align:center;">Use code <strong>{$DATA.coupon_code}</strong> at checkout<br>{$DATA.coupon_description}</p>{/if}
+<p style="margin:24px 0;"><a class="cc-button" href="{$DATA.recovery_link}" style="background-color:#333333;border-color:#333333;border-radius:6px;border-style:solid;border-width:12px 24px;color:#ffffff;display:inline-block;font-weight:bold;line-height:1.2;text-decoration:none;">Complete your order</a></p>
+<p>Thanks,<br>{$DATA.store_name}</p>
+<p style="color:#6b7479;font-size:12px;">Don't want these reminders? <a href="{$DATA.optout_link}">Unsubscribe from basket reminders</a>.</p>]]></content>
   </email>
   <email name="cart.withdrawal_acknowledgment">
-    <subject><![CDATA[Withdrawal request received — {$DATA.reference}]]></subject>
-    <content type="html"><![CDATA[<p>Hi {$DATA.name},</p>
-<p>We have received your withdrawal request{if !empty($DATA.cart_order_id)} for order <strong>{$DATA.cart_order_id}</strong>{/if}. Confirmation details:</p>
-<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
-<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Reference:</td><td>{$DATA.reference}</td></tr>
-<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Submitted at:</td><td>{$DATA.submitted_at}</td></tr>
-{if !empty($DATA.cart_order_id)}<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Order:</td><td>{$DATA.cart_order_id}</td></tr>{/if}
-{if !empty($DATA.reported_delivery)}<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Reported delivery date:</td><td>{$DATA.reported_delivery}</td></tr>{/if}
-</table>
+    <subject><![CDATA[We've received your withdrawal request ({$DATA.reference})]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">Withdrawal request received</h1>
+<p>Hi {$DATA.name},</p>
+<p>We have received your withdrawal request{if !empty($DATA.cart_order_id)} for order <strong>{$DATA.cart_order_id}</strong>{/if}. Here are the details:</p>
+<p><strong>Reference:</strong> {$DATA.reference}<br><strong>Submitted:</strong> {$DATA.submitted_at}{if !empty($DATA.reported_delivery)}<br><strong>Reported delivery date:</strong> {$DATA.reported_delivery}{/if}</p>
 <p><strong>Your statement:</strong></p>
-<blockquote style="margin:8px 0;padding:8px 12px;border-left:3px solid #ccc;color:#555;white-space:pre-wrap">{$DATA.statement|escape}</blockquote>
-{if !empty($DATA.reason)}<p><strong>Reason:</strong></p>
-<blockquote style="margin:8px 0;padding:8px 12px;border-left:3px solid #ccc;color:#555;white-space:pre-wrap">{$DATA.reason|escape}</blockquote>{/if}
-<p>This email confirms receipt only. We will assess your request and contact you with our decision. If you need to add information, reply to this email quoting reference <strong>{$DATA.reference}</strong>.</p>
-<p>Regards,<br>{$DATA.store_name}</p>]]></content>
+<blockquote style="border-left:3px solid #e3e6e8;color:#555555;margin:8px 0;padding:8px 12px;white-space:pre-wrap;">{$DATA.statement|escape}</blockquote>
+{if !empty($DATA.reason)}<p><strong>Your reason:</strong></p>
+<blockquote style="border-left:3px solid #e3e6e8;color:#555555;margin:8px 0;padding:8px 12px;white-space:pre-wrap;">{$DATA.reason|escape}</blockquote>{/if}
+<p>This email confirms receipt only. We will assess your request and contact you with our decision. If you need to add anything, reply to this email quoting reference <strong>{$DATA.reference}</strong>.</p>
+<p>Thanks,<br>{$DATA.store_name}</p>]]></content>
   </email>
   <email name="cart.withdrawal_decision">
-    <subject><![CDATA[Withdrawal request {if $DATA.status == 'accepted'}accepted{elseif $DATA.status == 'rejected'}rejected{else}update{/if} — {$DATA.reference}]]></subject>
-    <content type="html"><![CDATA[<p>Hi {$DATA.name},</p>
+    <subject><![CDATA[Withdrawal request {if $DATA.status == 'accepted'}accepted{elseif $DATA.status == 'rejected'}rejected{else}update{/if} ({$DATA.reference})]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">Your withdrawal request</h1>
+<p>Hi {$DATA.name},</p>
 {if $DATA.status == 'accepted'}
 <p>Your withdrawal request <strong>{$DATA.reference}</strong>{if !empty($DATA.cart_order_id)} for order <strong>{$DATA.cart_order_id}</strong>{/if} has been <strong>accepted</strong>.</p>
 {elseif $DATA.status == 'refunded'}
@@ -340,30 +213,111 @@ If you need any further help, please contact us.</p>]]></content>
 {else}
 <p>We have reviewed your withdrawal request <strong>{$DATA.reference}</strong>{if !empty($DATA.cart_order_id)} for order <strong>{$DATA.cart_order_id}</strong>{/if} and unfortunately we are unable to accept it.</p>
 {/if}
-<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
-<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Reference:</td><td>{$DATA.reference}</td></tr>
-<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Decision at:</td><td>{$DATA.decision_at}</td></tr>
-<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Status:</td><td>{$DATA.status|capitalize}</td></tr>
-</table>
-{if !empty($DATA.note)}<p><strong>Notes from the store:</strong></p>
-<blockquote style="margin:8px 0;padding:8px 12px;border-left:3px solid #ccc;color:#555;white-space:pre-wrap">{$DATA.note|escape}</blockquote>{/if}
+<p><strong>Reference:</strong> {$DATA.reference}<br><strong>Decision made:</strong> {$DATA.decision_at}<br><strong>Status:</strong> {$DATA.status|capitalize}</p>
+{if !empty($DATA.note)}<p><strong>A note from us:</strong></p>
+<blockquote style="border-left:3px solid #e3e6e8;color:#555555;margin:8px 0;padding:8px 12px;white-space:pre-wrap;">{$DATA.note|escape}</blockquote>{/if}
 <p>If you have questions about this decision, reply to this email quoting reference <strong>{$DATA.reference}</strong>.</p>
-<p>Regards,<br>{$DATA.store_name}</p>]]></content>
+<p>Thanks,<br>{$DATA.store_name}</p>]]></content>
+  </email>
+  <email name="admin.order_received">
+    <subject><![CDATA[New order #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">New order</h1>
+<p>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize}{if !empty($BILLING.company_name)} ({$BILLING.company_name}){/if} placed order {$DATA.cart_order_id} on {$DATA.order_date}.</p>
+<p style="margin:24px 0;"><a class="cc-button" href="{$DATA.link}" style="background-color:#333333;border-color:#333333;border-radius:6px;border-style:solid;border-width:12px 24px;color:#ffffff;display:inline-block;font-weight:bold;line-height:1.2;text-decoration:none;">Manage this order</a></p>
+{if !empty($DATA.customer_comments)}<p><strong>Customer comments:</strong><br>{$DATA.customer_comments}</p>{/if}
+<table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="margin:24px 0;">
+<tr>
+<td valign="top" width="50%" style="padding:0 12px 0 0;"><strong>Billing address</strong><br>{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>{/if}{$BILLING.line1|capitalize}<br>{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>{/if}{$BILLING.town|upper}<br>{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}{$BILLING.postcode}<br>{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}{if !empty($BILLING.phone)}<br>{$BILLING.phone}{/if}<br>{$BILLING.email}</td>
+<td valign="top" width="50%" style="padding:0 0 0 12px;"><strong>Shipping address</strong><br>{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}<br>{/if}{$SHIPPING.line1|capitalize}<br>{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize}<br>{/if}{$SHIPPING.town|upper}<br>{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}{$SHIPPING.postcode}<br>{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:24px 0;">
+<tr>
+<th align="left" style="border-bottom:2px solid #e3e6e8;padding:8px 8px 8px 0;text-align:left;">Item</th>
+<th align="center" style="border-bottom:2px solid #e3e6e8;padding:8px 8px;text-align:center;">Qty</th>
+<th align="right" style="border-bottom:2px solid #e3e6e8;padding:8px 0 8px 8px;text-align:right;">Price</th>
+</tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td valign="top" style="border-bottom:1px solid #e3e6e8;padding:10px 8px 10px 0;">{$product.name}{if !empty($product.product_options)}<br><span style="color:#6b7479;font-size:12px;">{$product.product_options}</span>{/if}</td>
+<td align="center" valign="top" style="border-bottom:1px solid #e3e6e8;padding:10px 8px;text-align:center;">{$product.quantity}</td>
+<td align="right" valign="top" style="border-bottom:1px solid #e3e6e8;padding:10px 0 10px 8px;text-align:right;white-space:nowrap;">{$product.price}</td>
+</tr>
+{/foreach}
+<tr>
+<td colspan="2" align="right" style="padding:10px 8px 4px 0;text-align:right;">Subtotal</td>
+<td align="right" style="padding:10px 0 4px 8px;text-align:right;white-space:nowrap;">{$DATA.subtotal}</td>
+</tr>
+{if !empty($DATA.raw_discount) && $DATA.raw_discount > 0}
+<tr>
+<td colspan="2" align="right" style="padding:4px 8px 4px 0;text-align:right;">Discount</td>
+<td align="right" style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap;">-{$DATA.discount}</td>
+</tr>
+{/if}
+<tr>
+<td colspan="2" align="right" style="padding:4px 8px 4px 0;text-align:right;">{if !empty($DATA.ship_method)}{$DATA.ship_method}{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Shipping{/if}</td>
+<td align="right" style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap;">{$DATA.shipping}</td>
+</tr>
+{foreach from=$TAXES item=tax}
+<tr>
+<td colspan="2" align="right" style="padding:4px 8px 4px 0;text-align:right;">{$tax.tax_name} ({$tax.tax_percent}%)</td>
+<td align="right" style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap;">{$tax.tax_amount}</td>
+</tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr>
+<td colspan="2" align="right" style="padding:4px 8px 4px 0;text-align:right;">Credit</td>
+<td align="right" style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap;">-{$DATA.credit_used}</td>
+</tr>
+{/if}
+<tr>
+<td colspan="2" align="right" style="border-top:2px solid #e3e6e8;padding:10px 8px 10px 0;text-align:right;"><strong>Order total</strong></td>
+<td align="right" style="border-top:2px solid #e3e6e8;padding:10px 0 10px 8px;text-align:right;white-space:nowrap;"><strong>{$DATA.total}</strong></td>
+</tr>
+</table>]]></content>
+  </email>
+  <email name="admin.review_added">
+    <subject><![CDATA[New product review]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">New product review</h1>
+<p>{$DATA.name} has reviewed <strong>{$DATA.product_name}</strong> and rated it {$DATA.rating} out of 5.</p>
+<p><strong>{$DATA.title}</strong><br>{$DATA.review}</p>
+<p style="margin:24px 0;"><a class="cc-button" href="{$DATA.link}" style="background-color:#333333;border-color:#333333;border-radius:6px;border-style:solid;border-width:12px 24px;color:#ffffff;display:inline-block;font-weight:bold;line-height:1.2;text-decoration:none;">Moderate this review</a></p>]]></content>
   </email>
   <email name="admin.withdrawal_received">
-    <subject><![CDATA[New withdrawal request — {$DATA.reference}]]></subject>
-    <content type="html"><![CDATA[<p>A new withdrawal request has been submitted.</p>
-<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
-<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Reference:</td><td>{$DATA.reference}</td></tr>
-<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Submitted at:</td><td>{$DATA.submitted_at}</td></tr>
-<tr><td style="padding:4px 12px 4px 0;font-weight:bold">From:</td><td>{$DATA.name|escape} &lt;{$DATA.email|escape}&gt;</td></tr>
-{if !empty($DATA.cart_order_id)}<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Order:</td><td>{$DATA.cart_order_id}</td></tr>{/if}
-{if !empty($DATA.reported_delivery)}<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Reported delivery date:</td><td>{$DATA.reported_delivery}</td></tr>{/if}
-</table>
+    <subject><![CDATA[New withdrawal request ({$DATA.reference})]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">New withdrawal request</h1>
+<p>{$DATA.name|escape} ({$DATA.email|escape}) has submitted a withdrawal request{if !empty($DATA.cart_order_id)} for order <strong>{$DATA.cart_order_id}</strong>{/if}.</p>
+<p style="margin:24px 0;"><a class="cc-button" href="{$DATA.admin_link}" style="background-color:#333333;border-color:#333333;border-radius:6px;border-style:solid;border-width:12px 24px;color:#ffffff;display:inline-block;font-weight:bold;line-height:1.2;text-decoration:none;">Open in the back office</a></p>
+<p><strong>Reference:</strong> {$DATA.reference}<br><strong>Submitted:</strong> {$DATA.submitted_at}{if !empty($DATA.reported_delivery)}<br><strong>Reported delivery date:</strong> {$DATA.reported_delivery}{/if}</p>
 <p><strong>Statement:</strong></p>
-<blockquote style="margin:8px 0;padding:8px 12px;border-left:3px solid #ccc;color:#555;white-space:pre-wrap">{$DATA.statement|escape}</blockquote>
+<blockquote style="border-left:3px solid #e3e6e8;color:#555555;margin:8px 0;padding:8px 12px;white-space:pre-wrap;">{$DATA.statement|escape}</blockquote>
 {if !empty($DATA.reason)}<p><strong>Reason:</strong></p>
-<blockquote style="margin:8px 0;padding:8px 12px;border-left:3px solid #ccc;color:#555;white-space:pre-wrap">{$DATA.reason|escape}</blockquote>{/if}
-<p><a href="{$DATA.admin_link}">Open in back office &rarr;</a></p>]]></content>
+<blockquote style="border-left:3px solid #e3e6e8;color:#555555;margin:8px 0;padding:8px 12px;white-space:pre-wrap;">{$DATA.reason|escape}</blockquote>{/if}]]></content>
+  </email>
+  <email name="admin.password_recovery">
+    <subject><![CDATA[Reset your back-office password]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">Reset your back-office password</h1>
+<p>Hi {$DATA.name},</p>
+<p>We received a request to reset the password for your {$DATA.store_name} back-office account. Use the button below to choose a new one.</p>
+<p style="margin:24px 0;"><a class="cc-button" href="{$DATA.link}" style="background-color:#333333;border-color:#333333;border-radius:6px;border-style:solid;border-width:12px 24px;color:#ffffff;display:inline-block;font-weight:bold;line-height:1.2;text-decoration:none;">Reset my password</a></p>
+<p>The link expires in 1 hour.</p>
+<p>If the button doesn't work, copy and paste this address into your browser:<br><a href="{$DATA.link}" style="word-break:break-all;">{$DATA.link}</a></p>
+<p>If you didn't ask for this, you can ignore this email and your password will stay the same.</p>]]></content>
+  </email>
+  <email name="admin.two_factor_code">
+    <subject><![CDATA[Your back-office verification code]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">Your verification code</h1>
+<p>Hi {$DATA.name},</p>
+<p>Use this code to finish logging in to the {$DATA.store_name} back office:</p>
+<p style="font-size:32px;font-weight:bold;letter-spacing:6px;margin:24px 0;text-align:center;">{$DATA.code}</p>
+<p>The code expires in {$DATA.expires_minutes} minutes. If you didn't try to log in, change your password straight away.</p>]]></content>
+  </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[New login to your back-office account]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">New login to your account</h1>
+<p>Hi {$DATA.name},</p>
+<p>Your {$DATA.store_name} back-office account was just accessed from a new {if $DATA.ip_changed && $DATA.browser_changed}location and device{elseif $DATA.ip_changed}location{else}device{/if}.</p>
+<p><strong>Time:</strong> {$DATA.login_time}<br><strong>IP address:</strong> {$DATA.new_ip}{if $DATA.ip_changed} (previously {$DATA.previous_ip}){/if}<br><strong>Browser:</strong> {$DATA.new_browser|truncate:120}</p>
+<p>If this was you, there's nothing to do. If you don't recognise it, change your password straight away and review your account security settings.</p>]]></content>
   </email>
 </emails>
