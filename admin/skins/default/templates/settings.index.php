@@ -578,7 +578,7 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.offline_message}</legend>
-         <textarea name="config[offline_content]" id="offline_content" class="textbox fck fck-full">{$CONFIG.offline_content|escape:"html"}</textarea>
+         <textarea name="config[offline_content]" id="offline_content" class="textbox cc-code" data-cc-mode="html" data-cc-height="420" spellcheck="false" aria-label="{$LANG.settings.offline_message}">{$CONFIG.offline_content|escape:"html"}</textarea>
       </fieldset>
    </div>
    <div id="Cart_Recovery" class="tab_content">

@@ -2147,3 +2147,56 @@ $(window).on('pageshow', function(e) {
         $('input.post-if-changed:disabled').prop('disabled', false);
     }
 });
+
+/* A whole HTML document, or a template, is edited as code (#4742):
+     <textarea class="cc-code" data-cc-mode="smarty|html" data-cc-height="600">
+   The invoice template and the page a closed store shows are both whole documents, which
+   a visual editor has to take apart to display and cannot put back as they were. Ace is
+   loaded by main.php on a page that has such a box; without it the text box is the editor. */
+$(function() {
+    if (!window.ace) return;
+    var dark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+    var editors = [];
+    $('textarea.cc-code').each(function() {
+        var $source = $(this), holder = document.createElement('div');
+        holder.className = 'cc-code-editor';
+        holder.style.height = (parseInt($source.attr('data-cc-height'), 10) || 450) + 'px';
+        $source.after(holder);
+        var editor = ace.edit(holder);
+        editor.session.setUseWrapMode(true);
+        editor.setOptions({
+            highlightActiveLine: true,
+            showPrintMargin: false,
+            theme: (dark && dark.matches) ? 'ace/theme/tomorrow_night' : 'ace/theme/github',
+            mode: 'ace/mode/' + ($source.attr('data-cc-mode') === 'html' ? 'html' : 'smarty')
+        });
+        // A whole document is what is wanted here; the HTML checker would call a template's tags mistakes
+        editor.session.setUseWorker(false);
+        editor.setReadOnly($source.prop('readOnly'));
+        editor.setValue($source.val(), -1);
+        editor.getSession().on('change', function() {
+            $source.val(editor.getSession().getValue()).trigger('change');
+        });
+        if ($source.attr('aria-label')) {
+            editor.textInput.getElement().setAttribute('aria-label', $source.attr('aria-label'));
+        }
+        $source.hide();
+        editors.push(editor);
+    });
+    if (!editors.length) return;
+    if (dark && dark.addEventListener) {
+        dark.addEventListener('change', function(event) {
+            editors.forEach(function(editor) {
+                editor.setTheme(event.matches ? 'ace/theme/tomorrow_night' : 'ace/theme/github');
+            });
+        });
+    }
+    // One on a tab that was not showing has no size until its tab is opened
+    $(document).on('click', 'div.tab', function() {
+        window.setTimeout(function() {
+            editors.forEach(function(editor) {
+                editor.resize();
+            });
+        }, 0);
+    });
+});
