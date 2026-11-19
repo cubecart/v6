@@ -172,6 +172,7 @@
 	<script type="text/javascript" defer src="includes/ace/src-min-noconflict/ace.js?{$VERSION_HASH}" charset="utf-8"></script>
 	<script type="text/javascript" defer src="includes/tinymce/tinymce.min.js?{$VERSION_HASH}"></script>
 	<script type="text/javascript" defer src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.email.js?{$VERSION_HASH}"></script>
+	<script type="text/javascript" defer src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.editor.units.js?{$VERSION_HASH}"></script>
 	<script type="text/javascript" defer src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.email.editor.js?{$VERSION_HASH}"></script>
 	{else}
 	<p>{$LANG.email.install_master_lang}</p>
