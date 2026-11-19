@@ -35,6 +35,11 @@ if (isset($_POST['newsletter']) && !empty($_POST['newsletter'])) {
     }
     if ($proceed) {
         $_POST['newsletter']['content_html'] = $GLOBALS['RAW']['POST']['newsletter']['content_html'];
+        // A newsletter goes through Smarty for each subscriber. The editor refuses one that is not
+        // valid before the form is sent; this is for a save that did not come through it (#4742)
+        if (($smarty_problem = EmailEditor::smartyProblem($_POST['newsletter']['content_html'])) !== '') {
+            $GLOBALS['main']->errorMessage(sprintf($lang['email']['editor_smarty_newsletter'], htmlspecialchars($smarty_problem, ENT_QUOTES, 'UTF-8')));
+        }
         if ($newsletter->saveNewsletter($_POST['newsletter'])) {
             $redirect = true;
             $_POST['newsletter']['newsletter_id'] = (!empty($_POST['newsletter']['newsletter_id'])) ? $_POST['newsletter']['newsletter_id'] : $newsletter->_newsletter_id;
@@ -125,6 +130,17 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
         $GLOBALS['smarty']->assign('EXISTING_TEMPLATES', $existing_templates);
     }
 
+    // What the wording of a newsletter can use (Mailer::assignStoreValues), for the editor's Macros menu
+    $newsletter_macros = array();
+    foreach (array('store_name' => '{$DATA.store_name}', 'store_url' => '{$DATA.storeURL}') as $macro_name => $macro_tag) {
+        $newsletter_macros[] = array(
+            'tag'         => $macro_tag,
+            'label'       => EmailEditor::macroName($lang['email']['label_'.$macro_name]),
+            'description' => $lang['email']['macro_'.$macro_name],
+            'sample'      => ($macro_name === 'store_name') ? (string)$GLOBALS['config']->get('config', 'store_name') : (string)$GLOBALS['storeURL'],
+        );
+    }
+    $GLOBALS['smarty']->assign('NEWSLETTER_MACROS', json_encode($newsletter_macros, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE));
     $GLOBALS['smarty']->assign('DISPLAY_FORM', true);
 } else {
     $GLOBALS['main']->addTabControl($lang['email']['title_newsletters'], 'newsletter-list');

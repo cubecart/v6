@@ -22,6 +22,9 @@
  *   data-cc-smarty="#id"            the "Parse Smarty Tags" toggle that goes with it, or "1" for always
  *   data-cc-height="400"            the height to start at
  *   data-cc-keep-image-size="1"     leave the width and height of images alone
+ *   data-cc-email="1"               the content is sent as an email: an image gets its whole address, and a size
+ *   data-cc-macros='[{"tag":"{$DATA.store_name}","label":"[STORE_NAME]","description":"","sample":""}]'
+ *                                   values to offer in a Macros menu, and to show by name
  *
  * class="fck" is still CKEditor, for extensions, and is deprecated.
  */
@@ -178,7 +181,12 @@
         this.trusted = false;       // content being set is this script's own, made safe already
         this.checked = null;        // the source last known to be valid Smarty
         this.turn = 0;              // which load is the current one
-        this.keepSizes = textarea.hasAttribute('data-cc-keep-image-size');
+        this.email = textarea.hasAttribute('data-cc-email');
+        this.keepSizes = this.email || textarea.hasAttribute('data-cc-keep-image-size');
+        this.macros = [];           // the values this content is known to have
+        try {
+            this.macros = JSON.parse(textarea.getAttribute('data-cc-macros') || '[]') || [];
+        } catch (e) { /* none */ }
         this.toggle = null;
         var smarty = textarea.getAttribute('data-cc-smarty') || '';
         if (smarty !== '' && smarty !== '1' && smarty !== '0') {
@@ -207,7 +215,7 @@
                 self.changed();
             },
             clean: function (html) {
-                return park(html, false);
+                return self.named(park(html, false));
             },
             ignore: function (tag, attribute) {
                 return !self.keepSizes && tag === 'img' && (attribute === 'width' || attribute === 'height');
@@ -223,6 +231,28 @@
         });
         this.core.refs(false); // the whole source is sent back with the form, never references
     }
+
+    /** A value this content is known to have is shown by its name, not as its tag */
+    Field.prototype.named = function (body) {
+        var chips, i, j, tag;
+        if (!this.macros.length) {
+            return body;
+        }
+        chips = body.querySelectorAll('.cc-ph[data-cc-l]');
+        for (i = 0; i < chips.length; i++) {
+            tag = (chips[i].getAttribute('data-cc-s') || '').replace(/\|[^{}]*\}$/, '}'); // without its modifiers
+            for (j = 0; j < this.macros.length; j++) {
+                if (this.macros[j].tag === tag) {
+                    chips[i].setAttribute('data-cc-l', this.macros[j].label);
+                    chips[i].setAttribute('data-cc-v', this.macros[j].sample || '');
+                    chips[i].setAttribute('title', this.macros[j].description || tag);
+                    chips[i].textContent = this.macros[j].label;
+                    break;
+                }
+            }
+        }
+        return body;
+    };
 
     /**
      * The content as it is to be stored. What nobody changed is what was there: an editor
@@ -492,7 +522,7 @@
             // No media plugin: it gives a stored <video> or <iframe> a fixed width and height when it
             // writes it back, which beats a responsive skin. An embed is pasted into the code view.
             plugins: 'link lists autolink image table charmap anchor searchreplace fullscreen',
-            toolbar: 'undo redo | blocks | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | ccCode fullscreen | anchor charmap hr removeformat searchreplace',
+            toolbar: 'undo redo | blocks | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | ' + (this.macros.length ? 'ccMacros | ' : '') + 'ccCode fullscreen | anchor charmap hr removeformat searchreplace',
             forced_root_block: 'p',
             // The content's own markup is left alone
             valid_elements: '*[*]',
@@ -522,8 +552,30 @@
                 window.ccOpenImagePickerDialog({
                     storageKey: 'editor_dialog',
                     onPick: function (file) {
+                        var path = 'images/source/' + (file.filepath || '') + (file.filename || ''), address = path, probe;
                         $.colorbox.close();
-                        callback('images/source/' + (file.filepath || '') + (file.filename || ''), {});
+                        if (!self.email) {
+                            callback(path, {});
+                            return;
+                        }
+                        // A mail client needs the whole address, and a size: and no wider than an
+                        // email is, or a photo straight from a camera pushes the layout out
+                        try {
+                            address = new URL(path, data.storeUrl).href;
+                        } catch (e) {}
+                        probe = new Image();
+                        probe.onload = function () {
+                            var width = probe.naturalWidth, height = probe.naturalHeight;
+                            if (width > 600) {
+                                height = Math.round(height * 600 / width);
+                                width = 600;
+                            }
+                            callback(address, width && height ? {width: String(width), height: String(height)} : {});
+                        };
+                        probe.onerror = function () {
+                            callback(address, {});
+                        };
+                        probe.src = address;
                     }
                 });
             },
@@ -572,6 +624,27 @@
                         self.openCode();
                     }
                 });
+                if (self.macros.length) {
+                    instance.ui.registry.addMenuButton('ccMacros', {
+                        text: T('editor_placeholders'),
+                        fetch: function (callback) {
+                            callback(self.macros.map(function (macro) {
+                                return {
+                                    type: 'menuitem',
+                                    text: macro.label + (macro.description ? '  ' + macro.description : ''),
+                                    onAction: function () {
+                                        // Where the caret is, unless that is inside something that is kept as it is
+                                        var node = instance.selection.getNode();
+                                        if (self.ready && node && !$(node).closest('.cc-locked, .cc-ph').length) {
+                                            instance.insertContent(self.core.chipHtml(macro));
+                                            self.changed();
+                                        }
+                                    }
+                                };
+                            }));
+                        }
+                    });
+                }
                 self.core.registerTools(instance);
                 instance.on('input change undo redo', function () {
                     if (self.ready && instance.isDirty()) {

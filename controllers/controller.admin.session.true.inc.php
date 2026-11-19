@@ -201,7 +201,7 @@ if (!empty($load_editor) || (!empty($page_content) && preg_match('/\bcc-editor\b
     foreach (array('editor_locked', 'editor_locked_note', 'editor_locked_markup', 'editor_locked_markup_note', 'editor_logic_note',
         'editor_edit_code', 'editor_move_up', 'editor_move_down', 'editor_remove', 'editor_new_paragraph', 'editor_locked_code_help',
         'editor_apply', 'editor_code_view', 'editor_parked', 'editor_content_code_only', 'editor_source_help',
-        'editor_source_help_smarty', 'editor_smarty_refused') as $editor_string) {
+        'editor_source_help_smarty', 'editor_smarty_refused', 'editor_placeholders') as $editor_string) {
         $editor_strings[$editor_string] = isset($editor_lang[$editor_string]) ? $editor_lang[$editor_string] : '';
     }
     $GLOBALS['smarty']->assign('EDITOR_DATA', json_encode(array(

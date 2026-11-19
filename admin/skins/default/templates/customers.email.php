@@ -51,7 +51,9 @@
    <div id="email_html" class="tab_content">
       <h3>{$LANG.email.title_content_html}</h3>
       <p>{$LANG.email.help_content_html}</p>
-      <textarea name="newsletter[content_html]" id="content_html" class="textbox fck fck-keep-image-size">{$NEWSLETTER.content_html|escape:"html"}</textarea>
+      {* A newsletter is an email: it goes through Smarty, and mail clients need images with a
+         whole address and a size. It is edited the way the emails are (#4742). *}
+      <textarea name="newsletter[content_html]" id="content_html" class="textbox cc-editor" data-cc-smarty="1" data-cc-email="1" data-cc-height="560" data-cc-macros="{$NEWSLETTER_MACROS|escape:'html'}">{$NEWSLETTER.content_html|escape:"html"}</textarea>
       <p>
          <input type="submit" value="{$LANG.common.save}">
          <button type="button" class="button" id="preview_newsletter" onclick="previewNewsletter()">{$LANG.common.preview}</button>
@@ -187,9 +189,8 @@
 
    // Editor button — pulls live data from the form fields.
    function previewNewsletter() {
-      var content = (typeof CKEDITOR !== 'undefined' && CKEDITOR.instances.content_html)
-         ? CKEDITOR.instances.content_html.getData()
-         : (document.getElementById('content_html') || {}).value || '';
+      var box = document.getElementById('content_html'), field = (window.ccEditor && box) ? ccEditor.of(box) : null;
+      var content = field ? field.source() : ((box || {}).value || '');
       var tplId   = parseInt((document.getElementById('template_id') || {}).value || 0, 10);
       var subject = (document.getElementById('email_subject') || {}).value || '';
       _renderNewsletterPreview(content, tplId, subject);
