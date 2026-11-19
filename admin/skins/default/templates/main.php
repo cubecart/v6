@@ -68,6 +68,10 @@
       <div style="display: none" id="val_lang_max_input_vars">{$LANG.notification.max_input_vars_exceeded}</div>
       {include file='templates/element.welcome_tour.php'}
       <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery.min.js?{$VERSION_HASH}"></script>
+      {* jQuery Migrate puts back what jQuery 3 removed, so admin scripts written for jQuery 1.x
+         keep working (#4748). With debug mode on its development build is loaded, which writes
+         a JQMIGRATE warning to the console wherever removed or deprecated jQuery is used. *}
+      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery-migrate{if empty($CONFIG.debug)}.min{/if}.js?{$VERSION_HASH}"></script>
       <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery-ui.min.js?{$VERSION_HASH}"></script>
       <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/plugins.php?{$VERSION_HASH}"></script>
       {* CKEditor is for extensions that still use class="fck"; core uses TinyMCE. It is
@@ -97,7 +101,14 @@
       <script src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/dropzone.js?{$VERSION_HASH}"></script>
       <script>
          {literal}
-         $(window).load(function() {
+         /* The admin sets its upload boxes up itself, in admin.js, once the page is ready. Dropzone
+            would set up every div.dropzone on its own the moment the page has loaded, and stops with
+            "No URL provided." on a box that has no address yet. jQuery 3 runs ready handlers after
+            that moment and not before it, as jQuery 1 did, so the switch is thrown here (#4748). */
+         if (window.Dropzone && document.querySelector('div.dropzone')) {
+           Dropzone.autoDiscover = false;
+         }
+         $(window).on('load', function() {
            $("#joyrideTour").joyride({
              autoStart: {/literal}{$TOUR_AUTO_START}{literal},
              postStepCallback: function (index, tip) {
