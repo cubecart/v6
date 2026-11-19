@@ -2156,17 +2156,63 @@ $(window).on('pageshow', function(e) {
     }
 });
 
-/* A whole HTML document, or a template, is edited as code (#4742):
-     <textarea class="cc-code" data-cc-mode="smarty|html" data-cc-height="600">
-   The invoice template and the page a closed store shows are both whole documents, which
-   a visual editor has to take apart to display and cannot put back as they were. Ace is
-   loaded by main.php on a page that has such a box; without it the text box is the editor. */
+/* Code is edited in a code box (#4742, #4743):
+     <textarea class="cc-code" data-cc-mode="smarty|html|php" data-cc-height="600">
+   A whole HTML document (the invoice template, the page a closed store shows) cannot be
+   put back as it was by a visual editor, and PHP (a code snippet, a hook file) is not
+   something to edit in one. Every such box is set up here, once, so that they all look
+   and behave the same and all follow the light or dark colour scheme.
+
+   Options, on the textarea:
+     data-cc-mode="php"       what the code is: smarty (the default), html or php
+     data-cc-height="600"     the height of the editor, in pixels
+     data-cc-source="#id"     an input that holds the code base64-encoded: the box starts with it, decoded
+     data-cc-target="#id"     an input kept up to date with the code, base64-encoded (it may be the same one)
+     readonly                 to be read, not typed in
+
+   For other scripts: ccCode.get(textarea), ccCode.set(textarea, code).
+
+   Ace is loaded by main.php on a page that has such a box; without it the text box is the editor. */
+window.ccCode = {
+    /** The code in a code box */
+    get: function(textarea) {
+        return $(textarea).val();
+    },
+    /** Replace the code in a code box */
+    set: function(textarea, code) {
+        var editor = $(textarea).data('ccCodeEditor');
+        if (editor) {
+            editor.setValue(code, -1); // which fills the text box, and whatever is kept in step with it
+        } else {
+            $(textarea).val(code).trigger('change');
+        }
+    }
+};
 $(function() {
-    if (!window.ace) return;
     var dark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
     var editors = [];
+    var theme = function() {
+        return (dark && dark.matches) ? 'ace/theme/tomorrow_night' : 'ace/theme/github';
+    };
     $('textarea.cc-code').each(function() {
-        var $source = $(this), holder = document.createElement('div');
+        var $source = $(this), mode = $source.attr('data-cc-mode');
+        var $from = $source.attr('data-cc-source') ? $($source.attr('data-cc-source')) : $();
+        var $to = $source.attr('data-cc-target') ? $($source.attr('data-cc-target')) : $();
+        if ($from.length) {
+            try {
+                $source.val(b64DecodeUnicode($from.val()));
+            } catch (e) { /* not base64: the box starts empty */ }
+            // This is what the box starts with, not a change someone made
+            this.defaultValue = $source.val();
+            $source.data('dirtyInitialValue', $source.val());
+        }
+        if ($to.length) {
+            $source.on('input change', function() {
+                $to.val(b64EncodeUnicode($source.val()));
+            });
+        }
+        if (!window.ace) return;
+        var holder = document.createElement('div');
         holder.className = 'cc-code-editor';
         holder.style.height = (parseInt($source.attr('data-cc-height'), 10) || 450) + 'px';
         $source.after(holder);
@@ -2175,11 +2221,11 @@ $(function() {
         editor.setOptions({
             highlightActiveLine: true,
             showPrintMargin: false,
-            theme: (dark && dark.matches) ? 'ace/theme/tomorrow_night' : 'ace/theme/github',
-            mode: 'ace/mode/' + ($source.attr('data-cc-mode') === 'html' ? 'html' : 'smarty')
+            theme: theme(),
+            mode: 'ace/mode/' + ((mode === 'html' || mode === 'php') ? mode : 'smarty')
         });
-        // A whole document is what is wanted here; the HTML checker would call a template's tags mistakes
-        editor.session.setUseWorker(false);
+        // PHP is checked as it is typed. A template is not: the HTML checker would call its tags mistakes.
+        editor.session.setUseWorker(mode === 'php');
         editor.setReadOnly($source.prop('readOnly'));
         editor.setValue($source.val(), -1);
         editor.getSession().on('change', function() {
@@ -2188,14 +2234,14 @@ $(function() {
         if ($source.attr('aria-label')) {
             editor.textInput.getElement().setAttribute('aria-label', $source.attr('aria-label'));
         }
-        $source.hide();
+        $source.hide().data('ccCodeEditor', editor);
         editors.push(editor);
     });
     if (!editors.length) return;
     if (dark && dark.addEventListener) {
-        dark.addEventListener('change', function(event) {
+        dark.addEventListener('change', function() {
             editors.forEach(function(editor) {
-                editor.setTheme(event.matches ? 'ace/theme/tomorrow_night' : 'ace/theme/github');
+                editor.setTheme(theme());
             });
         });
     }

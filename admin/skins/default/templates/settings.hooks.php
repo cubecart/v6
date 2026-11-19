@@ -137,24 +137,10 @@
          </fieldset>
          <fieldset>
          <legend>{$LANG.hooks.php_code}</legend>
-         <div id="php_code"></div>
+         {* The code travels base64-encoded, in the hidden field: the code box (admin.js) starts
+            with it decoded and keeps it up to date. *}
+         <textarea id="php_code" class="textbox cc-code" data-cc-mode="php" data-cc-height="300" data-cc-source="#php_code_base64" data-cc-target="#php_code_base64" spellcheck="false" aria-label="{$LANG.hooks.php_code}"></textarea>
          <input type="hidden" name="snippet[php_code]" id="php_code_base64" class="textbox" value="{$SNIPPET.php_code_base64}">
-         <script src="includes/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-         <script>
-            var editor = ace.edit("php_code");
-            var input = document.getElementById('php_code_base64');
-            editor.session.setUseWrapMode(true);
-            editor.setOptions({
-                highlightActiveLine: true,
-                showPrintMargin: false,
-                theme: 'ace/theme/github',
-                mode: 'ace/mode/php'
-            });
-            document.addEventListener('DOMContentLoaded', function() { editor.setValue(b64DecodeUnicode(input.value), 1); });
-            editor.getSession().on("change", function () {
-               input.value = b64EncodeUnicode(editor.getSession().getValue());
-            });
-         </script>
          <input type="hidden" name="snippet[snippet_id]" id="snippet_id" class="textbox" value="{$SNIPPET.snippet_id}">
       </fieldset>
       {/if}
@@ -255,35 +241,11 @@
             <span class="stat-chart-title">{$HOOK_FILE.path}</span>
             {if !$HOOK_FILE.writable}<span class="stat-chart-title hooks-pathbar-warning">{$LANG.hooks.hook_file_readonly}</span>{/if}
          </div>
-         <div id="hook_code_editor" class="hooks-code-editor"></div>
+         {* The file arrives base64-encoded in the hidden field and is sent back as it is typed.
+            A file that cannot be written to is shown to be read, and is not sent. *}
+         <textarea id="hook_code_editor" class="textbox cc-code" data-cc-mode="php" data-cc-height="500" data-cc-source="#hook_file_code_b64" spellcheck="false" aria-label="{$LANG.hooks.title_hook_code}"{if $HOOK_FILE.writable} name="hook_file_code"{else} readonly{/if}></textarea>
          <input type="hidden" id="hook_file_code_b64" value="{$HOOK_FILE.code}">
-         {if $HOOK_FILE.writable}<input type="hidden" name="hook_file_code" id="hook_file_code_input" value="">{/if}
       </fieldset>
-      <script src="includes/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-      {literal}
-      <script>
-         var hookEditor = ace.edit("hook_code_editor");
-         var hookInput = document.getElementById('hook_file_code_input');
-         hookEditor.session.setUseWrapMode(true);
-         hookEditor.setOptions({
-            highlightActiveLine: true,
-            showPrintMargin: false,
-            theme: 'ace/theme/github',
-            mode: 'ace/mode/php',
-            readOnly: !hookInput
-         });
-         document.addEventListener('DOMContentLoaded', function() {
-            var hookCode = b64DecodeUnicode(document.getElementById('hook_file_code_b64').value);
-            hookEditor.setValue(hookCode, 1);
-            if (hookInput) {
-               hookInput.value = hookCode;
-               hookEditor.getSession().on("change", function () {
-                  hookInput.value = hookEditor.getSession().getValue();
-               });
-            }
-         });
-      </script>
-      {/literal}
       {if $HOOK_FILE.backups}
       <script>var hookBackupId = {$HOOK.hook_id};</script>
       {literal}
