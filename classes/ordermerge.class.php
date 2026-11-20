@@ -20,7 +20,7 @@ if (!defined('CC_INI_SET')) {
  * A customer who orders again after forgetting something ends up with two orders
  * for one parcel. Merging moves the products and payments from the other orders
  * into the one being kept, adds the amounts together and cancels the orders that
- * were merged in.
+ * were merged in. The same product at the same price becomes one line.
  *
  * Nothing is recalculated. The combined order holds what the customer was charged
  * across the originals, shipping included, so its total still matches what was paid.
@@ -309,47 +309,86 @@ class OrderMerge
             // An order's pages and emails read the price each line was shown at from the basket
             // saved with it, which is what keeps them exact on a tax-inclusive store, and
             // "order again" refills the basket from it. The merged lines join the kept order's copy.
-            $basket       = Order::basketRead($keep['basket']);
-            $saved        = (is_array($basket) && isset($basket['contents']) && is_array($basket['contents']));
-            $basket_grown = false;
-            // Hashes already in use on the kept order, by its lines or in its saved basket
+            $basket         = Order::basketRead($keep['basket']);
+            $saved          = (is_array($basket) && isset($basket['contents']) && is_array($basket['contents']));
+            $basket_changed = false;
+            // Hashes already in use on the kept order, by its lines or in its saved basket, and
+            // the lines an identical one coming in can be added to
             $taken = $saved ? array_fill_keys(array_map('strval', array_keys($basket['contents'])), true) : array();
-            $mine  = $db->select('CubeCart_order_inventory', array('hash'), array('cart_order_id' => $keep_id), false, false, false, false);
+            $twins = array();
+            $mine  = $db->select('CubeCart_order_inventory', false, array('cart_order_id' => $keep_id), array('id' => 'ASC'), false, false, false);
             if ($mine) {
                 foreach ($mine as $line) {
                     $taken[(string)$line['hash']] = true;
+                    $key = self::_lineKey($line);
+                    if ($key !== '' && !isset($twins[$key])) {
+                        $twins[$key] = $line;
+                    }
                 }
             }
 
             foreach ($merging as $from) {
                 $from_id = (string)$from['cart_order_id'];
 
-                // A product bought on both orders has the same hash on each. A line coming in
-                // takes a new one, so that it finds its own saved price and never another line's.
                 $theirs   = Order::basketRead($from['basket']);
                 $theirs   = (is_array($theirs) && isset($theirs['contents']) && is_array($theirs['contents'])) ? $theirs['contents'] : array();
-                $incoming = $db->select('CubeCart_order_inventory', array('id', 'hash'), array('cart_order_id' => $from_id), false, false, false, false);
+                $incoming = $db->select('CubeCart_order_inventory', false, array('cart_order_id' => $from_id), array('id' => 'ASC'), false, false, false);
+                $arrived  = array();
                 if ($incoming) {
                     foreach ($incoming as $line) {
                         $hash = (string)$line['hash'];
-                        if ($hash === '') {
-                            continue;
+                        $key  = self::_lineKey($line);
+
+                        // The same product with the same options at the same price becomes one line,
+                        // with the quantities added, as if it had been ordered together
+                        if ($key !== '' && isset($twins[$key]) && self::_samePrice($twins[$key], $line, $saved ? $basket['contents'] : array(), $theirs)) {
+                            $twin     = $twins[$key];
+                            $quantity = (int)$twin['quantity'] + (int)$line['quantity'];
+                            if ($quantity <= 65535) {
+                                $tax = sprintf('%.2F', (float)$twin['tax'] + (float)$line['tax']);
+                                $db->update('CubeCart_order_inventory', array('quantity' => $quantity, 'tax' => $tax), array('id' => (int)$twin['id']), false, array('quantity', 'tax'));
+                                if ($db->statementErrno() !== 0 || $db->statementAffected() !== 1) {
+                                    throw new Exception('Line '.(int)$twin['id'].' could not take the quantity of line '.(int)$line['id']);
+                                }
+                                $db->delete('CubeCart_order_inventory', array('id' => (int)$line['id'], 'cart_order_id' => $from_id), '', false);
+                                self::_check('CubeCart_order_inventory');
+                                $twins[$key]['quantity'] = $quantity;
+                                $twins[$key]['tax']      = $tax;
+                                // Its saved price stays in use only while the quantity beside it agrees
+                                if ($saved && isset($basket['contents'][(string)$twin['hash']]) && is_array($basket['contents'][(string)$twin['hash']])) {
+                                    $basket['contents'][(string)$twin['hash']]['quantity'] = $quantity;
+                                    $basket_changed = true;
+                                }
+                                continue;
+                            }
                         }
-                        $new = isset($taken[$hash]) ? md5($from_id.'|'.$hash) : $hash;
-                        if ($new !== $hash) {
-                            $db->update('CubeCart_order_inventory', array('hash' => $new), array('id' => (int)$line['id'], 'cart_order_id' => $from_id), false, array('hash'));
-                            self::_check('CubeCart_order_inventory');
+
+                        // A product bought on both orders has the same hash on each. A line coming in
+                        // takes a new one, so that it finds its own saved price and never another line's.
+                        if ($hash !== '') {
+                            $new = isset($taken[$hash]) ? md5($from_id.'|'.$hash) : $hash;
+                            if ($new !== $hash) {
+                                $db->update('CubeCart_order_inventory', array('hash' => $new), array('id' => (int)$line['id'], 'cart_order_id' => $from_id), false, array('hash'));
+                                self::_check('CubeCart_order_inventory');
+                                $line['hash'] = $new;
+                            }
+                            $taken[$new] = true;
+                            if ($saved && isset($theirs[$hash])) {
+                                $basket['contents'][$new] = $theirs[$hash];
+                                $basket_changed = true;
+                            }
                         }
-                        $taken[$new] = true;
-                        if ($saved && isset($theirs[$hash])) {
-                            $basket['contents'][$new] = $theirs[$hash];
-                            $basket_grown = true;
+                        if ($key !== '' && !isset($arrived[$key])) {
+                            $arrived[$key] = $line;
                         }
                     }
                 }
+                // Lines from the order after this one can be added to these. Two lines that were
+                // separate on the same order stay separate.
+                $twins += $arrived;
 
-                // The products move as they are. Each line carries its own record of whether its
-                // stock has been taken, so nothing is taken or returned a second time.
+                // The lines that are left move as they are. Each carries its own record of whether
+                // its stock has been taken, so nothing is taken or returned a second time.
                 foreach (self::$_follow as $table => $column) {
                     $db->update($table, array($column => $keep_id), array($column => $from_id), false, array($column));
                     self::_check($table);
@@ -358,14 +397,14 @@ class OrderMerge
                 // Tax is kept per rate, so the same rate on both orders becomes one figure
                 $taxes = $db->select('CubeCart_order_tax', false, array('cart_order_id' => $from_id), false, false, false, false);
                 if ($taxes) {
-                    foreach ($taxes as $theirs) {
-                        $mine = $db->select('CubeCart_order_tax', false, array('cart_order_id' => $keep_id, 'tax_id' => $theirs['tax_id']), false, 1, false, false);
-                        if ($mine) {
-                            $db->update('CubeCart_order_tax', array('amount' => sprintf('%.2F', (float)$mine[0]['amount'] + (float)$theirs['amount'])), array('id' => (int)$mine[0]['id']), false, array('amount'));
+                    foreach ($taxes as $their_tax) {
+                        $my_tax = $db->select('CubeCart_order_tax', false, array('cart_order_id' => $keep_id, 'tax_id' => $their_tax['tax_id']), false, 1, false, false);
+                        if ($my_tax) {
+                            $db->update('CubeCart_order_tax', array('amount' => sprintf('%.2F', (float)$my_tax[0]['amount'] + (float)$their_tax['amount'])), array('id' => (int)$my_tax[0]['id']), false, array('amount'));
                             self::_check('CubeCart_order_tax');
-                            $db->delete('CubeCart_order_tax', array('id' => (int)$theirs['id']), '', false);
+                            $db->delete('CubeCart_order_tax', array('id' => (int)$their_tax['id']), '', false);
                         } else {
-                            $db->update('CubeCart_order_tax', array('cart_order_id' => $keep_id), array('id' => (int)$theirs['id']), false, array('cart_order_id'));
+                            $db->update('CubeCart_order_tax', array('cart_order_id' => $keep_id), array('id' => (int)$their_tax['id']), false, array('cart_order_id'));
                         }
                         self::_check('CubeCart_order_tax');
                     }
@@ -430,7 +469,7 @@ class OrderMerge
             // None of these is a sum for the database to work out
             $db->update('CubeCart_order_summary', $record, array('cart_order_id' => $keep_id), false, array_keys($record));
             self::_check('CubeCart_order_summary');
-            if ($basket_grown) {
+            if ($basket_changed) {
                 Order::saveBasketBlob($keep_id, Order::basketWrite($basket, Order::ORDER_PROCESS));
                 self::_check('CubeCart_order_summary');
             }
@@ -504,6 +543,54 @@ class OrderMerge
             $parts[] = $value;
         }
         return implode('|', $parts);
+    }
+
+    /**
+     * What has to match for two product lines to be the same thing at the same price
+     *
+     * @param array $line  Order inventory row
+     * @return string  '' for a line that always stays on its own
+     */
+    private static function _lineKey(array $line)
+    {
+        // A download has its own file link and a gift card its own code, each tied to its line
+        if ((int)$line['digital'] === 1 || (int)$line['coupon_id'] > 0 || trim((string)$line['custom']) !== '' || (int)$line['quantity'] < 1) {
+            return '';
+        }
+        return implode('|', array(
+            (int)$line['product_id'],
+            (string)$line['product_code'],
+            (string)$line['name'],
+            sprintf('%.2F', (float)$line['price']),
+            sprintf('%.4F', (float)$line['tax_percent']),
+            sprintf('%.2F', (float)$line['cost_price']),
+            (string)$line['options_identifier'],
+            md5((string)$line['product_options']),
+            md5((string)$line['options_array']),
+            (int)$line['stock_updated'], // stock taken for one and not the other is not the same line
+        ));
+    }
+
+    /**
+     * Do two lines that look the same also share the exact price their baskets saved?
+     *
+     * The price on a line is rounded. On a tax-inclusive store the unrounded one in the
+     * saved basket is what the customer was shown, so that has to agree as well.
+     *
+     * @param array $kept      Line on, or on its way to, the order being kept
+     * @param array $incoming  Line on the order being merged in
+     * @param array $mine      Saved basket lines of the kept order, by hash
+     * @param array $theirs    Saved basket lines of the order being merged in, by hash
+     * @return bool
+     */
+    private static function _samePrice(array $kept, array $incoming, array $mine, array $theirs)
+    {
+        $a = isset($mine[(string)$kept['hash']]) ? $mine[(string)$kept['hash']] : null;
+        $b = isset($theirs[(string)$incoming['hash']]) ? $theirs[(string)$incoming['hash']] : null;
+        if (!is_array($a) || !is_array($b) || !isset($a['total_price_each'], $b['total_price_each'])) {
+            return true; // nothing more exact than the lines themselves to go by
+        }
+        return abs((float)$a['total_price_each'] - (float)$b['total_price_each']) < 0.00001;
     }
 
     /**

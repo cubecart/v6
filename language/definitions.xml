@@ -2404,7 +2404,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="merge_note_kept" introduced="6.9.0"><![CDATA[Order %1$s (placed %2$s, total %3$s) was merged into this order on %4$s by %5$s.]]></string>
     <string name="merge_option" introduced="6.9.0"><![CDATA[merge into one order]]></string>
     <string name="merge_products" introduced="6.9.0"><![CDATA[Products]]></string>
-    <string name="merge_products_value" introduced="6.9.0"><![CDATA[%1$s moved to order %2$s]]></string>
+    <string name="merge_products_value" introduced="6.9.0"><![CDATA[%1$s moved to order %2$s. The same product at the same price becomes one line.]]></string>
     <string name="merge_reason_address" introduced="6.9.0"><![CDATA[Going to a different delivery address.]]></string>
     <string name="merge_reason_currency" introduced="6.9.0"><![CDATA[Placed in a different currency.]]></string>
     <string name="merge_reason_customer" introduced="6.9.0"><![CDATA[Placed by a different customer.]]></string>
