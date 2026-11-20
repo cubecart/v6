@@ -91,13 +91,22 @@ if (isset($_POST['newsletter']) && !empty($_POST['newsletter'])) {
         } else {
             $GLOBALS['main']->errorMessage($lang['email']['error_news_save']);
         }
-        if (isset($_POST['newsletter']['test_email']) && !empty($_POST['newsletter']['test_email'])) {
-            if ($newsletter->sendTest($_POST['newsletter']['newsletter_id'], $_POST['newsletter']['test_email'])) {
-                $GLOBALS['main']->successMessage($lang['email']['notify_news_test_sent']);
+        // A test goes out when its own button is pressed, not because an address is in the box,
+        // and the newsletter stays open afterwards: a test is something done while writing it
+        $send_test = !empty($_POST['send_test']);
+        if ($send_test && $redirect) {
+            $test_to = isset($_POST['newsletter']['test_email']) && is_scalar($_POST['newsletter']['test_email']) ? trim((string)$_POST['newsletter']['test_email']) : '';
+            if (!filter_var($test_to, FILTER_VALIDATE_EMAIL)) {
+                $GLOBALS['main']->errorMessage($lang['common']['error_email_invalid']);
+            } elseif ($newsletter->sendTest($_POST['newsletter']['newsletter_id'], $test_to)) {
+                $GLOBALS['session']->set('newsletter_test_to', $test_to); // offered again next time
+                $GLOBALS['main']->successMessage(sprintf($lang['email']['notify_test_sent'], htmlspecialchars($test_to, ENT_QUOTES, 'UTF-8')));
+            } else {
+                $GLOBALS['main']->errorMessage($lang['email']['error_test_send']);
             }
         }
         if ($redirect) {
-            httpredir('?_g=customers&node=email');
+            httpredir($send_test ? '?_g=customers&node=email&action=edit&newsletter_id='.(int)$_POST['newsletter']['newsletter_id'] : '?_g=customers&node=email');
         }
     }
 }
@@ -162,9 +171,12 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
 } elseif (isset($_GET['action']) && in_array(strtolower($_GET['action']), array('add', 'edit'))) {
     Admin::getInstance()->permissions('customers', CC_PERM_EDIT, true);
 
+    // One page: the newsletter, what describes it, and its test send (#4738)
     $GLOBALS['main']->addTabControl($lang['common']['general'], 'general');
-    $GLOBALS['main']->addTabControl($lang['email']['title_content_html'], 'email_html');
-    $GLOBALS['main']->addTabControl($lang['email']['title_send_test'], 'send_test');
+    $GLOBALS['smarty']->assign('NEWSLETTER_TITLE', $lang['email'][(isset($_GET['newsletter_id']) && is_numeric($_GET['newsletter_id'])) ? 'title_news_edit' : 'title_news_create']);
+    // A test goes to the address the last one went to, or to whoever is writing the newsletter
+    $test_to = $GLOBALS['session']->get('newsletter_test_to');
+    $GLOBALS['smarty']->assign('NEWSLETTER_TEST_TO', (is_string($test_to) && filter_var($test_to, FILTER_VALIDATE_EMAIL)) ? $test_to : (string)Admin::getInstance()->get('email'));
     if (isset($_GET['newsletter_id']) && is_numeric($_GET['newsletter_id'])) {
         if (($content = $GLOBALS['db']->select('CubeCart_newsletter', false, array('newsletter_id' => (int)$_GET['newsletter_id']))) !== false) {
             // Render editor window

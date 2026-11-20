@@ -664,7 +664,8 @@
             // No media plugin: it gives a stored <video> or <iframe> a fixed width and height when it
             // writes it back, which beats a responsive skin. An embed is pasted into the code view.
             plugins: 'link lists autolink image table charmap anchor searchreplace fullscreen',
-            toolbar: 'undo redo | blocks | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | ' + (this.macros.length ? 'ccMacros | ' : '') + 'ccCode fullscreen | anchor charmap hr removeformat searchreplace',
+            // The macros come early: beside a column of fields the editor is narrow, and what does not fit slides out of sight
+            toolbar: 'undo redo | blocks | ' + (this.macros.length ? 'ccMacros | ' : '') + 'bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | ccCode fullscreen | anchor charmap hr removeformat searchreplace',
             forced_root_block: 'p',
             // The content's own markup is left alone
             valid_elements: '*[*]',

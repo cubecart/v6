@@ -1387,7 +1387,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="news_unschedule" introduced="6.9.0"><![CDATA[Unschedule]]></string>
     <string name="notify_news_scheduled" introduced="6.9.0"><![CDATA[Newsletter scheduled. It will start sending on %s.]]></string>
     <string name="notify_news_unscheduled" introduced="6.9.0"><![CDATA[Newsletter unscheduled. It is a draft again.]]></string>
-    <string name="help_content_template" introduced="6.9.0"><![CDATA[Your content is shown inside the template chosen on the General tab, as the email will look. Only your content can be changed here.]]></string>
+    <string name="help_content_template" introduced="6.9.0"><![CDATA[Your content is shown inside the template chosen beside it, as the email will look. Only your content can be changed here.]]></string>
     <string name="help_content_text" introduced="5.0.0"><![CDATA[Subscribers who have their email client set to prefer plain text emails will see the contents of this field. Please do not enter HTML here.]]></string>
     <string name="help_macro" introduced="5.0.0"><![CDATA[Note: Visitors only need to add their email address to subscribe to the mailing list. Some data will only be known if they are a registered customer.]]></string>
     <string name="help_test_send" introduced="5.0.0"><![CDATA[Please use this to send a test copy of the email before sending it out to your customers. The email received will be sent in multipart format.<br>To view the HTML or text version you may need to edit your mail client settings.<br>Your customers will either see rich HTML or plain text depending on their email client settings.]]></string>
@@ -1547,6 +1547,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_macro_user_newsletter" introduced="6.1.0"><![CDATA[User: Verify Newsletter Subscription]]></string>
     <string name="title_macros" introduced="5.0.0"><![CDATA[Available Macros]]></string>
     <string name="title_news_create" introduced="5.0.0"><![CDATA[Create Newsletter]]></string>
+    <string name="title_news_edit" introduced="6.9.0"><![CDATA[Edit Newsletter]]></string>
     <string name="title_newsletters" introduced="5.0.0"><![CDATA[Newsletters]]></string>
     <string name="title_overview" introduced="5.0.0"><![CDATA[Overview]]></string>
     <string name="title_send_test" introduced="5.0.0"><![CDATA[Send Test Email]]></string>

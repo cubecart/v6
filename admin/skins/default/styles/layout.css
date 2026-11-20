@@ -2939,6 +2939,27 @@ input.textbox.email-line-field {
 .email-tools__group:last-child {
     margin-left: auto;
 }
+/* A form with more than one button that sends it (newsletters): Save is first in the form, so that
+   it is the one Enter presses, and is shown last */
+.email-tools--form {
+    margin-top: 10px;
+}
+.email-tools--form .email-tools__save {
+    order: 1;
+    margin-left: auto;
+}
+.email-tools--form .email-tools__group:last-child {
+    margin-left: 0;
+}
+/* A field that is a switch: its name and the switch on one line */
+.email-editor__field--toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.email-editor__field--toggle > label {
+    margin: 0;
+}
 .email-tools__status.is-ok::before {
     font-family: FontAwesome;
     content: "\f00c\00a0";

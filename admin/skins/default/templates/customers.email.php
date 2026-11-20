@@ -11,32 +11,33 @@
  *}
 {if isset($DISPLAY_FORM)}
 <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
+   {* One page, laid out as an email's content is: the newsletter in the middle as it will be
+      sent, what describes it beside it, and preview, test and save beneath (#4738) *}
    <div id="general" class="tab_content">
-   {if $CONFIG.newsletter_status=='0'}
-   <p>{$LANG.newsletter.disabled_notice}</p>
-   {/if}
-      <fieldset>
-         <legend>{$LANG.email.title_overview}</legend>
-         <div><label for="email_subject">{$LANG.email.news_subject}</label><span><input type="text" name="newsletter[subject]" id="email_subject" class="required textbox" value="{$NEWSLETTER.subject}"></span></div>
-         <div><label for="email_preheader">{$LANG.email.preview_text}</label><span><input type="text" name="newsletter[preheader]" id="email_preheader" class="textbox" maxlength="255" value="{$NEWSLETTER.preheader|escape:'html'}"> ({$LANG.email.preview_text_help})</span></div>
-         <div><label for="sender_name">{$LANG.email.news_sender_name}</label><span><input type="text" name="newsletter[sender_name]" id="sender_name" class="textbox" value="{$NEWSLETTER.sender_name}"> ({$LANG.email.empty_equals_default})</span></div>
-         <div><label for="sender_email">{$LANG.email.news_sender_email}</label><span><input type="text" name="newsletter[sender_email]" id="sender_email" class="textbox" value="{$NEWSLETTER.sender_email}"> ({$LANG.email.empty_equals_default})</span></div>
-         <div>
-            <label for="dbl_opt">{$LANG.email.news_dbl_opt_only}*</label>
-            <span>
-               <input type="hidden" id="dbl_opt" name="newsletter[dbl_opt]" class="toggle"
-               {if isset($CONFIG.subscribe_mode_lax) && $CONFIG.subscribe_mode_lax=='1'}
-               value="{if !isset($NEWSLETTER.dbl_opt)}{$CONFIG.dbl_opt}{else}{$NEWSLETTER.dbl_opt}{/if}">
-               {else}
-               value="1" style="pointer-events: none;" tabindex="-1">
-               {/if}
-            </span>
+      <h3>{$NEWSLETTER_TITLE}</h3>
+      {if $CONFIG.newsletter_status=='0'}
+      <p>{$LANG.newsletter.disabled_notice}</p>
+      {/if}
+      <div class="email-editor">
+         <div class="email-editor__main">
+            {* A newsletter is an email: it goes through Smarty, and mail clients need images with a
+               whole address and a size. It is edited the way the emails are (#4742). The template
+               chosen beside it is drawn round the content, which is the only part that can be changed. *}
+            <textarea name="newsletter[content_html]" id="content_html" class="textbox cc-editor" aria-label="{$LANG.email.title_content_html}" data-cc-smarty="1" data-cc-email="1" data-cc-height="680" data-cc-macros="{$NEWSLETTER_MACROS|escape:'html'}" data-cc-frame="#template_id" data-cc-frames="{$NEWSLETTER_FRAMES|escape:'html'}">{$NEWSLETTER.content_html|escape:"html"}</textarea>
+            {if $NEWSLETTER_FRAMED}<p class="email-field-help">{$LANG.email.help_content_template}</p>{/if}
          </div>
-         <div><label for="name_fallback">{$LANG.email.news_name_fallback}</label><span><input type="text" name="newsletter[name_fallback]" id="name_fallback" class="textbox" maxlength="64" value="{$NEWSLETTER.name_fallback|escape:'html'}"> ({$LANG.email.news_name_fallback_help})</span></div>
-         <div><label for="send_at">{$LANG.email.news_send_at}</label><span><input type="datetime-local" name="newsletter[send_at]" id="send_at" class="textbox" min="{$NEWSLETTER_SEND_FROM}" value="{$NEWSLETTER_SEND_AT}"> ({$LANG.email.news_send_at_help})</span></div>
-         <div>
-            <label for="template_id">{$LANG.email.email_template}</label>
-            <span>
+         <div class="email-editor__side">
+            <div class="email-editor__field">
+               <label for="email_subject">{$LANG.email.news_subject}</label>
+               <input type="text" name="newsletter[subject]" id="email_subject" class="required textbox" value="{$NEWSLETTER.subject}">
+            </div>
+            <div class="email-editor__field">
+               <label for="email_preheader">{$LANG.email.preview_text}</label>
+               <input type="text" name="newsletter[preheader]" id="email_preheader" class="textbox" maxlength="255" value="{$NEWSLETTER.preheader|escape:'html'}" aria-describedby="email_preheader_help">
+               <span id="email_preheader_help" class="email-field-help">{$LANG.email.preview_text_help}</span>
+            </div>
+            <div class="email-editor__field">
+               <label for="template_id">{$LANG.email.email_template}</label>
                <select name="newsletter[template_id]" id="template_id" class="textbox">
                   <option value="0">{$LANG.form.none}</option>
                   {if isset($EXISTING_TEMPLATES)}
@@ -45,31 +46,49 @@
                   {/foreach}
                   {/if}
                </select>
-            </span>
+            </div>
+            <div class="email-editor__field">
+               <label for="sender_name">{$LANG.email.news_sender_name}</label>
+               <input type="text" name="newsletter[sender_name]" id="sender_name" class="textbox" value="{$NEWSLETTER.sender_name}" aria-describedby="sender_name_help">
+               <span id="sender_name_help" class="email-field-help">{$LANG.email.empty_equals_default}</span>
+            </div>
+            <div class="email-editor__field">
+               <label for="sender_email">{$LANG.email.news_sender_email}</label>
+               <input type="text" name="newsletter[sender_email]" id="sender_email" class="textbox" value="{$NEWSLETTER.sender_email}" aria-describedby="sender_email_help">
+               <span id="sender_email_help" class="email-field-help">{$LANG.email.empty_equals_default}</span>
+            </div>
+            <div class="email-editor__field">
+               <label for="name_fallback">{$LANG.email.news_name_fallback}</label>
+               <input type="text" name="newsletter[name_fallback]" id="name_fallback" class="textbox" maxlength="64" value="{$NEWSLETTER.name_fallback|escape:'html'}" aria-describedby="name_fallback_help">
+               <span id="name_fallback_help" class="email-field-help">{$LANG.email.news_name_fallback_help}</span>
+            </div>
+            <div class="email-editor__field">
+               <label for="send_at">{$LANG.email.news_send_at}</label>
+               <input type="datetime-local" name="newsletter[send_at]" id="send_at" class="textbox" min="{$NEWSLETTER_SEND_FROM}" value="{$NEWSLETTER_SEND_AT}" aria-describedby="send_at_help">
+               <span id="send_at_help" class="email-field-help">{$LANG.email.news_send_at_help}</span>
+            </div>
+            <div class="email-editor__field email-editor__field--toggle">
+               <label for="dbl_opt">{$LANG.email.news_dbl_opt_only}*</label>
+               <input type="hidden" id="dbl_opt" name="newsletter[dbl_opt]" class="toggle"
+               {if isset($CONFIG.subscribe_mode_lax) && $CONFIG.subscribe_mode_lax=='1'}
+               value="{if !isset($NEWSLETTER.dbl_opt)}{$CONFIG.dbl_opt}{else}{$NEWSLETTER.dbl_opt}{/if}">
+               {else}
+               value="1" style="pointer-events: none;" tabindex="-1">
+               {/if}
+            </div>
          </div>
-      </fieldset>
-      * {$LANG.email.dbl_opt_strict}
-      <p><input type="submit" value="{$LANG.common.save}"></p>
-   </div>
-   <div id="email_html" class="tab_content">
-      <h3>{$LANG.email.title_content_html}</h3>
-      <p>{$LANG.email.help_content_html}</p>
-      {* A newsletter is an email: it goes through Smarty, and mail clients need images with a
-         whole address and a size. It is edited the way the emails are (#4742). *}
-      {if $NEWSLETTER_FRAMED}<p>{$LANG.email.help_content_template}</p>{/if}
-      {* The template chosen on the General tab is drawn round the content, which is the only part that can be changed (#4738) *}
-      <textarea name="newsletter[content_html]" id="content_html" class="textbox cc-editor" data-cc-smarty="1" data-cc-email="1" data-cc-height="560" data-cc-macros="{$NEWSLETTER_MACROS|escape:'html'}" data-cc-frame="#template_id" data-cc-frames="{$NEWSLETTER_FRAMES|escape:'html'}">{$NEWSLETTER.content_html|escape:"html"}</textarea>
-      <p>
-         <input type="submit" value="{$LANG.common.save}">
+      </div>
+      <div class="email-tools email-tools--form">
+         {* Save comes first in the form, so that it is the button Enter presses, and last on the page *}
+         <span class="email-tools__group email-tools__save"><input type="submit" value="{$LANG.common.save}"></span>
          <button type="button" class="button" id="preview_newsletter" onclick="previewNewsletter()">{$LANG.common.preview}</button>
-      </p>
-   </div>
-   <div id="send_test" class="tab_content">
-      <h3>{$LANG.email.title_send_test}</h3>
-      <p>{$LANG.email.help_test_send}</p>
-      <fieldset>
-         <div><label for="email_test">{$LANG.email.test_email}</label><span><input type="text" name="newsletter[test_email]" id="email_test" class="textbox" value=""> <input type="submit" value="{$LANG.email.save_send_test}" class="tiny"></span></div>
-      </fieldset>
+         <span class="email-tools__group">
+            <label for="email_test">{$LANG.email.title_send_test}</label>
+            <input type="text" inputmode="email" autocomplete="email" name="newsletter[test_email]" id="email_test" class="textbox" value="{$NEWSLETTER_TEST_TO|escape:'html'}">
+            <button type="submit" name="send_test" value="1" class="button" id="newsletter_send_test">{$LANG.email.save_send_test}</button>
+         </span>
+      </div>
+      <p class="email-field-help">* {$LANG.email.dbl_opt_strict}</p>
    </div>
       {if isset($PLUGIN_TABS)}
    {foreach from=$PLUGIN_TABS item=tab}
@@ -81,6 +100,20 @@
    <input type="hidden" name="previous-tab" id="previous-tab" value="">
 
 </form>
+<script>{literal}
+   // Enter in the test address sends the test, as its button does. Anywhere else it saves.
+   (function () {
+      var address = document.getElementById('email_test'), button = document.getElementById('newsletter_send_test');
+      if (address && button) {
+         address.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+               event.preventDefault();
+               button.click();
+            }
+         });
+      }
+   })();
+{/literal}</script>
 {/if}
 {if isset($DISPLAY_LIST)}
 {if $NEWSLETTER_AUTO_REFRESH}
