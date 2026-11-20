@@ -140,6 +140,7 @@ class Cubecart
         // Assigned once rather than per product: it does not vary by row.
         $GLOBALS['smarty']->assign('CTRL_REVIEW', (bool)$GLOBALS['config']->get('config', 'enable_reviews'));
 
+        $GLOBALS['catalogue']->primeProducts($rows);
         foreach ($rows as $product) {
             // Product Translation
             $GLOBALS['language']->translateProduct($product);
@@ -2216,6 +2217,7 @@ class Cubecart
             $gc = $GLOBALS['config']->get('gift_certs');
             $digital_only = true;
             $product_list = array();
+            $GLOBALS['seo']->primeItems('prod', array_column($contents, 'product_id'));
             foreach ($contents as $hash => $product) {
                 if ((int)$product['product_id']>0) {
                     $product_list[] = $product['product_id']; // Certificate ID is NULL
@@ -2533,6 +2535,7 @@ class Cubecart
                     }
                     if (($related_products = $GLOBALS['db']->select('CubeCart_order_inventory', array('DISTINCT' => 'product_id'), array('cart_order_id' => $related, '!product_id' => $product_list), false, $candidate_pool)) !== false) {
                         $related_list = array();
+                        $GLOBALS['seo']->primeItems('prod', array_column($related_products, 'product_id'));
                         foreach ($related_products as $related) {
                             if (empty($related['product_id']) || in_array($related['product_id'], $product_list)) {
                                 continue;

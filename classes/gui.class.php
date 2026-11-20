@@ -431,6 +431,7 @@ class GUI
         if (($contents = $GLOBALS['cart']->get()) !== false) {
             $gc = $GLOBALS['config']->get('gift_certs');
             $vars = array();
+            $GLOBALS['seo']->primeItems('prod', array_column($contents, 'product_id'));
             foreach ($contents as $hash => $product) {
                 $product['name_abbrev'] = (strlen($product['name']) >= 15) ? substr($product['name'], 0, 15).'&hellip;' : $product['name'];
                 $product['total']  = $GLOBALS['tax']->priceFormat($product['price_display']);
@@ -1424,6 +1425,7 @@ class GUI
 
         $vars = array();
         if (($docs = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_parent_id' => '0', 'doc_status' => '1', 'navigation_link' => 1), '`doc_order` ASC')) !== false) {
+            $GLOBALS['seo']->primeItems('doc', array_column($docs, 'doc_id'));
             foreach ($docs as $doc) {
                 if ($doc['doc_home']) {
                     continue;
@@ -1685,6 +1687,7 @@ class GUI
             }
             $vars = array();
             if ($products) {
+                $GLOBALS['seo']->primeItems('prod', array_column($products, 'product_id'));
                 foreach ($products as $product) {
                     $category_data = $GLOBALS['catalogue']->getCategoryStatusByProductID($product['product_id']);
                     $category_status = false;
@@ -1908,6 +1911,7 @@ class GUI
 
         $vars = array();
         if (!empty($sorted_products)) {
+            $GLOBALS['seo']->primeItems('prod', array_column($sorted_products, 'product_id'));
             foreach ($sorted_products as $product) {
                 $GLOBALS['language']->translateProduct($product);
                 $product['name'] = validHTML($product['name']);

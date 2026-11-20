@@ -128,7 +128,7 @@ if (isset($_GET['format']) && !empty($_GET['format']) && isset($allowed_formats[
             }
             // SEO product paths — bulk-loaded once and seeded into the SEO
             // class cache so generatePath() skips its own per-row SELECT.
-            if (($rows = $GLOBALS['db']->misc("SELECT `type`, `item_id`, `path` FROM `{$prefix}CubeCart_seo_urls` WHERE `type`='prod' AND `redirect`=0 AND `item_id` IN ($pid_in)")) !== false && is_array($rows)) {
+            if (($rows = $GLOBALS['db']->misc("SELECT `type`, `item_id`, `path` FROM `{$prefix}CubeCart_seo_urls` WHERE `type`='prod' AND `redirect`='0' AND `item_id` IN ($pid_in)")) !== false && is_array($rows)) {
                 $seo->primeSeoUrls($rows);
             }
         }

@@ -324,6 +324,7 @@ class Catalogue
                scores and could never show them. Assigned once, not per row. */
             $GLOBALS['smarty']->assign('CTRL_REVIEW', (bool)$GLOBALS['config']->get('config', 'enable_reviews'));
 
+            $this->primeProducts($products);
             foreach ($products as $product) {
                 $product = $this->getProductPrice($product);
                 // ctrl_stock True when a product is considered 'in stock' for purposes of allowing a purchase, either by actually being in stock or via certain settings
@@ -1543,6 +1544,55 @@ class Catalogue
      * Forget remembered product rows and stock figures. Called by anything that
      * moves stock: order processing deducts, then reads the level back.
      */
+    /**
+     * A page is about to show these products. Fetch what each one's listing needs in a single
+     * statement apiece, where there would otherwise be one for every product (#4756): its SEO
+     * path, and the highest stock level among its option combinations. Neither can be left to
+     * the query cache: a stale path is a broken link, and stock has to be current.
+     *
+     * @param array $products Product rows (each with a product_id), or product ids
+     */
+    public function primeProducts($products)
+    {
+        if (!is_array($products) || count($products) < 2) {
+            return;
+        }
+        $ids = array();
+        foreach ($products as $product) {
+            $id = is_array($product) ? (isset($product['product_id']) ? (int)$product['product_id'] : 0) : (int)$product;
+            if ($id > 0) {
+                $ids[$id] = $id;
+            }
+        }
+        if (isset($GLOBALS['seo']) && is_object($GLOBALS['seo'])) {
+            $GLOBALS['seo']->primeItems('prod', $ids);
+        }
+        // Option stock. The admin does not remember it, being where stock is edited (getProductStock())
+        if (CC_IN_ADMIN) {
+            return;
+        }
+        $ids = array_diff_key($ids, $this->_stock_max_cache);
+        if (count($ids) < 2) {
+            return;
+        }
+        $prefix = $GLOBALS['config']->get('config', 'dbprefix');
+        foreach (array_chunk($ids, 500) as $some) {
+            $rows = $GLOBALS['db']->query('SELECT `product_id`, MAX(`stock_level`) AS `stock_level` FROM `'.$prefix.'CubeCart_option_matrix` WHERE `product_id` IN ('.implode(',', $some).') AND `status` = 1 AND `use_stock` = 1 GROUP BY `product_id`', false, 0, false);
+            if ($rows === false && $GLOBALS['db']->statementErrno()) {
+                return; // left to the lookup each product makes for itself
+            }
+            foreach ($some as $id) {
+                // What that lookup gives a product with no option stock: one row holding nothing
+                $this->_stock_max_cache[$id] = array(array('stock_level' => null));
+            }
+            if (is_array($rows)) {
+                foreach ($rows as $row) {
+                    $this->_stock_max_cache[(int)$row['product_id']] = array(array('stock_level' => $row['stock_level']));
+                }
+            }
+        }
+    }
+
     public function flushProductCache()
     {
         $this->_product_row_cache = array();

@@ -43,6 +43,12 @@ class SEO
      */
     private $_seo_url_cache = array();
     /**
+     * Whether the fixed sections' paths (login, search and so on) have been fetched together in this request
+     *
+     * @var bool
+     */
+    private $_static_urls_read = false;
+    /**
      * Category directories
      *
      * @var array of strings
@@ -341,6 +347,45 @@ class SEO
     }
 
     /**
+     * Fetch the SEO paths of several items in one statement, for a page that is about to link
+     * to them all. Each link otherwise costs a statement of its own: these lookups bypass the
+     * query cache (a stale path is a broken link), so a listing ran one for every product (#4756).
+     *
+     * @param string $type prod, cat or doc
+     * @param array $item_ids
+     */
+    public function primeItems($type, $item_ids)
+    {
+        $type = strtolower((string)$type);
+        if (!is_array($item_ids) || !preg_match('/^[a-z_]+$/', $type) || !isset($GLOBALS['db']) || !is_object($GLOBALS['db'])) {
+            return;
+        }
+        $ids = array();
+        foreach ($item_ids as $id) {
+            $id = (int)$id;
+            if ($id > 0 && !isset($this->_seo_url_cache[$type][$id])) {
+                $ids[$id] = $id;
+            }
+        }
+        if (count($ids) < 2) {
+            return; // one is what the lookup itself makes
+        }
+        foreach (array_chunk($ids, 500) as $some) {
+            // Lowest id first and the first row kept: the row the single lookup would have found.
+            // (redirect is an enum: compared with a bare 0 it matches nothing, so the 0 is quoted)
+            $rows = $GLOBALS['db']->select('CubeCart_seo_urls', array('item_id', 'path', 'custom'), "`type` = '".$type."' AND `item_id` IN (".implode(',', $some).") AND `redirect` = '0'", array('id' => 'ASC'), false, false, false);
+            if (is_array($rows)) {
+                foreach ($rows as $row) {
+                    $id = (int)$row['item_id'];
+                    if (!isset($this->_seo_url_cache[$type][$id])) {
+                        $this->_seo_url_cache[$type][$id] = array('path' => $row['path'], 'custom' => (bool)$row['custom']);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Drop a remembered row. Called by everything here that writes one.
      *
      * @param string $type
@@ -372,6 +417,30 @@ class SEO
         if (isset($this->_seo_url_cache[$type][$key])) {
             $cached = $this->_seo_url_cache[$type][$key];
             return array('path' => $cached['path'], 'custom' => $cached['custom'] ? 1 : 0);
+        }
+
+        // The fixed sections are linked from every page, each with a statement of its own. The
+        // first one asked for fetches them all (#4756). Hits only, as below.
+        if ($key === 0 && !$this->_static_urls_read && in_array($type, $this->_static_sections, true)) {
+            $this->_static_urls_read = true;
+            $sections = array();
+            foreach ($this->_static_sections as $section) {
+                if (is_string($section) && preg_match('/^[a-z0-9_]+$/', $section)) {
+                    $sections[] = "'".$section."'";
+                }
+            }
+            if (count($sections) > 1 && ($rows = $GLOBALS['db']->select('CubeCart_seo_urls', array('type', 'path', 'custom'), '`type` IN ('.implode(',', $sections).") AND `redirect` = '0'", array('id' => 'ASC'), false, false, false)) !== false) {
+                foreach ($rows as $row) {
+                    $section = strtolower((string)$row['type']);
+                    if (!isset($this->_seo_url_cache[$section][0])) {
+                        $this->_seo_url_cache[$section][0] = array('path' => $row['path'], 'custom' => (bool)$row['custom']);
+                    }
+                }
+                if (isset($this->_seo_url_cache[$type][0])) {
+                    $cached = $this->_seo_url_cache[$type][0];
+                    return array('path' => $cached['path'], 'custom' => $cached['custom'] ? 1 : 0);
+                }
+            }
         }
 
         $where = ($item_id === false || $item_id === null)
