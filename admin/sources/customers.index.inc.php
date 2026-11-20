@@ -450,6 +450,11 @@ if ((!empty($_GET['action'] ??= "") || isset($_POST['multi-action'])) && Admin::
 
              $GLOBALS['main']->addTabControl('<i class="fa fa-sign-in"></i> '.sprintf($lang['customer']['signinas'], $customer['first_name'], $customer['last_name']), '', $url, null, false, '_blank',null, '');
 
+            // Merging deletes the account that is merged in, so it is only offered to those who may delete
+            if (Admin::getInstance()->permissions('customers', CC_PERM_DELETE)) {
+                $GLOBALS['main']->addTabControl('<i class="fa fa-compress"></i> '.$lang['customer']['merge_title'], '', '?_g=customers&node=merge&customer_id='.(int)$customer['customer_id']);
+            }
+
             $customer_id = (int)$customer['customer_id'];
             $GLOBALS['smarty']->assign('ADD_EDIT_CUSTOMER', $lang['customer']['title_customer_edit']);
 

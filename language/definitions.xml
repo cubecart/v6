@@ -1138,6 +1138,42 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_groups_delete" introduced="5.0.0"><![CDATA[Failed to delete customer group.]]></string>
     <string name="error_groups_update" introduced="5.0.0"><![CDATA[Failed to update customer group.]]></string>
     <string name="export_to" introduced="5.0.0"><![CDATA[Export to]]></string>
+    <string name="merge_addresses" introduced="6.9.0"><![CDATA[Addresses moved]]></string>
+    <string name="merge_addresses_duplicate" introduced="6.9.0"><![CDATA[%d already in the address book]]></string>
+    <string name="merge_basket" introduced="6.9.0"><![CDATA[Saved basket]]></string>
+    <string name="merge_basket_discard" introduced="6.9.0"><![CDATA[Discarded, as the account being kept has its own]]></string>
+    <string name="merge_basket_move" introduced="6.9.0"><![CDATA[Moved]]></string>
+    <string name="merge_coupons" introduced="6.9.0"><![CDATA[Coupon uses carried over]]></string>
+    <string name="merge_credit" introduced="6.9.0"><![CDATA[Store credit added]]></string>
+    <string name="merge_done" introduced="6.9.0"><![CDATA[%1$s (%2$s) has been merged into this account.]]></string>
+    <string name="merge_downloads" introduced="6.9.0"><![CDATA[Downloads moved]]></string>
+    <string name="merge_empty" introduced="6.9.0"><![CDATA[This account has nothing to move. It will just be deleted.]]></string>
+    <string name="merge_error_choose" introduced="6.9.0"><![CDATA[Please choose an account to merge in.]]></string>
+    <string name="merge_error_guest" introduced="6.9.0"><![CDATA[A registered account cannot be merged into a guest account, as its login would be lost. Keep the registered account instead.]]></string>
+    <string name="merge_error_same" introduced="6.9.0"><![CDATA[An account cannot be merged with itself.]]></string>
+    <string name="merge_failed" introduced="6.9.0"><![CDATA[The accounts could not be merged.]]></string>
+    <string name="merge_find" introduced="6.9.0"><![CDATA[Find Another Account]]></string>
+    <string name="merge_from" introduced="6.9.0"><![CDATA[Account to Merge In]]></string>
+    <string name="merge_groups" introduced="6.9.0"><![CDATA[Customer groups joined]]></string>
+    <string name="merge_intro" introduced="6.9.0"><![CDATA[Use this when one customer has ended up with more than one account. Everything that belongs to the account you choose (orders, addresses, downloads, reviews and store credit) is moved to this one, and the chosen account is then deleted. This account keeps its own email address, password and details.]]></string>
+    <string name="merge_keep" introduced="6.9.0"><![CDATA[Account to Keep]]></string>
+    <string name="merge_likely" introduced="6.9.0"><![CDATA[Likely Duplicates]]></string>
+    <string name="merge_likely_none" introduced="6.9.0"><![CDATA[No other account shares this customer's name, billing address or phone number.]]></string>
+    <string name="merge_match" introduced="6.9.0"><![CDATA[Match]]></string>
+    <string name="merge_match_address" introduced="6.9.0"><![CDATA[Same billing address]]></string>
+    <string name="merge_match_name" introduced="6.9.0"><![CDATA[Same name]]></string>
+    <string name="merge_match_phone" introduced="6.9.0"><![CDATA[Same phone number]]></string>
+    <string name="merge_newsletter_removed" introduced="6.9.0"><![CDATA[%s is removed from the mailing list]]></string>
+    <string name="merge_note" introduced="6.9.0"><![CDATA[Merged with account %1$d (%2$s, %3$s) on %4$s by %5$s.]]></string>
+    <string name="merge_notes_added" introduced="6.9.0"><![CDATA[Added to the notes of the account being kept]]></string>
+    <string name="merge_orders" introduced="6.9.0"><![CDATA[Orders moved]]></string>
+    <string name="merge_review" introduced="6.9.0"><![CDATA[Review Merge]]></string>
+    <string name="merge_reviews" introduced="6.9.0"><![CDATA[Reviews moved]]></string>
+    <string name="merge_swap" introduced="6.9.0"><![CDATA[Keep %s instead]]></string>
+    <string name="merge_title" introduced="6.9.0"><![CDATA[Merge Accounts]]></string>
+    <string name="merge_warning" introduced="6.9.0"><![CDATA[This cannot be undone. %1$s will be deleted, and %2$s will no longer work as a login.]]></string>
+    <string name="merge_what" introduced="6.9.0"><![CDATA[What Will Happen]]></string>
+    <string name="merge_withdrawals" introduced="6.9.0"><![CDATA[Withdrawal requests moved]]></string>
     <string name="notify_address_delete" introduced="5.0.0"><![CDATA[Address successfully added.]]></string>
     <string name="notify_customer_create" introduced="5.0.0"><![CDATA[Customer successfully added.]]></string>
     <string name="notify_customer_delete" introduced="5.0.0"><![CDATA[Customer successfully deleted.]]></string>
