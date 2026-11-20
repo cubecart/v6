@@ -53,7 +53,9 @@
       <p>{$LANG.email.help_content_html}</p>
       {* A newsletter is an email: it goes through Smarty, and mail clients need images with a
          whole address and a size. It is edited the way the emails are (#4742). *}
-      <textarea name="newsletter[content_html]" id="content_html" class="textbox cc-editor" data-cc-smarty="1" data-cc-email="1" data-cc-height="560" data-cc-macros="{$NEWSLETTER_MACROS|escape:'html'}">{$NEWSLETTER.content_html|escape:"html"}</textarea>
+      {if $NEWSLETTER_FRAMED}<p>{$LANG.email.help_content_template}</p>{/if}
+      {* The template chosen on the General tab is drawn round the content, which is the only part that can be changed (#4738) *}
+      <textarea name="newsletter[content_html]" id="content_html" class="textbox cc-editor" data-cc-smarty="1" data-cc-email="1" data-cc-height="560" data-cc-macros="{$NEWSLETTER_MACROS|escape:'html'}" data-cc-frame="#template_id" data-cc-frames="{$NEWSLETTER_FRAMES|escape:'html'}">{$NEWSLETTER.content_html|escape:"html"}</textarea>
       <p>
          <input type="submit" value="{$LANG.common.save}">
          <button type="button" class="button" id="preview_newsletter" onclick="previewNewsletter()">{$LANG.common.preview}</button>

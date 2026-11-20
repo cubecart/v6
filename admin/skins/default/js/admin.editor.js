@@ -25,6 +25,12 @@
  *   data-cc-email="1"               the content is sent as an email: an image gets its whole address, and a size
  *   data-cc-macros='[{"tag":"{$DATA.store_name}","label":"[STORE_NAME]","description":"","sample":""}]'
  *                                   values to offer in a Macros menu, and to show by name
+ *   data-cc-frame="#id"             a list or field whose value names what the content sits inside (an
+ *                                   email template, say). It is drawn round the content, which is then
+ *                                   the only part that can be changed. Needs data-cc-smarty="1".
+ *   data-cc-frames='{"3":{"html":"...<div id=\"cc-email-slot\"></div>...","css":"","body":{}}}'
+ *                                   what to draw for each value: its HTML with a slot where the content
+ *                                   goes, its style rules, and the attributes of its <body>
  *
  * class="fck" is still CKEditor, for extensions, and is deprecated.
  *
@@ -206,9 +212,21 @@
         }
         this.smarty = this.toggle ? (this.toggle.value === '1') : (smarty === '1');
         this.units = false;         // whether what is in the editor is units: a template, or content shown as code
+        this.frames = {};           // what the content can be shown inside, by the value that chooses it
+        this.frameBy = null;        // the list that chooses
+        this.frame = null;          // the one chosen now
+        this.inFrame = false;       // whether what is in the editor is drawn inside it
+        var frameBy = textarea.getAttribute('data-cc-frame') || '';
+        if (frameBy !== '') {
+            try {
+                this.frameBy = document.querySelector(frameBy);
+                this.frames = JSON.parse(textarea.getAttribute('data-cc-frames') || '{}') || {};
+            } catch (e) { /* no frames */ }
+            this.frame = this.chosenFrame();
+        }
         this.core = window.ccEditorUnits({
             holder: function () {
-                return self.editor ? self.editor.getBody() : null;
+                return self.host();
             },
             T: T,
             canEdit: function () {
@@ -264,6 +282,98 @@
         return body;
     };
 
+    //=====[ A frame round the content ]====================
+
+    /** What the list that chooses a frame is set to, or null */
+    Field.prototype.chosenFrame = function () {
+        var frame = this.frameBy ? this.frames[String(this.frameBy.value)] : null;
+        return (frame && typeof frame.html === 'string' && frame.html !== '') ? frame : null;
+    };
+
+    /** The frame's markup with nothing in it that could run, or null if it has nowhere for the content */
+    Field.prototype.frameBody = function () {
+        var body = this.frame ? window.ccEditorUnits.cleanBody(this.frame.html) : null;
+        return (body && body.querySelector('#cc-email-slot')) ? body : null;
+    };
+
+    /** Where the content is in the editor: the whole of it, or the part of a frame that holds it */
+    Field.prototype.host = function () {
+        var editor = this.editor, inner;
+        if (!editor) {
+            return null;
+        }
+        inner = this.inFrame ? editor.getDoc().getElementById('cc-frame-body') : null;
+        return inner || editor.getBody();
+    };
+
+    /** The content as the editor is to show it: inside the frame, where there is one */
+    Field.prototype.framed = function (content) {
+        var body = this.inFrame ? this.frameBody() : null, slot, holder;
+        if (!body) {
+            return content;
+        }
+        slot = body.querySelector('#cc-email-slot');
+        holder = body.ownerDocument.createElement('div');
+        holder.id = 'cc-frame-body';
+        holder.className = 'mceEditable'; // the one part TinyMCE lets the keyboard into
+        // Somewhere for the caret to go when there is nothing written yet
+        holder.innerHTML = (content === '') ? '<p><br data-mce-bogus="1"></p>' : content;
+        slot.parentNode.replaceChild(holder, slot);
+        return body.innerHTML;
+    };
+
+    /**
+     * Make the editor's page suit what is about to be shown. In a frame the page is the
+     * frame's: its colours and style rules, not the editor's own, and nothing outside the
+     * content can be typed in. Out of one it is an ordinary editor again.
+     */
+    Field.prototype.dress = function () {
+        var editor = this.editor, doc = editor.getDoc(), framed = this.inFrame, style = doc.getElementById('cc-frame-style'), links, i, probe, attributes, background, colour;
+        if (typeof editor.setEditableRoot === 'function') {
+            editor.setEditableRoot(!framed);
+        }
+        // The editor's own typography would restyle the frame's tables and text
+        links = doc.querySelectorAll('link[rel="stylesheet"]');
+        for (i = 0; i < links.length; i++) {
+            if (/\/skins\/content\//.test(links[i].getAttribute('href') || '')) {
+                links[i].disabled = framed;
+            }
+        }
+        if (!style) {
+            style = doc.createElement('style');
+            style.id = 'cc-frame-style';
+            doc.head.appendChild(style);
+        }
+        if (framed) {
+            attributes = this.frame.body || {};
+            probe = document.createElement('div');
+            probe.style.cssText = String(attributes.style || '');
+            background = probe.style.backgroundColor || String(attributes.bgcolor || '').replace(/[^#\w(),.% -]/g, '') || '#ffffff';
+            colour = probe.style.color || String(attributes.text || '').replace(/[^#\w(),.% -]/g, '') || '#000000';
+            style.textContent = String(this.frame.css || '') + '\nbody{background:' + background + ';color:' + colour + ';margin:0;padding:12px;}\n' + FRAME_CSS;
+        } else {
+            style.textContent = '';
+        }
+        // No dashed guides round the tables a frame is laid out with
+        editor.hasVisual = !framed;
+        editor.addVisual();
+    };
+
+    /** The list that chooses the frame was changed: the same content, shown inside the other one */
+    Field.prototype.reframe = function () {
+        var self = this, frame = this.chosenFrame();
+        if (frame === this.frame) {
+            return;
+        }
+        this.frame = frame;
+        if (!this.editor || !this.smarty) {
+            return; // it is drawn when the content is next shown as a template
+        }
+        this.showSmarty(this.source(), function () {
+            self.sync();
+        });
+    };
+
     /**
      * The content as it is to be stored. What nobody changed is what was there: an editor
      * that is only opened never rewrites what it was given.
@@ -278,10 +388,10 @@
     /** What is in the editor, as source */
     Field.prototype.serialise = function () {
         var editor = this.editor, body, wrap, i;
-        body = editor.getBody();
         if (this.units) {
-            return this.core.collect(body, 'top').source;
+            return this.core.collect(this.host(), 'top').source;
         }
+        body = editor.getBody();
         if (editor.getContent() === '' && !body.querySelector('[data-cc-p]')) {
             return ''; // TinyMCE's own idea of empty
         }
@@ -373,6 +483,8 @@
         this.units = whole;
         this.original = source;
         this.core.reset();
+        this.inFrame = false; // a frame goes round a template's wording, and this is not one
+        this.dress();
         if (whole) {
             this.trusted = true;
             try {
@@ -404,8 +516,11 @@
             }
             var build = function (units) {
                 self.core.reset();
-                return self.core.unitsHtml(units, 'top');
+                return self.framed(self.core.unitsHtml(units, 'top'));
             };
+            // Only where the editor can keep the keyboard out of the frame
+            self.inFrame = (typeof editor.setEditableRoot === 'function') && !!self.frameBody();
+            self.dress();
             self.trusted = true;
             try {
                 if (!good || !self.core.load(result.units, build)) {
@@ -661,8 +776,8 @@
                                     text: macro.label + (macro.description ? '  ' + macro.description : ''),
                                     onAction: function () {
                                         // Where the caret is, unless that is inside something that is kept as it is
-                                        var node = instance.selection.getNode();
-                                        if (self.ready && node && !$(node).closest('.cc-locked, .cc-ph').length) {
+                                        var node = instance.selection.getNode(), host = self.host();
+                                        if (self.ready && node && host && (node === host || host.contains(node)) && !$(node).closest('.cc-locked, .cc-ph').length) {
                                             instance.insertContent(self.core.chipHtml(macro));
                                             self.changed();
                                         }
@@ -706,6 +821,11 @@
                 self.switchTo(this.value === '1');
             });
         }
+        if (this.frameBy) {
+            $(this.frameBy).on('change', function () {
+                self.reframe();
+            });
+        }
         window.tinymce.init(options);
     };
 
@@ -717,6 +837,12 @@
         '.cc-parked--block{display:block;max-width:none;margin:8px 0;padding:3px 8px;}',
         '.cc-cond__body{padding:4px 10px;}',
         '.cc-code{margin:0;white-space:pre-wrap;word-break:break-word;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:inherit;}'
+    ].join('\n');
+
+    // Inside a frame: where the content goes is marked out, and has some height before anything is written
+    var FRAME_CSS = [
+        '#cc-frame-body{outline:1px dashed #9fc6d2;outline-offset:4px;min-height:120px;}',
+        '#cc-frame-body:focus,#cc-frame-body:focus-within{outline-color:#5ebdd5;}'
     ].join('\n');
 
     //=====[ Sending the form ]=============================

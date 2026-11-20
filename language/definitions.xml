@@ -1367,6 +1367,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="export_filename" introduced="5.0.0"><![CDATA[mailing-list]]></string>
     <string name="export_format" introduced="5.0.0"><![CDATA[Export Format]]></string>
     <string name="help_content_html" introduced="5.0.0"><![CDATA[Subscribers who have their email client set to prefer rich text HTML emails will see the contents of this field.]]></string>
+    <string name="help_content_template" introduced="6.9.0"><![CDATA[Your content is shown inside the template chosen on the General tab, as the email will look. Only your content can be changed here.]]></string>
     <string name="help_content_text" introduced="5.0.0"><![CDATA[Subscribers who have their email client set to prefer plain text emails will see the contents of this field. Please do not enter HTML here.]]></string>
     <string name="help_macro" introduced="5.0.0"><![CDATA[Note: Visitors only need to add their email address to subscribe to the mailing list. Some data will only be known if they are a registered customer.]]></string>
     <string name="help_test_send" introduced="5.0.0"><![CDATA[Please use this to send a test copy of the email before sending it out to your customers. The email received will be sent in multipart format.<br>To view the HTML or text version you may need to edit your mail client settings.<br>Your customers will either see rich HTML or plain text depending on their email client settings.]]></string>

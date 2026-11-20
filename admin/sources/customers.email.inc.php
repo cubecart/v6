@@ -141,6 +141,25 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
         );
     }
     $GLOBALS['smarty']->assign('NEWSLETTER_MACROS', json_encode($newsletter_macros, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE));
+
+    // The template each choice in the list sends the newsletter in, for the editor to draw round
+    // the wording (#4738). "None" is sent in the store's default template, so that is what it shows.
+    $newsletter_frames = array();
+    $frame_ids = array(0);
+    if (is_array($form_templates)) {
+        foreach ($form_templates as $template) {
+            $frame_ids[] = (int)$template['template_id'];
+        }
+    }
+    foreach ($frame_ids as $frame_id) {
+        $frame = EmailEditor::frame('newsletter', ($frame_id > 0) ? $frame_id : false);
+        if (!empty($frame['html'])) {
+            $newsletter_frames[(string)$frame_id] = $frame;
+        }
+    }
+    $frames_json = json_encode((object)$newsletter_frames, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
+    $GLOBALS['smarty']->assign('NEWSLETTER_FRAMES', ($frames_json !== false) ? $frames_json : '{}');
+    $GLOBALS['smarty']->assign('NEWSLETTER_FRAMED', !empty($newsletter_frames));
     $GLOBALS['smarty']->assign('DISPLAY_FORM', true);
 } else {
     $GLOBALS['main']->addTabControl($lang['email']['title_newsletters'], 'newsletter-list');
@@ -260,10 +279,14 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
 //   * PREVIEW_MACROS_JSON       — values for {$DATA.X} substitution
 //   * NEWSLETTERS_PREVIEW_JSON  — { newsletter_id: {subject, content_html, template_id}, ... }
 // ----------------------------------------------------------------------
-if (($all_templates = $GLOBALS['db']->select('CubeCart_email_template', array('template_id', 'content_html'))) !== false) {
+if (($all_templates = $GLOBALS['db']->select('CubeCart_email_template', array('template_id', 'content_html', 'template_default'))) !== false) {
     $template_map = array();
     foreach ($all_templates as $t) {
         $template_map[(int)$t['template_id']] = (string)$t['content_html'];
+        if ((int)$t['template_default'] === 1) {
+            // A newsletter with no template of its own is sent in the default one
+            $template_map[0] = (string)$t['content_html'];
+        }
     }
     $tmpl_json = json_encode($template_map, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
     if ($tmpl_json !== false) {
