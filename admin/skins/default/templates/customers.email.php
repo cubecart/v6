@@ -18,6 +18,7 @@
       <fieldset>
          <legend>{$LANG.email.title_overview}</legend>
          <div><label for="email_subject">{$LANG.email.news_subject}</label><span><input type="text" name="newsletter[subject]" id="email_subject" class="required textbox" value="{$NEWSLETTER.subject}"></span></div>
+         <div><label for="email_preheader">{$LANG.email.preview_text}</label><span><input type="text" name="newsletter[preheader]" id="email_preheader" class="textbox" maxlength="255" value="{$NEWSLETTER.preheader|escape:'html'}"> ({$LANG.email.preview_text_help})</span></div>
          <div><label for="sender_name">{$LANG.email.news_sender_name}</label><span><input type="text" name="newsletter[sender_name]" id="sender_name" class="textbox" value="{$NEWSLETTER.sender_name}"> ({$LANG.email.empty_equals_default})</span></div>
          <div><label for="sender_email">{$LANG.email.news_sender_email}</label><span><input type="text" name="newsletter[sender_email]" id="sender_email" class="textbox" value="{$NEWSLETTER.sender_email}"> ({$LANG.email.empty_equals_default})</span></div>
          <div>
@@ -31,6 +32,8 @@
                {/if}
             </span>
          </div>
+         <div><label for="name_fallback">{$LANG.email.news_name_fallback}</label><span><input type="text" name="newsletter[name_fallback]" id="name_fallback" class="textbox" maxlength="64" value="{$NEWSLETTER.name_fallback|escape:'html'}"> ({$LANG.email.news_name_fallback_help})</span></div>
+         <div><label for="send_at">{$LANG.email.news_send_at}</label><span><input type="datetime-local" name="newsletter[send_at]" id="send_at" class="textbox" min="{$NEWSLETTER_SEND_FROM}" value="{$NEWSLETTER_SEND_AT}"> ({$LANG.email.news_send_at_help})</span></div>
          <div>
             <label for="template_id">{$LANG.email.email_template}</label>
             <span>
@@ -105,6 +108,7 @@
             <td>{$LANG.email.email_template}</td>
             <td>{$LANG.common.created}</td>
             <td>{$LANG.email.news_status}</td>
+            <td>{$LANG.email.news_results}</td>
             <td></td>
             <td></td>
          </tr>
@@ -119,12 +123,16 @@
             <td>{$newsletter.template_title|default:'&mdash;' nofilter}</td>
             <td>{$newsletter.date_created_formatted}</td>
             <td>{$newsletter.status_text}</td>
+            <td>{$newsletter.results}</td>
             <td>
                <span class="actions">
                {if $newsletter.can_edit}
                <a href="{$newsletter.edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
                {/if}   
                <a href="#" class="preview" title="{$LANG.common.preview}" onclick="previewNewsletterRow({$newsletter.newsletter_id});return false;"><i class="fa fa-search" title="{$LANG.common.preview}"></i></a>
+               {if $NEWSLETTER_CAN_EDIT}
+               <a href="{$newsletter.copy}" class="copy" title="{$LANG.common.copy}"><i class="fa fa-files-o" title="{$LANG.common.copy}"></i></a>
+               {/if}
                {if $newsletter.can_delete}
                <a href="{$newsletter.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
                {/if}
@@ -132,7 +140,10 @@
             </td>
             <td class="text-center">
                {if $newsletter.can_send}
-               <a href="{$newsletter.send}" class="button tiny confirm" title="{$LANG.email.confirm_send}"><i class="fa fa-plane"></i> {$LANG.common.send}</a>
+               <a href="{$newsletter.send}" class="button tiny confirm" title="{$newsletter.send_confirm}"><i class="fa fa-plane"></i> {$newsletter.send_label}</a>
+               {/if}
+               {if $newsletter.can_unschedule}
+               <a href="{$newsletter.unschedule}" class="button tiny">{$LANG.email.news_unschedule}</a>
                {/if}
                {if $newsletter.can_pause}
                <a href="{$newsletter.pause}" class="button tiny confirm" title="{$LANG.email.confirm_pause}">{$LANG.common.pause}</a>
@@ -148,6 +159,7 @@
          {/foreach}
       </tbody>
    </table>
+   <p>{$LANG.email.news_results_help}</p>
    {else}
    <p>{$LANG.email.news_none}</p>
    {/if}

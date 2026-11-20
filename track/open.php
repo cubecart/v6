@@ -76,11 +76,25 @@ if ($mysqli->connect_errno) {
 }
 $mysqli->set_charset('utf8mb4');
 
-$sql = sprintf(
-    'UPDATE `%sCubeCart_email_log` SET `seen_count` = `seen_count` + 1, `seen_at` = COALESCE(`seen_at`, NOW()) WHERE `tracking_token` = ? LIMIT 1',
-    str_replace('`', '', $prefix)
-);
-if ($stmt = $mysqli->prepare($sql)) {
+$prefix = str_replace('`', '', $prefix);
+
+// The first time an email is seen is recorded by a statement that can only match once,
+// so however many requests arrive together, one of them and only one knows it was first.
+$first = false;
+if ($stmt = $mysqli->prepare(sprintf('UPDATE `%sCubeCart_email_log` SET `seen_at` = NOW() WHERE `tracking_token` = ? AND `seen_at` IS NULL LIMIT 1', $prefix))) {
+    $stmt->bind_param('s', $token);
+    @$stmt->execute();
+    $first = ($stmt->affected_rows === 1);
+    $stmt->close();
+}
+if ($stmt = $mysqli->prepare(sprintf('UPDATE `%sCubeCart_email_log` SET `seen_count` = `seen_count` + 1 WHERE `tracking_token` = ? LIMIT 1', $prefix))) {
+    $stmt->bind_param('s', $token);
+    @$stmt->execute();
+    $stmt->close();
+}
+// A newsletter counts each of its emails once, the first time it is opened. The count is kept
+// on the newsletter because the email log is cleared out after a while and the count must last.
+if ($first && ($stmt = $mysqli->prepare(sprintf('UPDATE `%1$sCubeCart_newsletter` SET `opened_count` = `opened_count` + 1 WHERE `newsletter_id` = (SELECT `newsletter_id` FROM `%1$sCubeCart_email_log` WHERE `tracking_token` = ? LIMIT 1) AND `newsletter_id` > 0', $prefix)))) {
     $stmt->bind_param('s', $token);
     @$stmt->execute();
     $stmt->close();

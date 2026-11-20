@@ -36,6 +36,8 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
     // 'string:' keeps a compiled copy of each template, 'eval:' does not (used for previews)
     private $_smarty_resource = 'string:';
     private $_shutdown_registered = false;
+    // The newsletter the emails being sent belong to, or 0 (see forNewsletter())
+    private $_newsletter_id = 0;
 
     protected static $_instance;
 
@@ -96,6 +98,19 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
     public function getTemplateTitle()
     {
         return $this->_template_title;
+    }
+
+    /**
+     * Say which newsletter the emails that follow are, or 0 for none
+     *
+     * Each one is then logged against that newsletter and its unsubscribe link names it,
+     * which is how an open and an unsubscribe are counted for the newsletter they came from.
+     *
+     * @param int $newsletter_id
+     */
+    public function forNewsletter($newsletter_id)
+    {
+        $this->_newsletter_id = max(0, (int)$newsletter_id);
     }
     /**
      * Load email content
@@ -222,6 +237,9 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
             $send_grid_to[] = $email;
             $this->AddAddress($email, (isset($contents['to'])) ? $contents['to'] : '');
             $email_param = '&amp;unsubscribe='.urlencode($email);
+            if ($this->_newsletter_id > 0) {
+                $email_param .= '&amp;n='.$this->_newsletter_id;
+            }
         } else {
             return false;
         }
@@ -291,6 +309,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                 'email_content_id' => $this->_email_content_id,
                 'fail_reason' => !empty($this->ErrorInfo) ? htmlentities($this->ErrorInfo, ENT_QUOTES) : '',
                 'tracking_token' => $tracking_token,
+                'newsletter_id' => $this->_newsletter_id,
             );
             $log_days = $GLOBALS['config']->get('config', 'r_email');
             if (ctype_digit((string)$log_days) &&  $log_days > 0) {

@@ -1367,6 +1367,26 @@ This email is sent from the store's master email address but it is possible to r
     <string name="export_filename" introduced="5.0.0"><![CDATA[mailing-list]]></string>
     <string name="export_format" introduced="5.0.0"><![CDATA[Export Format]]></string>
     <string name="help_content_html" introduced="5.0.0"><![CDATA[Subscribers who have their email client set to prefer rich text HTML emails will see the contents of this field.]]></string>
+    <string name="confirm_schedule" introduced="6.9.0"><![CDATA[Send this newsletter on %s?]]></string>
+    <string name="error_news_unschedule" introduced="6.9.0"><![CDATA[Could not unschedule the newsletter. It may already have started sending.]]></string>
+    <string name="label_subscriber_first_name" introduced="6.9.0"><![CDATA[First Name]]></string>
+    <string name="macro_subscriber_first_name" introduced="6.9.0"><![CDATA[The reader's first name, where they have a customer account. Otherwise the name the newsletter says to use instead.]]></string>
+    <string name="news_copy_of" introduced="6.9.0"><![CDATA[Copy of %s]]></string>
+    <string name="news_name_fallback" introduced="6.9.0"><![CDATA[Greet by, when no name is known]]></string>
+    <string name="news_name_fallback_default" introduced="6.9.0"><![CDATA[there]]></string>
+    <string name="news_name_fallback_help" introduced="6.9.0"><![CDATA[Used in place of [FIRST_NAME] for a subscriber with no customer account. It can be left empty.]]></string>
+    <string name="news_results" introduced="6.9.0"><![CDATA[Results]]></string>
+    <string name="news_results_help" introduced="6.9.0"><![CDATA[Results: Opened counts the emails whose pictures were loaded. Some mail apps load them unasked and others never do, so read it as a guide. Unsubscribed counts the people who left the mailing list from that newsletter's own link. Neither was counted for newsletters sent before CubeCart 6.9.]]></string>
+    <string name="news_results_opened" introduced="6.9.0"><![CDATA[Opened %1$s (%2$s%%)]]></string>
+    <string name="news_results_sent" introduced="6.9.0"><![CDATA[Sent %s]]></string>
+    <string name="news_results_unsubscribed" introduced="6.9.0"><![CDATA[Unsubscribed %s]]></string>
+    <string name="news_schedule" introduced="6.9.0"><![CDATA[Schedule]]></string>
+    <string name="news_send_at" introduced="6.9.0"><![CDATA[Send at]]></string>
+    <string name="news_send_at_help" introduced="6.9.0"><![CDATA[Leave it empty to send when Send is pressed. With a time here the button reads Schedule.]]></string>
+    <string name="news_status_scheduled" introduced="6.9.0"><![CDATA[Scheduled for %s]]></string>
+    <string name="news_unschedule" introduced="6.9.0"><![CDATA[Unschedule]]></string>
+    <string name="notify_news_scheduled" introduced="6.9.0"><![CDATA[Newsletter scheduled. It will start sending on %s.]]></string>
+    <string name="notify_news_unscheduled" introduced="6.9.0"><![CDATA[Newsletter unscheduled. It is a draft again.]]></string>
     <string name="help_content_template" introduced="6.9.0"><![CDATA[Your content is shown inside the template chosen on the General tab, as the email will look. Only your content can be changed here.]]></string>
     <string name="help_content_text" introduced="5.0.0"><![CDATA[Subscribers who have their email client set to prefer plain text emails will see the contents of this field. Please do not enter HTML here.]]></string>
     <string name="help_macro" introduced="5.0.0"><![CDATA[Note: Visitors only need to add their email address to subscribe to the mailing list. Some data will only be known if they are a registered customer.]]></string>

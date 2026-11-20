@@ -651,13 +651,18 @@ CREATE TABLE IF NOT EXISTS `CubeCart_newsletter` (
 	`date_saved` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`date_sent` TIMESTAMP,
 	`subject` VARCHAR(250) NOT NULL,
+	`preheader` VARCHAR(255) NOT NULL DEFAULT '',
 	`sender_email` VARCHAR(254) NOT NULL,
 	`sender_name` VARCHAR(255) NOT NULL,
 	`content_html` TEXT NOT NULL,
+	`name_fallback` VARCHAR(64) NOT NULL DEFAULT '',
 	`dbl_opt` enum('0','1') NOT NULL DEFAULT '0',
+	`send_at` INT UNSIGNED NOT NULL DEFAULT 0,
 	`last_subscriber_id` INT UNSIGNED NOT NULL DEFAULT 0,
 	`sent_count` INT UNSIGNED NOT NULL DEFAULT 0,
 	`total_subscribers` INT UNSIGNED NOT NULL DEFAULT 0,
+	`opened_count` INT UNSIGNED DEFAULT NULL,
+	`unsubscribed_count` INT UNSIGNED DEFAULT NULL,
 	PRIMARY KEY (`newsletter_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
@@ -1231,10 +1236,15 @@ CREATE TABLE IF NOT EXISTS `CubeCart_email_log` (
   `email_content_id` int(11) NOT NULL,
   `result` tinyint(1) NOT NULL,
   `email_method` varchar(20) NOT NULL DEFAULT '',
+  `tracking_token` varchar(32) DEFAULT NULL,
+  `seen_at` timestamp NULL DEFAULT NULL,
+  `seen_count` int(10) unsigned NOT NULL DEFAULT 0,
+  `newsletter_id` int(10) unsigned NOT NULL DEFAULT 0,
   `fail_reason` text,
   `attachment` text DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `to` (`to`)
+  KEY `to` (`to`),
+  KEY `tracking_token` (`tracking_token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_invoice_template` (

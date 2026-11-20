@@ -443,8 +443,8 @@ class Cron
         // Prune old send-log rows opportunistically (only the last hour matters for throttling)
         $GLOBALS['db']->misc(sprintf("DELETE FROM `%sCubeCart_newsletter_send_log` WHERE `sent_at` < (NOW() - INTERVAL 7 DAY)", $pfx));
 
-        // Pick the oldest queued/sending newsletter
-        $queued = $GLOBALS['db']->select('CubeCart_newsletter', false, "`status` IN (2, 3)", array('date_saved' => 'ASC'), 1, false, false);
+        // Pick the oldest queued/sending newsletter. One with a time to send at waits for it.
+        $queued = $GLOBALS['db']->select('CubeCart_newsletter', false, "`status` IN (2, 3) AND (`send_at` = 0 OR `send_at` <= ".time().")", array('date_saved' => 'ASC'), 1, false, false);
         if (!$queued) {
             return 'Idle (no queued newsletters)';
         }

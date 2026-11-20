@@ -172,6 +172,9 @@ class Newsletter
             $this->_mailer->From = $content['sender_email'];
         }
         $this->unsubscribeHeader($email);
+        $this->_mailer->forNewsletter(0); // a test is not one of the newsletter's emails: nothing is counted for it
+        $known = $GLOBALS['db']->select('CubeCart_customer', array('first_name'), array('email' => $email), false, 1, false, false);
+        $this->_greet($email, $known ? $known[0]['first_name'] : '', isset($content['name_fallback']) ? $content['name_fallback'] : '');
         if ($this->_mailer->sendEmail($email, $content, $content['template_id'])) {
             $log = sprintf($GLOBALS['language']->newsletter['test_subscriber_log'], $content['subject'], $this->_mailer->getTemplateTitle());
             $this->_subscriberLog($email, $log);
@@ -257,20 +260,35 @@ class Newsletter
             $this->_mailer->From = $content['sender_email'];
         }
 
-        // Move to "sending" on first tick that processes work
+        // Move to "sending" on first tick that processes work. The list is counted again as it
+        // stands now: a newsletter given a time to send at was queued when the list was another size.
         if ((int)$content['status'] !== 3) {
-            $GLOBALS['db']->update('CubeCart_newsletter', array('status' => 3), array('newsletter_id' => $newsletter_id));
+            $count_where = array('status' => '1');
+            if ($content['dbl_opt'] == 1) {
+                $count_where['dbl_opt'] = 1;
+            }
+            // Opens and unsubscribes are counted from here. Until now the counts were empty, which
+            // is how a newsletter sent before they were kept is told from one nobody has opened.
+            $GLOBALS['db']->update('CubeCart_newsletter', array(
+                'status'             => 3,
+                'total_subscribers'  => (int)$GLOBALS['db']->count('CubeCart_newsletter_subscriber', 'status', $count_where),
+                'opened_count'       => 0,
+                'unsubscribed_count' => 0,
+            ), array('newsletter_id' => $newsletter_id));
         }
 
         // Cursor-paginated subscriber fetch — no OFFSET, scales to any list size.
         // cache=false on misc() for the same race-staleness reason as above.
         $pfx = $GLOBALS['config']->get('config', 'dbprefix');
-        $where_sql = sprintf("`status`='1' AND `subscriber_id` > %d", (int)$content['last_subscriber_id']);
+        $where_sql = sprintf("S.`status`='1' AND S.`subscriber_id` > %d", (int)$content['last_subscriber_id']);
         if ($content['dbl_opt'] == 1) {
-            $where_sql .= " AND `dbl_opt`='1'";
+            $where_sql .= " AND S.`dbl_opt`='1'";
         }
+        // Each subscriber's first name comes with them, for the greeting: from the customer account
+        // they subscribed with, or failing that from one with the same email address. Looked up
+        // one subscriber at a time so that nobody can ever appear, and be written to, twice.
         $sql = sprintf(
-            "SELECT `subscriber_id`, `email` FROM `%sCubeCart_newsletter_subscriber` WHERE %s ORDER BY `subscriber_id` LIMIT %d",
+            "SELECT S.`subscriber_id`, S.`email`, COALESCE(NULLIF((SELECT C.`first_name` FROM `%1\$sCubeCart_customer` AS C WHERE C.`customer_id` = S.`customer_id` AND S.`customer_id` > 0 LIMIT 1), ''), NULLIF((SELECT E.`first_name` FROM `%1\$sCubeCart_customer` AS E WHERE E.`email` = S.`email` AND E.`first_name` <> '' ORDER BY E.`customer_id` DESC LIMIT 1), ''), '') AS `first_name` FROM `%1\$sCubeCart_newsletter_subscriber` AS S WHERE %2\$s ORDER BY S.`subscriber_id` LIMIT %3\$d",
             $pfx, $where_sql, $batch_size
         );
         $subscribers = $GLOBALS['db']->misc($sql, false);
@@ -297,8 +315,16 @@ class Newsletter
                     'subject'      => $content['subject'],
                     'content_html' => $content['content_html'],
                 );
-                $this->unsubscribeHeader($subscriber['email']);
-                if ($this->_mailer->sendEmail($subscriber['email'], $send_content, $content['template_id'])) {
+                if (isset($content['preheader']) && trim((string)$content['preheader']) !== '') {
+                    $send_content['preheader'] = $content['preheader'];
+                }
+                $this->unsubscribeHeader($subscriber['email'], $newsletter_id);
+                // Logged against this newsletter, with an unsubscribe link that names it
+                $this->_mailer->forNewsletter($newsletter_id);
+                $this->_greet($subscriber['email'], $subscriber['first_name'], isset($content['name_fallback']) ? $content['name_fallback'] : '');
+                $delivered = $this->_mailer->sendEmail($subscriber['email'], $send_content, $content['template_id']);
+                $this->_mailer->forNewsletter(0);
+                if ($delivered) {
                     $log = sprintf($GLOBALS['language']->newsletter['subscriber_log'], $content['subject'], $this->_mailer->getTemplateTitle());
                     $this->_subscriberLog($subscriber['email'], $log);
                     // sent_at relies on the column's DEFAULT CURRENT_TIMESTAMP — passing
@@ -372,6 +398,29 @@ class Newsletter
             array('status' => 3),
             "`newsletter_id` = {$newsletter_id} AND `status` = 5"
         );
+    }
+
+    /**
+     * Take back a newsletter that was given a time to send at, before that time comes. It
+     * is a draft again, to be changed or sent as any other. Nothing has gone out, so there
+     * is nothing to keep a record of, which is what sets this apart from cancelling.
+     *
+     * @param int $newsletter_id
+     * @return bool
+     */
+    public function unscheduleNewsletter($newsletter_id)
+    {
+        $newsletter_id = (int)$newsletter_id;
+        if ($newsletter_id <= 0) {
+            return false;
+        }
+        $GLOBALS['db']->update(
+            'CubeCart_newsletter',
+            array('status' => 0),
+            "`newsletter_id` = {$newsletter_id} AND `status` = 2 AND `sent_count` = 0 AND `send_at` > ".time()
+        );
+        // Whether a newsletter was in fact waiting: a statement that matches nothing still succeeds
+        return ($GLOBALS['db']->affected() > 0);
     }
 
     /**
@@ -496,9 +545,15 @@ class Newsletter
             if ($rt !== '' && !preg_match('/^[a-f0-9]{32}$/i', $rt)) {
                 $rt = '';
             }
+            // The newsletter whose link was followed, where the link said (see Mailer::forNewsletter())
+            $from_newsletter = (isset($_REQUEST['n']) && is_scalar($_REQUEST['n']) && ctype_digit((string)$_REQUEST['n'])) ? (int)$_REQUEST['n'] : 0;
             if((defined('ADMIN_CP') && ADMIN_CP === true) || $rt !== '') {
                 $where = ($rt !== '') ? array('remove_token' => $rt) : array('email' => $email);
                 $removed = $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', $where);
+                // Counted once, when someone really leaves the list, against a newsletter that has gone out
+                if ($removed && $rt !== '' && $from_newsletter > 0) {
+                    $GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_newsletter` SET `unsubscribed_count` = `unsubscribed_count` + 1 WHERE `newsletter_id` = ".$from_newsletter." AND `sent_count` > 0", false);
+                }
             } else {
                 $remove_token = md5(uniqid((string)time(), true));
                 $remove_possible = $GLOBALS['db']->update('CubeCart_newsletter_subscriber', array('remove_token' => $remove_token), array('email' => $email));
@@ -511,7 +566,7 @@ class Newsletter
             $this->_subscriberLog($email, 'Removal requested. Pending confirmation.');
             $mailer = new Mailer();
             if ($remove_possible && ($content = $mailer->loadContent('newsletter.remove_request', $GLOBALS['language']->current())) !== false) {
-                $GLOBALS['smarty']->assign('DATA', array('email' => $email, 'link' => CC_STORE_URL."/index.php?_a=unsubscribe&unsubscribe=".urlencode($email)."&rt=".$remove_token));
+                $GLOBALS['smarty']->assign('DATA', array('email' => $email, 'link' => CC_STORE_URL."/index.php?_a=unsubscribe&unsubscribe=".urlencode($email)."&rt=".$remove_token.(!empty($from_newsletter) ? '&n='.(int)$from_newsletter : '')));
                 $mailer->sendEmail($email, $content); 
                 $this->_subscriberLog($email, 'Removal requested email sent.');
             }
@@ -532,11 +587,37 @@ class Newsletter
      *
      * @param string $email
      */
-    public function unsubscribeHeader($email)
+    public function unsubscribeHeader($email, $newsletter_id = 0)
     {
         $this->_mailer->clearCustomHeaders();
-        $this->_mailer->addCustomHeader("List-Unsubscribe","<".$GLOBALS['storeURL']."/index.php?_a=unsubscribe&unsubscribe=".urlencode($email).">");
+        $this->_mailer->addCustomHeader("List-Unsubscribe","<".$GLOBALS['storeURL']."/index.php?_a=unsubscribe&unsubscribe=".urlencode($email).((int)$newsletter_id > 0 ? '&n='.(int)$newsletter_id : '').">");
         $this->_mailer->addCustomHeader("List-Unsubscribe-Post","List-Unsubscribe=One-Click");
+    }
+
+    /**
+     * Give the newsletter about to be sent the name to greet its reader by: {$DATA.first_name}
+     *
+     * A name typed all in one case is tidied ("ANNE", "anne": "Anne"); one with capitals of
+     * its own is left as it is ("McKay"). Where no name is known the newsletter's own
+     * stand-in is used, which may be nothing.
+     *
+     * @param string $email
+     * @param string $first_name  As stored: encoded by the form that saved it
+     * @param string $fallback    The newsletter's stand-in, encoded likewise
+     */
+    private function _greet($email, $first_name, $fallback)
+    {
+        $name = trim(html_entity_decode((string)$first_name, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        if ($name === '') {
+            $name = trim(html_entity_decode((string)$fallback, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        } elseif (function_exists('mb_convert_case') && ($name === mb_strtolower($name, 'UTF-8') || $name === mb_strtoupper($name, 'UTF-8'))) {
+            $name = mb_convert_case($name, MB_CASE_TITLE, 'UTF-8');
+        }
+        // Whatever was assigned for the email before this one is replaced, never added to
+        $GLOBALS['smarty']->assign('DATA', array(
+            'email'      => htmlspecialchars((string)$email, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+            'first_name' => htmlspecialchars($name, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+        ));
     }
 
     /**
