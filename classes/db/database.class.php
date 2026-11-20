@@ -129,6 +129,45 @@ class Database_Contoller
      */
     protected $_allowedColumns = array();
     /**
+     * Each table's columns are kept in a file between requests (#4754). Before that the
+     * database was asked on every page for every table it touched, wherever the cache is off,
+     * which is the whole of the admin: 15 to 39 lookups a page.
+     *
+     * A day, as the cache keeps a value: a table changed behind the store's back is seen within
+     * the time it always was.
+     */
+    const COLUMNS_LIFETIME = 86400;
+    /**
+     * Whether the lists are kept in a file here. Not during setup, nor where the cache folder cannot be written
+     *
+     * @var bool
+     */
+    protected $_columns_kept = false;
+    /**
+     * Whether the kept lists have been looked for in this request
+     *
+     * @var bool
+     */
+    protected $_columns_loaded = false;
+    /**
+     * Tables whose columns the database gave in this request, as against lists taken from the file
+     *
+     * @var array
+     */
+    protected $_columns_fresh = array();
+    /**
+     * Whether this request has learned a list that the file does not hold
+     *
+     * @var bool
+     */
+    protected $_columns_dirty = false;
+    /**
+     * Which database the kept lists belong to. A store pointed at another database must not use them
+     *
+     * @var string
+     */
+    protected $_schema_id = '';
+    /**
      * Database Engine in use
      *
      * @var string
@@ -168,6 +207,135 @@ class Database_Contoller
 
     public function __destruct()
     {
+        $this->_saveColumns();
+    }
+
+    /**
+     * The file each table's columns are kept in between requests. It sits in the cache folder,
+     * where every clearing of the cache removes it along with everything else.
+     *
+     * @return string
+     */
+    protected function _columnsFile()
+    {
+        return CC_CACHE_DIR.'db.columns.php';
+    }
+
+    /**
+     * Take up the column lists kept by earlier requests, once per request
+     */
+    protected function _loadColumns()
+    {
+        if ($this->_columns_loaded) {
+            return;
+        }
+        $this->_columns_loaded = true;
+        if ((defined('CC_IN_SETUP') && CC_IN_SETUP) || !defined('CC_CACHE_DIR') || $this->_schema_id === '') {
+            return;
+        }
+        $file = $this->_columnsFile();
+        if (!is_file($file)) {
+            $this->_columns_kept = is_writable(CC_CACHE_DIR);
+            return;
+        }
+        $this->_columns_kept = true;
+        if (($written = filemtime($file)) === false || $written < time() - self::COLUMNS_LIFETIME) {
+            return; // too old to trust: the lists are learned again and the file rewritten
+        }
+        try {
+            $kept = include $file;
+        } catch (Throwable $e) {
+            return; // a damaged file is no reason to stop
+        }
+        if (is_array($kept) && isset($kept['version'], $kept['for'], $kept['tables']) && $kept['version'] === CC_VERSION
+                && $kept['for'] === $this->_schema_id && is_array($kept['tables'])) {
+            // Anything already asked of the database in this request keeps the answer it was given
+            $this->_allowedColumns = $this->_allowedColumns + $kept['tables'];
+        }
+    }
+
+    /**
+     * Whether something a statement is about to use is missing from a table's list of columns.
+     * Only plain names count: a number, an expression or a function is not a column either way.
+     *
+     * @param array $columns The table's columns, name => name
+     * @param array|null $wanted What the statement names
+     * @return bool
+     */
+    protected function _unknownColumn($columns, $wanted)
+    {
+        if (is_array($wanted)) {
+            foreach ($wanted as $field) {
+                if (is_string($field) && !isset($columns[$field]) && !is_numeric($field) && preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $field)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Forget every kept column list: a table has just been altered, created, dropped or renamed
+     */
+    protected function _forgetColumns()
+    {
+        $this->_allowedColumns = array();
+        $this->_columns_fresh = array();
+        $this->_columns_dirty = false;
+        if ($this->_columns_kept && defined('CC_CACHE_DIR')) {
+            $file = $this->_columnsFile();
+            if (is_file($file) && @unlink($file) && function_exists('opcache_invalidate')) {
+                @opcache_invalidate($file, true);
+            }
+        }
+    }
+
+    /**
+     * Keep the column lists learned in this request for the ones that follow
+     */
+    protected function _saveColumns()
+    {
+        if (!$this->_columns_kept || !$this->_columns_dirty || !defined('CC_CACHE_DIR')) {
+            return;
+        }
+        $this->_columns_dirty = false;
+        $file = $this->_columnsFile();
+        $tables = array();
+        foreach ($this->_allowedColumns as $table => $columns) {
+            if (is_array($columns) && !empty($columns)) { // a table that could not be read is asked about again
+                $tables[$table] = $columns;
+            }
+        }
+        // Another request may have saved its own meanwhile: what it learned is kept, under this one's answers
+        if (is_file($file) && ($written = filemtime($file)) !== false && $written >= time() - self::COLUMNS_LIFETIME) {
+            try {
+                $kept = include $file;
+            } catch (Throwable $e) {
+                $kept = false;
+            }
+            if (is_array($kept) && isset($kept['version'], $kept['for'], $kept['tables']) && $kept['version'] === CC_VERSION
+                    && $kept['for'] === $this->_schema_id && is_array($kept['tables'])) {
+                $tables = $tables + $kept['tables'];
+            }
+        }
+        if (empty($tables)) {
+            return;
+        }
+        ksort($tables);
+        $php = "<?php\n"
+             . "// Which columns each table has, kept between requests by CubeCart's database class. Not for editing:\n"
+             . "// it is built again whenever the cache is cleared, and whenever a table is changed through that class.\n"
+             . "if (!defined('CC_INI_SET')) {\n    die('Access Denied');\n}\n"
+             . 'return '.var_export(array('version' => CC_VERSION, 'for' => $this->_schema_id, 'tables' => $tables), true).";\n";
+        // Written beside it and moved into place, so no request ever reads half a file
+        $partial = $file.'.'.bin2hex(random_bytes(4)).'.tmp';
+        if (@file_put_contents($partial, $php) === strlen($php) && @rename($partial, $file)) {
+            if (function_exists('opcache_invalidate')) {
+                @opcache_invalidate($file, true); // where opcache does not look at file times
+            }
+        } elseif (file_exists($partial)) {
+            @unlink($partial);
+        }
     }
 
     //=====[ Public ]=======================================
@@ -270,7 +438,7 @@ class Database_Contoller
         }
 
         if (!empty($table)) {
-            $allowed = $this->getFields($table);
+            $allowed = $this->getFields($table, false, array($field));
 
             $field = (in_array($field, $allowed) && !is_numeric($field)) ? $field : '*';
 
@@ -513,7 +681,7 @@ class Database_Contoller
     public function insert($table, $record, $purge = true)
     {
         if (is_array($record)) {
-            $allowed = $this->getFields($table);
+            $allowed = $this->getFields($table, false, array_keys($record));
             foreach ($record as $field => $value) {
                 if (in_array($field, $allowed) && !is_numeric($field)) {
                     $fields[] = "`$field`";
@@ -545,7 +713,7 @@ class Database_Contoller
     public function upsert($table, $record, $update_fields = array(), $purge = true)
     {
         if (is_array($record)) {
-            $allowed = $this->getFields($table);
+            $allowed = $this->getFields($table, false, array_keys($record));
             $fields = array();
             $values = array();
             foreach ($record as $field => $value) {
@@ -807,7 +975,7 @@ class Database_Contoller
 
         if (!stristr($table, 'JOIN')) {
             // Build an SQL SELECT query the (almost) easy way
-            $allowed = $this->getFields($table);
+            $allowed = $this->getFields($table, false, array_merge(is_array($columns) ? array_values($columns) : array(), is_array($order) ? array_keys($order) : array()));
             $wrapper = '`';
             $prefix = $this->_prefix;
         } else {
@@ -1032,7 +1200,7 @@ class Database_Contoller
     {
         $skip_math_fields = is_array($skip_math_fields) ? array_merge($skip_math_fields, $this->_skip_math_fields) : $this->_skip_math_fields;
         if (is_array($record)) {
-            $allowed = $this->getFields($table);
+            $allowed = $this->getFields($table, false, array_keys($record));
             foreach ($record as $field => $value) {
                 if (in_array($field, $allowed) && !is_numeric($field)) {
                     if (($number = substr((string)$value, 1)) && is_numeric($number) && $skip_math_fields!== 'all' && !in_array($field, $skip_math_fields) && isset($value[0]) && ($value[0] == '+' || $value[0] == '-')) {
@@ -1139,7 +1307,14 @@ class Database_Contoller
     {
         if (!empty($whereArray)) {
             if (is_array($whereArray)) {
-                $allowed = $this->getFields($table);
+                // The names the conditions are on (a condition on a name that is no column is left out)
+                $wanted = array();
+                foreach ($whereArray as $key => $value) {
+                    if (!is_array($value) && is_string($key)) {
+                        $wanted[] = $label ? preg_replace("/^$label\./", '', $key, 1) : $key;
+                    }
+                }
+                $allowed = $this->getFields($table, false, $wanted);
                 foreach ($whereArray as $key => $value) {
                     unset($symbol);
                     if (is_array($value)) {

@@ -41,6 +41,7 @@ class Database extends Database_Contoller
         }
 
         $this->_prefix = $config['dbprefix'];
+        $this->_schema_id = md5($config['dbhost'].'|'.$dbport.'|'.$dbsocket.'|'.$config['dbdatabase'].'|'.$config['dbprefix']);
 
         $this->_setup();
 
@@ -115,16 +116,22 @@ class Database extends Database_Contoller
      * @param bool $all
      * @return array
      */
-    public function getFields($table, $all = false)
+    public function getFields($table, $all = false, $wanted = null)
     {
+        $this->_loadColumns();
         if (isset($this->_allowedColumns[$table]) && is_array($this->_allowedColumns[$table])) {
-            return $this->_allowedColumns[$table];
+            // A list kept from an earlier request is trusted for the columns it holds. Before a
+            // name is left out of a statement as unknown, the database is asked again: the table
+            // may have gained a column since, and leaving it out would lose what was being saved.
+            if (!$this->_columns_kept || isset($this->_columns_fresh[$table]) || !$this->_unknownColumn($this->_allowedColumns[$table], $wanted)) {
+                return $this->_allowedColumns[$table];
+            }
         }
 
         $query = "SHOW COLUMNS FROM {$this->_prefix}$table;";
 
-        //Try cache first
-        if (($return = $this->_getCached($query)) !== false) {
+        //Try cache first, where the lists are not kept in a file
+        if (!$this->_columns_kept && ($return = $this->_getCached($query)) !== false) {
             $this->_allowedColumns[$table] = $return;
             return $return;
         }
@@ -136,8 +143,16 @@ class Database extends Database_Contoller
             }
         }
 
-        //Write the cache
-        $this->_writeCache($return, $query);
+        if ($this->_columns_kept) {
+            // Kept for later requests, unless it only confirmed what the file already says
+            $this->_columns_fresh[$table] = true;
+            if (!isset($this->_allowedColumns[$table]) || $this->_allowedColumns[$table] !== $return) {
+                $this->_columns_dirty = true;
+            }
+        } else {
+            //Write the cache
+            $this->_writeCache($return, $query);
+        }
         $this->_allowedColumns[$table] = $return;
 
         return $return;
@@ -232,6 +247,14 @@ class Database extends Database_Contoller
             // A statement that fails leaves the connection holding the id from the
             // last INSERT that worked, which is not this statement's to claim.
             $this->_statement_insert_id = $this->_statement_errno ? 0 : (int)$this->_db_connect_id->insert_id;
+
+            // A table has changed shape: the column lists kept between requests are no longer true (#4754).
+            // So they are when the database says a statement named a column or table it does not have
+            // (1054, 1146): something was changed behind the store's back, and only this one statement pays.
+            if ($this->_statement_errno === 1054 || $this->_statement_errno === 1146
+                    || (!$this->_statement_errno && preg_match('/^\s*(?:ALTER|CREATE|DROP|RENAME)\b/i', $this->_query))) {
+                $this->_forgetColumns();
+            }
 
             if ($result) {
                 if (is_bool($result)) {

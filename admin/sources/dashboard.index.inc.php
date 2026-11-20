@@ -581,7 +581,7 @@ if (Admin::getInstance()->permissions('statistics', CC_PERM_READ, false, false))
     $GLOBALS['smarty']->assign('CHART', $chart_data);
 }
 ## Last 5 orders
-if (($last_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('custom_oid', 'id', 'cart_order_id', 'first_name', 'last_name', 'name'), false, array('order_date' => 'DESC'), 5)) !== false) {
+if (($last_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('custom_oid', 'id', 'cart_order_id', 'first_name', 'last_name'), false, array('order_date' => 'DESC'), 5)) !== false) {
     $GLOBALS['smarty']->assign('LAST_ORDERS', $last_orders);
 }
 
