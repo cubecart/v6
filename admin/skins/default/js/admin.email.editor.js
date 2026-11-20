@@ -132,15 +132,22 @@
         });
     }
 
-    function insertPlaceholder(placeholder, fromKeyboard) {
+    /**
+     * Put a macro where the caret was last left: in the email, the subject or the preview text
+     *
+     * @param {object} placeholder
+     * @param {boolean} [away] The focus has left that place: the macro was chosen with the
+     *                         keyboard, or from the toolbar's menu
+     */
+    function insertPlaceholder(placeholder, away) {
         if (lastTarget) {
-            insertInLine(lastTarget, placeholder);
+            insertInLine(lastTarget, placeholder, away);
             return;
         }
         if (!editor || codeMode) {
             return;
         }
-        if (fromKeyboard && everFocused) {
+        if (away && everFocused) {
             editor.focus(); // back to where the caret was left
         }
         var node = editor.selection.getNode(), inside = node && $(node).closest('#cc-email-body').length && !$(node).closest('.cc-locked, .cc-ph').length;
@@ -152,8 +159,9 @@
         editor.insertContent(chipHtml(placeholder));
     }
 
-    function buildPlaceholderList() {
-        var $box = $('#email_placeholders_list').empty(), groups = {}, order = [];
+    /** The macros this email can use, in the groups they are offered in: [{title, items}] */
+    function placeholderGroups() {
+        var groups = {}, order = [];
         (state.placeholders || []).forEach(function (placeholder) {
             var match = /^\{\$([A-Za-z_]\w*)/.exec(placeholder.tag), name = match ? match[1] : '';
             if (!groups[name]) {
@@ -167,11 +175,18 @@
         order.sort(function (a, b) {
             return (rank[a] === undefined ? 9 : rank[a]) - (rank[b] === undefined ? 9 : rank[b]);
         });
-        order.forEach(function (name, index) {
+        return order.map(function (name) {
+            return {title: state.groups && state.groups[name] ? state.groups[name] : name, items: groups[name]};
+        });
+    }
+
+    function buildPlaceholderList() {
+        var $box = $('#email_placeholders_list').empty(), list = placeholderGroups();
+        list.forEach(function (group, index) {
             var $group = $('<details class="email-ph-group"></details>').prop('open', index === 0);
-            $group.append($('<summary></summary>').text(state.groups && state.groups[name] ? state.groups[name] : name));
+            $group.append($('<summary></summary>').text(group.title));
             var $buttons = $('<div class="email-ph-buttons"></div>');
-            groups[name].forEach(function (placeholder) {
+            group.items.forEach(function (placeholder) {
                 $('<button type="button" class="email-ph-button"></button>')
                     .text(placeholder.label)
                     .attr('title', placeholder.description + (placeholder.sample ? ' (' + placeholder.sample + ')' : ''))
@@ -190,7 +205,35 @@
             });
             $box.append($group.append($buttons));
         });
-        $('#email_placeholders').prop('hidden', !order.length);
+        $('#email_placeholders').prop('hidden', !list.length);
+    }
+
+    /** The same macros as a menu, for the editor's toolbar: the first group as it is, each of the others under its own name */
+    function placeholderMenu() {
+        var entry = function (placeholder) {
+            return {
+                type: 'menuitem',
+                text: placeholder.label + (placeholder.description ? '  ' + placeholder.description : ''),
+                onAction: function () {
+                    insertPlaceholder(placeholder, true); // the menu has the focus while it is open
+                }
+            };
+        };
+        var items = [];
+        placeholderGroups().forEach(function (group, index) {
+            if (index === 0) {
+                items = group.items.map(entry);
+                return;
+            }
+            items.push({
+                type: 'nestedmenuitem',
+                text: group.title,
+                getSubmenuItems: function () {
+                    return group.items.map(entry);
+                }
+            });
+        });
+        return items;
     }
 
     //=====[ Subject and preview text: one line of plain text with placeholders ]=====
@@ -254,7 +297,7 @@
         $line.data('sync', sync);
     }
 
-    function insertInLine(line, placeholder) {
+    function insertInLine(line, placeholder, away) {
         var holder = document.createElement('div'), range = lastRange, selection = window.getSelection();
         holder.innerHTML = chipHtml(placeholder);
         var chip = holder.firstChild;
@@ -275,6 +318,9 @@
         range.insertNode(chip);
         range.setStartAfter(chip);
         range.collapse(true);
+        if (away) {
+            line.focus(); // typing carries on after the macro
+        }
         selection.removeAllRanges();
         selection.addRange(range);
         lastRange = range.cloneRange();
@@ -359,7 +405,7 @@
             visual: false, // no dashed guides round the tables an email is laid out with
             plugins: 'link lists autolink image',
             // Nothing to format for someone who may only look
-            toolbar: state.canEdit ? 'undo redo | bold italic underline | link image | bullist numlist | alignleft aligncenter alignright | removeformat' : false,
+            toolbar: state.canEdit ? 'undo redo | bold italic underline | link image | bullist numlist | alignleft aligncenter alignright | removeformat' + ((state.placeholders || []).length ? ' | ccMacros' : '') : false,
             // Only the wording can be typed in; the template around it is there to be seen
             editable_root: false,
             forced_root_block: 'p',
@@ -433,9 +479,21 @@
                 instance.on('BeforeSetContent', makeSafe, true);
                 instance.on('PastePreProcess', makeSafe, true);
                 core.registerTools(instance);
-                instance.on('focus', function () {
-                    lastTarget = null;
-                    everFocused = true;
+                // The macros of the list beside the email, in the toolbar too, as the editor has them elsewhere
+                instance.ui.registry.addMenuButton('ccMacros', {
+                    text: T('editor_placeholders'),
+                    fetch: function (callback) {
+                        callback(placeholderMenu());
+                    }
+                });
+                // The caret is in the email. The toolbar is the editor's too, and the editor reports
+                // focus for it as it does for the email, so this asks which of the two it was: opening
+                // the menu must not forget that the subject was the last place clicked.
+                instance.on('focusin', function (event) {
+                    if (event.target && event.target.ownerDocument === instance.getDoc()) {
+                        lastTarget = null;
+                        everFocused = true;
+                    }
                 });
                 // An emptied email keeps one empty paragraph. Without it the wording has no
                 // height and no place for the caret, which lands in the template, where
