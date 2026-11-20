@@ -34,7 +34,7 @@
          {include file='templates/common.breadcrumb.php'}
          {/if}
          <div id="content">
-            <div id="tab_control">
+            <div id="tab_control"{if !empty($TABS_SINGLE)} class="tab_control--single"{/if}>
             {foreach from=$TABS item=tab}
                <div {if !empty($tab.tab_id)}id="{$tab.tab_id}" {/if}class="tab{if !empty($tab.is_external)} tab--external{/if}{if !empty($tab.is_external_first)} tab--external-first{/if}{if !empty($tab.is_action)} tab--action tab--action--{$tab.action_modifier}{/if}"{if !empty($tab.action_map)} data-action-map="{$tab.action_map|escape:'html'}"{/if}>
                {if !empty($tab.notify)}<span class="tab_notify">{$tab.notify}</span>{/if}

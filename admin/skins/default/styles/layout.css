@@ -663,6 +663,16 @@ hr {
     border-top: 1px solid var(--border);
     border-left: 1px solid var(--border)
 }
+/* A page with one tab shows none (#4751): the page takes the corner the tab would have had */
+#tab_control.tab_control--single {
+    min-height: 0
+}
+#tab_control.tab_control--single > .tab {
+    display: none
+}
+#tab_control.tab_control--single + #content_body {
+    border-top-left-radius: 5px
+}
 #breadcrumbs {
     padding: 0;
     margin-left: 128px;
