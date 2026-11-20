@@ -469,6 +469,15 @@ class User
                     $data['customer_id']  = $customer_id;
                 }
                 $customer_id = $GLOBALS['db']->insert('CubeCart_customer', $data);
+                if (!$customer_id && (int)$type === 2) {
+                    // An email address is held once, so when two submissions of one guest
+                    // checkout arrive together only the first can make the record. A guest
+                    // checkout uses the guest record that exists for its address (as above),
+                    // so the second uses the one the first just made. A registered account
+                    // is never picked up this way.
+                    $made = $GLOBALS['db']->select('CubeCart_customer', array('customer_id'), array('email' => $data['email'], 'type' => 2), false, 1, false, false);
+                    $customer_id = $made ? (int)$made[0]['customer_id'] : false;
+                }
                 if($type==2) $this->setGhostId($customer_id);
             }
             if ($login) {
