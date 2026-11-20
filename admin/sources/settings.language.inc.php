@@ -43,6 +43,7 @@ if (isset($_POST['save']) && (isset($_POST['string']) || isset($_POST['delete'])
                 'name'  => $name,
             );
             $GLOBALS['db']->delete('CubeCart_lang_strings', $record);
+            $clear = true; // a phrase put back to its default changes what the store says, as an edited one does
         }
     }
     

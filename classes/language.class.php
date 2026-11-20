@@ -60,6 +60,12 @@ class Language
      */
     private $_definition_file = '';
     /**
+     * How long a compiled language file is trusted before it is built again (#4753). A day, which
+     * is how long the cache keeps a value: a change made behind the store's back, such as a phrase
+     * edited straight in the database, is picked up within the time it always was.
+     */
+    const COMPILED_LIFETIME = 86400;
+    /**
      * Language groups
      *
      * @var array
@@ -525,6 +531,12 @@ class Language
      */
     public function getDefinitions($group)
     {
+        // A request that started from the compiled file has not read the definitions (#4753)
+        if (empty($this->_language_definitions)) {
+            $this->_language_definitions = $this->_coreDefinitions();
+            $this->_language_definition_data = array();
+            $this->_definition_file = CC_LANGUAGE_DIR.'definitions.xml';
+        }
         // Every string's attributes (its name, the version it was introduced in) come to nearly
         // four times the size of the strings, and this method is their only reader: the
         // Languages screen in the admin. They used to be cached and loaded on every request.
@@ -567,6 +579,10 @@ class Language
      */
     public function getGroups()
     {
+        // A request that started from the compiled file has not read the definitions (#4753)
+        if (empty($this->_language_strings_def)) {
+            $this->_language_strings_def = $this->_coreDefinitions();
+        }
         //  if (!empty($this->_language_strings)) {
         if (!empty($this->_language_strings_def)) { // $this->_language_strings_def in method loadLang() defined
             if (empty($this->_language_groups)) {
@@ -1019,6 +1035,16 @@ class Language
      */
     public function loadLang()
     {
+        // The strings a request starts with (the definitions, the language's own files and the
+        // phrases customised in the admin, merged) are kept as a PHP file where opcache is on.
+        // Opcache hands every request the same copy from shared memory, so there is nothing to
+        // read, parse or merge. In the admin, where the cache is off, they were read from the
+        // XML files on every page (#4753).
+        if (empty($this->_language_strings) && $this->_compiledAllowed() && ($this->_loadCompiled() || $this->_buildCompiled())) {
+            $this->_setLocale();
+            return;
+        }
+
         //Load the core language files
         $this->loadDefinitions('lang.core');
         $this->_language_strings_def = $this->_language_strings; // Admin Langs - show default core groups only
@@ -1027,6 +1053,220 @@ class Language
 
         //Set the system locale
         $this->_setLocale();
+    }
+
+    /**
+     * Whether the core strings can be kept as a compiled PHP file. Opcache has to be on for this
+     * kind of request: without it, reading the file back costs as much as building the strings.
+     *
+     * @return bool
+     */
+    private function _compiledAllowed()
+    {
+        return !(defined('CC_IN_SETUP') && CC_IN_SETUP)
+            && extension_loaded('Zend OPcache') && (bool)ini_get('opcache.enable')
+            && (PHP_SAPI !== 'cli' || (bool)ini_get('opcache.enable_cli'))
+            && preg_match('/^[A-Za-z0-9_-]{2,20}$/', (string)$this->_language) === 1;
+    }
+
+    /**
+     * The compiled file for the language in use. It sits in the cache folder, where every
+     * clearing of the cache removes it along with everything else: the Clear Cache button, a
+     * phrase saved on the Languages screen and a language pack imported all do.
+     *
+     * @return string
+     */
+    private function _compiledFile()
+    {
+        return CC_CACHE_DIR.'lang.'.$this->_language.'.php';
+    }
+
+    /**
+     * What a source file looked like, to tell whether it has changed since
+     *
+     * @param string $path
+     * @return string
+     */
+    private function _stamp($path)
+    {
+        return file_exists($path) ? filemtime($path).':'.filesize($path) : '';
+    }
+
+    /**
+     * Start from the compiled file, if there is one that can be trusted: built by this version,
+     * within the last day, from language files that are still as they were.
+     *
+     * @return bool
+     */
+    private function _loadCompiled()
+    {
+        $file = $this->_compiledFile();
+        if (!is_file($file) || ($built = filemtime($file)) === false || $built < time() - self::COMPILED_LIFETIME) {
+            return false;
+        }
+        try {
+            $compiled = include $file;
+        } catch (Throwable $e) {
+            return false; // a damaged file is no reason to stop: it is built again below
+        }
+        if (!is_array($compiled) || !isset($compiled['version'], $compiled['sources'], $compiled['info'], $compiled['strings'])
+                || $compiled['version'] !== CC_VERSION || !is_array($compiled['sources']) || !is_array($compiled['info'])
+                || !is_array($compiled['strings']) || empty($compiled['strings'])) {
+            return false;
+        }
+        foreach ($compiled['sources'] as $path => $stamp) {
+            if ($this->_stamp($path) !== $stamp) {
+                return false;
+            }
+        }
+        $this->_language_strings = $compiled['strings'];
+        $this->_language_data = $compiled['info'];
+        return true;
+    }
+
+    /**
+     * Build the core strings from the language files and the database themselves, never from
+     * the cache, which may hold them as they were up to a day ago, and keep the result as the
+     * compiled file.
+     *
+     * @return bool False when it cannot be done here, and the strings are loaded the old way
+     */
+    private function _buildCompiled()
+    {
+        $file = $this->_compiledFile();
+        $definition_file = CC_LANGUAGE_DIR.'definitions.xml';
+        if (!is_writable(CC_CACHE_DIR) || !file_exists($definition_file)) {
+            return false;
+        }
+        // Taken before anything is read, so a file changed meanwhile is noticed next time. The
+        // folder is among them: a file added to it beside the others changes what is read.
+        $sources = array(CC_LANGUAGE_DIR => '', $definition_file => '');
+        $own_files = $this->_languageFiles(CC_LANGUAGE_DIR.$this->_language);
+        if (is_array($own_files)) {
+            foreach ($own_files as $own_file) {
+                $sources[$own_file] = '';
+            }
+        }
+        foreach ($sources as $path => $stamp) {
+            $sources[$path] = $this->_stamp($path);
+        }
+
+        if (($definitions = $this->_parseDefinitions($definition_file)) === false || empty($definitions[0])
+                || ($own = $this->_parseLanguage(CC_LANGUAGE_DIR, $this->_language, true, true)) === false) {
+            return false;
+        }
+        // What loadDefinitions() and loadLanguageXML() leave behind, in the same order
+        $this->_language_definitions = $definitions[0];
+        $this->_language_definition_data = array();
+        $this->_definition_file = $definition_file;
+        $this->_language_strings_def = $definitions[0];
+        $this->_language_strings = empty($own[0]) ? $definitions[0] : merge_array($definitions[0], $own[0]);
+        if (is_array($own[1])) {
+            $this->_language_data = $own[1];
+        }
+        // The cache is brought up to date as well: change() and the Languages screen read from it
+        if (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) {
+            $GLOBALS['cache']->write($definitions[0], 'lang.core.definitions');
+            $GLOBALS['cache']->write($own[0], 'lang.lang.core.xml.'.$this->_language);
+            if (is_array($own[1])) {
+                $GLOBALS['cache']->write($own[1], 'lang.info.'.$this->_language);
+            }
+        }
+
+        $php = "<?php\n"
+             . "// The core language strings for ".$this->_language.", built by CubeCart from the files in /language and the\n"
+             . "// phrases customised in the admin. Not for editing: it is built again whenever the cache is cleared.\n"
+             . "if (!defined('CC_INI_SET')) {\n    die('Access Denied');\n}\n"
+             . 'return '.var_export(array('version' => CC_VERSION, 'sources' => $sources, 'info' => $this->_language_data, 'strings' => $this->_language_strings), true).";\n";
+        // Written beside it and moved into place, so no request ever reads half a file
+        $partial = $file.'.'.bin2hex(random_bytes(4)).'.tmp';
+        if (file_put_contents($partial, $php) === strlen($php) && rename($partial, $file)) {
+            if (function_exists('opcache_invalidate')) {
+                @opcache_invalidate($file, true); // where opcache does not look at file times
+            }
+        } elseif (file_exists($partial)) {
+            unlink($partial);
+        }
+        return true;
+    }
+
+    /**
+     * The core definitions, for a request that started from the compiled file and now wants them
+     *
+     * @return array
+     */
+    private function _coreDefinitions()
+    {
+        $cached = (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) ? $GLOBALS['cache']->read('lang.core.definitions') : false;
+        if (is_array($cached)) {
+            return $cached;
+        }
+        $file = CC_LANGUAGE_DIR.'definitions.xml';
+        if (file_exists($file) && ($parsed = $this->_parseDefinitions($file)) !== false && !empty($parsed[0])) {
+            if (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) {
+                $GLOBALS['cache']->write($parsed[0], 'lang.core.definitions');
+            }
+            return $parsed[0];
+        }
+        return array();
+    }
+
+    /**
+     * Read a language's own files, and the phrases customised for it in the admin
+     *
+     * @param string $path
+     * @param string $language
+     * @param bool $load_custom
+     * @param bool $fresh Read the customised phrases from the database itself, not from a kept query result
+     * @return array|false The strings by group, then the language's details (false where its files give none). False if the files cannot be read
+     */
+    private function _parseLanguage($path, $language, $load_custom = true, $fresh = false)
+    {
+        $strings = array();
+        $info = false;
+        $data = $this->_extractXML($path.$language);
+        if (!empty($data)) {
+            try {
+                $xml = new SimpleXMLElement($data);
+                if (!empty($xml)) {
+                    if (!empty($xml->info)) {
+                        $info = array();
+                        foreach ((array)$xml->info as $key => $value) {
+                            $info[$key] = (string)$value;
+                        }
+                    }
+                    switch (floor((float)$xml->attributes()->version)) {
+                    case 2:
+                        // New format - Similar layout to the definition file
+                        if ($xml->translation && $xml->translation->group) {
+                            foreach ($xml->translation->group as $groups) {
+                                $group = (string)$groups->attributes()->name;
+                                foreach ($groups->string as $string) {
+                                    $xml_name = $string->attributes()->name;
+                                    $strings[(string)$group][(string)$xml_name] = trim((string)$string);
+                                }
+                            }
+                            unset($groups, $group, $xml_name, $string);
+                        }
+                        break;
+                    default:
+                        trigger_error('Language format error - exiting.', E_USER_WARNING);
+                        die;
+                    }
+                }
+            } catch (Exception $e) {
+                trigger_error($e->getMessage());
+                return false;
+            }
+
+            // Load custom strings from database
+            if ($load_custom && isset($GLOBALS['db']) && ($custom = $GLOBALS['db']->select('CubeCart_lang_strings', false, array('language' => $language), false, false, false, !$fresh)) !== false) {
+                foreach ($custom as $string) {
+                    $strings[(string)$string['type']][(string)$string['name']] = $string['value'];
+                }
+            }
+        }
+        return array($strings, $info);
     }
 
     /**
@@ -1057,52 +1297,15 @@ class Language
             $strings = $cached_strings;
             $this->_language_data = $cached_info;
         } else {
-            $strings = array();
-            $data = $this->_extractXML($path.$language);
-            if (!empty($data)) {
-                try {
-                    $xml = new SimpleXMLElement($data);
-                    if (!empty($xml)) {
-                        if (!empty($xml->info)) {
-                            foreach ((array)$xml->info as $key => $value) {
-                                $lang_data[$key] = (string)$value;
-                            }
-                            $GLOBALS['cache']->write($lang_data, $cache_name_info);
-                            $this->_language_data = $lang_data;
-                        }
-                        switch (floor((float)$xml->attributes()->version)) {
-                        case 2:
-                            // New format - Similar layout to the definition file
-                            if ($xml->translation && $xml->translation->group) {
-                                foreach ($xml->translation->group as $groups) {
-                                    $group = (string)$groups->attributes()->name;
-                                    foreach ($groups->string as $string) {
-                                        $xml_name = $string->attributes()->name;
-                                        $strings[(string)$group][(string)$xml_name] = trim((string)$string);
-                                    }
-                                }
-                                unset($groups, $group, $xml_name, $string);
-                            }
-                            break;
-                        default:
-                            trigger_error('Language format error - exiting.', E_USER_WARNING);
-                            die;
-                        }
-                    }
-                } catch (Exception $e) {
-                    trigger_error($e->getMessage());
-                    return false;
-                }
-
-                // Load custom strings from database
-                if ($load_custom && isset($GLOBALS['db']) && ($custom = $GLOBALS['db']->select('CubeCart_lang_strings', false, array('language' => $language))) !== false) {
-                    foreach ($custom as $string) {
-                        $strings[(string)$string['type']][(string)$string['name']] = $string['value'];
-                    }
-                }
+            if (($parsed = $this->_parseLanguage($path, $language, $load_custom)) === false) {
+                return false;
             }
-
-            unset($custom, $data, $string, $xml);
+            $strings = $parsed[0];
+            if (is_array($parsed[1])) {
+                $GLOBALS['cache']->write($parsed[1], $cache_name_info);
+                $this->_language_data = $parsed[1];
+            }
+            unset($parsed);
             if (!empty($this->_language_strings)) {
                 $GLOBALS['cache']->write($strings, $cache_name_strings);
             }
@@ -1307,9 +1510,20 @@ class Language
      * @param string $language
      * @return array/false
      */
+    /**
+     * The files that make up a language: its own, a gzipped copy, and a -custom file beside them
+     *
+     * @param string $language The language code, with the folder in front of it
+     * @return array|false
+     */
+    private function _languageFiles($language)
+    {
+        return cc_glob($language.'*{-custom,}.xml*', GLOB_NOSORT);
+    }
+
     private function _extractXML($language)
     {
-        if ((($files = cc_glob($language.'*{-custom,}.xml*', GLOB_NOSORT)) !== false) && !empty($files)) {
+        if ((($files = $this->_languageFiles($language)) !== false) && !empty($files)) {
             $merged_addon_strings = '<?xml version="1.0"?><language version="2.0">';
             foreach ($files as $file) {
                 if (substr($file, -3) == '.gz') {
