@@ -402,6 +402,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_email_content` (
 CREATE TABLE IF NOT EXISTS `CubeCart_email_template` (
 	`template_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`template_default` ENUM('0','1') NOT NULL DEFAULT '0',
+	`newsletter_default` ENUM('0','1') NOT NULL DEFAULT '0',
 	`title` VARCHAR(100) NOT NULL,
 	`content_html` TEXT NOT NULL,
 	PRIMARY KEY (`template_id`)

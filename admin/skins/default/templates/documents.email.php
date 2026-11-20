@@ -58,7 +58,8 @@
 	  <table width="70%">
 	  	<thead>
 			<tr>
-				<th width="20">{$LANG.common.default}</th>
+				<th width="20" nowrap="nowrap">{$LANG.email.template_default_emails}</th>
+				<th width="20" nowrap="nowrap">{$LANG.email.template_default_newsletters}</th>
 				<th>{$LANG.email.template_name}</th>
 				<th colspan="4">&nbsp;</th>
 			</tr>
@@ -68,6 +69,9 @@
 			<tr>
 				<td style="text-align:center">
 					<input type="radio" name="template_default" id="template_default_{$template.template_id}" value="{$template.template_id}"{if $template.template_default==1} checked="checked"{/if}>
+				</td>
+				<td style="text-align:center">
+					<input type="radio" name="newsletter_default" id="newsletter_default_{$template.template_id}" value="{$template.template_id}"{if $template.newsletter_default==1} checked="checked"{/if}>
 				</td>
 				<td><a href="{$template.edit}">{$template.title}</a>{if $template.managed} <span class="email-field-help">{$LANG.email.design_title}</span>{/if}</td>
 				<td width="10"><a href="#" class="preview-template" data-template-id="{$template.template_id}" data-template-title="{$template.title}" title="{$LANG.common.preview}"><i class="fa fa-search"></i></a></td>

@@ -117,13 +117,14 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
         }
     }
     // Get template list (form path only — used by the dropdown).
-    if (($form_templates = $GLOBALS['db']->select('CubeCart_email_template', array('template_default', 'template_id', 'title'))) !== false) {
+    if (($form_templates = $GLOBALS['db']->select('CubeCart_email_template', array('template_default', 'newsletter_default', 'template_id', 'title'))) !== false) {
         $existing_templates = array();
         foreach ($form_templates as $template) {
             if (isset($content)) {
                 $template['selected'] = ($template['template_id'] == $content[0]['template_id']) ? ' selected="selected"' : '';
             } else {
-                $template['selected'] = '';
+                // A new newsletter starts in the template chosen for newsletters (Email Templates)
+                $template['selected'] = ((int)$template['newsletter_default'] === 1) ? ' selected="selected"' : '';
             }
             $existing_templates[] = $template;
         }

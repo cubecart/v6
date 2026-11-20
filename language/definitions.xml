@@ -1492,6 +1492,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="notify_template_update" introduced="5.0.0"><![CDATA[Template updated.]]></string>
     <string name="save_send_test" introduced="5.0.0"><![CDATA[Save &amp; Send]]></string>
     <string name="template_create" introduced="5.0.0"><![CDATA[Create a Template]]></string>
+    <string name="template_default_emails" introduced="6.9.0"><![CDATA[Email Default]]></string>
+    <string name="template_default_newsletters" introduced="6.9.0"><![CDATA[Newsletter Default]]></string>
     <string name="template_name" introduced="5.0.0"><![CDATA[Template Name]]></string>
     <string name="template_none" introduced="5.0.0"><![CDATA[No Templates Found.]]></string>
     <string name="test_email" introduced="5.0.0"><![CDATA[Recipient Email]]></string>

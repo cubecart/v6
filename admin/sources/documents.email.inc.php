@@ -542,21 +542,35 @@ if (isset($_POST['email_preview']) && is_array($_POST['email_preview'])) {
 
 $GLOBALS['gui']->addBreadcrumb($lang['email']['title_email'], currentPage(array('action', 'content_id', 'content_type', 'template_id')));
 
+// The list is one form: which emails are switched on, and which template is the default.
+// Both are saved before the page is shown again. (The first used to send the browser away
+// before the second was looked at, so a change of default template was never kept.)
+$list_saved = array();
 if (isset($_POST['email_enabled']) && isset($_POST['email_types']) && is_array($_POST['email_enabled']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
     foreach ($_POST['email_types'] as $i => $content_type) {
         $enabled = isset($_POST['email_enabled'][$i]) ? (int)$_POST['email_enabled'][$i] : 1;
         $GLOBALS['db']->update('CubeCart_email_content', array('enabled' => $enabled), array('content_type' => (string)$content_type));
     }
-    $GLOBALS['main']->successMessage($lang['email']['notify_content_update']);
-    httpredir(currentPage());
+    $list_saved[] = $lang['email']['notify_content_update'];
 }
 
-if (isset($_POST['template_default']) && ctype_digit($_POST['template_default']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
-    $GLOBALS['db']->update('CubeCart_email_template', array('template_default' => '0'));
-    $GLOBALS['db']->update('CubeCart_email_template', array('template_default' => '1'), array('template_id' => (int)$_POST['template_default']));
-
-    ## Update default template
-    $GLOBALS['main']->successMessage($lang['email']['notify_template_default']);
+// Two defaults: the template the store's emails are sent in, and the one a new newsletter starts in
+foreach (array('template_default', 'newsletter_default') as $default_field) {
+    if (isset($_POST[$default_field]) && is_string($_POST[$default_field]) && ctype_digit($_POST[$default_field]) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
+        $chosen  = (int)$_POST[$default_field];
+        $current = $GLOBALS['db']->select('CubeCart_email_template', array('template_id'), array($default_field => '1'), false, 1, false, false);
+        // Only a template that exists, and only when it is a change: the choice is sent with every save of the list
+        if ((!$current || (int)$current[0]['template_id'] !== $chosen) && $GLOBALS['db']->select('CubeCart_email_template', array('template_id'), array('template_id' => $chosen), false, 1, false, false)) {
+            $GLOBALS['db']->update('CubeCart_email_template', array($default_field => '0'));
+            $GLOBALS['db']->update('CubeCart_email_template', array($default_field => '1'), array('template_id' => $chosen));
+            $list_saved[] = $lang['email']['notify_template_default'];
+        }
+    }
+}
+if ($list_saved) {
+    foreach (array_unique($list_saved) as $message) {
+        $GLOBALS['main']->successMessage($message);
+    }
     httpredir(currentPage());
 }
 
