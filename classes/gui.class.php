@@ -2175,8 +2175,8 @@ class GUI
         $source = cc_glob('skins/'.$skin.'/images/*/logo/default.{gif,jpg,png,svg}');
         if (!empty($source)) return $source[0];
 
-        // Last resort: Foundation default
-        $source = cc_glob('skins/foundation/images/*/logo/default.{gif,jpg,png,svg}');
+        // Last resort: the core skin's default
+        $source = cc_glob('skins/atrium/images/*/logo/default.{gif,jpg,png,svg}');
         return (!empty($source)) ? $source[0] : null;
     }
 
@@ -2268,13 +2268,13 @@ class GUI
                     }
                 }
                 if (empty($this->_skin)) {
-                    $this->_skin = 'foundation';
+                    $this->_skin = 'atrium';
                 }
             }
         }
 
         if (empty($this->_skin)) {
-            $this->_skin = 'foundation';
+            $this->_skin = 'atrium';
         }
 
         if (($custom = $GLOBALS['cache']->read('skin.'.$this->_skin.'.custom')) === false && file_exists(CC_ROOT_DIR.'/skins/'.$this->_skin.'/'.'config.xml')) {

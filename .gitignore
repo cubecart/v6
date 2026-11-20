@@ -24,14 +24,13 @@ Thumbs.db
 !/modules/plugins/hooks.xml
 
 # ==========================
-# Skins (only Foundation tracked)
+# Skins (only Atrium tracked)
 # ==========================
 /skins/*
-!/skins/foundation/
 !/skins/atrium/
 # Ships with the release. One file, not a directory: kit exclusion unaffected.
 !/skins/.htaccess
-# Only foundation and atrium are tracked. Everything else under skins/ stays
+# Only atrium is tracked. Everything else under skins/ stays
 # ignored — including any licensed design kit downloaded for reference (a
 # Tailwind Plus kit lived at skins/tailwind/ during Atrium's build and has since
 # been removed). Such kits must never be committed: their licence forbids
