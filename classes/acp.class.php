@@ -775,10 +775,15 @@ class ACP
             foreach ($GLOBALS['hooks']->load('admin.tabs') as $hook) {
                 include $hook;
             }
-            // A page with one tab has nothing to choose between, so the tab is not shown (#4751).
-            // One that leads to another page, acts, or carries a count still is.
-            $lone = (count($tabs) === 1) ? reset($tabs) : false;
-            $GLOBALS['smarty']->assign('TABS_SINGLE', is_array($lone) && empty($lone['is_external']) && empty($lone['is_action']) && (float)str_replace(',', '', (string)$lone['notify']) <= 0);
+            // A page with one tab of its own has nothing to choose between, so that tab is not
+            // shown (#4751). Links and action buttons beside it stay, and so does a tab with a count.
+            $own = array();
+            foreach ($tabs as $tab) {
+                if (empty($tab['is_external']) && empty($tab['is_action'])) {
+                    $own[] = $tab;
+                }
+            }
+            $GLOBALS['smarty']->assign('TABS_SINGLE', count($own) === 1 && (float)str_replace(',', '', (string)$own[0]['notify']) <= 0);
             $GLOBALS['smarty']->assign('TABS', $tabs);
             return true;
         }

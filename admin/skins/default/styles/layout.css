@@ -667,7 +667,7 @@ hr {
 #tab_control.tab_control--single {
     min-height: 0
 }
-#tab_control.tab_control--single > .tab {
+#tab_control.tab_control--single > .tab:not(.tab--external):not(.tab--action) {
     display: none
 }
 #tab_control.tab_control--single + #content_body {
