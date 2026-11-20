@@ -54,6 +54,12 @@ class Language
      */
     private $_language_definition_data = array();
     /**
+     * The definitions file last loaded, which getDefinitions() reads the string attributes from
+     *
+     * @var string
+     */
+    private $_definition_file = '';
+    /**
      * Language groups
      *
      * @var array
@@ -519,6 +525,15 @@ class Language
      */
     public function getDefinitions($group)
     {
+        // Every string's attributes (its name, the version it was introduced in) come to nearly
+        // four times the size of the strings, and this method is their only reader: the
+        // Languages screen in the admin. They used to be cached and loaded on every request.
+        // They are now read from the definitions file last loaded, when they are asked for (#4752).
+        if (!empty($group) && isset($this->_language_definitions[$group]) && empty($this->_language_definition_data)
+                && $this->_definition_file !== '' && file_exists($this->_definition_file)
+                && ($parsed = $this->_parseDefinitions($this->_definition_file)) !== false) {
+            $this->_language_definition_data = $parsed[1];
+        }
         if (!empty($group) && isset($this->_language_definitions[$group]) && isset($this->_language_definition_data[$group])) {
             foreach ($this->_language_definition_data[$group] as $name => $data) {
                 $definition[$name] = array_merge($data, array('value' => $this->_language_definitions[$group][$name]));
@@ -928,63 +943,75 @@ class Language
         if ($path !== CC_LANGUAGE_DIR) {
             $path = appendDS($path);
         }
-        // Load basic language string data into a multi-dimensional array
+        // Load basic language string data into a multi-dimensional array. The strings alone:
+        // their attributes are read by getDefinitions() when it is asked for them (#4752)
+        $file = $path.$file_name;
         $cached_def = (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) ? $GLOBALS['cache']->read($name.'.definitions') : false;
-        $cached_def_data = (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) ? $GLOBALS['cache']->read($name.'.definition_data') : false;
-        if (is_array($cached_def) && is_array($cached_def_data)) {
+        if (is_array($cached_def)) {
             $this->_language_definitions = $cached_def;
-            $this->_language_definition_data = $cached_def_data;
-        } else {
+            $this->_language_definition_data = array();
+            $this->_definition_file = $file;
+        } elseif (file_exists($file)) {
             // Load language definitions
-            $file = $path.$file_name;
-            if (file_exists($file)) {
-                $definition_data = $definition = array();
-                try {
-                    $xml = new SimpleXMLElement(file_get_contents($file));
-                    foreach ($xml->group as $group) {
-                        $group_name = (string)$group->attributes()->name;
-                        if (empty($group_name)) {
-                            continue;
-                        }
-                        foreach ($group->string as $string) {
-                            // Get attributes of the string definition
-                            $attributes = $string->attributes();
-                            if (empty($attributes->name)) {
-                                continue;
-                            }
-                            //Loop through each attributes
-                            foreach ($attributes as $attr_name => $attr_value) {
-                                $data[(string)$attr_name] = (string)$attr_value;
-                            }
-                            $definition_data[$group_name][(string)$attributes->name] = $data;
-                            // String was introduced in this version, or earlier
-                            if (isset($attributes->deprecated) && !empty($attributes->deprecated) && version_compare((string)$attributes->deprecated, CC_VERSION, '<=')) {
-                                continue;
-                            }
-                            // String has not been deprecated, so add this string to the list, and set the default value
-                            $definition[$group_name][(string)$attributes->name] = (string)$string;
-                        }
-                        unset($group);
-                    }
-                } catch (Exception $e) {
-                    trigger_error($e->getMessage());
-                    return false;
-                }
-
-                if (!empty($definition)) {
-                    $GLOBALS['cache']->write($definition, $name.'.definitions');
-                    $GLOBALS['cache']->write($definition_data, $name.'.definition_data');
-                    $this->_language_definitions = $definition;
-                    $this->_language_definition_data = $definition_data;
-                }
-                unset($attributes, $definition, $group, $string, $xml);
+            if (($parsed = $this->_parseDefinitions($file)) === false) {
+                return false;
             }
+            if (!empty($parsed[0])) {
+                $GLOBALS['cache']->write($parsed[0], $name.'.definitions');
+                $this->_language_definitions = $parsed[0];
+                $this->_language_definition_data = array();
+                $this->_definition_file = $file;
+            }
+            unset($parsed);
         }
         if($merge) {
             $this->_language_strings = merge_array($this->_language_definitions, $this->_language_strings);
         } else {
             $this->_language_strings = $this->_language_definitions;
         }
+    }
+
+    /**
+     * Read a definitions file
+     *
+     * @param string $file
+     * @return array|false The strings by group, then every string's attributes by group. False if the file cannot be read
+     */
+    private function _parseDefinitions($file)
+    {
+        $definition_data = $definition = array();
+        try {
+            $xml = new SimpleXMLElement(file_get_contents($file));
+            foreach ($xml->group as $group) {
+                $group_name = (string)$group->attributes()->name;
+                if (empty($group_name)) {
+                    continue;
+                }
+                foreach ($group->string as $string) {
+                    // Get attributes of the string definition
+                    $attributes = $string->attributes();
+                    if (empty($attributes->name)) {
+                        continue;
+                    }
+                    //Loop through each attributes
+                    foreach ($attributes as $attr_name => $attr_value) {
+                        $data[(string)$attr_name] = (string)$attr_value;
+                    }
+                    $definition_data[$group_name][(string)$attributes->name] = $data;
+                    // String was introduced in this version, or earlier
+                    if (isset($attributes->deprecated) && !empty($attributes->deprecated) && version_compare((string)$attributes->deprecated, CC_VERSION, '<=')) {
+                        continue;
+                    }
+                    // String has not been deprecated, so add this string to the list, and set the default value
+                    $definition[$group_name][(string)$attributes->name] = (string)$string;
+                }
+                unset($group);
+            }
+        } catch (Exception $e) {
+            trigger_error($e->getMessage());
+            return false;
+        }
+        return array($definition, $definition_data);
     }
 
     /**
