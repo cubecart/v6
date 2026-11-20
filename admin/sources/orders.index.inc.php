@@ -626,6 +626,9 @@ if (isset($_GET['action'])) {
         $notes = $GLOBALS['db']->select('CubeCart_order_notes', false, array('cart_order_id' => $_GET['order_id']), array('note_id' => 'ASC'));
         $no_notes = $notes ? count($notes) : false;
         $GLOBALS['main']->addTabControl($lang['common']['notes'], 'order_notes', null, null, $no_notes);
+        if (!empty($_GET['order_id']) && Admin::getInstance()->permissions('orders', CC_PERM_EDIT) && ($mergeable = count(OrderMerge::candidates($_GET['order_id']))) > 0) {
+            $GLOBALS['main']->addTabControl('<i class="fa fa-compress"></i> '.$lang['orders']['merge_title'], '', '?'.http_build_query(array('_g' => 'orders', 'node' => 'merge', 'oid' => array((string)$_GET['order_id']))), null, $mergeable);
+        }
         if ($notes) {
             foreach ($notes as $note) {
                 $note['time']  = formatTime($note['time']);
@@ -838,6 +841,13 @@ if (isset($_GET['action'])) {
         if (!empty($_POST['multi-status']) && !Admin::getInstance()->permissions('orders', CC_PERM_EDIT)) {
             $_POST['multi-status'] = '';
         }
+        // Merging has a page of its own, where the orders are checked and the result reviewed first
+        if (($_POST['multi-action'] ?? '') == 'merge') {
+            if (Admin::getInstance()->permissions('orders', CC_PERM_EDIT)) {
+                httpredir('?'.http_build_query(array('_g' => 'orders', 'node' => 'merge', 'oid' => array_values((array)$_POST['multi-order']))));
+            }
+            $_POST['multi-action'] = '';
+        }
 
         foreach ($_POST['multi-order'] as $order_id) {
             // If multi action variable is numeric we need to update the order status
@@ -975,6 +985,7 @@ if (isset($_GET['action'])) {
             array('value' => "print", 'string' => $lang['orders']['option_print'], 'style' => ""),
             array('value' => "pin", 'string' => strtolower($lang['orders']['dashboard_show']), 'style' => ""),
             array('value' => "unpin", 'string' => strtolower($lang['orders']['dashboard_hide']), 'style' => ""),
+            array('value' => "merge", 'string' => $lang['orders']['merge_option'], 'style' => ""),
             array('value' => "delete", 'string' => $lang['orders']['option_delete'], 'style' => "color: red"),
         )
     );

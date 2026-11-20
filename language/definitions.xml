@@ -2374,6 +2374,52 @@ This email is sent from the store's master email address but it is possible to r
     <string name="stock_log_rollback" introduced="6.8.0"><![CDATA[Returned because the order could not be completed]]></string>
     <string name="stock_log_rollup" introduced="6.8.0"><![CDATA[Recalculated from the option matrix]]></string>
     <string name="stock_log_status" introduced="6.8.0"><![CDATA[Order status: %1$s]]></string>
+    <string name="merge_after" introduced="6.9.0"><![CDATA[After Merging]]></string>
+    <string name="merge_anchor_status" introduced="6.9.0"><![CDATA[Order %s cannot be merged because it is not at Processing. Only orders that are paid for and not yet dispatched can be merged.]]></string>
+    <string name="merge_before" introduced="6.9.0"><![CDATA[Now]]></string>
+    <string name="merge_cancelled" introduced="6.9.0"><![CDATA[Orders merged in]]></string>
+    <string name="merge_cancelled_value" introduced="6.9.0"><![CDATA[%1$s will be marked Cancelled, with a note pointing to order %2$s. No cancellation email is sent, no stock is returned and no payment is changed.]]></string>
+    <string name="merge_certificates" introduced="6.9.0"><![CDATA[Gift cards moved]]></string>
+    <string name="merge_change" introduced="6.9.0"><![CDATA[Change Orders]]></string>
+    <string name="merge_changed" introduced="6.9.0"><![CDATA[One of these orders has changed since you reviewed the merge. Please check it again.]]></string>
+    <string name="merge_choose" introduced="6.9.0"><![CDATA[Orders That Can Be Merged]]></string>
+    <string name="merge_customer" introduced="6.9.0"><![CDATA[Telling the Customer]]></string>
+    <string name="merge_customer_note" introduced="6.9.0"><![CDATA[Note to customer]]></string>
+    <string name="merge_customer_note_default" introduced="6.9.0"><![CDATA[Orders %1$s have been combined into order %2$s.]]></string>
+    <string name="merge_customer_note_help" introduced="6.9.0"><![CDATA[Added to each of these orders, where the customer sees it in their account and in order emails. Leave it empty to add nothing.]]></string>
+    <string name="merge_done" introduced="6.9.0"><![CDATA[Merged into this order: %s.]]></string>
+    <string name="merge_downloads" introduced="6.9.0"><![CDATA[Downloads moved]]></string>
+    <string name="merge_email" introduced="6.9.0"><![CDATA[Email the updated order confirmation to]]></string>
+    <string name="merge_email_failed" introduced="6.9.0"><![CDATA[The orders were merged, but the email to the customer could not be sent.]]></string>
+    <string name="merge_emailed" introduced="6.9.0"><![CDATA[The customer has been emailed the updated order confirmation.]]></string>
+    <string name="merge_error_choose" introduced="6.9.0"><![CDATA[Please tick at least two orders that can be merged.]]></string>
+    <string name="merge_failed" introduced="6.9.0"><![CDATA[The orders could not be merged. Nothing has been changed.]]></string>
+    <string name="merge_from_orders" introduced="6.9.0"><![CDATA[Orders to Merge In]]></string>
+    <string name="merge_intro" introduced="6.9.0"><![CDATA[Orders from the same customer can be merged into one when they are paid for, not yet dispatched and going to the same delivery address. Tick the orders to merge and choose which one to keep.]]></string>
+    <string name="merge_keep" introduced="6.9.0"><![CDATA[Keep]]></string>
+    <string name="merge_keep_order" introduced="6.9.0"><![CDATA[Order to Keep]]></string>
+    <string name="merge_method_note" introduced="6.9.0"><![CDATA[Order %1$s was placed with %2$s. The combined order keeps %3$s.]]></string>
+    <string name="merge_none" introduced="6.9.0"><![CDATA[No other order from this customer can be merged with order %s. An order can be merged when it is paid for, not yet dispatched and going to the same delivery address.]]></string>
+    <string name="merge_note_from" introduced="6.9.0"><![CDATA[Merged into order %1$s on %2$s by %3$s. Its products and payments are on that order.]]></string>
+    <string name="merge_note_kept" introduced="6.9.0"><![CDATA[Order %1$s (placed %2$s, total %3$s) was merged into this order on %4$s by %5$s.]]></string>
+    <string name="merge_option" introduced="6.9.0"><![CDATA[merge into one order]]></string>
+    <string name="merge_products" introduced="6.9.0"><![CDATA[Products]]></string>
+    <string name="merge_products_value" introduced="6.9.0"><![CDATA[%1$s moved to order %2$s]]></string>
+    <string name="merge_reason_address" introduced="6.9.0"><![CDATA[Going to a different delivery address.]]></string>
+    <string name="merge_reason_currency" introduced="6.9.0"><![CDATA[Placed in a different currency.]]></string>
+    <string name="merge_reason_customer" introduced="6.9.0"><![CDATA[Placed by a different customer.]]></string>
+    <string name="merge_reason_missing" introduced="6.9.0"><![CDATA[The order could not be found.]]></string>
+    <string name="merge_reason_same" introduced="6.9.0"><![CDATA[This is the order being kept.]]></string>
+    <string name="merge_reason_status" introduced="6.9.0"><![CDATA[Not at Processing. Only orders that are paid for and not yet dispatched can be merged.]]></string>
+    <string name="merge_refused_title" introduced="6.9.0"><![CDATA[Cannot Be Merged]]></string>
+    <string name="merge_review" introduced="6.9.0"><![CDATA[Review Merge]]></string>
+    <string name="merge_shipping_note" introduced="6.9.0"><![CDATA[Added together: %1$s = %2$s. The total stays what the customer paid. To refund part of it, change the shipping on the order after merging.]]></string>
+    <string name="merge_tick" introduced="6.9.0"><![CDATA[Merge]]></string>
+    <string name="merge_title" introduced="6.9.0"><![CDATA[Merge Orders]]></string>
+    <string name="merge_totals" introduced="6.9.0"><![CDATA[Order %s]]></string>
+    <string name="merge_transactions" introduced="6.9.0"><![CDATA[Payment records moved]]></string>
+    <string name="merge_warning" introduced="6.9.0"><![CDATA[This cannot be undone. Everything on %1$s moves to order %2$s.]]></string>
+    <string name="merge_what" introduced="6.9.0"><![CDATA[What Will Happen]]></string>
     <string name="card_card_cvv" introduced="5.0.0"><![CDATA[Security Code]]></string>
     <string name="card_card_details" introduced="5.0.0"><![CDATA[Credit Card Details]]></string>
     <string name="card_card_expire" introduced="5.0.0"><![CDATA[Expiry Date]]></string>
