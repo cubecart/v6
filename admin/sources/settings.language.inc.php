@@ -417,7 +417,7 @@ if (isset($_GET['export'])) {
 
         // Build full status array: checkboxes only submit checked values
         $checked = isset($_POST['status']) && is_array($_POST['status']) ? $_POST['status'] : array();
-        $all_languages = $GLOBALS['language']->listLanguages();
+        $all_languages = $GLOBALS['language']->listLanguages(false); // read again: the domains above have just been saved
         $status_array = array();
         if ($all_languages) {
             foreach ($all_languages as $code => $info) {

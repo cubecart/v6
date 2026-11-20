@@ -60,6 +60,12 @@ class Language
      */
     private $_definition_file = '';
     /**
+     * The installed languages, once worked out, for the rest of the request (#4755)
+     *
+     * @var array|null
+     */
+    private $_language_list = null;
+    /**
      * How long a compiled language file is trusted before it is built again (#4753). A day, which
      * is how long the cache keeps a value: a change made behind the store's back, such as a phrase
      * edited straight in the database, is picked up within the time it always was.
@@ -336,6 +342,7 @@ class Language
      */
     public function create($array)
     {
+        $this->_language_list = null; // the list of languages is about to change
         if (is_array($array) && isset($array['code'])) {
             // Check for required values
             if (preg_match(self::LANG_REGEX, $array['code'])) {
@@ -383,6 +390,7 @@ class Language
      */
     public function deleteLanguage($code, $path = CC_LANGUAGE_DIR)
     {
+        $this->_language_list = null; // the list of languages is about to change
         //Make sure the path is valid
         if (!$this->_checkPath($path)) {
             trigger_error('Invalid language path '.$path, E_USER_ERROR);
@@ -843,6 +851,7 @@ class Language
      */
     public function importLanguage($file, $overwrite = false)
     {
+        $this->_language_list = null; // the list of languages is about to change
         if (!preg_match('/.xml$/', $file['name']['file'])) {
             trigger_error('Please upload a valid XML file.');
             return false;
@@ -888,8 +897,15 @@ class Language
      */
     public function listLanguages($cache = true)
     {
+        // Worked out once for a request. Every language file is read and parsed to make the
+        // list, and in the admin, where the cache is off, that used to happen on each call:
+        // once for every row of the products, categories and documents lists (#4755).
+        if ($cache && is_array($this->_language_list)) {
+            return $this->_language_list;
+        }
         //Try cache first
         if ($cache && ($cached_list = $GLOBALS['cache']->read('lang.list')) !== false && is_array($cached_list)) {
+            $this->_language_list = $cached_list;
             return $cached_list;
         } else {
             //Get all langauge files
@@ -936,6 +952,7 @@ class Language
                 if (!empty($list) && is_array($list)) {
                     ksort($list);
                     $GLOBALS['cache']->write($list, 'lang.list');
+                    $this->_language_list = $list;
                     return $list;
                 }
             }
