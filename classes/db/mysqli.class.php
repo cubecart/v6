@@ -64,13 +64,17 @@ class Database extends Database_Contoller
     }
 
     /**
-     * Returns the rows affected
+     * Rows affected by the last statement
      *
-     * @return array
+     * Noted as the statement ran, not read from the connection now. The connection
+     * only remembers its latest query, and after a failure that is the one that
+     * wrote the failure to the error log.
+     *
+     * @return int
      */
     public function affected()
     {
-        return mysqli_affected_rows($this->_db_connect_id);
+        return (int)$this->_statement_affected;
     }
 
     /**
@@ -84,24 +88,24 @@ class Database extends Database_Contoller
     }
 
     /**
-     * Is there an error?
+     * Did the last statement fail?
      *
      * @return bool
      */
     public function error()
     {
-        $this->_errorno = (int)$this->_db_connect_id->errno;
+        $this->_errorno = (int)$this->_statement_errno;
         return ((bool)$this->_errorno) ? true : false;
     }
 
     /**
-     * Error info
+     * The last statement's error message, empty if it worked
      *
-     * @return bool
+     * @return string
      */
     public function errorInfo()
     {
-        return (string)$this->_db_connect_id->error;
+        return (string)$this->_statement_error;
     }
 
     /**
@@ -140,13 +144,13 @@ class Database extends Database_Contoller
     }
 
     /**
-     * Get the inserted ID
+     * The AUTO_INCREMENT id made by the last statement, 0 if it made none or failed
      *
-     * @return id
+     * @return int
      */
     public function insertid()
     {
-        return (int)$this->_db_connect_id->insert_id;
+        return (int)$this->_statement_insert_id;
     }
 
     /**
@@ -188,8 +192,10 @@ class Database extends Database_Contoller
         $cache = $cache && !preg_match('#\b('.$this->_cache_block_functions.')\b#', $this->_query) ?: false;
 
         $this->_found_rows = null;
-        $this->_statement_affected = 0;
-        $this->_statement_errno    = 0;
+        $this->_statement_affected  = 0;
+        $this->_statement_errno     = 0;
+        $this->_statement_error     = '';
+        $this->_statement_insert_id = 0;
 
         if (!empty($this->_query)) {
             $this->_result = array();
@@ -215,12 +221,17 @@ class Database extends Database_Contoller
 
             $result = $this->_db_connect_id->query($this->_query);
 
-            // Snapshot this statement's own outcome before anything else uses the
-            // connection. Both values are live reads, and _logError() below runs an
-            // INSERT, so a caller asking afterwards would get the log write's numbers
-            // rather than its own.
-            $this->_statement_affected = mysqli_affected_rows($this->_db_connect_id);
-            $this->_statement_errno    = (int)$this->_db_connect_id->errno;
+            // Note this statement's own outcome before anything else uses the
+            // connection. All four are live reads there, and _logError() below runs a
+            // statement of its own, so a caller asking afterwards would get the log
+            // write's answers. affected(), insertid(), error() and errorInfo() all
+            // answer from these notes.
+            $this->_statement_affected  = mysqli_affected_rows($this->_db_connect_id);
+            $this->_statement_errno     = (int)$this->_db_connect_id->errno;
+            $this->_statement_error     = (string)$this->_db_connect_id->error;
+            // A statement that fails leaves the connection holding the id from the
+            // last INSERT that worked, which is not this statement's to claim.
+            $this->_statement_insert_id = $this->_statement_errno ? 0 : (int)$this->_db_connect_id->insert_id;
 
             if ($result) {
                 if (is_bool($result)) {
@@ -242,7 +253,11 @@ class Database extends Database_Contoller
             }
 
             //Cache the result if needed
-            if ($cache && ($this->_writeCache($this->_result, $this->_query)) === false) {
+            if ($this->_statement_errno) {
+                // A statement that failed has no result to remember. Cached, its empty
+                // answer would be served as "no rows" until the cache was next cleared.
+                $cache = false;
+            } elseif ($cache && ($this->_writeCache($this->_result, $this->_query)) === false) {
                 $cache = false; // Query not cached for some reason. Check error log and cache status.
             }
              

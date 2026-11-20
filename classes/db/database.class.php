@@ -87,6 +87,18 @@ class Database_Contoller
      */
     protected $_statement_errno = 0;
     /**
+     * Error text of the last statement, captured as it ran
+     *
+     * @var string
+     */
+    protected $_statement_error = '';
+    /**
+     * AUTO_INCREMENT id made by the last statement, captured as it ran
+     *
+     * @var int
+     */
+    protected $_statement_insert_id = 0;
+    /**
      * Store prefix
      *
      * @var string
@@ -581,10 +593,11 @@ class Database_Contoller
     /**
      * Rows affected by the last statement, as counted while it ran.
      *
-     * affected() re-reads the connection, so anything that queries in between
-     * overwrites it - including the error logger, which runs its own INSERT on
-     * the failure path. Use this when the row count decides program flow, such
-     * as a conditional UPDATE that reports whether it matched.
+     * The connection only remembers its latest query, and after a failure that is
+     * the error logger's own INSERT. So the count is noted as each statement runs,
+     * and affected() answers from the same note. Use this when the row count
+     * decides program flow, such as a conditional UPDATE that reports whether it
+     * matched.
      *
      * @return int
      */
@@ -1297,6 +1310,14 @@ class Database_Contoller
             return;
         }
         $logging = true;
+        // Writing the log is a statement on this same object, and it succeeds. Left
+        // alone, its query, result and outcome would replace the failed statement's,
+        // and the caller would be told that its failed statement had worked. So
+        // everything the caller can ask about is put back once the log is written.
+        $failed = array();
+        foreach (array('_query', '_result', '_found_rows', '_query_time', '_statement_affected', '_statement_errno', '_statement_error', '_statement_insert_id') as $property) {
+            $failed[$property] = $this->$property;
+        }
         try {
             $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
             $message = 'File: ['.basename($trace[2]['file']).'] Line: ['.$trace[2]['line'].'] "'.$this->_query.'" - '.$this->errorInfo();
@@ -1306,6 +1327,9 @@ class Database_Contoller
                 Database::getInstance()->insert('CubeCart_system_error_log', array('message' => $message, 'time' => time()));
             }
         } finally {
+            foreach ($failed as $property => $value) {
+                $this->$property = $value;
+            }
             $logging = false;
         }
     }
