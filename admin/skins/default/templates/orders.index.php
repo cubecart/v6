@@ -181,6 +181,23 @@
             </div>
             {/if}
          </fieldset>
+         {if isset($PAY_LINK)}
+         <fieldset id="pay_link">
+            <legend>{$LANG.orders.pay_link_title}</legend>
+            {if $PAY_LINK.state == 'payable'}
+            <p>{$LANG.orders.pay_link_explain}</p>
+            <div><label for="pay_link_url">{$LANG.orders.pay_link_title}</label><span><input type="text" id="pay_link_url" class="textbox" value="{$PAY_LINK.url}" readonly="readonly" onfocus="this.select()"> {include file='templates/element.click_to_copy.php' value=$PAY_LINK.url}</span></div>
+            <p>
+               {if !empty($PAY_LINK.email)}<a href="{$PAY_LINK.email_url}" class="button" id="pay_link_email"><i class="fa fa-envelope"></i> {$LANG.orders.pay_link_email}</a>{/if}
+               <a href="{$PAY_LINK.new_url}" class="button confirm" id="pay_link_new" title="{$LANG.orders.pay_link_new_confirm}"><i class="fa fa-refresh"></i> {$LANG.orders.pay_link_new}</a>
+            </p>
+            {if empty($PAY_LINK.email)}<p>{$LANG.orders.pay_link_no_email}</p>{/if}
+            {if !empty($PAY_LINK.expires)}<p>{$PAY_LINK.expires}</p>{/if}
+            {else}
+            <p>{$PAY_LINK.message}</p>
+            {/if}
+         </fieldset>
+         {/if}
          {if isset($DISPLAY_OVERVIEW)}
          {if isset($DISPLAY_COMMENTS)}
          <div class="note">

@@ -66,6 +66,54 @@ if (isset($_GET['delete']) && !empty($_GET['delete']) && Admin::getInstance()->p
     }
 }
 
+// Payment link (#2858): the customer pays an unpaid order from it exactly as the order stands.
+// "Email to customer" sends them the link; "New link" replaces it, which ends the one given out before.
+if (isset($_GET['pay_link'], $_GET['order_id']) && Admin::getInstance()->permissions('orders', CC_PERM_EDIT)) {
+    $pay_order = $GLOBALS['db']->select('CubeCart_order_summary', false, array('cart_order_id' => (string)$_GET['order_id']), false, 1, false, false);
+    if ($pay_order && Order::payable($pay_order[0])) {
+        $pay_order = $pay_order[0];
+        if ($_GET['pay_link'] === 'new') {
+            Order::payUrl($pay_order['cart_order_id'], true);
+            $GLOBALS['main']->successMessage($lang['orders']['pay_link_renewed']);
+        } elseif ($_GET['pay_link'] === 'email') {
+            if (!filter_var($pay_order['email'], FILTER_VALIDATE_EMAIL)) {
+                $GLOBALS['main']->errorMessage($lang['orders']['pay_link_no_email']);
+            } else {
+                // In the language the order was placed in, then the customer's own, then the store's
+                $pay_language = (string)$pay_order['lang'];
+                if ($pay_language === '' && (int)$pay_order['customer_id'] > 0 && ($pay_customer = $GLOBALS['db']->select('CubeCart_customer', array('language'), array('customer_id' => (int)$pay_order['customer_id']), false, 1, false, false)) !== false) {
+                    $pay_language = (string)$pay_customer[0]['language'];
+                }
+                if ($pay_language === '') {
+                    $pay_language = (string)$GLOBALS['config']->get('config', 'default_language');
+                }
+                $pay_details = $order->getOrderDetails($pay_order['cart_order_id']);
+                $pay_details['order_summary']['pay_url'] = Order::payUrl($pay_order['cart_order_id']);
+                $pay_mailer = new Mailer();
+                $pay_sent   = false;
+                if (($pay_content = $pay_mailer->loadContent('cart.payment_request', $pay_language)) !== false) {
+                    $order->assignOrderDetails($pay_details);
+                    $pay_sent = (bool)$pay_mailer->sendEmail($pay_order['email'], $pay_content);
+                }
+                if ($pay_sent) {
+                    // Kept with the order, so that it is plain when the customer was asked and by whom
+                    $GLOBALS['db']->insert('CubeCart_order_notes', array(
+                        'admin_id'      => Admin::getInstance()->get('admin_id'),
+                        'cart_order_id' => $pay_order['cart_order_id'],
+                        'time'          => time(),
+                        'content'       => sprintf($lang['orders']['pay_link_note'], $pay_order['email']),
+                        'print'         => '0',
+                    ));
+                    $GLOBALS['main']->successMessage(sprintf($lang['orders']['pay_link_emailed'], $pay_order['email']));
+                } else {
+                    $GLOBALS['main']->errorMessage(sprintf($lang['orders']['pay_link_email_failed'], $pay_order['email']));
+                }
+            }
+        }
+    }
+    httpredir(currentPage(array('pay_link', 'token')));
+}
+
 if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders', CC_PERM_EDIT)) {
     $order_id = (!empty($_POST['cart_order_id'])) ? $_POST['cart_order_id'] : $order->createOrderId(true);
     // Hook
@@ -392,6 +440,23 @@ if (isset($_GET['action'])) {
             $GLOBALS['smarty']->assign('SUMMARY', $summary[0]);
             if ($summary[0]['status'] >= 3) {
                 $GLOBALS['smarty']->assign('DISPLAY_DASHBOARD', true);
+            }
+            // Payment link (#2858), for those who can edit orders. A paid order has none and shows nothing.
+            $pay_state = Order::payState($summary[0]);
+            if (in_array($pay_state, array('payable', 'cancelled', 'declined', 'nothing'), true) && Admin::getInstance()->permissions('orders', CC_PERM_EDIT, false, false)) {
+                $pay_link = array('state' => $pay_state);
+                if ($pay_state === 'payable') {
+                    $pay_link['url']       = Order::payUrl($summary[0]['cart_order_id']);
+                    $pay_link['email']     = filter_var($summary[0]['email'], FILTER_VALIDATE_EMAIL) ? $summary[0]['email'] : '';
+                    $pay_link['email_url'] = currentPage(null, array('pay_link' => 'email', 'token' => SESSION_TOKEN));
+                    $pay_link['new_url']   = currentPage(null, array('pay_link' => 'new', 'token' => SESSION_TOKEN));
+                    // A store may cancel orders left Pending too long, and the link goes with the order
+                    $pay_expire = (int)$GLOBALS['config']->get('config', 'basket_order_expire');
+                    $pay_link['expires'] = ($pay_expire > 0) ? sprintf($lang['orders']['pay_link_expires'], formatTime((int)$summary[0]['order_date'] + $pay_expire)) : '';
+                } else {
+                    $pay_link['message'] = $lang['orders']['pay_link_'.$pay_state];
+                }
+                $GLOBALS['smarty']->assign('PAY_LINK', $pay_link);
             }
             if (($customer_notes = $GLOBALS['db']->select('CubeCart_customer', array('notes'), array('customer_id' => $summary[0]['customer_id']))) !== false) {
                 $GLOBALS['smarty']->assign('CUSTOMER_NOTES', $customer_notes[0]['notes']);
