@@ -3571,6 +3571,7 @@ class Cubecart
                     // Loop through price values, and do the formatting
                     $order['show_credit'] = ($order['credit_used']>0) ? true : false;
                     $order['subtotal'] = Order::displaySubtotal($order, $tax_inclusive);
+					$order['shipping'] = Order::displayShipping($order, $tax_inclusive);
                     $GLOBALS['smarty']->assign('TAX_INCLUSIVE', $tax_inclusive);
                     foreach (array('discount', 'shipping', 'subtotal', 'total', 'total_tax', 'credit_used') as $key) {
                         $order[$key] = $GLOBALS['tax']->priceFormat($order[$key], true);
@@ -3740,6 +3741,7 @@ class Cubecart
                     $order['state_d'] = is_numeric($order['state_d']) ? getStateFormat($order['state_d']) : $order['state_d'];
                     // Loop through price values, and do the formatting
                     $order['subtotal'] = Order::displaySubtotal($order, $tax_inclusive);
+					$order['shipping'] = Order::displayShipping($order, $tax_inclusive);
                     $GLOBALS['smarty']->assign('TAX_INCLUSIVE', $tax_inclusive);
                     foreach (array('discount', 'shipping', 'subtotal', 'total', 'total_tax') as $key) {
                         $order[$key] = $GLOBALS['tax']->priceFormat($order[$key], true);
