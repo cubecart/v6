@@ -146,6 +146,20 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                 }
             } else {
                 if ($panic) { // Content type doesn't exist for any language
+                    // An email newer than every language pack the store has: its English wording ships with CubeCart (#2858)
+                    if ($GLOBALS['language']->importEmailDefinition($content_type, $GLOBALS['config']->get('config', 'default_language')) && ($contents = $GLOBALS['db']->select('CubeCart_email_content', false, $where, false, 1, false, false)) !== false) {
+                        if (isset($contents[0]['enabled']) && !$contents[0]['enabled']) {
+                            return false;
+                        }
+                        $this->_email_content_id = $contents[0]['content_id'];
+                        $this->_content_type = $content_type;
+                        if ($data) {
+                            $GLOBALS['smarty']->assign('DATA', $data);
+                        }
+                        if (!empty($contents[0]['content_html'])) {
+                            return $this->_contentElements($contents[0]);
+                        }
+                    }
                     trigger_error('Email content for '.$content_type.' doesn\'t exist in any language.');
                     return false;
                 } elseif ($default) {

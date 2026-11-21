@@ -110,6 +110,65 @@
 </table>
 <p>Thanks,<br>{$DATA.store_name}</p>]]></content>
   </email>
+  <email name="cart.payment_request">
+    <subject><![CDATA[Payment request for order #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">Your order is ready to pay</h1>
+<p>Hi {$DATA.first_name|capitalize},</p>
+<p>Order {$DATA.cart_order_id} is ready, and {$DATA.total} is due. You can pay it online at any time with the button below.</p>
+<p style="margin:24px 0;"><a class="cc-button" href="{$DATA.pay_url}" style="background-color:#333333;border-color:#333333;border-radius:6px;border-style:solid;border-width:12px 24px;color:#ffffff;display:inline-block;font-weight:bold;line-height:1.2;text-decoration:none;">Pay now</a></p>
+{if !empty($DATA.note_to_customer)}<p><strong>A note from us:</strong><br>{$DATA.note_to_customer}</p>{/if}
+<table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="margin:24px 0;">
+<tr>
+<td valign="top" width="50%" style="padding:0 12px 0 0;"><strong>Billing address</strong><br>{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>{/if}{$BILLING.line1|capitalize}<br>{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>{/if}{$BILLING.town|upper}<br>{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}{$BILLING.postcode}<br>{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}{if !empty($BILLING.phone)}<br>{$BILLING.phone}{/if}<br>{$BILLING.email}</td>
+<td valign="top" width="50%" style="padding:0 0 0 12px;"><strong>Shipping address</strong><br>{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}<br>{/if}{$SHIPPING.line1|capitalize}<br>{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize}<br>{/if}{$SHIPPING.town|upper}<br>{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}{$SHIPPING.postcode}<br>{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:24px 0;">
+<tr>
+<th align="left" style="border-bottom:2px solid #e3e6e8;padding:8px 8px 8px 0;text-align:left;">Item</th>
+<th align="center" style="border-bottom:2px solid #e3e6e8;padding:8px 8px;text-align:center;">Qty</th>
+<th align="right" style="border-bottom:2px solid #e3e6e8;padding:8px 0 8px 8px;text-align:right;">Price</th>
+</tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td valign="top" style="border-bottom:1px solid #e3e6e8;padding:10px 8px 10px 0;">{$product.name}{if !empty($product.product_options)}<br><span style="color:#6b7479;font-size:12px;">{$product.product_options}</span>{/if}</td>
+<td align="center" valign="top" style="border-bottom:1px solid #e3e6e8;padding:10px 8px;text-align:center;">{$product.quantity}</td>
+<td align="right" valign="top" style="border-bottom:1px solid #e3e6e8;padding:10px 0 10px 8px;text-align:right;white-space:nowrap;">{$product.price}</td>
+</tr>
+{/foreach}
+<tr>
+<td colspan="2" align="right" style="padding:10px 8px 4px 0;text-align:right;">Subtotal</td>
+<td align="right" style="padding:10px 0 4px 8px;text-align:right;white-space:nowrap;">{$DATA.subtotal}</td>
+</tr>
+{if !empty($DATA.raw_discount) && $DATA.raw_discount > 0}
+<tr>
+<td colspan="2" align="right" style="padding:4px 8px 4px 0;text-align:right;">Discount</td>
+<td align="right" style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap;">-{$DATA.discount}</td>
+</tr>
+{/if}
+<tr>
+<td colspan="2" align="right" style="padding:4px 8px 4px 0;text-align:right;">{if !empty($DATA.ship_method)}{$DATA.ship_method}{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Shipping{/if}</td>
+<td align="right" style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap;">{$DATA.shipping}</td>
+</tr>
+{foreach from=$TAXES item=tax}
+<tr>
+<td colspan="2" align="right" style="padding:4px 8px 4px 0;text-align:right;">{$tax.tax_name} ({$tax.tax_percent}%)</td>
+<td align="right" style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap;">{$tax.tax_amount}</td>
+</tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr>
+<td colspan="2" align="right" style="padding:4px 8px 4px 0;text-align:right;">Credit</td>
+<td align="right" style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap;">-{$DATA.credit_used}</td>
+</tr>
+{/if}
+<tr>
+<td colspan="2" align="right" style="border-top:2px solid #e3e6e8;padding:10px 8px 10px 0;text-align:right;"><strong>Order total</strong></td>
+<td align="right" style="border-top:2px solid #e3e6e8;padding:10px 0 10px 8px;text-align:right;white-space:nowrap;"><strong>{$DATA.total}</strong></td>
+</tr>
+</table>
+<p>Thanks,<br>{$DATA.store_name}</p>]]></content>
+  </email>
   <email name="cart.payment_received">
     <subject><![CDATA[We've received your payment]]></subject>
     <content type="html"><![CDATA[<h1 style="font-size:22px;line-height:1.3;margin:0 0 16px 0;">Payment received</h1>

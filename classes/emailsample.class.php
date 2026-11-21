@@ -35,6 +35,7 @@ class EmailSample
         'cart.order_confirmation', 'cart.order_complete', 'admin.order_received',
         'cart.order_cancelled', 'cart.payment_fraud', 'cart.payment_received',
         'cart.digital_download', 'cart.gift_certificate', 'cart.abandoned',
+        'cart.payment_request',
     );
 
     //=====[ Public ]=======================================
@@ -131,6 +132,12 @@ class EmailSample
             case 'cart.payment_received':
                 // Exactly what Order::orderStatus() and paymentStatus() do before sending these
                 Order::getInstance()->assignOrderDetails($order, $admin);
+                break;
+
+            case 'cart.payment_request':
+                // As the admin's order page sends it. The link is a made-up one: a preview must not hand out a real order's.
+                $order['order_summary']['pay_url'] = $store_url.'/index.php?_a=pay&cart_order_id='.rawurlencode((string)$order['order_summary']['cart_order_id']).'&key='.str_repeat('0', 32);
+                Order::getInstance()->assignOrderDetails($order);
                 break;
 
             case 'cart.digital_download':

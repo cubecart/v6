@@ -195,6 +195,12 @@ $email_types = array(
         'description' => $lang['email']['title_macro_order_fraud'],
         'macros' => $order_macros,
     ),
+    'cart.payment_request' => array(
+        'description' => $lang['email']['title_macro_payment_request'],
+        'macros' => array_merge($order_macros, array(
+            '{$DATA.pay_url}' => $macro('pay_link'),
+        )),
+    ),
     'cart.payment_received' => array(
         'description' => $lang['email']['title_macro_order_payment'],
         'macros' => array_merge($order_macros, array(

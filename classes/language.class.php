@@ -771,6 +771,48 @@ class Language
     }
 
     /**
+     * Give the store an email that none of its language packs has yet (#2858)
+     *
+     * Language packs are downloaded when a store is installed and updated when the
+     * merchant chooses, so an email added by a later release is in none of them at
+     * first, and importEmail() reads packs only. The English wording of every email
+     * ships with CubeCart in email_definitions.xml, and is used until a pack brings a
+     * translation. Like importEmail(), this never replaces wording the store has.
+     *
+     * @param string $content_type e.g. cart.payment_request
+     * @param string $language The language to keep it under, e.g. en-GB
+     * @return bool Whether the store has the email in that language now
+     */
+    public function importEmailDefinition($content_type, $language)
+    {
+        $file = CC_LANGUAGE_DIR.'email_definitions.xml';
+        if (empty($content_type) || !preg_match(self::LANG_REGEX, (string)$language) || !file_exists($file)) {
+            return false;
+        }
+        $where = array('language' => (string)$language, 'content_type' => (string)$content_type);
+        if ($GLOBALS['db']->select('CubeCart_email_content', array('content_id'), $where, false, 1, false, false)) {
+            return true;
+        }
+        try {
+            $xml = new simpleXMLElement(file_get_contents($file));
+        } catch (Exception $e) {
+            trigger_error($e->getMessage());
+            return false;
+        }
+        $config_oid_col = $GLOBALS['config']->get('config', 'oid_col');
+        $oid_col = empty($config_oid_col) ? 'cart_order_id' : $config_oid_col;
+        foreach ($xml->email as $email) {
+            if ((string)$content_type === (string)$email->attributes()->name && $email->content) {
+                $record = $this->_emailRecord($email, (string)$language, $oid_col);
+                if (!empty($record['content_html'])) {
+                    return (bool)$GLOBALS['db']->insert('CubeCart_email_content', $record);
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * The wording an email came with, read from the language pack on disk. This is
      * what importEmail() would insert for a store that did not have the email yet.
      *
