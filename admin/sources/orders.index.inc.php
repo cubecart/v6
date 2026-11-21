@@ -486,7 +486,7 @@ if (isset($_GET['action'])) {
             $overview_summary['ship_date']  = $overview_summary['ship_date'] ? formatDispatchDate($overview_summary['ship_date']) : "";
             $overview_summary['discount']  = $GLOBALS['tax']->priceFormat($overview_summary['discount']);
             $overview_summary['subtotal']  = $GLOBALS['tax']->priceFormat(Order::displaySubtotal($overview_summary, $tax_inclusive));
-            $overview_summary['shipping']  = $GLOBALS['tax']->priceFormat($overview_summary['shipping']);
+            $overview_summary['shipping']  = $GLOBALS['tax']->priceFormat(Order::displayShipping($overview_summary, $tax_inclusive));
             $overview_summary['total_tax']  = $GLOBALS['tax']->priceFormat($overview_summary['total_tax']);
             $overview_summary['show_credit']  = $overview_summary['credit_used'] > 0 ? true : false;
             $overview_summary['credit_used']  = $GLOBALS['tax']->priceFormat($overview_summary['credit_used']);
@@ -721,6 +721,7 @@ if (isset($_GET['action'])) {
             }
             // After the percentage above, which is worked out against the ex-tax figure.
             $summary['subtotal'] = Order::displaySubtotal($summary, $print_inclusive);
+            $summary['shipping'] = Order::displayShipping($summary, $print_inclusive);
             $format = array('discount', 'shipping', 'subtotal', 'total_tax', 'total', 'credit_used');
             $summary['show_credit'] = ($summary['credit_used']>0) ? true : false;
             foreach ($format as $field) {
