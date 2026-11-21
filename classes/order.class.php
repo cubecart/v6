@@ -920,6 +920,18 @@ class Order
                 httpredir('index.php');
                 return false;
             }
+            // An order loaded to be paid as it stands is not created or updated here: the
+            // basket came from it, so there is nothing to write back (#2858). It only has to
+            // be payable still, as it may have been paid or cancelled since it was loaded.
+            if (isset($GLOBALS['cart']) && $GLOBALS['cart'] instanceof Cart && $GLOBALS['cart']->locked()) {
+                if (!self::payable((string)($this->_basket['cart_order_id'] ?? ''))) {
+                    $pay_url = !empty($this->_basket['pay_url']) ? $this->_basket['pay_url'] : 'index.php';
+                    $GLOBALS['cart']->unlock();
+                    httpredir($pay_url);
+                    return false;
+                }
+                return true;
+            }
             // Order Creation/Updating
             $this->_saveAddresses();
 
@@ -1310,6 +1322,222 @@ class Order
         $hex = bin2hex($blob);
         $oid = $GLOBALS['db']->sqlSafe($order_id, true);
         return (bool)$GLOBALS['db']->misc("UPDATE `{$pfx}CubeCart_order_summary` SET `basket` = UNHEX('{$hex}') WHERE `cart_order_id` = {$oid}");
+    }
+
+    /**
+     * Whether an order can be paid on the store as it stands, and if not, why (#2858)
+     *
+     * An order raised in the admin or through the API has no basket to go back to, so it
+     * is paid exactly as it was raised: from a payment link, or from the customer's own
+     * account. Only a Pending order with something to pay can be.
+     *
+     * @param array|string $order The order's summary row, or its order number
+     * @return string payable, paid, cancelled, declined, nothing (no balance) or unknown
+     */
+    public static function payState($order)
+    {
+        if (!is_array($order)) {
+            $rows  = $GLOBALS['db']->select('CubeCart_order_summary', array('status', 'total'), array('cart_order_id' => (string)$order), false, 1, false, false);
+            $order = $rows ? $rows[0] : array();
+        }
+        if (!isset($order['status'], $order['total'])) {
+            return 'unknown';
+        }
+        switch ((int)$order['status']) {
+            case self::ORDER_PENDING:
+                return ((float)$order['total'] > 0) ? 'payable' : 'nothing';
+            case self::ORDER_PROCESS:
+            case self::ORDER_COMPLETE:
+                return 'paid';
+            case self::ORDER_CANCELLED:
+                return 'cancelled';
+            case self::ORDER_DECLINED:
+            case self::ORDER_FAILED:
+                return 'declined';
+        }
+        return 'unknown';
+    }
+
+    /**
+     * Whether an order can be paid on the store as it stands
+     *
+     * @param array|string $order The order's summary row, or its order number
+     * @return bool
+     */
+    public static function payable($order)
+    {
+        return self::payState($order) === 'payable';
+    }
+
+    /**
+     * The key in an order's payment link, made the first time it is asked for
+     *
+     * @param string $order_id
+     * @param bool $renew Replace the key, which ends the link given out before
+     * @return string|false False when there is no such order
+     */
+    public static function payKey($order_id, $renew = false)
+    {
+        $rows = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id', 'pay_key'), array('cart_order_id' => (string)$order_id), false, 1, false, false);
+        if (!$rows) {
+            return false;
+        }
+        if (!$renew && !empty($rows[0]['pay_key'])) {
+            return $rows[0]['pay_key'];
+        }
+        $key = bin2hex(random_bytes(16));
+        $GLOBALS['db']->update('CubeCart_order_summary', array('pay_key' => $key), array('cart_order_id' => $rows[0]['cart_order_id']));
+        return $key;
+    }
+
+    /**
+     * The link a customer pays an order from
+     *
+     * @param string $order_id
+     * @param bool $renew Make a new link, which ends the one given out before
+     * @return string|false False when there is no such order
+     */
+    public static function payUrl($order_id, $renew = false)
+    {
+        $key = self::payKey($order_id, $renew);
+        if ($key === false) {
+            return false;
+        }
+        return $GLOBALS['storeURL'].'/index.php?_a=pay&cart_order_id='.rawurlencode((string)$order_id).'&key='.$key;
+    }
+
+    /**
+     * An order as a basket, so that it can be paid exactly as it stands (#2858)
+     *
+     * Payment gateways take what they charge from the session basket. This builds that
+     * basket from the order as stored, in the shape a checkout basket has: nothing is
+     * priced from the catalogue, and a line with no product behind it is kept.
+     *
+     * @param string $order_id
+     * @return array|false False when there is no such order
+     */
+    public static function basketFromOrder($order_id)
+    {
+        $rows = $GLOBALS['db']->select('CubeCart_order_summary', false, array('cart_order_id' => (string)$order_id), false, 1, false, false);
+        if (!$rows) {
+            return false;
+        }
+        $order = $rows[0];
+
+        $contents = array();
+        $digital_only = true;
+        $lines = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $order['cart_order_id']), array('id' => 'ASC'), false, false, false);
+        if (is_array($lines)) {
+            foreach ($lines as $line) {
+                // The hash ties a line to the basket it came from; a line added in the admin has none
+                $hash = !empty($line['hash']) ? $line['hash'] : md5('order-line-'.$line['id']);
+                $contents[$hash] = array(
+                    'id'                 => (int)$line['product_id'],
+                    'quantity'           => max(1, (int)$line['quantity']),
+                    'name'               => (string)$line['name'],
+                    'product_code'       => (string)$line['product_code'],
+                    'digital'            => (int)$line['digital'],
+                    'options_identifier' => (string)$line['options_identifier'],
+                    'total_price_each'   => $line['price'],
+                    'option_line_price'  => 0,
+                    'cost_price'         => $line['cost_price'],
+                    'tax_each'           => array('amount' => $line['tax'], 'tax_percent' => $line['tax_percent']),
+                );
+                if (empty($line['digital'])) {
+                    $digital_only = false;
+                }
+            }
+        }
+
+        $billing  = self::_basketAddress($order, '');
+        $delivery = self::_basketAddress($order, '_d');
+        if (empty($order['line1_d']) && empty($order['postcode_d']) && empty($order['country_d'])) {
+            // No delivery address was given: gateways and their country rules fall back on the billing one
+            $delivery = $billing;
+        }
+
+        $basket = array(
+            'cart_order_id'     => $order['cart_order_id'],
+            'order_status'      => (int)$order['status'],
+            'contents'          => $contents,
+            'subtotal'          => sprintf('%.2F', $order['subtotal']),
+            'discount'          => sprintf('%.2F', $order['discount']),
+            'discount_type'     => (string)$order['discount_type'],
+            'total_tax'         => sprintf('%.2F', $order['total_tax']),
+            'total'             => sprintf('%.2F', $order['total']),
+            'weight'            => sprintf('%.4F', $order['weight']),
+            'shipping'          => array(),
+            'order_taxes'       => array(),
+            'billing_address'   => $billing,
+            'delivery_address'  => $delivery,
+            'customer'          => array(
+                'customer_id' => (int)$order['customer_id'],
+                'first_name'  => (string)$order['first_name'],
+                'last_name'   => (string)$order['last_name'],
+                'email'       => (string)$order['email'],
+                'phone'       => (string)$order['phone'],
+                'mobile'      => (string)$order['mobile'],
+            ),
+            'register'          => false,
+            'confirm_addresses' => true,
+            'comments'          => (string)$order['customer_comments'],
+        );
+        if (!empty($order['ship_method']) || (float)$order['shipping'] > 0) {
+            $basket['shipping'] = array(
+                'name'    => (string)$order['ship_method'],
+                'product' => (string)$order['ship_product'],
+                'value'   => sprintf('%.2F', $order['shipping']),
+                'tax'     => array('amount' => $order['shipping_tax'], 'tax_percent' => $order['shipping_tax_rate']),
+            );
+        }
+        if ($digital_only && !empty($contents)) {
+            $basket['digital_only'] = true;
+        }
+        if ((float)$order['credit_used'] > 0) {
+            $basket['credit_used'] = sprintf('%.2F', $order['credit_used']);
+        }
+        $taxes = $GLOBALS['db']->select('CubeCart_order_tax', array('tax_id', 'amount'), array('cart_order_id' => $order['cart_order_id']), false, false, false, false);
+        if (is_array($taxes)) {
+            $basket['order_taxes'] = $taxes;
+        }
+        return $basket;
+    }
+
+    /**
+     * One of an order's addresses as a checkout basket holds it
+     *
+     * @param array $order The order's summary row
+     * @param string $suffix '' for billing, '_d' for delivery
+     * @return array
+     */
+    private static function _basketAddress($order, $suffix)
+    {
+        $state       = (string)$order['state'.$suffix];
+        $state_field = is_numeric($state) ? 'id' : 'name';
+        $state_id    = getStateFormat($state, $state_field, 'id');
+        $country     = (int)$order['country'.$suffix];
+        $name        = ($country > 0) ? (string)getCountryFormat($country) : '';
+        return array(
+            'user_defined' => true,
+            'first_name'   => (string)$order['first_name'.$suffix],
+            'last_name'    => (string)$order['last_name'.$suffix],
+            'company_name' => (string)$order['company_name'.$suffix],
+            'line1'        => (string)$order['line1'.$suffix],
+            'line2'        => (string)$order['line2'.$suffix],
+            'town'         => (string)$order['town'.$suffix],
+            'postcode'     => (string)$order['postcode'.$suffix],
+            'state_id'     => $state_id,
+            'state'        => (string)getStateFormat($state_id),
+            'state_abbrev' => (string)getStateFormat($state, $state_field, 'abbrev'),
+            'country'      => $name,
+            'country_id'   => $country,
+            'country_iso'  => ($country > 0) ? (string)getCountryFormat($country, 'numcode', 'iso') : '',
+            'country_iso3' => ($country > 0) ? (string)getCountryFormat($country, 'numcode', 'iso3') : '',
+            'country_name' => $name,
+            'w3w'          => (string)$order['w3w'.$suffix],
+            'email'        => (string)$order['email'],
+            'phone'        => (string)$order['phone'],
+        );
     }
 
     //=====[ Private ]=======================================
@@ -2182,13 +2410,20 @@ class Order
         foreach ($GLOBALS['hooks']->load('class.order.retrieveorder') as $hook) {
             include $hook;
         }
-        // Retrieve an order from the database, and put it back into the session
-        if (!empty($order_id)) {
+        // Retrieve one of the customer's own orders from the database, and put it back into the session
+        $customer_id = (int)$GLOBALS['user']->getId();
+        if (!empty($order_id) && $customer_id > 0) {
             // Fetch summary
-            if (($summary = $GLOBALS['db']->select('CubeCart_order_summary', 'basket', array('cart_order_id' => (string)$order_id), false, false, false, false)) !== false) {
-                if ($this->_basket = self::basketRead($summary[0]['basket'])) {
+            if (($summary = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id', 'basket', 'status', 'total'), array('cart_order_id' => (string)$order_id, 'customer_id' => $customer_id), false, 1, false, false)) !== false) {
+                $basket = self::basketRead($summary[0]['basket']);
+                if (is_array($basket) && !empty($basket)) {
+                    $this->_basket = $basket;
                     $GLOBALS['cart']->save();
                     return true;
+                }
+                // No basket was kept, as for an order raised in the admin: it is paid as it stands (#2858)
+                if (self::payable($summary[0])) {
+                    httpredir('index.php?_a=pay&cart_order_id='.rawurlencode($summary[0]['cart_order_id']));
                 }
             }
         }

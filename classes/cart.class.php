@@ -137,6 +137,7 @@ class Cart
 
         // Load Basket contents
         $this->load();
+        $this->_refreshLocked();
 
         if (!$GLOBALS['config']->get('config', 'basket_allow_non_invoice_address') && isset($_POST['delivery_address']) && is_numeric($_POST['delivery_address'])) {
             $this->basket['delivery_address'] = $GLOBALS['user']->getAddress((int)$_POST['delivery_address']);
@@ -227,6 +228,8 @@ class Cart
      */
     public function add($product_id, $optionsArray = null, $quantity = 1, $redirect_enabled = true)
     {
+        // An order being paid as it stands is not a basket to add to: shopping starts a new one (#2858)
+        $this->unlock();
         foreach ($GLOBALS['hooks']->load('class.cart.add.pre') as $hook) {
             include $hook;
         }
@@ -545,10 +548,14 @@ class Cart
      */
     public function clear()
     {
+        $locked = $this->locked();
         $this->basket = array();
         $GLOBALS['session']->delete('', 'basket');
 
-        $GLOBALS['db']->delete('CubeCart_saved_cart', array('customer_id' => $GLOBALS['user']->getId()));
+        // An order paid as it stands was never the customer's saved basket (#2858)
+        if (!$locked) {
+            $GLOBALS['db']->delete('CubeCart_saved_cart', array('customer_id' => $GLOBALS['user']->getId()));
+        }
         foreach ($GLOBALS['hooks']->load('class.cart.clear') as $hook) {
             include $hook;
         }
@@ -563,6 +570,9 @@ class Cart
      */
     public function discountAdd($code)
     {
+        if ($this->locked()) {
+            return false;
+        }
         if (!is_null($code) && !empty($code)) {
             if (($coupon = $GLOBALS['db']->select('CubeCart_coupons', '*', "`code` = '".preg_replace('/[^\w\-\_]/u', '', $code)."' AND `status` = 1", false, 1, false, false)) !== false) {
                 if (!empty($coupon[0]['cart_order_id'])) {
@@ -832,6 +842,9 @@ class Cart
      */
     public function discountRemove($code)
     {
+        if ($this->locked()) {
+            return false;
+        }
         if ($code && isset($this->basket['coupons'][strtoupper($code)])) {
             unset($this->basket['coupons'][strtoupper($code)], $this->basket['discount_type']);
             if ($this->basket['free_coupon_shipping']==1) {
@@ -853,6 +866,10 @@ class Cart
     public function get()
     {
         if ($GLOBALS['session']->get('hide_prices')) {
+            return false;
+        }
+        // An order being paid as it stands is never priced from the catalogue (#2858)
+        if ($this->locked()) {
             return false;
         }
 
@@ -1190,6 +1207,78 @@ class Cart
     }
 
     /**
+     * Whether the basket is an order loaded to be paid exactly as it stands (#2858)
+     *
+     * Such a basket is a copy of the order, made by Order::basketFromOrder(). Nothing here
+     * prices, changes or saves it as the customer's own basket, and it is read from the
+     * order again on every request.
+     *
+     * @return bool
+     */
+    public function locked()
+    {
+        return is_array($this->basket) && !empty($this->basket['locked']);
+    }
+
+    /**
+     * Put an order in the basket to be paid exactly as it stands
+     *
+     * @param array $basket As built by Order::basketFromOrder()
+     * @param string $pay_url The page the customer pays it from, to send them back to
+     * @param string $gateway The payment gateway they chose there, if they have
+     * @return bool
+     */
+    public function loadOrder($basket, $pay_url = '', $gateway = '')
+    {
+        if (!is_array($basket) || empty($basket['cart_order_id'])) {
+            return false;
+        }
+        $basket['locked']  = true;
+        $basket['pay_url'] = (string)$pay_url;
+        if ($gateway !== '') {
+            $basket['gateway'] = (string)$gateway;
+        }
+        $this->basket = $basket;
+        $this->save();
+        return true;
+    }
+
+    /**
+     * Let go of an order loaded to be paid. The order itself is not touched.
+     */
+    public function unlock()
+    {
+        if ($this->locked()) {
+            $this->basket = array();
+            $GLOBALS['session']->delete('', 'basket');
+        }
+    }
+
+    /**
+     * Read a locked basket's order again, so that a gateway is always given the order as
+     * it stands now. An order that can no longer be paid is left as it was loaded: the
+     * receipt still needs its number, and the payment step turns it away.
+     */
+    private function _refreshLocked()
+    {
+        if (!$this->locked()) {
+            return;
+        }
+        $fresh = Order::basketFromOrder((string)($this->basket['cart_order_id'] ?? ''));
+        if ($fresh === false || !Order::payable(array('status' => $fresh['order_status'], 'total' => $fresh['total']))) {
+            return;
+        }
+        $before = $this->basket;
+        // What the order no longer has must not linger from the copy before
+        unset($this->basket['digital_only'], $this->basket['credit_used']);
+        $this->basket = array_merge($this->basket, $fresh);
+        // Kept in the session too when the order has changed, so that both always agree
+        if ($this->basket != $before) {
+            $this->save();
+        }
+    }
+
+    /**
      * Load current basket
      *
      * @return bool
@@ -1326,7 +1415,7 @@ class Cart
     public function remove($identifier)
     {
         // Remove an item from the basket
-        if (!is_null($identifier) && isset($this->basket['contents'][$identifier])) {
+        if (!$this->locked() && !is_null($identifier) && isset($this->basket['contents'][$identifier])) {
             unset($this->basket['contents'][$identifier]);
             $this->save();
             return $this->update();
@@ -1341,7 +1430,8 @@ class Cart
     {
         Session::getInstance()->set('', $this->basket, 'basket', true);
         //Only care about auto saving the cart if there is something in there
-        if (!empty($this->basket) && isset($this->basket['contents'])) {
+        //An order being paid as it stands is not the customer's own basket, so it is not kept as one (#2858)
+        if (!empty($this->basket) && isset($this->basket['contents']) && !$this->locked()) {
             if (User::getInstance()->is()) {
                 static $old_basket = null;
                 $id = User::getInstance()->getId();
@@ -1422,6 +1512,9 @@ class Cart
      */
     public function update($verify = array())
     {
+        if ($this->locked()) {
+            return;
+        }
         // Update basket values and such - possibly to the database too
         $quantities = isset($_POST['quan']) && is_array($_POST['quan']) ? $_POST['quan'] : $verify;
         if (count($quantities) > 0) {

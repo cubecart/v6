@@ -592,7 +592,8 @@ class Cubecart
                 case 'confirm':
                     $GLOBALS['smarty']->assign('SECTION_NAME', 'checkout');
                     $GLOBALS['session']->set('LAST_PAGE', 'basket');
-                    if ($GLOBALS['config']->get('config', 'catalogue_mode')) {
+                    // Catalogue mode closes the checkout, but not to an order being paid from its payment link (#2858)
+                    if ($GLOBALS['config']->get('config', 'catalogue_mode') && !$GLOBALS['cart']->locked()) {
                         httpredir('index.php');
                     }
                     $this->_checkout();
@@ -602,7 +603,7 @@ class Cubecart
                 case 'cart':
                     $GLOBALS['smarty']->assign('SECTION_NAME', 'checkout');
                     $GLOBALS['session']->set('LAST_PAGE', 'basket');
-                    if ($GLOBALS['config']->get('config', 'catalogue_mode')) {
+                    if ($GLOBALS['config']->get('config', 'catalogue_mode') && !$GLOBALS['cart']->locked()) {
                         httpredir('index.php');
                     }
                     $this->_basket(isset($editable) ? $editable : true);
@@ -912,6 +913,8 @@ class Cubecart
         foreach ($GLOBALS['hooks']->load('class.cubecart.pre_basket') as $hook) {
             include $hook;
         }
+        // Placed after the hook, which gateways answer their own calls from
+        $this->_payInstead();
 
         $this->_checkoutProcess();
         $GLOBALS['cart']->verifyBasket();
@@ -1296,6 +1299,8 @@ class Cubecart
         foreach ($GLOBALS['hooks']->load('class.cubecart.construct.confirm') as $hook) {
             include $hook;
         }
+        // Placed after the hook, which gateways answer their own calls from
+        $this->_payInstead();
         // Display order confirmation page
         if (!$GLOBALS['user']->is()) {
             // Unregistered Users
@@ -2660,7 +2665,7 @@ class Cubecart
                                 } else {
                                     $oid = $order_data['order_summary']['cart_order_id'];
                                 }
-                                $GLOBALS['smarty']->assign('LANG_AMOUNT_DUE', sprintf($GLOBALS['language']->checkout['make_payment'], $GLOBALS['tax']->priceFormat($this->_basket['total']), $oid));
+                                $GLOBALS['smarty']->assign('LANG_AMOUNT_DUE', sprintf($GLOBALS['language']->checkout['make_payment'], $GLOBALS['tax']->priceFormat($this->_basket['total'], true, false, $GLOBALS['cart']->locked()), $oid));
                                 $GLOBALS['smarty']->assign('FORM_TEMPLATE', $gateway->form());
                                 $GLOBALS['smarty']->assign('BTN_PROCEED', $GLOBALS['language']->gateway['make_payment']);
                             } else {
@@ -2892,7 +2897,8 @@ class Cubecart
      */
     private function _gateway()
     {
-        if (!isset($_REQUEST['gateway']) || (isset($_GET['cart_order_id']) && $_GET['retrieve'])) {
+        // An order being paid as it stands is looked at on every pass: it writes nothing, and only checks it can still be paid (#2858)
+        if (!isset($_REQUEST['gateway']) || (isset($_GET['cart_order_id']) && $_GET['retrieve']) || $GLOBALS['cart']->locked()) {
             Order::getInstance()->placeOrder();
             $GLOBALS['session']->delete('checkout_solved', 'captcha');
         }
@@ -3648,6 +3654,7 @@ class Cubecart
                 } elseif (isset($_GET['reorder']) && Order::validOrderId(trim($_GET['reorder']))) {
                     $basket = $GLOBALS['db']->select('CubeCart_order_summary', array('basket'), array('cart_order_id'=>$_GET['reorder'], 'customer_id' => $GLOBALS['user']->get('customer_id')));
                     $past_data = Order::basketRead($basket[0]['basket']);
+                    $GLOBALS['cart']->unlock();
                     $GLOBALS['cart']->basket['contents'] = $past_data['contents'];
                     $GLOBALS['cart']->save();
                     httpredir('?_a=basket');
@@ -3682,9 +3689,11 @@ class Cubecart
                             break;
                         }
 
+                        // An order that kept no basket, as one raised in the admin, is paid as it stands from its pay page (#2858)
+                        $pay_as_raised = (empty($order['basket']) && Order::payable($order));
                         $order['total'] = $GLOBALS['tax']->priceFormat($order['total'], true);
                         $existing_transactions = $GLOBALS['db']->select('CubeCart_transactions', array('id'), array('order_id' => $order['cart_order_id']));
-                        $order['make_payment'] = ($order['status'] == 1 && !empty($order['basket']) && !$existing_transactions) ? true : false;
+                        $order['make_payment'] = (($order['status'] == 1 && !empty($order['basket']) && !$existing_transactions) || $pay_as_raised) ? true : false;
                         $order['cancel'] = ($order['status']==1 && !$existing_transactions) ? true : false;
                         $order['status'] = array('id' => (int)$order['status'], 'icon' => $icon, 'text' => $GLOBALS['language']->order_state['name_'.(int)$order['status']]);
                         $vars['orders'][] = $order;
@@ -3770,6 +3779,199 @@ class Cubecart
 
         $content = $GLOBALS['smarty']->fetch($template);
         $GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
+    }
+
+    /**
+     * Pay an order exactly as it stands (#2858)
+     *
+     * Reached from a payment link, which carries the order's key, or from the customer's own
+     * account, which needs none. Opening the page changes nothing: it is drawn from the order
+     * in the database, because a visitor arriving from an email has no session yet. Pressing
+     * Pay puts the order in the basket, locked (Cart::loadOrder), and hands over to the gateway
+     * page every skin already has.
+     */
+    private function _pay()
+    {
+        $GLOBALS['smarty']->assign('SECTION_NAME', 'checkout');
+        if (!headers_sent()) {
+            header('X-Robots-Tag: noindex, nofollow');
+        }
+        // Loading the order class first lets it cancel Pending orders that have run out of time
+        $orders   = Order::getInstance();
+        $order_id = (isset($_GET['cart_order_id']) && is_scalar($_GET['cart_order_id'])) ? trim((string)$_GET['cart_order_id']) : '';
+        $key      = (isset($_GET['key']) && is_scalar($_GET['key'])) ? (string)$_GET['key'] : '';
+        $order    = false;
+        $owner    = false;
+        $keyed    = false;
+        if (preg_match('/^[\w\-]{1,18}$/', $order_id)) {
+            $rows = $GLOBALS['db']->select('CubeCart_order_summary', false, array('cart_order_id' => $order_id), false, 1, false, false);
+            if ($rows) {
+                $owner = ($GLOBALS['user']->is() && (int)$rows[0]['customer_id'] > 0 && (int)$rows[0]['customer_id'] === (int)$GLOBALS['user']->getId());
+                $keyed = ($key !== '' && !empty($rows[0]['pay_key']) && hash_equals((string)$rows[0]['pay_key'], $key));
+                if ($owner || $keyed) {
+                    $order = $rows[0];
+                }
+            }
+        }
+        // No such order and a wrong key get the same answer
+        if ($order === false) {
+            $this->_payMessage('invalid');
+            return;
+        }
+
+        $state = Order::payState($order);
+        if ($state !== 'payable') {
+            // Paid, cancelled or changed since it was loaded: there is nothing left to hold on to
+            if ($GLOBALS['cart']->locked() && ($GLOBALS['cart']->basket['cart_order_id'] ?? '') === $order['cart_order_id']) {
+                $GLOBALS['cart']->unlock();
+            }
+            $this->_payMessage($state, $order, $owner);
+            return;
+        }
+
+        $pay_url = $GLOBALS['storeURL'].'/index.php?_a=pay&cart_order_id='.rawurlencode($order['cart_order_id']).($keyed ? '&key='.$key : '');
+        $basket  = Order::basketFromOrder($order['cart_order_id']);
+
+        // Pay was pressed. By now the page's script has set the cookie a session needs.
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $GLOBALS['session']->getState() === 'active') {
+            $gateway = (isset($_POST['gateway']) && is_scalar($_POST['gateway']) && preg_match('/^[\w\-]+$/', (string)$_POST['gateway'])) ? (string)$_POST['gateway'] : '';
+            $GLOBALS['cart']->loadOrder($basket, $pay_url, $gateway);
+            httpredir('index.php?_a=gateway');
+            return;
+        }
+
+        // The payment methods open to this order. Gateways and their hooks read the basket for the
+        // country it is going to, so the order stands in for the visitor's own basket while the
+        // list is made, and their basket is put back untouched.
+        $own_basket = $GLOBALS['cart']->basket;
+        $GLOBALS['cart']->basket = array_merge($basket, array('locked' => true, 'pay_url' => $pay_url));
+        $this->_listPaymentOptions();
+        $GLOBALS['cart']->basket = $own_basket;
+
+        $number  = $this->_payOrderView($order);
+        $attempt = $GLOBALS['db']->select('CubeCart_transactions', array('time'), array('order_id' => $order['cart_order_id']), array('time' => 'DESC'), 1, false, false);
+        $pay = array(
+            'state'        => 'payable',
+            'action'       => $pay_url,
+            'order_number' => $number,
+            'amount_due'   => sprintf($GLOBALS['language']->checkout['make_payment'], $GLOBALS['tax']->priceFormat($order['total'], true, false, true), htmlspecialchars((string)$number, ENT_QUOTES, 'UTF-8')),
+            // A payment already started may still be on its way, so the customer is told before paying again
+            'attempted'    => $attempt ? sprintf($GLOBALS['language']->orders['pay_attempted'], formatTime($attempt[0]['time'])) : '',
+        );
+        $GLOBALS['smarty']->assign('PAY', $pay);
+
+        if ($GLOBALS['smarty']->templateExists('templates/content.pay.php')) {
+            $content = $GLOBALS['smarty']->fetch('templates/content.pay.php');
+        } else {
+            // A skin from before 6.9.0 has no pay page: its own payment method page, with what is due above it
+            $content = '<p>'.$pay['amount_due'].'</p>'.(($pay['attempted'] !== '') ? '<p>'.$pay['attempted'].'</p>' : '').$GLOBALS['smarty']->fetch('templates/content.gateway.php');
+        }
+        $GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
+    }
+
+    /**
+     * Say why an order cannot be paid from its pay page
+     *
+     * @param string $state As Order::payState() gives it, or 'invalid' for a link that opens no order
+     * @param array|null $order The order's summary row
+     * @param bool $owner Whether the visitor is the customer the order belongs to
+     */
+    private function _payMessage($state, $order = null, $owner = false)
+    {
+        $lang = $GLOBALS['language']->orders;
+        if ($state === 'invalid') {
+            http_response_code(404);
+            $title = $lang['pay_invalid_title'];
+        } else {
+            $title = $lang['pay_unavailable_title'];
+        }
+        $pay = array(
+            'state'     => $state,
+            'title'     => $title,
+            'message'   => isset($lang['pay_'.$state]) ? $lang['pay_'.$state] : $lang['pay_declined'],
+            // Their own order is a click away for the customer it belongs to
+            'order_url' => ($owner && is_array($order)) ? $GLOBALS['storeURL'].'/index.php?_a=vieworder&cart_order_id='.rawurlencode($order['cart_order_id']) : '',
+        );
+        $GLOBALS['smarty']->assign('PAY', $pay);
+        if ($GLOBALS['smarty']->templateExists('templates/content.pay.php')) {
+            $content = $GLOBALS['smarty']->fetch('templates/content.pay.php');
+        } else {
+            $content = '<h2>'.$pay['title'].'</h2><p>'.$pay['message'].'</p>';
+        }
+        $GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
+    }
+
+    /**
+     * Give the pay page the order to show, as the order page shows it
+     *
+     * Prices are shown even where the store hides them from visitors who are not signed in:
+     * whoever holds the link has been sent these figures to pay.
+     *
+     * @param array $order The order's summary row
+     * @return string The order number as the store shows it to customers
+     */
+    private function _payOrderView($order)
+    {
+        $price = function ($value) {
+            return $GLOBALS['tax']->priceFormat($value, true, false, true);
+        };
+        $presentation  = Order::storedPresentation($order);
+        $tax_inclusive = $presentation['inclusive'];
+        $items = array();
+        if (($lines = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $order['cart_order_id']), array('id' => 'ASC'), false, false, false)) !== false) {
+            foreach ($lines as $item) {
+                $price_each = Order::displayLinePrice($item, $tax_inclusive, $presentation['lines']);
+                $item['price_total'] = $price($price_each * $item['quantity']);
+                $item['price']       = $price($price_each);
+                $item['options']     = Order::getInstance()->unSerializeOptions($item['product_options']);
+                $items[] = $item;
+            }
+        }
+        $GLOBALS['smarty']->assign('ITEMS', $items);
+
+        $taxes = array();
+        if (($rows = $GLOBALS['db']->select('CubeCart_order_tax', false, array('cart_order_id' => $order['cart_order_id']), false, false, false, false)) !== false) {
+            foreach ($rows as $vat) {
+                $taxes[] = array('name' => Order::displayTaxName($GLOBALS['tax']->fetchTaxDetails($vat['tax_id'])), 'value' => $price($vat['amount']), 'included' => $tax_inclusive);
+            }
+        } else {
+            $taxes[] = array('name' => $GLOBALS['language']->basket['total_tax'], 'value' => $price($order['total_tax']), 'included' => $tax_inclusive);
+        }
+        $GLOBALS['smarty']->assign('TAXES', $taxes);
+        $GLOBALS['smarty']->assign('TAX_INCLUSIVE', $tax_inclusive);
+        $GLOBALS['smarty']->assign('DISCOUNT', ((float)$order['discount'] > 0));
+
+        $oid_col = $GLOBALS['config']->get('config', 'oid_col');
+        $number  = ($GLOBALS['config']->get('config', 'oid_mode') == 'i' && !empty($oid_col) && !empty($order[$oid_col])) ? $order[$oid_col] : $order['cart_order_id'];
+
+        $order['state']       = getStateFormat($order['state']);
+        $order['country']     = getCountryFormat($order['country']);
+        $order['state_d']     = is_numeric($order['state_d']) ? getStateFormat($order['state_d']) : $order['state_d'];
+        $order['country_d']   = getCountryFormat($order['country_d']);
+        $order['show_credit'] = ((float)$order['credit_used'] > 0);
+        $order['subtotal']    = Order::displaySubtotal($order, $tax_inclusive);
+        foreach (array('discount', 'shipping', 'subtotal', 'total', 'total_tax', 'credit_used') as $field) {
+            $order[$field] = $price($order[$field]);
+        }
+        $order['order_status']         = $GLOBALS['language']->order_state['name_'.$order['status']];
+        $order['order_date_formatted'] = formatTime($order['order_date'], false, true);
+        // Nothing a template has no business with
+        unset($order['basket'], $order['pay_key'], $order['offline_capture'], $order['ip_address']);
+        $GLOBALS['smarty']->assign('SUM', $order);
+        return (string)$number;
+    }
+
+    /**
+     * Send the customer back to the pay page when the basket is an order being paid (#2858)
+     *
+     * Such an order has no basket to edit and no checkout to go through. Gateways that send a
+     * customer "back to the basket" after a cancelled payment end up here too.
+     */
+    private function _payInstead()
+    {
+        if ($GLOBALS['cart']->locked()) {
+            httpredir(!empty($GLOBALS['cart']->basket['pay_url']) ? $GLOBALS['cart']->basket['pay_url'] : 'index.php');
+        }
     }
 
     /**

@@ -928,6 +928,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
   	`credit_used` decimal(8,2) NOT NULL DEFAULT '0.00',
   	`credit_shift` tinyint NOT NULL DEFAULT '0',
 	`coupon_data` TEXT NULL DEFAULT NULL,
+	`pay_key` VARCHAR(32) NULL DEFAULT NULL,
 	`updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `cart_order_id` (`cart_order_id`),

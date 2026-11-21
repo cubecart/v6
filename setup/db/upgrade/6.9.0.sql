@@ -35,3 +35,5 @@ EXECUTE stmt; #EOQ
 DEALLOCATE PREPARE stmt; #EOQ
 -- #4738 - Which newsletter an email in the log was, so that an open can be counted against it
 ALTER TABLE `CubeCart_email_log` ADD COLUMN `newsletter_id` INT UNSIGNED NOT NULL DEFAULT 0 AFTER `seen_count`; #EOQ
+-- #2858 - The key in an order's payment link. It is empty until a link is first made for the order
+ALTER TABLE `CubeCart_order_summary` ADD COLUMN `pay_key` VARCHAR(32) NULL DEFAULT NULL AFTER `coupon_data`; #EOQ

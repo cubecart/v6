@@ -1416,6 +1416,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="macro_order_subtotal" introduced="5.0.0"><![CDATA[Order subtotal.]]></string>
     <string name="macro_order_total" introduced="5.0.0"><![CDATA[Total cost of order.]]></string>
     <string name="macro_payment_amount" introduced="5.0.0"><![CDATA[The amount paid.]]></string>
+    <string name="macro_pay_link" introduced="6.9.0"><![CDATA[The link the customer pays the order from.]]></string>
     <string name="macro_product_code" introduced="5.0.0"><![CDATA[Product code.]]></string>
     <string name="macro_product_name" introduced="5.0.0"><![CDATA[Product name.]]></string>
     <string name="macro_product_price" introduced="5.0.0"><![CDATA[Product price.]]></string>
@@ -1543,6 +1544,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_macro_order_dispatched" introduced="5.0.0"><![CDATA[Cart: Order Complete]]></string>
     <string name="title_macro_order_fraud" introduced="5.0.0"><![CDATA[Cart: Fraud Review]]></string>
     <string name="title_macro_order_payment" introduced="5.0.0"><![CDATA[Cart: Payment Received]]></string>
+    <string name="title_macro_payment_request" introduced="6.9.0"><![CDATA[Cart: Payment Request]]></string>
     <string name="title_macro_user_password" introduced="5.0.0"><![CDATA[User: Recover Password]]></string>
     <string name="title_macro_user_newsletter" introduced="6.1.0"><![CDATA[User: Verify Newsletter Subscription]]></string>
     <string name="title_macros" introduced="5.0.0"><![CDATA[Available Macros]]></string>
@@ -1609,6 +1611,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="label_order_subtotal" introduced="6.9.0"><![CDATA[Subtotal]]></string>
     <string name="label_order_total" introduced="6.9.0"><![CDATA[Order Total]]></string>
     <string name="label_payment_amount" introduced="6.9.0"><![CDATA[Amount Paid]]></string>
+    <string name="label_pay_link" introduced="6.9.0"><![CDATA[Payment Link]]></string>
     <string name="label_phone" introduced="6.9.0"><![CDATA[Billing Phone]]></string>
     <string name="label_postcode" introduced="6.9.0"><![CDATA[Billing Postcode]]></string>
     <string name="label_postcode_d" introduced="6.9.0"><![CDATA[Shipping Postcode]]></string>
@@ -2493,6 +2496,30 @@ This email is sent from the store's master email address but it is possible to r
     <string name="option_print" introduced="5.0.0"><![CDATA[print an invoice]]></string>
     <string name="option_status_no_change" introduced="5.0.0"><![CDATA[Don't change order status]]></string>
     <string name="order_number" introduced="5.0.0"><![CDATA[Order Number]]></string>
+    <string name="pay_title" introduced="6.9.0"><![CDATA[Pay for Your Order]]></string>
+    <string name="pay_invalid_title" introduced="6.9.0"><![CDATA[This payment link is not valid]]></string>
+    <string name="pay_invalid" introduced="6.9.0"><![CDATA[Please use the link in the email we sent you, or contact us and we will send you a new one.]]></string>
+    <string name="pay_unavailable_title" introduced="6.9.0"><![CDATA[This order cannot be paid online]]></string>
+    <string name="pay_paid" introduced="6.9.0"><![CDATA[This order has already been paid. Thank you.]]></string>
+    <string name="pay_cancelled" introduced="6.9.0"><![CDATA[This order has been cancelled, so it can no longer be paid. Please contact us if you still want it.]]></string>
+    <string name="pay_declined" introduced="6.9.0"><![CDATA[A payment for this order did not go through. Please contact us and we will open it for payment again.]]></string>
+    <string name="pay_nothing" introduced="6.9.0"><![CDATA[There is nothing to pay on this order.]]></string>
+    <string name="pay_unknown" introduced="6.9.0"><![CDATA[Please contact us about this order.]]></string>
+    <string name="pay_attempted" introduced="6.9.0"><![CDATA[A payment for this order was started on %1$s. Please only pay again if it did not go through.]]></string>
+    <string name="pay_link_title" introduced="6.9.0"><![CDATA[Payment Link]]></string>
+    <string name="pay_link_explain" introduced="6.9.0"><![CDATA[The customer pays this order, exactly as it stands, from this link. They do not need an account or to sign in.]]></string>
+    <string name="pay_link_email" introduced="6.9.0"><![CDATA[Email to Customer]]></string>
+    <string name="pay_link_new" introduced="6.9.0"><![CDATA[New Link]]></string>
+    <string name="pay_link_new_confirm" introduced="6.9.0"><![CDATA[Make a new payment link? The link given out before will stop working.]]></string>
+    <string name="pay_link_emailed" introduced="6.9.0"><![CDATA[A payment request has been emailed to %1$s.]]></string>
+    <string name="pay_link_email_failed" introduced="6.9.0"><![CDATA[The payment request could not be emailed to %1$s.]]></string>
+    <string name="pay_link_no_email" introduced="6.9.0"><![CDATA[This order has no email address to send a payment request to.]]></string>
+    <string name="pay_link_renewed" introduced="6.9.0"><![CDATA[A new payment link has been made. The one given out before no longer works.]]></string>
+    <string name="pay_link_note" introduced="6.9.0"><![CDATA[Payment request emailed to %1$s.]]></string>
+    <string name="pay_link_cancelled" introduced="6.9.0"><![CDATA[This order is cancelled. Set it back to Pending to take payment for it.]]></string>
+    <string name="pay_link_declined" introduced="6.9.0"><![CDATA[A payment for this order was declined. Set it back to Pending to let the customer try again.]]></string>
+    <string name="pay_link_nothing" introduced="6.9.0"><![CDATA[There is nothing to pay on this order.]]></string>
+    <string name="pay_link_expires" introduced="6.9.0"><![CDATA[If it has not been paid by %1$s, this order will be cancelled automatically.]]></string>
     <string name="reset_download_link" introduced="5.0.0"><![CDATA[Reset Download Link]]></string>
     <string name="search" introduced="5.0.0"><![CDATA[Order Search]]></string>
     <string name="shipping_date" introduced="5.0.0"><![CDATA[Dispatch Date]]></string>
