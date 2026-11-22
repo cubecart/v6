@@ -340,7 +340,8 @@ class HookLoader
                     foreach ($xml->hooks->hook as $hook) {
                         // Check if the hook already exists
                         array_push($allowed_hooks, (string)$hook->attributes()->trigger);
-                        $check = $GLOBALS['db']->select('CubeCart_hooks', false, array('plugin' => $plugin, 'trigger' => (string)$hook->attributes()->trigger));
+                        // Asked of the database itself: a cached "not there" would add the same hook again
+                        $check = $GLOBALS['db']->select('CubeCart_hooks', false, array('plugin' => $plugin, 'trigger' => (string)$hook->attributes()->trigger), false, false, false, false);
 
                         $record = array(
                             'plugin' => $plugin,
