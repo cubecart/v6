@@ -175,7 +175,8 @@
                         product page instead. The tile's image and title already link
                         there, so nothing is unreachable when this is off. *}
                      {if !isset($SKIN_SETTINGS.show_listing_add_to_basket) || $SKIN_SETTINGS.show_listing_add_to_basket}
-                     <div class="flex gap-2">
+                     {* Wraps so a narrow tile puts the button under the quantity, not over the next tile. *}
+                     <div class="flex flex-wrap gap-2">
                         <label class="cc-sr-only" for="qty-cat-{$product.product_id}">{$LANG.common.quantity}</label>
                         <input type="number" id="qty-cat-{$product.product_id}" name="quantity"
                                value="{$product.minimum_quantity|default:'1'}"
