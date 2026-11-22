@@ -347,7 +347,7 @@ class Config
         if (!isset($GLOBALS['db'])) {
             return false;
         }
-        $result = $GLOBALS['db']->select('CubeCart_config', array('config_key', 'config_value'), array('name' => $name));
+        $result = $this->_selectRows($name);
         if ($result === false) {
             return false;
         }
@@ -356,6 +356,34 @@ class Config
             $array_out[$row['config_key']] = $this->_decodeValue($row['config_value']);
         }
         return $array_out;
+    }
+
+    /**
+     * The stored rows of a config section. Read and forgotten through here, so that both use the same query
+     *
+     * @param string $name
+     * @param bool $cache
+     * @return array|false
+     */
+    private function _selectRows($name, $cache = true)
+    {
+        return $GLOBALS['db']->select('CubeCart_config', array('config_key', 'config_value'), array('name' => $name), false, false, false, $cache);
+    }
+
+    /**
+     * The storefront reads a config section through the query cache, which a write does not clear.
+     * Its copy is dropped here, so that the next request reads what was just written
+     *
+     * @param string $name
+     */
+    private function _forgetCached($name)
+    {
+        if (!isset($GLOBALS['db'], $GLOBALS['cache']) || !is_object($GLOBALS['cache'])) {
+            return;
+        }
+        // A cached answer is filed under the text of its query
+        $this->_selectRows($name, false);
+        $GLOBALS['cache']->delete($GLOBALS['db']->getQuery());
     }
 
     /**
@@ -435,6 +463,7 @@ class Config
             // Upsert each key to avoid race conditions
             // The old DELETE + INSERT pattern was not atomic — concurrent
             // requests could read an empty table mid-write and lose config
+            $written = false;
             foreach (array_keys($keys) as $key) {
                 //Skip data that was merged in
                 if (isset($this->_temp[$config]) && array_key_exists($key, $this->_temp[$config])) {
@@ -448,6 +477,10 @@ class Config
                     'config_key'   => $key,
                     'config_value' => $this->_encodeValue($this->_config[$config][$key])
                 ), array('config_value'));
+                $written = true;
+            }
+            if ($written) {
+                $this->_forgetCached($config);
             }
         }
         $this->_dirty = array();
