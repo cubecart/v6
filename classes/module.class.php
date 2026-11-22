@@ -176,6 +176,10 @@ class Module
 			$updated = true;
 		}
 
+		// The storefront keeps its lists of modules in the cache, so a change to the row they are built from clears it
+		$listed = array('module' => $this->_info['type'], 'folder' => $this->_folder_name);
+		$before = $GLOBALS['db']->select('CubeCart_modules', array('status', 'position', 'default'), $listed, false, 1, false, false);
+
 		// Handle default flag: unset all others first
 		if (!empty($settings['default'])) {
 			$GLOBALS['db']->update('CubeCart_modules', array('default' => 0), array('module' => $this->_info['type']));
@@ -191,9 +195,12 @@ class Module
 		if (isset($settings['default'])) {
 			$data['default'] = $settings['default'];
 		}
-		$GLOBALS['db']->delete('CubeCart_modules', array('module' => $this->_info['type'], 'folder' => $this->_folder_name));
+		$GLOBALS['db']->delete('CubeCart_modules', $listed);
 		if ($GLOBALS['db']->insert('CubeCart_modules', $data)) {
 			$updated = true;
+		}
+		if ($GLOBALS['db']->select('CubeCart_modules', array('status', 'position', 'default'), $listed, false, 1, false, false) != $before) {
+			$GLOBALS['cache']->clear();
 		}
 
 		return $updated;

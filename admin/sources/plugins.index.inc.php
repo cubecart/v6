@@ -269,6 +269,8 @@ if ($is_ajax && $_POST['ajax_action'] === 'toggle_module') {
     // The compiled hook map is built from module status and is cached, so it has
     // to be rebuilt here or the extension's hooks keep firing after it is switched off.
     $GLOBALS['hooks']->clearCache();
+    // So are the storefront's lists of modules, such as the payment methods at checkout.
+    $GLOBALS['cache']->clear();
 
     _ajax_respond(array('success' => true, 'enabled' => $enabled));
 }
