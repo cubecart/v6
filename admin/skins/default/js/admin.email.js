@@ -180,7 +180,7 @@
             return;
         }
         if ($holder.length && window.ace) {
-            var dark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+            var dark = window.ccTheme ? window.ccTheme.query : (window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null);
             var editor = ace.edit('template_ace');
             editor.session.setUseWrapMode(true);
             editor.setOptions({

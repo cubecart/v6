@@ -735,6 +735,48 @@ hr {
 #help_menu > ul > li:last-child {
     border-right: 1px solid var(--border) !important
 }
+/* The choice of theme: light, dark, or whichever the device is in (js/admin.theme.js) */
+#breadcrumbs ul.quick_links > li#theme_switch {
+    gap: 2px;
+    padding: 0 8px
+}
+#theme_switch .theme-switch__label {
+    display: none
+}
+#theme_switch button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 20px;
+    padding: 0;
+    color: var(--text-light);
+    font-size: 12px;
+    line-height: 1;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    cursor: pointer
+}
+#theme_switch button i {
+    color: inherit
+}
+#theme_switch button:hover {
+    background: var(--rowHover)
+}
+#theme_switch button[aria-pressed="true"] {
+    color: var(--primary-accent);
+    background: var(--panel-muted);
+    border-color: var(--primary-accent)
+}
+/* !important: the dark theme gives every icon its colour that way */
+#theme_switch button[aria-pressed="true"] i {
+    color: var(--primary-accent) !important
+}
+#theme_switch button:focus-visible {
+    outline: 2px solid var(--input-border-focus);
+    outline-offset: 1px
+}
 #page_content {
     padding: 0 10px 10px;
     min-height: 400px;

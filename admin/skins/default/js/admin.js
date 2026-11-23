@@ -2189,7 +2189,7 @@ window.ccCode = {
     }
 };
 $(function() {
-    var dark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+    var dark = window.ccTheme ? window.ccTheme.query : (window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null);
     var editors = [];
     var theme = function() {
         return (dark && dark.matches) ? 'ace/theme/tomorrow_night' : 'ace/theme/github';

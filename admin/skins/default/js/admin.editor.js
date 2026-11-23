@@ -639,7 +639,7 @@
     };
 
     Field.prototype.start = function () {
-        var self = this, textarea = this.textarea, dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var self = this, textarea = this.textarea, dark = window.ccTheme ? window.ccTheme.dark() : !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
         var height = parseInt(textarea.getAttribute('data-cc-height'), 10) || 380;
         var options = {
             target: textarea,

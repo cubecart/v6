@@ -386,7 +386,7 @@
     }
 
     function startEditor(done) {
-        var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var dark = window.ccTheme ? window.ccTheme.dark() : !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
         tinymce.init({
             target: document.getElementById('email_visual'),
             license_key: 'gpl',
@@ -593,7 +593,7 @@
         if (ace_editor || !window.ace) {
             return;
         }
-        var dark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null, $source = $('#content_html');
+        var dark = window.ccTheme ? window.ccTheme.query : (window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null), $source = $('#content_html');
         ace_editor = ace.edit('email_code_ace');
         ace_editor.session.setUseWrapMode(true);
         ace_editor.setOptions({

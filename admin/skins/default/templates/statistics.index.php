@@ -29,9 +29,16 @@ window.whenChartsReady = function(fn) {
     }
 };
 
+// A chart is drawn in the page's colours: each one drawn is drawn again when they change
+window.chartsDrawn = window.chartsDrawn || {};
+document.addEventListener('cc:theme', function() {
+    Object.keys(window.chartsDrawn).forEach(function(id) { window.drawChart(id, window.chartsDrawn[id]); });
+});
+
 window.drawChart = function(id, chart_data) {
     var container = document.getElementById('chart' + id);
     if (container == null) return false;
+    window.chartsDrawn[id] = chart_data;
     // gstatic loader's setOnLoadCallback can fire before admin.js shows the
     // active tab (it removes display:none on doc-ready). If we draw while the
     // container has no layout, Google Charts measures 0 width and falls back
@@ -71,7 +78,7 @@ window.drawChart = function(id, chart_data) {
     yMax = ceilnormyMax * Math.pow(10, floorexp);
 
     if (yMax < 20 || isNaN(yMax)) { yMax = 20; }
-    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = window.ccTheme ? window.ccTheme.dark() : window.matchMedia('(prefers-color-scheme: dark)').matches;
     const theme = isDark ? {
         backgroundColor: '#171b1f',
         chartAreaBg: '#171b1f',

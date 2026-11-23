@@ -17,6 +17,13 @@
             <li><a href="https://community.cubecart.com" target="_blank"><i class="fa fa-users" aria-hidden="true"></i>{$LANG.common.community}</a></li>
          </ul>
       </li>
+      {* Light, dark, or whichever the device is in. js/admin.theme.js acts on a click and marks the one chosen *}
+      <li id="theme_switch" role="group" aria-label="{$LANG.common.theme}">
+         <span class="theme-switch__label">{$LANG.common.theme}</span>
+         <button type="button" data-cc-theme="light" aria-pressed="false" title="{$LANG.common.light}" aria-label="{$LANG.common.light}"><i class="fa fa-sun-o" aria-hidden="true"></i></button>
+         <button type="button" data-cc-theme="dark" aria-pressed="false" title="{$LANG.common.dark}" aria-label="{$LANG.common.dark}"><i class="fa fa-moon-o" aria-hidden="true"></i></button>
+         <button type="button" data-cc-theme="auto" aria-pressed="false" title="{$LANG.common.auto}" aria-label="{$LANG.common.auto}"><i class="fa fa-adjust" aria-hidden="true"></i></button>
+      </li>
       </ul>
       <ul class="location">
       <li><i class="fa fa-home"></i> <a href="?">{$LANG.dashboard.title_dashboard}</a></li>

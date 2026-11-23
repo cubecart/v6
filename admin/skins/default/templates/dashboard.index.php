@@ -53,7 +53,7 @@
                var view = new google.visualization.DataView(masterData);
                view.setColumns(cols);
 
-               var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+               var isDark = window.ccTheme ? window.ccTheme.dark() : window.matchMedia('(prefers-color-scheme: dark)').matches;
                var theme = isDark
                   ? { backgroundColor: '#171b1f', chartAreaBg: '#171b1f', text: '#e6e6e6', gridline: '#2c343b' }
                   : { backgroundColor: '#ffffff', chartAreaBg: '#ffffff', text: '#555555', gridline: '#ddd' };
@@ -106,6 +106,8 @@
                      if (!isNaN(c)) toggleYear(c, card);
                   });
                });
+               // The chart is drawn in the page's colours: again when they change
+               document.addEventListener('cc:theme', drawChart);
                drawChart();
             }
 

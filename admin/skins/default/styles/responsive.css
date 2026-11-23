@@ -206,6 +206,26 @@ fieldset {
     #navigation ul.quick_links li#help_menu > a {
         font-weight: 700
     }
+    /* The theme switch: its name, then its three buttons at a size for a finger */
+    #navigation ul.quick_links > li#theme_switch {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        border-top: 1px solid var(--border) !important
+    }
+    #navigation #theme_switch .theme-switch__label {
+        display: block;
+        margin-right: auto;
+        font-size: 14px;
+        color: var(--text-light)
+    }
+    #navigation #theme_switch button {
+        width: 46px;
+        height: 38px;
+        font-size: 16px;
+        border-color: var(--border)
+    }
     #navigation ul.quick_links li#help_menu ul {
         display: block !important;
         position: static;
