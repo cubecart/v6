@@ -317,7 +317,7 @@
    </table>
    <form action="?_g=orders&amp;redirect=dashboard" method="post" enctype="multipart/form-data">
    <div>
-      <table>
+      <table class="cc-rows">
          <thead>
             <tr>
                <td>&nbsp;</td>
@@ -333,25 +333,25 @@
          <tbody>
             {foreach from=$ORDERS item=order}
             <tr>
-               <td style="text-align:center"><input type="checkbox" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"></td>
-               <td><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard" title="{$LANG.common.edit}">{$order.{$CONFIG.oid_col}|default:$order.cart_order_id}</a>
+               <td style="text-align:center" class="r-check"><input type="checkbox" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"></td>
+               <td class="r-title"><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard" title="{$LANG.common.edit}">{$order.{$CONFIG.oid_col}|default:$order.cart_order_id}</a>
                {if !empty($order.customer_comments)}<a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard"><i class="fa fa fa-comment" title="{$LANG.email.customer_comments}: {$order.customer_comments|strip_tags}" aria-hidden="true"></i></a>{/if}</td>
-               <td style="text-align:center">
+               <td style="text-align:center" class="r-meta r-icon">
                   {append "cust_type" "registered" index="1"}
                   {append "cust_type" "unregistered" index="2"}
                   <i class="fa fa-user {$cust_type[$order.type]}" title="{$LANG.customer[$order.cust_type[$order.type]]}"></i>
                </td>
-               <td>
+               <td class="r-meta">
                   <a href="?_g=customers&action=edit&customer_id={$order.customer_id}">{if empty($order.first_name) && empty($order.last_name)}
                   {$order.name}
                   {else}
                   <span class="capitalize">{$order.first_name} {$order.last_name}</span>
                   {/if}</a>
                </td>
-               <td class="{$order.status_class}">{$order.status}</td>
-               <td>{$order.date}</td>
-               <td>{$order.total}</td>
-               <td style="text-align:right">
+               <td class="{$order.status_class} r-status">{$order.status}</td>
+               <td class="r-meta">{$order.date}</td>
+               <td class="r-side">{$order.total}</td>
+               <td style="text-align:right" class="r-actions">
                   {if isset($order.notes)}
                   <a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard#order_notes" title="{foreach $order.notes as $note}{$note.time} {$note.content}{"\r\n"}{/foreach}"><i class="fa fa-sticky-note" title="{$LANG.common.notes}" aria-hidden="true"></i></a>
                   {/if}
@@ -469,7 +469,7 @@
          </td>
       </tr>
    </table>
-   <table width="70%">
+   <table width="70%" class="cc-rows">
       <thead>
          <tr>
             <th>{$THEAD_STOCK.name}</th>
@@ -481,13 +481,13 @@
       <tbody>
          {foreach from=$STOCK item=warn}
          <tr>
-            <td><a href="?_g=products&action=edit&product_id={$warn.product_id}{if $warn.M_use_stock==1}#Options{/if}">{$warn.name}</a></td>
-            <td>{$warn.product_code}</td>
-            <td style="text-align:center"  width="65" nowrap="nowrap">{if $warn.M_use_stock==1}{$warn.M_stock_level}{else}{$warn.I_stock_level}{/if}{if $warn.cached_name}
+            <td class="r-title"><a href="?_g=products&action=edit&product_id={$warn.product_id}{if $warn.M_use_stock==1}#Options{/if}">{$warn.name}</a></td>
+            <td class="r-meta">{$warn.product_code}</td>
+            <td style="text-align:center"  width="65" nowrap="nowrap" class="r-meta" data-label="{$LANG.catalogue.title_stock}">{if $warn.M_use_stock==1}{$warn.M_stock_level}{else}{$warn.I_stock_level}{/if}{if $warn.cached_name}
                - {$warn.cached_name}
                {/if}
             </td>
-            <td width="30">
+            <td width="30" class="r-actions">
             <a href="?_g=products&action=edit&product_id={$warn.product_id}{if $warn.M_use_stock==1}#Options{/if}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a><a href="?_g=products&delete={$warn.product_id}&dashboard=1" class="delete" title="{sprintf($LANG.notification.confirm_delete_product,$warn.name)}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
             </td>
          </tr>

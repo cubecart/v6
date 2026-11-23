@@ -31,7 +31,7 @@
             </td>
          </tr>
       </table>
-      <table width="100%">
+      <table width="100%" class="cc-rows">
          <thead>
             <tr>
                <td>&nbsp;</td>
@@ -48,31 +48,31 @@
          <tbody>
             {foreach from=$ORDER_LIST item=order}
             <tr>
-               <td style="text-align:center"><input type="checkbox" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"></td>
-               <td>
+               <td style="text-align:center" class="r-check"><input type="checkbox" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"></td>
+               <td class="r-title">
                   <a href="{$order.link_edit}" title="{$LANG.common.edit}">{$order.{$CONFIG.oid_col}|default:$order.cart_order_id}</a>
                   {if $order.has_notes}<a href="{$order.link_edit}#order_notes"><i class="fa fa-sticky-note" title="{$LANG.common.notes}" aria-hidden="true"></i></a>{/if} {if !empty($order.customer_comments)}<a href="{$order.link_edit}"><i class="fa fa fa-comment" title="{$LANG.email.customer_comments}: {$order.customer_comments|strip_tags}" aria-hidden="true"></i></a>{/if}
                   {if $order.dashboard}
                   <a href="?#orders"><i class="fa fa-thumb-tack" aria-hidden="true" title="{$LANG.orders.pinned}"></i></a>
                   {/if}
                </td>
-               <td style="text-align:center">
+               <td style="text-align:center" class="r-meta r-icon">
                   {append "cust_type" "registered" index="1"}
                   {append "cust_type" "unregistered" index="2"}
                   <i class="fa fa-user {$cust_type[$order.type]}" title="{$LANG.customer[$order.cust_type[$order.type]]}"></i>
                </td>
-               <td>
+               <td class="r-meta">
                {if $order.customer_id}
                   <a href="{$order.link_customer}" title="{$order.name}">{$order.name}</a>
                {else}
                   {$order.name}
                {/if}
                </td>
-               <td class="{$order.status_class}">{$order.status}</td>
-               <td>{$order.date}</td>
-               <td>{$order.updated}</td>
-               <td style="text-align:right">{$order.prod_total}</td>
-               <td style="text-align:center">
+               <td class="{$order.status_class} r-status">{$order.status}</td>
+               <td class="r-meta">{$order.date}</td>
+               <td class="r-hide">{$order.updated}</td>
+               <td style="text-align:right" class="r-side">{$order.prod_total}</td>
+               <td style="text-align:center" class="r-actions">
                   <a href="{$order.link_print}" class="print" target="_blank" title="{$LANG.common.print}"><i class="fa fa-print" title="{$LANG.common.print}"></i></a>
                   <a href="{$order.link_edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
                   <a href="{$order.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
@@ -158,7 +158,7 @@
    {/if}
    {if isset($DISPLAY_FORM)}
    <div>
-      <div id="order_summary" class="tab_content" style="width: 700px;">
+      <div id="order_summary" class="tab_content" style="max-width: 700px;">
          <h3>{$LANG.orders.title_order_summary}</h3>
          <p><a href="?_g=orders&node=index&print[]={$SUMMARY.cart_order_id}" class="print" target="_blank"><i class="fa fa-print" title="{$LANG.common.print}"></i> {$LANG.common.print}</a></p>
          {if $CUSTOMER_NOTES}
@@ -244,7 +244,7 @@
                
                {if !empty($OVERVIEW_SUMMARY.currency)}<br><strong>{$LANG.catalogue.guide_currency}:</strong> {$OVERVIEW_SUMMARY.currency}{/if}
             </p>
-            <table id="items" style="width: 700px;">
+            <table id="items" style="width: 100%;">
                <thead>
                   <tr>
                      <th>{$LANG.common.quantity}</th>

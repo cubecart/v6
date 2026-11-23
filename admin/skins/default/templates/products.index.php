@@ -63,7 +63,7 @@
       <div style="text-align: right"><a href="{$SORT_CHARS_RESET_LINK}">{$LANG.common.any}</a></div>
       {/if}
       {if isset($PRODUCTS)}
-      <table width="100%">
+      <table width="100%" class="cc-rows">
          <thead>
             <tr>
                <th nowrap="nowrap">&nbsp;</th>
@@ -83,46 +83,46 @@
          <tbody>
             {foreach from=$PRODUCTS item=product}
             <tr>
-               <td style="text-align:center" width="10"><input type="checkbox" name="delete[]" id="{$product.product_id}" value="{$product.product_id}" class="table"></td>
-               <td><a href="{$product.link_edit}">{$product.name}</a>
+               <td style="text-align:center" width="10" class="r-check"><input type="checkbox" name="delete[]" id="{$product.product_id}" value="{$product.product_id}" class="table"></td>
+               <td class="r-title"><a href="{$product.link_edit}">{$product.name}</a>
                   {if isset($product.category)}
                   <br>
                   <span class="light-category">{$product.category}</span>
                   {/if}
                </td>
-               <td style="text-align:center">
+               <td style="text-align:center" class="r-thumb">
                   {if !empty($product.image_path_tiny)}
                   <a href="{$product.image_path_large}" class="colorbox" title="{$product.name}" target="_blank"><img src="{$product.image_path_tiny}" style="max-width: 30px; max-height: 30px" alt="{$product.name}"></a>
                   {elseif !empty($product.image_path_large)}
                   <a href="{$product.image_path_large}" class="colorbox" title="{$product.name}" target="_blank"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/image.png" alt="{$product.name}"></a>
                   {/if}
                </td>
-               <td style="text-align:center">{$product.product_id}</td>
-               <td style="text-align:center">
+               <td style="text-align:center" class="r-hide">{$product.product_id}</td>
+               <td style="text-align:center" class="r-hide">
                   {if $product.digital}
                   <i class="fa fa-download" title="{$product.type_alt}"></i>
                   {else}
                   <i class="fa fa-archive" title="{$product.type_alt}"></i>
                   {/if}
                </td>
-               <td>{include file='templates/element.click_to_copy.php' value=$product.product_code}{$product.product_code}</td>
-               <td nowrap="nowrap">{$product.price_display}</td>
-               <td style="text-align:center">{$product.stock_level_display}</td>
-               <td>
+               <td class="r-meta">{include file='templates/element.click_to_copy.php' value=$product.product_code}{$product.product_code}</td>
+               <td nowrap="nowrap" class="r-side">{$product.price_display}</td>
+               <td style="text-align:center" class="r-meta" data-label="{$LANG.catalogue.title_stock}">{$product.stock_level_display}</td>
+               <td class="r-hide">
                   {if $product.updated == '0000-00-00 00:00:00'}
                   {$LANG.common.unknown}
                   {else}
                   {formatTime(strtotime($product.updated))}
                   {/if}
                </td>
-               <td style="text-align:center" class="language_list">
+               <td style="text-align:center" class="language_list r-hide">
                   {foreach from=$product.translations item=translation}
                   <a href="{$translation.link}"><img src="language/flags/{$translation.language}.png" alt="{$translation.language}" class="flag"></a>
                   {/foreach}
                   {if !$product.fully_translated}<a href="{$product.translate}" title="{$LANG.translate.trans_add}"><i class="fa fa-plus-circle" title="{$LANG.translate.trans_add}"></i></a>{/if}
                </td>
-               <td style="text-align:center"><input type="hidden" name="status[{$product.product_id}]" id="status_{$product.product_id}" value="{$product.status}" class="toggle"></td>
-               <td style="text-align:center" nowrap="nowrap">
+               <td style="text-align:center" class="r-toggle"><input type="hidden" name="status[{$product.product_id}]" id="status_{$product.product_id}" value="{$product.status}" class="toggle"></td>
+               <td style="text-align:center" nowrap="nowrap" class="r-actions">
                   {if isset($product.link_clone)}
                   <a href="{$product.link_clone}" title="{$LANG.common.clone}" alt="{$LANG.common.clone}" target="_self"><i class="fa fa-files-o" title="{$LANG.common.clone}"></i></a>
                   {/if}

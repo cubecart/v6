@@ -2254,3 +2254,153 @@ $(function() {
         }, 0);
     });
 });
+
+/* Narrow and touch screens (#4765). The layout is in styles/responsive.css; this is what CSS
+   cannot do. A wide screen is left as it was, with one exception: a table too wide for its
+   column now scrolls in a box of its own, where it used to push the whole page sideways. */
+(function ($) {
+    var narrow = window.matchMedia ? window.matchMedia('(max-width: 900px)') : null;
+    var isNarrow = function () { return !!(narrow && narrow.matches); };
+    var $body = $(document.body);
+
+    /* The sidebar as a slide-in menu */
+    function searchPanel(open) {
+        var $panel = $('#sidebar_contain');
+        if ($panel.length && !open && parseInt($panel.css('left'), 10) > -340) {
+            $panel.stop(true).animate({ left: '-340px' });
+        }
+    }
+    function menu(open) {
+        $body.toggleClass('nav-open', !!open);
+        $('#nav_toggle').attr('aria-expanded', open ? 'true' : 'false');
+        if (!open) searchPanel(false);
+    }
+    $(document).on('click', '#nav_toggle', function () {
+        menu(!$body.hasClass('nav-open'));
+    }).on('click', '#nav_overlay', function () {
+        menu(false);
+    }).on('keyup', function (e) {
+        if (e.key === 'Escape' && $body.hasClass('nav-open')) menu(false);
+    }).on('click', function (e) {
+        // The search panel shuts when the mouse leaves it. A finger never leaves, so a tap elsewhere shuts it
+        if (isNarrow() && !$(e.target).closest('#sidebar_contain, #search-placeholder, .jqac-menu').length) searchPanel(false);
+    });
+
+    /* The quick links (store status, help) sit in the breadcrumb bar on a wide screen and at the
+       foot of the menu on a narrow one, where the bar has no room for them */
+    function placeQuickLinks() {
+        var $links = $('ul.quick_links').first(), $bar = $('#breadcrumbs .inner');
+        if (!$links.length || !$bar.length) return;
+        if (isNarrow()) {
+            if (!$links.parent().is('#navigation')) $links.appendTo('#navigation');
+        } else if (!$links.parent().is($bar)) {
+            $links.prependTo($bar);
+        }
+    }
+
+    /* Tabs are one strip on a narrow screen: the selected one is kept in view */
+    function showSelectedTab() {
+        var strip = document.getElementById('tab_control');
+        var tab = strip ? strip.querySelector('.tab-selected') : null;
+        if (!tab || !isNarrow()) return;
+        strip.scrollLeft = Math.max(0, tab.offsetLeft - (strip.clientWidth - tab.offsetWidth) / 2);
+    }
+
+    /* A table wider than the column it is in scrolls sideways in a box of its own */
+    function fitTables() {
+        $('#page_content table').each(function () {
+            var box = this.parentNode;
+            if (!box || !this.getClientRects().length || $(box).hasClass('cc-scroll-x')) return;
+            if (this.offsetWidth > box.clientWidth + 1) $(this).wrap('<div class="cc-scroll-x"></div>');
+        });
+    }
+
+    var settle;
+    function arrange() {
+        placeQuickLinks();
+        fitTables();
+        showSelectedTab();
+    }
+    $(arrange);
+    $(window).on('load', arrange).on('resize orientationchange', function () {
+        window.clearTimeout(settle);
+        settle = window.setTimeout(function () {
+            if (!isNarrow()) menu(false);
+            arrange();
+        }, 120);
+    });
+    // A tab that was not showing has no size until it is opened. Bound to the tabs themselves:
+    // their own handler stops the click before it reaches the document
+    $(function () {
+        $('#tab_control .tab').on('click', function () {
+            window.setTimeout(function () {
+                fitTables();
+                showSelectedTab();
+            }, 30);
+        });
+        // Whatever else changes the size of the page (a section opened, rows added)
+        var content = document.getElementById('page_content');
+        if (content && window.ResizeObserver) {
+            var due = 0;
+            new ResizeObserver(function () {
+                window.clearTimeout(due);
+                due = window.setTimeout(fitTables, 60);
+            }).observe(content);
+        }
+    });
+
+    /* Rows are put in order by dragging, and jQuery UI's sortable follows a mouse. A finger is
+       passed on to it as one: at once on a row's handle, after a short hold on a whole tile */
+    var drag = null;
+    function pass(type, touch, target) {
+        target.dispatchEvent(new MouseEvent(type, {
+            bubbles: true, cancelable: true, view: window, button: 0, buttons: type === 'mouseup' ? 0 : 1,
+            clientX: touch.clientX, clientY: touch.clientY, screenX: touch.screenX, screenY: touch.screenY
+        }));
+    }
+    function pickUp() {
+        if (!drag || drag.on) return;
+        drag.on = true;
+        pass('mousedown', drag.start, drag.target);
+    }
+    if (window.MouseEvent && document.addEventListener) {
+        document.addEventListener('touchstart', function (e) {
+            if (e.touches.length !== 1 || !e.target.closest) return;
+            var handle = e.target.closest('.reorder-list a.handle');
+            var tile = handle ? null : e.target.closest('.ui-sortable > li');
+            if ((!handle && !tile) || e.target.closest('a:not(.handle), button, input, select')) return;
+            drag = { on: false, start: e.touches[0], target: e.target, timer: 0 };
+            if (handle) {
+                pickUp();
+                e.preventDefault();
+            } else {
+                drag.timer = window.setTimeout(pickUp, 350);
+            }
+        }, { passive: false });
+        document.addEventListener('touchmove', function (e) {
+            if (!drag) return;
+            var t = e.touches[0];
+            if (!drag.on) {
+                // The finger moved before the hold was up: it is scrolling the page
+                if (Math.abs(t.clientX - drag.start.clientX) + Math.abs(t.clientY - drag.start.clientY) > 10) {
+                    window.clearTimeout(drag.timer);
+                    drag = null;
+                }
+                return;
+            }
+            e.preventDefault();
+            pass('mousemove', t, document);
+        }, { passive: false });
+        var drop = function (e) {
+            if (!drag) return;
+            window.clearTimeout(drag.timer);
+            if (drag.on) {
+                pass('mouseup', e.changedTouches[0], document);
+                e.preventDefault();
+            }
+            drag = null;
+        };
+        document.addEventListener('touchend', drop, { passive: false });
+        document.addEventListener('touchcancel', drop, { passive: false });
+    }
+})(jQuery);

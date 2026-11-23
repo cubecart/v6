@@ -13,7 +13,7 @@
   {if isset($DISPLAY_DOCUMENT_LIST)}
   <div id="overview" class="tab_content">
 	<h3>{$LANG.documents.title_documents}</h3>
-	<table>
+	<table class="cc-rows">
 	  <thead>
 		<tr>
 		  <td>{$LANG.common.arrange}</td>
@@ -32,15 +32,15 @@
 	  {if isset($DOCUMENTS)}
 	  {foreach from=$DOCUMENTS item=document}
 		<tr>
-		  <td style="text-align:center"><a href="#" class="handle"><i class="fa fa-sort" title="{$LANG.ui.drag_reorder}"></i></a></td>
-		  <td style="text-align:center">
+		  <td style="text-align:center" class="r-check"><a href="#" class="handle"><i class="fa fa-sort" title="{$LANG.ui.drag_reorder}"></i></a></td>
+		  <td style="text-align:center" class="r-toggle">
 			<input type="hidden" name="order[]" value="{$document.doc_id}">
 			<input type="hidden" id="status-{$document.doc_id}" name="status[{$document.doc_id}]" value="{$document.doc_status}" class="toggle">
 		  </td>
-		  <td style="text-align:center">{$document.doc_id}</td>
-		  <td style="text-align:center"><img src="{$document.flag}"></td>
-		  <td><a href="{$document.link.edit}"{if $document.hide_title==1} class="line-through"{/if}>{$document.doc_name}</a></td>
-		  <td style="text-align:center" nowrap="nowrap">
+		  <td style="text-align:center" class="r-hide">{$document.doc_id}</td>
+		  <td style="text-align:center" class="r-hide"><img src="{$document.flag}"></td>
+		  <td class="r-title"><a href="{$document.link.edit}"{if $document.hide_title==1} class="line-through"{/if}>{$document.doc_name}</a></td>
+		  <td style="text-align:center" nowrap="nowrap" class="r-hide">
 			{if isset($document.translations)}
 			{foreach from=$document.translations item=translation}
 			<a href="{$translation.link.edit}" class="language_list"><img src="language/flags/{$translation.doc_lang}.png" alt="{$translation.doc_lang}" title="{$translation.doc_lang}" class="flag"></a>
@@ -48,10 +48,10 @@
 			{/if}
 			{if !$document.fully_translated}<a href="{$document.link.translate}" title="{$LANG.translate.trans_add}"><i class="fa fa-plus-circle" title="{$LANG.translate.trans_add}"></i></a>{/if}
 		  </td>
-		  <td style="text-align:center"><input type="radio" name="terms" value="{$document.doc_id}" {$document.terms}></td>
-		  <td style="text-align:center"><input type="radio" name="home" value="{$document.doc_id}" {$document.homepage}></td>
-		  <td style="text-align:center"><input type="radio" name="contact" value="{$document.doc_id}" {$document.contact}></td>
-		  <td style="text-align:center">
+		  <td style="text-align:center" class="r-meta" data-label="{$LANG.documents.document_terms}"><input type="radio" name="terms" value="{$document.doc_id}" {$document.terms}></td>
+		  <td style="text-align:center" class="r-meta" data-label="{$LANG.documents.document_homepage}"><input type="radio" name="home" value="{$document.doc_id}" {$document.homepage}></td>
+		  <td style="text-align:center" class="r-meta" data-label="{$LANG.documents.document_contact}"><input type="radio" name="contact" value="{$document.doc_id}" {$document.contact}></td>
+		  <td style="text-align:center" class="r-actions">
 		  	<a href="{if !empty($document.homepage)}index.php{else}index.php?_a=document&doc_id={$document.doc_id}{/if}" title="{$LANG.common.view}" target="_blank"><i class="fa fa-search" title="{$LANG.common.view}"></i></a>
 			<a href="{$document.link.edit}" title="{$LANG.common.edit}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 			<a href="{$document.link.delete}" title="{$LANG.notification.confirm_delete}" class="delete"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>

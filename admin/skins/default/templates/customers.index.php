@@ -40,7 +40,7 @@
 	  </td>
 	</tr>
   </table>
-	<table width="100%">
+	<table width="100%" class="cc-rows">
 	  <thead>
 		<tr>
 		  <td width="32">&nbsp;</td>
@@ -57,27 +57,27 @@
 	  <tbody>
 		{foreach from=$CUSTOMERS item=customer}
 		<tr>
-		  <td align="center"><input type="checkbox" name="multi-customer[]" id="selected_{$customer.customer_id}" value="{$customer.customer_id}" class="all-customers"></td>
-		  <td style="text-align:center"><input type="hidden" name="status[{$customer.customer_id}]" id="status_{$customer.customer_id}" value="{$customer.status}" class="toggle"></td>
-		  <td style="text-align:center">
+		  <td align="center" class="r-check"><input type="checkbox" name="multi-customer[]" id="selected_{$customer.customer_id}" value="{$customer.customer_id}" class="all-customers"></td>
+		  <td style="text-align:center" class="r-toggle"><input type="hidden" name="status[{$customer.customer_id}]" id="status_{$customer.customer_id}" value="{$customer.status}" class="toggle"></td>
+		  <td style="text-align:center" class="r-thumb">
 		  	{if $customer.type==1}
 		  	<i class="fa fa-user registered" title="{$LANG.customer.title_key_registered}"></i>
 		  	{elseif $customer.type==2}
 		  	<i class="fa fa-user unregistered" title="{$LANG.customer.title_key_unregistered}"></i>
 		  	{/if}
 		  </td>
-		  <td><a href="{$customer.edit}">{$customer.last_name}, {$customer.first_name}</a> {if !empty($customer.groups)}({$customer.groups}){/if}</td>
-		  <td class="text-center"><a href="?_g=settings&node=language&language={$customer.language}"><img src="language/flags/{$customer.language}.png" alt="{$customer.language}" /></a></td> 
-		  <td>{include file='templates/element.click_to_copy.php' value=$customer.email}{$customer.email}</td>
-		  <td>{$customer.registered}</td>
-		  <td style="text-align:center">
+		  <td class="r-title"><a href="{$customer.edit}">{$customer.last_name}, {$customer.first_name}</a> {if !empty($customer.groups)}({$customer.groups}){/if}</td>
+		  <td class="text-center r-hide"><a href="?_g=settings&node=language&language={$customer.language}"><img src="language/flags/{$customer.language}.png" alt="{$customer.language}" /></a></td> 
+		  <td class="r-meta">{include file='templates/element.click_to_copy.php' value=$customer.email}{$customer.email}</td>
+		  <td class="r-meta" data-label="{$LANG.customer.date_registered}">{$customer.registered}</td>
+		  <td style="text-align:center" class="r-meta" data-label="{$LANG.customer.order_count}">
 		  {if $customer.order_count>0}
 		  	<a href="?_g=orders&customer_id={$customer.customer_id}">{$customer.order_count}</a>
 		  {else}
 		  	{$customer.order_count}
 		  {/if}
 		  </td>
-		  <td style="text-align:center">
+		  <td style="text-align:center" class="r-actions">
 		  	<a href="{$customer.signinas_url}" target="_blank"><i class="fa fa-sign-in" title="{$customer.signinas_name}"></i></a>
 			<a href="{$customer.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 			<a href="{$customer.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>

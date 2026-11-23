@@ -2,10 +2,13 @@
 <html class="no-js" dir="ltr" lang="{$HTML_LANG}">
    <head>
       <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
       <title>{$LANG.dashboard.title_admin_cp}</title>
       <link rel="icon" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/favicon.svg?{$VERSION_HASH}" type="image/svg+xml">
       <link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
       <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/layout.css?{$VERSION_HASH}" media="screen">
+      {* Narrow and touch screens (#4765). Before the extensions' own styles, so that they can still have the last word *}
+      <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/responsive.css?{$VERSION_HASH}" media="screen">
       <link rel="stylesheet" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/font-awesome.min.css?{$VERSION_HASH}">
       {foreach from=$HEAD_CSS item=style}
       <link rel="stylesheet" type="text/css" href="{$style}?{$VERSION_HASH}" media="screen">
@@ -19,6 +22,8 @@
    <body{if isset($HIDE_NAVIGATION) && $HIDE_NAVIGATION} class="chromeless"{/if}>
       {if !isset($HIDE_NAVIGATION) || !$HIDE_NAVIGATION}
       <div id="header">
+         {* Opens the sidebar where it is a slide-in menu (styles/responsive.css). Not shown on a wide screen *}
+         <button type="button" id="nav_toggle" aria-controls="navigation" aria-expanded="false" title="{$LANG.common.menu}" aria-label="{$LANG.common.menu}"><i class="fa fa-bars" aria-hidden="true"></i></button>
          <a href="?"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/logo.cubecart.svg" width="158" height="30" id="logo"></a>
          <span class="user_info">
             <a href="?_g=settings&node=admins&action=edit&admin_id={$ADMIN_UID}" id="admin_id">{$ADMIN_USER}</a> {if $VERSION_AVAILABLE_LABEL}<a href="{$VERSION_UPGRADE_URL}" target="_blank" title="{$VERSION_AVAILABLE_LABEL}" class="btn btn-version-available"><i class="fa fa-arrow-up"></i> {$VERSION_AVAILABLE_LABEL}</a>{/if} {if $CONFIG.cache}<span id="clear_cache_master"{if $CLEAR_CACHE} class="clear"{/if}><a href="{$SKIN_VARS.clear_cache_link}" title="{$LANG.maintain.cache_clear}" class="btn btn-clear-cache"><i class="fa fa-refresh"></i> {$LANG.maintain.cache_clear}</a></span>{/if} <a href="?_g=logout&amp;token={$SESSION_TOKEN}" title="{$LANG.account.logout}" class="btn btn-signout"><i class="fa fa-sign-out"></i> {$LANG.account.logout}</a>
@@ -31,6 +36,7 @@
             {include file='templates/common.search.php'}
             {include file='templates/common.navigation.php'}
          </div>
+         <div id="nav_overlay"></div>
          {include file='templates/common.breadcrumb.php'}
          {/if}
          <div id="content">
@@ -110,7 +116,8 @@
          }
          $(window).on('load', function() {
            $("#joyrideTour").joyride({
-             autoStart: {/literal}{$TOUR_AUTO_START}{literal},
+             /* The tour points at the sidebar, which a narrow screen keeps in a menu: it waits for a wide one (#4765) */
+             autoStart: {/literal}{$TOUR_AUTO_START}{literal} && !(window.matchMedia && window.matchMedia('(max-width: 900px)').matches),
              postStepCallback: function (index, tip) {
                if (index == 6) {
                   $('<p><iframe src="//player.vimeo.com/video/118638908" width="500" height="313" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></p>').insertAfter($(".joyride_tour_end p").last());

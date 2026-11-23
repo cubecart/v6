@@ -2196,16 +2196,6 @@ input[type="submit"].go_search {
     flex: 0 0 50px;
     box-sizing: border-box
 }
-@media screen and (max-width: 650px) and (min-width: 100px) {
-    #content {
-        margin-left: 4px !important
-    }
-    span.user_info,
-    #breadcrumbs,
-    div#navigation {
-        display: none
-    }
-}
 #items .download_info {
     text-align: left !important;
     font-family: courier;

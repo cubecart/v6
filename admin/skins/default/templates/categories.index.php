@@ -18,7 +18,7 @@
 	{else}
 	<h3>{$LANG.settings.title_category}</h3>
 	{/if}
-	<table>
+	<table class="cc-rows">
 	  <thead>
 		<tr>
 		  <td align="center">{$LANG.settings.item_id}</td>
@@ -35,36 +35,36 @@
 	  
 	  {foreach from=$CATEGORIES item=category}
 	    <tr>
-	      <td style="text-align:center">
+	      <td style="text-align:center" class="r-hide">
 	        <strong>{$category.cat_id}</strong>
 	      </td>
-	      <td style="text-align:center">
+	      <td style="text-align:center" class="r-check">
 	        <a href="#" class="handle"><i class="fa fa-sort" title="{$LANG.ui.drag_reorder}"></i></a>
 	        <input type="hidden" name="order[]" value="{$category.cat_id}">
 	      </td>
-	      <td style="text-align:center">
+	      <td style="text-align:center" class="r-toggle" data-label="{$LANG.common.visible}">
 	        <input type="hidden" name="visible[{$category.cat_id}]" id="catv_{$category.cat_id}" value="{$category.visible}" class="toggle">
 	      </td>
-	      <td style="text-align:center">
+	      <td style="text-align:center" class="r-toggle" data-label="{$LANG.common.enabled}">
 	        <input type="hidden" name="status[{$category.cat_id}]" id="cat_{$category.cat_id}" value="{$category.status}" class="toggle">
 	      </td>
-	      <td>
+	      <td class="r-title">
 			{if $category.no_children}
 		    <a href="{$category.children}" title="{$category.alt_text}"><span style="color:#888;margin-right:4px" aria-hidden="true">&#9656;</span>{$category.cat_name}</a>
 		    {else}
 		    <span style="visibility:hidden;margin-right:4px" aria-hidden="true">&#9656;</span>{$category.cat_name}
 		    {/if}
 	      </td>
-		  <td style="text-align:center">
+		  <td style="text-align:center" class="r-meta" data-label="{$LANG.catalogue.product_count}">
 			<span style="cursor:help" title="{$LANG.common.primary}: {$category.primary_count} / {$LANG.common.additional}: {$category.additional_count}">{$category.total_count}</span>
 		  </td>
-	      <td style="text-align:center" class="language_list">
+	      <td style="text-align:center" class="language_list r-hide">
 	    	{foreach from=$category.translations item=translation}
 	  	    <a href="{$translation.edit}"><img src="language/flags/{$translation.language}.png" alt="{$translation.language}" title="{$translation.language}" class="flag"></a>
 	  	    {/foreach}
 			{if !$category.fully_translated}<a href="{$category.translate}" title="{$LANG.translate.trans_add}"><i class="fa fa-plus-circle" title="{$LANG.translate.trans_add}"></i></a>{/if}
 	      </td>
-	      <td>
+	      <td class="r-actions">
 		  	<a href="?_g=products&cat_id={$category.cat_id}" title="{$LANG.dashboard.inv_products}"><i class="fa fa-filter" title="{$LANG.dashboard.inv_products}"></i></a>
 		  	<a href="index.php?_a=category&cat_id={$category.cat_id}" title="{$LANG.common.view}" target="_blank"><i class="fa fa-search" title="{$LANG.common.view}"></i></a>
 		    <a href="?_g=categories&action=add&parent={$category.cat_id}" title="{$LANG.settings.title_subcategory_add}"><i class="fa fa-plus-circle" title="{$LANG.settings.title_subcategory_add}"></i></a>
