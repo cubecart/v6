@@ -16,6 +16,12 @@
  */
 class Sanitize
 {
+    /**
+     * max_input_vars, when it cut this request's post short
+     *
+     * @var int
+     */
+    private static $_truncated = 0;
 
     /**
      * Checks GET & POSTs for valid security token
@@ -488,15 +494,31 @@ class Sanitize
     {
         $_POST = $_GET = $_REQUEST = array();
         if ($truncated) {
-            $limit = (int)ini_get('max_input_vars');
-            $message = 'This form has more fields than your server allows (max_input_vars = '.$limit.'), so nothing was saved. Ask your host to raise max_input_vars.';
-            $log = 'POST exceeded max_input_vars ('.$limit.')';
-        } else {
-            $message = 'Security Alert: Possible Cross-Site Request Forgery (CSRF). <a href="https://kb.cubecart.com/administration/security/understanding-cubecart-s-csrf-protection">Learn more</a>.';
-            $log = 'Invalid Security Token';
+            // The language is not loaded yet, so tellTruncated() says it once it is
+            self::$_truncated = (int)ini_get('max_input_vars');
+            trigger_error('POST exceeded max_input_vars ('.self::$_truncated.')', E_USER_WARNING);
+            return;
         }
+        $message = 'Security Alert: Possible Cross-Site Request Forgery (CSRF). <a href="https://kb.cubecart.com/administration/security/understanding-cubecart-s-csrf-protection">Learn more</a>.';
         $gui_message['error'][md5($message)] = $message;
         $GLOBALS['session']->set('GUI_MESSAGE', $gui_message);
-        trigger_error($log, E_USER_WARNING);
+        trigger_error('Invalid Security Token', E_USER_WARNING);
+    }
+
+    /**
+     * Tells the visitor that their post was cut short by max_input_vars, so nothing was saved
+     *
+     * The token check stops such a post before the language is loaded. This is
+     * called once it is, and does nothing for any other request.
+     */
+    public static function tellTruncated()
+    {
+        if (self::$_truncated > 0) {
+            $strings = $GLOBALS['language']->notification;
+            if (!empty($strings['max_input_vars_stopped'])) {
+                $GLOBALS['gui']->setError(str_replace('%s', (string)self::$_truncated, $strings['max_input_vars_stopped']));
+            }
+            self::$_truncated = 0;
+        }
     }
 }

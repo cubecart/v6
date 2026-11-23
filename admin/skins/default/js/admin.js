@@ -2145,7 +2145,7 @@ $(document).on('submit', 'form', function(e) {
     if (count > limit) {
         e.preventDefault();
         held.prop('disabled', false);
-        var msg = $('#val_lang_max_input_vars').text() || 'This form has more fields than your server allows (max_input_vars = %s), so it was not sent and nothing was saved. Ask your host to raise max_input_vars.';
+        var msg = $('#val_lang_max_input_vars').text();
         alert(msg.replace('%s', limit) + ' (' + count + ')');
     }
 });

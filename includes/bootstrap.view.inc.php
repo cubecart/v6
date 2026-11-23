@@ -45,3 +45,6 @@ $GLOBALS['ssl']      = SSL::getInstance();
 $GLOBALS['seo']      = SEO::getInstance();
 $GLOBALS['gui']      = GUI::getInstance(defined('CC_IN_ADMIN') && CC_IN_ADMIN);
 $GLOBALS['tax']      = Tax::getInstance();
+
+// A post cut short by max_input_vars was stopped before there was a language to say so in
+Sanitize::tellTruncated();

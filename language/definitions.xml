@@ -2319,6 +2319,7 @@ This email is sent from the store's master email address but it is possible to r
   </group>
   <group name="notification">
     <string name="max_input_vars_exceeded" introduced="6.9.0"><![CDATA[This form has more fields than your server allows (max_input_vars = %s), so it was not sent and nothing was saved. Ask your host to raise max_input_vars.]]></string>
+    <string name="max_input_vars_stopped" introduced="6.9.0"><![CDATA[This form has more fields than your server allows (max_input_vars = %s), so nothing was saved. Ask your host to raise max_input_vars.]]></string>
     <string name="notify_seo_url_deleted" introduced="6.5.2"><![CDATA[Redirect has been deleted.]]></string>
     <string name="notify_seo_url_not_deleted" introduced="6.5.2"><![CDATA[Failed to delete redirect.]]></string>
     <string name="notify_success_add_redirect" introduced="6.4.0"><![CDATA[Redirect added successfully.]]></string>
