@@ -569,7 +569,7 @@
             },
             initialData: {code: source},
             buttons: [
-                {type: 'cancel', text: 'Cancel'},
+                {type: 'cancel', text: T('cancel')},
                 {type: 'submit', text: T('editor_apply'), buttonType: 'primary'}
             ],
             onSubmit: function (api) {

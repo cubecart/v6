@@ -926,6 +926,7 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                         $editor['strings'][$name] = $string;
                     }
                 }
+                $editor['strings']['cancel'] = $lang['common']['cancel'];
                 // Last, because it assigns the template's own values over the sample data
                 $editor['frame'] = EmailEditor::frame($data['content_type'], false, !empty($data['language']) ? $data['language'] : '');
                 $editor_json = json_encode($editor, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_INVALID_UTF8_SUBSTITUTE);
