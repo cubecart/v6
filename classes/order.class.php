@@ -1540,6 +1540,152 @@ class Order
         );
     }
 
+    /**
+     * A saved order, ready for a payment gateway to charge (#4757)
+     *
+     * The order as stored is the record of what the customer agreed to pay. This returns
+     * it in the shape a checkout basket has, so a gateway reads the same keys it always
+     * has, with what a gateway needs besides: the currency the total is in, the order
+     * number as the customer knows it, and whether the order can be paid at all.
+     *
+     * @param string $order_id
+     * @return array|false False when there is no such order
+     */
+    public static function forPayment($order_id)
+    {
+        $order = self::basketFromOrder($order_id);
+        if ($order === false) {
+            return false;
+        }
+        // Orders are always kept and charged in the store's default currency
+        $order['currency'] = strtoupper((string)$GLOBALS['config']->get('config', 'default_currency'));
+        $order['reference'] = (string)$order['cart_order_id'];
+        if ($GLOBALS['config']->get('config', 'oid_mode') == 'i') {
+            $column = (string)$GLOBALS['config']->get('config', 'oid_col');
+            if (in_array($column, array('id', 'custom_oid'), true)) {
+                $rows = $GLOBALS['db']->select('CubeCart_order_summary', array($column), array('cart_order_id' => (string)$order['cart_order_id']), false, 1, false, false);
+                if ($rows && !empty($rows[0][$column])) {
+                    $order['reference'] = (string)$rows[0][$column];
+                }
+            }
+        }
+        $order['pay_state'] = self::payState(array('status' => $order['order_status'], 'total' => $order['total']));
+        $order['payable']   = ($order['pay_state'] === 'payable');
+        return $order;
+    }
+
+    /**
+     * Record a payment a gateway says was made for an order (#4757)
+     *
+     * The one call a gateway makes when a payment comes back. The order, the amount and
+     * the currency are confirmed here before anything changes, so no gateway carries its
+     * own version of that: a payment in another currency, or for less than the order's
+     * total, is logged and the order stays unpaid. A payment already recorded is not
+     * recorded twice, as a gateway often reports one both when the customer returns and
+     * in a notification.
+     *
+     * $payment holds:
+     *   gateway   (required) the gateway's name, as it logs transactions
+     *   amount    (required) what was paid, in whole units of the currency: 47.94
+     *   currency  (required) the ISO code it was paid in
+     *   trans_id  the gateway's reference for the payment
+     *   reserved  true when the money is authorised but not yet taken: the transaction is
+     *             logged and the order stays Pending until the gateway reports it taken
+     *   status    what the transaction log should say, 'Success' unless given
+     *   notes     a line, or a list of lines, for the transaction log
+     *   extra     anything else the gateway keeps with its transactions
+     *   order_status  the status a paid order moves to, Processing unless given
+     *
+     * @param string $order_id
+     * @param array $payment
+     * @return array ok (bool), code (paid, reserved, repeat, already_paid, no_order, not_payable,
+     *               currency, amount or invalid) and message, a line saying what happened
+     */
+    public function settlePayment($order_id, array $payment)
+    {
+        $result = function ($ok, $code, $message) {
+            return array('ok' => $ok, 'code' => $code, 'message' => $message);
+        };
+        $gateway  = isset($payment['gateway']) ? trim((string)$payment['gateway']) : '';
+        $trans_id = isset($payment['trans_id']) ? trim((string)$payment['trans_id']) : '';
+        $currency = isset($payment['currency']) ? strtoupper(trim((string)$payment['currency'])) : '';
+        if ($gateway === '' || $currency === '' || !isset($payment['amount']) || !is_numeric($payment['amount']) || (float)$payment['amount'] < 0) {
+            return $result(false, 'invalid', 'A payment needs a gateway, an amount and a currency.');
+        }
+        $amount = round((float)$payment['amount'], 2);
+        $rows = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id', 'status', 'total', 'customer_id'), array('cart_order_id' => (string)$order_id), false, 1, false, false);
+        if (!$rows) {
+            return $result(false, 'no_order', 'There is no such order.');
+        }
+        $order    = $rows[0];
+        $order_id = (string)$order['cart_order_id'];
+        $reserved = !empty($payment['reserved']);
+        $status   = (isset($payment['status']) && $payment['status'] !== '') ? (string)$payment['status'] : ($reserved ? 'Authorised' : 'Success');
+        $notes    = isset($payment['notes']) ? (is_array($payment['notes']) ? array_values($payment['notes']) : array((string)$payment['notes'])) : array();
+        $log = function ($status, array $notes) use ($order, $order_id, $gateway, $trans_id, $amount, $payment) {
+            return $this->logTransaction(array(
+                'order_id'    => $order_id,
+                'gateway'     => $gateway,
+                'trans_id'    => $trans_id,
+                'amount'      => sprintf('%.2F', $amount),
+                'status'      => $status,
+                'customer_id' => $order['customer_id'],
+                'extra'       => isset($payment['extra']) ? $payment['extra'] : '',
+                'notes'       => array_values(array_filter($notes, 'strlen')),
+            ));
+        };
+
+        // A gateway often reports one payment twice in the same second, on the customer's return and in a notification.
+        // One at a time per order, so the second sees what the first recorded. The lock goes when the request ends.
+        $GLOBALS['db']->query("SELECT GET_LOCK('cc_settle_".md5($order_id)."', 10)", false, 0, false);
+        // The same payment, reported a second time: recorded once, whether it was applied or refused
+        if ($trans_id !== '') {
+            $seen = $GLOBALS['db']->select('CubeCart_transactions', array('status'), array('order_id' => $order_id, 'gateway' => $gateway, 'trans_id' => $trans_id), array('id' => 'ASC'), false, false, false);
+            foreach (is_array($seen) ? $seen : array() as $row) {
+                if ($row['status'] === 'Refused') {
+                    return $result(false, 'repeat', 'This payment was already refused.');
+                }
+                if ($row['status'] === $status) {
+                    return $result(true, 'repeat', 'This payment was already recorded.');
+                }
+            }
+        }
+
+        $default = strtoupper((string)$GLOBALS['config']->get('config', 'default_currency'));
+        $total   = round((float)$order['total'], 2);
+        $state   = self::payState($order);
+        if ($state === 'paid') {
+            // A second, different payment for an order already paid: kept on record for the merchant to refund
+            $log($status, array_merge($notes, array('The order was already paid when this payment arrived.')));
+            return $result(true, 'already_paid', 'The order was already paid.');
+        }
+        if ($state !== 'payable') {
+            $log('Refused', array_merge($notes, array('Payment not applied: the order is not awaiting payment.')));
+            return $result(false, 'not_payable', 'The order is not awaiting payment.');
+        }
+        if ($currency !== $default) {
+            $log('Refused', array_merge($notes, array(sprintf('Payment not applied: it was made in %s and the order is in %s.', $currency, $default))));
+            return $result(false, 'currency', 'The payment is in a different currency from the order.');
+        }
+        // Half a penny of tolerance, for a gateway that reports the amount as a rounded figure
+        if ($amount + 0.005 < $total) {
+            $log('Refused', array_merge($notes, array(sprintf('Payment not applied: %s was paid and the order is for %s.', sprintf('%.2F', $amount), sprintf('%.2F', $total)))));
+            return $result(false, 'amount', 'The payment is for less than the order.');
+        }
+        if ($amount > $total + 0.005) {
+            $notes[] = sprintf('More was paid than the order is for: %s against %s.', sprintf('%.2F', $amount), sprintf('%.2F', $total));
+        }
+        if ($reserved) {
+            $log($status, $notes);
+            return $result(true, 'reserved', 'The payment is authorised and the order awaits its capture.');
+        }
+        $to = (isset($payment['order_status']) && in_array((int)$payment['order_status'], array(self::ORDER_PROCESS, self::ORDER_COMPLETE), true)) ? (int)$payment['order_status'] : self::ORDER_PROCESS;
+        $this->orderStatus($to, $order_id);
+        $this->paymentStatus(self::PAYMENT_SUCCESS, $order_id);
+        $log($status, $notes);
+        return $result(true, 'paid', 'The payment was recorded and the order is paid.');
+    }
+
     //=====[ Private ]=======================================
 
     /**
