@@ -157,7 +157,7 @@ class EmailSample
                 $GLOBALS['smarty']->assign('DATA', array_merge($stored, array(
                     'name'     => 'Alex Morgan',
                     'email'    => 'alex.morgan@example.com',
-                    'message'  => 'Happy birthday!',
+                    'message'  => self::_say('gift_message'),
                     'value'    => Tax::getInstance()->priceFormat(25),
                     'code'     => 'GC-EXAMPLE-1234',
                     'storeURL' => $store_url,
@@ -191,7 +191,7 @@ class EmailSample
                     'recovery_link'      => $store_url.'/index.php?_a=recover&token=EXAMPLE',
                     'optout_link'        => $store_url.'/index.php?_a=recover&action=optout&token=EXAMPLE',
                     'coupon_code'        => 'EXAMPLE10',
-                    'coupon_description' => '10% off your order',
+                    'coupon_description' => self::_say('coupon'),
                 ));
                 break;
 
@@ -204,8 +204,8 @@ class EmailSample
                     'submitted_at'      => formatTime($now),
                     'cart_order_id'     => $order_number,
                     'reported_delivery' => date('Y-m-d', $now - 432000),
-                    'statement'         => 'I withdraw from my contract for the purchase of the goods in this order.',
-                    'reason'            => 'The item is not what I expected.',
+                    'statement'         => $GLOBALS['language']->withdrawal['field_statement_default'],
+                    'reason'            => self::_say('withdrawal_reason'),
                     'store_name'        => $store_name,
                     'admin_link'        => $admin_url.'?_g=customers&node=withdrawals',
                 ));
@@ -218,7 +218,7 @@ class EmailSample
                     'cart_order_id' => $order_number,
                     'status'        => 'accepted',
                     'decision_at'   => formatTime($now),
-                    'note'          => 'Your refund will be with you within 14 days.',
+                    'note'          => self::_say('withdrawal_note'),
                     'store_name'    => $store_name,
                 ));
                 break;
@@ -275,8 +275,8 @@ class EmailSample
                 $GLOBALS['smarty']->assign('DATA', array(
                     'name'         => 'Sam Taylor',
                     'email'        => 'sam.taylor@example.com',
-                    'title'        => 'Just what I needed',
-                    'review'       => 'Arrived quickly and works exactly as described.',
+                    'title'        => self::_say('review_title'),
+                    'review'       => self::_say('review'),
                     'rating'       => 5,
                     'product_name' => $order['products'][0]['name'],
                     'link'         => $admin_url.'?_g=products&node=reviews',
@@ -364,6 +364,18 @@ class EmailSample
     }
 
     /**
+     * A line of sample wording, in the language the admin reads
+     *
+     * @param string $key The string's name in the email group, without its sample_ prefix
+     * @return string
+     */
+    private static function _say($key)
+    {
+        $strings = $GLOBALS['language']->email;
+        return isset($strings['sample_'.$key]) ? (string)$strings['sample_'.$key] : '';
+    }
+
+    /**
      * A made-up order in the shape Order::getOrderDetails() returns
      *
      * @return array
@@ -395,14 +407,14 @@ class EmailSample
             'lang'              => $GLOBALS['language']->current(),
             'email'             => 'sam.taylor@example.com',
             'phone'             => '0117 496 0123',
-            'gateway'           => 'Card',
-            'ship_method'       => 'Standard delivery',
+            'gateway'           => self::_say('gateway'),
+            'ship_method'       => self::_say('ship_method'),
             'ship_product'      => '',
             'ship_tracking'     => 'AB123456789GB',
             'ship_date'         => formatDispatchDate(date('Y-m-d', $now)),
-            'customer_comments' => 'Comments left by the customer are shown here.',
+            'customer_comments' => self::_say('customer_comments'),
             'ip_address'        => '203.0.113.24',
-            'note_to_customer'  => 'A note you add to the order is shown here.',
+            'note_to_customer'  => self::_say('note_to_customer'),
             'subtotal'          => $tax->priceFormat(59, true),
             'raw_subtotal'      => 59,
             'shipping'          => $tax->priceFormat(3.95, true),
@@ -420,17 +432,17 @@ class EmailSample
         }
         $products = array(
             array(
-                'name'            => 'Example product',
+                'name'            => self::_say('product'),
                 'product_code'    => 'EXAMPLE-1',
                 'quantity'        => 1,
                 'price'           => $tax->priceFormat(42),
                 'item_price'      => $tax->priceFormat(42),
                 'raw_price'       => 42,
                 'raw_line_total'  => 42,
-                'product_options' => 'Colour: Blue',
+                'product_options' => self::_say('product_options'),
             ),
             array(
-                'name'            => 'Another example product',
+                'name'            => self::_say('product_second'),
                 'product_code'    => 'EXAMPLE-2',
                 'quantity'        => 2,
                 'price'           => $tax->priceFormat(17),

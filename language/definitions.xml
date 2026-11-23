@@ -1556,6 +1556,19 @@ This email is sent from the store's master email address but it is possible to r
     <string name="sample_data" introduced="6.9.0"><![CDATA[Sample data]]></string>
     <string name="sample_latest_order" introduced="6.9.0"><![CDATA[Your latest order (%s)]]></string>
     <string name="sample_example_order" introduced="6.9.0"><![CDATA[An example order]]></string>
+    <string name="sample_product" introduced="6.9.0"><![CDATA[Example product]]></string>
+    <string name="sample_product_second" introduced="6.9.0"><![CDATA[Another example product]]></string>
+    <string name="sample_product_options" introduced="6.9.0"><![CDATA[Colour: Blue]]></string>
+    <string name="sample_gateway" introduced="6.9.0"><![CDATA[Card]]></string>
+    <string name="sample_ship_method" introduced="6.9.0"><![CDATA[Standard delivery]]></string>
+    <string name="sample_customer_comments" introduced="6.9.0"><![CDATA[Comments left by the customer are shown here.]]></string>
+    <string name="sample_note_to_customer" introduced="6.9.0"><![CDATA[A note you add to the order is shown here.]]></string>
+    <string name="sample_gift_message" introduced="6.9.0"><![CDATA[Happy birthday!]]></string>
+    <string name="sample_coupon" introduced="6.9.0"><![CDATA[10% off your order]]></string>
+    <string name="sample_withdrawal_reason" introduced="6.9.0"><![CDATA[The item is not what I expected.]]></string>
+    <string name="sample_withdrawal_note" introduced="6.9.0"><![CDATA[Your refund will be with you within 14 days.]]></string>
+    <string name="sample_review_title" introduced="6.9.0"><![CDATA[Just what I needed]]></string>
+    <string name="sample_review" introduced="6.9.0"><![CDATA[Arrived quickly and works exactly as described.]]></string>
     <string name="notify_test_sent" introduced="6.9.0"><![CDATA[Test email sent to %s.]]></string>
     <string name="error_test_send" introduced="6.9.0"><![CDATA[The test email could not be sent.]]></string>
     <string name="title_macro_user_activate" introduced="6.9.0"><![CDATA[User: Confirm Email Address]]></string>
