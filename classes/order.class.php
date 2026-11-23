@@ -1614,16 +1614,31 @@ class Order
         $result = function ($ok, $code, $message) {
             return array('ok' => $ok, 'code' => $code, 'message' => $message);
         };
+        // The wording, in the language of the request: the "settle_" strings of the orders group. A translation
+        // whose placeholders do not fit must not stop a payment being recorded, so it falls back to the bare words
+        $strings = $GLOBALS['language']->orders;
+        $say = function ($key, array $with = array()) use ($strings) {
+            $text = isset($strings['settle_'.$key]) ? (string)$strings['settle_'.$key] : '';
+            if (!$with) {
+                return $text;
+            }
+            try {
+                $out = @vsprintf($text, $with);
+            } catch (Throwable $e) {
+                $out = false;
+            }
+            return is_string($out) ? $out : trim($text.' '.implode(' ', $with));
+        };
         $gateway  = isset($payment['gateway']) ? trim((string)$payment['gateway']) : '';
         $trans_id = isset($payment['trans_id']) ? trim((string)$payment['trans_id']) : '';
         $currency = isset($payment['currency']) ? strtoupper(trim((string)$payment['currency'])) : '';
         if ($gateway === '' || $currency === '' || !isset($payment['amount']) || !is_numeric($payment['amount']) || (float)$payment['amount'] < 0) {
-            return $result(false, 'invalid', 'A payment needs a gateway, an amount and a currency.');
+            return $result(false, 'invalid', $say('invalid'));
         }
         $amount = round((float)$payment['amount'], 2);
         $rows = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id', 'status', 'total', 'customer_id'), array('cart_order_id' => (string)$order_id), false, 1, false, false);
         if (!$rows) {
-            return $result(false, 'no_order', 'There is no such order.');
+            return $result(false, 'no_order', $say('no_order'));
         }
         $order    = $rows[0];
         $order_id = (string)$order['cart_order_id'];
@@ -1651,10 +1666,10 @@ class Order
             $seen = $GLOBALS['db']->select('CubeCart_transactions', array('status'), array('order_id' => $order_id, 'gateway' => $gateway, 'trans_id' => $trans_id), array('id' => 'ASC'), false, false, false);
             $seen = is_array($seen) ? array_column($seen, 'status') : array();
             if (in_array('Refused', $seen, true)) {
-                return $result(false, 'repeat', 'This payment was already refused.');
+                return $result(false, 'repeat', $say('repeat_refused'));
             }
             if (in_array($status, $seen, true)) {
-                return $result(true, 'repeat', 'This payment was already recorded.');
+                return $result(true, 'repeat', $say('repeat'));
             }
         }
 
@@ -1662,35 +1677,36 @@ class Order
         $paid_statuses = array(self::ORDER_PROCESS, self::ORDER_COMPLETE);
         if (in_array((int)$order['status'], $paid_statuses, true)) {
             // A second, different payment for an order already paid: kept on record for the merchant to refund
-            $log($status, array_merge($notes, array('The order was already paid when this payment arrived.')));
-            return $result(true, 'already_paid', 'The order was already paid.');
+            $log($status, array_merge($notes, array($say('already_paid'))));
+            return $result(true, 'already_paid', $say('already_paid'));
         }
-        // What stands in the way of this payment being applied to the order as a row shows it: code, message and log note, or false
-        $refusal = function ($row) use ($amount, $currency, $default) {
+        // What stands in the way of this payment being applied to the order as a row shows it: its code and the words for it, or false
+        $refusal = function ($row) use ($amount, $currency, $default, $say) {
             $total = round((float)$row['total'], 2);
             // Declined or Cancelled before the payment arrived is no bar: the money has been taken either way
             if (!in_array((int)$row['status'], array(self::ORDER_PENDING, self::ORDER_DECLINED, self::ORDER_CANCELLED), true) || $total <= 0) {
-                return array('not_payable', 'The order is not awaiting payment.', 'Payment not applied: the order is not awaiting payment.');
+                return array('not_payable', $say('not_payable'));
             }
             if ($currency !== $default) {
-                return array('currency', 'The payment is in a different currency from the order.', sprintf('Payment not applied: it was made in %s and the order is in %s.', $currency, $default));
+                return array('currency', $say('currency', array($currency, $default)));
             }
             // Half a penny of tolerance, for a gateway that reports the amount as a rounded figure
             if ($amount + 0.005 < $total) {
-                return array('amount', 'The payment is for less than the order.', sprintf('Payment not applied: %s was paid and the order is for %s.', sprintf('%.2F', $amount), sprintf('%.2F', $total)));
+                return array('amount', $say('amount', array(sprintf('%.2F', $amount), sprintf('%.2F', $total))));
             }
             return false;
         };
         if (($why = $refusal($order)) !== false) {
-            $log('Refused', array_merge($notes, array($why[2])));
+            $log('Refused', array_merge($notes, array($why[1])));
             return $result(false, $why[0], $why[1]);
         }
         $total = round((float)$order['total'], 2);
         if ($amount > $total + 0.005) {
-            $notes[] = sprintf('More was paid than the order is for: %s against %s.', sprintf('%.2F', $amount), sprintf('%.2F', $total));
+            $notes[] = $say('overpaid', array(sprintf('%.2F', $amount), sprintf('%.2F', $total)));
         }
         if ((int)$order['status'] !== self::ORDER_PENDING) {
-            $notes[] = sprintf('The order was %s when this payment arrived.', ((int)$order['status'] === self::ORDER_CANCELLED) ? 'Cancelled' : 'Declined');
+            $state_names = $GLOBALS['language']->order_state;
+            $notes[] = $say('order_was', array(isset($state_names['name_'.(int)$order['status']]) ? $state_names['name_'.(int)$order['status']] : (string)(int)$order['status']));
         }
 
         // The money first. Once a transaction is logged, a checkout confirmed again in another tab starts a new
@@ -1698,24 +1714,24 @@ class Order
         $log($status, $notes);
         $rows = $GLOBALS['db']->select('CubeCart_order_summary', array('status', 'total'), array('cart_order_id' => $order_id), false, 1, false, false);
         if (!$rows) {
-            $log('Refused', array('Payment not applied: the order was removed as this payment arrived.'));
-            return $result(false, 'no_order', 'There is no such order.');
+            $log('Refused', array($say('order_removed')));
+            return $result(false, 'no_order', $say('no_order'));
         }
         if (in_array((int)$rows[0]['status'], $paid_statuses, true)) {
-            return $result(true, 'already_paid', 'The order was already paid.');
+            return $result(true, 'already_paid', $say('already_paid'));
         }
         if (($why = $refusal($rows[0])) !== false) {
             // It changed in the moment between the check and the log
-            $log('Refused', array($why[2], 'The order changed as this payment arrived.'));
+            $log('Refused', array($why[1], $say('order_changed')));
             return $result(false, $why[0], $why[1]);
         }
         if ($reserved) {
-            return $result(true, 'reserved', 'The payment is authorised and the order awaits its capture.');
+            return $result(true, 'reserved', $say('reserved'));
         }
         $to = (isset($payment['order_status']) && in_array((int)$payment['order_status'], $paid_statuses, true)) ? (int)$payment['order_status'] : self::ORDER_PROCESS;
         $this->orderStatus($to, $order_id);
         $this->paymentStatus(self::PAYMENT_SUCCESS, $order_id);
-        return $result(true, 'paid', 'The payment was recorded and the order is paid.');
+        return $result(true, 'paid', $say('paid'));
     }
 
     //=====[ Private ]=======================================

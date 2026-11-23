@@ -2520,6 +2520,20 @@ This email is sent from the store's master email address but it is possible to r
     <string name="pay_link_declined" introduced="6.9.0"><![CDATA[A payment for this order was declined. Set it back to Pending to let the customer try again.]]></string>
     <string name="pay_link_nothing" introduced="6.9.0"><![CDATA[There is nothing to pay on this order.]]></string>
     <string name="pay_link_expires" introduced="6.9.0"><![CDATA[If it has not been paid by %1$s, this order will be cancelled automatically.]]></string>
+    <string name="settle_invalid" introduced="6.9.0"><![CDATA[A payment needs a gateway, an amount and a currency.]]></string>
+    <string name="settle_no_order" introduced="6.9.0"><![CDATA[There is no such order.]]></string>
+    <string name="settle_repeat" introduced="6.9.0"><![CDATA[This payment was already recorded.]]></string>
+    <string name="settle_repeat_refused" introduced="6.9.0"><![CDATA[This payment was already refused.]]></string>
+    <string name="settle_already_paid" introduced="6.9.0"><![CDATA[The order was already paid when this payment arrived.]]></string>
+    <string name="settle_not_payable" introduced="6.9.0"><![CDATA[Payment not applied: the order is not awaiting payment.]]></string>
+    <string name="settle_currency" introduced="6.9.0"><![CDATA[Payment not applied: it was made in %1$s and the order is in %2$s.]]></string>
+    <string name="settle_amount" introduced="6.9.0"><![CDATA[Payment not applied: %1$s was paid and the order is for %2$s.]]></string>
+    <string name="settle_overpaid" introduced="6.9.0"><![CDATA[More was paid than the order is for: %1$s against %2$s.]]></string>
+    <string name="settle_order_was" introduced="6.9.0"><![CDATA[The order was %1$s when this payment arrived.]]></string>
+    <string name="settle_order_removed" introduced="6.9.0"><![CDATA[Payment not applied: the order was removed as this payment arrived.]]></string>
+    <string name="settle_order_changed" introduced="6.9.0"><![CDATA[The order changed as this payment arrived.]]></string>
+    <string name="settle_reserved" introduced="6.9.0"><![CDATA[The payment is authorised and the order awaits its capture.]]></string>
+    <string name="settle_paid" introduced="6.9.0"><![CDATA[The payment was recorded and the order is paid.]]></string>
     <string name="reset_download_link" introduced="5.0.0"><![CDATA[Reset Download Link]]></string>
     <string name="search" introduced="5.0.0"><![CDATA[Order Search]]></string>
     <string name="shipping_date" introduced="5.0.0"><![CDATA[Dispatch Date]]></string>
