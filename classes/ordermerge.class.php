@@ -440,8 +440,8 @@ class OrderMerge
                 $db->insert('CubeCart_order_history', array('cart_order_id' => $from_id, 'status' => Order::ORDER_CANCELLED, 'updated' => time(), 'initiator' => 'S'), false);
                 self::_check('CubeCart_order_history');
 
-                self::_note($from_id, $admin_id, sprintf(self::_phrase('merge_note_from', 'Merged into order %1$s on %2$s by %3$s. Its products and payments are on that order.'), $keep_number, $when, $who));
-                self::_note($keep_id, $admin_id, sprintf(self::_phrase('merge_note_kept', 'Order %1$s (placed %2$s, total %3$s) was merged into this order on %4$s by %5$s.'), self::number($from), formatTime((int)$from['order_date'], false, true), sprintf('%.2F', (float)$from['total']), $when, $who));
+                self::_note($from_id, $admin_id, sprintf(self::_phrase('merge_note_from'), $keep_number, $when, $who));
+                self::_note($keep_id, $admin_id, sprintf(self::_phrase('merge_note_kept'), self::number($from), formatTime((int)$from['order_date'], false, true), sprintf('%.2F', (float)$from['total']), $when, $who));
             }
 
             // What the kept order gains. Its own details, delivery method and tracking stay as they are.
@@ -717,15 +717,14 @@ class OrderMerge
     }
 
     /**
-     * A language string, with wording to fall back on where it has not been translated
+     * A language string from the orders group
      *
      * @param string $key
-     * @param string $fallback
      * @return string
      */
-    private static function _phrase($key, $fallback)
+    private static function _phrase($key)
     {
         $strings = (isset($GLOBALS['language']) && is_object($GLOBALS['language'])) ? $GLOBALS['language']->orders : null;
-        return (is_array($strings) && !empty($strings[$key])) ? $strings[$key] : $fallback;
+        return (is_array($strings) && isset($strings[$key])) ? (string)$strings[$key] : '';
     }
 }
