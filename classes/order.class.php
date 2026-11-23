@@ -1584,6 +1584,14 @@ class Order
      * recorded twice, as a gateway often reports one both when the customer returns and
      * in a notification.
      *
+     * A payment is applied to an order that is Pending, and to one that was Declined or
+     * Cancelled before the payment arrived, because the money has been taken either way.
+     * An order marked as Failed (fraudulent) is left for the merchant to decide.
+     *
+     * The transaction is logged before the order's status changes. A logged transaction
+     * stops a checkout confirmed again in another tab from rewriting the order, so the
+     * order that is marked as paid is the order that was checked.
+     *
      * $payment holds:
      *   gateway   (required) the gateway's name, as it logs transactions
      *   amount    (required) what was paid, in whole units of the currency: 47.94
@@ -1641,48 +1649,72 @@ class Order
         // The same payment, reported a second time: recorded once, whether it was applied or refused
         if ($trans_id !== '') {
             $seen = $GLOBALS['db']->select('CubeCart_transactions', array('status'), array('order_id' => $order_id, 'gateway' => $gateway, 'trans_id' => $trans_id), array('id' => 'ASC'), false, false, false);
-            foreach (is_array($seen) ? $seen : array() as $row) {
-                if ($row['status'] === 'Refused') {
-                    return $result(false, 'repeat', 'This payment was already refused.');
-                }
-                if ($row['status'] === $status) {
-                    return $result(true, 'repeat', 'This payment was already recorded.');
-                }
+            $seen = is_array($seen) ? array_column($seen, 'status') : array();
+            if (in_array('Refused', $seen, true)) {
+                return $result(false, 'repeat', 'This payment was already refused.');
+            }
+            if (in_array($status, $seen, true)) {
+                return $result(true, 'repeat', 'This payment was already recorded.');
             }
         }
 
         $default = strtoupper((string)$GLOBALS['config']->get('config', 'default_currency'));
-        $total   = round((float)$order['total'], 2);
-        $state   = self::payState($order);
-        if ($state === 'paid') {
+        $paid_statuses = array(self::ORDER_PROCESS, self::ORDER_COMPLETE);
+        if (in_array((int)$order['status'], $paid_statuses, true)) {
             // A second, different payment for an order already paid: kept on record for the merchant to refund
             $log($status, array_merge($notes, array('The order was already paid when this payment arrived.')));
             return $result(true, 'already_paid', 'The order was already paid.');
         }
-        if ($state !== 'payable') {
-            $log('Refused', array_merge($notes, array('Payment not applied: the order is not awaiting payment.')));
-            return $result(false, 'not_payable', 'The order is not awaiting payment.');
+        // What stands in the way of this payment being applied to the order as a row shows it: code, message and log note, or false
+        $refusal = function ($row) use ($amount, $currency, $default) {
+            $total = round((float)$row['total'], 2);
+            // Declined or Cancelled before the payment arrived is no bar: the money has been taken either way
+            if (!in_array((int)$row['status'], array(self::ORDER_PENDING, self::ORDER_DECLINED, self::ORDER_CANCELLED), true) || $total <= 0) {
+                return array('not_payable', 'The order is not awaiting payment.', 'Payment not applied: the order is not awaiting payment.');
+            }
+            if ($currency !== $default) {
+                return array('currency', 'The payment is in a different currency from the order.', sprintf('Payment not applied: it was made in %s and the order is in %s.', $currency, $default));
+            }
+            // Half a penny of tolerance, for a gateway that reports the amount as a rounded figure
+            if ($amount + 0.005 < $total) {
+                return array('amount', 'The payment is for less than the order.', sprintf('Payment not applied: %s was paid and the order is for %s.', sprintf('%.2F', $amount), sprintf('%.2F', $total)));
+            }
+            return false;
+        };
+        if (($why = $refusal($order)) !== false) {
+            $log('Refused', array_merge($notes, array($why[2])));
+            return $result(false, $why[0], $why[1]);
         }
-        if ($currency !== $default) {
-            $log('Refused', array_merge($notes, array(sprintf('Payment not applied: it was made in %s and the order is in %s.', $currency, $default))));
-            return $result(false, 'currency', 'The payment is in a different currency from the order.');
-        }
-        // Half a penny of tolerance, for a gateway that reports the amount as a rounded figure
-        if ($amount + 0.005 < $total) {
-            $log('Refused', array_merge($notes, array(sprintf('Payment not applied: %s was paid and the order is for %s.', sprintf('%.2F', $amount), sprintf('%.2F', $total)))));
-            return $result(false, 'amount', 'The payment is for less than the order.');
-        }
+        $total = round((float)$order['total'], 2);
         if ($amount > $total + 0.005) {
             $notes[] = sprintf('More was paid than the order is for: %s against %s.', sprintf('%.2F', $amount), sprintf('%.2F', $total));
         }
+        if ((int)$order['status'] !== self::ORDER_PENDING) {
+            $notes[] = sprintf('The order was %s when this payment arrived.', ((int)$order['status'] === self::ORDER_CANCELLED) ? 'Cancelled' : 'Declined');
+        }
+
+        // The money first. Once a transaction is logged, a checkout confirmed again in another tab starts a new
+        // order instead of rewriting this one, so the order read next is the order that is marked as paid.
+        $log($status, $notes);
+        $rows = $GLOBALS['db']->select('CubeCart_order_summary', array('status', 'total'), array('cart_order_id' => $order_id), false, 1, false, false);
+        if (!$rows) {
+            $log('Refused', array('Payment not applied: the order was removed as this payment arrived.'));
+            return $result(false, 'no_order', 'There is no such order.');
+        }
+        if (in_array((int)$rows[0]['status'], $paid_statuses, true)) {
+            return $result(true, 'already_paid', 'The order was already paid.');
+        }
+        if (($why = $refusal($rows[0])) !== false) {
+            // It changed in the moment between the check and the log
+            $log('Refused', array($why[2], 'The order changed as this payment arrived.'));
+            return $result(false, $why[0], $why[1]);
+        }
         if ($reserved) {
-            $log($status, $notes);
             return $result(true, 'reserved', 'The payment is authorised and the order awaits its capture.');
         }
-        $to = (isset($payment['order_status']) && in_array((int)$payment['order_status'], array(self::ORDER_PROCESS, self::ORDER_COMPLETE), true)) ? (int)$payment['order_status'] : self::ORDER_PROCESS;
+        $to = (isset($payment['order_status']) && in_array((int)$payment['order_status'], $paid_statuses, true)) ? (int)$payment['order_status'] : self::ORDER_PROCESS;
         $this->orderStatus($to, $order_id);
         $this->paymentStatus(self::PAYMENT_SUCCESS, $order_id);
-        $log($status, $notes);
         return $result(true, 'paid', 'The payment was recorded and the order is paid.');
     }
 
