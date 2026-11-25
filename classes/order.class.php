@@ -305,7 +305,7 @@ class Order
         $order_summary['credit_used']  = Tax::getInstance()->priceFormat($order_summary['credit_used'], true);
         $order_summary['total']  = Tax::getInstance()->priceFormat($order_summary['total'], true);
         $order_summary['discount']  = Tax::getInstance()->priceFormat($order_summary['discount'], true);
-        $order_summary['shipping'] = Tax::getInstance()->priceFormat($order_summary['shipping'], true);
+        $order_summary['shipping'] = Tax::getInstance()->priceFormat(self::displayShipping($order_summary, $email_inclusive), true);
         // Get taxes
         $order_taxes = $GLOBALS['db']->select('CubeCart_order_tax', array('tax_id', 'amount'), array('cart_order_id' => $order_id));
 
@@ -513,6 +513,25 @@ class Order
             return (float)$order['subtotal'];
         }
         return (float)$order['subtotal'] + ((float)$order['total_tax'] - (float)$order['shipping_tax'] - self::_tariffTotal($order['cart_order_id'] ?? ''));
+    }
+
+    /**
+     * Shipping as the basket showed it
+     *
+     * Shipping is stored ex tax. On an inclusive store the tax line reads "Includes" and
+     * counts the shipping tax, so a net shipping figure leaves Subtotal + Shipping short
+     * of the Total by the shipping tax. Gross it, as the basket does for inclusive shipping.
+     *
+     * @param array $order
+     * @param bool $inclusive
+     * @return float
+     */
+    public static function displayShipping($order, $inclusive)
+    {
+        if (!$inclusive) {
+            return (float)$order['shipping'];
+        }
+        return (float)$order['shipping'] + (float)($order['shipping_tax'] ?? 0);
     }
 
     /**
